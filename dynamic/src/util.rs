@@ -1,6 +1,7 @@
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
+use crate::ext::*;
 use std::arch::asm;
 
 #[macro_export]
@@ -140,14 +141,20 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
         Some(object.battle_object_id + 0x10000)
     } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
         let next_id = object.battle_object_id + 0x10000;
-        let next_object = unsafe { &mut *get_battle_object_from_id(next_id) };
-        let next_status = unsafe {
-            StatusModule::status_kind(next_object.module_accessor)
-        };
-        if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
-            Some(next_id)
-        } else {
-            Some(next_id + 0x10000)
+        let next_object = unsafe { get_battle_object_from_id(next_id) };
+        if !next_object.is_null() {
+            let next_object = unsafe { &mut *next_object };
+            let next_status = unsafe {
+                StatusModule::status_kind(next_object.module_accessor)
+            };
+            if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
+                Some(next_id)
+            } else {
+                Some(next_id + 0x10000)
+            }
+        }
+        else {
+            Some(object.battle_object_id)
         }
     } else {
         Some(object.battle_object_id)
@@ -221,6 +228,32 @@ pub fn get_game_state() -> *const u64 {
         }
         p_game_state
     }
+}
+
+pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x52c30f0) as *const u64);
+    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
+}
+
+pub unsafe fn get_controller_mapping_from_id(player: usize) -> &'static ControllerMapping {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x52c30f0) as *const u64);
+    &*((base + 0x18) as *const ControllerMapping).add(player as usize)
+}
+
+#[repr(C)]
+struct SomeControllerStruct {
+    padding: [u8; 0x10],
+    controller: &'static mut Controller,
+}
+
+pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x5337860) as *const u64);
+    let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
+    let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
+    (*controller_struct).controller
 }
 
 /// Triggers a match exit (all the way back to the stage select screen) by entering into the `StateExit` game state.

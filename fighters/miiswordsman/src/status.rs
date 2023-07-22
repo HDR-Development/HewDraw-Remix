@@ -22,7 +22,8 @@ pub fn install() {
         special_hi3_end,
         //special_lw,
         //miiswordsman_speciallw1hit_main,
-        //special_lw3_end
+        //special_lw3_end,
+        special_hi2_bound_end
     );
 }
 
@@ -697,6 +698,37 @@ unsafe fn pre_chakram_hop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     original!(weapon)
 }
 
+// FIGHTER_STATUS_KIND_SPECIAL_HI
+
+#[status_script(agent = "miiswordsman", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+    0.into()
+}
+
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -863,11 +895,7 @@ unsafe extern "C" fn sub_special_hi3_end_Main(fighter: &mut L2CFighterCommon) ->
     GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL) {
         if !MotionModule::is_end(fighter.module_accessor) {
-            if GroundModule::can_entry_cliff(fighter.module_accessor) == 1 && fighter.global_table[STICK_Y].get_f32() > -0.66 {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE),
-                    L2CValue::Bool(false)
-                );
+            if fighter.sub_transition_group_check_air_cliff().get_bool() {
                 return 1.into()
             }
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT) && MotionModule::is_end(fighter.module_accessor) {
@@ -879,7 +907,7 @@ unsafe extern "C" fn sub_special_hi3_end_Main(fighter: &mut L2CFighterCommon) ->
             }
             if miisword_situation_helper(fighter).get_bool() && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL),
                     L2CValue::Bool(true)
                 );
                 return 1.into()
@@ -1153,7 +1181,7 @@ unsafe fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2C
     return L2CValue::I32(0)
 }
 
-//FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
+// FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -1296,4 +1324,13 @@ unsafe extern "C" fn some6(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     L2CValue::I32(num)
+}
+
+// FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND
+
+#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn special_hi2_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
+    WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+    0.into()
 }

@@ -23,7 +23,7 @@ unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
         if !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN){
             VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                if MeterModule::drain(fighter.battle_object, 2) {
+                if MeterModule::drain(fighter.battle_object, 1) {
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX); 
                 }
@@ -75,7 +75,7 @@ unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
         if !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN){
             VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                if MeterModule::drain(fighter.battle_object, 2) {
+                if MeterModule::drain(fighter.battle_object, 1) {
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX); 
                 }
@@ -122,7 +122,7 @@ unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -357,7 +357,7 @@ unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -565,7 +565,7 @@ unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -804,7 +804,7 @@ unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -1041,7 +1041,7 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -1306,7 +1306,7 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }

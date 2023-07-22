@@ -1,0 +1,56 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+attack_12:
+  extra:
+    cancel_frame: 18
+attack_13:
+  extra:
+    cancel_frame: 28
+special_s:
+  extra:
+    cancel_frame: 46
+attack_11:
+  extra:
+    cancel_frame: 16
+attack_lw3:
+  extra:
+    cancel_frame: 25
+attack_hi4:
+  extra:
+    cancel_frame: 44
+attack_lw4:
+  extra:
+    cancel_frame: 48
+attack_s4_s:
+  extra:
+    cancel_frame: 50
+attack_s3_s:
+attack_s3_lw:
+attack_s4_hi:
+  extra:
+    cancel_frame: 50
+attack_air_b:
+  extra:
+    cancel_frame: 32
+attack_air_f:
+  extra:
+    cancel_frame: 50
+attack_s4_lw:
+  extra:
+    cancel_frame: 50
+attack_s3_hi:
+special_air_s:
+  extra:
+    cancel_frame: 46
+attack_air_lw:
+  extra:
+    cancel_frame: 41
+attack_air_hi:
+  extra:
+    cancel_frame: 28

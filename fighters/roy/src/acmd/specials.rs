@@ -1679,15 +1679,19 @@ unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
-    
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+    }
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
@@ -1723,11 +1727,15 @@ unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 15.0/(40.0-30.0));
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {

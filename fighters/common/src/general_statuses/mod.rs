@@ -30,6 +30,7 @@ mod damage;
 mod escape;
 mod dead;
 mod damageflyreflect;
+mod down;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -372,13 +373,14 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
 pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) -> L2CValue {
     if VarModule::has_var_module(fighter.battle_object)
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY)
-    && fighter.global_table[CURRENT_FRAME].get_i32() != 0
     {
         // When we are calling MAIN status for the sole purpose of changing motion kind upon contact with a surface,
         // there is no need to increment the CURRENT_FRAME counter,
         // or run sub statuses (which are often used to increment various counters used during a status)
         // So we are only updating situation kind, then returning
         // MAIN status will then be called after returning
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::FLUSH_EFFECT_ACMD);
         let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
         fighter.global_table[0xD].assign(&L2CValue::Bool(false));
@@ -547,6 +549,7 @@ pub fn install() {
     escape::install();
     dead::install();
     damageflyreflect::install();
+    down::install();
 
     skyline::nro::add_hook(nro_hook);
 }

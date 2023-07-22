@@ -1,13 +1,11 @@
 use super::*;
-use utils::ext::*;
 use rand::prelude::SliceRandom;
 use rand::Rng;
+use utils::ext::*;
 
 #[skyline::hook(offset = 0x16d948c, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
-    // *ctx.registers[8].x.as_mut() |= 0xFC_00000000;
     *ctx.registers[22].x.as_mut() = 0x2;
-    // println!("{:#x} | {:#x}", *ctx.registers[8].x.as_ref(), *ctx.registers[22].x.as_ref());
 }
 
 #[skyline::hook(offset = 0x16d94c0, inline)]
@@ -32,15 +30,7 @@ unsafe fn write_packet(ctx: &mut skyline::hooks::InlineCtx) {
 #[repr(C)]
 struct SomeControllerStruct {
     padding: [u8; 0x10],
-    controller: &'static mut Controller
-}
-
-unsafe fn get_player_idx_from_boma(boma: u64) -> i32 {
-    let control_module = *((boma + 0x48) as *const u64);
-    let next = *((control_module + 0x118) as *const u64);
-    let next = *((next + 0x58) as *const u64);
-    let next = *((next + 0x8) as *const u64);
-    *((next + 0x8) as *const i32)
+    controller: &'static mut Controller,
 }
 
 macro_rules! apply_button_mappings {
@@ -61,15 +51,63 @@ unsafe fn map_controls_hook(
     player_idx: i32,
     out: *mut MappedInputs,
     controller_struct: &mut SomeControllerStruct,
-    arg: bool
+    arg: bool,
 ) {
     let entry_count = (*mappings.add(player_idx as usize))._34[0];
-    let ret = original!()(mappings, player_idx, out, controller_struct, arg);
+    let ret = if controller_struct.controller.style == ControllerStyle::GCController {
+        // Used for analog shields
+        // let is_r_press = if (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard {
+        //     let press = Some(controller_struct.controller.current_buttons.r());
+        //     controller_struct.controller.current_buttons.set_r(false);
+        //     press
+        // } else {
+        //     None
+        // };
+
+        // let is_l_press = if (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard {
+        //     let press = Some(controller_struct.controller.current_buttons.l());
+        //     controller_struct.controller.current_buttons.set_l(false);
+        //     press
+        // } else {
+        //     None
+        // };
+
+        let ab_smash = (*mappings.add(player_idx as usize)).gc_absmash;
+        (*mappings.add(player_idx as usize)).gc_absmash &= 1;
+        let ret = original!()(mappings, player_idx, out, controller_struct, arg);
+        (*mappings.add(player_idx as usize)).gc_absmash = ab_smash;
+
+        // if let Some(press) = is_r_press {
+        //     controller_struct.controller.current_buttons.set_r(press);
+        // }
+
+        // if let Some(press) = is_l_press {
+        //     controller_struct.controller.current_buttons.set_l(press);
+        // }
+    } else {
+        if controller_struct.controller.style == ControllerStyle::LeftJoycon
+            || controller_struct.controller.style == ControllerStyle::RightJoycon
+        {
+            let ab_smash = (*mappings.add(player_idx as usize)).joy_absmash;
+            (*mappings.add(player_idx as usize)).joy_absmash &= 1;
+            let ret = original!()(mappings, player_idx, out, controller_struct, arg);
+            (*mappings.add(player_idx as usize)).joy_absmash = ab_smash;
+            ret
+        } else {
+            let ab_smash = (*mappings.add(player_idx as usize)).pro_absmash;
+            (*mappings.add(player_idx as usize)).pro_absmash &= 1;
+            let ret = original!()(mappings, player_idx, out, controller_struct, arg);
+            (*mappings.add(player_idx as usize)).pro_absmash = ab_smash;
+            ret
+        }
+    };
     let controller = &mut controller_struct.controller;
 
     //println!("entry_count vs. current: {} vs. {}", entry_count, (*mappings.add(player_idx as usize))._34[0]);
 
-    if (*out).buttons.contains(Buttons::CStickOn) && (*mappings.add(player_idx as usize))._34[0] != entry_count {
+    if (*out).buttons.contains(Buttons::CStickOn)
+        && (*mappings.add(player_idx as usize))._34[0] != entry_count
+    {
         (*out).rstick_x = (controller.left_stick_x * (i8::MAX as f32)) as i8;
         (*out).rstick_y = (controller.left_stick_y * (i8::MAX as f32)) as i8;
         (*out).buttons |= Buttons::CStickOverride;
@@ -84,187 +122,408 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, gc_l, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (r, gc_r, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (zl, gc_z, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (zr, gc_z, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (a, gc_a, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (b, gc_b, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (x, gc_x, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (y, gc_y, JumpMini, Buttons::JumpMini | Buttons::Jump)
+            (l, gc_l, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                r,
+                gc_r,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(zl, gc_z, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                zr,
+                gc_z,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(a, gc_a, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                b,
+                gc_b,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(x, gc_x, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                y,
+                gc_y,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, gc_l, SmashAttack, Buttons::AttackAll)
-                (r, gc_r, SmashAttack, Buttons::AttackAll)
-                (zl, gc_z, SmashAttack, Buttons::AttackAll)
-                (zr, gc_z, SmashAttack, Buttons::AttackAll)
-                (a, gc_a, SmashAttack, Buttons::AttackAll)
-                (b, gc_b, SmashAttack, Buttons::AttackAll)
-                (x, gc_x, SmashAttack, Buttons::AttackAll)
-                (y, gc_y, SmashAttack, Buttons::AttackAll)
+            (l, gc_l, SmashAttack, Buttons::AttackAll)(r, gc_r, SmashAttack, Buttons::AttackAll)(
+                zl,
+                gc_z,
+                SmashAttack,
+                Buttons::AttackAll
+            )(zr, gc_z, SmashAttack, Buttons::AttackAll)(
+                a, gc_a, SmashAttack, Buttons::AttackAll
+            )(b, gc_b, SmashAttack, Buttons::AttackAll)(
+                x, gc_x, SmashAttack, Buttons::AttackAll
+            )(y, gc_y, SmashAttack, Buttons::AttackAll)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, gc_l,   AppealHi, Buttons::AppealHi)
-                (r, gc_r,   AppealHi, Buttons::AppealHi)
-                (zl, gc_z,  AppealHi, Buttons::AppealHi)
-                (zr, gc_z,  AppealHi, Buttons::AppealHi)
-                (a, gc_a,   AppealHi, Buttons::AppealHi)
-                (b, gc_b,   AppealHi, Buttons::AppealHi)
-                (x, gc_x,   AppealHi, Buttons::AppealHi)
-                (y, gc_y,   AppealHi, Buttons::AppealHi)
+            (l, gc_l, AppealHi, Buttons::AppealHi)(r, gc_r, AppealHi, Buttons::AppealHi)(
+                zl,
+                gc_z,
+                AppealHi,
+                Buttons::AppealHi
+            )(zr, gc_z, AppealHi, Buttons::AppealHi)(
+                a, gc_a, AppealHi, Buttons::AppealHi
+            )(b, gc_b, AppealHi, Buttons::AppealHi)(
+                x, gc_x, AppealHi, Buttons::AppealHi
+            )(y, gc_y, AppealHi, Buttons::AppealHi)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, gc_l,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (r, gc_r,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (zl, gc_z,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (zr, gc_z,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (a, gc_a,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (b, gc_b,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (x, gc_x,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (y, gc_y,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+            (
+                l,
+                gc_l,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                r,
+                gc_r,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                zl,
+                gc_z,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                zr,
+                gc_z,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                a,
+                gc_a,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                b,
+                gc_b,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                x,
+                gc_x,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                y,
+                gc_y,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )
         );
-        if (*mappings.add(player_idx as usize)).gc_absmash {
+        if (*mappings).gc_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings.add(player_idx as usize)).is_absmash = true;
-            } else if !(*out).buttons.intersects(Buttons::Attack | Buttons::Special) {
-                (*mappings.add(player_idx as usize)).is_absmash = false;
-            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*mappings).is_absmash = true;
+            } else if !(*out)
+                .buttons
+                .intersects(Buttons::Attack | Buttons::Special)
+            {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
-    } else if controller.style == ControllerStyle::LeftJoycon || controller.style == ControllerStyle::RightJoycon {
+    } else if controller.style == ControllerStyle::LeftJoycon
+        || controller.style == ControllerStyle::RightJoycon
+    {
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, joy_shoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (r, joy_shoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (zl, joy_zshoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (zr, joy_zshoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (left_sl, joy_sl, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (left_sr, joy_sr, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (right_sl, joy_sl, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (right_sr, joy_sr, JumpMini, Buttons::JumpMini | Buttons::Jump)
+            (l, joy_shoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                r,
+                joy_shoulder,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(
+                zl,
+                joy_zshoulder,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(
+                zr,
+                joy_zshoulder,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(left_sl, joy_sl, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                left_sr,
+                joy_sr,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(
+                right_sl,
+                joy_sl,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(
+                right_sr,
+                joy_sr,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, joy_shoulder,   SmashAttack, Buttons::AttackAll)
-                (r, joy_shoulder,   SmashAttack, Buttons::AttackAll)
-                (zl, joy_zshoulder, SmashAttack, Buttons::AttackAll)
-                (zr, joy_zshoulder, SmashAttack, Buttons::AttackAll)
-                (left_sl, joy_sl,   SmashAttack, Buttons::AttackAll)
-                (left_sr, joy_sr,   SmashAttack, Buttons::AttackAll)
-                (right_sl, joy_sl,  SmashAttack, Buttons::AttackAll)
-                (right_sr, joy_sr,  SmashAttack, Buttons::AttackAll)
+            (l, joy_shoulder, SmashAttack, Buttons::AttackAll)(
+                r,
+                joy_shoulder,
+                SmashAttack,
+                Buttons::AttackAll
+            )(zl, joy_zshoulder, SmashAttack, Buttons::AttackAll)(
+                zr,
+                joy_zshoulder,
+                SmashAttack,
+                Buttons::AttackAll
+            )(left_sl, joy_sl, SmashAttack, Buttons::AttackAll)(
+                left_sr,
+                joy_sr,
+                SmashAttack,
+                Buttons::AttackAll
+            )(right_sl, joy_sl, SmashAttack, Buttons::AttackAll)(
+                right_sr,
+                joy_sr,
+                SmashAttack,
+                Buttons::AttackAll
+            )
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, joy_shoulder,   AppealHi, Buttons::AppealHi)
-                (r, joy_shoulder,   AppealHi, Buttons::AppealHi)
-                (zl, joy_zshoulder, AppealHi, Buttons::AppealHi)
-                (zr, joy_zshoulder, AppealHi, Buttons::AppealHi)
-                (left_sl, joy_sl,   AppealHi, Buttons::AppealHi)
-                (left_sr, joy_sr,   AppealHi, Buttons::AppealHi)
-                (right_sl, joy_sl,  AppealHi, Buttons::AppealHi)
-                (right_sr, joy_sr,  AppealHi, Buttons::AppealHi)
+            (l, joy_shoulder, AppealHi, Buttons::AppealHi)(
+                r,
+                joy_shoulder,
+                AppealHi,
+                Buttons::AppealHi
+            )(zl, joy_zshoulder, AppealHi, Buttons::AppealHi)(
+                zr,
+                joy_zshoulder,
+                AppealHi,
+                Buttons::AppealHi
+            )(left_sl, joy_sl, AppealHi, Buttons::AppealHi)(
+                left_sr,
+                joy_sr,
+                AppealHi,
+                Buttons::AppealHi
+            )(right_sl, joy_sl, AppealHi, Buttons::AppealHi)(
+                right_sr,
+                joy_sr,
+                AppealHi,
+                Buttons::AppealHi
+            )
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, joy_shoulder,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (r, joy_shoulder,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (zl, joy_zshoulder, TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (zr, joy_zshoulder, TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (left_sl, joy_sl,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (left_sr, joy_sr,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (right_sl, joy_sl,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (right_sr, joy_sr,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+            (
+                l,
+                joy_shoulder,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                r,
+                joy_shoulder,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                zl,
+                joy_zshoulder,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                zr,
+                joy_zshoulder,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                left_sl,
+                joy_sl,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                left_sr,
+                joy_sr,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                right_sl,
+                joy_sl,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                right_sr,
+                joy_sr,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )
         );
 
         if controller.style == ControllerStyle::LeftJoycon {
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (dpad_left, joy_down, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                    (dpad_right, joy_up, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                    (dpad_up, joy_left, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                    (dpad_down, joy_right, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (
+                    dpad_left,
+                    joy_down,
+                    JumpMini,
+                    Buttons::JumpMini | Buttons::Jump
+                )(
+                    dpad_right,
+                    joy_up,
+                    JumpMini,
+                    Buttons::JumpMini | Buttons::Jump
+                )(
+                    dpad_up,
+                    joy_left,
+                    JumpMini,
+                    Buttons::JumpMini | Buttons::Jump
+                )(
+                    dpad_down,
+                    joy_right,
+                    JumpMini,
+                    Buttons::JumpMini | Buttons::Jump
+                )
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (dpad_left, joy_down, SmashAttack, Buttons::AttackAll)
-                    (dpad_right, joy_up, SmashAttack, Buttons::AttackAll)
-                    (dpad_up, joy_left, SmashAttack, Buttons::AttackAll)
-                    (dpad_down, joy_right, SmashAttack, Buttons::AttackAll)
+                (dpad_left, joy_down, SmashAttack, Buttons::AttackAll)(
+                    dpad_right,
+                    joy_up,
+                    SmashAttack,
+                    Buttons::AttackAll
+                )(dpad_up, joy_left, SmashAttack, Buttons::AttackAll)(
+                    dpad_down,
+                    joy_right,
+                    SmashAttack,
+                    Buttons::AttackAll
+                )
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (dpad_left, joy_down,   AppealHi, Buttons::AppealHi)
-                    (dpad_right, joy_up,    AppealHi, Buttons::AppealHi)
-                    (dpad_up, joy_left,     AppealHi, Buttons::AppealHi)
-                    (dpad_down, joy_right,  AppealHi, Buttons::AppealHi)
+                (dpad_left, joy_down, AppealHi, Buttons::AppealHi)(
+                    dpad_right,
+                    joy_up,
+                    AppealHi,
+                    Buttons::AppealHi
+                )(dpad_up, joy_left, AppealHi, Buttons::AppealHi)(
+                    dpad_down,
+                    joy_right,
+                    AppealHi,
+                    Buttons::AppealHi
+                )
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (dpad_left, joy_down,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                    (dpad_right, joy_up,    TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                    (dpad_up, joy_left,     TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                    (dpad_down, joy_right,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (
+                    dpad_left,
+                    joy_down,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )(
+                    dpad_right,
+                    joy_up,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )(
+                    dpad_up,
+                    joy_left,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )(
+                    dpad_down,
+                    joy_right,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )
             );
         } else {
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (a, joy_down, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                    (y, joy_up, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                    (b, joy_left, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                    (x, joy_right, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (a, joy_down, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                    y,
+                    joy_up,
+                    JumpMini,
+                    Buttons::JumpMini | Buttons::Jump
+                )(b, joy_left, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                    x,
+                    joy_right,
+                    JumpMini,
+                    Buttons::JumpMini | Buttons::Jump
+                )
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (a, joy_down, SmashAttack, Buttons::AttackAll)
-                    (y, joy_up, SmashAttack, Buttons::AttackAll)
-                    (b, joy_left, SmashAttack, Buttons::AttackAll)
-                    (x, joy_right, SmashAttack, Buttons::AttackAll)
+                (a, joy_down, SmashAttack, Buttons::AttackAll)(
+                    y,
+                    joy_up,
+                    SmashAttack,
+                    Buttons::AttackAll
+                )(b, joy_left, SmashAttack, Buttons::AttackAll)(
+                    x,
+                    joy_right,
+                    SmashAttack,
+                    Buttons::AttackAll
+                )
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (a, joy_down,   AppealHi, Buttons::AppealHi)
-                    (y, joy_up,     AppealHi, Buttons::AppealHi)
-                    (b, joy_left,   AppealHi, Buttons::AppealHi)
-                    (x, joy_right,  AppealHi, Buttons::AppealHi)
+                (a, joy_down, AppealHi, Buttons::AppealHi)(y, joy_up, AppealHi, Buttons::AppealHi)(
+                    b,
+                    joy_left,
+                    AppealHi,
+                    Buttons::AppealHi
+                )(x, joy_right, AppealHi, Buttons::AppealHi)
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (a, joy_down,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                    (y, joy_up,     TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                    (b, joy_left,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                    (x, joy_right,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (
+                    a,
+                    joy_down,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )(
+                    y,
+                    joy_up,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )(
+                    b,
+                    joy_left,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )(
+                    x,
+                    joy_right,
+                    TiltAttack,
+                    Buttons::TiltAttack | Buttons::AttackAll
+                )
             );
         }
-        if (*mappings.add(player_idx as usize)).joy_absmash {
+        if (*mappings).joy_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings.add(player_idx as usize)).is_absmash = true;
-            } else if !(*out).buttons.intersects(Buttons::Attack | Buttons::Special) {
-                (*mappings.add(player_idx as usize)).is_absmash = false;
-            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*mappings).is_absmash = true;
+            } else if !(*out)
+                .buttons
+                .intersects(Buttons::Attack | Buttons::Special)
+            {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
@@ -272,71 +531,225 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, pro_l, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (r, pro_r, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (zl, pro_zl, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (zr, pro_zr, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (a, pro_a, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (b, pro_b, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (x, pro_x, JumpMini, Buttons::JumpMini | Buttons::Jump)
-                (y, pro_y, JumpMini, Buttons::JumpMini | Buttons::Jump)
+            (l, pro_l, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                r,
+                pro_r,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(zl, pro_zl, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                zr,
+                pro_zr,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(a, pro_a, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                b,
+                pro_b,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )(x, pro_x, JumpMini, Buttons::JumpMini | Buttons::Jump)(
+                y,
+                pro_y,
+                JumpMini,
+                Buttons::JumpMini | Buttons::Jump
+            )
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, pro_l, SmashAttack, Buttons::AttackAll)
-                (r, pro_r, SmashAttack, Buttons::AttackAll)
-                (zl, pro_zl, SmashAttack, Buttons::AttackAll)
-                (zr, pro_zr, SmashAttack, Buttons::AttackAll)
-                (a, pro_a, SmashAttack, Buttons::AttackAll)
-                (b, pro_b, SmashAttack, Buttons::AttackAll)
-                (x, pro_x, SmashAttack, Buttons::AttackAll)
-                (y, pro_y, SmashAttack, Buttons::AttackAll)
+            (l, pro_l, SmashAttack, Buttons::AttackAll)(r, pro_r, SmashAttack, Buttons::AttackAll)(
+                zl,
+                pro_zl,
+                SmashAttack,
+                Buttons::AttackAll
+            )(zr, pro_zr, SmashAttack, Buttons::AttackAll)(
+                a,
+                pro_a,
+                SmashAttack,
+                Buttons::AttackAll
+            )(b, pro_b, SmashAttack, Buttons::AttackAll)(
+                x, pro_x, SmashAttack, Buttons::AttackAll
+            )(y, pro_y, SmashAttack, Buttons::AttackAll)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, pro_l,      AppealHi, Buttons::AppealHi)
-                (r, pro_r,      AppealHi, Buttons::AppealHi)
-                (zl, pro_zl,    AppealHi, Buttons::AppealHi)
-                (zr, pro_zr,    AppealHi, Buttons::AppealHi)
-                (a, pro_a,      AppealHi, Buttons::AppealHi)
-                (b, pro_b,      AppealHi, Buttons::AppealHi)
-                (x, pro_x,      AppealHi, Buttons::AppealHi)
-                (y, pro_y,      AppealHi, Buttons::AppealHi)
+            (l, pro_l, AppealHi, Buttons::AppealHi)(r, pro_r, AppealHi, Buttons::AppealHi)(
+                zl,
+                pro_zl,
+                AppealHi,
+                Buttons::AppealHi
+            )(zr, pro_zr, AppealHi, Buttons::AppealHi)(
+                a, pro_a, AppealHi, Buttons::AppealHi
+            )(b, pro_b, AppealHi, Buttons::AppealHi)(
+                x, pro_x, AppealHi, Buttons::AppealHi
+            )(y, pro_y, AppealHi, Buttons::AppealHi)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, pro_l,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (r, pro_r,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (zl, pro_zl,    TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (zr, pro_zr,    TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (a, pro_a,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (b, pro_b,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (x, pro_x,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
-                (y, pro_y,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+            (
+                l,
+                pro_l,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                r,
+                pro_r,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                zl,
+                pro_zl,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                zr,
+                pro_zr,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                a,
+                pro_a,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                b,
+                pro_b,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                x,
+                pro_x,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )(
+                y,
+                pro_y,
+                TiltAttack,
+                Buttons::TiltAttack | Buttons::AttackAll
+            )
         );
 
-        if (*mappings.add(player_idx as usize)).pro_absmash {
+        if (*mappings).pro_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings.add(player_idx as usize)).is_absmash = true;
-            } else if !(*out).buttons.intersects(Buttons::Attack | Buttons::Special) {
-                (*mappings.add(player_idx as usize)).is_absmash = false;
-            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*mappings).is_absmash = true;
+            } else if !(*out)
+                .buttons
+                .intersects(Buttons::Attack | Buttons::Special)
+            {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
+        }
+    }
+
+    // if controller.style == ControllerStyle::GCController {
+    //     let analog_setting = (*mappings.add(player_idx as usize))._34.last_mut().unwrap();
+
+    //     if *analog_setting & 6 == 2 {
+    //         if controller.left_trigger > 0.33 {
+    //             *analog_setting = 2;
+    //         } else {
+    //             *analog_setting = 0;
+    //         }
+    //     } else if *analog_setting & 6 == 4 {
+    //         if controller.right_trigger > 0.33 {
+    //             *analog_setting = 4;
+    //         } else {
+    //             *analog_setting = 0;
+    //         }
+    //     }
+
+    //     if *analog_setting & 6 == 0 {
+    //         if (controller.left_trigger > 0.33 || controller.current_buttons.real_digital_l())
+    //             && (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard
+    //         {
+    //             *analog_setting = 2;
+    //         } else if (controller.right_trigger > 0.33
+    //             || controller.current_buttons.real_digital_r())
+    //             && (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard
+    //         {
+    //             *analog_setting = 4;
+    //         }
+    //     }
+
+    //     let analog_value = match *analog_setting & 6 {
+    //         2 => {
+    //             (*out).buttons |= Buttons::Guard;
+    //             if controller.current_buttons.real_digital_r() || controller.right_trigger > 0.33 {
+    //                 (*out).buttons |= Buttons::GuardHold;
+    //             }
+
+    //             if controller.current_buttons.real_digital_l() {
+    //                 1.0
+    //             } else {
+    //                 controller.left_trigger
+    //             }
+    //         }
+    //         4 => {
+    //             (*out).buttons |= Buttons::Guard;
+    //             if controller.current_buttons.real_digital_l() || controller.left_trigger > 0.33 {
+    //                 (*out).buttons |= Buttons::GuardHold;
+    //             }
+
+    //             if controller.current_buttons.real_digital_r() {
+    //                 1.0
+    //             } else {
+    //                 controller.right_trigger
+    //             }
+    //         }
+    //         _ => 0.0,
+    //     };
+
+    //     let analog_value = if analog_value <= 0.33 {
+    //         0.0
+    //     } else if analog_value >= 0.8 {
+    //         1.0
+    //     } else {
+    //         (analog_value - 0.33) / 0.53
+    //     };
+
+    //     let bits = (analog_value * 1023.0) as u16;
+    //     (*out).buttons =
+    //         Buttons::from_bits_unchecked((*out).buttons.bits() | ((bits as i32) << 22));
+    // }
+
+    let is_parry_taunt = match controller.style {
+        ControllerStyle::GCController => (*mappings).gc_absmash & 2 != 0,
+        ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
+            (*mappings).joy_absmash & 2 != 0
+        }
+        _ => (*mappings).pro_absmash & 2 != 0,
+    };
+
+    let (parry, hold) = if is_parry_taunt {
+        (Buttons::AppealAll, Buttons::Special)
+    } else {
+        (Buttons::Special, Buttons::AppealAll)
+    };
+
+    if (*out).buttons.intersects(Buttons::Guard) {
+        if (*out).buttons.intersects(parry) {
+            if is_parry_taunt {
+                (*out).buttons |= Buttons::TauntParry;
+            }
+            else {
+                (*out).buttons |= Buttons::SpecialParry;
+            }
+        } else if (*out).buttons.intersects(hold) {
+            (*out).buttons |= Buttons::GuardHold;
         }
     }
 
     // Check if the button combos are being pressed and then force Stock Share + AttackRaw/SpecialRaw depending on input
 
     if controller.current_buttons.l()
-    && controller.current_buttons.r()
-    && controller.current_buttons.a()
-    && (controller.current_buttons.minus() || controller.current_buttons.plus())
+        && controller.current_buttons.r()
+        && controller.current_buttons.a()
+        && (controller.current_buttons.minus() || controller.current_buttons.plus())
     {
         controller.current_buttons.set_plus(false);
         controller.current_buttons.set_minus(false);
@@ -356,24 +769,6 @@ unsafe fn map_controls_hook(
     }
 }
 
-#[skyline::hook(offset = offsets::analog_trigger_l(), inline)]
-unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
-    if *ctx.registers[9].x.as_ref() & 0x40 != 0 {
-        *ctx.registers[11].x.as_mut() = 0;
-    } else {
-        *ctx.registers[11].w.as_mut() = 0x27FF;
-    }
-}
-
-#[skyline::hook(offset = offsets::analog_trigger_r(), inline)]
-unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
-    if *ctx.registers[8].x.as_ref() & 0x80 != 0 {
-        *ctx.registers[11].x.as_mut() = 0;
-    } else {
-        *ctx.registers[11].w.as_mut() = 0x27FF;
-    }
-}
-
 #[repr(C)]
 struct ControlModuleInternal {
     vtable: *mut u8,
@@ -390,12 +785,8 @@ struct ControlModuleInternal {
     clamped_rstick_y: f32,
 }
 
-unsafe fn get_mapped_controller_inputs(player: usize) -> &'static MappedInputs {
-    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c30f0) as *const u64);
-    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
-}
-
 static mut LAST_ALT_STICK: [f32; 2] = [0.0, 0.0];
+static mut LAST_ANALOG: f32 = 0.0;
 
 #[skyline::hook(offset = 0x3f7220)]
 unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
@@ -411,7 +802,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     //println!("this.controller_index: {}", this.controller_index);
     // assert!(this.controller_index <= 7);
 
-    let inputs = get_mapped_controller_inputs(this.controller_index as usize);
+    let inputs = util::get_mapped_controller_inputs_from_id(this.controller_index as usize);
 
     let clamp_mul = 1.0 / CLAMP_MAX;
 
@@ -424,8 +815,18 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     let raw_rstick_x = ((inputs.rstick_x as f32) * clamp_mul).clamp(-1.0, 1.0);
     let raw_rstick_y = ((inputs.rstick_y as f32) * clamp_mul).clamp(-1.0, 1.0);
 
-    LAST_ALT_STICK[0] = if raw_rstick_x.abs() >= NEUTRAL { raw_rstick_x } else { 0.0 };
-    LAST_ALT_STICK[1] = if raw_rstick_y.abs() >= NEUTRAL { raw_rstick_y } else { 0.0 };
+    LAST_ALT_STICK[0] = if raw_rstick_x.abs() >= NEUTRAL {
+        raw_rstick_x
+    } else {
+        0.0
+    };
+    LAST_ALT_STICK[1] = if raw_rstick_y.abs() >= NEUTRAL {
+        raw_rstick_y
+    } else {
+        0.0
+    };
+
+    LAST_ANALOG = ((inputs.buttons.bits() >> 22) & 1023) as f32 / 1023.0;
 
     call_original!(this)
 }
@@ -436,6 +837,7 @@ unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     let internal_class = *(module as *const u64).add(0x110 / 0x8);
     *(internal_class as *mut f32).add(0x40 / 0x4) = LAST_ALT_STICK[0];
     *(internal_class as *mut f32).add(0x44 / 0x4) = LAST_ALT_STICK[1];
+    *(internal_class as *mut f32).add(0x48 / 0x4) = LAST_ANALOG;
 }
 
 #[skyline::hook(offset = 0x16d7ee4, inline)]
@@ -447,7 +849,7 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
         lstick_x: 0,
         lstick_y: 0,
         rstick_x: 0,
-        rstick_y: 0
+        rstick_y: 0,
     };
 
     let raw_buttons = ((packet >> 16) & 0xFFFF_FFFF) as u32;
@@ -468,7 +870,6 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
 /// fix throws not respecting the cstick, especially dk cargo throw
 #[skyline::hook(replace = L2CFighterCommon_IsThrowStick)]
 unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue {
-
     let mut out = fighter.local_func__fighter_status_catch_1();
     let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
     let stick_y = fighter.stick_y();
@@ -485,15 +886,20 @@ unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue 
     out
 }
 
-static mut SHOULD_END_RESULT_SCREEN : bool = false;
+static mut SHOULD_END_RESULT_SCREEN: bool = false;
 
 // Skip results screen with start button
 #[skyline::hook(offset = 0x3664040)]
 unsafe fn process_inputs_handheld(controller: &mut Controller) {
     let entry_count = lua_bind::FighterManager::entry_count(utils::singletons::FighterManager());
-    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) && entry_count > 0 {
+    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager())
+        && entry_count > 0
+    {
         if ninput::any::is_press(ninput::Buttons::PLUS) {
             SHOULD_END_RESULT_SCREEN = true;
+        }
+        if ninput::any::is_press(ninput::Buttons::B) {
+            SHOULD_END_RESULT_SCREEN = false;
         }
         if SHOULD_END_RESULT_SCREEN {
             let mut rng = rand::thread_rng();
@@ -511,6 +917,47 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
     call_original!(controller);
 }
 
+static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
+
+#[skyline::hook(offset = 0x3665e2c, inline)]
+unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
+    let state: *mut skyline::nn::hid::NpadGcState =
+        (ctx as *const _ as *mut u8).add(0x100) as *mut _;
+    let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
+
+    GC_TRIGGERS[0] = (*state).LTrigger as f32 / i16::MAX as f32;
+    GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
+}
+
+#[skyline::hook(offset = 0x3665c8c, inline)]
+unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
+    let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
+    (*controller).left_trigger = GC_TRIGGERS[0];
+    (*controller).right_trigger = GC_TRIGGERS[1];
+    GC_TRIGGERS = [0.0, 0.0];
+}
+
+#[skyline::hook(offset = offsets::analog_trigger_l(), inline)]
+unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
+    if *ctx.registers[9].x.as_ref() & 0x40 != 0 {
+        let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
+        (*controller).current_buttons.set_real_digital_l(true);
+        *ctx.registers[11].x.as_mut() = 0;
+    } else {
+        *ctx.registers[11].w.as_mut() = 0x27FF;
+    }
+}
+
+#[skyline::hook(offset = offsets::analog_trigger_r(), inline)]
+unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
+    if *ctx.registers[8].x.as_ref() & 0x80 != 0 {
+        let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
+        (*controller).current_buttons.set_real_digital_r(true);
+    } else {
+        *ctx.registers[11].w.as_mut() = 0x27FF;
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hook!(is_throw_stick);
@@ -518,6 +965,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 }
 
 pub fn install() {
+    skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,
@@ -527,7 +976,9 @@ pub fn install() {
         parse_inputs,
         handle_incoming_packet,
         after_exec,
-        process_inputs_handheld
+        process_inputs_handheld,
+        post_gamecube_process,
+        apply_triggers
     );
     skyline::nro::add_hook(nro_hook);
 }

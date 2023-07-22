@@ -146,6 +146,23 @@ unsafe fn roy_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "roy", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn roy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 #[acmd_script( agent = "roy", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -324,6 +341,7 @@ pub fn install() {
         roy_attack_air_f_game,
         roy_attack_air_f_effect,
         roy_attack_air_f_sound,
+        roy_attack_air_f_expression,
         roy_attack_air_b_game,
         roy_attack_air_b_game,
         roy_attack_air_b_effect,

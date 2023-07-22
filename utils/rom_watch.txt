@@ -1,7 +1,0 @@
-fighter/common/hdr/param/common.xml
-fighter/common/hdr/param/fighter_param.xml
-fighter/luigi/param/hdr.xml
-fighter/pikmin/param/hdr.xml
-fighter/lucas/param/hdr.xml
-fighter/lucario/param/hdr.xml
-fighter/pichu/param/hdr.xml
