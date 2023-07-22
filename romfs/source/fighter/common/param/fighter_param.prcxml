@@ -862,10 +862,10 @@
       <float hash="ground_brake">0.06</float>
       <float hash="dash_speed">1.5</float>
       <float hash="run_accel_mul">0.07</float>
-      <float hash="run_accel_add">0</float>
-      <float hash="run_speed_max">1.69</float>
+      <float hash="run_accel_add">0.005</float>
+      <float hash="run_speed_max">1.7</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.206</float>
+      <float hash="jump_speed_x_max">1.21</float>
       <float hash="jump_initial_y">11.0718</float>
       <float hash="jump_aerial_y">25</float>
       <float hash="air_speed_x_stable">0.915</float>
