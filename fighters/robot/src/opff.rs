@@ -225,7 +225,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     uspecial_cancels(boma, situation_kind, frame);
-    uspecial_cancels2(boma, situation_kind, frame);
+    //uspecial_cancels2(boma, situation_kind, frame);
     dair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);
