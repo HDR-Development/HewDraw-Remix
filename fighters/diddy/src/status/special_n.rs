@@ -203,9 +203,6 @@ unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             special_n_shoot_motion_helper(fighter);
         }
-        else {
-            special_n_shoot_motion_helper(fighter);
-        }
     }
     if !CancelModule::is_enable_cancel(fighter.module_accessor) || (!fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
         if MotionModule::is_end(fighter.module_accessor) {
@@ -216,11 +213,6 @@ unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -
             else {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
                 return 0.into();
-            }
-        }
-        else {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_SHOOT) {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_SHOOT);
             }
         }
     }
