@@ -968,8 +968,7 @@ pub mod vars {
 
             // floats
             pub const CURRENT_CHARGE: i32 = 0x1100;
-            pub const IS_CHARGE_FINISHED: i32 = 0x1101;
-            pub const MISSILE_DETONATE: i32 = 0x1102;
+            pub const MISSILE_DETONATE: i32 = 0x1101;
         }
         pub mod instance {
             // flags

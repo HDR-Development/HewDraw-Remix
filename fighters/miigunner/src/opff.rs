@@ -3,73 +3,69 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn charge_handle(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion_one_of(&[
+unsafe fn charge_handle(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion_one_of(&[
         Hash40::new("attack_air_lw"),
         Hash40::new("special_n3_start"),
         Hash40::new("special_air_n3_start"),
         Hash40::new("special_hi1"),
         Hash40::new("special_air_hi1")]) {
         let is_hold =
-            if fighter.is_motion(Hash40::new("attack_air_lw")) {
-                ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            if boma.is_motion(Hash40::new("attack_air_lw")) {
+                ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
             } else {
-                ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+                ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
             };
-        let charge = VarModule::get_float(fighter.battle_object, vars::miigunner::status::CURRENT_CHARGE);
+        let charge = VarModule::get_float(boma.object(), vars::miigunner::status::CURRENT_CHARGE);
         let mut charge_start_frame = 0.0;
         let mut charge_end_frame = 0.0;
-        let mut max_charge_frames = 0.0;
+        let mut max_charge_frames = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.max_charge_frames");
 
-        match MotionModule::motion_kind(fighter.module_accessor) {
-            _ if fighter.is_motion(Hash40::new("attack_air_lw")) => {
-                charge_start_frame = 10.0;
-                charge_end_frame = 14.0;
-                max_charge_frames = 20.0;
+        match MotionModule::motion_kind(boma) {
+            _ if boma.is_motion(Hash40::new("attack_air_lw")) => {
+                charge_start_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.attack_air_lw_charge_start");
+                charge_end_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.attack_air_lw_charge_end");
             },
-            _ if fighter.is_motion_one_of(&[Hash40::new("special_n3_start"), Hash40::new("special_air_n3_start")]) => {
-                charge_start_frame = 10.0;
-                charge_end_frame = 15.0;
-                max_charge_frames = 20.0;
+            _ if boma.is_motion_one_of(&[Hash40::new("special_n3_start"), Hash40::new("special_air_n3_start")]) => {
+                charge_start_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.special_n3_charge_start");
+                charge_end_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.special_n3_charge_end");
             },
-            _ if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) => {
-                charge_start_frame = 6.0;
-                charge_end_frame = 8.0;
-                max_charge_frames = 20.0;
+            _ if boma.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) => {
+                charge_start_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.special_hi1_charge_start");
+                charge_end_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.special_hi1_charge_end");
             },
             _ => {}
         }
 
-        if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < max_charge_frames && is_hold {
-            if fighter.is_motion(Hash40::new("attack_air_lw")) {
-                let handle = VarModule::get_int64(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
-                EffectModule::set_scale(fighter.module_accessor, handle as u32, &Vector3f::new(0.75 + 0.018 * charge, 0.75 + 0.018 * charge, 0.75 + 0.018 * charge));
+        if (charge_start_frame..charge_end_frame).contains(&boma.motion_frame()) && charge < max_charge_frames && is_hold {
+            if boma.is_motion(Hash40::new("attack_air_lw")) {
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                EffectModule::set_scale(boma, handle as u32, &Vector3f::new(0.75 + 0.018 * charge, 0.75 + 0.018 * charge, 0.75 + 0.018 * charge));
             }
-            else if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
+            else if boma.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
                 let motion_vec = if charge <= 10.0 { Vector3f{ x: 1.0, y: 0.55, z: 1.0 } } else { Vector3f{ x: 1.0, y: 0.35, z: 1.0 } };
-                KineticModule::mul_speed(fighter.module_accessor, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                let handle = VarModule::get_int64(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
-                EffectModule::set_rate(fighter.module_accessor, handle as u32, 1.0/fighter.motion_frame());
+                KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                EffectModule::set_rate(boma, handle as u32, 1.0/boma.motion_frame());
             }
             let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
-            MotionModule::set_rate(fighter.module_accessor, motion_rate);
-            VarModule::set_float(fighter.battle_object, vars::miigunner::status::CURRENT_CHARGE, charge + 1.0);
+            MotionModule::set_rate(boma, motion_rate);
+            VarModule::set_float(boma.object(), vars::miigunner::status::CURRENT_CHARGE, charge + 1.0);
         }
         else {
-            VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
-            if fighter.is_motion(Hash40::new("attack_air_lw")) {
-                let handle = VarModule::get_int64(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
-                EffectModule::set_rate(fighter.module_accessor, handle as u32, 1.0);
-                MotionModule::set_rate(fighter.module_accessor, 1.0);
+            if boma.is_motion(Hash40::new("attack_air_lw")) {
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                EffectModule::set_rate(boma, handle as u32, 1.0);
+                MotionModule::set_rate(boma, 1.0);
             }
-            else if fighter.is_motion_one_of(&[Hash40::new("special_n3_start"), Hash40::new("special_air_n3_start")]) {
-                VarModule::set_float(fighter.battle_object, vars::miigunner::instance::GRENADE_CHARGE, charge);
-                MotionModule::set_rate(fighter.module_accessor, 1.0);
+            else if boma.is_motion_one_of(&[Hash40::new("special_n3_start"), Hash40::new("special_air_n3_start")]) {
+                VarModule::set_float(boma.object(), vars::miigunner::instance::GRENADE_CHARGE, charge);
+                MotionModule::set_rate(boma, 1.0);
             }
-            else if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
-                let handle = VarModule::get_int64(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
-                EffectModule::set_rate(fighter.module_accessor, handle as u32, 1.0);
-                MotionModule::set_rate(fighter.module_accessor, 1.0);
+            else if boma.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                EffectModule::set_rate(boma, handle as u32, 1.0);
+                MotionModule::set_rate(boma, 1.0);
             }
         }
     }
@@ -212,7 +208,7 @@ unsafe fn stealth_burst_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    charge_handle(fighter);
+    charge_handle(boma);
     nspecial_cancels(boma);
     reflector_jc(boma);
     laser_blaze_ff_land_cancel(boma);
