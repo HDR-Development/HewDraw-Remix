@@ -108,7 +108,8 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         smash::app::lua_bind::KineticEnergy::enable(gravity_energy);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
-        // Bounds here were made based off testing
+        // Bounds here were made based off testing, may need tweaking if not getting float effect
+        // when expected or vice versa
         if aerial_y_speed >= 0.9 && (aerial_x_speed <= 0.0011 && aerial_x_speed >= -0.0011)  {
             fighter.sub_set_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_n"));
         }
