@@ -3,6 +3,7 @@ use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
 use crate::ext::*;
 use std::arch::asm;
+use smash::phx::Vector2f;
 
 #[macro_export]
 macro_rules! dump_trace {
@@ -311,4 +312,13 @@ extern "C"{
     /// gets whether we are in training mode
     #[link_name = "\u{1}_ZN3app9smashball16is_training_modeEv"]
     pub fn is_training_mode() -> bool;
+}
+
+extern "C" {
+    #[link_name = "_ZN3app13sv_debug_draw11draw_circleERKN3phx8Vector2fEfi"]
+    fn debug_draw_circle(center: &Vector2f, radius: f32, num_frames: i32);
+   #[link_name = "_ZN3app13sv_debug_draw9draw_lineERKN3phx8Vector2fES4_i"]
+    fn debug_draw_line(a: &Vector2f, b: &Vector2f, num_frames: i32);
+    #[link_name = "_ZN3app13sv_debug_draw14set_draw_colorEffff"]
+    fn debug_set_draw_color(r: f32, g: f32, b: f32, a: f32);
 }
