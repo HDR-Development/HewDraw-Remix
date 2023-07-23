@@ -648,7 +648,7 @@ pub mod vars {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-
+            pub const TRAINING_ALWAYS_MISFIRES: i32 = 0x0101;
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;

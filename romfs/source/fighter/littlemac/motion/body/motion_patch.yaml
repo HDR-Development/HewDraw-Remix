@@ -1,3 +1,11 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
 catch:
   flags:
     move: false
@@ -20,21 +28,13 @@ attack_13:
   extra:
     cancel_frame: 19
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 15
 attack_lw3:
-  flags:
-    move: false
   extra:
     cancel_frame: 24
 attack_hi4:
-  flags:
-    move: false
 attack_lw4:
-  flags:
-    move: false
   extra:
     cancel_frame: 48
 special_lw:
@@ -77,11 +77,7 @@ special_n_dash:
   extra:
     cancel_frame: 45
 attack_s4_hold:
-  flags:
-    move: false
 attack_hi4_hold:
-  flags:
-    move: false
 special_n_cancel:
   game_script: game_specialncancel
   flags:
