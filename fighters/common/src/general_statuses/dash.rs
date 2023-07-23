@@ -672,6 +672,12 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_RUN {
+        let mut hip_translate = Vector3f::zero();
+        MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+        VarModule::set_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X, hip_translate.z);
+    }
+
     call_original!(fighter)
 }
 
