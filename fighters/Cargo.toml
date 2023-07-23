@@ -193,3 +193,8 @@ include-popo         = ["popo"]
 include-dedede       = ["dedede"]
 include-snake        = ["snake"]
 include-demon        = ["demon"]
+
+[build-dependencies]
+hdr-macros = { path = "../hdr-macros" }
+prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std", "xml-feat"] }
+walkdir = "2.3.2"
