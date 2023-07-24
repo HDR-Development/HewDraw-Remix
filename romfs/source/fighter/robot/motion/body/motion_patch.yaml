@@ -6,6 +6,8 @@ fall_special:
   blend_frames: 5
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 throw_lw:
   extra:
     cancel_frame: 69
@@ -45,3 +47,6 @@ special_s_end:
 attack_air_hi:
   extra:
     cancel_frame: 49
+catch_attack:
+  extra:
+    cancel_frame: 20

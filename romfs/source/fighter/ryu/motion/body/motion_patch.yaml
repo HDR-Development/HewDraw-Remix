@@ -2,6 +2,8 @@ fall:
   blend_frames: 5
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 throw_lw:
   extra:
     cancel_frame: 41
@@ -53,3 +55,6 @@ special_lw_step_f:
 special_lw_step_b:
   extra:
     cancel_frame: 13
+catch_attack:
+  extra:
+    cancel_frame: 20
