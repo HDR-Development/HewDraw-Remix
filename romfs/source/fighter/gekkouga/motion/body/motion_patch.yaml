@@ -18,6 +18,8 @@ attack_13:
     cancel_frame: 30
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 attack_11:
   extra:
     cancel_frame: 16
