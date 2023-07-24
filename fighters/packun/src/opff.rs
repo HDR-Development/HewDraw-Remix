@@ -252,23 +252,23 @@ pub fn spikeball_frame(weapon: &mut L2CFighterBase) {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
             VarModule::on_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
-            println!("bomb");
+            // println!("bomb");
         }
         else if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
             VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
-            println!("not bomb");
+            // println!("not bomb");
         }
         let status_kind = StatusModule::status_kind(weapon.module_accessor);
         let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
         if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
             if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) || weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_HOP) {
-                if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() == 2 {
+                /* if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() == 2 {
                     println!("will bomb");
-                }
+                } */
                 if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() >= 80 && motion_kind != hash40("explode") {
                     WorkModule::off_flag(boma, *WEAPON_PACKUN_SPIKEBALL_STATUS_HOP_WORK_FLAG_CLEARED_ATTACK);
                     MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
-                    println!("is bomb");
+                    // println!("is bomb");
                 }
             }
         }
