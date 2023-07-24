@@ -283,8 +283,8 @@ unsafe fn sound_speciallwloop(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new("se_falco_special_l02"));
-        PLAY_STATUS(fighter, Hash40::new("se_falco_special_l02"));
+        //STOP_SE(fighter, Hash40::new("se_falco_special_l02"));
+        //PLAY_STATUS(fighter, Hash40::new("se_falco_special_l02"));
     }
 }
 
