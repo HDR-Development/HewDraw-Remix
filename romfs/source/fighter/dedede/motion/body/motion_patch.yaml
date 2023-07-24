@@ -76,3 +76,6 @@ special_air_s_miss:
 special_air_s_start:
   extra:
     cancel_frame: 57
+catch_attack:
+  extra:
+    cancel_frame: 20

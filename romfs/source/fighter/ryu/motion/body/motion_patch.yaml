@@ -55,3 +55,6 @@ special_lw_step_f:
 special_lw_step_b:
   extra:
     cancel_frame: 13
+catch_attack:
+  extra:
+    cancel_frame: 20

@@ -232,3 +232,6 @@ special_air_hi_command_ex:
     intangible_end_frame: 7
     cancel_frame: 0
     freeze_during_hitstop: false
+catch_attack:
+  extra:
+    cancel_frame: 20

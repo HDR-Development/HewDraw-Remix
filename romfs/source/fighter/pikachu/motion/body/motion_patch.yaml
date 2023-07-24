@@ -40,3 +40,6 @@ landing_air_hi:
 landing_air_lw:
   extra:
     cancel_frame: 30
+catch_attack:
+  extra:
+    cancel_frame: 20

@@ -64,3 +64,6 @@ special_air_lw:
 special_air_hi:
   extra:
     intangible_start_frame: 4
+catch_attack:
+  extra:
+    cancel_frame: 20

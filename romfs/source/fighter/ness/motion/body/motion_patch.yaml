@@ -52,3 +52,6 @@ attack_lw4_hold:
 special_air_lw_end:
   extra:
     cancel_frame: 20
+catch_attack:
+  extra:
+    cancel_frame: 20

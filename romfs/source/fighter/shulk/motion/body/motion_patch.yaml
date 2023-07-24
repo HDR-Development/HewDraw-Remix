@@ -56,3 +56,6 @@ attack_air_n:
 attack_s4_lw:
   extra:
     cancel_frame: 72
+catch_attack:
+  extra:
+    cancel_frame: 20
