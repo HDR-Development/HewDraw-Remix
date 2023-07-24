@@ -34,14 +34,14 @@ fall_aerial:
   blend_frames: 5
 attack_s4_s:
   extra:
-    cancel_frame: 66
+    cancel_frame: 57
 attack_s3_s:
 fall_special:
   blend_frames: 5
 attack_s3_lw:
 attack_air_b:
   extra:
-    cancel_frame: 46
+    cancel_frame: 38
 attack_air_f:
   extra:
     cancel_frame: 37
