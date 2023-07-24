@@ -2,6 +2,8 @@ fall:
   blend_frames: 6
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 special_s:
   flags:
     move: false
