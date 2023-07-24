@@ -97,9 +97,6 @@ unsafe fn packun_attack_lw4_game(fighter: &mut L2CAgentBase) {
     if stance.label == 2 {
         FT_MOTION_RATE(fighter, (17.0/14.0));
     }
-    if stance.label == 0 {
-        FT_MOTION_RATE(fighter, (17.0/14.0));
-    }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
