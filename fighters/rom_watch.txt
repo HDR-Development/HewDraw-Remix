@@ -33,3 +33,4 @@ fighter/krool/param/hdr.xml
 fighter/ganon/param/hdr.xml
 fighter/miifighter/param/hdr.xml
 fighter/sheik/param/hdr.xml
+fighter/falco/param/hdr.xml
