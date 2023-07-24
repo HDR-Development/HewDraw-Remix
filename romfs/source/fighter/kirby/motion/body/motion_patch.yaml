@@ -162,3 +162,13 @@ dedede_special_n_shot_object_spit:
 dedede_special_air_n_shot_object_spit:
   extra:
     cancel_frame: 22
+zelda_special_n:
+  extra:
+    intangible_start_frame: 5
+    intangible_end_frame: 13
+    cancel_frame: 64
+zelda_special_air_n:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 64
