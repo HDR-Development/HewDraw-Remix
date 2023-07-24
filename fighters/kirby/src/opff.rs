@@ -459,6 +459,7 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Bullet Climax Mechanics
 unsafe fn bayo_nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE) { //PM-like neutral-b canceling
         if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -482,6 +483,196 @@ unsafe fn bayo_nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut Bat
         }
     }
 }
+
+// Falcon Punch Turnarounds
+unsafe fn repeated_falcon_punch_turnaround(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
+    let frame = fighter.motion_frame();
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_CAPTAIN_SPECIAL_N_TURN)
+    && 22.0 < frame && frame < 41.0
+    && fighter.is_stick_backward()
+    && fighter.stick_x().abs() > 0.1
+    {
+        fighter.change_status_req(*FIGHTER_KIRBY_STATUS_KIND_CAPTAIN_SPECIAL_N_TURN, true);
+    }
+}
+
+// Blue Eggs Land Cancel
+unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    {
+        // Current FAF in motion list is 50, frame is 0 indexed so subtract a frame
+        let special_n_fire_cancel_frame_ground = 49.0;
+        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+        let landing_lag = 12.0;
+        if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
+        }
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+    }
+}
+
+// Peanut Popgun Airdodge Cancel
+unsafe fn peanut_popgun_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_SHOOT && frame > 5.0 {
+        boma.check_airdodge_cancel();
+    }
+}
+
+//Darkest Lariat Ledge Slipoff
+unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N) {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_KEEP));
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
+//Bowser Flame Land Cancel
+unsafe fn koopa_flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N {
+        if frame < 23.0 {
+            if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+                MotionModule::set_frame(boma, 22.0, true);
+            }
+        }
+    }
+}
+
+// Clown Cannon Shield Cancel
+unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_KOOPAJR_SPECIAL_N_HOLD {
+        if frame > 16.0 {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                if situation_kind == *SITUATION_KIND_GROUND {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
+                }
+            }
+        }
+    }
+}
+
+// Link's Bow Fastfall
+unsafe fn bow_fastfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_LINK_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
+// Bonus Fruit Airdodge Cancel
+unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N_SHOOT {
+        if frame > 11.0 {
+            boma.check_airdodge_cancel();
+        }
+    }
+}
+
+// Dark Pit's Bow Fastfall Land Cancel
+unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if(WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PITB){
+        if [*FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT,
+            *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_CHARGE,
+            *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_DIR,
+            *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_TURN].contains(&status_kind) {
+            if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT {
+                if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+                }
+            }
+            if situation_kind == *SITUATION_KIND_AIR {
+                if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
+                    && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                }
+            }
+        }
+    }
+}
+
+// Flamethrower Land Cancel
+unsafe fn plizardon_flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+    let prev_situation = StatusModule::prev_situation_kind(boma);
+    if status_kind != *FIGHTER_KIRBY_STATUS_KIND_PLIZARDON_SPECIAL_N || situation_kind != *SITUATION_KIND_GROUND || prev_situation != *SITUATION_KIND_AIR {
+        return;
+    }
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if frame < 19.0 {
+        MotionModule::set_frame(boma, 18.0, true);
+    }
+}
+
+// Metal Blade Airdodge Cancel
+unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_ROCKMAN_SPECIAL_N {
+        if boma.status_frame() > 16 {
+            boma.check_airdodge_cancel();
+        }
+    }
+}
+
+// Simon's Axe Fastfall
+unsafe fn axe_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            if boma.is_cat_flag(Cat2::FallJump)
+                && stick_y < -0.66
+                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
+// Toon Link's Bow Fastfall
+unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TOONLINK_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 {
+                if KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                }
+            }
+        }
+    }
+}
+
+// Young Link's Bow Fastfall
+unsafe fn fire_arrow_ff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_YOUNGLINK_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if boma.is_cat_flag(Cat2::FallJump)
+                && stick_y < -0.66
+                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
 
 unsafe fn copy_ability_other_aerial_drift(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
@@ -687,6 +878,18 @@ unsafe fn miigunner_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, stat
     }
 }
 
+// Byleth
+unsafe fn master_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_CANCEL {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if WorkModule::get_int(boma, *FIGHTER_MASTER_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE) == *FIGHTER_MASTER_SPECIAL_N_CANCEL_TYPE_AIR_ESCAPE_AIR {
+                WorkModule::set_int(boma, *FIGHTER_MASTER_SPECIAL_N_CANCEL_TYPE_NONE, *FIGHTER_MASTER_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE);
+                //ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
@@ -727,6 +930,48 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Bullet Arts Mechanics
     bayo_nspecial_mechanics(fighter, boma);
 
+    // Falcon Punch Turnarounds
+    repeated_falcon_punch_turnaround(fighter);
+
+    //Blue Eggs Land Cancel
+    blue_eggs_land_cancels(fighter);
+
+    // Peanut Popgun Airdodge Cancel
+    peanut_popgun_ac(boma, status_kind, situation_kind, cat[1], frame);
+
+    // Darkest Lariat Ledge Slipoff
+    lariat_ledge_slipoff(fighter);
+
+    // Bowser Flame Land Cancel
+    koopa_flame_cancel(boma, status_kind, situation_kind, frame);
+
+    // Clown Cannon Shield Cancel
+    clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame);
+
+    // Link's Bow Fastfall
+    bow_fastfall(boma, status_kind, situation_kind, cat[1], stick_y);
+
+    // Bonus Fruit Airdodge Cancel
+    bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
+
+    // Dark Pit's Bow Fastfall Land Cancel
+    bow_ff_lc(boma, status_kind, situation_kind, cat[1], stick_y);
+
+    // Flamethower Land Cancel
+    plizardon_flame_cancel(boma, status_kind, situation_kind, frame);
+
+    // Metal Blade Airdodge Cancel
+    blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
+
+    // Simon's Axe Fastfall
+    axe_ff(boma, status_kind, situation_kind, cat[1], stick_y);
+
+    // Toon Link's Bow Fastfall
+    heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
+
+    // Young Link's Bow Fastfall
+    fire_arrow_ff(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
+
     // Others Aerial Drift
     copy_ability_other_aerial_drift(fighter);
 
@@ -745,6 +990,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     brave_nspecial_cancels(fighter);
     edge_nspecial_cancels(boma, status_kind, situation_kind, cat[2]);
     miigunner_nspecial_cancels(boma, status_kind, situation_kind, cat[1], cat[2]);
+    master_nspecial_cancels(boma, status_kind, situation_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KIRBY )]
