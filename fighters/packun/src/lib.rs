@@ -73,8 +73,6 @@ fn packun_init(fighter: &mut L2CFighterCommon) {
     }
 
     VarModule::set_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE, 0);
-    VarModule::set_int(fighter.battle_object, vars::packun::instance::PTOOIE_STANCE, 0);
-    VarModule::set_int(fighter.battle_object, vars::packun::instance::POISON_STANCE, 0);
 }
 
 pub fn install(is_runtime: bool) {
@@ -84,10 +82,14 @@ pub fn install(is_runtime: bool) {
 
     smashline::install_agent_resets!(packun_reset);
     smashline::install_agent_init_callbacks!(packun_init);
-    smashline::install_agent_frame!(poisonbreath_frame, spikeball_frame);
     acmd::install();
     status::install();
     opff::install(is_runtime);
+    use opff::*;
+    smashline::install_agent_frames!(
+        poisonbreath_frame,
+        spikeball_frame
+    );
 
     //smashline::install_status_script!(guard_cont_pre);
 

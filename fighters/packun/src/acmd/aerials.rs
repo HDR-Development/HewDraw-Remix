@@ -93,10 +93,12 @@ unsafe fn packun_attack_air_b_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0 * stance.damage_other, 50, 108, 0, 25, 9.0, 0.0, 4.0, -10.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            VarModule::on_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
         }
         wait(lua_state, 4.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
+            VarModule::off_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
         }
         frame(lua_state, 36.0);
         if is_excute(fighter) {
