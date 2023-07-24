@@ -30,33 +30,23 @@ attack_11:
   extra:
     cancel_frame: 25
 attack_lw3:
-  flags:
-    move: false
   extra:
     cancel_frame: 32
 special_hi:
   extra:
     cancel_frame: 45
-attack_hi4:
-  flags:
-    move: false
 appeal_s_l:
   extra:
     cancel_frame: 31
 appeal_s_r:
   extra:
     cancel_frame: 31
-attack_lw4:
-  flags:
-    move: false
 special_lw:
   blend_frames: 3
   extra:
     intangible_end_frame: 15
     cancel_frame: 66
 attack_hi3:
-  flags:
-    move: false
   extra:
     cancel_frame: 25
 appeal_lw_r:
@@ -71,8 +61,6 @@ appeal_hi_l:
   extra:
     cancel_frame: 24
 attack_s4_s:
-  flags:
-    move: false
 attack_s3_s:
   blend_frames: 5
   extra:
@@ -89,8 +77,6 @@ appeal_lw_l:
   - sound_appeallwl
   - effect_win2
 attack_s4_hi:
-  flags:
-    move: false
 attack_air_f:
   extra:
     cancel_frame: 32
@@ -99,8 +85,6 @@ attack_s3_s3:
   extra:
     cancel_frame: 47
 attack_s4_lw:
-  flags:
-    move: false
 attack_s3_s2:
   blend_frames: 3
   extra:

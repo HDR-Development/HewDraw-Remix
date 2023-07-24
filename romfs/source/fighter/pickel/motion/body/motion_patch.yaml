@@ -10,8 +10,6 @@ throw_hi:
   extra:
     cancel_frame: 40
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 53
 attack_lw4:

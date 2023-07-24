@@ -15,11 +15,7 @@ attack_13:
   extra:
     cancel_frame: 27
 attack_hi4:
-  flags:
-    move: false
 attack_lw4:
-  flags:
-    move: false
   extra:
     cancel_frame: 35
 fall_aerial:
