@@ -1,0 +1,87 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
+throw_lw:
+  extra:
+    cancel_frame: 50
+throw_hi:
+  extra:
+    cancel_frame: 37
+attack_12:
+  extra:
+    cancel_frame: 24
+attack_11:
+  extra:
+    cancel_frame: 21
+attack_lw3:
+  extra:
+    cancel_frame: 26
+attack_hi4:
+  extra:
+    cancel_frame: 57
+attack_lw4:
+  extra:
+    cancel_frame: 53
+attack_hi3:
+  extra:
+    cancel_frame: 31
+attack_s4_s:
+  extra:
+    cancel_frame: 61
+attack_s3_s:
+attack_s4_hi:
+  extra:
+    cancel_frame: 61
+attack_air_f:
+  extra:
+    cancel_frame: 33
+attack_air_n:
+  extra:
+    cancel_frame: 43
+attack_s4_lw:
+  extra:
+    cancel_frame: 61
+special_s_jump:
+  extra:
+    cancel_frame: 8
+special_lw_hit:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+special_air_hi:
+  extra:
+    intangible_start_frame: 10
+    intangible_end_frame: 17
+special_s_jump_end:
+  extra:
+    cancel_frame: 4
+item_light_throw_f:
+  flags:
+    move: false
+special_air_lw_hit:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+special_s_wall_jump:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 20
+special_lw_hit_turn:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+special_air_lw_hit_turn:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+catch_attack:
+  extra:
+    cancel_frame: 20

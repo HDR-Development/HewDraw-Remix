@@ -13,13 +13,10 @@ mod jumpsquat;
 pub mod jump;
 mod footstool;
 mod run;
-pub mod attack;
+mod attack;
 mod shield;
 mod turn;
 mod walk;
-mod attackdash;
-mod attackhi4;
-mod attacklw4;
 mod passive;
 mod damagefall;
 mod downdamage;
@@ -30,7 +27,7 @@ mod damage;
 mod escape;
 mod dead;
 mod damageflyreflect;
-mod downstand;
+mod down;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -536,9 +533,6 @@ pub fn install() {
     shield::install();
     turn::install();
     walk::install();
-    attackdash::install();
-    attackhi4::install();
-    attacklw4::install();
     passive::install();
     damagefall::install();
     downdamage::install();
@@ -549,7 +543,7 @@ pub fn install() {
     escape::install();
     dead::install();
     damageflyreflect::install();
-    downstand::install();
+    down::install();
 
     skyline::nro::add_hook(nro_hook);
 }

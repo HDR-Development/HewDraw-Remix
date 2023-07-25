@@ -31,6 +31,27 @@ unsafe fn daisy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "daisy", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn daisy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
 #[acmd_script( agent = "daisy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -144,6 +165,7 @@ unsafe fn daisy_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         daisy_attack_s3_s_game,
+        daisy_attack_s3_s_expression,
         daisy_attack_hi3_game,
         daisy_attack_hi3_effect,
         daisy_attack_lw3_game,

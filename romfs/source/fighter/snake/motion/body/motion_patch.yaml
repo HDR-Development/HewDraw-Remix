@@ -1,0 +1,309 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
+attack_13:
+  extra:
+    cancel_frame: 41
+attack_lw3:
+attack_hi4:
+  extra:
+    cancel_frame: 62
+appeal_s_l:
+  extra:
+    cancel_frame: 40
+appeal_s_r:
+  extra:
+    cancel_frame: 40
+attack_lw4:
+  extra:
+    cancel_frame: 65
+attack_hi3:
+  extra:
+    cancel_frame: 35
+appeal_hi_l:
+  extra:
+    cancel_frame: 40
+attack_s4_s:
+  extra:
+    cancel_frame: 50
+appeal_hi_r:
+  extra:
+    cancel_frame: 40
+attack_s4_s3:
+  game_script: game_attacks4s3
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c03attacks4s3.nuanmb
+  scripts:
+  - expression_attacks4s3
+  - sound_attacks4s3
+  - effect_attacks4s3
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 55
+    freeze_during_hitstop: false
+attack_air_b:
+  extra:
+    cancel_frame: 41
+attack_air_f:
+  extra:
+    cancel_frame: 44
+attack_air_n:
+  extra:
+    cancel_frame: 55
+attack_s4_s2:
+  game_script: game_attacks4s2
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c03attacks4s2.nuanmb
+  scripts:
+  - expression_attacks4s2
+  - sound_attacks4s2
+  - effect_attacks4s2
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 40
+    freeze_during_hitstop: false
+catch_walk_b:
+  game_script: game_walkslow
+  flags:
+    turn: false
+    loop: true
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 6
+  animations:
+  - name: e01catchwalkb.nuanmb
+  scripts:
+  - expression_walkslow
+  - sound_walkslow
+  - effect_walkslow
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+catch_walk_f:
+  game_script: game_walkslow
+  flags:
+    turn: false
+    loop: true
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 6
+  animations:
+  - name: e01catchwalkf.nuanmb
+  scripts:
+  - expression_walkslow
+  - sound_walkslow
+  - effect_walkslow
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+attack_air_lw:
+  extra:
+    cancel_frame: 55
+attack_air_hi:
+  extra:
+    cancel_frame: 43
+special_s_start:
+  extra:
+    cancel_frame: 80
+item_light_throw_f:
+  flags:
+    move: false
+appeal_end_explode:
+  game_script: game_appealendexplode
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: j01appealendexplode.nuanmb
+  scripts:
+  - expression_appealendexplode
+  - sound_appealendexplode
+  - effect_appealendexplode
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 93
+    freeze_during_hitstop: false
+special_air_s_start:
+  extra:
+    cancel_frame: 80
+special_air_lw_wall:
+  extra:
+    cancel_frame: 16
+special_air_hi_hang:
+  extra:
+    cancel_frame: 9
+special_air_lw_enemy:
+  extra:
+    cancel_frame: 16
+special_air_lw_ground:
+  extra:
+    cancel_frame: 16
+special_lw_self_stick:
+  game_script: game_speciallwselfstick
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03speciallwselfstick.nuanmb
+  scripts:
+  - expression_speciallwselfstick
+  - sound_speciallwselfstick
+  - effect_speciallwselfstick
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 17
+    freeze_during_hitstop: false
+special_air_lw_self_stick:
+  game_script: game_specialairlwselfstick
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03speciallwselfstick.nuanmb
+  scripts:
+  - expression_specialairlwselfstick
+  - sound_specialairlwselfstick
+  - effect_specialairlwselfstick
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 25
+    freeze_during_hitstop: false
+special_lw_squat_self_stick:
+  game_script: game_speciallwsquatselfstick
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03speciallwsquatselfstick.nuanmb
+  scripts:
+  - expression_speciallwsquatselfstick
+  - sound_speciallwsquatselfstick
+  - effect_speciallwsquatselfstick
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 27
+    freeze_during_hitstop: false
+catch_attack:
+  extra:
+    cancel_frame: 20

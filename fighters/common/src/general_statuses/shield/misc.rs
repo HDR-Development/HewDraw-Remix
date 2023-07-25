@@ -383,9 +383,8 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
             return true.into();
         }
-        
 
-        if fighter.is_button_trigger(Buttons::Parry) {
+        if fighter.is_parry_input() {
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
             VarModule::on_flag(
                 fighter.object(),

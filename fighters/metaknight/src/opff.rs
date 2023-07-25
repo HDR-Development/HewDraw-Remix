@@ -113,6 +113,16 @@ unsafe fn attack_100_end_early(fighter: &mut smash::lua2cpp::L2CFighterCommon, b
     }
 }
 
+unsafe fn special_lw_landing_lag(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if [
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END,
+    ].contains(&status_kind)
+    && situation_kind == *SITUATION_KIND_GROUND
+    && StatusModule::prev_situation_kind(boma) != *SITUATION_KIND_GROUND {
+        StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     dim_cape_early_attack_cancel(boma, status_kind, frame);

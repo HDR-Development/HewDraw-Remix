@@ -10,7 +10,12 @@ unsafe fn lucina_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 5.0 / (9.75 - 4.0));
+    frame(lua_state, 9.75);
+    FT_MOTION_RATE(fighter, 1.0 / (10.25 - 9.75));
+    frame(lua_state, 10.25);
+    FT_MOTION_RATE(fighter, 1.0 / (11.0 - 10.25));
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 15.0, 361, 83, 0, 65, 3.5, 0.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 15.0, 361, 83, 0, 65, 3.5, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -18,11 +23,15 @@ unsafe fn lucina_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("sword1"), 15.0, 361, 83, 0, 65, 4.0, 0.0, 0.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 13.0);
+    FT_DESIRED_RATE(fighter, (26.0 - 13.0), 22.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+    frame(lua_state, 26.0);  // f36 ingame
+    FT_DESIRED_RATE(fighter, (49.0 - 26.0), 13.0);
 }
 
 #[acmd_script( agent = "lucina", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
@@ -63,7 +72,8 @@ unsafe fn lucina_attack_lw4_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.000);
         AttackModule::clear_all(boma);
     }
-    
+    frame(lua_state, 43.0);
+    FT_DESIRED_RATE(fighter, (70.0 - 43.0), 23.0);
 }
 
 pub fn install() {

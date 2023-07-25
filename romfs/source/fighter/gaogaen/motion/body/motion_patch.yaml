@@ -1,0 +1,88 @@
+fall:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
+throw_lw:
+  extra:
+    cancel_frame: 33
+throw_hi:
+  extra:
+    cancel_frame: 53
+attack_12:
+  extra:
+    cancel_frame: 20
+attack_13:
+  extra:
+    cancel_frame: 34
+attack_11:
+  extra:
+    cancel_frame: 17
+attack_lw3:
+  extra:
+    cancel_frame: 29
+attack_hi4:
+  extra:
+    cancel_frame: 56
+attack_lw4:
+  extra:
+    cancel_frame: 65
+special_lw:
+  extra:
+    cancel_frame: 30
+attack_hi3:
+  extra:
+    cancel_frame: 32
+attack_s4_s:
+  extra:
+    cancel_frame: 60
+attack_s3_s:
+fall_special:
+  blend_frames: 10
+attack_s3_lw:
+attack_air_b:
+  extra:
+    cancel_frame: 37
+attack_air_f:
+  extra:
+    cancel_frame: 42
+attack_s3_hi:
+attack_air_hi:
+  extra:
+    cancel_frame: 31
+special_air_lw:
+  extra:
+    cancel_frame: 30
+attack_lw4_hit:
+  extra:
+    cancel_frame: 36
+attack_hi4_hit:
+  extra:
+    cancel_frame: 33
+attack_s4_s_hit:
+  extra:
+    cancel_frame: 35
+special_lw_turn:
+  extra:
+    cancel_frame: 30
+special_lw_start:
+  extra:
+    cancel_frame: 62
+item_light_throw_f:
+  flags:
+    move: false
+special_air_s_start:
+  extra:
+    cancel_frame: 57
+special_air_hi_turn:
+  blend_frames: 10
+special_air_lw_turn:
+  extra:
+    cancel_frame: 30
+special_air_lw_start:
+  extra:
+    cancel_frame: 62
+catch_attack:
+  extra:
+    cancel_frame: 20
