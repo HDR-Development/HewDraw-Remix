@@ -3,6 +3,18 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+// Blizzaga turnaround handling
+unsafe fn special_n2_turnaround_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2) {
+        let facing = PostureModule::lr(fighter.module_accessor);
+        let stick_x = fighter.stick_x();
+        if stick_x * facing < 0.0 {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+    }
+}
+
  
 unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     // Fair/nair's external velocity setting might be handled via an on hit event or smth as I could not locate them in the status scripts, once we find those and edit as appropriate we should come back and remove this functionality here
@@ -212,6 +224,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_fair_momentum_handling(fighter, boma);
     magic_cancels(boma);
     aerial_sweep_hit_actionability(boma);
+    special_n2_turnaround_handling(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]

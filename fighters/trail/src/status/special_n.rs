@@ -60,7 +60,7 @@ unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         || fighter.sub_air_check_fall_common().get_bool()) {
         if !(app::lua_bind::MotionModule::is_end(fighter.module_accessor)) {
             fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n2"), L2CValue::Hash40s("special_air_n2"), true.into());
-            fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_lw"));
+            fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_n"));
             fighter.sub_set_ground_correct_by_situation(true.into());
             special_n2_main_loop_function(fighter, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_SHOOTED, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_SPECIAL_N2_HOP);
             return 0.into();
@@ -88,15 +88,16 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     else {
         None
     };
+    // Added code
     let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
     if situation_kind == *SITUATION_KIND_AIR {
         // Glide a small amount in the air unless there's too much positive y energy (to avoid flying to the top blastzone)
         let mut aerial_y_speed = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let mut aerial_x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * 0.001;
-        let mut x_string = aerial_x_speed.to_string();
-        let mut y_string = aerial_y_speed.to_string();
-        println!("Pre X: {}" , x_string);
-        println!("Pre Y: {}" , y_string);
+        // let mut x_string = aerial_x_speed.to_string();
+        // let mut y_string = aerial_y_speed.to_string();
+        // println!("Pre X: {}" , x_string);
+        // println!("Pre Y: {}" , y_string);
         let mut reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: 0.0 };
         let mut reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: 0.0 };
         let mut reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
@@ -106,14 +107,20 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
         smash::app::lua_bind::KineticEnergy::enable(stop_energy);
         smash::app::lua_bind::KineticEnergy::enable(gravity_energy);
+        // Don't allow drift during the move and set accelleration to slow descent
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
+        // Keep accelleration
+        sv_kinetic_energy!(controller_set_accel_x_mul, fighter, aerial_x_speed);
         // Bounds here were made based off testing, may need tweaking if not getting float effect
         // when expected or vice versa
         if aerial_y_speed >= 0.9 && (aerial_x_speed <= 0.0011 && aerial_x_speed >= -0.0011)  {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_BRAKE);
             fighter.sub_set_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_n"));
         }
-    }   
+    }  
+    // End of added code 
     if let Some(speed) = initial_speed_y {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed);
