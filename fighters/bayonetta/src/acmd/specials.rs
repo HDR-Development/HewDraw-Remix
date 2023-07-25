@@ -191,7 +191,7 @@ unsafe fn bayonetta_special_air_s_d_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         VarModule::inc_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
         fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK);
