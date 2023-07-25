@@ -58,6 +58,38 @@ pub unsafe fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // NEUTRAL SPECIAL
 
+#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | 
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON 
+            | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        0
+    );
+    0.into()
+}
+
 #[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
@@ -73,7 +105,18 @@ unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_change_motion_by_situation(Hash40::new("special_n_max").into(), Hash40::new("special_air_n_max").into(), true.into());
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        fighter.sub_change_motion_by_situation(Hash40::new("special_n_max").into(), Hash40::new("special_air_n_max").into(), true.into());
+
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        }
+    }
 
     if MotionModule::is_end(fighter.module_accessor) {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
@@ -83,14 +126,6 @@ unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(),false.into());
         }
         return 0.into();
-    }
-    if fighter.is_situation(*SITUATION_KIND_GROUND){
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-    }
-    else {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
 
     WorkModule::set_float(fighter.module_accessor, 361.0, *FIGHTER_KOOPA_STATUS_BREATH_WORK_FLOAT_GENE_ANGLE);
@@ -161,7 +196,6 @@ unsafe fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
         let param_life =  WorkModule::get_param_float(weapon.module_accessor, hash40("param_breath"), hash40("life")) as i32;
         WorkModule::set_int(weapon.module_accessor, param_life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         WorkModule::set_int(weapon.module_accessor, param_life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
-        println!("Fireball life: {param_life}");
         
         let param_hit_decrease = WorkModule::get_param_float(weapon.module_accessor, hash40("param_breath"), hash40("hit_frames")) as i32;
         WorkModule::set_int(weapon.module_accessor, param_hit_decrease, *WEAPON_KOOPA_BREATH_INSTANCE_WORK_ID_INT_HIT_FRAME);
@@ -239,6 +273,7 @@ pub fn install() {
     smashline::install_agent_init_callbacks!(koopa_init);
     install_status_scripts!(
         exec_special_hi_a,
+        special_n_pre,
         special_n_main,
         special_n_exec,
         special_n_execstop,
