@@ -6,6 +6,8 @@ fall_special:
   blend_frames: 5
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 throw_f:
   extra:
     cancel_frame: 26
@@ -63,3 +65,6 @@ special_air_hi2:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 20

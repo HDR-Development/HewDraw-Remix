@@ -12,6 +12,8 @@ throw_lw:
     cancel_frame: 39
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 attack_11:
   extra:
     cancel_frame: 20
@@ -83,3 +85,6 @@ item_light_throw_f:
 special_air_n_cancel:
   extra:
     cancel_frame: 9
+catch_attack:
+  extra:
+    cancel_frame: 20

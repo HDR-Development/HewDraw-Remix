@@ -90,6 +90,8 @@
   <byte hash="special_command_life_max">10</byte>
   <byte hash="super_special_command_life_max">20</byte>
   <float hash="catch_dash_brake_mul">1</float>
+  <int hash="capture_cut_frame">76</int>
+  <float hash="capture_cut_frame_damage">2.2</float>
   <int hash="shield_setoff_catch_frame">0</int>
   <int hash="invalid_capture_frame">1</int>
   <float hash="cliff_catch_cancel_stick_y">-0.6358</float>
