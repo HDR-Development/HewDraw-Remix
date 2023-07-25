@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
 throw_hi:
   extra:
     cancel_frame: 43
@@ -5,22 +15,14 @@ attack_12:
   extra:
     cancel_frame: 26
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 22
 attack_hi4:
-  flags:
-    move: false
 attack_lw4:
-  flags:
-    move: false
 attack_hi3:
   extra:
     cancel_frame: 32
 attack_s4_s:
-  flags:
-    move: false
 attack_air_b:
   extra:
     cancel_frame: 42
@@ -31,8 +33,7 @@ attack_air_hi:
   extra:
     cancel_frame: 42
 attack_s4_hold:
-  flags:
-    move: false
 attack_hi4_hold:
-  flags:
-    move: false
+catch_attack:
+  extra:
+    cancel_frame: 20

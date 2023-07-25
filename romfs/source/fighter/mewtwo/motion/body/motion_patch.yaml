@@ -12,9 +12,9 @@ throw_lw:
     cancel_frame: 39
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 20
 attack_lw3:
@@ -24,8 +24,6 @@ attack_hi4:
   extra:
     cancel_frame: 73
 attack_lw4:
-  flags:
-    move: false
   extra:
     cancel_frame: 48
 special_lw:
@@ -38,21 +36,13 @@ attack_hi3:
 fall_aerial:
   blend_frames: 5
 attack_s4_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 57
 attack_s3_s:
-  flags:
-    move: false
 fall_special:
   blend_frames: 5
 attack_s3_lw:
-  flags:
-    move: false
 attack_s4_hi:
-  flags:
-    move: false
   extra:
     cancel_frame: 57
 attack_air_b:
@@ -62,13 +52,9 @@ attack_air_f:
   extra:
     cancel_frame: 38
 attack_s4_lw:
-  flags:
-    move: false
   extra:
     cancel_frame: 57
 attack_s3_hi:
-  flags:
-    move: false
 attack_air_lw:
   extra:
     cancel_frame: 46
@@ -99,3 +85,6 @@ item_light_throw_f:
 special_air_n_cancel:
   extra:
     cancel_frame: 9
+catch_attack:
+  extra:
+    cancel_frame: 20
