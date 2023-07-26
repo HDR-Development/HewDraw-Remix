@@ -235,6 +235,8 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
             pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
+            pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
+            pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
         }
         pub mod status {
             // flags
@@ -262,6 +264,8 @@ pub mod vars {
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
             pub const ENABLE_UCF: i32 = 0x1000;
+
+            pub const PUMMEL_USE_GLOBAL_STATS: i32 = 0x1000;
 
             // ints
 

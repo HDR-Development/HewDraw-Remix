@@ -6,6 +6,8 @@ fall_special:
   blend_frames: 5
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 catch:
   flags:
     move: false
@@ -36,14 +38,19 @@ attack_hi3:
 special_s1:
   extra:
     cancel_frame: 30
-attack_s4_s:
 attack_s3_s:
 attack_air_b:
   extra:
-    cancel_frame: 36
+    cancel_frame: 30
 attack_air_f:
   extra:
-    cancel_frame: 34
+    cancel_frame: 43
+attack_lw4:
+  extra:
+    cancel_frame: 56
+attack_s4_s:
+  extra:
+    cancel_frame: 56
 attack_air_n:
   extra:
     cancel_frame: 54
@@ -57,3 +64,6 @@ special_air_lw:
 special_air_hi:
   extra:
     intangible_start_frame: 4
+catch_attack:
+  extra:
+    cancel_frame: 20
