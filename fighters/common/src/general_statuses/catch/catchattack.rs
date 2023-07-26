@@ -21,7 +21,7 @@ unsafe fn status_CatchAttack_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionModule::set_rate(fighter.module_accessor, 0.5);
     }
     // Your pummel FAF is equal to your animation's length, with a cap at 17f
-    if fighter.global_table[CURRENT_FRAME].get_i32() as f32 + 1.0 >= MotionModule::end_frame(fighter.module_accessor).min(16.0) {
+    if fighter.global_table[CURRENT_FRAME].get_i32() as f32 + 1.0 >= MotionModule::end_frame(fighter.module_accessor).min(18.0) {
         if fighter.CatchCont().get_bool() {
             return 0.into();
         }
