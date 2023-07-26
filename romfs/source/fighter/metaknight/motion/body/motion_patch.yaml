@@ -35,7 +35,7 @@ fall_special:
   blend_frames: 5
 attack_air_b:
   extra:
-    cancel_frame: 51
+    cancel_frame: 47
 attack_air_f:
   extra:
     cancel_frame: 36
