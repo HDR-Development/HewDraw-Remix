@@ -38,6 +38,3 @@ attack_air_b_arm:
 attack_air_b_upper:
   extra:
     cancel_frame: 35
-catch_attack:
-  extra:
-    cancel_frame: 20

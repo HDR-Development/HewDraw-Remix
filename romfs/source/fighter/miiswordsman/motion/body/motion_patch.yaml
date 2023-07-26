@@ -265,6 +265,3 @@ special_air_hi1_start:
     intangible_end_frame: 24
     cancel_frame: 50
     freeze_during_hitstop: false
-catch_attack:
-  extra:
-    cancel_frame: 20
