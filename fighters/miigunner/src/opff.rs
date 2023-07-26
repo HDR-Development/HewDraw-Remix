@@ -177,7 +177,12 @@ unsafe fn stealth_burst_land_cancel(boma: &mut BattleObjectModuleAccessor, statu
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
-    && (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
+    && (
+        ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_1,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_1,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_1,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
+        ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
         && fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -192,7 +197,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP
             ])
         )
-    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
+    || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_2,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_2,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_2,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
+        ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
         && fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
@@ -200,7 +209,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI2_JUMP,
             ])
         )
-    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
+    || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_3,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_3,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_3,
+        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
+        ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
         && fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
@@ -214,6 +227,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD
             ])
         )
+    )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
