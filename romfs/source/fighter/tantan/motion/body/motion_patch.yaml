@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
 catch:
   extra:
     cancel_frame: 43
@@ -26,14 +36,10 @@ attack_lw3:
   extra:
     cancel_frame: 34
 attack_hi4:
-  flags:
-    move: false
 attack_lw4:
   extra:
     cancel_frame: 53
 attack_hi3:
-  flags:
-    move: false
   extra:
     cancel_frame: 34
 attack_dash:
@@ -672,3 +678,6 @@ attack_legs_twist_walk_brake_l_b:
 attack_legs_twist_walk_brake_r_b:
   flags:
     unk_800: false
+catch_attack:
+  extra:
+    cancel_frame: 20

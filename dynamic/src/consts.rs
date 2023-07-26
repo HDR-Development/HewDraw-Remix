@@ -171,6 +171,8 @@ pub mod vars {
 
             pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
 
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -196,6 +198,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+
+            pub const FRAME_COUNTER: i32 = 0x000E;
 
             // floats
 
@@ -231,9 +235,13 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
             pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
+            pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
+            pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
         }
         pub mod status {
             // flags
+            pub const FAF_REACHED: i32 = 0x10FD;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
@@ -256,6 +264,8 @@ pub mod vars {
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
             pub const ENABLE_UCF: i32 = 0x1000;
+
+            pub const PUMMEL_USE_GLOBAL_STATS: i32 = 0x1000;
 
             // ints
 
@@ -642,7 +652,7 @@ pub mod vars {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-
+            pub const TRAINING_ALWAYS_MISFIRES: i32 = 0x0101;
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;
