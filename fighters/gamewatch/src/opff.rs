@@ -3,14 +3,13 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
+        if boma.is_situation(*SITUATION_KIND_AIR) {
+            if boma.is_cat_flag(Cat2::FallJump) && ControlModule::get_stick_y(boma) < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
@@ -23,37 +22,33 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind
 }
 
 // Game & Watch Parachute Double Jump
-unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if [*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL,
-        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE].contains(&status_kind) {
+unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE]) {
         boma.check_jump_cancel(false);
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
-    ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    parachute_dj(boma, status_kind, situation_kind, cat[0]);
-    //jc_oil_panic_reflect(boma, status_kind, situation_kind); 
-    jc_judge_four(boma, motion_kind, situation_kind);
-    dthrow_reverse(boma, motion_kind);
-
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
+// Jump cancel Judge 4
+unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion_one_of(&[Hash40::new("special_s_4"), Hash40::new("special_air_s_4")]) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+            boma.check_jump_cancel(false);
+        }
+    }
 }
 
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
+// down throw mirror
+unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("throw_lw")) {
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &Vector3f{x: 0.0, y: 180.0, z: 0.0}, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 19.0 {
-            MotionModule::set_rate(boma, 2.0);
-        }
-        if frame > 19.0 {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
+}
+
+pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    ff_chef_land_cancel(boma);
+    parachute_dj(boma);
+    jc_judge_four(boma);
+    dthrow_reverse(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_GAMEWATCH )]
@@ -70,38 +65,6 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-// Jump cancel Judge 4
-unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, situation_kind: i32) {
-    if motion_kind == hash40("special_s_4") || motion_kind == hash40("special_air_s_4") {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false);
-        }
-    }
-}
-
-// down throw mirror
-unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor, motion_kind: u64) {
-    if boma.is_motion(Hash40::new("throw_lw")) {
-        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &Vector3f{x: 0.0, y: 180.0, z: 0.0}, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    }
-}
-
-// Jump cancel bucket reflect
-// unsafe fn jc_oil_panic_reflect(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-//     if status_kind == *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_REFLECT {
-//         if boma.is_input_jump() && !boma.is_in_hitlag() {
-//             if situation_kind == *SITUATION_KIND_GROUND {
-//                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
-//             }
-//             else if situation_kind == *SITUATION_KIND_AIR {
-//                 if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-//                 }
-//             }
-//         }
-//     }
-// }
-
 #[smashline::weapon_frame_callback(main)]
 pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
@@ -114,7 +77,7 @@ pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
             let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
             if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
-                if info.frame < 11.0 {
+                if info.frame < 10.0 {
                     ModelModule::set_scale(weapon.module_accessor, 0.75);
                 }
                 else {
