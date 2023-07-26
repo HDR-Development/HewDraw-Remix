@@ -656,7 +656,7 @@ unsafe fn game_catchattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::common::status::PUMMEL_USE_GLOBAL_STATS);
+        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {

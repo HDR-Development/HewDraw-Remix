@@ -32,7 +32,7 @@ unsafe fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::common::status::PUMMEL_USE_GLOBAL_STATS);
+        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {

@@ -7,7 +7,7 @@ unsafe fn catch_attack(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::common::status::PUMMEL_USE_GLOBAL_STATS);
+        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
