@@ -1,5 +1,9 @@
 fall:
   blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
 escape:
   flags:
     move: false
@@ -13,16 +17,12 @@ attack_11:
   extra:
     cancel_frame: 16
 attack_lw3:
-  flags:
-    move: false
 attack_lw4:
   extra:
     cancel_frame: 60
 fall_aerial:
   blend_frames: 5
 attack_s4_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 65
 attack_s3_s:
@@ -34,13 +34,9 @@ attack_s3_lw:
   flags:
     move: false
 attack_s4_hi:
-  flags:
-    move: false
   extra:
     cancel_frame: 65
 attack_s4_lw:
-  flags:
-    move: false
   extra:
     cancel_frame: 65
 attack_s3_hi:
@@ -49,3 +45,6 @@ attack_s3_hi:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 20

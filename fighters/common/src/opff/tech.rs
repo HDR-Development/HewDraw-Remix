@@ -112,30 +112,17 @@ unsafe fn non_tumble_di(
 
 // plat drop if you input down during a waveland (airdodge landing lag)
 unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, status_kind: i32) {
-    let pass_thresh = ParamModule::get_float(
-        boma.object(),
-        ParamType::Common,
-        "wavedrop_stick_y_threshold",
-    );
+    let pass_thresh = boma.get_param_float("common", "pass_stick_y");
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
-    && VarModule::is_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
     && ControlModule::get_flick_y(boma) < 2
     && boma.left_stick_y() < pass_thresh
-    // && boma.prev_stick_y() > -0.3 && boma.left_stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
     ]) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
         return;
-    }
-
-    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING) && boma.left_stick_y() > pass_thresh {
-        VarModule::on_flag(
-            boma.object(),
-            vars::common::instance::ENABLE_WAVELAND_PLATDROP,
-        );
     }
 }
 
