@@ -179,6 +179,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_N_AIR_START,
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_N_AIR_SHOOT,
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_S_AIR_END,
+        *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE,
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
