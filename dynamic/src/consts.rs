@@ -1098,6 +1098,7 @@ pub mod vars {
             pub const SKEWER_STICK_Y: i32 = 0x1100;
         }
     }
+
     pub mod iceclimbers {
         pub mod instance {
             //flags
@@ -1108,6 +1109,7 @@ pub mod vars {
             pub const SEPARATED_EFFECT: i32 = 0x0110;
         }
     }
+
     pub mod packun {
         pub mod instance {
             // flags
@@ -1142,6 +1144,29 @@ pub mod vars {
             //ints
             pub const SPECIAL_HI_FUEL: i32 = 0x0100;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0101;
+        }
+    }
+
+    pub mod wiifit {
+        pub mod instance {
+            // flags
+            pub const DEEP_BREATHING_COOLDOWN: i32 = 0x0100;
+            pub const IS_RING_VISIBLE: i32 = 0x0101;
+
+            // ints
+            pub const SHOW_RING_MOTION: i32 = 0x0100;
+            pub const RING_EFF_HANDLE: i32 = 0x0101;
+            pub const RING_SECOND_EFF_HANDLE: i32 = 0x0102;
+            pub const RING_THIRD_EFF_HANDLE: i32 = 0x0103;
+
+            // floats
+            pub const RING_START_FRAME: i32 = 0x0100;
+            pub const RING_CURRENT_FRAME: i32 = 0x0101;
+            pub const RING_END_FRAME: i32 = 0x0102;
+            pub const RING_START_SIZE: i32 = 0x0103;
+            pub const RING_END_SIZE: i32 = 0x0104;
+            pub const RING_COLOR: i32 = 0x0105;     // this is a vector, so it needs three values (next value starts at 0x0108)
+            pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
 }
