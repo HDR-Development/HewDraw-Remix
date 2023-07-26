@@ -62,6 +62,3 @@ special_air_n_cancel:
 special_air_n_jump_cancel:
   extra:
     cancel_frame: 8
-catch_attack:
-  extra:
-    cancel_frame: 20

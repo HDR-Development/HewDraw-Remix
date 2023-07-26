@@ -26,9 +26,13 @@ attack_s4_s:
   extra:
     cancel_frame: 65
 attack_s3_s:
+  flags:
+    move: false
 fall_special:
   blend_frames: 5
 attack_s3_lw:
+  flags:
+    move: false
 attack_s4_hi:
   extra:
     cancel_frame: 65
@@ -36,9 +40,8 @@ attack_s4_lw:
   extra:
     cancel_frame: 65
 attack_s3_hi:
+  flags:
+    move: false
 item_light_throw_f:
   flags:
     move: false
-catch_attack:
-  extra:
-    cancel_frame: 20

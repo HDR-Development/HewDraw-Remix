@@ -25,13 +25,15 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 unsafe fn status_end_attackxx4start(fighter: &mut L2CFighterCommon) {
     let restart_frame = MotionModule::frame(fighter.module_accessor);
     WorkModule::set_float(fighter.module_accessor, restart_frame, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
-    sv_kinetic_energy!(
-        set_speed,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        0.0,
-        0.0
-    );
+    if [*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, *FIGHTER_STATUS_KIND_ATTACK_S4].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            0.0,
+            0.0
+        );
+    }
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_HI4_START
