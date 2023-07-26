@@ -101,14 +101,16 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.5, 4.5);
-
         is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
         is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
+        if is_dragonized && is_doubledragon {
+            FT_MOTION_RATE_RANGE(fighter, 16.0, 18.0, 7.0);
+        }
+    }
+    frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter,1.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.5, 4.5);
         if (is_doubledragon && is_dragonized) {
             damage = 17.5;
             sfx_level = *ATTACK_SOUND_LEVEL_L;
@@ -171,13 +173,14 @@ unsafe fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 
-    frame(lua_state, 17.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter,Hash40::new("sys_sscope_hold"),false,false);
-        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        
         is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
         is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
 
@@ -247,16 +250,6 @@ unsafe fn tantan_attack_s4_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_tantan_attack01_beam_ready"));
     }
-
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-        is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
-        is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
-        if is_dragonized && is_doubledragon {
-            PLAY_STATUS(fighter, Hash40::new("se_tantan_final02"));
-        }
-    }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
@@ -272,6 +265,7 @@ unsafe fn tantan_attack_s4_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let sfx = if WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE) {Hash40::new("se_tantan_attack01_beam_max")} else {Hash40::new("se_tantan_attack01_beam")};
         if is_dragonized && is_doubledragon {
+            PLAY_STATUS(fighter, Hash40::new("se_tantan_final02"));
         }
         else {
             PLAY_SE(fighter, sfx);
