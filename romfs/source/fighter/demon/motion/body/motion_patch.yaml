@@ -8,6 +8,3 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 0
-catch_attack:
-  extra:
-    cancel_frame: 20
