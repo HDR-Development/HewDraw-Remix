@@ -200,44 +200,48 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && (
-        ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_1,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_1,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_1,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
-        ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
-        && fighter.is_status_one_of(&[
+        fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT
+        ])
+        || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_1,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_1,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_1,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
+            ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
+            && fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_STATUS_KIND_SPECIAL_LW,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT
             ])
         )
-    || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_2,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_2,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_2,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
-        ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
-        && fighter.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND
+        || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_2,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_2,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_2,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
+            ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
+            && fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_STATUS_KIND_SPECIAL_LW,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND
             ])
         )
-    || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_3,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_3,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_3,
-        *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
-        ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
-        && fighter.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_LOOP,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END_MAX,
-            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END,
+        || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_3,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_3,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_3,
+            *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
+            ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
+            && fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_STATUS_KIND_SPECIAL_S,
+                *FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_LOOP,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END_MAX,
+                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END,
             ])
         )
     )
