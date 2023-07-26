@@ -68,4 +68,4 @@ special_lw2_kick_landing:
     cancel_frame: 32
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

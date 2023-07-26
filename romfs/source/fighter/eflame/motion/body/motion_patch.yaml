@@ -72,4 +72,4 @@ special_air_s_flick:
     cancel_frame: 45
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

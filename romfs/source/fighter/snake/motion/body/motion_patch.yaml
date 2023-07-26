@@ -306,4 +306,4 @@ special_lw_squat_self_stick:
     freeze_during_hitstop: false
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

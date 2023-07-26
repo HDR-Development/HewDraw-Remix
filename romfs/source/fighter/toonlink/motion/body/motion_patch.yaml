@@ -58,4 +58,4 @@ item_light_throw_hi4:
     cancel_frame: 21
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

@@ -79,4 +79,4 @@ special_s_wall_clash:
     cancel_frame: 1
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

@@ -66,4 +66,4 @@ special_air_hi:
     intangible_start_frame: 4
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

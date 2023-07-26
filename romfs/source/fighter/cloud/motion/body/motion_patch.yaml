@@ -66,4 +66,4 @@ attack_hi4_hold:
 attack_lw4_hold:
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

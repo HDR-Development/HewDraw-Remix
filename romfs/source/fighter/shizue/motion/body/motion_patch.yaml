@@ -44,4 +44,4 @@ special_air_s_throw_lw:
     cancel_frame: 31
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

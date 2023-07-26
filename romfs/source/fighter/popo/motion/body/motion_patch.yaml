@@ -46,4 +46,4 @@ item_light_throw_f:
     move: false
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

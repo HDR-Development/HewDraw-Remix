@@ -76,4 +76,4 @@ special_air_lw_blast:
     cancel_frame: 25
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

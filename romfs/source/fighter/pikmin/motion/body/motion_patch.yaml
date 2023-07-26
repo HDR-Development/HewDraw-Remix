@@ -56,4 +56,4 @@ special_air_n_failure:
     cancel_frame: 29
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0

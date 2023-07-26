@@ -40,4 +40,4 @@ attack_air_b_upper:
     cancel_frame: 35
 catch_attack:
   extra:
-    cancel_frame: 20
+    cancel_frame: 0
