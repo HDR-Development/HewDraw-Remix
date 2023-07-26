@@ -567,9 +567,8 @@ pub mod vars {
 
     pub mod kamui {
         pub mod status {
-            // flags
-            pub const IS_CHARGE_FINISHED: i32 = 0x1100;
-            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1101;
+            // floats
+            pub const CURRENT_CHARGE: i32 = 0x1100;
         }
     }
 
