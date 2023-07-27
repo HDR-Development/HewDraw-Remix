@@ -34,6 +34,9 @@ unsafe fn palutena_attack_11_game(fighter: &mut L2CAgentBase) {
 unsafe fn palutena_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.5, 361, 140, 0, 55, 6.0, 0.0, 12.0, 10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
@@ -78,6 +81,9 @@ unsafe fn palutena_attack_100_end_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_NORMAL);

@@ -7,6 +7,9 @@ unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 11.0/(16.0-0.0));
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -149,6 +152,9 @@ unsafe fn palutena_attack_s3_s_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.778);
@@ -286,6 +292,9 @@ unsafe fn palutena_attack_hi3_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.693);
@@ -375,7 +384,7 @@ unsafe fn palutena_attack_lw3_effect(agent: &mut L2CAgentBase) {
     }
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 180, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
     }
     frame(lua_state, 29.0);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {

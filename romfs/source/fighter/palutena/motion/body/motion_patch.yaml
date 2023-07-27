@@ -397,6 +397,3 @@ special_air_n_g:
     xlu_end: 0
     cancel_frame: 33
     no_stop_intp: false
-catch_attack:
-  extra:
-    cancel_frame: 20

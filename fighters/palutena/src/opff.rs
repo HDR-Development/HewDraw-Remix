@@ -138,29 +138,36 @@ unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status
 
 // sets set_color var, controlling when a color is charged
 unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
-    // frame range listed is from the frame before the hitbox appears to the frame the hitbox is cleared, and ignores motion rates
-    // red moves: neutral/side
-    if fighter.is_motion(Hash40::new("attack_100_end"))
-    && fighter.motion_frame() >= 2.0 && fighter.motion_frame() < 6.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && VarModule::is_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
+        VarModule::off_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        // red moves: neutral/side
+        if fighter.is_motion(Hash40::new("attack_100_end"))
+        || fighter.is_motion(Hash40::new("attack_dash"))
+        || fighter.is_motion(Hash40::new("attack_s3_s"))
+        || fighter.is_motion(Hash40::new("attack_s4_s"))
+        || fighter.is_motion(Hash40::new("attack_air_n"))
+        || fighter.is_motion(Hash40::new("attack_air_f"))
+        || fighter.is_motion(Hash40::new("attack_air_b")) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
         }
-    }
-    if fighter.is_motion(Hash40::new("attack_dash"))
-    && fighter.motion_frame() >= 5.0 && fighter.motion_frame() < 18.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+
+        // blue moves: up
+        else if fighter.is_motion(Hash40::new("attack_hi3"))
+        || fighter.is_motion(Hash40::new("attack_hi4"))
+        || fighter.is_motion(Hash40::new("attack_air_hi")) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
+        }
+
+        // yellow moves: down
+        else if fighter.is_motion(Hash40::new("attack_lw3"))
+        || fighter.is_motion(Hash40::new("attack_lw4"))
+        || fighter.is_motion(Hash40::new("attack_air_lw")) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
     }
-    if fighter.is_motion(Hash40::new("attack_s3_s"))
-    && fighter.motion_frame() >= 28.0 && fighter.motion_frame() < 44.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
-        }
-    }
+    // needed for fsmash and dsmash
+    
     if fighter.is_motion(Hash40::new("attack_s4_s"))
     && fighter.motion_frame() >= 17.0 && fighter.motion_frame() < 21.0
     {
@@ -168,68 +175,8 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
         }
     }
-    if fighter.is_motion(Hash40::new("attack_air_n"))
-    && fighter.motion_frame() >= 28.0 && fighter.motion_frame() < 32.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
-        }
-    }
-    if fighter.is_motion(Hash40::new("attack_air_f"))
-    && fighter.motion_frame() >= 8.0 && fighter.motion_frame() < 15.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
-        }
-    }
-    if fighter.is_motion(Hash40::new("attack_air_b"))
-    && fighter.motion_frame() >= 7.0 && fighter.motion_frame() < 11.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
-        }
-    }
-
-    // blue moves: up
-    if fighter.is_motion(Hash40::new("attack_hi3"))
-    && fighter.motion_frame() >= 30.0 && fighter.motion_frame() < 34.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
-        }
-    }
-    if fighter.is_motion(Hash40::new("attack_hi4"))
-    && fighter.motion_frame() >= 17.0 && fighter.motion_frame() < 30.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
-        }
-    }
-    if fighter.is_motion(Hash40::new("attack_air_hi"))
-    && fighter.motion_frame() >= 23.0 && fighter.motion_frame() < 27.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
-        }
-    }
-
-    // yellow moves: down
-    if fighter.is_motion(Hash40::new("attack_lw3"))
-    && fighter.motion_frame() >= 12.0 && fighter.motion_frame() < 25.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
-        }
-    }
     if fighter.is_motion(Hash40::new("attack_lw4"))
     && fighter.motion_frame() >= 16.0 && fighter.motion_frame() < 20.0
-    {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
-        }
-    }
-    if fighter.is_motion(Hash40::new("attack_air_lw"))
-    && fighter.motion_frame() >= 8.0 && fighter.motion_frame() < 16.0
     {
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);

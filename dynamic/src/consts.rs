@@ -931,6 +931,9 @@ pub mod vars {
 
     pub mod palutena {
         pub mod status {
+            // flags
+            pub const CAN_INCREASE_COLOR: i32 = 0x1100;
+
             // floats
             pub const ADD_DAMAGE: i32 = 0x1100;
         }
