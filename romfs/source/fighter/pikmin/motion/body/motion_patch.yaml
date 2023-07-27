@@ -54,6 +54,3 @@ special_n_failure:
 special_air_n_failure:
   extra:
     cancel_frame: 29
-catch_attack:
-  extra:
-    cancel_frame: 20

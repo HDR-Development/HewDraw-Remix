@@ -92,6 +92,3 @@ special_air_n_end:
 special_air_lw_end:
   extra:
     cancel_frame: 25
-catch_attack:
-  extra:
-    cancel_frame: 20
