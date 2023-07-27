@@ -48,12 +48,14 @@ macro_rules! require_input_module {
     }};
 }
 
+#[repr(C)]
 struct HdrCat {
     /// Represents the number of remaining buffered frames that each input will be considered active.
     /// A value of zero for any entry means that input is not considered to be in the buffer.
     pub valid_frames: [u8; 32],
 }
 
+#[repr(C)]
 struct BufferState {
     pub on_last_frame: u32,
     pub should_hold: [bool; 32],
@@ -127,6 +129,7 @@ impl BufferState {
 /// depending on the situation to encourage more precise inputs with some exceptions to allow for overall better game health and feel.
 /// You can reference all of these calls from just passing the `BattleObject` into function. If a function is called on a `BattleObject` that does not have
 /// `InputModule` set up, it will panic.
+#[repr(C)]
 pub struct InputModule {
     owner: *mut BattleObject,
     cats: [BufferState; 5],
