@@ -34,6 +34,7 @@ macro_rules! require_var_module {
     }}
 }
 
+#[repr(C)]
 pub struct VarModule {
     int: [Vec<i32>; 2],
     int64: [Vec<u64>; 2],
