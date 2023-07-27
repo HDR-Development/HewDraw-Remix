@@ -40,6 +40,7 @@ macro_rules! require_meter_module {
     }}
 }
 
+#[repr(C)]
 pub struct MeterModule {
     owner: *mut BattleObject,
     current_meter: f32,

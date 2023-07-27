@@ -169,6 +169,10 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
+            pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
+
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -194,6 +198,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+
+            pub const FRAME_COUNTER: i32 = 0x000E;
 
             // floats
 
@@ -229,9 +235,13 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
             pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
+            pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
+            pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
         }
         pub mod status {
             // flags
+            pub const FAF_REACHED: i32 = 0x10FD;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
@@ -278,12 +288,13 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
             pub const IS_ACTIVATE: i32 = 0x1100;
             pub const DIRECT_HIT: i32 = 0x1101;
+            // floats
+            pub const ABK_ANGLE: i32 = 0x1102;
         }
     }
 
@@ -365,6 +376,19 @@ pub mod vars {
         pub mod instance {
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
         }
+        pub mod status {
+            // ints
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x1100;
+        }
+
+        pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;
+        pub const SPECIAL_N_CANCEL_TYPE_GROUND_JUMP: i32 = 0x1;
+        pub const SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL: i32 = 0x2;
+        pub const SPECIAL_N_CANCEL_TYPE_GUARD: i32 = 0x3;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE: i32 = 0x4;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR: i32 = 0x5;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_F: i32 = 0x6;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_B: i32 = 0x7;
     }
 
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
@@ -394,10 +418,13 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_AIR_LW_USED_STALL: i32 = 0x0100;
+            /// used to indicate that a new barrel was spawned
+            pub const DID_SPAWN_BARREL: i32 = 0x0101;
         }
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
+            pub const IS_NEUTRAL_TOSS: i32 = 0x1101;
 
             // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
@@ -640,7 +667,7 @@ pub mod vars {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-
+            pub const TRAINING_ALWAYS_MISFIRES: i32 = 0x0101;
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;
@@ -815,10 +842,23 @@ pub mod vars {
     }
 
     pub mod sonic {
+        pub mod instance {
+            pub const USED_AIR_ACTION: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const PULSE_HITBOX: i32 = 0x1100;
+
+            pub const SPECIAL_S_HOP: i32 = 0x1100;
+            pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
+            pub const SPECIAL_S_ENABLE_CONTROL: i32 = 0x1102;
+
+            // ints
+            pub const SPECIAL_S_STEP: i32 = 0x1100;
         }
+        pub const SPECIAL_S_STEP_START: i32 = 0x0;
+        pub const SPECIAL_S_STEP_DASH: i32 = 0x1;
+        pub const SPECIAL_S_STEP_END: i32 = 0x2;
     }
 
     pub mod snake {
@@ -830,6 +870,8 @@ pub mod vars {
             pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
             pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
             pub const IS_GRAB_WALK : i32 = 0x0105;
+            pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
+            pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
             
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
@@ -1037,11 +1079,16 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const IS_TILT_LW_SAPLING_PULL: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
 
             // floats
             pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
             pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
             pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
+
+            // ints
+            pub const TURNIP_NUM_HI: i32 = 0x0104;
+            pub const TURNIP_NUM_LW: i32 = 0x0105;
         }
     }
 
@@ -1143,6 +1190,11 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0;
         pub const SPECIAL_S_END: i32 = 1;
+    }
+
+    pub mod diddy {
+        pub const SPECIAL_N_CANCEL: i32 = 0;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
     
     pub mod kirby {

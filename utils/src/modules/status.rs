@@ -46,6 +46,7 @@ lazy_static! {
     static ref CUSTOM_STATUS_MANAGER: RwLock<CustomStatusManager> = RwLock::new(CustomStatusManager::new());
 }
 
+#[repr(C)]
 pub struct CustomStatusManager {
     pub agent_statuses: HashMap<Hash40, Arc<RwLock<HashMap<i32, StatusInfo>>>>,
     pub common_statuses: Arc<RwLock<HashMap<i32, StatusInfo>>>,
@@ -101,6 +102,7 @@ impl CustomStatusManager {
     }
 }
 
+#[repr(C)]
 pub struct CustomStatusModule {
     pub common_statuses: Arc<RwLock<HashMap<i32, StatusInfo>>>,
     pub agent_statuses: Option<Arc<RwLock<HashMap<i32, StatusInfo>>>>,

@@ -112,11 +112,12 @@ unsafe fn lucina_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 36.0);
+    frame(lua_state, 24.0);
+    FT_DESIRED_RATE(fighter, (44.0 - 24.0), 10.0);
+    frame(lua_state, 45.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 
@@ -131,6 +132,23 @@ unsafe fn lucina_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
     AFTER_IMAGE_OFF(fighter, 3);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucina_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -155,11 +173,14 @@ unsafe fn lucina_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 2.0);
+    frame(lua_state, 23.0);  // f31 ingame
+    FT_DESIRED_RATE(fighter, (39.0 - 23.0), 10.0);
+    frame(lua_state, 23.625);  // f32 ingame
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    
+    } 
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -240,6 +261,7 @@ pub fn install() {
         lucina_attack_air_lw_game,
         lucina_attack_air_n_effect,
         lucina_attack_air_f_effect,
+        lucina_attack_air_f_expression,
         lucina_attack_air_n_sound,
     );
 }

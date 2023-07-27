@@ -380,8 +380,11 @@ pub unsafe fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!(fighter);
+
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
-    0.into()
+    
+    ret
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
