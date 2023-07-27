@@ -341,6 +341,28 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
+
+        else if fighter_kind == *WEAPON_KIND_MARIOD_DRCAPSULE {
+            if x1 == hash40("param_drcapsule") {
+                if VarModule::is_flag(owner_module_accessor.object(), vars::mariod::status::PILL_TOSS) {
+                    if x2 == hash40("speed") {
+                        return 1.6;
+                    }
+                    else if x2 == hash40("gravity_accel") {
+                        return 0.07;
+                    }
+                    else if x2 == hash40("angle") {
+                        return 65.0;
+                    }
+                    else if x2 == hash40("bounded_speed_y_min") {
+                        return 0.75;
+                    }
+                    else if x2 == hash40("gravity_acl_max") {
+                        return 1.5;
+                    }
+                }
+            }
+        }
     }
 
     original!()(x0, x1, x2)

@@ -22,8 +22,20 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: 
     }
 }
 
+pub unsafe fn test(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion_one_of(&[ Hash40::new("special_n"), Hash40::new("special_air_n") ]) {
+        if boma.motion_frame() == 10.0 {
+            if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
+                let motion = if boma.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("special_n_toss") } else { Hash40::new("special_air_n_toss") };
+                MotionModule::change_motion_force_inherit_frame(boma, motion, 10.0, 1.0, 1.0);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //super_sheet_stall(boma, status_kind, situation_kind, frame);
+    test(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIOD )]

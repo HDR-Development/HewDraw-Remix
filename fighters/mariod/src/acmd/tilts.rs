@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 #[acmd_script( agent = "mariod", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn mariod_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
@@ -129,9 +127,6 @@ unsafe fn mariod_attack_lw3_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("kneel"), 9.0, 120, 70, 0, 40, 3.5, -1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("kneel"), 8.0, 100, 60, 0, 45, 4.5, 7.0, 0.0, 0.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
-        //AttackModule::set_add_reaction_frame(boma, 0, 3.0, false);
-        //AttackModule::set_add_reaction_frame(boma, 1, 3.0, false);
-        //AttackModule::set_add_reaction_frame(boma, 2, 3.0, false);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -171,4 +166,3 @@ pub fn install() {
         mariod_attack_lw3_effect,
     );
 }
-

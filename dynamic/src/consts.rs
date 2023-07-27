@@ -761,7 +761,7 @@ pub mod vars {
     pub mod mariod {
         pub mod status {
             // flags
-            pub const IS_SPECIAL_N_CHILL_PILL: i32 = 0x1100;
+            pub const PILL_TOSS: i32 = 0x1100;
         }
     }
 

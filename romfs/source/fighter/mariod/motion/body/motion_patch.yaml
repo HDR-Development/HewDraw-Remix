@@ -8,57 +8,121 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 0
+attack_11:
+  extra:
+    cancel_frame: 16
 attack_12:
   extra:
     cancel_frame: 18
 attack_13:
   extra:
     cancel_frame: 28
-special_s:
-  extra:
-    cancel_frame: 46
-attack_11:
-  extra:
-    cancel_frame: 16
+attack_s3_s:
+  flags:
+    move: false
+attack_s3_hi:
+  flags:
+    move: false
+attack_s3_lw:
+  flags:
+    move: false
 attack_lw3:
   extra:
     cancel_frame: 25
+attack_s4_s:
+  extra:
+    cancel_frame: 50
+attack_s4_hi:
+  extra:
+    cancel_frame: 50
+attack_s4_lw:
+  extra:
+    cancel_frame: 50
 attack_hi4:
   extra:
     cancel_frame: 44
 attack_lw4:
   extra:
     cancel_frame: 48
-attack_s4_s:
+attack_air_f:
   extra:
-    cancel_frame: 50
-attack_s3_s:
-  flags:
-    move: false
-attack_s3_lw:
-  flags:
-    move: false
-attack_s4_hi:
-  extra:
-    cancel_frame: 50
+    cancel_frame: 46
 attack_air_b:
   extra:
     cancel_frame: 32
-attack_air_f:
-  extra:
-    cancel_frame: 50
-attack_s4_lw:
-  extra:
-    cancel_frame: 50
-attack_s3_hi:
-  flags:
-    move: false
-special_air_s:
-  extra:
-    cancel_frame: 46
-attack_air_lw:
-  extra:
-    cancel_frame: 41
 attack_air_hi:
   extra:
     cancel_frame: 28
+attack_air_lw:
+  extra:
+    cancel_frame: 41
+special_n_toss:
+  game_script: game_specialntoss
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialntoss.nuanmb
+  scripts:
+  - expression_specialntoss
+  - sound_specialntoss
+  - effect_specialntoss
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 49
+    freeze_during_hitstop: false
+special_air_n_toss:
+  game_script: game_specialairntoss
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialairntoss.nuanmb
+  scripts:
+  - expression_specialairntoss
+  - sound_specialairntoss
+  - effect_specialairntoss
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 49
+    freeze_during_hitstop: false
+special_s:
+  extra:
+    cancel_frame: 46
+special_air_s:
+  extra:
+    cancel_frame: 46
+catch_attack:
+  extra:
+    cancel_frame: 20
+throw_b:
+  extra:
+    cancel_frame: 47

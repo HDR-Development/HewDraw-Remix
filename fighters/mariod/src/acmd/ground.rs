@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 #[acmd_script( agent = "mariod", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn mariod_attack_11_game(fighter: &mut L2CAgentBase) {
@@ -119,4 +117,3 @@ pub fn install() {
         mariod_attack_dash_game,
     );
 }
-

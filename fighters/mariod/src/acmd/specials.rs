@@ -1,329 +1,63 @@
-
 use super::*;
 
-
-
-
-
-#[acmd_script( agent = "mariod", script = "game_specialn" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "mariod", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
 unsafe fn mariod_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 16.0/(14.0-1.0));
-        VarModule::off_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL);
-    }
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){ 
-            VarModule::on_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL);
-        }
-
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL){
-            FT_MOTION_RATE(fighter, 3.0/(14.0-10.0));
-        } 
-    }
+    FT_MOTION_RATE_RANGE(fighter, 10.0, 14.0, 6.0);
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL){
-            ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 69, 90, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 69, 90, 0, 50, 4.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("arml"), 10.0, 69, 90, 0, 50, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-            HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-        else {
-            ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
-        }
+        ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
     }
     frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL){
-            AttackModule::clear_all(boma);
-            HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-            FT_MOTION_RATE(fighter, 1.5);
-        }
-    }
+    FT_MOTION_RATE_RANGE(fighter, 18.0, 43.0, 30.0);
+    frame(lua_state, 43.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "mariod", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "mariod", scripts = ["effect_specialn", "effect_specialairn", "effect_specialntoss", "effect_specialairntoss"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.75, 0.6, 1.0);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
         }
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        EFFECT_FLIP(fighter, Hash40::new("mariod_capsule_shoot"), Hash40::new("mariod_capsule_shoot"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.46, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_ice"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.35, true);
-            LAST_EFFECT_SET_RATE(fighter, 1.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_ice_landing"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.75, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.75);
-            EffectModule::enable_sync_init_pos_last(boma);
+        if !VarModule::is_flag(fighter.battle_object, vars::mariod::status::PILL_TOSS) {
+            EFFECT_FLIP(fighter, Hash40::new("mariod_capsule_shoot"), Hash40::new("mariod_capsule_shoot"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.46, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+            }
         }
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.5, 0.25, 1, 0.35);
-        }
-        else{
-            FLASH(fighter, 1, 1, 0, 0.353);
-        }
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-
-        }
-        else{
-            COL_NORMAL(fighter);
-        }
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.5, 0.25, 1, 0.75);
-        }
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            
-        }
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.5, 0.25, 1, 0.35);
-        }
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            COL_NORMAL(fighter);
-        }
-    }
-    frame(lua_state, 27.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-        }
-        else{
-            COL_NORMAL(fighter);
-        }
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.75);
-        }
-    }
-    frame(lua_state, 33.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-        }
-    }
-    frame(lua_state, 36.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            COL_NORMAL(fighter);
-            EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_ice"), false, true);
-            EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice_landing"), false, true);
-        }
-    }
-    frame(lua_state, 39.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-        }
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("mario_fb_shoot"), false, false);
-    }
-    frame(lua_state, 42.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            COL_NORMAL(fighter);
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::PILL_TOSS) {
+            EFFECT_FLIP(fighter, Hash40::new("mariod_capsule_shoot"), Hash40::new("mariod_capsule_shoot"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.46, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+            }
         }
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_special_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mariod", scripts = ["game_specialntoss", "game_specialairntoss"] , category = ACMD_GAME , low_priority)]
+unsafe fn mariod_special_n_toss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 16.0/(14.0-1.0));
-        VarModule::off_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL);
-    }
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){ 
-            VarModule::on_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL);
-        }
-
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL){
-            FT_MOTION_RATE(fighter, 3.0/(14.0-10.0));
-        } 
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL){
-            ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 69, 90, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 69, 90, 0, 50, 4.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("arml"), 10.0, 69, 90, 0, 50, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-            HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-        else {
-            ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
-        }
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL){
-            AttackModule::clear_all(boma);
-            HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-            FT_MOTION_RATE(fighter, 1.5);
-        }
-    }
-    
-}
-
-#[acmd_script( agent = "mariod", script = "effect_specialairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.75, 0.6, 1.0);
-        }
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        EFFECT_FLIP(fighter, Hash40::new("mariod_capsule_shoot"), Hash40::new("mariod_capsule_shoot"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.46, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_ice"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.35, true);
-            LAST_EFFECT_SET_RATE(fighter, 1.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_ice_landing"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.75, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.75);
-            EffectModule::enable_sync_init_pos_last(boma);
-        }
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.5, 0.25, 1, 0.35);
-        }
-        else{
-            FLASH(fighter, 1, 1, 0, 0.353);
-        }
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-
-        }
-        else{
-            COL_NORMAL(fighter);
-        }
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.5, 0.25, 1, 0.75);
-        }
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            
-        }
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.5, 0.25, 1, 0.35);
-        }
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            COL_NORMAL(fighter);
-        }
-    }
-    frame(lua_state, 27.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-        }
-        else{
-            COL_NORMAL(fighter);
-        }
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.75);
-        }
-    }
-    frame(lua_state, 33.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-        }
-    }
-    frame(lua_state, 36.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            COL_NORMAL(fighter);
-            EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_ice"), false, true);
-            EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice_landing"), false, true);
-        }
-    }
-    frame(lua_state, 39.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-        }
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("mario_fb_shoot"), false, false);
-    }
-    frame(lua_state, 42.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
-            COL_NORMAL(fighter);
-        }
+        ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
     }
 }
 
@@ -841,8 +575,7 @@ pub fn install() {
     install_acmd_scripts!(
         mariod_special_n_game,
         mariod_special_n_effect,
-        mariod_special_air_n_game,
-        mariod_special_air_n_effect,
+        mariod_special_n_toss_game,
         mariod_special_s_game,
         mariod_special_s_effect,
         mariod_special_air_s_game,
@@ -857,4 +590,3 @@ pub fn install() {
         mariod_special_air_lw_effect,
     );
 }
-
