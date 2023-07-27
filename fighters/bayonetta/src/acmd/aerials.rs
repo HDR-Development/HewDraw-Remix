@@ -86,7 +86,6 @@ unsafe fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 8, false);
         AttackModule::clear(boma, 9, false);
     }
-    
 }
 
 #[acmd_script( agent = "bayonetta", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
