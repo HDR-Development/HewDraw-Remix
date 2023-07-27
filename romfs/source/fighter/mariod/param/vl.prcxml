@@ -40,4 +40,17 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_drcapsule">
+    <struct index="0">
+      <int hash="life">80</int>
+      <float hash="speed">1.9</float>
+      <float hash="gravity_accel">0.11</float>
+      <float hash="angle">64</float>
+      <float hash="bounded_speed_y_min">1.65</float>
+      <float hash="gravity_acl_max">1.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
 </struct>

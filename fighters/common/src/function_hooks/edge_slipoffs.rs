@@ -142,6 +142,7 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             || (fighter_kind == *FIGHTER_KIND_DONKEY && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
             || (fighter_kind == *FIGHTER_KIND_GAOGAEN && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
             || (fighter_kind == *FIGHTER_KIND_LUIGI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
+            || (fighter_kind == *FIGHTER_KIND_MARIOD && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
             || (fighter_kind == *FIGHTER_KIND_PEACH && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)
             || (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)
             || (fighter_kind == *FIGHTER_KIND_EDGE && status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH)

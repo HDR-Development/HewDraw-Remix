@@ -759,9 +759,9 @@ pub mod vars {
     }
 
     pub mod mariod {
-        pub mod status {
+        pub mod instance {
             // flags
-            pub const PILL_TOSS: i32 = 0x1100;
+            pub const UP_SPECIAL_CANCEL: i32 = 0x0100;
         }
     }
 
