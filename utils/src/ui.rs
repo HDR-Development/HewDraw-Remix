@@ -25,6 +25,7 @@ static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager 
     pichu_meter: [PichuMeter::default(); 8]
 }));
 
+#[repr(C)]
 pub struct UiManager {
     ex_meter: [ExMeter; 8],
     ff_meter: [FfMeter; 8],

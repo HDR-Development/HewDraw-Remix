@@ -10,6 +10,7 @@ use smash::phx::Vector3f;
 use crate::util;
 
 const TAG_DURATION: usize = 60 * 30;
+#[repr(C)]
 struct TagInfo {
     pub target_die_frame: usize,
     pub target_id: u32,
