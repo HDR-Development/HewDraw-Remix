@@ -195,28 +195,22 @@ unsafe fn mario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 #[acmd_script( agent = "mario", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_attackairlw(agent: &mut L2CAgentBase) {
-    /* 
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 2.0);
+    frame(lua_state, 7.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 8.5, 0, 0, 0, 0, 0.9, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 8.0, 0, -27, 0, 0, 0.65, true);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.5, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 1.8, 2.6, -27, 0, 0, 0.8, true);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7, 0, 0, 0, 0, 0.95, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.5, 1.5, -27, 0, 0, 0.35, true);
     }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 7.5, 0, 0, 0, 0, 2, true);
-        LAST_EFFECT_SET_ALPHA(agent, 0.7);
-    }
-    */
 }
+
 #[acmd_script( agent = "mario", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
