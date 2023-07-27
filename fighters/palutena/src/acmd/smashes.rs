@@ -224,9 +224,11 @@ unsafe fn palutena_attack_lw4_effect(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        palutena_attack_s4_game,
         palutena_attack_s4_effect,
         palutena_attack_hi4_game,
         palutena_attack_hi4_effect,
+        palutena_attack_lw4_game,
         palutena_attack_lw4_effect
     );
 }

@@ -166,7 +166,7 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
     }
-    // needed for fsmash and dsmash
+    /*  needed for fsmash and dsmash
     
     if fighter.is_motion(Hash40::new("attack_s4_s"))
     && fighter.motion_frame() >= 17.0 && fighter.motion_frame() < 21.0
@@ -181,7 +181,7 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
-    }
+    }*/
 }
 
 // handles the color charges
