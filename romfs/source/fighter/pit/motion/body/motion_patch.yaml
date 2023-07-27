@@ -70,6 +70,3 @@ special_air_s_start:
 special_air_n_fire_hi:
   extra:
     cancel_frame: 30
-catch_attack:
-  extra:
-    cancel_frame: 20
