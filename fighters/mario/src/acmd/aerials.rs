@@ -203,7 +203,7 @@ unsafe fn effect_attackairlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 1.8, 2.6, -27, 0, 0, 0.8, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 1.8, 2.6, -27, 0, 0, 0.38, true);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
