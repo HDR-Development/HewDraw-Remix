@@ -967,6 +967,13 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub fn install() {
     skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
     skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
+
+    // Removes 10f C-stick lockout for tilt stick and special stick
+    skyline::patching::Patch::in_text(0x17527dc).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x17527e0).nop();
+    skyline::patching::Patch::in_text(0x17527e4).nop();
+    skyline::patching::Patch::in_text(0x17527e8).nop();
+
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,
