@@ -53,7 +53,7 @@ attack_air_lw:
     animations:
       - name: c05attackairlw.nuanmb
     extra:
-      cancel_frame: 38
+      cancel_frame: 35
 landing_air_lw:
     blend_frames: 2
     animations:
