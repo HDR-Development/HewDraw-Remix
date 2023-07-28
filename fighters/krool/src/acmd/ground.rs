@@ -1,4 +1,3 @@
-
 use super::*;
 
 #[acmd_script( agent = "krool", script = "game_attack11" , category = ACMD_GAME , low_priority)]
@@ -25,7 +24,6 @@ unsafe fn krool_attack_11_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.0)
     //WorkModule::on_flag(FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART)
 }
-
 
 #[acmd_script( agent = "krool", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
@@ -59,7 +57,6 @@ unsafe fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 #[acmd_script( agent = "krool", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
 unsafe fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -70,7 +67,6 @@ unsafe fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
     EFFECT_FLIP_ALPHA(fighter, Hash40::new("krool_scratch"), Hash40::new("krool_scratch"), Hash40::new("top"), 0, 13, 13, -8, 60, -127, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.3);
     }
 }
-
 
 #[acmd_script( agent = "krool", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
@@ -92,26 +88,23 @@ unsafe fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 #[acmd_script( agent = "krool", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.88);
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.800);
-    }
+    FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 10.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
-        FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 15.0, 45, 70, 0, 60, 7.0, 4.0, 3.5, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -146,14 +139,12 @@ unsafe fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 pub fn install() {
     install_acmd_scripts!(
         krool_attack_11_game,
         krool_attack_12_game,
+        krool_attack_12_effect,
         krool_attack_13_game,
         krool_attack_dash_game,
-        krool_attack_12_effect,
-
     );
 }
