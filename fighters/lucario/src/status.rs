@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 // status script import
+mod special_n;
 
 extern "C" {
     #[link_name = "\u{1}_ZN3app14LinkEventThrow13new_l2c_tableEv"]
@@ -10,6 +11,7 @@ extern "C" {
 }
 
 pub fn install() {
+    special_n::install();
     install_status_scripts!(
         special_s_throw_pre,
         special_s_throw_main,
@@ -20,8 +22,6 @@ pub fn install() {
         lucario_special_lw_pre,
         lucario_special_lw_init,
         lucario_special_lw_main,
-        lucario_special_n_shoot_pre,
-        auraball_shoot_pre,
     );
     smashline::install_agent_init_callbacks!(lucario_init);
 }
@@ -386,36 +386,3 @@ pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     
     ret
 }
-
-#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn lucario_special_n_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
-    original!(fighter)
-}
-
-#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn auraball_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    VarModule::set_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP, VarModule::is_flag(owner_module_accessor.object(), vars::lucario::instance::IS_POWERED_UP));
-    println!("lucario_auraball is_powered_up: {}", VarModule::is_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP));
-    original!(fighter)
-}
-
-// #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// pub unsafe fn auraball_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-
-//     let is_bomb = false; // TODD: figure this out
-
-//     let life = if is_bomb {60} else {120}; // TODO: use params
-//     fighter.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE); 
-//     fighter.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-
-
-//     let motion = if is_bomb {"bomb"} else {"shoot"};
-//     MotionModule::change_motion(fighter.module_accessor, Hash40::new(motion), 0.0, 1.0, false, 0.0, false, false);
-
-//     let max_charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_PARAM_MAX_CHARGE_FRAME);
-//     let charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
-
-//     0.into()
-// }
