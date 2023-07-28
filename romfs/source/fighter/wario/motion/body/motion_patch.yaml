@@ -20,13 +20,7 @@ attack_hi3:
 attack_s4_s:
   flags:
     move: false
-attack_s4_hold:
-  flags:
-    move: false
 attack_hi4:
-  flags:
-    move: false
-attack_hi4_hold:
   flags:
     move: false
 attack_lw4:
