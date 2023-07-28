@@ -329,7 +329,7 @@ unsafe fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1;
+    let power = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3;
     let sound_lvl = if power {Hash40::new("se_common_electric_hit_l")} else {Hash40::new("se_common_electric_hit_m")};
     frame(lua_state, 11.0);
     if is_excute(agent) {
