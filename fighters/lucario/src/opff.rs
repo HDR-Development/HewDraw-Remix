@@ -42,7 +42,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     meter_module(fighter, boma, status_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     jump_cancels(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    training_mode_deplete_meter(fighter, boma, status_kind);
+    training_mode_max_meter(fighter, boma, status_kind);
 }
 
 unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
@@ -50,13 +50,13 @@ unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
     VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
 }
 
-unsafe fn training_mode_deplete_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+unsafe fn training_mode_max_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if app::smashball::is_training_mode()
     && boma.is_status(*FIGHTER_STATUS_KIND_APPEAL)
     && boma.is_button_on(Buttons::Guard)
     {
-        MeterModule::reset(fighter.battle_object);
-        VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+        let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
+        MeterModule::add(boma.object(), meter_max);
     }
 }
 
@@ -296,13 +296,8 @@ unsafe fn jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     && !CancelModule::is_enable_cancel(boma) 
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR
     ])
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT)
     && fighter.check_jump_cancel(false) {
-        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
-        pause_meter_regen(fighter, 90);
     }
 }
