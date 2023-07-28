@@ -265,8 +265,6 @@ pub mod vars {
 
             pub const ENABLE_UCF: i32 = 0x1000;
 
-            pub const PUMMEL_USE_GLOBAL_STATS: i32 = 0x1000;
-
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -585,12 +583,13 @@ pub mod vars {
         }
     }
 
-    // pub mod koopa {
-    //     pub mod instance {
-    //         // flags
-    //         pub use super::super::mario::instance::NOKNOK_SHELL;
-    //     }
-    // }
+    pub mod koopa {
+        pub mod instance {
+            // ints
+            pub const FIREBALL_COOLDOWN_FRAME: i32 = 0x0100;
+            pub const FIREBALL_EFFECT_ID: i32 = 0x0101;
+        }
+    }
 
     pub mod lucario {
         pub mod status {

@@ -199,6 +199,7 @@ impl ParamListing {
     }
 }
 
+#[repr(C)]
 struct FighterParam {
     pub fighter_list: ParamListing
 }
@@ -293,6 +294,7 @@ use prc::{ParamList, ParamStruct};
 
 /// stores the tournament mode configuration
 #[derive(Serialize, Deserialize, Debug)]
+#[repr(C)]
 struct TourneyConfig {
     /// whether the tourney mode is enabled
     enabled: bool,
@@ -599,6 +601,7 @@ pub enum ParamType {
 
 // An additional module to be used with Smash's `BattleObject` class. This uses an ARCropolis API to load (new) files and store them as global param data
 // that objects can access at runtime. This allows for storing constants in data modifiable for easy balancing.
+#[repr(C)]
 pub struct ParamModule {
     owner: *mut BattleObject,
     agent_params: Option<Arc<ParamListing>>
