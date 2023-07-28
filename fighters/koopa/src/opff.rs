@@ -3,6 +3,10 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+// symbol-based call for the pikachu/pichu characters' common opff
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
  
 unsafe fn bowser_bomb_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -38,7 +42,8 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame < 23.0 {
+        let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
+        if frame < 23.0 && !cooleddown {
             if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                 MotionModule::set_frame(boma, 22.0, true);
             }
@@ -77,6 +82,43 @@ unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, status_k
     }
 }
 
+
+unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    //Ignore cooldown during respawn,death,entry and nspecial
+    if (&[
+        *FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_SPECIAL_N
+    ]).contains(&status_kind) {
+        return;
+    }
+
+    let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
+    let charged_effect =  VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID);
+    //If cooling down, remove ready effect
+    if !cooleddown {
+        if charged_effect > 0 {
+            VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID,0);
+            if EffectModule::is_exist_effect(boma, charged_effect as u32) {
+                EffectModule::kill(boma, charged_effect as u32, false,false);
+            }
+        }
+        return;
+    }
+    //Otherwise, spawn effect if effect does not exist
+    else if (charged_effect <= 0 
+    || !EffectModule::is_exist_effect(boma, charged_effect as u32))
+    {
+        if (charged_effect <= 0){
+            gimmick_flash(boma);
+        }
+        let pos = &Vector3f{x: 0.0, y: 1.0, z: 0.0};
+        let rot = &Vector3f{x: 180.0, y: 0.0, z: 50.0};
+        let handle = EffectModule::req_follow(boma, Hash40::new("koopa_breath_m_fire"), Hash40::new("jaw"), pos, rot, 1.0, true, 0, 0, 0, 0, 0, false, false) as u32;
+        VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID,handle as i32);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -107,11 +149,12 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
+    fireball_cooldown(boma,status_kind);
     // noknok_reset(boma);
     //up_special_land_cancel(boma, status_kind);
     // noknok_training(boma);
