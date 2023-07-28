@@ -28,7 +28,10 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     if status_kind == *FIGHTER_STATUS_KIND_THROW {
         if motion_kind == hash40("throw_b") {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if stick_x != 0.0 {
+                let currentFrame = MotionModule::frame(boma);
+                let maxFrame = 46.0;
+                if stick_x != 0.0 
+                && currentFrame < maxFrame {
                     let motion_vec = x_motion_vec(1.0, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
@@ -37,10 +40,23 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     }
 }
 
+
+unsafe fn dash_attack_air_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
+    && situation_kind == *SITUATION_KIND_AIR
+    && MotionModule::frame(boma) >= 30.0 {
+        CancelModule::enable_cancel(boma);
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
     bthrow_movement(boma, status_kind, situation_kind, motion_kind, stick_x);
+    dash_attack_air_cancel(boma, status_kind, situation_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_WARIO )]
