@@ -920,13 +920,19 @@ pub mod vars {
 
     pub mod robot {
         pub mod instance {
+            // flags
+            pub const AIRTIME_DAIR: i32 = 0x0100;
+            pub const AIRTIME_BAIR: i32 = 0x0101;
             // ints
             pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
             pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
         }
         pub mod status {
             // flags
-            pub const BOOST_ATTACK: i32 = 0x1100;
+            pub const IS_CHARGE_STARTED: i32 = 0x1100;
+            pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const IS_CHARGE_MAX: i32 = 0x1102;
+            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
         }
     }
 
