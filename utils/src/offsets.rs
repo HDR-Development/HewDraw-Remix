@@ -123,6 +123,7 @@ mod offsets_impl {
 
     use crate::util::byte_search;
 
+    #[repr(C)]
     struct CoreOffsets {
         pub exec_command: usize,
         pub get_command_flag_cat: usize,
