@@ -141,12 +141,12 @@ unsafe fn wario_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 3, 7, 1.5, 20, -15, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 3, 8.5, -3.0, 20, -15, 0, 1.2, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("arml"), 10.0, -1.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("arml"), 9.5, -1.0, 0.0, 0, 0, 0, 1.0, true);
     }
     frame(lua_state, 7.0);
 }
