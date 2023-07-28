@@ -763,6 +763,10 @@ pub mod vars {
             // flags
             pub const UP_SPECIAL_CANCEL: i32 = 0x0100;
         }
+        pub mod status {
+            // flags
+            pub const CHILL_PILL: i32 = 0x1100;
+        }
     }
 
     pub mod robin {

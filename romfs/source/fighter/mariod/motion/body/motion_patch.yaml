@@ -57,11 +57,73 @@ attack_air_lw:
   extra:
     cancel_frame: 41
 special_n:
+  animations:
+  - name: d00specialntoss.nuanmb
   extra:
-    cancel_frame: 49
+    cancel_frame: 47
 special_air_n:
+  animations:
+  - name: d00specialairntoss.nuanmb
   extra:
-    cencel_frame: 49
+    cencel_frame: 47
+special_n_chill:
+  game_script: game_specialnchill
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialn.nuanmb
+  scripts:
+  - expression_specialnchill
+  - sound_specialnchill
+  - effect_specialnchill
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
+special_air_n_chill:
+  game_script: game_specialairnchill
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialairn.nuanmb
+  scripts:
+  - expression_specialairnchill
+  - sound_specialairnchill
+  - effect_specialairnchill
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
 special_s:
   extra:
     cancel_frame: 46
