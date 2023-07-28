@@ -11,9 +11,6 @@ guard_off:
 escape:
   flags:
     move: false
-catch_attack:
-  extra:
-    cancel_frame: 20
 throw_f:
   extra:
     cancel_frame: 49
