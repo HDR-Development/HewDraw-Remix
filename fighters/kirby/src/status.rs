@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 mod special_hi_h;
+mod gaogaen_special_n;
  
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
@@ -10,6 +11,8 @@ pub fn install() {
     );
 
     special_hi_h::install();
+    gaogaen_special_n::install();
+
 }
 
 pub fn add_statuses() {

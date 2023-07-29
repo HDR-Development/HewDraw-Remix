@@ -921,7 +921,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Nayru's Love Land Cancel and Fast Fall
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
 
-    //Hero Dash Cancel Frizz
+    // Hero Dash Cancel Frizz
     dash_cancel_frizz(fighter);
 
     // Laser Airdodge Cancel
