@@ -8,6 +8,7 @@ pub fn install() {
         auraball_shoot_pre,
         special_n_main,
         lucario_special_n_hold_main,
+        lucario_special_n_max_main,
     );
 }
 
@@ -71,65 +72,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-unsafe extern "C" fn special_n_set_kinetic(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        fighter.set_situation(SITUATION_KIND_AIR.into());
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
-            MotionModule::change_motion_inherit_frame_keep_rate(
-                fighter.module_accessor,
-                Hash40::new_raw(mot),
-                -1.0,
-                1.0,
-                0.0
-            );
-        }
-        else {
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new_raw(mot),
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
-            );
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-        }
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-    }
-    else {
-        fighter.set_situation(SITUATION_KIND_GROUND.into());
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
-            MotionModule::change_motion_inherit_frame_keep_rate(
-                fighter.module_accessor,
-                Hash40::new_raw(mot),
-                -1.0,
-                1.0,
-                0.0
-            );
-        }
-        else {
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new_raw(mot),
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
-            );
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-        }
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-    }
-}
-
 pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFighterCommon) {
     let havel = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
     let haver = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
@@ -167,7 +109,7 @@ unsafe fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValu
         *WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE,
         ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)
     );
-    lucario_special_n_hold_set_kinetic(fighter);
+    special_n_set_kinetic(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_hold_main_loop as *const () as _))
 }
@@ -175,7 +117,7 @@ unsafe fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
-        lucario_special_n_hold_set_kinetic(fighter);
+        special_n_set_kinetic(fighter);
         return 0.into();
     }
     
@@ -184,11 +126,11 @@ unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCo
         return 0.into();
     }
 
-    if fighter.check_jump_cancel(false) {
-        return 0.into();
-    }
+    // if fighter.check_jump_cancel(false) {
+    //     return 0.into();
+    // }
 
-    if lucario_special_n_hold_check_cancel(fighter).get_bool() {
+    if special_n_check_cancel(fighter).get_bool() {
         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into());
         return 0.into();
     }
@@ -201,10 +143,47 @@ unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-unsafe extern "C" fn lucario_special_n_hold_check_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucario_special_n_max_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_n_max") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_max") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+    special_n_set_kinetic(fighter);
+    ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_max_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn lucario_special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        special_n_set_kinetic(fighter);
+        return 0.into();
+    }
+    
+    if fighter.is_button_trigger(Buttons::Special) {
+        fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
+        return 0.into();
+    }
+
+    // if fighter.check_jump_cancel(false) {
+    //     return 0.into();
+    // }
+
+    if special_n_check_cancel(fighter).get_bool() {
+        fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into());
+        return 0.into();
+    }
+
+    0.into()
+}
+
+unsafe extern "C" fn special_n_check_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         if fighter.is_button_on(Buttons::Guard) {
             fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
+            return true.into();
+        }
+        if fighter.sub_check_jump_in_charging_for_cancel_status((*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS).into()).get_bool() {
             return true.into();
         }
     }
@@ -241,11 +220,14 @@ unsafe extern "C" fn lucario_special_n_hold_check_cancel(fighter: &mut L2CFighte
             }
             return true.into();
         }
+        if fighter.sub_check_jump_in_charging_for_cancel_status((*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS).into()).get_bool() {
+            return true.into();
+        }
     }
     return false.into();
 }
 
-unsafe extern "C" fn lucario_special_n_hold_set_kinetic(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn special_n_set_kinetic(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -272,6 +254,11 @@ unsafe extern "C" fn lucario_special_n_hold_set_kinetic(fighter: &mut L2CFighter
             );
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
         }
+        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
+        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
+        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_JUMP_AERIAL);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     else {
@@ -300,6 +287,11 @@ unsafe extern "C" fn lucario_special_n_hold_set_kinetic(fighter: &mut L2CFighter
             );
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
         }
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
+        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_JUMP_AERIAL);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
 }
