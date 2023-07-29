@@ -447,7 +447,7 @@ unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, stat
 unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_SHOOT)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_motion(Hash40::new("bravespecial_n1"))
+    && fighter.is_motion(Hash40::new("brave_special_n1"))
     && fighter.motion_frame() > 20.0 && fighter.motion_frame() < 44.0 // after F20 and before the FAF
     && (WorkModule::get_float(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP) > 12.0)
     {
