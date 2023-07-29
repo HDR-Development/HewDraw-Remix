@@ -20,7 +20,7 @@ unsafe fn koopa_attack_s4_game(fighter: &mut L2CAgentBase) {
                 macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 25.5, 361, 97, 0, 28, 8.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-		frame(lua_state, /*Frames*/ 26.0);
+		frame(lua_state, 26.0);
 		if macros::is_excute(fighter) {
 			AttackModule::clear_all(fighter.module_accessor);
             EffectModule::kill_kind(boma, Hash40::new("sys_damage_fire"), false, false);
