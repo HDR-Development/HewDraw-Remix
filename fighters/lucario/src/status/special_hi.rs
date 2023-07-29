@@ -16,7 +16,7 @@ pub fn install() {
 pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!(fighter);
 
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
+    fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
     
     ret
 }
@@ -25,7 +25,7 @@ pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
+    fighter.set_int(-1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
     GroundModule::set_passable_check(fighter.module_accessor, true);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -82,8 +82,8 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
-        WorkModule::set_int(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
+        fighter.on_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
+        fighter.set_int(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
     }
     if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
         let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut smash::app::KineticEnergy;
@@ -110,14 +110,14 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
         }
     }
     else if GroundModule::can_entry_cliff(fighter.module_accessor) != 0 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
-        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
+        fighter.on_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
+        fighter.set_int(*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS) {
-        let status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
+    if fighter.is_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS) {
+        let status = fighter.get_int(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
         StatusModule::change_status_request(fighter.module_accessor, status, false);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
-        WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
+        fighter.off_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
+        fighter.set_int(-1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
     }
     0.into()
 }
@@ -133,7 +133,7 @@ unsafe fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
         GroundModule::set_cliff_check(fighter.module_accessor, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        let end_brake_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("end_brake_x"));
+        let end_brake_x = fighter.get_param_float("param_special_hi", "end_brake_x");
         sv_kinetic_energy!(
             set_brake,
             fighter,
@@ -141,7 +141,7 @@ unsafe fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2
             end_brake_x,
             0.0
         );
-        let end_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("end_accel_y"));
+        let end_accel_y = fighter.get_param_float("param_special_hi", "end_accel_y");
         sv_kinetic_energy!(
             set_accel,
             fighter,
@@ -182,7 +182,7 @@ unsafe fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2
         );
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     }
-    WorkModule::set_int(fighter.module_accessor, situation, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_END_SITUATION);
+    fighter.set_int(situation, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_END_SITUATION);
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_hi_rush_end_main_loop as *const () as _))
 }
 
@@ -191,7 +191,7 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
         // metered attack cancel
         lucario_special_hi_metered_cancel(fighter);
     }
-    let sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_END_SITUATION);
+    let sit = fighter.get_int(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_END_SITUATION);
     if sit != *SITUATION_KIND_GROUND
     && fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
@@ -211,9 +211,9 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
             return 0.into();
         }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X) {
+        if fighter.is_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X);
+            fighter.off_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X);
         }
     }
     else {
@@ -259,11 +259,11 @@ unsafe extern "C" fn lucario_special_hi_rush_touch_ground(
             y: KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
         };
         let vec_angle = sv_math::vec2_angle(normal.x, normal.y, speed.x, speed.y);
-        let crush_angle = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("crush_angle"));
+        let crush_angle = fighter.get_param_float("param_special_hi", "crush_angle");
         let ref_angle = (crush_angle + 90.0).to_radians();
         if ref_angle <= vec_angle {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
+            fighter.on_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
+            fighter.set_int(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
             return true.into();
         }
         let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
@@ -279,7 +279,7 @@ unsafe extern "C" fn lucario_special_hi_rush_touch_ground(
             };
             let dot = sv_math::vec2_dot(stop_speed.x, stop_speed.y, normal.x, normal.y);
             if dot < 0.0 {
-                let angle_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("angle_speed"));
+                let angle_speed: f32 = fighter.get_param_float("param_special_hi", "angle_speed");
                 let rad_speed = angle_speed.to_radians();
                 let mut speed_atan = speed.y.atan2(speed.x);
                 let mut normal_atan = normal.y.atan2(normal.x);
@@ -315,9 +315,9 @@ unsafe extern "C" fn lucario_special_hi_rush_touch_ground(
                         diff *= -1.0;
                     }
                 }
-                let rush_dir = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR);
+                let rush_dir = fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR);
                 let new_dir = rush_dir + diff;
-                WorkModule::set_float(fighter.module_accessor, new_dir, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR);
+                fighter.set_float(new_dir, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR);
                 let vec = lucario_special_hi_get_vec(fighter, new_dir.into(), length.into());
                 lua_bind::KineticEnergyNormal::set_speed(stop_energy as *mut smash::app::KineticEnergyNormal, &vec);
             }

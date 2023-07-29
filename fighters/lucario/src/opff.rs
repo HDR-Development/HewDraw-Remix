@@ -37,7 +37,6 @@ pub unsafe fn lucario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
-    uspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     meter_module(fighter, boma, status_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
@@ -97,17 +96,6 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
         MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
         pause_meter_regen(fighter, 120);
-    }
-}
-
-unsafe fn uspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    if !fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END
-    ]) {
-        return;
     }
 }
 
