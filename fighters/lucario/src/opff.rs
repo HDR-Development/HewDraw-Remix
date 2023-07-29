@@ -88,8 +88,8 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     // critical hit activation
-    if ((MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s_throw") && frame == 22.0)
-    || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_throw") && frame == 27.0))
+    if ((MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s_throw") && frame == 21.0)
+    || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_throw") && frame == 26.0))
     && fighter.is_button_on(Buttons::SpecialRaw)
     && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
         let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");

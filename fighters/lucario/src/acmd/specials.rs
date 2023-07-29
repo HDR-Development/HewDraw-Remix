@@ -71,9 +71,9 @@ unsafe fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
-        // able to angle sideB dunk based on stick position on f10
+        // able to angle sideB dunk based on stick position on f22
 
         // get stick angle for dunk
         let angle = fighter.stick_y().atan2(fighter.stick_x() * PostureModule::lr(boma)).to_degrees();
@@ -88,7 +88,8 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
         // only able to angle the dunk within a certain angle range
         let throw_angle_min = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "force_palm_air.throw_angle_min") as u64;
         let throw_angle_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "force_palm_air.throw_angle_max") as u64;
-        kb_angle = if fighter.stick_y() < 0.0 {
+        kb_angle = if VarModule::get_float(fighter.object(), vars::lucario::status::AURA_OVERRIDE) > 0.0
+        && fighter.stick_y() < 0.0 {
             kb_angle.clamp(throw_angle_min, throw_angle_max)
         }
         else {
