@@ -85,20 +85,6 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     && frame < 37.0 {
         KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
-
-    //PM-like neutral-b canceling
-    if situation_kind == *SITUATION_KIND_AIR {
-        // if status_kind == FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD
-        // && fighter.is_button_on(Buttons::Guard) 
-        // && fighter.status_frame() > 1.0 {
-        //     fighter.change_status_req(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL, false);
-        // }
-
-        if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL 
-        && WorkModule::get_int(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-            WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
-        }
-    }
 }
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
@@ -115,21 +101,13 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 }
 
 unsafe fn uspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    if fighter.is_status(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH)
-    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-        fighter.change_status_req(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, false);
-    }
-    else if fighter.is_status_one_of(&[
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END
-    ]) 
-    && !CancelModule::is_enable_cancel(boma)
-    && fighter.is_button_on(Buttons::AttackRaw) 
-    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-        KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) * 2.0);
-        pause_meter_regen(fighter, 120);
+    ]) {
+        return;
     }
 }
 
