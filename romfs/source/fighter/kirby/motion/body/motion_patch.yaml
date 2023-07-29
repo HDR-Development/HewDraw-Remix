@@ -172,3 +172,231 @@ zelda_special_air_n:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 64
+brave_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+brave_special_air_n_jump_cancel:
+  extra:
+    cancel_frame: 8
+buddy_special_n_shoot_end:
+  extra:
+    cancel_frame: 8
+buddy_special_air_n_shoot_end:
+  extra:
+    cancel_frame: 8
+captain_special_n:
+  extra:
+    cancel_frame: 103
+captain_special_n_turn:
+  extra:
+    cancel_frame: 103
+captain_special_air_n:
+  extra:
+    cancel_frame: 103
+captain_special_air_n_turn:
+  extra:
+    cancel_frame: 103
+chrom_special_n_end:
+  extra:
+    cancel_frame: 38
+chrom_special_n_end2:
+  extra:
+    cancel_frame: 38
+chrom_special_n_end3:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end:
+  extra:
+    cancel_frame: 38
+chrom_special_n_end_max:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end3:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end2:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end_max:
+  extra:
+    cancel_frame: 38
+dolly_special_air_n:
+  extra:
+    cancel_frame: 40
+donkey_special_n_cancel:
+  extra:
+    cancel_frame: 9
+donkey_special_air_n_cancel:
+  extra:
+    cancel_frame: 9
+falco_special_n_end:
+  extra:
+    cancel_frame: 19
+falco_special_air_n_end:
+  extra:
+    cancel_frame: 19
+gekkouga_special_n_shot:
+  extra:
+    cancel_frame: 29
+koopajr_special_n_shoot:
+  extra:
+    cancel_frame: 32
+koopajr_special_air_n_shoot:
+  extra:
+    cancel_frame: 32
+lucario_special_n_cancel:
+  extra:
+    cancel_frame: 7
+lucario_special_air_n_cancel:
+  extra:
+    cancel_frame: 7
+lucina_special_n_end:
+  extra:
+    cancel_frame: 45
+luigi_special_n:
+  extra:
+    cancel_frame: 41
+luigi_special_air_n:
+  extra:
+    cancel_frame: 41
+mario_special_n:
+  extra:
+    cancel_frame: 41
+master_special_n:
+  extra:
+    cancel_frame: 46
+master_special_air_n:
+  extra:
+    cancel_frame: 46
+master_special_n_cancel:
+  extra:
+    cancel_frame: 10
+master_special_air_n_cancel:
+  extra:
+    cancel_frame: 10
+mewtwo_special_n_cancel:
+  extra:
+    cancel_frame: 9
+mewtwo_special_air_n_cancel:
+  extra:
+    cancel_frame: 9
+miigunner_special_n1_cancel:
+  extra:
+    cancel_frame: 9
+miigunner_special_air_n1_cancel:
+  extra:
+    cancel_frame: 9
+pacman_special_n_shoot:
+  extra:
+    cancel_frame: 40
+pacman_special_air_n_shoot:
+  extra:
+    cancel_frame: 40
+pacman_special_n_cancel:
+  extra:
+    cancel_frame: 7
+pacman_special_air_n_cancel:
+  extra:
+    cancel_frame: 7
+palutena_special_n:
+  extra:
+    cancel_frame: 72
+palutena_special_air_n:
+  extra:
+    cancel_frame: 72
+pit_special_n_fire_s:
+  extra:
+    cancel_frame: 30
+pit_special_n_fire_hi:
+  extra:
+    cancel_frame: 30
+pit_special_air_n_fire_hi:
+  extra:
+    cancel_frame: 30
+reflet_special_n_cancel:
+  extra:
+    cancel_frame: 8
+reflet_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+ridley_special_n_shoot:
+  extra:
+    cancel_frame: 37
+ridley_special_n_failure:
+  extra:
+    cancel_frame: 30
+ridley_special_air_n_shoot:
+  extra:
+    cancel_frame: 37
+ridley_special_air_n_failure:
+  extra:
+    cancel_frame: 30
+rockman_special_n:
+  extra:
+    cancel_frame: 39
+rockman_special_n_empty:
+  extra:
+    cancel_frame: 33
+rockman_special_n_turn:
+  extra:
+    cancel_frame: 41
+rockman_special_n_turn_empty:
+  extra:
+    cancel_frame: 35
+rockman_special_air_n:
+  extra:
+    cancel_frame: 39
+rockman_special_air_n_empty:
+  extra:
+    cancel_frame: 33
+rockman_special_air_n_turn:
+  extra:
+    cancel_frame: 41
+rockman_special_air_n_turn_empty:
+  extra:
+    cancel_frame: 35
+samus_special_n_c:
+  extra:
+    cancel_frame: 9
+samus_special_air_n_c:
+  extra:
+    cancel_frame: 9
+samusd_special_n_f_max:
+  extra:
+    cancel_frame: 38
+samusd_special_n_c:
+  extra:
+    cancel_frame: 9
+samusd_special_air_n_c:
+  extra:
+    cancel_frame: 9
+sheik_special_air_n_end:
+  extra:
+    cancel_frame: 32
+sheik_special_n_cancel:
+  extra:
+    cancel_frame: 8
+sheik_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+simon_special_n:
+  extra:
+    cancel_frame: 60
+simon_special_air_n:
+  extra:
+    cancel_frame: 60
+szerosuit_special_n_landing:
+  extra:
+    cancel_frame: 15
+wiifit_special_n_cancel:
+  extra:
+    cancel_frame: 8
+wiifit_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+younglink_special_n_end:
+  extra:
+    cancel_frame: 23
+younglink_special_air_n_end:
+  extra:
+    cancel_frame: 23
