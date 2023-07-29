@@ -119,12 +119,50 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+// opff for handling the "excellent" punch 
+unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    let punch_zoom = VarModule::get_int(fighter.battle_object, vars::koopa::instance::PUNCH_ZOOM);
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD {
+        if frame == 48.0 { // spawns fire effect on fist to indicate excellent window
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1.5, true);
+        } else if frame == 51.0 { // indicates start of "excellent" frame window
+            VarModule::on_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+        } else if frame == 58.0 { // window ends
+            VarModule::off_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+        }
+    }
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_START || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 {
+        if VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH) {
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                VarModule::inc_int(fighter.battle_object, vars::koopa::instance::PUNCH_ZOOM);
+                if VarModule::is_flag(fighter.battle_object, vars::koopa::instance::PUNCH_CAN_ZOOM) {
+                    SlowModule::set_whole(boma, 8, 80);
+                    macros::CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
+                    EffectModule::req_follow(boma, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), &Vector3f{x: 0.0, y: 0.0, z: 0.0} as *const Vector3f, &Vector3f{x: 0.0, y: 0.0, z: 0.0} as *const Vector3f, 1.0, false, 0, 0, 0, 0, 0, false, false);
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.7, true);
+                    macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+                    macros::PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
+                    macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
+                    VarModule::off_flag(fighter.battle_object, vars::koopa::instance::PUNCH_CAN_ZOOM);
+                } else if punch_zoom >= 4 {
+                    SlowModule::clear_whole(boma);
+                    CameraModule::reset_all(boma);
+                    EffectModule::kill_kind(boma, Hash40::new("sys_bg_criticalhit"), false, false);
+                    macros::CAM_ZOOM_OUT(fighter);
+                    VarModule::set_int(fighter.battle_object, vars::koopa::instance::PUNCH_ZOOM, 0);
+                }
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
     fireball_cooldown(boma,status_kind);
+    koopa_ex_punch(fighter, boma, status_kind, frame);
     // noknok_reset(boma);
     //up_special_land_cancel(boma, status_kind);
     // noknok_training(boma);
@@ -141,6 +179,6 @@ pub fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn koopa_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
