@@ -52,6 +52,10 @@ unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCo
         return 0.into();
     }
 
+    if fighter.check_jump_cancel(false) {
+        return 0.into();
+    }
+
     if lucario_special_n_hold_check_cancel(fighter).get_bool() {
         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into());
         return 0.into();
@@ -69,9 +73,6 @@ unsafe extern "C" fn lucario_special_n_hold_check_cancel(fighter: &mut L2CFighte
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         if fighter.is_button_on(Buttons::Guard) {
             fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
-            return true.into();
-        }
-        if fighter.sub_check_jump_in_charging_for_cancel_status(FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS.into()).get_bool() {
             return true.into();
         }
     }
@@ -106,9 +107,6 @@ unsafe extern "C" fn lucario_special_n_hold_check_cancel(fighter: &mut L2CFighte
             } else {
                 fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
             }
-            return true.into();
-        }
-        if fighter.sub_check_jump_in_charging_for_cancel_status(FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS.into()).get_bool() {
             return true.into();
         }
     }
