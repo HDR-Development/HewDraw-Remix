@@ -62,6 +62,8 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         if !((boma.get_grabber_boma().kind() == *FIGHTER_KIND_KIRBY
             && [hash40("throw_f"), hash40("throw_b")].contains(&LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE)))
         || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_ROBOT
+            && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi"))
+        || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_WARIO
             && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi")))
         {
             return;
