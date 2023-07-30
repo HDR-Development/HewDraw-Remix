@@ -101,11 +101,11 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
 }
 
 // Allow grabbing the ledge from behind while in upSpecialEnd
-unsafe fn upspecialend_cliff(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) {
-        fighter.select_cliff_hangdata_from_name("special_air_hi_end");
-    }
-}
+// unsafe fn upspecialend_cliff(fighter: &mut L2CFighterCommon) {
+//     if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) {
+//         fighter.select_cliff_hangdata_from_name("special_air_hi_end");
+//     }
+// }
 
 // Remove right arm growing during uair
 unsafe fn uair_scaling(boma: &mut BattleObjectModuleAccessor) {
@@ -124,7 +124,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     pk_fire_ff(boma, stick_y);
-    upspecialend_cliff(fighter);
+    //upspecialend_cliff(fighter);
     uair_scaling(boma);
 }
 
