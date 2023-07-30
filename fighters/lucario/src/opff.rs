@@ -100,9 +100,19 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 }
 
 unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    if (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) 
-        || (fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR) && fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))
-    ) && !CancelModule::is_enable_cancel(boma)
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        || frame > 25.0 {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+        } else {
+            fighter.set_float(10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, false);
+        }
+    }
+    if (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) || (fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR) && fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))) 
+    && !CancelModule::is_enable_cancel(boma)
     && fighter.is_button_on(Buttons::Attack)
     && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
