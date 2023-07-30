@@ -913,6 +913,179 @@ unsafe fn luigi_special_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", scripts = ["game_miigunnerspecialn1start", "game_miigunnerspecialairn1start"] , category = ACMD_GAME , low_priority)]
+unsafe fn miigunner_special_n1_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	if is_excute(fighter) {
+		VarModule::set_float(fighter.battle_object, vars::kirby::status::COPY_CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::kirby::status::COPY_IS_CHARGE_FINISHED);
+	}
+	frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		ArticleModule::generate_article_enable(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, false, 0);
+		WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_BULLET_DISP);
+	}
+
+}
+
+#[acmd_script( agent = "kirby", scripts = ["game_miigunnerspecialn1firemax", "game_miigunnerspecialairn1firemax"] , category = ACMD_GAME , low_priority)]
+unsafe fn miigunner_special_n1_fire_max_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	if is_excute(fighter) {
+		VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+	}
+	frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+			WorkModule::off_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_BULLET_DISP);
+			FT_MOTION_RATE(fighter, 10.0/(3.0 - 1.0));
+        }
+    }
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		FT_MOTION_RATE(fighter, 1.0);
+		// Melee blast
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			ArticleModule::remove_exist(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+			WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_SHOOT);
+			ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 361, 100, 0, 56, 7.0, 0.0, 7.5, 8.0, Some(0.0), Some(7.5), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+			ATTACK(fighter, 1, 0, Hash40::new("top"), 15.0, 361, 100, 0, 56, 5.0, 0.0, 7.5, 8.0, Some(0.0), Some(7.5), Some(20.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+			FT_MOTION_RATE(fighter, 5.0/(5.0 - 3.0));
+		}
+		// Normal
+		else {
+			ArticleModule::shoot_exist(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+			WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_SHOOT);
+		}
+	} 
+	frame(lua_state, 5.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(boma);
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			FT_MOTION_RATE(fighter, 37.0/(40.0 - 8.0));
+		}
+	} 
+}
+
+#[acmd_script( agent = "kirby", script = "effect_miigunnerspecialn1firemax" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miigunner_special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_sb_tama"), Hash40::new("armr"), 6.0, 0, 0, 0, 0, 0, 3.5, true);
+			LAST_EFFECT_SET_RATE(fighter, 2.0);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 10.0);
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_sb_tama"), Hash40::new("armr"), 6.0, 0, 0, 90, 0, 0, 3.5, true);
+			LAST_EFFECT_SET_RATE(fighter, 2.0);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 3.0);
+		}
+	}
+	frame(lua_state, 2.6);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("miigunner_sb_tama"), false, false);
+		EFFECT_DETACH_KIND(fighter, Hash40::new("miigunner_sb_tama"), -1);
+	}
+	frame(lua_state, 2.8);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_air_bullet"), Hash40::new("top"), 0, 6.3, 10.5, 0, 0, 0, 1, false);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 5.0, 0.55);
+			LAST_EFFECT_SET_RATE(fighter, 0.85);
+		}
+	}
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_cshot_shot"), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, false);
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_laser"), Hash40::new("top"), 0, 6.3, 10.5, 0, 0, 0, 1, false);
+			LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.7, 1.0);
+			LAST_EFFECT_SET_RATE(fighter, 0.8);
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot_s"), Hash40::new("armr"), 6.3, 0, 0, 0, 0, -90, 1, false);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 5.0, 5.0);
+			LAST_EFFECT_SET_RATE(fighter, 0.5);
+			LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+			FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 2.5, 0, 0, 0, 0, 0, 0, false);
+		}
+		else {
+			EFFECT(fighter, Hash40::new("miigunner_cshot_shot"), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+			LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		}
+	}
+
+}
+
+#[acmd_script( agent = "kirby", script = "effect_miigunnerspecialairn1firemax" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miigunner_special_air_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_sb_tama"), Hash40::new("armr"), 6.0, 0, 0, 0, 0, 0, 3.5, true);
+			LAST_EFFECT_SET_RATE(fighter, 2.0);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 5.0);
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_sb_tama"), Hash40::new("armr"), 6.0, 0, 0, 90, 0, 0, 3.5, true);
+			LAST_EFFECT_SET_RATE(fighter, 2.0);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 3.0);
+		}
+	}
+	frame(lua_state, 2.6);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("miigunner_sb_tama"), false, false);
+		EFFECT_DETACH_KIND(fighter, Hash40::new("miigunner_sb_tama"), -1);
+	}
+	frame(lua_state, 2.8);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_air_bullet"), Hash40::new("top"), 0, 6.3, 10.5, 0, 0, 0, 1, false);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 5.0, 0.55);
+			LAST_EFFECT_SET_RATE(fighter, 0.85);
+		}
+	}
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_cshot_shot"), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, false);
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_laser"), Hash40::new("top"), 0, 6.3, 10.5, 0, 0, 0, 1, false);
+			LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.7, 1.0);
+			LAST_EFFECT_SET_RATE(fighter, 0.8);
+			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot_s"), Hash40::new("armr"), 6.3, 0, 0, 0, 0, -90, 1, false);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 5.0, 5.0);
+			LAST_EFFECT_SET_RATE(fighter, 0.5);
+		}
+		else {
+			EFFECT(fighter, Hash40::new("miigunner_cshot_shot"), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		}
+	}
+
+}
+
+#[acmd_script( agent = "kirby", scripts = ["sound_miigunnerspecialn1firemax", "sound_miigunnerspecialairn1firemax"] , category = ACMD_SOUND , low_priority)]
+unsafe fn miigunner_special_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	if is_excute(fighter) {
+		PLAY_SEQUENCE(fighter, Hash40::new("seq_miigunner_rnd_special_c1_n01"));
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			PLAY_SE(fighter, Hash40::new("se_miigunner_final01"));
+		}
+	}
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			STOP_SE(fighter, Hash40::new("se_miigunner_final01"));
+			PLAY_SE(fighter, Hash40::new("se_miigunner_final04"));
+		}
+	}
+
+}
+
 // End of Copy Ability Effects
 #[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
@@ -1433,7 +1606,12 @@ pub fn install() {
         luigi_special_n_sound,
         luigi_special_air_n_game,
         luigi_special_air_n_effect,
-        luigi_special_air_n_sound
+        luigi_special_air_n_sound,
+        miigunner_special_n1_start_game,
+		miigunner_special_n1_fire_max_game,
+		miigunner_special_n1_fire_max_effect,
+		miigunner_special_air_n1_fire_max_effect,
+		miigunner_special_n1_fire_max_sound
 
     );
 }
