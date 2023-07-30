@@ -102,6 +102,9 @@
 		],
 		"fighter/sheik/cmn": [
 			"fighter/sheik/param/hdr.prc"
+		],
+		"fighter/ness/cmn": [
+			"fighter/ness/param/hdr.prc"
 		]
 	}
 }

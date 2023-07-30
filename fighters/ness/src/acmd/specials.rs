@@ -55,6 +55,38 @@ unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ness", script = "game_specials" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specials (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 0.85);
+	frame(lua_state, 20.0);
+	FT_MOTION_RATE(fighter, 1);
+	frame(lua_state, 21.0);
+	if is_excute(fighter) {
+		ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
+		//WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_NESS_STATUS_SPECIAL_S_FLAG_SHOOT);
+	}
+	FT_MOTION_RATE(fighter, 1);
+}
+
+#[acmd_script( agent = "ness", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialairs (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 0.85);
+	frame(lua_state, 20.0);
+	FT_MOTION_RATE(fighter, 1);
+	frame(lua_state, 21.0);
+	if is_excute(fighter) {
+		ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
+		//WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_NESS_STATUS_SPECIAL_S_FLAG_SHOOT);
+	}
+	FT_MOTION_RATE(fighter, 1);
+}
+
 #[acmd_script( agent = "ness", script = "sound_specialairs" , category = ACMD_SOUND )]
 unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -112,6 +144,8 @@ unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
 }
 pub fn install() {
     install_acmd_scripts!(
+        game_specials,
+        game_specialairs,
         sound_specials,
         sound_specialairs,
         special_n_fire_game,
