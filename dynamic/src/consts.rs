@@ -173,6 +173,8 @@ pub mod vars {
 
             pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
 
+            pub const IS_ATTACK_CANCEL: i32 = 0x0063;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;

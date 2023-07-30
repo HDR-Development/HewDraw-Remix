@@ -112,6 +112,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_air_transition_group_check_air_attack_hook,
             // sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
+            change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
@@ -235,6 +236,26 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
         }
     }
     false.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_change_status_jump_mini_attack)]
+unsafe fn change_status_jump_mini_attack(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_100,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD
+    ]) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_ATTACK_CANCEL);
+    }
+    call_original!(fighter, arg)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_escape)]
