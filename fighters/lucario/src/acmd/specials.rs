@@ -227,7 +227,7 @@ unsafe fn lucario_special_air_s_throw_expression(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_DESIRED_RATE(fighter, 30.0, 25.0);
+    FT_DESIRED_RATE(fighter, 30.0, 34.0);
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
@@ -239,7 +239,7 @@ unsafe fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_DESIRED_RATE(fighter, 30.0, 25.0);
+    FT_DESIRED_RATE(fighter, 30.0, 34.0);
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
@@ -251,7 +251,7 @@ unsafe fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_special_air_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_DESIRED_RATE(fighter, 30.0, 25.0);
+    FT_DESIRED_RATE(fighter, 30.0, 34.0);
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
@@ -267,7 +267,7 @@ unsafe fn lucario_special_air_hi_l_game(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_special_air_hi_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_DESIRED_RATE(fighter, 30.0, 25.0);
+    FT_DESIRED_RATE(fighter, 30.0, 34.0);
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
