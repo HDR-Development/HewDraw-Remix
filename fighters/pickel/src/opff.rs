@@ -105,7 +105,7 @@ unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 // lets steve respawn table during first 5 frames of standing mine
-unsafe fn pickel_table_recreate(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+unsafe fn pickel_table_recreate(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let prev_status = StatusModule::prev_status_kind(boma, 0);
     if status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT // if steve is in stationary mining status
     && MotionModule::frame(boma) <= 5.0 //during first 5 frames of animation
@@ -121,7 +121,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //buildwalk_crouch_disable(boma, status_kind);
     build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
-    pickel_table_recreate(fighter, boma, status_kind, situation_kind);
+    pickel_table_recreate(fighter, boma, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICKEL )]
