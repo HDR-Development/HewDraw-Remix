@@ -68,9 +68,131 @@ unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ness", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackhi4 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 0.74);
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		ArticleModule::set_visibility_whole(boma, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+		ArticleModule::set_visibility_whole(boma, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+	}
+	frame(lua_state, 11.0);
+	if is_excute(fighter) {
+		ArticleModule::shoot(boma, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+	}
+	frame(lua_state, 12.0);
+	FT_MOTION_RATE(fighter, 1);
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+	}
+	frame(lua_state, 56.0);
+	if is_excute(fighter) {
+		ArticleModule::remove_exist(boma, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+		ArticleModule::remove_exist(boma, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+	}
+}
+
+#[acmd_script( agent = "ness", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacklw4 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+		ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+	}
+	frame(lua_state, 6.0);
+	if is_excute(fighter) {
+		ArticleModule::shoot(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+	}
+	frame(lua_state, 12.0);
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+	}
+	frame(lua_state, 54.0);
+	if is_excute(fighter) {
+		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+	}
+}
+
+#[acmd_script( agent = "ness_yoyohead", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_yoyo_attackhi4 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 0.74);
+	frame(lua_state, 11.0);
+	FT_MOTION_RATE(fighter, 1);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("attach"), 1.0, 90, 100, 30, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+	}
+    frame(lua_state, 16.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("attach"), 13.0, 80, 79, 0, 70, 4.7, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+	}
+	frame(lua_state, 34.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+	}
+	frame(lua_state, 37.0);
+}
+
+#[acmd_script( agent = "ness_yoyohead", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_yoyo_attacklw4 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 11.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("attach"), 1.0, 367, 100, 12, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+		AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+	}
+	frame(lua_state, 15.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+	}
+	frame(lua_state, 16.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("attach"), 10.0, 28, 80, 0, 60, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+		AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+	}
+	// frame(lua_state, 18.0);
+	// if is_excute(fighter) {
+	// 	AttackModule::clear_all(fighter.module_accessor);
+	// }
+	frame(lua_state, 23.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("attach"), 10.0, 33, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+		AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+	}
+	// frame(lua_state, 25.0);
+	// if is_excute(fighter) {
+	// 	ATTACK(fighter, 0, 0, Hash40::new("attach"), 1.0, 35, 100, 30, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+	// 	AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+	// 	AttackModule::clear_all(fighter.module_accessor);
+	// }
+	// frame(lua_state, 30.0);
+	// if is_excute(fighter) {
+	// 	ATTACK(fighter, 0, 0, Hash40::new("attach"), 10.0, 33, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+	// 	AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+	// }
+	frame(lua_state, 32.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+	}
+	frame(lua_state, 40.0);
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_attacks4,
+        game_attackhi4,
+        game_attacklw4,
+        game_yoyo_attackhi4,
+        game_yoyo_attacklw4,
         expression_attackhi4
     );
 }
