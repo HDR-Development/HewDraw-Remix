@@ -42,18 +42,20 @@ unsafe fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 0.into();
     }
 
-    sv_kinetic_energy!(
-        set_speed,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        0.0
-    );
-    sv_kinetic_energy!(
-        set_accel,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        0.0
-    );
+    if !VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            0.0
+        );
+    }
 
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let reflector_air_start_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_start_x_mul");
@@ -158,6 +160,9 @@ unsafe fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::status_kind_next(fighter.module_accessor) != CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::falco::SPECIAL_LW_LOOP) {
+        VarModule::set_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
+    }
     0.into()
 }
 
@@ -267,6 +272,9 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::status_kind_next(fighter.module_accessor) != CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::falco::SPECIAL_LW_END) {
+        VarModule::set_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
+    }
     0.into()
 }
 
