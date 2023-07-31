@@ -62,14 +62,12 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && fighter.status_frame() >= 38 {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-            //let fall_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "fall_max_x_mul");
+            let fall_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "fall_max_x_mul");
             sv_kinetic_energy!(
                 set_stable_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                //i tried adding it as a file and all that jazz, kept throwing the "cant find this param" error
-                //until someone tells me how the ParamType::Agent call works, i couldnt get it to call the hdr.prc properly
-                air_speed_x_stable * 0.8, //fall_x_mul, //this is the 0.8 value i wanted to parse 
+                air_speed_x_stable * fall_x_mul,
                 0.0
             );
         }

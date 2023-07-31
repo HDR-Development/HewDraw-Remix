@@ -13,7 +13,7 @@ unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon) {
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 6)  // Allows for jump cancel on frame 8(?) in game
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 9)  // Allows for jump cancel on frame 8(?) in game
     || fighter.is_status_one_of(&[
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
@@ -101,11 +101,11 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
 }
 
 // Allow grabbing the ledge from behind while in upSpecialEnd
-// unsafe fn upspecialend_cliff(fighter: &mut L2CFighterCommon) {
-//     if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) {
-//         fighter.select_cliff_hangdata_from_name("special_air_hi_end");
-//     }
-// }
+unsafe fn upspecialend_cliff(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) {
+        fighter.select_cliff_hangdata_from_name("special_air_hi_end");
+    }
+}
 
 // Remove right arm growing during uair
 unsafe fn uair_scaling(boma: &mut BattleObjectModuleAccessor) {
@@ -124,7 +124,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     pk_fire_ff(boma, stick_y);
-    //upspecialend_cliff(fighter);
+    upspecialend_cliff(fighter);
     uair_scaling(boma);
 }
 

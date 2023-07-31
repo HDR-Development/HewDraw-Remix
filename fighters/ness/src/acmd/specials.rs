@@ -123,93 +123,76 @@ unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
 unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+   //wait_loop_clear(lua_state);
     for _ in 0..999 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 361, 100, 70, 0, 8.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 20, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 361, 100, 70, 0, 8.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 10, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
+        }   
+        wait(lua_state, 6.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
         }
     }
-
+    wait(lua_state, 14.0);
 }
 
 
+
+
 //Implemented to remove release windbox
-#[acmd_script( agent = "ness", script = "game_speciallwend", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ness", scripts = ["game_speciallwend", "game_specialairlwend"], category = ACMD_GAME, low_priority )]
 unsafe fn game_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 }
 
-#[acmd_script( agent = "ness", script = "game_specialairlwend", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairlwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+#[acmd_script( agent = "ness", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_speciallwstart (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("ness_psimagnet_start"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.4, false);
+	}
 }
 
-#[acmd_script( agent = "ness", script = "effect_speciallwhold", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_speciallwhold(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        FLASH(agent, 0, 1, 1, 0.2);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    wait(lua_state, 1.0);
+#[acmd_script( agent = "ness", script = "effect_speciallwend" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_speciallwend (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		LAST_EFFECT_SET_RATE(fighter, 1.3);
+		EFFECT_FOLLOW(fighter, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.5, false);
+		FLASH(fighter, 0.5, 1, 1, 0.4);
+	}
+	wait(lua_state, 5.0);
+	if is_excute(fighter) {
+		FLASH_FRM(fighter, 10, 0, 1, 1, 0.1);
+	}
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		COL_NORMAL(fighter);
+	}
 }
 
-#[acmd_script( agent = "ness", script = "effect_specialairlwhold", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_specialairlwhold(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        FLASH(agent, 0, 1, 1, 0.2);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    wait(lua_state, 1.0);
+#[acmd_script( agent = "ness", script = "effect_specialairlwend" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialairlwend (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.5, false);
+		FLASH(fighter, 0.5, 1, 1, 0.4);
+	}
+	wait(lua_state, 5.0);
+	if is_excute(fighter) {
+		FLASH_FRM(fighter, 10, 0, 1, 1, 0.1);
+	}
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		COL_NORMAL(fighter);
+	}
 }
 
-#[acmd_script( agent = "ness", script = "effect_speciallwend", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 1.3);
-        EFFECT_FOLLOW(agent, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.7, false);
-        FLASH(agent, 0.5, 1, 1, 0.4);
-    }
-    wait(lua_state, 5.0);
-    if is_excute(agent) {
-        FLASH_FRM(agent, 10, 0, 1, 1, 0.1);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
-#[acmd_script( agent = "ness", script = "effect_specialairlwend", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_specialairlwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.7, false);
-        FLASH(agent, 0.5, 1, 1, 0.4);
-    }
-    wait(lua_state, 5.0);
-    if is_excute(agent) {
-        FLASH_FRM(agent, 10, 0, 1, 1, 0.1);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -222,9 +205,7 @@ pub fn install() {
         special_lw_hold_game,
         special_air_lw_hold_game,
         game_speciallwend,
-        game_specialairlwend,
-        effect_speciallwhold,
-        effect_specialairlwhold,
+        effect_speciallwstart,
         effect_speciallwend,
         effect_specialairlwend,
     );
