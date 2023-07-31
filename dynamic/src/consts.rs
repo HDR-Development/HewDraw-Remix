@@ -203,6 +203,9 @@ pub mod vars {
 
             pub const FRAME_COUNTER: i32 = 0x000E;
 
+            pub const LEFT_STICK_FLICK_X: i32 = 0x000F;
+            pub const LEFT_STICK_FLICK_Y: i32 = 0x0010;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
