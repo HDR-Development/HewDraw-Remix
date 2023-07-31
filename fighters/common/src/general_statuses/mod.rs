@@ -122,7 +122,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             super_jump_punch_main_hook,
             sub_cliff_uniq_process_exec_fix_pos,
             end_pass_ground,
-            sub_fighter_pre_end_status
+            virtual_ftStatusUniqProcessDamage_exec_common,
+            FighterStatusDamage__correctDamageVectorEffect,
+            sub_fighter_pre_end_status,
         );
     }
 }
@@ -521,6 +523,36 @@ pub unsafe fn end_pass_ground(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     }
     call_original!(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_virtual_ftStatusUniqProcessDamage_exec_common)]
+pub unsafe fn virtual_ftStatusUniqProcessDamage_exec_common(fighter: &mut L2CFighterCommon) {
+    // Adding FIGHTER_STATUS_KIND_DAMAGE_AIR to this check allows for DI on non-tumble knockback
+    if [*FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_LUIGI_FINAL_SHOOT,
+        ].contains(&fighter.global_table[STATUS_KIND].get_i32())
+    {
+        fighter.ftStatusUniqProcessDamageFly_exec_common();
+    }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
+pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
+        return call_original!(fighter);
+    }
+    // This allows us to call the blue DI line effect on non-tumble knockback
+    // Currently not able to be done by reimplementing this function
+    // because an inner function returns multiple L2CValues
+    // which is not currently supported by skyline-smash
+    fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_FLY));
+    let ret = call_original!(fighter);
+    fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_AIR));
+    ret
 }
 
 // Disables aerials canceling fast fall
