@@ -238,6 +238,9 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
                 //println!("bornana");
             }
             else {
+                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
+                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+                }
                 let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_R);
                 StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
                 //println!("red");
@@ -255,6 +258,9 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
                 //println!("i like cash from my hair to my ass");
             }
             else {
+                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
+                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+                }
                 let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_B);
                 StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
                 //println!("blud");
@@ -272,6 +278,9 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
                 //println!("i like cash from my hair to my ass");
             }
             else {
+                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
+                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+                }
                 let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_Y);
                 StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
                 //println!("ielo");

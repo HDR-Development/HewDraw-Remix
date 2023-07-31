@@ -56,9 +56,9 @@ unsafe fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {8.0} else {0.0};
-    let sound_lvl = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
-    let size = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {2.0} else {0.0};
+    let power = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {6.0} else {0.0};
+    let sound_lvl = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
+    let size = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {3.0} else {0.0};
     FT_DESIRED_RATE(agent, 18.0, 12.0);
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -73,8 +73,8 @@ unsafe fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 12.0 + power, 361, 90, 0, 40, 6.1 + size, 0.0, 11.0, 6.0, Some(0.0), Some(9.9), Some(11.9), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 9.0 + power, 361, 92, 0, 40, 6.1 + size, 0.0, 11.0, 6.0, Some(0.0), Some(8.5), Some(18.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 14.0 + power, 361, 95, 0, 40, 5.6 + (size / 2.0), 1.0, 11.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 10.0 + (power / 2.0), 361, 97, 0, 40, 8.6 + size, 1.0, 11.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {
@@ -86,7 +86,7 @@ unsafe fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1;
+    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
     frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
@@ -129,7 +129,7 @@ unsafe fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1;
+    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
     let sound_lvl = if power {Hash40::new("se_common_bomb_l")} else {Hash40::new("se_common_bomb_s")};
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -145,7 +145,7 @@ unsafe fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_b_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let powered = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2;
+    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
     let power = if powered {6.0} else {0.0};
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -197,8 +197,8 @@ unsafe fn palutena_special_n_b_game(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let length = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {0.69} else {0.5};
-    let powered = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2;
+    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+    let length = if powered {0.69} else {0.5};
     frame(lua_state, 14.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
@@ -251,7 +251,7 @@ unsafe fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2;
+    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
     let sound_lvl = if power {Hash40::new("se_common_frieze_l")} else {Hash40::new("se_common_frieze_m")};
     frame(lua_state, 17.0);
     if is_excute(agent) {
@@ -267,9 +267,9 @@ unsafe fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let hitlag = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {0.5} else {0.75};
-    let paralyze = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {0.6} else {0.3};
-    let power = if VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {2} else {4};
+    let hitlag = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {0.5} else {0.75};
+    let paralyze = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {0.6} else {0.3};
+    let power = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {2} else {4};
     frame(lua_state, 1.0);
     if is_excute(agent) {
         if !MeterModule::drain(boma.object(), 2) {
@@ -329,7 +329,7 @@ unsafe fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::get_int(boma.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3;
+    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
     let sound_lvl = if power {Hash40::new("se_common_electric_hit_l")} else {Hash40::new("se_common_electric_hit_m")};
     frame(lua_state, 11.0);
     if is_excute(agent) {
@@ -506,14 +506,17 @@ unsafe fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
         MeterModule::drain(boma.object(), 2);
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
     }
-    frame(lua_state, 8.0);
+    FT_DESIRED_RATE(agent, 20.0, 10.0);
+    frame(lua_state, 20.0);
+    FT_DESIRED_RATE(agent, 25.0, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 120, 40, 0, 75, 13.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 366, 40, 70, 0, 6.0, 0.0, 18.0, 9.7, Some(0.0), Some(4.0), Some(9.7), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 5, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 25.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        AttackModule::clear_all(boma);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 60, 40, 70, 0, 25.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_turn"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        let angle_mod = ((sv_math::rand(hash40("fighter"), 51) as i32) - 25) as u64;
+        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 90 + angle_mod, 116, 0, 75, 8.0, 0.0, 20.0, 9.7, Some(0.0), Some(4.0), Some(9.7), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
@@ -533,20 +536,21 @@ unsafe fn palutena_special_n_g_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 0.05, 0.50, 0.01);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.05, 0.50, 0.01);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_hit_magic_s"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.05, 0.50, 0.01);
-        LAST_EFFECT_SET_ALPHA(agent, 0.3);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_club_tornado"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.05, 0.50, 0.05);
+    }
+    wait(lua_state, 26.0);
+    if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("sys_club_tornado"), -1);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_hit_magic_s"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.4, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.05, 0.50, 0.01);
-        LAST_EFFECT_SET_ALPHA(agent, 0.3);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_club_tornado"), false, false);
     }
 }
 
@@ -559,9 +563,17 @@ unsafe fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
         PLAY_STATUS(agent, Hash40::new("se_palutena_special_n01"));
         PLAY_SE(agent, Hash40::new("se_common_slip_01"));
     }
-    wait(lua_state, 20.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
         sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+        PLAY_SE(agent, Hash40::new("se_palutena_throw"));
+        PLAY_SE(agent, Hash40::new("se_common_throw_02"));
+        PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_attack"));
+        PLAY_SE(agent, Hash40::new("se_item_club_wind"));
+    }
+    wait(lua_state, 25.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_item_club_wind"));
     }
 }
 

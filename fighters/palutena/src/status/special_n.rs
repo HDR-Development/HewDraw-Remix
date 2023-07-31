@@ -39,6 +39,9 @@ unsafe extern "C" fn special_n_r_main(fighter: &mut L2CFighterCommon) -> L2CValu
     else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_r"), 0.0, 1.0, false, 0.0, false, false);
     }
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
+        VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+    }
     
     fighter.main_shift(special_n_r_main_loop)
 }
@@ -78,6 +81,7 @@ unsafe extern "C" fn special_n_r_main_loop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_r_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.object(), vars::palutena::instance::POWERED);
     return 0.into()
 }
 
@@ -119,6 +123,9 @@ unsafe extern "C" fn special_n_b_main(fighter: &mut L2CFighterCommon) -> L2CValu
     else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_b"), 0.0, 1.0, false, 0.0, false, false);
     }
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
+        VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+    }
     
     fighter.main_shift(special_n_b_main_loop)
 }
@@ -158,6 +165,7 @@ unsafe extern "C" fn special_n_b_main_loop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.object(), vars::palutena::instance::POWERED);
     return 0.into()
 }
 
@@ -199,6 +207,9 @@ unsafe extern "C" fn special_n_y_main(fighter: &mut L2CFighterCommon) -> L2CValu
     else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_y"), 0.0, 1.0, false, 0.0, false, false);
     }
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
+        VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+    }
     
     fighter.main_shift(special_n_y_main_loop)
 }
@@ -238,6 +249,7 @@ unsafe extern "C" fn special_n_y_main_loop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_y_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.object(), vars::palutena::instance::POWERED);
     return 0.into()
 }
 
