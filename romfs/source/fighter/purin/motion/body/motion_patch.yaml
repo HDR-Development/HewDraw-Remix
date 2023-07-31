@@ -27,6 +27,3 @@ attack_air_f:
 attack_air_hi:
   extra:
     cancel_frame: 45
-catch_attack:
-  extra:
-    cancel_frame: 20

@@ -8,30 +8,39 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 0
-throw_f:
-  extra:
-    cancel_frame: 42
-attack_12:
-  extra:
-    cancel_frame: 20
 attack_11:
   extra:
     cancel_frame: 18
+attack_12:
+  extra:
+    cancel_frame: 20
+attack_s3_s:
+  flags:
+    move: false
+attack_s3_hi:
+  flags:
+    move: false
+attack_s3_lw:
+  flags:
+    move: false
+attack_s4_s:
+  flags:
+    move: false
+attack_s4_hi:
+  flags:
+    move: false
+attack_s4_lw:
+  flags:
+    move: false
 attack_lw4:
   extra:
     cancel_frame: 70
-attack_s4_s:
-attack_s3_s:
-attack_s3_lw:
-attack_s4_hi:
-attack_air_b:
-  extra:
-    cancel_frame: 45
 attack_air_f:
   extra:
     cancel_frame: 42
-attack_s4_lw:
-attack_s3_hi:
+attack_air_b:
+  extra:
+    cancel_frame: 45
 attack_air_lw:
   extra:
     cancel_frame: 47
@@ -41,24 +50,49 @@ special_s_get:
 attack_air_hi:
   extra:
     cancel_frame: 54
-special_s_catch:
-  extra:
-    cancel_frame: 1
 special_s_throw:
   extra:
     cancel_frame: 44
-special_air_s_get:
-  extra:
-    cancel_frame: 1
-item_light_throw_f:
-  flags:
-    move: false
-special_air_s_catch:
-  extra:
-    cancel_frame: 1
 special_air_s_throw:
   extra:
     cancel_frame: 44
-catch_attack:
+special_s_catch:
   extra:
-    cancel_frame: 20
+    cancel_frame: 1
+special_air_s_catch:
+  extra:
+    cancel_frame: 1
+special_air_s_get:
+  extra:
+    cancel_frame: 1
+special_lw:
+  game_script: game_speciallwhit
+  animations:
+  - name: d03speciallwhit.nuanmb
+  scripts:
+  - expression_speciallwhit
+  - sound_speciallwhit
+  - effect_speciallwhit
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 48
+special_air_lw:
+  game_script: game_specialairlwhit
+  animations:
+  - name: d03specialairlwhit.nuanmb
+  scripts:
+  - expression_specialairlwhit
+  - sound_specialairlwhit
+  - effect_specialairlwhit
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 48
+throw_f:
+  extra:
+    cancel_frame: 42
+item_light_throw_f:
+  flags:
+    move: false
+    cancel_frame: 44
