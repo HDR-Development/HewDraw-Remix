@@ -269,11 +269,16 @@ unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
         guard_off_cancel_frame,
         *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME,
     );
-    let fighter_guard_off_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(
+    let mut fighter_guard_off_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(
         fighter.module_accessor,
         Hash40::new("guard_off"),
         true,
     );
+    match fighter_guard_off_cancel_frame {
+        // if cancel frame is read as 0, use the animation's total length as cancel frame
+        0.0 => {fighter_guard_off_cancel_frame = MotionModule::end_frame(fighter.module_accessor)},
+        _ => {}
+    }
     let guard_off_motion_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "guard_off_motion_start_frame");
     let ret_val = if 0.0 < fighter_guard_off_cancel_frame && 0 < guard_off_cancel_frame {
         (fighter_guard_off_cancel_frame - guard_off_motion_start_frame) / (guard_off_cancel_frame as f32)
