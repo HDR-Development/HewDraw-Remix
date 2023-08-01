@@ -103,7 +103,7 @@
   <float hash="cliff_robbed_speed_x">-0.5</float>
   <float hash="cliff_robbed_speed_y">17.5</float>
   <int hash="cliff_robbed_no_control_frame">50</int>
-  <int hash="air_lasso_catch_num">999</int>
+  <int hash="air_lasso_catch_num">3</int>
   <int hash="cliff_max_count">999</int>
   <int hash="0x189f0b0c96">999</int>
   <int hash="air_lasso_cliff_wait_frame">7</int>
