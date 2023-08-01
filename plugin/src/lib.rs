@@ -97,9 +97,9 @@ extern "C" {
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     unsafe {
-        static mut did_init: bool = false;
-        if !did_init {
-            did_init = true;
+        static mut DID_INIT: bool = false;
+        if !DID_INIT {
+            DID_INIT = true;
             runtime_motion_patcher::run(true);
         }
     }

@@ -7,6 +7,7 @@ mod specials;
 mod throws;
 mod ground;
 
+#[repr(C)]
 pub struct StanceInfo {
     label: i32,
     damage_bite: f32,
