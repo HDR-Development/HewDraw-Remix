@@ -228,9 +228,9 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
 		let motion_kind = MotionModule::motion_kind(boma);
         if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
             let pos_x = PostureModule::pos_x(boma);
-            let pos_y = PostureModule::pos_x(boma);
+            let pos_y = PostureModule::pos_y(boma);
             let packun_pos_x = PostureModule::pos_x(owner_module_accessor);
-            let packun_pos_y = PostureModule::pos_x(owner_module_accessor);
+            let packun_pos_y = PostureModule::pos_y(owner_module_accessor);
             let scale = PostureModule::scale(boma);
             if ((pos_x - packun_pos_x).abs() < 12.0*scale) && 
                 ((pos_y - packun_pos_y).abs() < 12.0*scale) && 

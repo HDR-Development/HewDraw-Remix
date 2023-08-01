@@ -120,15 +120,12 @@ unsafe fn packun_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     let bkb = if stance.label == 1 {10} else {0};
-    if stance.label == 2 {
-        FT_DESIRED_RATE(fighter, 7.0, 9.0);
+    if stance.label != 2 {
+        FT_DESIRED_RATE(fighter, 6.0, 3.0);
     }
-    else {
-        FT_DESIRED_RATE(fighter, 7.0, 5.0)
-    }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 8.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0 * stance.damage_other, 73, 75, 0, 60 + bkb, 5.0, 0.0, 4.0, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0 * stance.damage_other, 73, 75, 0, 60 + bkb, 5.0, 0.0, 3.4, 9.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);

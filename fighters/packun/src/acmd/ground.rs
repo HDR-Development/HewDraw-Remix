@@ -173,7 +173,7 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 * stance.damage_other, 50, 43, 0, 90, 4.0, 0.0, 11.0, -2.0, Some(0.0), Some(5.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.3);
         if stance.label == 2 {
-            HIT_NODE(fighter, Hash40::new("potc"), *HIT_STATUS_XLU);
+            HIT_NODE(fighter, Hash40::new("potc"), *HIT_STATUS_INVINCIBLE);
         }
     }
     wait(lua_state, 10.0);
