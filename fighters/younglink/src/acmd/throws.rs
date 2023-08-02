@@ -47,6 +47,7 @@ unsafe fn younglink_throw_b_game (fighter: &mut L2CAgentBase) {
 
 }
 
+/// NOT IMPLEMENTED YET
 #[acmd_script( agent = "younglink", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn younglink_throw_lw_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -88,7 +89,7 @@ pub fn install() {
     install_acmd_scripts!(
     younglink_throw_f_game,
 	//younglink_throw_b_game,
-	younglink_throw_lw_game,
+	//younglink_throw_lw_game,
     );
 }
 
