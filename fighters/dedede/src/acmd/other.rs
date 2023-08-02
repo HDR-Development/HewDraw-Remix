@@ -223,18 +223,6 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
         if PostureModule::lr(owner_module_accessor) * gordo_speed_x < 0.0{
             KineticModule::mul_speed(boma, &Vector3f{x: -1.0, y: 1.0,z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         }
-        /* 
-        if PostureModule::lr(owner_module_accessor) == 1.0 {
-            if gordo_speed_x < 0.0{
-                KineticModule::mul_speed(boma, &Vector3f{x: -1.0, y: 1.0,z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            }
-         }
-        else if PostureModule::lr(owner_module_accessor) == -1.0 {
-            if gordo_speed_x > 0.0{
-                KineticModule::mul_speed(boma, &Vector3f{x: -1.0, y: 1.0,z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            }
-        }
-        */
     }
     /* Checks every frame the gordo is active, set equal to the gordo life param */
     for _ in 0..181{
@@ -242,9 +230,9 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
             if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
                 if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
                     let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 1.0) * 0.25);
-                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0 * bounce_dmg_multiplier, 55, 120, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
-
-                    //Reduces the max amount of bounces by 1 per recatch on the same gordo.
+                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+    
+                    //Reduces the max amount of bounces by 1 per recatch on the same gordo
                     if (WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) - VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::RECATCH_COUNTER)) < 0{
                         StatusModule::change_status_request(fighter.module_accessor, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD, true);
                     }
@@ -252,7 +240,7 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
                 else{
                     /* Reduces damage on every bounce, by 10% of its last damage in this case */
                     let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 7.0) * 0.1);
-                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0 * bounce_dmg_multiplier, 55, 120, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
                 }
             }
         }
@@ -316,10 +304,11 @@ unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
         //Diminishing returns on repeated gordo spits
         if VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) > 1{ 
             let wall_stop_life_param = WorkModule::get_param_int(boma, hash40("param_gordo"), hash40("wall_stop_life"));
-            let new_gordo_life = wall_stop_life_param - (VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) * 30);       
+            let new_gordo_life = wall_stop_life_param - ((VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) - 1)* 60);       
             WorkModule::set_int(boma, new_gordo_life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0, 75, 50, 0, 65, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 8.0, 75, 50, 0, 70, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
 }
 
@@ -359,10 +348,13 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
+    }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
     }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
@@ -374,11 +366,13 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
+    }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
-        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {

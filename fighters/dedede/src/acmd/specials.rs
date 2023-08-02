@@ -54,7 +54,7 @@ unsafe fn dedede_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-        FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
+    FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
 }
 
 #[acmd_script( agent = "dedede", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
@@ -62,7 +62,7 @@ unsafe fn dedede_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-        FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
+    FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
 }
 
 #[acmd_script( agent = "dedede", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]

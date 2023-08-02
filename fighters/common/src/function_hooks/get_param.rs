@@ -276,6 +276,12 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
 
+        else if fighter_kind == *WEAPON_KIND_DEDEDE_GORDO {
+            if x1 == hash40("param_gordo") && x2 == hash40("shot_start_angle"){
+                return 20.0 * ControlModule::get_stick_y(owner_module_accessor);
+            }
+        }
+
         // Frieza death ball on M2 aerial Shadow Ball
         /*
         if fighter_kind == *WEAPON_KIND_MEWTWO_SHADOWBALL {

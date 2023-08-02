@@ -17,6 +17,39 @@ unsafe fn super_dedede_jump_quickfall(boma: &mut BattleObjectModuleAccessor, fra
     }
 }
 
+unsafe fn rotate_bone(boma: &mut BattleObjectModuleAccessor, max_angle: f32, min_angle: f32, strength: f32) {
+    let mut angle = min_angle.abs();
+    if strength > 0.0 {
+        angle = max_angle
+    }
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: ((angle * -1.0 * strength) - 2.5)};
+    let fighter = utils::util::get_fighter_common_from_accessor(boma);
+    fighter.set_joint_rotate("bust", rotation);
+}
+
+unsafe fn bust_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, return_frame: f32, max_angle: f32, min_angle: f32) {
+    let stick_y = ControlModule::get_stick_y(boma);
+    let frame = MotionModule::frame(boma);
+    let end_frame = MotionModule::end_frame(boma);
+    let chest_y: f32 = VarModule::get_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y);
+    if frame >= 0.0 && frame < lean_frame {
+
+        VarModule::set_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y, stick_y);
+        rotate_bone(boma, max_angle, min_angle, stick_y * ((frame as f32) / 30.0));
+    } else if frame >= lean_frame && frame < return_frame {
+        // rotate at selected angle for each frame
+        rotate_bone(boma, max_angle, min_angle, chest_y);
+    } else {
+        // linear interpolate back to normal
+        rotate_bone(boma, max_angle, min_angle, chest_y * (1.0 - ((frame - return_frame) / (end_frame - return_frame))));
+    }
+}
+
+unsafe fn angled_inhale_shot(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT){
+        bust_lean(fighter.boma(), 6.0, 12.0, 20.0, -20.0);
+    }
+}
 unsafe fn gordo_stage_stick(boma: &mut BattleObjectModuleAccessor, frame: f32, fighter: &mut L2CFighterCommon){
     if ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
         let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO);
@@ -50,11 +83,12 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         let char_pos = *PostureModule::pos(boma);
         let gordo_pos = *PostureModule::pos(article_boma);
         let char_lr = PostureModule::lr(boma);
+        
         // left of gordo / right of gordo / below gordo / above gordo
         if(((gordo_pos.x - char_pos.x) * char_lr) < 19.0 && ((gordo_pos.x - char_pos.x) * char_lr) > -9.5 && (gordo_pos.y - char_pos.y) < 19.0 && (gordo_pos.y - char_pos.y) > -10.0){
             if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
                 if (fighter.status_frame() < 4){ //We don't want to go into recatch if we are in the middle of airdodge/landing
-                    if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD && StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP{
+                    if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD {
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, true);
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, false);
@@ -172,6 +206,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     super_dedede_jump_quickfall(boma, frame);
     gordo_recatch(boma, frame, fighter);
     gordo_stage_stick(boma, frame, fighter);
+    angled_inhale_shot(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_DEDEDE )]
 pub fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
