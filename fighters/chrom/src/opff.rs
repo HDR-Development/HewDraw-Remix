@@ -100,7 +100,7 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
         },
 
         utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if !fighter.is_in_hitlag() => {
-            if fighter.check_jump_cancel(false) {
+            if fighter.check_jump_cancel(false) || fighter.check_attack_hi4_cancel(false) {
                 return;
             }
 

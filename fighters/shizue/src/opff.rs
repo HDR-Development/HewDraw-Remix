@@ -108,7 +108,7 @@ pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
 unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE {
         if boma.status_frame() > 5 && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false) || boma.check_attack_hi4_cancel(false);
         }
     }
 }

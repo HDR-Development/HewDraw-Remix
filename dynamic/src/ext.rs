@@ -505,6 +505,7 @@ pub trait BomaExt {
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
+    unsafe fn check_attack_hi4_cancel(&mut self, update_lr: bool) -> bool;
     // Checks for status and enables transition to jump
     unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
     // Checks for status and enables transition to airdodge
@@ -940,6 +941,22 @@ impl BomaExt for BattleObjectModuleAccessor {
     /// gets the current status kind for the fighter
     unsafe fn status(&mut self) -> i32 {
         return StatusModule::status_kind(self);
+    }
+
+    unsafe fn check_attack_hi4_cancel(&mut self, repeat: bool) -> bool {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+            return false;
+        }
+        WorkModule::enable_transition_term(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4,
+        );
+        if fighter.is_cat_flag(Cat1::AttackHi4) {
+            self.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI4, repeat);
+            return true;
+        }
+        return false;
     }
 
     /// If update_lr is true, we set your facing direction based on your stick position

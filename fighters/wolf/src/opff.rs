@@ -39,7 +39,7 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
             *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END]))
         && !fighter.is_in_hitlag()
         {
-            fighter.check_jump_cancel(false);
+            fighter.check_jump_cancel(false) || fighter.check_attack_hi4_cancel(false);
         }
 }
 

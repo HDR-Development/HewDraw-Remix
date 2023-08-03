@@ -128,7 +128,7 @@ unsafe fn gut_shine(fighter: &mut L2CFighterCommon) {
     if (fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 8)  // Allows for jump cancel on frame 10 if not charged
         && !VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
         && !fighter.is_in_hitlag() {
-        fighter.check_jump_cancel(false);
+        fighter.check_jump_cancel(false) || fighter.check_attack_hi4_cancel(false);
     }
 }
 

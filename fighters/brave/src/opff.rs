@@ -106,7 +106,7 @@ unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
 unsafe fn kaclang_jc(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
-            fighter.check_jump_cancel(false);
+            fighter.check_jump_cancel(false) || fighter.check_attack_hi4_cancel(false);
         }
     }
 }

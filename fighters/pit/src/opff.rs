@@ -27,7 +27,7 @@ unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAcce
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END && frame > 6.0) {
         if (boma.is_situation(*SITUATION_KIND_GROUND) || WorkModule::is_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF))
         && frame > 28.0 {
-            boma.check_jump_cancel(true);
+            boma.check_jump_cancel(true) || boma.check_attack_hi4_cancel(false);
         }
     }
 }

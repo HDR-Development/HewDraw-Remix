@@ -8,7 +8,7 @@ unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
     if [*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if boma.status_frame() > 0 {
             if !boma.is_in_hitlag() {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false) || boma.check_attack_hi4_cancel(false);
             }
         }
     }

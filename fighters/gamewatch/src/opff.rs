@@ -74,7 +74,7 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, situation_kind: i32) {
     if motion_kind == hash40("special_s_4") || motion_kind == hash40("special_air_s_4") {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false) || boma.check_attack_hi4_cancel(false);
         }
     }
 }

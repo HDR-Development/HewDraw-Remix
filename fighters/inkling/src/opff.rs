@@ -93,7 +93,7 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
         && boma.is_situation(*SITUATION_KIND_GROUND)
         && boma.status_frame() > 10
     {
-        boma.check_jump_cancel(true);
+        boma.check_jump_cancel(true) || boma.check_attack_hi4_cancel(false);
     }
     if boma.is_motion(Hash40::new("special_air_s_jump_end"))
     && !StatusModule::is_changing(boma) {

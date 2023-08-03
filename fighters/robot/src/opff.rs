@@ -50,7 +50,7 @@ unsafe fn jc_sideb(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind
     if ([*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false) || boma.check_attack_hi4_cancel(false);
     }
 }
 
@@ -82,7 +82,7 @@ unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i
 unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false) || boma.check_attack_hi4_cancel(false);
         }
     }
 }
