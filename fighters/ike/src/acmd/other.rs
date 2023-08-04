@@ -287,6 +287,38 @@ unsafe fn ike_appeal_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ike", scripts = ["expression_appeallwl", "expression_appeallwr"] , category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_appeal_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        println!("Ike Down Taunt");
+        VisibilityModule::set_int64(boma, hash40("sword") as i64, hash40("sword_hide") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        //ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        } else {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_slashm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+    frame(lua_state, 93.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 113.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 #[acmd_script( agent = "ike_sword", script = "game_appeallw" , category = ACMD_GAME , low_priority)]
 unsafe fn ike_sword_appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -377,6 +409,7 @@ pub fn install() {
         ike_appeal_lw_game,
         ike_appeal_lw_l_sound,
         ike_appeal_lw_r_sound,
+        ike_appeal_lw_expression,
         ike_sword_appeal_lw_game,
         ike_sword_appeal_lw_effect,
         damageflyhi_sound,
