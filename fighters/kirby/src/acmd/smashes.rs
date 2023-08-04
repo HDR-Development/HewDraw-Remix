@@ -45,7 +45,7 @@ unsafe fn kirby_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "kirby", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
@@ -92,6 +92,18 @@ unsafe fn kirby_attack_s4_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
         }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("footl"), 15.0, 361, 106, 0, 32, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("footl"), 11.0, 60, 98, 0, 40, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
     }
 
 }
@@ -141,7 +153,7 @@ unsafe fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "kirby", scripts = ["sound_attacks4hi", "sound_attacks4", "sound_attacks4lw"], category = ACMD_SOUND, low_priority )]
@@ -361,7 +373,39 @@ unsafe fn kirby_attack_lw4_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-    
+
+}
+
+#[acmd_script( agent = "kirby", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kirby_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+    }
+    frame(lua_state, 5.0);
+    app::sv_animcmd::execute(lua_state, 5.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 7, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 7);
+    }
 }
 
 #[acmd_script( agent = "kirby", script = "sound_attacklw4", category = ACMD_SOUND, low_priority )]
@@ -400,6 +444,7 @@ pub fn install() {
         kirby_attack_hi4_sound,
         kirby_attack_lw4_game,
         kirby_attack_lw4_sound,
+        kirby_attack_lw4_expression,
     );
 }
 

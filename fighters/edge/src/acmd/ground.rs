@@ -70,7 +70,32 @@ unsafe fn sephiroth_attack_11_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("swordl1"), -3.0, 0, -1.0, 0, 0, 0, 0.65, true);
         LAST_EFFECT_SET_RATE(fighter, 0.75);
     }
-    
+
+}
+
+#[acmd_script( agent = "edge", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sephiroth_attack_11_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_R, 4);
+    }
+    frame(lua_state, 4.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 13);
+    }
 }
 
 #[acmd_script( agent = "edge", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
@@ -98,13 +123,14 @@ unsafe fn sephiroth_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 pub fn install() {
     install_acmd_scripts!(
         sephiroth_attack_11_game,
         sephiroth_attack_11_effect,
+        sephiroth_attack_11_expression,
         sephiroth_attack_dash_game,
     );
 }

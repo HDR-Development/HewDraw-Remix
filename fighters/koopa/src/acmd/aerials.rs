@@ -125,7 +125,7 @@ unsafe fn koopa_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopa", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
@@ -165,7 +165,21 @@ unsafe fn koopa_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "koopa", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
 }
 
 #[acmd_script( agent = "koopa", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -197,7 +211,7 @@ unsafe fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopa", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
@@ -256,7 +270,7 @@ unsafe fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopa", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
@@ -316,6 +330,8 @@ pub fn install() {
         koopa_attack_air_f_game,
         koopa_attack_air_f_effect,
         koopa_attack_air_b_game,
+        koopa_attack_air_b_expression,
+
         koopa_attack_air_hi_game,
         koopa_attack_air_hi_effect,
         koopa_attack_air_hi_expression,
