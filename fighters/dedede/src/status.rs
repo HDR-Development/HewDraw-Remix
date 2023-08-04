@@ -57,7 +57,7 @@ unsafe fn dedede_gordo_wall_stop_pre(weapon: &mut L2CWeaponCommon) -> L2CValue{
 #[status_script(agent = "dedede_gordo", status = WEAPON_DEDEDE_GORDO_STATUS_KIND_WALL_STOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dedede_gordo_wall_stop_main(weapon: &mut L2CWeaponCommon) -> L2CValue{
     let ret = original!(weapon);
-    HitModule::set_status_all(weapon.module_accessor, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+    HitModule::set_whole(weapon.module_accessor, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_DEDEDE{
         let dedede = utils::util::get_battle_object_from_id(owner_id);
@@ -67,17 +67,11 @@ unsafe fn dedede_gordo_wall_stop_main(weapon: &mut L2CWeaponCommon) -> L2CValue{
     ret
 }
 
-//Some gordo dash logic
-#[status_script(agent = "dedede", status = *FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dedede_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue{
-    if VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO){
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR{
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_get"), 0.0, 1.0, false, 0.0, false, false);
-        }
-        else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND{
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_get"), 0.0, 1.0, false, 0.0, false, false); 
-        } 
-    }
+#[status_script(agent = "dedede", status = *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn dedede_special_hi_status_main(fighter: &mut L2CFighterCommon) -> L2CValue{
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_fall_special"), 0.0, 1.0, false, 0.0, false, false);
+    StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+
     return original!(fighter);
 }
 
@@ -85,8 +79,8 @@ pub fn install(){
     smashline::install_status_scripts!(
         special_lw_jump_squat_exec,
         dedede_gordo_dead_end,
-        dedede_side_special_status_main,
         dedede_gordo_wall_stop_main,
         dedede_gordo_wall_stop_pre,
+        dedede_special_hi_status_main,
     );
 }

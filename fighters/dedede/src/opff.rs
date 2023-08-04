@@ -33,7 +33,8 @@ unsafe fn bust_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, retu
     let end_frame = MotionModule::end_frame(boma);
     let chest_y: f32 = VarModule::get_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
-
+        // linear interpolate to stick position,
+        // while getting stick position still
         VarModule::set_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y, stick_y);
         rotate_bone(boma, max_angle, min_angle, stick_y * ((frame as f32) / 30.0));
     } else if frame >= lean_frame && frame < return_frame {
@@ -46,10 +47,13 @@ unsafe fn bust_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, retu
 }
 
 unsafe fn angled_inhale_shot(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT){
-        bust_lean(fighter.boma(), 6.0, 12.0, 20.0, -20.0);
+    if ArticleModule::is_exist(fighter.boma(), *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
+        if fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT){
+            bust_lean(fighter.boma(), 6.0, 12.0, 20.0, -20.0);
+        }
     }
 }
+
 unsafe fn gordo_stage_stick(boma: &mut BattleObjectModuleAccessor, frame: f32, fighter: &mut L2CFighterCommon){
     if ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
         let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO);
@@ -58,7 +62,6 @@ unsafe fn gordo_stage_stick(boma: &mut BattleObjectModuleAccessor, frame: f32, f
         if KineticModule::get_sum_speed_x(article_boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs() > 2.0 && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG){
             if GroundModule::is_touch(article_boma, *GROUND_TOUCH_FLAG_ALL as u32){
                 StatusModule::change_status_force(article_boma, *WEAPON_DEDEDE_GORDO_STATUS_KIND_WALL_STOP, false);
-                //VarModule::inc_int(fighter.battle_object, vars::dedede::instance::INHALE_COUNTER);
                 VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, true);
                 KineticModule::clear_speed_all(article_boma); 
             } 
@@ -85,7 +88,7 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         let char_lr = PostureModule::lr(boma);
         
         // left of gordo / right of gordo / below gordo / above gordo
-        if(((gordo_pos.x - char_pos.x) * char_lr) < 19.0 && ((gordo_pos.x - char_pos.x) * char_lr) > -9.5 && (gordo_pos.y - char_pos.y) < 19.0 && (gordo_pos.y - char_pos.y) > -10.0){
+        if(((gordo_pos.x - char_pos.x) * char_lr) < 19.0 && ((gordo_pos.x - char_pos.x) * char_lr) > -14.5 && (gordo_pos.y - char_pos.y) < 19.0 && (gordo_pos.y - char_pos.y) > -10.0){
             if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
                 if (fighter.status_frame() < 4){ //We don't want to go into recatch if we are in the middle of airdodge/landing
                     if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD {
@@ -127,6 +130,12 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
     else{
         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, false);
         VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
+    }
+}
+
+unsafe fn super_jump_fail_edge_cancel(fighter: &mut L2CFighterCommon){
+    if fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        StatusModule::change_status_force(fighter.boma(), *FIGHTER_STATUS_KIND_FALL, false);
     }
 }
 
@@ -207,6 +216,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     gordo_recatch(boma, frame, fighter);
     gordo_stage_stick(boma, frame, fighter);
     angled_inhale_shot(fighter);
+    super_jump_fail_edge_cancel(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_DEDEDE )]
 pub fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

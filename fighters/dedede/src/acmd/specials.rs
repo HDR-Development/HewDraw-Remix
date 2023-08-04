@@ -308,7 +308,7 @@ unsafe fn dedede_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 
     if is_excute(fighter){
-        FT_MOTION_RATE(fighter, 14.0/(18.0-1.0));
+        FT_MOTION_RATE(fighter, 13.0/(18.0-1.0));
         ArticleModule::generate_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER, false, -1);
     }
 }
@@ -328,7 +328,6 @@ unsafe fn dedede_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    //let rush_speed = 0.6 + 0.0067*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
     let rush_speed = 0.6 + 0.01*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -392,7 +391,6 @@ unsafe fn dedede_special_lw_max_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    //let rush_speed = 0.6 + 0.0067*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
     let rush_speed = 0.6 + 0.01*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -450,6 +448,13 @@ unsafe fn dedede_special_air_lw_max_game(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 1.0);
     }
+}
+
+#[acmd_script( agent = "dedede", script = "game_speciallwjumpsquat" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_special_lw_jump_squat_game(fighter: &mut L2CAgentBase){
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 5.0 / (8.0-1.0));
 }
 
 #[acmd_script( agent = "dedede", script = "game_specialhijump" , category = ACMD_GAME , low_priority)]
@@ -550,6 +555,7 @@ pub fn install() {
         dedede_special_lw_max_game,
         dedede_special_air_lw_game,
         dedede_special_air_lw_max_game,
+        dedede_special_lw_jump_squat_game,
         dedede_special_hi_jump_game,
         dedede_special_hi_landing_game,
     );

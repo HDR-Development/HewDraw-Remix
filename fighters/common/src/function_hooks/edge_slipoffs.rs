@@ -149,7 +149,9 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             || (fighter_kind == *FIGHTER_KIND_PACMAN && status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
             || (fighter_kind == *FIGHTER_KIND_TRAIL && status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END)
             || (fighter_kind == *FIGHTER_KIND_PLIZARDON && status_kind == *FIGHTER_PLIZARDON_STATUS_KIND_SPECIAL_S_END)
-            || (fighter_kind == *FIGHTER_KIND_DEDEDE && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S) {
+            || (fighter_kind == *FIGHTER_KIND_DEDEDE) && 
+            [*FIGHTER_STATUS_KIND_SPECIAL_S,
+             *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE].contains(&status_kind) {
             return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
     }

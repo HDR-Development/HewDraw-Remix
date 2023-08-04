@@ -52,7 +52,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="jump_start_speed_y">6.4</float>
+      <float hash="jump_start_speed_y">6.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
