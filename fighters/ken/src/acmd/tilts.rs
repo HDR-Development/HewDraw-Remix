@@ -318,19 +318,8 @@ unsafe fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "sound_attackhi3s", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attackhi3s(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_ken_swing_kick_l"));
-        PLAY_SE(fighter, Hash40::new("vc_ken_attack06"));
-    }
-}
-
-#[acmd_script( agent = "ken", script = "expression_attackhi3s", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "expression_attack11s", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -346,7 +335,7 @@ unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -358,7 +347,8 @@ unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-
+// if you're looking for strong up tilt, it's a motion list remap to strong distance jab
+// so go look for attack11s in ground.rs
 pub fn install() {
     install_acmd_scripts!(
         game_attacks3w,
@@ -368,13 +358,13 @@ pub fn install() {
         game_attacks3w,
         game_attacks3s,
         effect_attacks3s,
-        game_attackhi3w,
-        game_attacklw3w,
-        game_attacklw3s,
-        game_attackhi3s,
-        effect_attackhi3s,
-        sound_attackhi3s,
-        expression_attackhi3s,
+        ken_attack_hi3_w_game,
+        ken_attack_lw3_w_game,
+        ken_attack_lw3_s_game,
+        game_attacknearw,
+        ken_attack_11_s_game,
+        effect_attack11s,
+        expression_attack11s,
     );
 }
 
