@@ -75,14 +75,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_JUMP,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_BARRAGE,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_BARRAGE_START,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_BARRAGE_END,
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI_THROW,
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END,
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_HOLD,
