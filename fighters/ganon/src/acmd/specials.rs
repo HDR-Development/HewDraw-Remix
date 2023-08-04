@@ -190,15 +190,6 @@ unsafe fn game_specialairsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "expression_float", category = ACMD_EXPRESSION , low_priority)]
-unsafe fn ganon_float_exp(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-}
-
 #[acmd_script( agent = "ganon", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
