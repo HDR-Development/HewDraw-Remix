@@ -681,6 +681,22 @@ unsafe fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "mario", scripts = ["expression_speciallwlight", "expression_specialairlwlight"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter){
+        if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        } else {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        }
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+}
+
 #[acmd_script( agent = "mario", script = "game_specialairlwlight" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -822,6 +838,7 @@ pub fn install() {
         mario_special_lw_light,
         effect_special_lw_light,
         sound_special_lw_light,
+        expression_special_lw_light,
         mario_special_air_lw_light,
         effect_special_air_lw_light,
         sound_special_air_lw_light,

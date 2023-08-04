@@ -411,26 +411,25 @@ unsafe fn miigunner_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	frame(lua_state, 14.0);
 	if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        // Boosted early hit
-		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-			ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
+			ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
 		}
 	}
     frame(lua_state, 35.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }

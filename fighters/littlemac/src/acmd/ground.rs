@@ -244,6 +244,7 @@ pub fn install() {
         littlemac_attack_13_effect,
         littlemac_attack_13_sound,
         littlemac_attack_dash_game,
+        littlemac_attack_dash_expression,
     );
 }
 
