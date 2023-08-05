@@ -112,11 +112,12 @@ unsafe fn lucina_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 36.0);
+    frame(lua_state, 24.0);
+    FT_DESIRED_RATE(fighter, (44.0 - 24.0), 10.0);
+    frame(lua_state, 45.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 
@@ -172,11 +173,14 @@ unsafe fn lucina_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 2.0);
+    frame(lua_state, 23.0);  // f31 ingame
+    FT_DESIRED_RATE(fighter, (39.0 - 23.0), 10.0);
+    frame(lua_state, 23.625);  // f32 ingame
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    
+    } 
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]

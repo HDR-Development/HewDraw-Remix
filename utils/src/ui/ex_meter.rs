@@ -24,6 +24,7 @@ const EMPTY_TEXCOORDS: [f32; 8] = [
 ];
 
 #[derive(Default, Copy, Clone)]
+#[repr(C)]
 pub struct ExMeter {
     // Panes
     pub base_bar: u64,

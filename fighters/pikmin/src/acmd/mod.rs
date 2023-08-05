@@ -9,6 +9,7 @@ mod specials;
 mod throws;
 mod tilts;
 
+#[repr(C)]
 pub struct PikminInfo {
     damage: f32,
     //kbg: i32,
