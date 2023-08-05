@@ -23,6 +23,8 @@ attack_11:
   extra:
     cancel_frame: 18
 attack_lw3:
+  flags:
+    move: false
 attack_hi4:
 fall_aerial:
   blend_frames: 5
