@@ -367,7 +367,6 @@ unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         palutena_attack_air_n_game,
-        palutena_attack_air_n_effect,
         palutena_attack_air_f_game,
         palutena_attack_air_f_effect,
         palutena_attack_air_b_game,

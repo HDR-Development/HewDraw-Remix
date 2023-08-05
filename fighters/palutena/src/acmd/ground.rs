@@ -140,7 +140,6 @@ pub fn install() {
         palutena_attack_dash_game,
         palutena_attack_dash_effect,
         palutena_attack_100_end_game,
-        palutena_attack_100_end_effect
     );
 }
 
