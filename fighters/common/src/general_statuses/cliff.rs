@@ -14,6 +14,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_end_CliffCatchMove,
             status_end_CliffCatch,
             status_end_CliffWait,
+            status_CliffAttack,
             status_end_CliffAttack,
             status_end_CliffClimb,
             status_end_CliffEscape,
@@ -60,6 +61,13 @@ unsafe fn status_end_CliffWait(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::set_vec3(fighter.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
     call_original!(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_CliffAttack)]
+unsafe fn status_CliffAttack(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = call_original!(fighter);
+    MotionModule::set_rate(fighter.module_accessor, 0.92);
+    ret
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffAttack)]
