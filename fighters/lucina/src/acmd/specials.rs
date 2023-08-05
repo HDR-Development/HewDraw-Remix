@@ -1238,7 +1238,7 @@ unsafe fn lucina_special_air_s3_lw_sound(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_special_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let add_damage = 0.5*(VarModule::get_float(boma.object(), vars::lucina::instance::NEW_DAMAGE) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
+    let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0 + add_damage, 79, 80, 0, 60, 4.5, 0.0, 6.0, 7.5, Some(0.0), Some(21.0), Some(7.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1287,7 +1287,7 @@ unsafe fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let add_damage = 0.5*(VarModule::get_float(boma.object(), vars::lucina::instance::NEW_DAMAGE) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
+    let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0 + add_damage, 79, 80, 0, 60, 4.5, 0.0, 6.0, 7.5, Some(0.0), Some(21.0), Some(7.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1336,7 +1336,7 @@ unsafe fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_special_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let add_damage = 0.5*(VarModule::get_float(boma.object(), vars::lucina::instance::NEW_DAMAGE) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
+    let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0 + add_damage, 361, 73, 0, 60, 8.0, 0.0, 9.0, 11.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1384,7 +1384,7 @@ unsafe fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let add_damage = 0.5*(VarModule::get_float(boma.object(), vars::lucina::instance::NEW_DAMAGE) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
+    let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0 + add_damage, 361, 73, 0, 60, 8.0, 0.0, 9.0, 11.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1432,7 +1432,7 @@ unsafe fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_special_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let add_damage = 0.5*(VarModule::get_float(boma.object(), vars::lucina::instance::NEW_DAMAGE) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
+    let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
     frame(lua_state, 7.0);
     for _ in 0..4 {
         if is_excute(fighter) {
@@ -1519,7 +1519,7 @@ unsafe fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_special_air_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let add_damage = 0.5*(VarModule::get_float(boma.object(), vars::lucina::instance::NEW_DAMAGE) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
+    let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
     frame(lua_state, 7.0);
     for _ in 0..4 {
         if is_excute(fighter) {
@@ -1693,7 +1693,6 @@ unsafe fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
         HitModule::set_hit_stop_mul(fighter.module_accessor, 1.0, HitStopMulTarget{_address: (*HIT_STOP_MUL_TARGET_OPPONENT) as u8}, 0.0);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         VarModule::on_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK);
-        VarModule::set_float(boma.object(), vars::lucina::instance::NEW_DAMAGE, DamageModule::damage(boma, 0));
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
@@ -1712,6 +1711,7 @@ unsafe fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
         HitModule::set_hit_stop_mul(fighter.module_accessor, 3.0, HitStopMulTarget{_address: (*HIT_STOP_MUL_TARGET_OPPONENT) as u8}, 0.0);
         DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        VarModule::set_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE, DamageModule::damage(boma, 0));
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
