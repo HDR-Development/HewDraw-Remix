@@ -59,6 +59,7 @@ unsafe fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     let power = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {6.0} else {0.0};
     let sound_lvl = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
     let size = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {3.0} else {0.0};
+    let kbg = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {10} else {0};
     FT_DESIRED_RATE(agent, 18.0, 12.0);
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -73,8 +74,8 @@ unsafe fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 14.0 + power, 361, 95, 0, 40, 5.6 + (size / 2.0), 1.0, 11.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 10.0 + (power / 2.0), 361, 97, 0, 40, 8.6 + size, 1.0, 11.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 14.0 + power, 361, 95 - kbg, 0, 40, 5.6 + (size / 2.0), 1.0, 11.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 10.0 + (power / 2.0), 361, 97 - kbg, 0, 40, 8.6 + size, 1.0, 11.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sound_lvl, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {
@@ -87,23 +88,26 @@ unsafe fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
-    frame(lua_state, 16.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+            if is_excute(agent) {
+                EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
+                LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+            }
         }
-    }
-    else{
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -55, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        else {
+            if is_excute(agent) {
+                EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -55, 0, 1, true);
+                LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+            }
         }
     }
     frame(lua_state, 18.0);
@@ -510,7 +514,7 @@ unsafe fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     FT_DESIRED_RATE(agent, 25.0, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 366, 40, 70, 0, 6.0, 0.0, 18.0, 9.7, Some(0.0), Some(4.0), Some(9.7), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 5, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.5, 366, 40, 70, 0, 6.0, 0.0, 18.0, 9.7, Some(0.0), Some(4.0), Some(9.7), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 5, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 25.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -542,14 +546,22 @@ unsafe fn palutena_special_n_g_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_club_tornado"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.05, 0.50, 0.05);
     }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_club_tornado"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.2, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.25, 0.70, 0.25);
+        LAST_EFFECT_SET_ALPHA(agent, 0.3);
+    }
     wait(lua_state, 26.0);
     if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("sys_club_tornado"), -1);
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_club_tornado"), -1);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_club_tornado"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("sys_club_tornado"), false, false);
     }
 }

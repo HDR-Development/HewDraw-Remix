@@ -176,11 +176,9 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
     && VarModule::is_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
         VarModule::off_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR);
         // red moves: neutral/side
-        if fighter.is_motion(Hash40::new("attack_100_end"))
-        || fighter.is_motion(Hash40::new("attack_dash"))
+        if fighter.is_motion(Hash40::new("attack_dash"))
         || fighter.is_motion(Hash40::new("attack_s3_s"))
         || fighter.is_motion(Hash40::new("attack_s4_s"))
-        || fighter.is_motion(Hash40::new("attack_air_n"))
         || fighter.is_motion(Hash40::new("attack_air_f"))
         || fighter.is_motion(Hash40::new("attack_air_b")) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
@@ -312,7 +310,7 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
                 //println!("i like cash from my hair to my ass");
             }
             else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
+                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
                     VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
                 }
                 let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_Y);
