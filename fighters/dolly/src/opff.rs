@@ -216,14 +216,14 @@ unsafe fn meter_cap_control(boma: &mut BattleObjectModuleAccessor) {
     let info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
     if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
         MeterModule::reset(boma.object());
-        println!("is result mode");
+        // println!("is result mode");
     }
     
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,]) {
         MeterModule::reset(boma.object());
-        println!("is victory");
+        // println!("is victory");
     }
 
     if boma.is_status_one_of(&[
