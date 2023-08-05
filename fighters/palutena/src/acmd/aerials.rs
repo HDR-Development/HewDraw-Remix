@@ -357,7 +357,7 @@ unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
         LAST_EFFECT_SET_RATE(agent, 0.5);
     }
-    frame(lua_state, 44.0);
+    frame(lua_state, 30.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);

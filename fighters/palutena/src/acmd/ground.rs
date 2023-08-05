@@ -114,6 +114,13 @@ unsafe fn palutena_attack_dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -131,6 +138,11 @@ unsafe fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_flash"), -1);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
 
