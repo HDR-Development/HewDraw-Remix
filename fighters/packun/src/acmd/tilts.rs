@@ -148,7 +148,6 @@ unsafe fn packun_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 8.0);
-    // println!("{}", sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR));
     if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("packun_atk_lw_arc"), Hash40::new("top"), 0.7, 4.6, 4.6, -170, -20, -12, 1, true);
