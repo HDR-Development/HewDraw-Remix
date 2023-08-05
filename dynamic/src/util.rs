@@ -316,9 +316,9 @@ extern "C"{
 
 extern "C" {
     #[link_name = "_ZN3app13sv_debug_draw11draw_circleERKN3phx8Vector2fEfi"]
-    fn debug_draw_circle(center: &Vector2f, radius: f32, num_frames: i32);
+    pub fn debug_draw_circle(center: &Vector2f, radius: f32, num_frames: i32);
    #[link_name = "_ZN3app13sv_debug_draw9draw_lineERKN3phx8Vector2fES4_i"]
-    fn debug_draw_line(a: &Vector2f, b: &Vector2f, num_frames: i32);
+    pub fn debug_draw_line(a: &Vector2f, b: &Vector2f, num_frames: i32);
     #[link_name = "_ZN3app13sv_debug_draw14set_draw_colorEffff"]
-    fn debug_set_draw_color(r: f32, g: f32, b: f32, a: f32);
+    pub fn debug_set_draw_color(r: f32, g: f32, b: f32, a: f32);
 }
