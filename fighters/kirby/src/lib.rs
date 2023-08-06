@@ -45,7 +45,7 @@ pub fn install(is_runtime: bool) {
     use opff::*;
     if !is_runtime {
         smashline::install_agent_frames!(
-            hammer_fastfall_landcancel
+            hammer_landcancel
         );
     }
 
