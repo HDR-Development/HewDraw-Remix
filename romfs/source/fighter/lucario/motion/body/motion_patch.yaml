@@ -50,7 +50,7 @@ attack_hi4:
   extra:
     xlu_start: 5
     xlu_end: 9
-    cancel_frame: 20
+    cancel_frame: 25
     no_stop_intp: false
 attack_lw3:
   extra:

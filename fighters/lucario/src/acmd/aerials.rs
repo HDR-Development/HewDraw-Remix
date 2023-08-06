@@ -82,6 +82,20 @@ unsafe fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "lucario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "lucario", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -196,6 +210,7 @@ pub fn install() {
     install_acmd_scripts!(
         lucario_attack_air_n_game,
         lucario_attack_air_f_game,
+        expression_attackairf,
         lucario_attack_air_b_game,
         lucario_attack_air_hi_game,
         lucario_attack_air_lw_game,
