@@ -197,6 +197,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     // noknok_reset(boma);
     //up_special_land_cancel(boma, status_kind);
     // noknok_training(boma);
+    fastfall_specials(fighter);
 }
 
 
