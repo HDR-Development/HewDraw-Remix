@@ -40,7 +40,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     meter_module(fighter, boma, status_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    jump_cancels(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_max_meter(fighter, boma, status_kind);
 }
 
@@ -264,16 +263,5 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         if boma.is_cat_flag(Cat1::SpecialLw) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
         }
-    }
-}
-
-unsafe fn jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    if !boma.is_in_hitlag() 
-    && !CancelModule::is_enable_cancel(boma) 
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-    ])
-    && fighter.check_jump_cancel(false) {
     }
 }

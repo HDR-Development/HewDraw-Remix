@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 // status script import
+mod attack_hi4;
 mod special_hi;
 mod special_lw;
 mod special_n;
@@ -14,11 +15,13 @@ extern "C" {
 }
 
 pub fn install() {
+    attack_hi4::install();
     special_hi::install();
     special_lw::install();
     special_n::install();
     special_s::install();
     install_status_scripts!(
+        dead_main,
         pre_walk,
         pre_dash,
         pre_run,
@@ -74,6 +77,18 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
     0.into()
 }
+
+// FIGHTER_STATUS_KIND_DEAD
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_DEAD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MeterModule::reset(fighter.battle_object);
+    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
+    MeterModule::add(fighter.battle_object, meter_max / 3.0);
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    original!(fighter)
+}
+
 // FIGHTER_STATUS_KIND_WALK //
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
