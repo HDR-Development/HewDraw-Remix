@@ -42,18 +42,13 @@ unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
 // }
 
 #[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
-pub fn hammer_fastfall_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub fn hammer_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
             if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
                 AttackModule::clear_all(fighter.module_accessor);
                 MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
                 MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
-            }
-            if fighter.is_situation(*SITUATION_KIND_AIR) {
-                if fighter.is_cat_flag(Cat2::FallJump) && fighter.stick_y() < -0.66 && KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    WorkModule::set_flag(fighter.module_accessor, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-                }
             }
         }
     }
@@ -305,11 +300,55 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SPIT,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_DRINK,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_FALL,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP1,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP2,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_TURN_AIR,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_FALL,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_JUMP,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
+        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
+    fastfall_specials(fighter);
 
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
