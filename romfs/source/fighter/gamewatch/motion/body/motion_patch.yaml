@@ -1,3 +1,6 @@
+guard_off:
+  extra:
+    cancel_frame: 0
 throw_f:
   extra:
     cancel_frame: 38
@@ -24,8 +27,6 @@ attack_lw4:
   extra:
     cancel_frame: 40
 attack_s4_s:
-  flags:
-    move: false
 attack_hi4_r:
   extra:
     cancel_frame: 45

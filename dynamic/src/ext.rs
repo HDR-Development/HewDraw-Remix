@@ -268,9 +268,8 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const TiltAttack = 0x1;
-        const Wavedash = 0x2;
-        const ShieldDrop = 0x4;
+        const Wavedash = 0x1;
+        const ShieldDrop = 0x2;
     }
 
     pub struct PadFlag: i32 {
@@ -1432,6 +1431,7 @@ pub struct Controller {
 /// Re-ordered bitfield the game uses for buttons
 #[bitfield]
 #[derive(Debug, Default, Copy, Clone)]
+#[repr(C)]
 pub struct ButtonBitfield {
     pub dpad_up: bool,
     pub dpad_right: bool,
@@ -1497,6 +1497,7 @@ pub struct MappedInputs {
 
 pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
 
+#[repr(C)]
 pub struct StatusInfo {
     pub pre: Option<StatusFunc>,
     pub main: Option<StatusFunc>,

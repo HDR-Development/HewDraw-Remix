@@ -58,11 +58,7 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
     if fighter.is_situation(*SITUATION_KIND_AIR)
     && param_1.get_bool() {
         // enable fastfall
-        if fighter.is_cat_flag(Cat2::FallJump)
-            && fighter.stick_y() < -0.66
-            && KineticModule::get_sum_speed_y(fighter.boma(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-            WorkModule::set_flag(fighter.boma(), true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-        }
+        fighter.sub_air_check_dive();
 
         // try to pick up an item nearby
         let frame = fighter.motion_frame();
