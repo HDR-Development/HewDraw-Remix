@@ -8,7 +8,7 @@ unsafe fn koopa_attack_s4_game(fighter: &mut L2CAgentBase) {
         let boma = fighter.module_accessor;
         VarModule::on_flag(fighter.battle_object, vars::koopa::instance::PUNCH_CAN_ZOOM);
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::PUNCH_ZOOM, 0);
-        frame(lua_state, 13.0);
+        frame(lua_state, 19.0);
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
         }
@@ -47,7 +47,10 @@ unsafe fn koopa_attack_s4_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("koopa_smash_line"), Hash40::new("koopa_smash_line"), Hash40::new("top"), 0, 10, -26, 0, 0, 0, 2.3, true, *EF_FLIP_YZ);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.9);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12, 22, 0, 0, 0, 2.6, true);
+    }
+    frame(lua_state, 22.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.65, true);
     }
     frame(lua_state, 23.0);
     if macros::is_excute(fighter) {
@@ -66,7 +69,7 @@ unsafe fn koopa_attack_s4_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script(agent = "koopa", script =  "sound_attacks4", category = ACMD_SOUND, low_priority)]
 unsafe fn koopa_attack_s4_sound(fighter: &mut L2CAgentBase) {
     	let lua_state = fighter.lua_state_agent;
-		frame(lua_state, 19.0);
+		frame(lua_state, 20.0);
 		if macros::is_excute(fighter) {
 			macros::PLAY_SE(fighter, Hash40::new("se_koopa_nailswing02"));
 			macros::PLAY_SE(fighter, Hash40::new("vc_koopa_attack06"));
