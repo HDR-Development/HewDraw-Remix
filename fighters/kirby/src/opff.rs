@@ -301,27 +301,19 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
 // Copy Abilities
 // Fox Laser Land Cancel
-unsafe fn fox_laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn fox_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-        } else if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-            }
         }
     }
 }
 
 // Falco Laser Land Cancel
-unsafe fn falco_laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn falco_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-        } else if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-            }
         }
     }
 }
@@ -386,18 +378,12 @@ unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, sta
 }
 
 // Chef Land Cancel
-unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-            }
-        }
-        if MotionModule::frame(boma) <= 1.0 {
+        if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
@@ -418,8 +404,8 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
     }
 }
 
-// Nayru's Love Land Cancel and Fast Fall
-unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
+// Nayru's Love Drift and Land Cancel
+unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_ZELDA_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND {
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 55.0 {
@@ -430,9 +416,8 @@ unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, stat
         }
         else if situation_kind == *SITUATION_KIND_AIR {
             if frame >= 31.0 {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-                if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                    KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
                 }
             }
         }
@@ -577,12 +562,12 @@ unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, stat
     }
 }
 
-// Link's Bow Fastfall
-unsafe fn bow_fastfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Link's Bow Drift
+unsafe fn bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_LINK_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -600,8 +585,8 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// Dark Pit's Bow Fastfall Land Cancel
-unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Dark Pit's Bow Land Cancel
+unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if(WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PITB){
         if [*FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT,
             *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_CHARGE,
@@ -610,12 +595,6 @@ unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
             if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT {
                 if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-                }
-            }
-            if situation_kind == *SITUATION_KIND_AIR {
-                if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                    && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
                 }
             }
         }
@@ -645,60 +624,53 @@ unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
     }
 }
 
-// Simon's Axe Fastfall
-unsafe fn axe_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Simon's Axe Drift
+unsafe fn axe_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if boma.is_cat_flag(Cat2::FallJump)
-                && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
 }
 
-// Toon Link's Bow Fastfall
-unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Toon Link's Bow Drift
+unsafe fn heros_bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TOONLINK_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 {
-                if KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-                }
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
 }
 
-// Young Link's Bow Fastfall
-unsafe fn fire_arrow_ff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Young Link's Bow Drift
+unsafe fn fire_arrow_drift(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_YOUNGLINK_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump)
-                && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
 }
 
 
-unsafe fn copy_ability_other_aerial_drift(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[
-        *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N,
-        *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N,
-        *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N,
-        *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N]) {
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            }
-        }
-    }
-}
+//unsafe fn copy_ability_other_aerial_drift(fighter: &mut L2CFighterCommon) {
+//    if fighter.is_status_one_of(&[
+//        *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N,
+//        *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N,
+//        *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N,
+//        *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N]) {
+//        if fighter.is_situation(*SITUATION_KIND_AIR) {
+//            if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
+//                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+//            }
+//        }
+//    }
+//}
 
 // PM-like neutral-b canceling
 // Donkey Kong
@@ -922,6 +894,259 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
         *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
         *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
+        //copy abilities
+        *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_LINK_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_ZELDA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_YOUNGLINK_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_TOONLINK_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_FIRE,
+        *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_AIR,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_AIR_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_AERIAL,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_FALL,
+        *FIGHTER_KIRBY_STATUS_KIND_CAPTAIN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_CAPTAIN_SPECIAL_N_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_CHROM_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_CHROM_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_CHROM_SPECIAL_N_END2,
+        *FIGHTER_KIRBY_STATUS_KIND_CHROM_SPECIAL_N_END3,
+        *FIGHTER_KIRBY_STATUS_KIND_CHROM_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_CHROM_SPECIAL_N_END_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_CLOUD_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_DAISY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_DAISY_SPECIAL_N_HIT,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_SPIT,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_SWALLOW,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_FALL,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_JUMP1,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_JUMP2,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_TURN_AIR,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_WAIT_FALL,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_WAIT_JUMP,
+        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_EAT_PASS,
+        *FIGHTER_KIRBY_STATUS_KIND_DEMON_SPECIAL_N_AIR_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_DANGER,
+        *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_BLOW,
+        *FIGHTER_KIRBY_STATUS_KIND_DOLLY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_DONKEY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_DONKEY_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_DONKEY_SPECIAL_N_ATTACK,
+        *FIGHTER_KIRBY_STATUS_KIND_DONKEY_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_DONKEY_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_DUCKHUNT_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_ELIGHT_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_ELIGHT_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_ELIGHT_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_EFLAME_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_EFLAME_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_EFLAME_SPECIAL_N_ATTACK,
+        *FIGHTER_KIRBY_STATUS_KIND_EFLAME_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_GEKKOUGA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_GEKKOUGA_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_GEKKOUGA_SPECIAL_N_SHOT,
+        *FIGHTER_KIRBY_STATUS_KIND_GEKKOUGA_SPECIAL_N_MAX_START,
+        *FIGHTER_KIRBY_STATUS_KIND_GEKKOUGA_SPECIAL_N_MAX_SHOT,
+        *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END_MDL,
+        *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_KAMUI_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KAMUI_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_KAMUI_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_KAMUI_SPECIAL_N_BITE,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N2_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KOOPAJR_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KOOPAJR_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_KOOPAJR_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_KROOL_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KROOL_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_KROOL_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_KROOL_SPECIAL_N_SUCTION,
+        *FIGHTER_KIRBY_STATUS_KIND_KROOL_SPECIAL_N_SPIT,
+        *FIGHTER_KIRBY_STATUS_KIND_KROOL_SPECIAL_N_SWALLOW,
+        *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N2,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_FIRE,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCINA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCINA_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCINA_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_LUCINA_SPECIAL_N_END_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_LUIGI_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MARIO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MARIOD_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MARTH_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MARTH_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_MARTH_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_MARTH_SPECIAL_N_END_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_MIIFIGHTER_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MIISWORDSMAN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MIIGUNNER_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MIIGUNNER_SPECIAL_N1_FIRE,
+        *FIGHTER_KIRBY_STATUS_KIND_MIIGUNNER_SPECIAL_N1_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_MIIGUNNER_SPECIAL_N1_START,
+        *FIGHTER_KIRBY_STATUS_KIND_MIIGUNNER_SPECIAL_N1_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N_POCKET,
+        *FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N_SEARCH,
+        *FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N_FAILURE,
+        *FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N_TAKE_OUT,
+        *FIGHTER_KIRBY_STATUS_KIND_NESS_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_NESS_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_NESS_SPECIAL_N_FIRE,
+        *FIGHTER_KIRBY_STATUS_KIND_NESS_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_PACKUN_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_PACKUN_SPECIAL_N_HIT_END,
+        *FIGHTER_KIRBY_STATUS_KIND_PACKUN_SPECIAL_N_FAILURE,
+        *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PEACH_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PEACH_SPECIAL_N_HIT,
+        *FIGHTER_KIRBY_STATUS_KIND_PFUSHIGISOU_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PFUSHIGISOU_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_PFUSHIGISOU_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_PIKACHU_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_PITB_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_PITB_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_PITB_SPECIAL_N_DIR,
+        *FIGHTER_KIRBY_STATUS_KIND_PIKMIN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PLIZARDON_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_POPO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PURIN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PURIN_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_PURIN_SPECIAL_N_HIT_END,
+        *FIGHTER_KIRBY_STATUS_KIND_PURIN_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_PZENIGAME_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_PZENIGAME_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_PZENIGAME_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_FAILURE,
+        *FIGHTER_KIRBY_STATUS_KIND_REFLET_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_REFLET_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_REFLET_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_REFLET_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_ROSETTA_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_ROSETTA_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_ROSETTA_SPECIAL_N_RETURN,
+        *FIGHTER_KIRBY_STATUS_KIND_ROSETTA_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N_END2,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N_END3,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_ROY_SPECIAL_N_END_MAX,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUS_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUS_SPECIAL_N_C,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUS_SPECIAL_N_E,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUS_SPECIAL_N_F,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUS_SPECIAL_N_H,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUSD_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUSD_SPECIAL_N_C,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUSD_SPECIAL_N_E,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUSD_SPECIAL_N_F,
+        *FIGHTER_KIRBY_STATUS_KIND_SAMUSD_SPECIAL_N_H,
+        *FIGHTER_KIRBY_STATUS_KIND_SHEIK_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SHEIK_SPECIAL_N_LOOP,
+        *FIGHTER_KIRBY_STATUS_KIND_SHEIK_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_SHEIK_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N_POCKET,
+        *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N_SEARCH,
+        *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N_FAILURE,
+        *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N_TAKE_OUT,
+        *FIGHTER_KIRBY_STATUS_KIND_SNAKE_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SNAKE_SPECIAL_N_HOLD_AIR,
+        *FIGHTER_KIRBY_STATUS_KIND_SNAKE_SPECIAL_N_HOLD_JUMP,
+        *FIGHTER_KIRBY_STATUS_KIND_SNAKE_SPECIAL_N_HOLD_JUMP_AERIAL,
+        *FIGHTER_KIRBY_STATUS_KIND_SNAKE_SPECIAL_N_THROW,
+        *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N_HIT,
+        *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N_REBOUND,
+        *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N_FAIL,
+        *FIGHTER_KIRBY_STATUS_KIND_SZEROSUIT_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SZEROSUIT_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_SZEROSUIT_SPECIAL_N_SHOOT_H,
+        *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1,
+        *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_END,
+        *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2,
+        *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_OPEN_WAIT,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE_START,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE_END,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_EAT,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BOMB,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_FOOD,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_ITEM,
+        *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_LARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_WIIFIT_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_WIIFIT_SPECIAL_N_HOLD,
+        *FIGHTER_KIRBY_STATUS_KIND_WIIFIT_SPECIAL_N_CANCEL,
+        *FIGHTER_KIRBY_STATUS_KIND_WIIFIT_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_WIIFIT_SPECIAL_N_END,
+        *FIGHTER_KIRBY_STATUS_KIND_YOSHI_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_YOSHI_SPECIAL_N_1,
+        *FIGHTER_KIRBY_STATUS_KIND_YOSHI_SPECIAL_N_2,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -955,11 +1180,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     
-    // Fox Laser Land Cancel and Fast Fall
-    fox_laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Fox Laser Land Cancel
+    fox_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
 
-    // Falco Laser Land Cancel and Fast Fall
-    falco_laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Falco Laser Land Cancel
+    falco_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
 
     // Water Shuriken Max Dash Cancel
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
@@ -971,11 +1196,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
 
     // Chef Land Cancel
-    ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     frame_data(boma, status_kind, motion_kind, frame);
 
-    // Nayru's Love Land Cancel and Fast Fall
-    nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
+    // Nayru's Love Drift and Fast Fall
+    nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
 
     // Hero Dash Cancel Frizz
     dash_cancel_frizz(fighter);
@@ -1007,14 +1232,14 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Clown Cannon Shield Cancel
     clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame);
 
-    // Link's Bow Fastfall
-    bow_fastfall(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Link's Bow Drift
+    bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
     // Bonus Fruit Airdodge Cancel
     bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
 
-    // Dark Pit's Bow Fastfall Land Cancel
-    bow_ff_lc(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Dark Pit's Bow Land Cancel
+    pitb_bow_lc(boma, status_kind, situation_kind, cat[1], stick_y);
 
     // Flamethower Land Cancel
     plizardon_flame_cancel(boma, status_kind, situation_kind, frame);
@@ -1022,17 +1247,17 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Metal Blade Airdodge Cancel
     blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
 
-    // Simon's Axe Fastfall
-    axe_ff(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Simon's Axe Drift
+    axe_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
-    // Toon Link's Bow Fastfall
-    heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Toon Link's Bow Drift
+    heros_bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
     // Young Link's Bow Fastfall
-    fire_arrow_ff(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
+    fire_arrow_drift(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
 
     // Others Aerial Drift
-    copy_ability_other_aerial_drift(fighter);
+    // copy_ability_other_aerial_drift(fighter);
 
     // PM-like Neutral B Cancels
     donkey_nspecial_cancels(fighter, boma, status_kind, situation_kind);
