@@ -343,29 +343,44 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 // Copy Abilities
-// Fox Laser Land Cancel
-unsafe fn fox_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Fox Drift and Laser Land Cancel
+unsafe fn fox_drift_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-    }
-}
-
-// Falco Laser Land Cancel
-unsafe fn falco_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
         }
     }
 }
 
-// Laser Airdodge Cancel
-unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+// Falco Drift and Laser Land Cancel
+unsafe fn falco_drift_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        }
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
+    }
+}
+
+// Wolf Drift and Laser Airdodge Cancel
+unsafe fn wolf_drift_airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N {
         if frame > 17.0 {
             boma.check_airdodge_cancel();
+        }
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
         }
     }
 }
@@ -420,8 +435,8 @@ unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, sta
     }
 }
 
-// Chef Land Cancel
-unsafe fn chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+// Chef Drift and Land Cancel
+unsafe fn chef_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
@@ -429,6 +444,11 @@ unsafe fn chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
         if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
         }
     }
 }
@@ -699,21 +719,6 @@ unsafe fn fire_arrow_drift(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         }
     }
 }
-
-
-//unsafe fn copy_ability_other_aerial_drift(fighter: &mut L2CFighterCommon) {
-//    if fighter.is_status_one_of(&[
-//        *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N,
-//        *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N,
-//        *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N,
-//        *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N]) {
-//        if fighter.is_situation(*SITUATION_KIND_AIR) {
-//            if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
-//                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-//            }
-//        }
-//    }
-//}
 
 // PM-like neutral-b canceling
 // Donkey Kong
@@ -1224,11 +1229,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 
-    // Fox Laser Land Cancel
-    fox_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Fox Drift and Laser Land Cancel
+    fox_drift_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
 
-    // Falco Laser Land Cancel
-    falco_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Falco Drift and Laser Land Cancel
+    falco_drift_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
 
     // Water Shuriken Max Dash Cancel
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
@@ -1239,8 +1244,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Bite Early Throw and Turnaround
     bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
 
-    // Chef Land Cancel
-    chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    // Chef Drift and Land Cancel
+    chef_drift_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     frame_data(boma, status_kind, motion_kind, frame);
 
     // Nayru's Love Drift and Fast Fall
@@ -1249,8 +1254,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Hero Dash Cancel Frizz
     dash_cancel_frizz(fighter);
 
-    // Laser Airdodge Cancel
-    airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
+    // Wolf Drift and Laser Airdodge Cancel
+    wolf_drift_airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
 
     // Bullet Arts Mechanics
     bayo_nspecial_mechanics(fighter, boma);
@@ -1299,9 +1304,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Young Link's Bow Fastfall
     fire_arrow_drift(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
-
-    // Others Aerial Drift
-    // copy_ability_other_aerial_drift(fighter);
 
     // PM-like Neutral B Cancels
     donkey_nspecial_cancels(fighter, boma, status_kind, situation_kind);
