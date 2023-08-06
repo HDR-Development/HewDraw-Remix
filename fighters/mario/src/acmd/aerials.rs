@@ -176,34 +176,49 @@ unsafe fn mario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        FT_MOTION_RATE(fighter, 1.333);
+        FT_MOTION_RATE(fighter, 1.2);
     }
-    frame(lua_state, 5.0);
-    for _ in 0..5 {
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.1, 367, 15, 0, 45, 4.5, 0.0, -0.5, 0.0, None, None, None, 0.75, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.1, 367, 15, 0, 45, 8.0, 0.0, 6.0, 0.0, None, None, None, 0.75, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        }
-        wait(lua_state, 1.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-        }
-        wait(lua_state, 1.0);
-    }
-    frame(lua_state, 23.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 65, 90, 0, 55, 11.5, 0.0, 6.8, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.1, 367, 15, 0, 45, 3.5, 0.0, -0.5, 3.0, None, None, None, 0.75, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.1, 367, 15, 0, 45, 4.8, 0.0, 6.0, 0.0, None, None, None, 0.75, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-    wait(lua_state, 2.0);
+    frame(lua_state, 25.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-
-    frame(lua_state, 33.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 
+}
+#[acmd_script( agent = "mario", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 8.0, 0, -27, 0, 0, 0.65, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 1.8, 2.6, -27, 0, 0, 0.38, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.5, 1.5, -27, 0, 0, 0.35, true);
+    }
+}
+
+#[acmd_script( agent = "mario", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attackairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_mario_attackair_l01"));
+    }
 }
 
 #[acmd_script( agent = "mario", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
@@ -220,7 +235,6 @@ unsafe fn mario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     */
-
 }
 
 pub fn install() {
@@ -231,6 +245,8 @@ pub fn install() {
         mario_attack_air_b_game,
         mario_attack_air_hi_game,
         mario_attack_air_lw_game,
+        effect_attackairlw,
+        sound_attackairlw,
         mario_landing_air_lw_game,
     );
 }
