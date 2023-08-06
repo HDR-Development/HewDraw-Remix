@@ -27,6 +27,8 @@
       <float hash="long_punch_length">3.5</float>
       <float hash="long_shift_punch_length">3.5</float>
       
+      <int hash="punch_frame">9</int>
+      <int hash="long_punch_frame">12</int>
       <int hash="punch_back_frame">13</int>
       <int hash="long_punch_back_frame">15</int>
 
@@ -44,11 +46,11 @@
       <int hash="punch_frame">16</int>
       <int hash="long_punch_frame">20</int>
 
-      <int hash="punch_back_frame">16</int>
-      <int hash="punch_back_brake_frame">15</int>
+      <int hash="punch_back_frame">12</int>
+      <int hash="punch_back_brake_frame">11</int>
 
-      <int hash="long_punch_back_frame">16</int>
-      <int hash="long_punch_back_brake_frame">15</int>
+      <int hash="long_punch_back_frame">12</int>
+      <int hash="long_punch_back_brake_frame">11</int>
 
       <float hash="shift_control_angle_up_max">7</float>
       <float hash="shift_control_angle_down_max">4</float>
