@@ -119,7 +119,7 @@ unsafe extern "C" fn special_n_cancel_end(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn special_n_jump_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("pre");
+    // println!("pre");
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),

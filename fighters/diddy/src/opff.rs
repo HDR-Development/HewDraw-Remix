@@ -75,7 +75,47 @@ unsafe fn fastfall_dashattack(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_DASH
+        *FIGHTER_STATUS_KIND_ATTACK_DASH])
+
+        && fighter.is_situation(*SITUATION_KIND_AIR) {
+            fighter.sub_air_check_dive();
+            if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+                if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                    let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+    
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                    app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+    
+                    
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                    app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+    
+                    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+                }
+            }
+        }
+    }
+
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_DANGER,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_BLOW,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_FLIP_FALL,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_STICK_JUMP,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_STICK_JUMP2,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_FALL_ROLL,
+        *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_HIT_CEIL,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -89,6 +129,7 @@ unsafe fn fastfall_dashattack(fighter: &mut L2CFighterCommon) {
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
                 app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
 
+                
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 app::sv_kinetic_energy::enable(fighter.lua_state_agent);
@@ -129,6 +170,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dash_attack_jump_cancels(fighter, boma, status_kind, situation_kind);
     fastfall_dashattack(fighter);
     dashattack_land_cancel(boma);
+    fastfall_specials(fighter);
 }
 
 
