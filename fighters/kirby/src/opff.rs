@@ -923,6 +923,7 @@ unsafe fn master_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_
 }
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    let copystatus = StatusModule::status_kind(fighter.module_accessor);
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
@@ -1198,12 +1199,31 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_KIRBY_STATUS_KIND_YOSHI_SPECIAL_N_2,
         ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+        if fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_LOOP,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SPIT,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_DRINK,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_END,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_FALL,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP1,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP2,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_TURN_AIR,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_FALL,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_JUMP,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
+            ])
+        || (0x206..0x37c).contains(&copystatus) {
+            fighter.sub_air_check_dive();
+            if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+                if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                    let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
 
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
@@ -1213,7 +1233,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 app::sv_kinetic_energy::enable(fighter.lua_state_agent);
 
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+                    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+                }
             }
         }
     }
