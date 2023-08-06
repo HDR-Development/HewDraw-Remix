@@ -64,7 +64,7 @@ unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 14.0);
-     FT_MOTION_RATE_RANGE(fighter, 14.0, 20.0, 7.0);    
+     FT_MOTION_RATE_RANGE(fighter, 14.0, 21.0, 7.0);    
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hammer2"), 15.0, 361, 95, 0, 15, 7.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
         ATTACK(fighter, 1, 0, Hash40::new("hammer2"), 13.0, 361, 95, 0, 15, 3.0, -9.0, 1.0, 0.0, Some(-12.00), None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
