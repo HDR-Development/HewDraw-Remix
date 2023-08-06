@@ -10,11 +10,11 @@ unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
         CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
