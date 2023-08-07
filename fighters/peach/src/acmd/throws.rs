@@ -60,7 +60,8 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 38.0);
+    frame(lua_state, 35.0);
+    FT_MOTION_RATE_RANGE(fighter, 35.0, 50.0, 8.0);   
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_KINOPIO, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
