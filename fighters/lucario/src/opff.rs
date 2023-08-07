@@ -254,10 +254,12 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     if !boma.is_in_hitlag() {
         // Set faster passive regeneration rate in burnout
         let is_burnout = VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-        if is_burnout {
+        if !is_burnout {
+            // regular rate
             let rate = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate");
             VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, rate);
         } else {
+            // burnout rate
             let rate = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate_burnout");
             VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, rate);
         }

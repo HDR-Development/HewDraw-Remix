@@ -454,6 +454,9 @@ unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
         COL_PRI(fighter, 200);
         FLASH(fighter, 0.67, 0, 0.78, 0.31);
         FLASH(fighter, 1, 1, 1, 0.75);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("lucario_shinsoku1"), Hash40::new("lucario_shinsoku2"), 13, Hash40::new("handl"), 0.0, 0.0, 0.0, Hash40::new("handr"), 0.0, 0.0, 0.0, true, Hash40::new("null"), Hash40::new("waist"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, -1.0);
+        // EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 7, -20, 0, 0, 0, 1.0, true);
+        // LAST_EFFECT_SET_RATE(fighter, 0.4);
     }
     wait(lua_state, 1.0);
     for _ in 0..4 {
@@ -484,6 +487,7 @@ unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
+        AFTER_IMAGE_OFF(fighter, 4);
     }
 }
 
@@ -521,6 +525,9 @@ unsafe fn effect_specialairlw(fighter: &mut L2CAgentBase) {
         COL_PRI(fighter, 200);
         FLASH(fighter, 0.67, 0, 0.78, 0.31);
         FLASH(fighter, 1, 1, 1, 0.75);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("lucario_shinsoku1"), Hash40::new("lucario_shinsoku2"), 13, Hash40::new("handl"), 0.0, 0.0, 0.0, Hash40::new("handr"), 0.0, 0.0, 0.0, true, Hash40::new("null"), Hash40::new("waist"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, -1.0);
+        // EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 19, -12, 45, 0, 0, 1.0, true);
+        // LAST_EFFECT_SET_RATE(fighter, 0.4);
     }
     wait(lua_state, 1.0);
     for _ in 0..4 {
@@ -551,6 +558,7 @@ unsafe fn effect_specialairlw(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
+        AFTER_IMAGE_OFF(fighter, 4);
     }
 }
 
