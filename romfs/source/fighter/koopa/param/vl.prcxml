@@ -10,13 +10,28 @@
   </struct>
   <list hash="param_special_n">
     <struct index="0">
+      <float hash="fire_speed_mul_max">0.6</float>
+      <float hash="fire_scale_max">0.85</float>
       <float hash="limit_up">60</float>
       <float hash="limit_down">50</float>
-      <float hash="fire_speed_max_frame">600</float>
-      <float hash="fire_scale_min_frame">240</float>
-      <float hash="fire_scale_max_frame">600</float>
+      <float hash="fire_speed_min_frame">150</float>
+      <float hash="fire_speed_max_frame">300</float>
+      <float hash="fire_scale_min_frame">150</float>
+      <float hash="fire_scale_max_frame">300</float>
     </struct>
     <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_breath">
+    <hash40 index="0">dummy</hash40>
+    <struct index="1">
+      <float hash="ground_offset">-3.6</float>
+      <float hash="life">60</float>
+      <float hash="hit_frames">60</float>
+      <float hash="min_speed">4</float>
+      <float hash="max_speed">4</float>
+    </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
