@@ -1,0 +1,98 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
+attack_12:
+  extra:
+    cancel_frame: 29
+attack_11:
+  extra:
+    cancel_frame: 18
+throw_f_b:
+  extra:
+    cancel_frame: 33
+throw_f_f:
+  extra:
+    cancel_frame: 27
+attack_lw3:
+  extra:
+    cancel_frame: 23
+throw_f_hi:
+  extra:
+    cancel_frame: 36
+special_hi:
+  extra:
+    cancel_frame: 111
+attack_hi4:
+  extra:
+    cancel_frame: 55
+attack_lw4:
+  extra:
+    cancel_frame: 60
+throw_f_lw:
+  extra:
+    cancel_frame: 41
+attack_hi3:
+  extra:
+    cancel_frame: 36
+attack_s4_s:
+  extra:
+    cancel_frame: 60
+attack_s3_s:
+  extra:
+    cancel_frame: 35
+attack_s3_lw:
+  extra:
+    cancel_frame: 35
+attack_air_f:
+  extra:
+    cancel_frame: 49
+attack_s3_hi:
+  extra:
+    cancel_frame: 35
+special_air_lw:
+  blend_frames: 2
+special_lw_end:
+  extra:
+    cancel_frame: 22
+attack_air_dash:
+  game_script: game_attackairdash
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attackairdash.nuanmb
+  scripts:
+  - expression_attackairdash
+  - sound_attackairdash
+  - effect_attackairdash
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 35
+    freeze_during_hitstop: false
+special_n_cancel:
+  extra:
+    cancel_frame: 9
+special_air_n_cancel:
+  extra:
+    cancel_frame: 9

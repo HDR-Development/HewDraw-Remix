@@ -38,7 +38,7 @@
       <float hash="fire_rush_speed">3.8</float>
       <int hash="fire_rush_brake_frame">5</int>
       <float hash="fire_rush_brake">0.16</float>
-      <float hash="fire_crush_x_mul">0.75</float>
+      <float hash="fire_crush_x_mul">0.8</float>
       <float hash="fire_fall_x_mul">0.65</float>
       <int hash="fire_landing_frame">25</int>
     </struct>

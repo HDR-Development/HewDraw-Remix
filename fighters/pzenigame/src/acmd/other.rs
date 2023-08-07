@@ -121,6 +121,23 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pzenigame", script = "effect_dash", category = ACMD_EFFECT, low_priority )]
+unsafe fn dash_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_dash"), Hash40::new("top"), 2.5, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.56, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "pzenigame", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
 unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -132,19 +149,78 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_turn_dash_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
+#[acmd_script( agent = "pzenigame", script = "effect_runbrake", category = ACMD_EFFECT, low_priority )]
+unsafe fn runbrake_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 0.56, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
     }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    
+}
+
+#[acmd_script( agent = "pzenigame", script = "effect_runbrakel", category = ACMD_EFFECT, low_priority )]
+unsafe fn runbrakel_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 0.56, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "pzenigame", script = "effect_runbraker", category = ACMD_EFFECT, low_priority )]
+unsafe fn runbraker_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 0.56, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "pzenigame", script = "effect_turnrun", category = ACMD_EFFECT, low_priority )]
+unsafe fn turnrun_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_run"), Hash40::new("top"), 0, 0, 1.5, 0, 180, 0, 0.84, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+}
+
+#[acmd_script( agent = "pzenigame", script = "effect_turnrunbrake", category = ACMD_EFFECT, low_priority )]
+unsafe fn turnrunbrake_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("pzenigame_brake"), Hash40::new("top"), 0, 0, -5, 0, 0, 0, 0.56, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
 }
 
 #[acmd_script( agent = "pzenigame", script = "game_catch" , category = ACMD_GAME , low_priority)]
@@ -209,7 +285,13 @@ pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
+        dash_effect,
         dash_sound,
+        runbrake_effect,
+        runbrakel_effect,
+        runbraker_effect,
+        turnrun_effect,
+        turnrunbrake_effect,
         pzenigame_catch_game,
         damageflyhi_sound,
         damageflylw_sound,

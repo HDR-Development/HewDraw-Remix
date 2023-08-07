@@ -324,9 +324,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
     }
 
     // Double air brake value when above max horizontal jump speed
-    let status_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x8);
-    if !*(status_module as *const bool).add(0x12a)
-    && boma.status_frame() > 0 {
+    if boma.status_frame() > 0 {
         let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
         let ratio = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_RATIO);
         // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
@@ -410,6 +408,7 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
             energy.speed_limit = PaddedVec2::new(air_x_speed_max, 0.0);
             energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0);
             energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0);
+            VarModule::set_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.0);
         },
         FlyAdjust => {
             let kind = app::utility::get_kind(boma);

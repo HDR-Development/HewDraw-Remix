@@ -169,6 +169,10 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
+            pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
+
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -194,6 +198,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+
+            pub const FRAME_COUNTER: i32 = 0x000E;
 
             // floats
 
@@ -229,9 +235,13 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
             pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
+            pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
+            pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
         }
         pub mod status {
             // flags
+            pub const FAF_REACHED: i32 = 0x10FD;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
@@ -278,12 +288,13 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
             pub const IS_ACTIVATE: i32 = 0x1100;
             pub const DIRECT_HIT: i32 = 0x1101;
+            // floats
+            pub const ABK_ANGLE: i32 = 0x1102;
         }
     }
 
@@ -413,6 +424,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
+            pub const IS_NEUTRAL_TOSS: i32 = 0x1101;
 
             // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
@@ -571,12 +583,13 @@ pub mod vars {
         }
     }
 
-    // pub mod koopa {
-    //     pub mod instance {
-    //         // flags
-    //         pub use super::super::mario::instance::NOKNOK_SHELL;
-    //     }
-    // }
+    pub mod koopa {
+        pub mod instance {
+            // ints
+            pub const FIREBALL_COOLDOWN_FRAME: i32 = 0x0100;
+            pub const FIREBALL_EFFECT_ID: i32 = 0x0101;
+        }
+    }
 
     pub mod lucario {
         pub mod status {
@@ -638,7 +651,7 @@ pub mod vars {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-
+            pub const TRAINING_ALWAYS_MISFIRES: i32 = 0x0101;
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;
@@ -822,6 +835,7 @@ pub mod vars {
 
             pub const SPECIAL_S_HOP: i32 = 0x1100;
             pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
+            pub const SPECIAL_S_ENABLE_CONTROL: i32 = 0x1102;
 
             // ints
             pub const SPECIAL_S_STEP: i32 = 0x1100;
@@ -840,6 +854,8 @@ pub mod vars {
             pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
             pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
             pub const IS_GRAB_WALK : i32 = 0x0105;
+            pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
+            pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
             
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
@@ -904,13 +920,19 @@ pub mod vars {
 
     pub mod robot {
         pub mod instance {
+            // flags
+            pub const AIRTIME_DAIR: i32 = 0x0100;
+            pub const AIRTIME_BAIR: i32 = 0x0101;
             // ints
             pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
             pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
         }
         pub mod status {
             // flags
-            pub const BOOST_ATTACK: i32 = 0x1100;
+            pub const IS_CHARGE_STARTED: i32 = 0x1100;
+            pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const IS_CHARGE_MAX: i32 = 0x1102;
+            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
         }
     }
 
@@ -1081,6 +1103,7 @@ pub mod vars {
             pub const SKEWER_STICK_Y: i32 = 0x1100;
         }
     }
+
     pub mod iceclimbers {
         pub mod instance {
             //flags
@@ -1091,6 +1114,7 @@ pub mod vars {
             pub const SEPARATED_EFFECT: i32 = 0x0110;
         }
     }
+
     pub mod packun {
         pub mod instance {
             // flags
@@ -1125,6 +1149,19 @@ pub mod vars {
             //ints
             pub const SPECIAL_HI_FUEL: i32 = 0x0100;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0101;
+
+            // floats
+            pub const STORED_DAMAGE: i32 = 0x0100;
+
+            // flags
+            pub const BLUNDERBUSS_GRAB: i32 = 0x0100;
+        }
+        pub mod status {
+            // ints
+            pub const CURRENT_CHARGE: i32 = 0x1100;
+
+            // flags
+            pub const GUT_CHECK_CHARGED: i32 = 0x1100;
         }
     }
 }

@@ -192,7 +192,7 @@ unsafe extern "C" fn sub_specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 if link_situation_helper(fighter).get_bool() {
                     fighter.change_status(
-                        L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
+                        L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL),
                         L2CValue::Bool(true)
                     );
                     return 1.into()

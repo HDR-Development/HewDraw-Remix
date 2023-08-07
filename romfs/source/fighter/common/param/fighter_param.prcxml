@@ -10,7 +10,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.52</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.51</float>
+      <float hash="jump_speed_x_max">1.52</float>
       <float hash="jump_initial_y">11.946</float>
       <float hash="jump_y">33.33</float>
       <float hash="mini_jump_y">13</float>
@@ -45,7 +45,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.8</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.685</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.8</float>
       <float hash="jump_initial_y">12.155</float>
       <float hash="mini_jump_y">13</float>
       <float hash="jump_aerial_y">34.5</float>
@@ -79,6 +80,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.5</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">9.9385</float>
       <float hash="mini_jump_y">12.58</float>
@@ -113,7 +115,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.55</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.8</float>
+      <float hash="jump_speed_x">0.9</float>
       <float hash="jump_speed_x_max">1.34</float>
       <float hash="jump_initial_y">13.2275</float>
       <float hash="mini_jump_y">19.4</float>
@@ -148,7 +150,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.696</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.515</float>
+      <float hash="jump_speed_x">0.93</float>
+      <float hash="jump_speed_x_max">1.596</float>
       <float hash="jump_initial_y">12.9022</float>
       <float hash="air_accel_x_mul">0.048</float>
       <float hash="air_accel_x_add">0.02</float>
@@ -182,8 +185,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.6</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.95</float>
-      <float hash="jump_speed_x_max">1.5</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.6</float>
       <float hash="jump_initial_y">9.07</float>
       <float hash="air_accel_x_mul">0.045</float>
       <float hash="air_accel_x_add">0.02</float>
@@ -250,7 +253,7 @@
       <float hash="run_speed_max">1.8</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">0.8</float>
-      <float hash="jump_speed_x_max">1.62</float>
+      <float hash="jump_speed_x_max">1.8</float>
       <float hash="jump_initial_y">12.69125</float>
       <float hash="mini_jump_y">15</float>
       <float hash="air_accel_x_mul">0.03</float>
@@ -361,8 +364,8 @@
       <float hash="run_accel_add">0.01</float>
       <float hash="run_speed_max">2.3</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.9</float>
-      <float hash="jump_speed_x_max">2</float>
+      <float hash="jump_speed_x">0.95</float>
+      <float hash="jump_speed_x_max">2.1</float>
       <float hash="jump_initial_y">14.4</float>
       <float hash="jump_y">40.13</float>
       <float hash="mini_jump_y">12.95</float>
@@ -428,8 +431,9 @@
       <float hash="run_accel_add">0.1</float>
       <float hash="run_speed_max">1.5</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_mul">0.75</float>
-      <float hash="jump_speed_x_max">1.2</float>
+      <float hash="jump_speed_x">0.71</float>
+      <float hash="jump_speed_x_mul">0.73</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.7357</float>
       <float hash="mini_jump_y">15.66</float>
       <float hash="air_accel_x_mul">0.06</float>
@@ -566,6 +570,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.83</float>
       <int hash="jump_squat_frame">3</int>
+      <float hash="jump_speed_x">0.76</float>
+      <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">13.9425</float>
       <float hash="mini_jump_y">15.5</float>
       <float hash="air_accel_x_mul">0.075</float>
@@ -599,8 +605,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.35</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_mul">0.75</float>
-      <float hash="jump_speed_x_max">1.13</float>
+      <float hash="jump_speed_x">0.72</float>
+      <float hash="jump_speed_x_mul">0.7</float>
+      <float hash="jump_speed_x_max">1.175</float>
       <float hash="jump_initial_y">11.2791</float>
       <float hash="mini_jump_y">14.24</float>
       <float hash="air_accel_x_mul">0.05</float>
@@ -632,7 +639,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.5</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.505</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">11.0398</float>
       <float hash="mini_jump_y">12</float>
       <float hash="jump_aerial_y">29.5</float>
@@ -667,7 +674,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.82</float>
       <int hash="jump_squat_frame">3</int>
-      <float hash="jump_speed_x_max">1.6</float>
+      <float hash="jump_speed_x_max">1.82</float>
       <float hash="jump_initial_y">11.63813</float>
       <float hash="jump_y">32</float>
       <float hash="mini_jump_y">15.43</float>
@@ -703,7 +710,7 @@
       <float hash="run_speed_max">1.5</float>
       <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x">0.7</float>
-      <float hash="jump_speed_x_mul">0.9</float>
+      <float hash="jump_speed_x_mul">1</float>
       <float hash="jump_speed_x_max">1.7</float>
       <float hash="jump_initial_y">17.0573</float>
       <float hash="mini_jump_y">12</float>
@@ -739,6 +746,7 @@
       <float hash="run_accel_add">0.012</float>
       <float hash="run_speed_max">1.8</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.21</float>
       <float hash="jump_initial_y">12.03345</float>
       <float hash="mini_jump_y">14.76</float>
@@ -771,6 +779,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.6</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.2</float>
       <float hash="jump_initial_y">12.03345</float>
       <float hash="mini_jump_y">12.6</float>
       <float hash="air_speed_x_stable">1</float>
@@ -801,8 +811,8 @@
       <float hash="run_accel_add">0.01</float>
       <float hash="run_speed_max">1.45</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.455</float>
+      <float hash="jump_speed_x_mul">0.75</float>
+      <float hash="jump_speed_x_max">1.8</float>
       <float hash="jump_initial_y">10.61365</float>
       <float hash="jump_y">30.5</float>
       <float hash="mini_jump_y">14.21</float>
@@ -837,7 +847,7 @@
       <float hash="run_accel_add">0.1</float>
       <float hash="run_speed_max">1.71</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.375</float>
+      <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">11.12183</float>
       <float hash="mini_jump_y">14.5</float>
       <float hash="air_accel_x_mul">0.03</float>
@@ -897,7 +907,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.5</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.475</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">9.8348</float>
       <float hash="mini_jump_y">11.76</float>
       <float hash="air_accel_x_mul">0.048</float>
@@ -967,7 +978,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.82</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.5</float>
+      <float hash="jump_speed_x_max">1.55</float>
       <float hash="jump_initial_y">11.0825</float>
       <float hash="mini_jump_y">12.96</float>
       <float hash="air_accel_x_mul">0.05</float>
@@ -1041,7 +1052,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.55</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_mul">0.95</float>
+      <float hash="jump_speed_x">1.3</float>
+      <float hash="jump_speed_x_mul">1</float>
       <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">10.90375</float>
       <float hash="mini_jump_y">13.7</float>
@@ -1059,7 +1071,7 @@
       <float hash="landing_attack_air_frame_f">7</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_hi">9</float>
-      <float hash="landing_attack_air_frame_lw">13</float>
+      <float hash="landing_attack_air_frame_lw">29</float>
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">10</float>
@@ -1114,9 +1126,9 @@
       <float hash="run_accel_add">0.01</float>
       <float hash="run_speed_max">1.55</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x">0.8</float>
+      <float hash="jump_speed_x">0.95</float>
       <float hash="jump_speed_x_mul">0.75</float>
-      <float hash="jump_speed_x_max">1.75</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.6893</float>
       <float hash="mini_jump_y">14</float>
       <float hash="jump_aerial_y">27</float>
@@ -1150,9 +1162,9 @@
       <float hash="run_accel_add">0.01</float>
       <float hash="run_speed_max">1.585</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.5</float>
-      <float hash="jump_speed_x_mul">0.85</float>
-      <float hash="jump_speed_x_max">1.345</float>
+      <float hash="jump_speed_x">0.4</float>
+      <float hash="jump_speed_x_mul">0.75</float>
+      <float hash="jump_speed_x_max">2.135</float>
       <float hash="jump_initial_y">12.6377</float>
       <float hash="mini_jump_y">15.873</float>
       <float hash="air_accel_x_mul">0.08</float>
@@ -1186,7 +1198,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.5</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.4</float>
+      <float hash="jump_speed_x_mul">1</float>
+      <float hash="jump_speed_x_max">1.45</float>
       <float hash="jump_initial_y">11.5294</float>
       <float hash="mini_jump_y">16.03</float>
       <float hash="air_speed_x_stable">0.93</float>
@@ -1225,7 +1238,7 @@
       <float hash="air_accel_x_mul">0.04</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">1</float>
-      <float hash="air_brake_x">0.016</float>
+      <float hash="air_brake_x">0.018</float>
       <float hash="air_accel_y">0.1</float>
       <float hash="air_speed_y_stable">1.75</float>
       <float hash="damage_fly_top_air_accel_y">0.1</float>
@@ -1252,7 +1265,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.9</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.5</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_mul">0.85</float>
+      <float hash="jump_speed_x_max">1.7</float>
       <float hash="jump_initial_y">14.7326</float>
       <float hash="mini_jump_y">17</float>
       <float hash="jump_aerial_y">33</float>
@@ -1357,7 +1372,7 @@
       <float hash="run_speed_max">1.36</float>
       <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x">1</float>
-      <float hash="jump_speed_x_mul">0.75</float>
+      <float hash="jump_speed_x_mul">0.7</float>
       <float hash="jump_speed_x_max">1.16</float>
       <float hash="jump_initial_y">11.7439</float>
       <float hash="mini_jump_y">15.02</float>
@@ -1394,8 +1409,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.625</float>
       <int hash="jump_squat_frame">3</int>
-      <float hash="jump_speed_x">0.67</float>
-      <float hash="jump_speed_x_max">1.305</float>
+      <float hash="jump_speed_x">0.7</float>
+      <float hash="jump_speed_x_mul">1</float>
+      <float hash="jump_speed_x_max">1.315</float>
       <float hash="jump_initial_y">11.9763</float>
       <float hash="mini_jump_y">11.69</float>
       <float hash="air_accel_x_mul">0.03</float>
@@ -1468,8 +1484,9 @@
       <float hash="run_accel_add">0.1</float>
       <float hash="run_speed_max">1.618</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">0.7</float>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.2</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">13.585</float>
       <float hash="mini_jump_y">17.98</float>
       <float hash="air_accel_x_mul">0.025</float>
@@ -1503,6 +1520,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.675</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_initial_y">12.0835</float>
       <float hash="mini_jump_y">14.32</float>
       <float hash="jump_aerial_y">25</float>
@@ -1541,15 +1559,15 @@
       <float hash="run_speed_max">1.8</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">0.9</float>
-      <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.58</float>
+      <float hash="jump_speed_x_mul">0.75</float>
+      <float hash="jump_speed_x_max">1.8</float>
       <float hash="jump_initial_y">11.44715</float>
       <float hash="mini_jump_y">12</float>
       <float hash="jump_aerial_y">33</float>
       <float hash="air_accel_x_mul">0.06</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">1.2</float>
-      <float hash="air_brake_x">0.0125</float>
+      <float hash="air_brake_x">0.015</float>
       <float hash="air_accel_y">0.16</float>
       <float hash="air_speed_y_stable">2.7</float>
       <float hash="damage_fly_top_air_accel_y">0.15</float>
@@ -1578,8 +1596,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.507</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x">0.8</float>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_mul">1</float>
+      <float hash="jump_speed_x_max">1.55</float>
       <float hash="jump_initial_y">11.61875</float>
       <float hash="mini_jump_y">15.09</float>
       <float hash="air_accel_x_mul">0.05</float>
@@ -1615,7 +1634,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.542</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.3</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">11.726</float>
       <float hash="mini_jump_y">11.99</float>
       <float hash="air_accel_x_mul">0.065</float>
@@ -1650,7 +1670,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.89</float>
       <int hash="jump_squat_frame">3</int>
-      <float hash="jump_speed_x_max">1.435</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.45</float>
       <float hash="jump_initial_y">12.727</float>
       <float hash="mini_jump_y">13.18</float>
       <float hash="air_accel_x_mul">0.066</float>
@@ -1682,7 +1703,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.67</float>
       <int hash="jump_squat_frame">3</int>
-      <float hash="jump_speed_x_max">1.235</float>
+      <float hash="jump_speed_x">0.77</float>
+      <float hash="jump_speed_x_max">1.25</float>
       <float hash="jump_initial_y">14.3</float>
       <float hash="mini_jump_y">16.17</float>
       <float hash="air_accel_x_mul">0.078</float>
@@ -1715,8 +1737,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">2.046</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">0.95</float>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.44</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">10.725</float>
       <float hash="jump_y">28</float>
       <float hash="jump_aerial_y">27</float>
@@ -1752,7 +1775,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.9</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.455</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.46</float>
       <float hash="jump_initial_y">16.445</float>
       <float hash="mini_jump_y">15.51</float>
       <float hash="air_accel_x_mul">0.058</float>
@@ -1785,8 +1809,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.815</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">0.77</float>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.315</float>
+      <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">12.8343</float>
       <float hash="mini_jump_y">14.31</float>
       <float hash="air_accel_x_mul">0.08</float>
@@ -1819,7 +1844,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.6</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.28</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">12.1908</float>
       <float hash="mini_jump_y">15.48</float>
       <float hash="jump_aerial_y">32.1</float>
@@ -1854,7 +1880,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.35</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.214</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.25</float>
       <float hash="jump_initial_y">11.8726</float>
       <float hash="mini_jump_y">14.52</float>
       <float hash="air_accel_x_mul">0.04</float>
@@ -1889,7 +1916,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.6</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.285</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">11.9763</float>
       <float hash="mini_jump_y">16.2</float>
       <float hash="air_accel_x_mul">0.022</float>
@@ -1922,7 +1950,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.724</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.325</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">12.298</float>
       <float hash="mini_jump_y">15.59</float>
       <float hash="air_accel_x_mul">0.058</float>
@@ -1954,7 +1983,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.642</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.31</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">12.155</float>
       <float hash="mini_jump_y">14.48</float>
       <float hash="air_accel_x_mul">0.048</float>
@@ -1992,7 +2022,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.535</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.3</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.35</float>
       <float hash="jump_initial_y">10.725</float>
       <float hash="air_speed_x_stable">1.1</float>
       <float hash="air_speed_y_stable">1.97</float>
@@ -2021,7 +2052,7 @@
       <float hash="run_accel_add">0.03</float>
       <float hash="run_speed_max">1.855</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x">0.925</float>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.425</float>
       <float hash="jump_initial_y">11.6188</float>
       <float hash="jump_y">36.5</float>
@@ -2059,7 +2090,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.68</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.22</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.6071</float>
       <float hash="air_accel_x_mul">0.027</float>
       <float hash="air_accel_x_add">0.015</float>
@@ -2092,7 +2124,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.635</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.35</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">13.9425</float>
       <float hash="mini_jump_y">12</float>
       <float hash="air_accel_x_mul">0.065</float>
@@ -2127,7 +2160,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.875</float>
       <int hash="jump_squat_frame">3</int>
-      <float hash="jump_speed_x_max">1.53</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.6</float>
       <float hash="jump_initial_y">11.7975</float>
       <float hash="mini_jump_y">12.2</float>
       <float hash="jump_y">33</float>
@@ -2162,10 +2196,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.815</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="mini_jump_y">12.56</float>
+      <float hash="jump_speed_x">0.85</float>
       <float hash="jump_speed_x_max">1.55</float>
       <float hash="jump_initial_y">12.155</float>
-      <int hash="jump_count_max">4</int>
       <float hash="mini_jump_y">12.56</float>
       <float hash="air_accel_x_mul">0.05</float>
       <float hash="air_accel_x_add">0.01</float>
@@ -2182,8 +2215,8 @@
       <float hash="landing_attack_air_frame_b">13</float>
       <float hash="landing_attack_air_frame_hi">12</float>
       <float hash="landing_attack_air_frame_lw">14</float>
-      <bool hash="air_lasso_type">false</bool>
       <int hash="landing_heavy_frame">5</int>
+      <int hash="jump_count_max">4</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
@@ -2199,6 +2232,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.51</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">0.85</float>
       <float hash="jump_speed_x_max">1.25</float>
       <float hash="jump_initial_y">10.5</float>
       <float hash="mini_jump_y">15</float>
@@ -2230,6 +2264,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.63</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">0.95</float>
       <float hash="jump_speed_x_mul">0.6</float>
       <float hash="jump_speed_x_max">1.567</float>
       <float hash="jump_initial_y">11.7975</float>
@@ -2264,6 +2299,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.58</float>
       <int hash="jump_squat_frame">3</int>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.45</float>
       <float hash="jump_initial_y">11.6188</float>
       <float hash="mini_jump_y">15.29</float>
       <float hash="air_accel_x_mul">0.03</float>
@@ -2296,8 +2333,9 @@
       <float hash="run_accel_mul">0.05571</float>
       <float hash="run_speed_max">1.45</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">0.95</float>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.365</float>
+      <float hash="jump_speed_x_max">1.45</float>
       <float hash="jump_initial_y">11.297</float>
       <float hash="jump_y">31.6</float>
       <float hash="mini_jump_y">11</float>
@@ -2335,8 +2373,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.59</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">0.95</float>
       <float hash="jump_speed_x_mul">0.825</float>
-      <float hash="jump_speed_x_max">1.45</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">13.3705</float>
       <float hash="mini_jump_y">16</float>
       <float hash="air_accel_x_mul">0.035</float>
@@ -2369,9 +2408,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.86</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.85</float>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.4</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">11.61875</float>
       <float hash="mini_jump_y">12</float>
       <float hash="jump_aerial_y">32</float>
@@ -2406,7 +2445,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.625</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.25</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.3675</float>
       <float hash="mini_jump_y">14.5</float>
       <float hash="jump_aerial_y">28</float>
@@ -2442,7 +2482,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.716</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.44</float>
+      <float hash="jump_speed_x">0.95</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">10.654</float>
       <float hash="mini_jump_y">14.3</float>
       <float hash="air_accel_x_mul">0.05</float>
@@ -2478,8 +2519,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.65</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">0.85</float>
       <float hash="jump_speed_x_mul">0.85</float>
-      <float hash="jump_speed_x_max">1.3475</float>
+      <float hash="jump_speed_x_max">1.35</float>
       <float hash="jump_initial_y">11.85</float>
       <float hash="mini_jump_y">13.2</float>
       <float hash="air_accel_x_mul">0.04</float>
@@ -2512,8 +2554,8 @@
       <float hash="run_accel_mul">0.08323</float>
       <float hash="run_speed_max">1.51</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x">0.9</float>
-      <float hash="jump_speed_x_max">1.295</float>
+      <float hash="jump_speed_x">0.85</float>
+      <float hash="jump_speed_x_max">1.35</float>
       <float hash="jump_initial_y">10.47375</float>
       <float hash="jump_y">30</float>
       <float hash="jump_aerial_y">28</float>
@@ -2548,9 +2590,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.54</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x">0.8</float>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.285</float>
+      <float hash="jump_speed_x_max">1.6</float>
       <float hash="jump_initial_y">14.55</float>
       <float hash="mini_jump_y">12</float>
       <float hash="air_accel_x_mul">0.03</float>
@@ -2581,7 +2623,8 @@
       <float hash="run_accel_add">0.07915</float>
       <float hash="run_speed_max">1.495</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.218</float>
+      <float hash="jump_speed_x">0.9</float>
+      <float hash="jump_speed_x_max">1.2</float>
       <float hash="jump_initial_y">9</float>
       <float hash="jump_y">18.5</float>
       <float hash="mini_jump_y">10</float>
@@ -2618,6 +2661,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.7</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.27</float>
       <float hash="air_speed_x_stable">0.91</float>
       <float hash="air_speed_y_stable">1.8</float>
@@ -2644,7 +2688,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.85</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.495</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">15.8</float>
       <float hash="jump_y">33.5</float>
       <float hash="mini_jump_y">13.2</float>
@@ -2676,7 +2721,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.4975</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.25</float>
+      <float hash="jump_speed_x">0.85</float>
+      <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.328</float>
       <float hash="mini_jump_y">14.7</float>
       <float hash="air_accel_x_mul">0.04</float>
@@ -2705,7 +2751,8 @@
       <float hash="run_accel_mul">0.07635</float>
       <float hash="run_speed_max">1.89</float>
       <int hash="jump_squat_frame">3</int>
-      <float hash="jump_speed_x_max">1.66</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.7</float>
       <float hash="jump_initial_y">10.848</float>
       <float hash="mini_jump_y">13</float>
       <float hash="air_accel_x_mul">0.05</float>
@@ -2736,7 +2783,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.8</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.34</float>
+      <float hash="jump_speed_x">0.95</float>
+      <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">9.975</float>
       <float hash="mini_jump_y">13.45</float>
       <float hash="air_accel_x_mul">0.03</float>
@@ -2771,7 +2819,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">2.1</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.95</float>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_mul">0.75</float>
       <float hash="jump_speed_x_max">1.8</float>
       <float hash="jump_initial_y">12.5125</float>
@@ -2811,7 +2859,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.6</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_max">1.315</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.32</float>
       <float hash="jump_initial_y">10.114</float>
       <float hash="jump_y">28.5</float>
       <float hash="mini_jump_y">13</float>
@@ -2847,6 +2896,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.26</float>
       <int hash="jump_squat_frame">5</int>
+      <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.18</float>
       <float hash="jump_initial_y">11.0468</float>
       <float hash="mini_jump_y">14</float>
@@ -2883,7 +2933,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.61</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x">0.95</float>
+      <float hash="jump_speed_x">1.0</float>
       <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">13.2275</float>
       <float hash="jump_y">35</float>
@@ -2921,9 +2971,9 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.79</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.82</float>
-      <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.46</float>
+      <float hash="jump_speed_x">0.7</float>
+      <float hash="jump_speed_x_mul">1</float>
+      <float hash="jump_speed_x_max">1.65</float>
       <float hash="jump_initial_y">10.7357</float>
       <float hash="jump_y">30.03</float>
       <float hash="mini_jump_y">11.5</float>
@@ -2960,7 +3010,8 @@
       <float hash="run_accel_add">0.012</float>
       <float hash="run_speed_max">1.85</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x_mul">0.825</float>
+      <float hash="jump_speed_x">0.9</float>
+      <float hash="jump_speed_x_mul">0.95</float>
       <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">12.03345</float>
       <float hash="jump_y">31.5</float>
@@ -2997,7 +3048,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.9</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.8</float>
+      <float hash="jump_speed_x">0.9</float>
       <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">11.0718</float>
       <float hash="jump_y">29.97</float>
@@ -3033,7 +3084,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.735</float>
       <int hash="jump_squat_frame">5</int>
-      <float hash="jump_speed_x_max">1.415</float>
+      <float hash="jump_speed_x">0.85</float>
+      <float hash="jump_speed_x_max">1.45</float>
       <float hash="jump_initial_y">11.0825</float>
       <float hash="jump_y">33</float>
       <float hash="mini_jump_y">13.96</float>
@@ -3069,8 +3121,8 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.825</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.75</float>
-      <float hash="jump_speed_x_max">1.55</float>
+      <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">10.725</float>
       <float hash="jump_y">26</float>
       <float hash="mini_jump_y">12</float>
@@ -3104,6 +3156,7 @@
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.63</float>
       <int hash="jump_squat_frame">4</int>
+      <float hash="jump_speed_x">0.85</float>
       <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.5</float>
       <float hash="jump_y">31</float>
