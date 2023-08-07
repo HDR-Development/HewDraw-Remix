@@ -64,12 +64,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
-    fastfall_specials(fighter);
-}
-
 pub unsafe fn remove_super_missiles(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G, false);
@@ -81,6 +75,7 @@ pub unsafe fn remove_super_missiles(boma: &mut BattleObjectModuleAccessor) {
  
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     remove_super_missiles(boma);
+    fastfall_specials(fighter);
 }
 
 pub unsafe extern "Rust" fn common_samusd(fighter: &mut L2CFighterCommon) {
