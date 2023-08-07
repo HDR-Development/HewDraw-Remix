@@ -85,7 +85,7 @@ special_lw_light:
       - sound_speciallwlight
       - effect_speciallwlight
     extra:
-      cancel_frame: 57
+      cancel_frame: 55
 special_air_lw_light:
     game_script: game_specialairlwlight
     flags:
@@ -100,4 +100,4 @@ special_air_lw_light:
       - sound_specialairlwlight
       - effect_specialairlwlight
     extra:
-      cancel_frame: 62
+      cancel_frame: 61

@@ -141,7 +141,7 @@ unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjec
 // Aerial SMG spin rise
 unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
     let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
-    let air_fri = Vector3f{x: 0.85, y: 1.0, z: 0.0}; // air friction
+    let air_fri = Vector3f{x: 0.89, y: 1.0, z: 0.0}; // air friction
     if motion_kind == hash40("special_air_lw_light") {
         if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) {
             if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
@@ -250,9 +250,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE,
-        *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
