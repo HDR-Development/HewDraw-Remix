@@ -15,6 +15,8 @@ attack_11:
   extra:
     cancel_frame: 17
 attack_lw3:
+  flags:
+    move: false
 attack_hi4:
   extra:
     cancel_frame: 50
