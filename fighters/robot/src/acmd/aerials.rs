@@ -38,7 +38,7 @@ unsafe fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(agent, Hash40::new("robot_nozzle_flare"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("robot_nozzle_flare"), false, false);
     }
 
 }
