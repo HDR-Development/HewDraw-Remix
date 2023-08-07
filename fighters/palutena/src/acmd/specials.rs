@@ -673,7 +673,7 @@ unsafe fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(agent) {
         FLASH(agent, 1, 1, 1, 0);
-        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_attack"), Hash40::new("stick"), 0, 8.5, 0, 0, 0, 0, 1.2, true);
+        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_attack"), Hash40::new("stick"), 0, 8.5, 0, 0, 0, 0, 0.9, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 22.0);
