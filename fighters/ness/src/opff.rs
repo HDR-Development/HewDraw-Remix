@@ -37,6 +37,27 @@ unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
     }
 }
 
+unsafe fn magnet_stall_prevention(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
+    if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END
+        && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(boma.object(), vars::common::instance::STALL_PREVENTION) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END, true);
+            // ^ just here to check if it ran at all
+        }
+        //VarModule::on_flag(boma.object(), vars::common::instance::STALL_PREVENTION);
+    }
+
+    if status_kind == *FIGHTER_STATUS_KIND_FALL
+        && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END
+        && situation_kind == *SITUATION_KIND_AIR {
+        if  !VarModule::is_flag(boma.object(), vars::common::instance::STALL_PREVENTION) {
+            // try to turn it on if the previous conditions were true?
+            VarModule::on_flag(boma.object(), vars::common::instance::STALL_PREVENTION);
+        }
+    }
+}
+
 // Ness PK Thunder cancel
 unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD {
@@ -121,7 +142,8 @@ unsafe fn uair_scaling(boma: &mut BattleObjectModuleAccessor) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_jump_cancel_turnaround(fighter);
-    pk_thunder_cancel(boma, id, status_kind, situation_kind);
+    //pk_thunder_cancel(boma, id, status_kind, situation_kind);
+    //magnet_stall_prevention(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     pk_fire_ff(boma, stick_y);
     upspecialend_cliff(fighter);
