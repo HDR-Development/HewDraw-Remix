@@ -14,8 +14,8 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     for _ in 0..3 {
         if is_excute(fighter) {
             FT_MOTION_RATE(fighter, 1.250);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 367, 80, 45, 15, 5.5, 0.0, 5.0, 1.0, None, None, None, 0.5, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.8, 366, 80, 45, 15, 5.5, 0.0, 5.0, 1.0, None, None, None, 0.5, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 365, 80, 45, 15, 5.5, 0.0, 5.0, 1.0, None, None, None, 0.5, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.8, 365, 80, 45, 15, 5.5, 0.0, 5.0, 1.0, None, None, None, 0.5, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
             AttackModule::set_add_reaction_frame(boma, 0, 1.0, false);
             AttackModule::set_add_reaction_frame(boma, 1, 1.0, false);
         }

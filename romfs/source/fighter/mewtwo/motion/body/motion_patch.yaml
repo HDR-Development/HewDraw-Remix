@@ -12,6 +12,8 @@ throw_lw:
     cancel_frame: 39
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 0
 attack_11:
   extra:
     cancel_frame: 20
