@@ -125,11 +125,16 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     let damage_gain_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.damage_meter_gain_mul");
     MeterModule::set_damage_gain_mul(fighter.object(), damage_gain_mul);
     if [ // list of statuses that should pause passive meter regen
+        // wallcling
+	    *FIGHTER_STATUS_KIND_ATTACH_WALL,
+	    *FIGHTER_STATUS_KIND_ATTACH_WALL_WAIT,
+        // grabbed
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED_OCTOPUS,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED_YOSHI,
+        // ledge stuff
         *FIGHTER_STATUS_KIND_CLIFF_ATTACK,
         *FIGHTER_STATUS_KIND_CLIFF_CATCH,
         *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
@@ -140,6 +145,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3,
         *FIGHTER_STATUS_KIND_CLIFF_ROBBED,
         *FIGHTER_STATUS_KIND_CLIFF_WAIT,
+        // hit
         *FIGHTER_STATUS_KIND_DAMAGE,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
@@ -149,7 +155,21 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        // dead
         *FIGHTER_STATUS_KIND_DEAD,
+        // knockdown
+        *FIGHTER_STATUS_KIND_DOWN,
+	    *FIGHTER_STATUS_KIND_DOWN_CONTINUE,
+	    *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+	    *FIGHTER_STATUS_KIND_DOWN_EAT,
+	    *FIGHTER_STATUS_KIND_DOWN_REFLECT_LR,
+	    *FIGHTER_STATUS_KIND_DOWN_SPOT,
+	    *FIGHTER_STATUS_KIND_DOWN_STAND,
+	    *FIGHTER_STATUS_KIND_DOWN_STAND_ATTACK,
+	    *FIGHTER_STATUS_KIND_DOWN_STAND_FB,
+	    *FIGHTER_STATUS_KIND_DOWN_WAIT,
+	    *FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE,
+        // defensive options
         *FIGHTER_STATUS_KIND_ESCAPE,
         *FIGHTER_STATUS_KIND_ESCAPE_F,
         *FIGHTER_STATUS_KIND_ESCAPE_B,
@@ -157,11 +177,31 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_GUARD_OFF, 
         *FIGHTER_STATUS_KIND_GUARD_ON,
         *FIGHTER_STATUS_KIND_REBIRTH,
+        // shieldbreak
         *FIGHTER_STATUS_KIND_SHIELD_BREAK_DOWN,
         *FIGHTER_STATUS_KIND_SHIELD_BREAK_FALL,
-        *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY
+        *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY,
+        *FIGHTER_STATUS_KIND_FURAFURA,
+        *FIGHTER_STATUS_KIND_FURAFURA_END,
+        *FIGHTER_STATUS_KIND_FURAFURA_STAND,
+        // lay down
+        *FIGHTER_STATUS_KIND_LAY_DOWN,
+        // sleeping
+        *FIGHTER_STATUS_KIND_SLEEP,
+        *FIGHTER_STATUS_KIND_SLEEP_END,
+        *FIGHTER_STATUS_KIND_SLEEP_FALL,
+        *FIGHTER_STATUS_KIND_SLEEP_START,
+        // slip
+        *FIGHTER_STATUS_KIND_SLIP,
+        *FIGHTER_STATUS_KIND_SLIP_DAMAGE,
+        *FIGHTER_STATUS_KIND_SLIP_STAND,
+        *FIGHTER_STATUS_KIND_SLIP_STAND_ATTACK,
+        *FIGHTER_STATUS_KIND_SLIP_STAND_B,
+        *FIGHTER_STATUS_KIND_SLIP_STAND_F,
+        *FIGHTER_STATUS_KIND_SLIP_WAIT,
+
     ].contains(&status_kind) {
-        pause_meter_regen(fighter, 90);
+        pause_meter_regen(fighter, 180);
     }
 
     let meter = MeterModule::meter(fighter.object());

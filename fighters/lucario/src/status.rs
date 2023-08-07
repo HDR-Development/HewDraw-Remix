@@ -21,6 +21,7 @@ pub fn install() {
     special_n::install();
     special_s::install();
     install_status_scripts!(
+        shield_break_fly_main,
         dead_main,
         pre_walk,
         pre_dash,
@@ -79,7 +80,16 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 }
 
 // FIGHTER_STATUS_KIND_DEAD
+// go into burnout when shield broken
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MeterModule::reset(fighter.battle_object);
+    VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    original!(fighter)
+}
 
+// FIGHTER_STATUS_KIND_DEAD
+// reset meter to initial state between stocks
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_DEAD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
