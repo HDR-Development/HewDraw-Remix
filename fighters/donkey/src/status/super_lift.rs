@@ -41,16 +41,7 @@ pub unsafe fn super_lift_platdrop(fighter: &mut smash::lua2cpp::L2CFighterCommon
 
 /// subroutine for beginning a fastfall in super lift
 pub unsafe fn super_lift_fastfall(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_cat_flag(Cat2::FallJump)
-        && fighter.stick_y() < -0.66
-        && KineticModule::get_sum_speed_y(fighter.boma(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0
-        && !WorkModule::is_flag(fighter.boma(), *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-        let lr = PostureModule::lr(fighter.module_accessor);
-        let flash_y_offset = WorkModule::get_param_float(fighter.module_accessor, hash40("height"), 0);
-        EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 15, 6, 5, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.75);
-        WorkModule::set_flag(fighter.boma(), true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-    }
+    fighter.sub_air_check_dive();
 }
 
 /// callback run during SUPER_LIFT_WAIT
