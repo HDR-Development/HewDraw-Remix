@@ -22,26 +22,30 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_PUSH_B_BUTTON) || WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_CONTINUE_HI)
+    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
     && situation_kind == *SITUATION_KIND_AIR {
-        if frame > 13.0 {
-            if boma.is_button_on(Buttons::Attack) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
+        //if !StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+            if frame > 13.0 {
+                if boma.is_button_on(Buttons::Attack) {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
+                }
             }
-        }
+        //}
     }
 }
 
 unsafe fn uspecial_cancels2(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
     if StatusModule::status_kind(boma) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP
     && situation_kind == *SITUATION_KIND_AIR {
-            
+        if boma.is_button_on(Buttons::Attack) {
+
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             } 
 
+        }
     }
 }
 
@@ -219,6 +223,39 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
     
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
+        *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
@@ -230,6 +267,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     bair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);
     fuel_indicator_effect(fighter, boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ROBOT )]

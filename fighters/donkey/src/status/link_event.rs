@@ -5,7 +5,7 @@ use std::arch::asm;
 pub unsafe extern "C" fn donkey_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash2::app::LinkEvent) -> u64 {
     // param_3 + 0x10
     if event.link_event_kind.0 == hash40("capture") {
-        println!("hi");
+        // println!("hi");
         let capture_event : &mut smash2::app::LinkEventCapture = std::mem::transmute(event);
         let module_accessor = fighter.battle_object.module_accessor;
         if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {

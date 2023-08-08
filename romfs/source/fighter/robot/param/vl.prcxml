@@ -26,12 +26,12 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="blow_accel_y">0.06</float>
+      <float hash="blow_accel_y">0.12</float>
       <float hash="air_start_speed_y">0.3</float>
       <float hash="up_speed_limit">1.15</float>
       <float hash="up_power_limit_power">0.0025</float>
       <float hash="speed_max_y">1.15</float>
-      <float hash="hovering_accel_y">0.09</float>
+      <float hash="hovering_accel_y">0.065</float>
       <float hash="hovering_speed_max_y">2.0</float>
       <float hash="hovering_speed_max_x">0.9</float>
       <float hash="energy_max_frame">100</float>

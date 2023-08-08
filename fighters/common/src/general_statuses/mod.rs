@@ -125,6 +125,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             end_pass_ground,
             virtual_ftStatusUniqProcessDamage_exec_common,
             FighterStatusDamage__correctDamageVectorEffect,
+            sub_fighter_pre_end_status,
             sub_is_dive,
         );
     }
@@ -574,6 +575,11 @@ pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFi
     let ret = call_original!(fighter);
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_AIR));
     ret
+}
+
+// Disables aerials canceling fast fall
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_fighter_pre_end_status)]
+pub unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_is_dive)]
