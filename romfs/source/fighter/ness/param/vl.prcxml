@@ -44,7 +44,6 @@
       <float hash="life">120</float>
       <float hash="stick_min">0.5</float>
       <float hash="add_angle">9</float>
-      <int hash="penetration_frame">120</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
