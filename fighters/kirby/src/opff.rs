@@ -299,49 +299,6 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     }
 }
 
-unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_in_hitlag()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_LOOP,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SPIT,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_DRINK,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_END,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_FALL,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP1,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP2,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_TURN_AIR,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_FALL,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_JUMP,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
-        *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
-        ])
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
-    }
-}
-
 // Copy Abilities
 // Fox Drift and Laser Land Cancel
 unsafe fn fox_drift_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
