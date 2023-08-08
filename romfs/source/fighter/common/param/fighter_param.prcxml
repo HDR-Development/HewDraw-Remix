@@ -656,7 +656,7 @@
       <float hash="landing_attack_air_frame_n">8</float>
       <float hash="landing_attack_air_frame_f">12</float>
       <float hash="landing_attack_air_frame_b">8</float>
-      <float hash="landing_attack_air_frame_lw">12</float>
+      <float hash="landing_attack_air_frame_lw">13</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">9.9</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
