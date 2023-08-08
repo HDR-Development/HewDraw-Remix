@@ -70,20 +70,6 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             }
         }
 
-        else if fighter_kind == *FIGHTER_KIND_WIIFIT {
-            if VarModule::is_flag(boma_reference.object(), vars::wiifit::instance::DEEP_BREATHING_COOLDOWN)
-            && x1 == hash40("param_special_lw") {
-                if x2 == 0x21a6281763 {
-                    println!("smaller h");
-                    return 300;
-                }
-                else if x2 == 0x21011c971a {
-                    println!("bigger h");
-                    return 300;
-                }
-            }
-        }
-
     }
 
     else if boma_reference.is_weapon() {
