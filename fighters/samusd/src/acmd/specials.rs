@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 // #[acmd_script( agent = "samusd", script = "game_specials" , category = ACMD_GAME , low_priority)]
 // unsafe fn game_specials(fighter: &mut L2CAgentBase) {
@@ -37,7 +35,7 @@ use super::*;
 // }
 
 #[acmd_script( agent = "samusd", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -93,7 +91,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -138,7 +136,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -171,7 +169,7 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -193,11 +191,10 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_specialhi,
-        game_specialairhi,
-        game_speciallw,
-        game_specialairlw,
-        
+        samusd_special_hi_game,
+        samusd_special_air_hi_game,
+        samusd_special_lw_game,
+        samusd_special_air_lw_game,
     );
 }
 
