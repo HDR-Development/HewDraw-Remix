@@ -635,6 +635,11 @@ pub mod vars {
     }
 
     pub mod lucina {
+        pub mod instance {
+            //int
+            /// This int stores damage received from an attack during quick riposte
+            pub const CURRENT_DAMAGE: i32 = 0x0100;
+        }
 
         pub mod status {
             // int
