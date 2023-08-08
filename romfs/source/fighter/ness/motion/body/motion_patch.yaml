@@ -1,3 +1,6 @@
+throw_lw:
+  extra:
+    cancel_frame: 45
 fall:
   blend_frames: 5
 fall_f:
