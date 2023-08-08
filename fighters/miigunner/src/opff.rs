@@ -115,7 +115,6 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor) {
         }
         if boma.is_situation(*SITUATION_KIND_AIR) {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            }
         }
     }
 }
