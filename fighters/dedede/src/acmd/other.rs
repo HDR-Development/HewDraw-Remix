@@ -218,8 +218,13 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let gordo_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
     let char_pos = *PostureModule::pos(owner_module_accessor);
     
-    /* Prevents backwards gordos */
+    
     if is_excute(fighter){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
+            PostureModule::reverse_rot_y_lr(boma);
+            PostureModule::reverse_lr(boma);
+        }
+        /* Prevents backwards gordos */
         if PostureModule::lr(owner_module_accessor) * gordo_speed_x < 0.0{
             KineticModule::mul_speed(boma, &Vector3f{x: -1.0, y: 1.0,z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         }
@@ -229,8 +234,9 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
                 if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
-                    let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 1.0) * 0.25);
-                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+
+                    let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 2.0) * 0.25);
+                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 120, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     
                     //Reduces the max amount of bounces by 1 per recatch on the same gordo
                     if (WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) - VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::RECATCH_COUNTER)) < 0{
@@ -239,8 +245,8 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
                 }
                 else{
                     /* Reduces damage on every bounce, by 10% of its last damage in this case */
-                    let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 7.0) * 0.1);
-                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.0 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+                    let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 8.0) * 0.1);
+                    ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
                 }
             }
         }
@@ -254,11 +260,11 @@ unsafe fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter){
-
+        //Intentionally blank to kill vanilla effects
     }
 
     if is_excute(fighter){
-
+        //Intentionally blank to kill vanilla effects
     }
 }
 
@@ -316,14 +322,25 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 2.0, true);
-        LAST_EFFECT_SET_RATE(fighter, 2.0);
-        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.8, 0.1);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_fire_fly"), false, false);
+    //Intentionally blank to kill vanilla effects
+
+}
+
+#[acmd_script( agent = "dedede_gordo", script = "game_specialswallstop" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+
+    if is_excute(fighter){
+        //Diminishing returns on repeated gordo spits
+        if VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) > 1{ 
+            let wall_stop_life_param = WorkModule::get_param_int(boma, hash40("param_gordo"), hash40("wall_stop_life"));
+            let new_gordo_life = wall_stop_life_param - ((VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) - 1)* 300);       
+            WorkModule::set_int(boma, new_gordo_life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+        }
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 8.0, 75, 50, 0, 70, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 80, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
 }
 
@@ -331,6 +348,14 @@ unsafe fn dedede_gordo_special_s_attack_effect(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+
+    frame(lua_state, 1.0);
+    if is_excute(fighter){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
+            WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
+        }
+    }
     frame(lua_state, 7.0);
     if is_excute(fighter){
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
@@ -341,6 +366,13 @@ unsafe fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
 unsafe fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+
+    if is_excute(fighter){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
+            WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
+        }
+    }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
@@ -410,7 +442,6 @@ pub fn install() {
         dedede_gordo_special_s_attack_effect,
         dedede_gordo_special_s_start_game,
         dedede_gordo_special_air_s_start_game,
-        //dedede_gordo_special_s_dead,
         dedede_gordo_special_s_wall_stop_game,
         damageflyhi_sound,
         damageflylw_sound,

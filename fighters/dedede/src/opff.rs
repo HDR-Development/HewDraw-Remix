@@ -66,11 +66,6 @@ unsafe fn gordo_stage_stick(boma: &mut BattleObjectModuleAccessor, frame: f32, f
                 KineticModule::clear_speed_all(article_boma); 
             } 
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG){
-            if AttackModule::is_infliction_status(article_boma, *COLLISION_KIND_MASK_HIT){
-                //StatusModule::change_status_force(article_boma, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD, true);
-            }
-        }
     }
     else{
         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, false);
@@ -83,12 +78,13 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO);
         let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
         let article_boma = sv_battle_object::module_accessor(object_id);
-        let char_pos = *PostureModule::pos(boma);
-        let gordo_pos = *PostureModule::pos(article_boma);
-        let char_lr = PostureModule::lr(boma);
+
+        let char_pos = *PostureModule::pos(boma); //position of dedede
+        let gordo_pos = *PostureModule::pos(article_boma); //position of gordo
+        let char_lr = PostureModule::lr(boma); // LR value before we check everything
+        let offset = Vector3f::new(6.0 * char_lr, 9.0, 0.0); //offset, if we need to move the area
         
-        // left of gordo / right of gordo / below gordo / above gordo
-        if(((gordo_pos.x - char_pos.x) * char_lr) < 19.0 && ((gordo_pos.x - char_pos.x) * char_lr) > -14.5 && (gordo_pos.y - char_pos.y) < 19.0 && (gordo_pos.y - char_pos.y) > -10.0){
+        if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 15.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 10.0){
             if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
                 if (fighter.status_frame() < 4){ //We don't want to go into recatch if we are in the middle of airdodge/landing
                     if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD {
@@ -97,10 +93,14 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, false);
                         VarModule::inc_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER);
                         
-                        ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+                        ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)); 
                         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                         if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR{
                             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.5, y: 0.0, z:1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+                            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_get"), 0.0, 1.0, false, 0.0, false, false);
+                        }
+                        else{
+                            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_get"), 0.0, 1.0, false, 0.0, false, false);
                         }
                         //Prevents turnarounds
                         if ControlModule::get_stick_x(fighter.module_accessor) * char_lr < 0.0{

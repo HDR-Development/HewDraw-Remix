@@ -7,7 +7,7 @@ unsafe fn special_lw_jump_squat_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL){
         StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK, true);
     }
-    return original!(fighter);
+    return 0.into();
 }
 
 
@@ -45,10 +45,12 @@ unsafe fn dedede_gordo_wall_stop_pre(weapon: &mut L2CWeaponCommon) -> L2CValue{
             *FS_SUCCEEDS_KEEP_ATTACK,
         );
 
-        ret
+        return 0.into();
+
     }
     else{
-        ret
+        return 0.into();
+
     }
 
 }
@@ -72,7 +74,7 @@ unsafe fn dedede_special_hi_status_main(fighter: &mut L2CFighterCommon) -> L2CVa
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_fall_special"), 0.0, 1.0, false, 0.0, false, false);
     StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
 
-    return original!(fighter);
+    return 0.into();
 }
 
 pub fn install(){
