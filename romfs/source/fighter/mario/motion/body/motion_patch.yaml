@@ -39,10 +39,14 @@ appeal_hi_l:
   extra:
     cancel_frame: 65
 attack_s3_s:
+  flags:
+    move: false
 appeal_hi_r:
   extra:
     cancel_frame: 65
 attack_s3_lw:
+  flags:
+    move: false
 attack_air_b:
   extra:
     cancel_frame: 30
@@ -50,12 +54,11 @@ attack_air_f:
   extra:
     cancel_frame: 48
 attack_s3_hi:
+  flags:
+    move: false
 attack_air_lw:
   extra:
     cancel_frame: 40
 attack_air_hi:
   extra:
     cancel_frame: 30
-catch_attack:
-  extra:
-    cancel_frame: 20

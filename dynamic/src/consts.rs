@@ -265,8 +265,6 @@ pub mod vars {
 
             pub const ENABLE_UCF: i32 = 0x1000;
 
-            pub const PUMMEL_USE_GLOBAL_STATS: i32 = 0x1000;
-
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -567,9 +565,8 @@ pub mod vars {
 
     pub mod kamui {
         pub mod status {
-            // flags
-            pub const IS_CHARGE_FINISHED: i32 = 0x1100;
-            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1101;
+            // floats
+            pub const CURRENT_CHARGE: i32 = 0x1100;
         }
     }
 
@@ -585,12 +582,13 @@ pub mod vars {
         }
     }
 
-    // pub mod koopa {
-    //     pub mod instance {
-    //         // flags
-    //         pub use super::super::mario::instance::NOKNOK_SHELL;
-    //     }
-    // }
+    pub mod koopa {
+        pub mod instance {
+            // ints
+            pub const FIREBALL_COOLDOWN_FRAME: i32 = 0x0100;
+            pub const FIREBALL_EFFECT_ID: i32 = 0x0101;
+        }
+    }
 
     pub mod lucario {
         pub mod status {
@@ -636,6 +634,11 @@ pub mod vars {
     }
 
     pub mod lucina {
+        pub mod instance {
+            //int
+            /// This int stores damage received from an attack during quick riposte
+            pub const CURRENT_DAMAGE: i32 = 0x0100;
+        }
 
         pub mod status {
             // int
@@ -761,9 +764,13 @@ pub mod vars {
     }
 
     pub mod mariod {
+        pub mod instance {
+            // flags
+            pub const UP_SPECIAL_CANCEL: i32 = 0x0100;
+        }
         pub mod status {
             // flags
-            pub const IS_SPECIAL_N_CHILL_PILL: i32 = 0x1100;
+            pub const CHILL_PILL: i32 = 0x1100;
         }
     }
 
@@ -771,6 +778,10 @@ pub mod vars {
         pub mod status {
             // flags
             pub const ELWIND1_CANCEL: i32 = 0x1100;
+        }
+        pub mod instance {
+            //flags
+            pub const THUNDER_CHARGE: i32 = 0x0100;
         }
     }
 
@@ -921,13 +932,19 @@ pub mod vars {
 
     pub mod robot {
         pub mod instance {
+            // flags
+            pub const AIRTIME_DAIR: i32 = 0x0100;
+            pub const AIRTIME_BAIR: i32 = 0x0101;
             // ints
             pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
             pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
         }
         pub mod status {
             // flags
-            pub const BOOST_ATTACK: i32 = 0x1100;
+            pub const IS_CHARGE_STARTED: i32 = 0x1100;
+            pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const IS_CHARGE_MAX: i32 = 0x1102;
+            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
         }
     }
 
@@ -967,10 +984,12 @@ pub mod vars {
 
     pub mod miigunner {
         pub mod status {
+            // flags
+            pub const BOOSTED_AERIAL: i32 = 0x1100;
+
             // floats
-            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
-            pub const IS_CHARGE_FINISHED: i32 = 0x1101;
-            pub const MISSILE_DETONATE: i32 = 0x1102;
+            pub const CURRENT_CHARGE: i32 = 0x1100;
+            pub const MISSILE_DETONATE: i32 = 0x1101;
         }
         pub mod instance {
             // flags
@@ -981,6 +1000,9 @@ pub mod vars {
             pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
             pub const MISSILE_OBJECT_ID: i32 = 0x0101;
             pub const STEALTHBOMB_EFF_HANDLER: i32 = 0x0102;
+
+            // floats
+            pub const GRENADE_CHARGE: i32 = 0x0102;
         }
     }
 
@@ -1098,6 +1120,7 @@ pub mod vars {
             pub const SKEWER_STICK_Y: i32 = 0x1100;
         }
     }
+
     pub mod iceclimbers {
         pub mod instance {
             //flags
@@ -1108,6 +1131,7 @@ pub mod vars {
             pub const SEPARATED_EFFECT: i32 = 0x0110;
         }
     }
+
     pub mod packun {
         pub mod instance {
             // flags
@@ -1142,6 +1166,42 @@ pub mod vars {
             //ints
             pub const SPECIAL_HI_FUEL: i32 = 0x0100;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0101;
+
+            // floats
+            pub const STORED_DAMAGE: i32 = 0x0100;
+
+            // flags
+            pub const BLUNDERBUSS_GRAB: i32 = 0x0100;
+        }
+        pub mod status {
+            // ints
+            pub const CURRENT_CHARGE: i32 = 0x1100;
+
+            // flags
+            pub const GUT_CHECK_CHARGED: i32 = 0x1100;
+        }
+    }
+
+    pub mod wiifit {
+        pub mod instance {
+            // flags
+            pub const DEEP_BREATHING_COOLDOWN: i32 = 0x0100;
+            pub const IS_RING_VISIBLE: i32 = 0x0101;
+
+            // ints
+            pub const SHOW_RING_MOTION: i32 = 0x0100;
+            pub const RING_EFF_HANDLE: i32 = 0x0101;
+            pub const RING_SECOND_EFF_HANDLE: i32 = 0x0102;
+            pub const RING_THIRD_EFF_HANDLE: i32 = 0x0103;
+
+            // floats
+            pub const RING_START_FRAME: i32 = 0x0100;
+            pub const RING_CURRENT_FRAME: i32 = 0x0101;
+            pub const RING_END_FRAME: i32 = 0x0102;
+            pub const RING_START_SIZE: i32 = 0x0103;
+            pub const RING_END_SIZE: i32 = 0x0104;
+            pub const RING_COLOR: i32 = 0x0105;     // this is a vector, so it needs three values (next value starts at 0x0108)
+            pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
 }

@@ -96,6 +96,3 @@ special_air_n_cancel:
     intangible_end_frame: 0
     cancel_frame: 35
     freeze_during_hitstop: false
-catch_attack:
-  extra:
-    cancel_frame: 20
