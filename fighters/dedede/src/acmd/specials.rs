@@ -224,7 +224,7 @@ unsafe fn dedede_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dedede", script = "expression_specialairsstart", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_specialsstart(fighter: &mut L2CAgentBase) {
+unsafe fn dedede_special_air_s_start_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -567,9 +567,11 @@ pub fn install() {
         dedede_special_s_start_game,
         dedede_special_s_start_effect,
         dedede_special_s_start_sound,
+        dedede_special_s_start_expression,
         dedede_special_air_s_start_effect,
         dedede_special_air_s_start_game,
         dedede_special_air_s_start_sound,
+        dedede_special_air_s_start_expression,
         dedede_special_s_miss_game,
         dedede_special_air_s_miss_game,
         dedede_special_s_get_game,

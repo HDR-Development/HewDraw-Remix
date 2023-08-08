@@ -331,7 +331,7 @@ unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
             let new_gordo_life = wall_stop_life_param - ((VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) - 1)* 300);       
             WorkModule::set_int(boma, new_gordo_life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 8.0, 75, 50, 0, 70, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 80, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
 }
