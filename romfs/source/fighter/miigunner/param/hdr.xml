@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <struct hash="param_charge">
+    <float hash="max_charge_frames">20.0</float>
+    <float hash="attack_air_lw_charge_start">10.0</float>
+    <float hash="attack_air_lw_charge_end">14.0</float>
+    <float hash="special_n3_charge_start">10.0</float>
+    <float hash="special_n3_charge_end">15.0</float>
+    <float hash="special_hi1_charge_start">6.0</float>
+    <float hash="special_hi1_charge_end">8.0</float>
+  </struct>
+</struct>
