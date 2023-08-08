@@ -297,15 +297,7 @@ unsafe fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_shot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 2.0, true);
-        LAST_EFFECT_SET_RATE(fighter, 2.0);
-        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.8, 0.1);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_fire_fly"), false, false);
-    }
+
 }
 
 #[acmd_script( agent = "dedede_gordo", script = "game_specialsattack" , category = ACMD_GAME , low_priority)]

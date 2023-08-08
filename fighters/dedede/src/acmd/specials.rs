@@ -114,14 +114,7 @@ unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
     }
     frame(lua_state, 25.0);
-    if VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO){
-        FT_MOTION_RATE(fighter, 29.0 / (65.0-26.0));    
-
-    }
-    else{
-        FT_MOTION_RATE(fighter, 35.0 / (65.0-26.0));    
-    }
-
+    FT_MOTION_RATE(fighter, 35.0 / (65.0-26.0));    
 }
 
 #[acmd_script( agent = "dedede", script = "effect_specialsstart" , category = ACMD_EFFECT , low_priority)]
