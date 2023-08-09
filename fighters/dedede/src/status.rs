@@ -31,7 +31,8 @@ unsafe fn dedede_gordo_wall_stop_pre(weapon: &mut L2CWeaponCommon) -> L2CValue{
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let ret = original!(weapon);
     let dedede = utils::util::get_battle_object_from_id(owner_id);
-    if StatusModule::prev_status_kind(owner_module_accessor, 0) == *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT || StatusModule::status_kind(owner_module_accessor) == *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT{
+    if StatusModule::prev_status_kind(owner_module_accessor, 0) == *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT 
+    || StatusModule::status_kind(owner_module_accessor) == *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT{
         StatusModule::init_settings(
             weapon.module_accessor,
             app::SituationKind(*SITUATION_KIND_GROUND),
