@@ -71,6 +71,8 @@ attack_lw4:
   extra:
     cancel_frame: 66
 attack_hi3:
+  flags:
+    move: false
   extra:
     cancel_frame: 48
 appeal_lw_r:
