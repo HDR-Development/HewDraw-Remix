@@ -60,6 +60,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
                 return 3;
             }
         }
+
         else if fighter_kind == *FIGHTER_KIND_PACKUN {
             if boma_reference.is_motion(Hash40::new("special_hi"))
             && !boma_reference.is_prev_situation(*SITUATION_KIND_AIR)
