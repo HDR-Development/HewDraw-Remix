@@ -139,37 +139,41 @@ unsafe fn packun_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "packun", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_attack_lw4_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+unsafe fn packun_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     frame(lua_state, 3.0);
-    if is_excute(agent) {
-        EFFECT_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 4, 9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+    if is_excute(fighter) {
+        EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 4, 9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 9.5);
+    if is_excute(fighter) {
+        if stance.label == 0 {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("mouth"), 6.0, 1.0, 0, 0, 0, 0, 0.6, true);
+        }
     }
     frame(lua_state, 10.0);
-    if is_excute(agent) {
-        LANDING_EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+    if is_excute(fighter) {
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
     }
-    frame(lua_state, 11.0);
-    for _ in 0..3 {
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
         if stance.label == 0 {
-            if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new("packun_atk_air_b_fire"), Hash40::new("potc"), 0, 0, 0, 0, 0, 0, 1.5, true);
-            }
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_atk_air_b_fire"), Hash40::new("potc"), -8, 0, 0, 0, 0, 0, 1.2, true);
         }
-        wait(lua_state, 2.0);
-    }
-    if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_smash_lw_arc"), Hash40::new("packun_smash_lw_arc"), Hash40::new("top"), 0, 5, 3, -180, 170, 7, 1.4, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("packun_smash_lw_arc"), Hash40::new("packun_smash_lw_arc"), Hash40::new("top"), 0, 5, 3, -180, 150, 7, 1.4, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 16.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("packun_smash_lw_arc"), true, true);
+    if is_excute(fighter) {
+        if stance.label == 0 {
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_atk_air_b_fire"), Hash40::new("potc"), -8, 0, 0, 0, 0, 0, 1.2, true);
+        }
     }
     frame(lua_state, 17.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_smash_lw_arc"), Hash40::new("packun_smash_lw_arc"), Hash40::new("top"), 0, 5, -4, -180, 20, 5, 1.4, true, *EF_FLIP_YZ);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("packun_smash_lw_arc"), true, true);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("packun_smash_lw_arc"), Hash40::new("packun_smash_lw_arc"), Hash40::new("top"), 0, 5, -4, -180, 20, 5, 1.4, true, *EF_FLIP_YZ);
     }
 }
 

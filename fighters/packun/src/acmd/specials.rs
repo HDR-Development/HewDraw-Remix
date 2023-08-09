@@ -119,7 +119,7 @@ unsafe fn packun_special_s_end_effect(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         if stance == 0 {
             EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("mouth"), 2, -2, 0, 0, 0, 0, 0.75, false);
-            EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 0.7, true);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 0.6, true);
         }
         if stance == 1 {
             EFFECT_FOLLOW(agent, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 1, true);
@@ -150,7 +150,9 @@ unsafe fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
         if stance == 0 {
             EFFECT(agent, Hash40::new("packun_spikeball_shoot"), Hash40::new("mouth"), 2, -0.6, 0, 0, 90, -100, 1, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 1.0, 0.35, 0.02);
-            EFFECT_FOLLOW(agent, Hash40::new("packun_atk_air_b_fire"), Hash40::new("mouth"), 7.5, 0, 0, 0, 0, 0, 1.5, true);
+            let effect = if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 75 { Hash40::new("sys_flame") } else { Hash40::new("packun_atk_air_b_fire") };
+            let size = if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 75 { 0.8 } else { 1.5 };
+            EFFECT_FOLLOW(agent, effect, Hash40::new("mouth"), 7.5, 0, 0, 0, 0, 0, size, true);
         }
         else if stance == 2 {
             EFFECT_FOLLOW_NO_STOP_FLIP(agent, Hash40::new("packun_bite_line"), Hash40::new("packun_bite_line"), Hash40::new("top"), -5, 11, 19, 0, -130, 35, 1, true, *EF_FLIP_YZ);
@@ -217,7 +219,7 @@ unsafe fn packun_special_air_s_end_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if stance == 0 {
             EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("mouth"), 2, -2, 0, 0, 0, 0, 0.75, false);
-            EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 0.7, true);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 0.6, true);
         }
         if stance == 1 {
             EFFECT_FOLLOW(agent, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 1, true);
@@ -245,7 +247,9 @@ unsafe fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
         if stance == 0 {
             EFFECT(agent, Hash40::new("packun_spikeball_shoot"), Hash40::new("mouth"), 2, -0.6, 0, 0, 90, -100, 1, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 1.0, 0.35, 0.02);
-            EFFECT_FOLLOW(agent, Hash40::new("packun_atk_air_b_fire"), Hash40::new("mouth"), 7.5, 0, 0, 0, 0, 0, 1.5, true);
+            let effect = if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 75 { Hash40::new("sys_flame") } else { Hash40::new("packun_atk_air_b_fire") };
+            let size = if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 75 { 0.8 } else { 1.5 };
+            EFFECT_FOLLOW(agent, effect, Hash40::new("mouth"), 7.5, 0, 0, 0, 0, 0, size, true);
         }
         else if stance == 2 {
             EFFECT_FOLLOW_NO_STOP_FLIP(agent, Hash40::new("packun_bite_line"), Hash40::new("packun_bite_line"), Hash40::new("top"), -5, 11, 19, 0, -130, 35, 1, true, *EF_FLIP_YZ);
@@ -314,7 +318,9 @@ unsafe fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
         //sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
         if stance == 0 {
             PLAY_SE(agent, Hash40::new("se_packun_special_n03"));
-            PLAY_SE(agent, Hash40::new("se_common_fire_m"));
+            if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 75 {
+                PLAY_SE(agent, Hash40::new("se_common_fire_m"));
+            }
         }
     }
     frame(lua_state, 3.0);
