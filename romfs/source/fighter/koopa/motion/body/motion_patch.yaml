@@ -44,7 +44,9 @@ appeal_hi_l:
 attack_dash:
   extra:
     cancel_frame: 44
-attack_s3_s:
+attack_s4_s:
+  extra:
+    cancel_frame: 85
 appeal_hi_r:
   extra:
     cancel_frame: 70
