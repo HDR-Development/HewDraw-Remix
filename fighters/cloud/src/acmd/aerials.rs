@@ -266,7 +266,7 @@ unsafe fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 4, false);
         AttackModule::clear(boma, 5, false);
     }
-    wait(lua_state, 25.0);
+    wait(lua_state, 24.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
