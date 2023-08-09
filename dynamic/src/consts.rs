@@ -728,6 +728,7 @@ pub mod vars {
             pub const TUMBLE_START: i32 = 0x0101;
             pub const IS_IN_TUMBLE: i32 = 0x0102;
             pub const DISABLE_SPECIAL_S: i32 = 0x0103;
+            pub const CAN_RESPAWN_TABLE: i32 = 0x0104;
         }
         pub mod status {
             // floats
