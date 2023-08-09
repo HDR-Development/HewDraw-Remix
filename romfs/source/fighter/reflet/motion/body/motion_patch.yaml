@@ -30,6 +30,8 @@ attack_hi3:
   extra:
     cancel_frame: 32
 attack_s3_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 30
 special_air_s:
