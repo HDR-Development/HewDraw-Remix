@@ -34,14 +34,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                     return false;
             }
         }
-        
-        // handle tilt attack input stopping you from getting a smash attack
-        if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,].contains(&flag)
-            && boma.is_cat_flag(CatHdr::TiltAttack) {
-                return false;
-        }
     
         // Disallow airdodge out of tumble until you reach your stable fall speed
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR

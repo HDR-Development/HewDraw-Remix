@@ -172,6 +172,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
     pickel_table_recreate(fighter, boma, id, status_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICKEL )]

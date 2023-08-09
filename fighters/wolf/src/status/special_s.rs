@@ -447,7 +447,6 @@ pub fn install() {
 }
 
 pub fn add_statuses() {
-    println!("blah");
     CustomStatusManager::add_new_agent_status_script(
         "fighter_kind_wolf".to_hash(),
         SPECIAL_S_RUSH,
