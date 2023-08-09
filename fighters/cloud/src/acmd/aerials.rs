@@ -281,7 +281,7 @@ unsafe fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(fighter.lua_state_agent, 2.0);
+    frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
