@@ -6,7 +6,7 @@ unsafe fn koopa_attack_s4_hold_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        let eff_handle = EffectModule::req_follow(boma, Hash40::new("sys_explosion_sign"), Hash40::new("haver"), &Vector3f::zero(), &Vector3f::zero(), 0.85, false, 0, 0, 0, 0, 0, false, false);
+        let eff_handle = EffectModule::req_follow(boma, Hash40::new("sys_explosion_sign"), Hash40::new("haver"), &Vector3f::zero(), &Vector3f::zero(), 0.75, false, 0, 0, 0, 0, 0, false, false);
         VarModule::set_int64(fighter.battle_object, vars::koopa::instance::CHARGE_EFFECT_HANDLER, eff_handle as u64);
     }
     frame(lua_state, 2.0);
