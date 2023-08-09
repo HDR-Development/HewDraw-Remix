@@ -43,7 +43,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon) {
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END]))
         && !fighter.is_in_hitlag()
         {
-            fighter.check_jump_cancel(false);
+            fighter.check_jump_cancel(false, false);
         }
     }
 }

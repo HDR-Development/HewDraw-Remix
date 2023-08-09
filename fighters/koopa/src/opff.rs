@@ -15,7 +15,7 @@ unsafe fn bowser_bomb_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_LW_G].contains(&status_kind) {
         if frame > 20.0 && frame < 31.0 {
             if situation_kind == *SITUATION_KIND_AIR {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
     }
