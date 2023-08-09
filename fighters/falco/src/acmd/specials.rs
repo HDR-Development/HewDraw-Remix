@@ -185,7 +185,7 @@ unsafe fn falco_special_lw_effect(fighter: &mut L2CAgentBase) {
 	let boma = fighter.boma();
 	if is_excute(fighter) {
 		//LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 0.8, true);
 		EffectModule::preset_limit_num(fighter.module_accessor, 2);
 		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
         //FLASH(fighter, 1, 1, 1, 0.627);
@@ -262,7 +262,7 @@ unsafe fn effect_speciallwloop(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SET_EFFECT) {
         if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 0.8, true);
             EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.2, 0, -0.5, 0, 0, 0, 1, true);
             VarModule::on_flag(fighter.battle_object, vars::falco::status::SET_EFFECT);
         }
