@@ -299,7 +299,7 @@ pub unsafe fn run(
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
     double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
-    drift_di(fighter, boma, status_kind, situation_kind);
+    //drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
