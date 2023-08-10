@@ -101,7 +101,6 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 23.0/(49.0 - 21.0));
         }
     }
-
 }
 
 #[acmd_script( agent = "kirby", script = "effect_mariospecialn" , category = ACMD_EFFECT , low_priority)]
@@ -127,7 +126,6 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
         else{
             EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, -45, 0, 1, true);
         }
-
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -601,7 +599,6 @@ unsafe fn mariod_special_air_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.5);
         }
     }
-
 }
 
 #[acmd_script( agent = "kirby", script = "effect_mariodspecialairn" , category = ACMD_EFFECT , low_priority)]
@@ -755,7 +752,6 @@ unsafe fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
-
 }
 
 #[acmd_script( agent = "kirby", script = "effect_luigispecialn" , category = ACMD_EFFECT , low_priority)]
