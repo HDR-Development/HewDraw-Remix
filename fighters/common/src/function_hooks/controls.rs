@@ -217,6 +217,31 @@ unsafe fn map_controls_hook(
                 Buttons::TiltAttack | Buttons::AttackAll
             )
         );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+            (l, gc_l, Parry, Buttons::Parry)(
+                r,
+                gc_r,
+                Parry,
+                Buttons::Parry
+            )(zl, gc_z, Parry, Buttons::Parry)(
+                zr,
+                gc_z,
+                Parry,
+                Buttons::Parry
+            )(a, gc_a, Parry, Buttons::Parry)(
+                b,
+                gc_b,
+                Parry,
+                Buttons::Parry
+            )(x, gc_x, Parry, Buttons::Parry)(
+                y,
+                gc_y,
+                Parry,
+                Buttons::Parry
+            )
+        );
         if (*mappings).gc_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
@@ -362,6 +387,41 @@ unsafe fn map_controls_hook(
                 joy_sr,
                 TiltAttack,
                 Buttons::TiltAttack | Buttons::AttackAll
+            )
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+            (l, joy_shoulder, Parry, Buttons::Parry)(
+                r,
+                joy_shoulder,
+                Parry,
+                Buttons::Parry
+            )(
+                zl,
+                joy_zshoulder,
+                Parry,
+                Buttons::Parry
+            )(
+                zr,
+                joy_zshoulder,
+                Parry,
+                Buttons::Parry
+            )(left_sl, joy_sl, Parry, Buttons::Parry)(
+                left_sr,
+                joy_sr,
+                Parry,
+                Buttons::Parry
+            )(
+                right_sl,
+                joy_sl,
+                Parry,
+                Buttons::Parry
+            )(
+                right_sr,
+                joy_sr,
+                Parry,
+                Buttons::Parry
             )
         );
 
@@ -512,6 +572,31 @@ unsafe fn map_controls_hook(
                     Buttons::TiltAttack | Buttons::AttackAll
                 )
             );
+            (*out).buttons |= apply_button_mappings!(
+                controller,
+                mappings,
+                (
+                    a,
+                    joy_down,
+                    Parry,
+                    Buttons::Parry
+                )(
+                    y,
+                    joy_up,
+                    Parry,
+                    Buttons::Parry
+                )(
+                    b,
+                    joy_left,
+                    Parry,
+                    Buttons::Parry
+                )(
+                    x,
+                    joy_right,
+                    Parry,
+                    Buttons::Parry
+                )
+            );
         }
         if (*mappings).joy_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
@@ -627,6 +712,51 @@ unsafe fn map_controls_hook(
                 pro_y,
                 TiltAttack,
                 Buttons::TiltAttack | Buttons::AttackAll
+            )
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+            (
+                l,
+                pro_l,
+                Parry,
+                Buttons::Parry
+            )(
+                r,
+                pro_r,
+                Parry,
+                Buttons::Parry
+            )(
+                zl,
+                pro_zl,
+                Parry,
+                Buttons::Parry
+            )(
+                zr,
+                pro_zr,
+                Parry,
+                Buttons::Parry
+            )(
+                a,
+                pro_a,
+                Parry,
+                Buttons::Parry
+            )(
+                b,
+                pro_b,
+                Parry,
+                Buttons::Parry
+            )(
+                x,
+                pro_x,
+                Parry,
+                Buttons::Parry
+            )(
+                y,
+                pro_y,
+                Parry,
+                Buttons::Parry
             )
         );
 

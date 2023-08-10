@@ -250,8 +250,8 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
                     // Disable Airdodging if you're pressing Attack.
-        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0
-        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
+        && ((cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0) || fighter.is_cat_flag(CatHdr::Parry))
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
             return true.into();
@@ -284,6 +284,11 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     || fighter.is_cat_flag(Cat1::Jump)
     || fighter.is_button_on(Buttons::Catch) {
         return false.into()
+    }
+    if fighter.is_button_on(Buttons::Parry) {
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+        return true.into()
     }
     call_original!(fighter)
 }

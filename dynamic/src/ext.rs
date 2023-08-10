@@ -270,6 +270,7 @@ bitflags! {
     pub struct CatHdr: i32 {
         const Wavedash = 0x1;
         const ShieldDrop = 0x2;
+        const Parry = 0x3;
     }
 
     pub struct PadFlag: i32 {
@@ -308,6 +309,7 @@ bitflags! {
         const CStickOverride = 0x100000;
         const SpecialParry = 0x200000;
         const TauntParry = 0x400000;
+        const Parry = 0x800000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -1224,8 +1226,9 @@ impl BomaExt for BattleObjectModuleAccessor {
                                     || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
         let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
 
-        (self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
-        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered)
+        (self.is_button_on(Buttons::Parry))
+        || ((self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
+        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered))
     }
 }
 
@@ -1318,6 +1321,7 @@ pub enum InputKind {
     Unset = 0xD,
     JumpMini = 0x12,   // this is ours :), also start at 0x12 to avoid masking errors
     TiltAttack = 0x13, // also custom, this one is for tilts!
+    Parry = 0x14,      // The H man was here
 }
 
 /// 0x50 Byte struct containing the information for controller mappings

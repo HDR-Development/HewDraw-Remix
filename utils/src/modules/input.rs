@@ -506,7 +506,8 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let wavedash_offset = CatHdr::Wavedash.bits().trailing_zeros() as usize;
     let wavedash_input = (triggered_buttons.intersects(Buttons::Jump)
         || triggered_buttons.intersects(Buttons::FlickJump))
-        && triggered_buttons.intersects(Buttons::Guard);
+        && (triggered_buttons.intersects(Buttons::Guard)
+        || triggered_buttons.intersects(Buttons::Parry));
     if wavedash_input {
         if input_module.hdr_cat.valid_frames[wavedash_offset] == 0 {
             input_module.hdr_cat.valid_frames[wavedash_offset] = unsafe {
@@ -519,6 +520,23 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         && !(input_module.hdr_cat.valid_frames[wavedash_offset] == 1 && wavedash_input)
     {
         input_module.hdr_cat.valid_frames[wavedash_offset] -= 1;
+    }
+
+    // Parry cat flag
+    let parry_offset = CatHdr::Parry.bits().trailing_zeros() as usize;
+    let parry_input = triggered_buttons.intersects(Buttons::Parry);
+    if parry_input {
+        if input_module.hdr_cat.valid_frames[parry_offset] == 0 {
+            input_module.hdr_cat.valid_frames[parry_offset] = unsafe {
+                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor)
+                    as u8
+            };
+        }
+    }
+    if input_module.hdr_cat.valid_frames[parry_offset] != 0
+        && !(input_module.hdr_cat.valid_frames[parry_offset] == 1 && parry_input)
+    {
+        input_module.hdr_cat.valid_frames[parry_offset] -= 1;
     }
 
     // ShieldDrop cat flag

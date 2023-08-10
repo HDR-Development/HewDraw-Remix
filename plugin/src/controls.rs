@@ -69,7 +69,8 @@ unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
 
         if input_list_vector.len() < 8 {
             input_list_vector.push(utils::ext::InputKind::AppealHi as u8);
-            input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+            //input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+            input_list_vector.push(utils::ext::InputKind::Parry as u8);
             input_list_vector.push(utils::ext::InputKind::SmashAttack as u8);
             input_list_vector.push(utils::ext::InputKind::TiltAttack as u8);
         }
@@ -86,7 +87,8 @@ unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
 
     if input_list_vector.len() < 8 {
         input_list_vector.push(utils::ext::InputKind::AppealHi as u8);
-        input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+        //input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+        input_list_vector.push(utils::ext::InputKind::Parry as u8);
         input_list_vector.push(utils::ext::InputKind::SmashAttack as u8);
         input_list_vector.push(utils::ext::InputKind::TiltAttack as u8);
     }
@@ -98,7 +100,8 @@ unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
     
     if input_list_vector.len() < 8 {
         input_list_vector.push(utils::ext::InputKind::AppealHi as u8);
-        input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+        //input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+        input_list_vector.push(utils::ext::InputKind::Parry as u8);
         input_list_vector.push(utils::ext::InputKind::SmashAttack as u8);
         input_list_vector.push(utils::ext::InputKind::TiltAttack as u8);
     }
