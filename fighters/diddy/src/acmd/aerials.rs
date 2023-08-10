@@ -146,6 +146,21 @@ unsafe fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "diddy", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("diddy_attack_arc"), Hash40::new("diddy_attack_arc"), Hash40::new("top"), 0, 10, -3, -48, 78.5, 51, 1.2, true, *EF_FLIP_YZ, 0.7);
+        LAST_EFFECT_SET_RATE(agent, 1.9);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_arc"), true, true);
+    }
+}
+
 #[acmd_script( agent = "diddy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn diddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -186,6 +201,7 @@ pub fn install() {
         diddy_attack_air_b_game,
         diddy_attack_air_hi_game,
         diddy_attack_air_lw_game,
+        effect_attackairhi,
     );
 }
 

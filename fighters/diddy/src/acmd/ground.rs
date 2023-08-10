@@ -64,23 +64,33 @@ unsafe fn diddy_attack_dash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+        smash::app::lua_bind::KineticEnergy::reset_energy(fighter.get_controller_energy() as *mut _ as _, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, &Vector2f::zero(), &Vector3f::zero(), fighter.module_accessor);
+        smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_mul(fighter.get_controller_energy(), 0.0);
+        smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_add(fighter.get_controller_energy(), 0.0);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
+    
     frame(lua_state, 5.0);
     if is_excute(fighter){
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 75, 80, 0, 55, 3.5, 0.0, 11.0, 8.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 75, 80, 0, 55, 3.5, 0.0, 11.0, 8.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 75, 80, 0, 55, 3.5, 0.0, 5.5, 7.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 75, 70, 0, 65, 3.5, 0.0, 11.0, 8.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 75, 70, 0, 65, 3.5, 0.0, 11.0, 8.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 75, 70, 0, 65, 3.5, 0.0, 5.5, 7.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
-    frame(lua_state, 10.0);
+    
+    frame(lua_state, 13.0);
     if is_excute(fighter){
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 90, 80, 0, 35, 3.5, 0.0, 11.0, 8.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 80, 0, 35, 3.5, 0.0, 11.0, 8.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 90, 80, 0, 35, 3.5, 0.0, 5.5, 7.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
-    wait(lua_state, 15.0);
+    wait(lua_state, 12.0);
     if is_excute(fighter){
         AttackModule::clear_all(boma);
-        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
+      
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter){
+    
     }
     frame(lua_state,  26.0);
     if is_excute(fighter) {
@@ -96,36 +106,18 @@ unsafe fn diddy_attack_dash(fighter: &mut L2CAgentBase) {
 unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         if boma.is_situation(*SITUATION_KIND_GROUND) {
             FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         }
     }
-    frame(lua_state, 8.0);
-    frame(lua_state, 9.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 1, 8, 1.5, 180, -330, 110, 1.37, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.8);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FLW_POS(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7, -0.5, 90, 90, 20, 0.95, true);
+        LAST_EFFECT_SET_RATE(fighter, 1);
     }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_spin_wind_s"), true, true);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        EFFECT_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 2, 8, 0, 171, -323, 80, 1.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.8);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_spin_wind_s"), true, true);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 7, -1, 180, -315, 90, 1.6, true, *EF_FLIP_YZ, 0.8);
-        LAST_EFFECT_SET_RATE(fighter, 1.95);
-    }
+   
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_spin_wind_s"), true, true);

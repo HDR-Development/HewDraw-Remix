@@ -62,6 +62,7 @@ unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     //wait_loop_clear();
     if is_excute(fighter) {
+        
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 1, 2.0, 361, 50, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 10.0);
@@ -86,10 +87,11 @@ unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairsjump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 5.5, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_DIDDY, *COLLISION_SITUATION_MASK_GA);
+    frame(lua_state, 1.0);
+    {
+        FT_MOTION_RATE(fighter, 0.4);
     }
+   
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 0);
