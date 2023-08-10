@@ -99,7 +99,8 @@
   </list>
   <list hash="param_bomb">
     <struct index="0">
-      <int hash="life">240</int>
+      <int hash="life">180</int>
+      <float hash="0x1c309814d2">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
