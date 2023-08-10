@@ -215,9 +215,7 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let gordo_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-    let char_pos = *PostureModule::pos(owner_module_accessor);
-    
+    let gordo_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);    
     
     if is_excute(fighter){
         if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
@@ -259,10 +257,6 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter){
-        //Intentionally blank to kill vanilla effects
-    }
-
     if is_excute(fighter){
         //Intentionally blank to kill vanilla effects
     }
@@ -323,12 +317,12 @@ unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-
+    let inhale_counter = VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER);
     if is_excute(fighter){
         //Diminishing returns on repeated gordo spits
-        if VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) > 1{ 
+        if inhale_counter > 1{ 
             let wall_stop_life_param = WorkModule::get_param_int(boma, hash40("param_gordo"), hash40("wall_stop_life"));
-            let new_gordo_life = wall_stop_life_param - ((VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::INHALE_COUNTER) - 1)* 300);       
+            let new_gordo_life = wall_stop_life_param - ((inhale_counter - 1) * 300);       
             WorkModule::set_int(boma, new_gordo_life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);
