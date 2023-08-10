@@ -25,6 +25,9 @@ attack_lw3:
 attack_s3_s:
   extra:
     cancel_frame: 30
+attack_air_n:
+  extra:
+    cancel_frame: 36
 attack_air_b:
   extra:
     cancel_frame: 42
