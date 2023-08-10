@@ -48,9 +48,10 @@ unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let curr_charge_frame = fighter.get_int(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME) as f32;
     if curr_charge_frame >= max_charge_frame {
         fighter.on_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX);
+    } else {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_HOLD);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_SHOOT);
     }
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_HOLD);
-    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_SHOOT);
     lucario_special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_main_loop as *const () as _))
@@ -71,6 +72,10 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if MotionModule::is_end(fighter.module_accessor) {
         // ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, false, -1);
         ControlModule::clear_command(fighter.module_accessor, true);
+        if fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
+            fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX.into(), false.into());
+            return 0.into();
+        }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_HOLD) {
             fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD.into(), false.into());
             return 0.into();
@@ -130,6 +135,18 @@ unsafe fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValu
         ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)
     );
     special_n_set_kinetic(fighter);
+
+    // skip forward in the motion to the current charge
+    let max_charge_frame = fighter.get_param_float("param_special_n", "max_charge_frame");
+    let curr_charge_frame = fighter.get_int(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME) as f32;
+    let motion_end_frame = MotionModule::end_frame(fighter.module_accessor);
+    let frame = motion_end_frame * curr_charge_frame / max_charge_frame;
+    MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, frame, true, false, false);
+
+    // motion rate the motion to match charge rate
+    let rate = motion_end_frame / max_charge_frame;
+    MotionModule::set_rate(fighter.module_accessor, rate);
+
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_hold_main_loop as *const () as _))
 }
@@ -341,89 +358,35 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
     let special_n_shoot =   if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT}    else {*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT};
     let special_n_cancel =  if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL}   else {*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL};
 
-    println!(
-        "end: {}",
-        (curr_status != special_n || next_status == special_n_hold || next_status == special_n_shoot)
-        && !(curr_status == special_n_hold && next_status != special_n_max && next_status != special_n_shoot)
-        && !(curr_status == special_n_max && next_status != special_n_shoot)
-    );
-    dbg!(
-        (curr_status != special_n || next_status == special_n_hold || next_status == special_n_shoot)
-        && !(curr_status == special_n_hold && next_status != special_n_max && next_status != special_n_shoot)
-        && !(curr_status == special_n_max && next_status != special_n_shoot)
-    );
-
-    if (curr_status != special_n || next_status == special_n_hold || next_status == special_n_shoot)
-    && !(curr_status == special_n_hold && next_status != special_n_max && next_status != special_n_shoot)
-    && !(curr_status == special_n_max && next_status != special_n_shoot) {
-        // LAB_7100011994:
-        if curr_status != special_n_shoot {
-            return lucario_special_n_save_charge_end(fighter); // goto LAB_7100011d48;
-        }
-        let is_exist = ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
-        if !is_exist {
-            return lucario_special_n_save_charge_end(fighter); // goto LAB_7100011d48;
-        }
-    }
-
-
-    // LAB_7100011a44:
-    if (lucario_special_n_save_charge_effects(fighter).get_bool()) {
+    // handle charge storage
+    // store charge if in cancel status or if moving between valid statuses
+    if curr_status == special_n_cancel
+    || [special_n, special_n_hold, special_n_max, special_n_shoot, special_n_cancel].contains(&next_status) {
         let article = ArticleModule::get_article(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
         if !article.is_null() {
             let article_object_id = app::lua_bind::Article::get_battle_object_id(article) as u32;
             let article_module_accessor = app::sv_battle_object::module_accessor(article_object_id);
             let charge_frame = WorkModule::get_int(article_module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
             app::FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, true, charge_frame);
-            // TODO: goto LAB_7100011d20;
         }
     } else {
         app::FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, false, 0);
-        // LAB_7100011d20:
     }
 
-
-    ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(0));
-    // LAB_7100011d48:
-    return lucario_special_n_save_charge_end(fighter);
-}
-
-pub unsafe extern "C" fn lucario_special_n_save_charge_effects(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let curr_status = StatusModule::status_kind(fighter.module_accessor);
-    let next_status = fighter.global_table[STATUS_KIND].get_i32();
-    let is_kirby = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY;
-    let special_n_hold =    if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD}     else {*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD};
-    let special_n_max =     if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX}      else {*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX};
-    let special_n_cancel =  if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL}   else {*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL};
-    if next_status != special_n_cancel{
-        EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-        return false.into();
+    // handle article removal
+    let is_exist = ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
+    // remove the article if it exists and won't be needed by the next status
+    if is_exist && ![special_n_hold, special_n_max, special_n_shoot].contains(&next_status) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(0));
     }
-    if curr_status != special_n_hold {
-        if curr_status != special_n_max {
-            EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-            return false.into();
-        } 
+
+    // handle max charge effects
+    // request the max charge effect if we're canceling from max charge status
+    // else, always remove the effect (for simplicity)
+    if curr_status == special_n_max && next_status == special_n_cancel {
         EffectModule::req_common(fighter.module_accessor, Hash40::new("charge_max"), 0.0);
-        return true.into();
+    } else {
+        EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
     }
-    return true.into();
-}
 
-pub unsafe extern "C" fn lucario_special_n_save_charge_end(fighter: &mut L2CFighterCommon) {
-    let curr_status = StatusModule::status_kind(fighter.module_accessor);
-    let next_status = fighter.global_table[STATUS_KIND].get_i32();
-    let is_kirby = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY;
-    // define statuses for kirby or lucario
-    let special_n = *FIGHTER_STATUS_KIND_SPECIAL_N;
-    let special_n_shoot =   if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT}    else {*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT};
-    if curr_status == special_n {
-        if next_status == special_n_shoot {
-            EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-        }
-    }
-    if curr_status == special_n_shoot {
-        app::FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, false, 0);
-    }
-    return;
 }
