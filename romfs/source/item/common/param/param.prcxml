@@ -2,9 +2,15 @@
 <struct>
   <list hash="params">
     <hash40 index="0">dummy</hash40>
+    <!-- barrel -->
     <struct index="1">
       <float hash="gravity_accel">0.15</float>
-      <float hash="gravity_accel_max">2</float>
+      <float hash="gravity_accel_max">2.0</float>
+      <float hash="hp">999</float><!--vanilla is 14-->
+      <!-- force barrel to incur hitlag-->
+      <hash40 hash="attack_hitstop_kind">item_attack_hitstop_kind_normal</hash40>
+      <float hash="pickup_range_sizew">10.0</float>
+      <float hash="pickup_range_sizeh">12.0</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
@@ -150,13 +156,15 @@
     </struct>
     <hash40 index="129">dummy</hash40>
     <struct index="130">
+      <float hash="hp">999</float>
       <float hash="scale">2.3</float>
-      <float hash="hitsize">1</float>
+      <float hash="hitsize">0</float>
       <float hash="throw_speed_mul">0.75</float>
       <float hash="throw_power_speed_mul">0.95</float>
       <float hash="gravity_accel">0.075</float>
       <float hash="air_brake_x">0.005</float>
       <float hash="ground_brake_x">0.04</float>
+      <bool hash="enemy_can_attack">false</bool>
     </struct>
     <hash40 index="131">dummy</hash40>
     <hash40 index="132">dummy</hash40>

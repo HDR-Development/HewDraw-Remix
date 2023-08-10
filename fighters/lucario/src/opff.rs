@@ -38,9 +38,47 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     extreme_speed_cancel(boma, status_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
+    fastfall_specials(fighter);
 
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
@@ -91,10 +129,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs during dash attack (on hit)
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
                 && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                if boma.is_input_jump()
-                    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-                }
+                boma.check_jump_cancel(false);
             }
 
         }
@@ -132,11 +167,10 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             }
 
             // Check for jump inputs during utilt
-            if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
-                if boma.is_input_jump()
-                    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-                }
+            if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3
+            && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+            && !boma.is_in_hitlag()) {
+                boma.check_jump_cancel(false);
             }
         }
     }
@@ -163,11 +197,10 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             }
 
             // Check for jump inputs
-            if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-                if boma.is_input_jump()
-                    & (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-                }
+            if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4
+            && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+            && !boma.is_in_hitlag()) {
+                boma.check_jump_cancel(false);
             }
         }
     }
@@ -177,11 +210,8 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
             || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
             // Check for jump inputs
-            if boma.is_input_jump()
-                && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
-                }
+            if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
+                boma.check_jump_cancel(false);
             }
             // Check for special attack inputs
             if boma.is_cat_flag(Cat1::SpecialN) {
@@ -202,20 +232,9 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     // Extreme Speed Cancels
     if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
-
-            // Check for jump inputs
-            if boma.is_input_jump()
-                && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    if situation_kind == *SITUATION_KIND_AIR {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
-                    }
-                    if situation_kind == *SITUATION_KIND_GROUND {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-                    }
-                }
-            }
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag())
+        {
+            boma.check_jump_cancel(false);
         }
     }
 }
@@ -230,6 +249,6 @@ pub fn lucario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn lucario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

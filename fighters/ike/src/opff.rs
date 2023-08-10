@@ -41,20 +41,22 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
 
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(boma);
-
-    if boma.is_input_jump() && !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            if facing * stick_x < 0.0 {
-                PostureModule::reverse_lr(boma);
-            }
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
-    } else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+    
+    if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);
+    }
+    if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
+        if situation_kind == *SITUATION_KIND_GROUND {
+            VarModule::set_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.346);  // 1.75 max jump speed out of Quick Draw
+            boma.check_jump_cancel(true);
+        }
     }
 }
 
 unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     // Glow blue when attack is charged enough
     let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
     let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.45}; // Diffuse vector
@@ -71,7 +73,7 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
         }
     }
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK) && fighter.is_situation(*SITUATION_KIND_GROUND){
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) && MotionModule::frame(boma) >= 29.0{
+        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) && MotionModule::frame(boma) >= 30.0 {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 if PostureModule::lr(boma) > 0.0{
                     StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
@@ -130,9 +132,9 @@ unsafe fn quickdraw_attack_arm_bend(boma: &mut BattleObjectModuleAccessor) {
 // straight_frame: frame the bones should be at the regular angle again
 unsafe fn jab_lean(boma: &mut BattleObjectModuleAccessor) {
     let start_frame = 0.0;
-    let bend_frame = 2.0;
-    let return_frame = 9.0;
-    let straight_frame = 20.0;
+    let bend_frame = 3.0;
+    let return_frame = 10.0;
+    let straight_frame = 21.0;
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
     let max_x_rotation_torso = 0.0;
@@ -239,9 +241,9 @@ unsafe fn jab_lean(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn grab_lean(boma: &mut BattleObjectModuleAccessor) {
     let start_frame = 0.0;
-    let bend_frame = 5.0;
-    let return_frame = 12.0;
-    let straight_frame = 35.0;
+    let bend_frame = 6.0;
+    let return_frame = 13.0;
+    let straight_frame = 36.0;
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
     let max_x_rotation_torso = 0.0;
@@ -345,10 +347,10 @@ unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
     //let bend_frame = 0.3;
     //let return_frame = 100.0;
     //let straight_frame = 105.0;
-    let start_frame = 6.0;
-    let bend_frame = 12.0;
-    let return_frame = 13.0;
-    let straight_frame = 25.0;
+    let start_frame = 7.0;
+    let bend_frame = 13.0;
+    let return_frame = 14.0;
+    let straight_frame = 26.0;
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
     let max_x_rotation_wrist = 0.0;
@@ -384,6 +386,55 @@ unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && CancelModule::is_enable_cancel(fighter.module_accessor) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+    }
+}
+
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MDL,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
@@ -393,6 +444,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //jab_lean(boma);
     //grab_lean(boma);
     //fair_wrist_bend(boma);
+    quickdraw_attack_whiff_freefall(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_IKE )]

@@ -2,7 +2,30 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">24.75</float>
+      <float hash="p1_y">23</float>
     </struct>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="0x1d19c540e7">1.2</float>
+      <float hash="0x1d67331740">1.0</float>
+      <float hash="0x1b87f2d11b">1.1</float>
+      <float hash="0x20bf99af3d">1.1</float>
+      <float hash="0x1fb66c763a">1.1</float>
+      <float hash="0x222f497375">1.1</float>
+      <float hash="0x219af274ea">1.2</float>
+      <float hash="0x21a7925d5a">1.2</float>
+      <float hash="0x1d3e7e27d6">1.2</float>
+      <float hash="0x1d40887071">1.0</float>
+      <float hash="0x1bc7bda96d">1.1</float>
+      <float hash="0x20ec3fb7d9">1.1</float>
+      <float hash="0x1fa3e7a2c8">1.1</float>
+      <float hash="0x2206378e6d">1.1</float>
+      <float hash="0x213dc6f493">1.2</float>
+      <float hash="0x2100a6dd23">1.2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
 </struct>

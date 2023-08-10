@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+
 // This file contains code for wavelanding
 
 pub fn install() {
@@ -83,15 +84,12 @@ unsafe extern "C" fn status_pre_Jump_sub(fighter: &mut L2CFighterCommon) {
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_Jump_sub_paramEN3lib8L2CValueES2_S2_S2_S2_")]
 unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, flag_keep: L2CValue, int_keep: L2CValue, float_keep: L2CValue, kinetic_type: L2CValue, arg: L2CValue) {
-    //println!("status_pre_Jump_sub_param");
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     let flag_keep = flag_keep.get_i32();
     let int_keep = int_keep.get_i32();
     let float_keep = float_keep.get_i32();
     let mut kinetic_type = kinetic_type.get_i32();
     let arg = arg.get_i32();
-    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP {
-        kinetic_type = *FIGHTER_KINETIC_TYPE_UNIQ;
-    }
     let status_kind = StatusModule::status_kind(fighter.module_accessor);
     let ground_correct_kind = app::FighterUtil::get_ground_correct_kind_air_trans(fighter.module_accessor, status_kind);
     StatusModule::init_settings(

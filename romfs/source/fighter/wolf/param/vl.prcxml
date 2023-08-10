@@ -3,14 +3,16 @@
   <list hash="cliff_hang_data">
     <hash40 index="0">dummy</hash40>
     <struct index="1">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">19</float>
     </struct>
     <struct index="2">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">17</float>
     </struct>
   </list>
   <list hash="param_special_n">
     <struct index="0">
+      <float hash="blaster_shoot_x">0</float>
+      <float hash="blaster_air_shoot_x">0</float>
       <float hash="blaster_air_shoot_y">0.9</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -30,13 +32,14 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="fire_start_accel_y">0.0175</float>
+      <int hash="fire_stop_y_frame">14</int>
+      <float hash="fire_accel_y">0.0175</float>
       <int hash="fire_rush_frame">20</int>
       <float hash="fire_rush_speed">3.8</float>
       <int hash="fire_rush_brake_frame">5</int>
       <float hash="fire_rush_brake">0.16</float>
-      <float hash="fire_crush_x_mul">0.75</float>
-      <float hash="fire_fall_x_mul">0.75</float>
+      <float hash="fire_crush_x_mul">0.8</float>
+      <float hash="fire_fall_x_mul">0.65</float>
       <int hash="fire_landing_frame">25</int>
     </struct>
     <hash40 index="1">dummy</hash40>

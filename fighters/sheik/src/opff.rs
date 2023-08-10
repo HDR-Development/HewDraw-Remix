@@ -5,19 +5,10 @@ use globals::*;
 
  
 unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind != *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN || frame <= 10.0 {
-        return;
-    }
-
-    if situation_kind == *SITUATION_KIND_AIR {
-        if boma.is_input_jump() {
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-            }
-        } else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        } else if boma.is_cat_flag(Cat1::SpecialHi) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
+    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN && boma.status_frame() > 14 {
+        if situation_kind == *SITUATION_KIND_AIR {
+            boma.check_jump_cancel(false);
+            boma.check_airdodge_cancel();
         }
     }
 }
@@ -33,142 +24,84 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
-// Sheik Grenade Pull Cancel
-unsafe fn grenade_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) != 0 {
-        return;
-    }
-
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame < 15.0 {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                    VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting
-                }
-            }
-        }
+// Removes "variable landing lag" from Vanish reappearance
+// always lands with flat special fall landing lag
+unsafe fn vanish_landing_lag(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
     }
 }
-
 
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
+// pub unsafe fn hitfall_aerials(fighter: &mut L2CFighterCommon, frame: f32) {
+//     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+//         // only allow the last hit of uair to be hitfalled
+//         if fighter.is_motion(Hash40::new("attack_air_hi")) {
+//             if frame >= 23.0 && AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+//                 fighter.check_hitfall();
+//             }
+//         }
+//         else {
+//             fighter.check_hitfall();
+//         }
+//     }
+// }
 
-// Grenade Cancel Timer Count
-unsafe fn grenade_cancel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 901 {
-        if gimmick_timerr > 899 {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-            gimmick_flash(boma);
-        } else {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
-        }
-    }
-}
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_S_FIRE,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
 
-// Grenade Cancel Timer Death Reset
-unsafe fn grenade_cancel_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH,
-        *FIGHTER_STATUS_KIND_WIN,
-        *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-    }
-}
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
 
-// Training Mode Grenade Cancel Timer taunt reset
-unsafe fn grenade_cancel_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if is_training_mode() {
-        if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-        }
-    }
-}
-
-// Up Special Cancels
-unsafe fn up_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
             }
         }
-    }
-}
-
-pub unsafe fn sheik_teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
-    /*
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE {
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END, false);
-        }
-    }
-    */
-
-    // Wall Ride momentum fixes
-    let mut wall_ride = Vector3f{x: 1.0, y: 1.0, z: 1.0};
-    let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-    let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-    let warp_speed = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("warp_speed_add")) + WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("warp_speed_mul"));
-
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE {
-        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-            VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-            if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
-                let rise_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                if rise_speed > 0.0 {
-                    wall_ride = Vector3f{x: 0.0, y: (warp_speed / rise_speed), z: 1.0};
-                }
-                else {
-                    wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                }
-                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            }
-        }
-    }
-    else if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END {
-        if touch_right || touch_left {
-            if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
-                wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            }
-        }
-    }
-    else {
-        VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
     }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
     bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
-    //grenade_pull(fighter, boma, id, status_kind, situation_kind, frame);
-    grenade_cancel_timer(fighter, boma, id);
-    grenade_cancel_reset(fighter, id, status_kind);
-    grenade_cancel_training(fighter, id, status_kind);
-    sheik_teleport_cancel(boma, status_kind, id);
-
-    // Magic Series
-    //up_special_cancels(fighter, boma, status_kind, situation_kind, cat[0]);
+    //hitfall_aerials(fighter, frame);
+    vanish_landing_lag(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SHEIK )]
 pub fn sheik_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		sheik_frame(fighter)
+        sheik_frame(fighter)
     }
 }
 

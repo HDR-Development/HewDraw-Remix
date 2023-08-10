@@ -7,7 +7,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="no_bang">3</int>
+      <int hash="no_bang">4</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -15,13 +15,14 @@
   </list>
   <list hash="param_dein">
     <struct index="0">
-      <float hash="speed">1.5</float>
-      <float hash="angle_add">3.0</float>
+      <float hash="speed">1.75</float>
+      <float hash="speed_max">2.75</float>
+      <float hash="angle_add">5.0</float>
       <float hash="angle_max">85</float>
-      <float hash="life">50</float>
-      <float hash="count">50</float>
-      <float hash="size_max">3</float>
-      <float hash="bang_time">35</float>
+      <float hash="life">60</float>
+      <float hash="count">60</float>
+      <float hash="size_max">4</float>
+      <float hash="bang_time">180</float>
       <float hash="size_min">2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -58,7 +59,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="pos_offset_x">1.0</float>
+      <float hash="pos_offset_x">1.6</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
