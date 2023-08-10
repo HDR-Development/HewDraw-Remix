@@ -182,21 +182,21 @@ unsafe fn effect_attackairn (fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
         fighter.clear_lua_stack();
 		EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 4.7, 4, 40, 0, -13, 0.7, true);
-		lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("haver"), 0.0, 0.0, -1.5, 0.0, 90.0, 0.0, 1.0, true);
+		lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("handr"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
         smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
         fighter.pop_lua_stack(1);
-		lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("havel"), 0.0, 0.0, -1.5, 0.0, 90.0, 0.0, 1.0, true);
+		lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
         smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
         fighter.pop_lua_stack(1);
 	}
 	frame(lua_state, 11.0);
 	if is_excute(fighter) {
         fighter.clear_lua_stack();
-		lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("haver"), 0.0, 0.0, -1.5, 0.0, 90.0, 0.0, 1.0, true);
+		lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("handr"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
 		smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
         fighter.pop_lua_stack(1);
         fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("havel"), 0.0, 0.0, -1.5, 0.0, 90.0, 0.0, 1.0, true);
+        lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
         smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
         fighter.pop_lua_stack(1);
     }

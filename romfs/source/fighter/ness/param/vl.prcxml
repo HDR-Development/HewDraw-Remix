@@ -60,7 +60,7 @@
       <float hash="brake_x_on_air">0.015</float>
       <float hash="start_ymul">0.1</float>
       <float hash="phy_magnet_size">9.3</float>
-      <float hash="phy_magnet_effect_scale">0.6</float>
+      <float hash="phy_magnet_effect_scale">0.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
