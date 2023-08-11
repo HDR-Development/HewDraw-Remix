@@ -11,7 +11,8 @@
   </list>
   <list hash="param_auraball">
     <struct index="0">
-      <float hash="scale_mul">2.8</float>
+      <float hash="charge_max_scale">4.5</float>
+      <float hash="charge_max_scale_shoot">4.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
