@@ -108,6 +108,9 @@
 		],
 		"fighter/miigunner/cmn": [
 			"fighter/miigunner/param/hdr.prc"
+		],
+		"fighter/falco/cmn": [
+			"fighter/falco/param/hdr.prc"
 		]
 	}
 }
