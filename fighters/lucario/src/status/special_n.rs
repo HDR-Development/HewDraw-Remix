@@ -150,6 +150,10 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
     if MotionModule::is_end(fighter.module_accessor) {
         // ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, false, -1);
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_SHOOT) {
+            fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
+            return 0.into();
+        }
         ControlModule::clear_command(fighter.module_accessor, true);
         if fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
             fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX.into(), false.into());
@@ -163,10 +167,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_HOLD) {
             fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD.into(), false.into());
-            return 0.into();
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_SHOOT) {
-            fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
             return 0.into();
         }
         return 0.into();
@@ -446,7 +446,7 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
     // handle charge storage
     // store charge if in cancel status or if moving between valid statuses
     if curr_status == special_n_cancel
-    || [special_n, special_n_hold, special_n_max, special_n_shoot, special_n_cancel].contains(&next_status) {
+    || [special_n_hold, special_n_max, special_n_shoot, special_n_cancel].contains(&next_status) {
         let article = ArticleModule::get_article(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
         if !article.is_null() {
             let article_object_id = app::lua_bind::Article::get_battle_object_id(article) as u32;
