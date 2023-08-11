@@ -234,6 +234,9 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
 }
 
 unsafe extern "C" fn lucario_special_hi_metered_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
+        return false.into();
+    }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         return false.into();
     }
