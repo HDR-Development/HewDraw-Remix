@@ -879,6 +879,42 @@ unsafe fn master_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_
     }
 }
 
+// Ken
+unsafe fn ken_air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N2_COMMAND,
+    ]) {
+        return;
+    }
+
+    // set VarModule flag on f12 - this flag changes hado properties
+    if frame == 12.0 && fighter.is_motion_one_of(&[
+        Hash40::new("ken_special_air_n"),
+    ]) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
+    }
+    // after frame 13, disallow changing from aerial to grounded hadoken
+    // instead, we enter a landing animation
+    if (frame > 13.0 || fighter.is_motion_one_of(&[
+        Hash40::new("ken_special_air_n_empty"),
+        Hash40::new("ken_special_n_empty"),
+    ]))
+    && boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        if frame < 70.0 { // the autocancel frame
+            WorkModule::set_float(boma, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        } else {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     let copystatus = StatusModule::status_kind(fighter.module_accessor);
     if !fighter.is_in_hitlag()
@@ -900,7 +936,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_JUMP,
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
-            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK, 
+            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
             ])
         || (0x206..0x37c).contains(&copystatus) {
             fighter.sub_air_check_dive();
@@ -934,7 +970,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    
+
     // Fox Drift and Laser Land Cancel
     fox_drift_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
 
@@ -1027,6 +1063,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     edge_nspecial_cancels(boma, status_kind, situation_kind, cat[2]);
     miigunner_nspecial_cancels(boma, status_kind, situation_kind, cat[1], cat[2]);
     master_nspecial_cancels(boma, status_kind, situation_kind);
+    ken_air_hado_distinguish(fighter, boma, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KIRBY )]

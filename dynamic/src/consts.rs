@@ -394,10 +394,10 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            // ints 
+            // ints
             pub const METER_STOCKS: i32 = 0x0150;
             pub const CURRENT_STOCKS: i32 = 0x0151;
-            
+
             // flags
             pub const SUPER_CANCEL: i32 = 0x0150;
             pub const DISABLE_SPECIAL_S: i32 = 0x0151;
@@ -597,7 +597,7 @@ pub mod vars {
             pub const COPY_IS_CHARGE_FINISHED: i32 = 0x1101;
             // flags
             pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
-            pub use super::super::mariod::status::IS_SPECIAL_N_CHILL_PILL;
+            pub use super::super::mariod::status::CHILL_PILL;
         }
     }
 
@@ -778,7 +778,7 @@ pub mod vars {
 
     pub mod pzenigame {
         pub mod instance {
-            
+
         }
     }
 
@@ -887,7 +887,7 @@ pub mod vars {
             pub const IS_GRAB_WALK : i32 = 0x0105;
             pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
             pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
-            
+
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
             pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
@@ -1172,7 +1172,7 @@ pub mod vars {
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
         }
     }
-    
+
     pub mod tantan {
         pub mod status {
             // flags
@@ -1265,7 +1265,7 @@ pub mod statuses {
         pub const SPECIAL_N_CANCEL: i32 = 0;
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
-    
+
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0;
     }
