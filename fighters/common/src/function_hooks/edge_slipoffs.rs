@@ -93,6 +93,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
            || (boma.kind() == *FIGHTER_KIND_PIKMIN && boma.is_status(*FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_LANDING))
            || (boma.kind() == *FIGHTER_KIND_FALCO && boma.is_status(*FIGHTER_FALCO_STATUS_KIND_SPECIAL_S_FALL_LANDING))
            || (boma.kind() == *FIGHTER_KIND_MURABITO && boma.is_status(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_NESS && boma.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END))
+           || (boma.kind() == *FIGHTER_KIND_LUCAS && boma.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END))
         {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
@@ -150,7 +152,18 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             || (fighter_kind == *FIGHTER_KIND_TRAIL && status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END)
             || (fighter_kind == *FIGHTER_KIND_PLIZARDON && status_kind == *FIGHTER_PLIZARDON_STATUS_KIND_SPECIAL_S_END)
             || (fighter_kind == *FIGHTER_KIND_FOX && [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP, *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind))
-            || (fighter_kind == *FIGHTER_KIND_WOLF && [*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind)) {
+            || (fighter_kind == *FIGHTER_KIND_WOLF && [*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind)) 
+            || (fighter_kind == *FIGHTER_KIND_NESS && 
+                [*FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_REFLECT,
+                *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD,
+                *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind))
+            || (fighter_kind == *FIGHTER_KIND_LUCAS && 
+                [*FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_REFLECT,
+                *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD,
+                *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind))
+        {
                 return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
     }
