@@ -2,7 +2,8 @@ use super::*;
 use globals::*;
 mod special_hi_h;
 mod gaogaen_special_n;
- 
+mod ridley_special_n;
+
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
     install_status_scripts!(
@@ -12,6 +13,7 @@ pub fn install() {
 
     special_hi_h::install();
     gaogaen_special_n::install();
+    ridley_special_n::install();
 
 }
 
@@ -110,7 +112,7 @@ pub unsafe fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CV
     let fall_stop_frame = if motion_kind == hash40("throw_b") { 29.0 } else { 34.0 };
     let landing_frame = if motion_kind == hash40("throw_b") { 30.0 } else { 35.0 };
     let return_air_frame = if motion_kind == hash40("throw_b") { 39.0 } else { 43.0 };
-    
+
     if (motion_kind != hash40("throw_b") && motion_kind != hash40("throw_f"))
     || frame <= fall_start_frame
     {

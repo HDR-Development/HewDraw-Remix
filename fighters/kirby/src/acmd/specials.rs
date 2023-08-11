@@ -1563,6 +1563,148 @@ unsafe fn kirby_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "game_ridleyspecialnexplode", category = ACMD_GAME )]
+unsafe fn ridley_special_n_explode_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("mouth1"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("mouth1"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 361, 80, 0, 58, 9.0, 0.0, 8.0, 14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_ridleyspecialnexplode", category = ACMD_EFFECT )]
+unsafe fn ridley_special_n_explode_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, 15.5, -3.5, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, -9, 0, 0, 0, 1.2, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("ridley_smash_bomb"), Hash40::new("top"), 0, 8.5, 15, 0, 0, 0, 1.2, true);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ridley_mouth_fire"), Hash40::new("top"), 0, 11, 8.5, 0, 0, 0, 1, true);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "sound_ridleyspecialnexplode", category = ACMD_SOUND )]
+unsafe fn ridley_special_n_explode_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ridley_smash_s01"));
+        PLAY_SE(fighter, Hash40::new("vc_kirby_attack05"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ridley_smash_s02"));
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "expression_ridleyspecialnexplode", category = ACMD_EXPRESSION )]
+unsafe fn ridley_special_n_explode_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "game_ridleyspecialairnexplode", category = ACMD_GAME )]
+unsafe fn ridley_special_air_n_explode_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("mouth1"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("mouth1"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 361, 80, 0, 58, 9.0, 0.0, 8.0, 14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_ridleyspecialairnexplode", category = ACMD_EFFECT )]
+unsafe fn ridley_special_air_n_explode_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, 15.5, -3.5, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, -9, 0, 0, 0, 1.2, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ridley_smash_bomb"), Hash40::new("top"), 0, 8.5, 15, 0, 0, 0, 1.2, true);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ridley_mouth_fire"), Hash40::new("top"), 0, 11, 8.5, 0, 0, 0, 1, true);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "sound_ridleyspecialairnexplode", category = ACMD_SOUND )]
+unsafe fn ridley_special_air_n_explode_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ridley_smash_s01"));
+        PLAY_SE(fighter, Hash40::new("vc_kirby_copy_roy_02"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ridley_smash_s02"));
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "expression_ridleyspecialairnexplode", category = ACMD_EXPRESSION )]
+unsafe fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kirby_special_n_eat_game,
@@ -1607,7 +1749,15 @@ pub fn install() {
 		miigunner_special_n1_fire_max_game,
 		miigunner_special_n1_fire_max_effect,
 		miigunner_special_air_n1_fire_max_effect,
-		miigunner_special_n1_fire_max_sound
+		miigunner_special_n1_fire_max_sound,
+        ridley_special_n_explode_game,
+        ridley_special_n_explode_effect,
+        ridley_special_n_explode_sound,
+        ridley_special_n_explode_expression,
+        ridley_special_air_n_explode_game,
+        ridley_special_air_n_explode_effect,
+        ridley_special_air_n_explode_sound,
+        ridley_special_air_n_explode_expression
 
     );
 }
