@@ -75,25 +75,14 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         // able to angle sideB dunk based on stick position on f22
 
-        // get stick angle for dunk
-        let angle = fighter.stick_y().atan2(fighter.stick_x() * PostureModule::lr(boma)).to_degrees();
-        let mut kb_angle = if angle >= 360.0 {
-            angle - 360.0
-        } else if angle < 0.0 {
-            angle + 360.0
-        } else {
-            angle
-        } as u64;
-
-        // only able to angle the dunk within a certain angle range
         let throw_angle_min = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "force_palm_air.throw_angle_min") as u64;
         let throw_angle_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "force_palm_air.throw_angle_max") as u64;
-        kb_angle = if VarModule::get_float(fighter.object(), vars::lucario::status::AURA_OVERRIDE) > 0.0
-        && fighter.stick_y() < 0.0 {
-            kb_angle.clamp(throw_angle_min, throw_angle_max)
-        }
-        else {
-            270
+        let kb_angle = if VarModule::get_float(fighter.object(), vars::lucario::status::AURA_OVERRIDE) > 0.0 
+        && fighter.stick_y() < 0.25 {
+            let angle = (270.0 + PostureModule::lr(boma) * fighter.stick_x().atan2(-fighter.stick_y()).to_degrees()) as u64;
+            angle.clamp(throw_angle_min, throw_angle_max)
+        } else {
+            270 as u64
         };
 
         // calculate angle to rotate Lucario's model based on knockback angle
