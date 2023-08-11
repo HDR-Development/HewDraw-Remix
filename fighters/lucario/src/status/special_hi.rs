@@ -66,7 +66,9 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
             }
         }
         // metered attack cancel
-        lucario_special_hi_metered_cancel(fighter);
+        if lucario_special_hi_metered_cancel(fighter).get_bool() {
+            return 0.into();
+        }
         // early rush_end cancel
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
             fighter.change_status_req(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, false);
@@ -189,7 +191,9 @@ unsafe fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2
 unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         // metered attack cancel
-        lucario_special_hi_metered_cancel(fighter);
+        if lucario_special_hi_metered_cancel(fighter).get_bool() {
+            return 0.into();
+        }
     }
     let sit = fighter.get_int(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_END_SITUATION);
     if sit != *SITUATION_KIND_GROUND
@@ -230,10 +234,14 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
 }
 
 unsafe extern "C" fn lucario_special_hi_metered_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !CancelModule::is_enable_cancel(fighter.module_accessor)
-    && fighter.is_button_on(Buttons::Attack | Buttons::Catch) 
-    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        return false.into();
+    }
+    if !fighter.is_situation(*SITUATION_KIND_AIR) {
+        return false.into();
+    }
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+    if fighter.sub_transition_group_check_air_attack().get_bool() {
         KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) * 2.0);
         let frames = 120.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
