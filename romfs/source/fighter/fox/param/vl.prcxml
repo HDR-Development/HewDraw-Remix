@@ -47,7 +47,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <int hash="reflector_air_stop_y_frame">2</int>
+      <int hash="reflector_air_stop_y_frame">4</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
