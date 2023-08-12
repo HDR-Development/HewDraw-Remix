@@ -508,6 +508,21 @@ pub mod vars {
         pub const SPECIAL_HI_JUMP_RESERVE_ACTION_FALL: i32 = 0x2;
     }
 
+    pub mod falco {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const SET_ATTACK: i32 = 0x1100;
+            pub const SET_EFFECT: i32 = 0x1101;
+
+            // ints
+            pub const SPECIAL_LW_STOP_Y_FRAME: i32 = 0x1100;
+        }
+    }
+
     pub mod ganon {
         pub mod instance {
             // flags
@@ -1226,6 +1241,11 @@ pub mod vars {
 pub mod statuses {
     pub mod elight {
         pub const SPECIAL_HI_FINISH2: i32 = 0;
+    }
+
+    pub mod falco {
+        pub const SPECIAL_LW_LOOP: i32 = 0;
+        pub const SPECIAL_LW_END: i32 = 1;
     }
 
     pub mod ganon {
