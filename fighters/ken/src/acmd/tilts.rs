@@ -226,9 +226,9 @@ unsafe fn game_attacknearw(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
-/// This is actually now strong up tilt - remapped in motion list.
-#[acmd_script( agent = "ken", script = "game_attack11s" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_11_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ken", script = "game_attackhi3s" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -276,8 +276,8 @@ unsafe fn ken_attack_11_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_attack11s", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attack11s(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "effect_attackhi3s", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -297,8 +297,47 @@ unsafe fn effect_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-// if you're looking for strong up tilt, it's a motion list remap to strong distance jab
-// so go look for attack11s in ground.rs
+#[acmd_script( agent = "ken", script = "sound_attackhi3s", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attackhi3s(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ken_swing_kick_l"));
+        PLAY_SE(fighter, Hash40::new("vc_ken_attack06"));
+    }
+}
+
+#[acmd_script( agent = "ken", script = "expression_attackhi3s", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 4);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         ken_attack_s3_s_w_game,
@@ -308,8 +347,10 @@ pub fn install() {
         ken_attack_lw3_w_game,
         ken_attack_lw3_s_game,
         game_attacknearw,
-        ken_attack_11_s_game,
-        effect_attack11s,
+        game_attackhi3s,
+        effect_attackhi3s,
+        sound_attackhi3s,
+        expression_attackhi3s,
     );
 }
 

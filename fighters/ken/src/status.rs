@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 // status script import
-mod final;
+mod finals;
 mod special_cmd4;
 mod special_lw;
 mod special_s;
@@ -23,7 +23,7 @@ extern "Rust" {
 }
 
 pub fn install() {
-    final::install();
+    finals::install();
     special_cmd4::install();
     special_lw::install();
     special_s::install();
