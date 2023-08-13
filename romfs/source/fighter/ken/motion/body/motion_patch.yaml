@@ -14,7 +14,7 @@ attack_11_w:
   flags:
     move: true
   extra:
-    cancel_frame: 20
+    cancel_frame: 15
 attack_12:
   flags:
     move: false
@@ -57,13 +57,26 @@ attack_hi3_s:
     cancel_frame: 33
 attack_hi4:
   extra:
-    cancel_frame: 40
+    cancel_frame: 36
 attack_lw3_s:
   extra:
     cancel_frame: 25
 attack_lw4:
   extra:
     cancel_frame: 35
+attack_near_w:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 27
+attack_s3_s_s:
+  extra:
+    cancel_frame: 25
+attack_s3_s_w:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 27
 attack_s4_s:
   extra:
     cancel_frame: 42
@@ -77,6 +90,10 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 0
+special_air_hi_command:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_air_hi_command_ex:
   game_script: game_specialairhicommandex
   flags:
@@ -102,10 +119,14 @@ special_air_hi_command_ex:
   - sound_specialairhicommandex
   - effect_specialairhicommandex
   extra:
-    intangible_start_frame: 4
-    intangible_end_frame: 7
+    intangible_start_frame: 0
+    intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
+special_air_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_air_hi_ex:
   game_script: game_specialairhiex
   flags:
@@ -131,8 +152,8 @@ special_air_hi_ex:
   - sound_specialairhiex
   - effect_specialairhiex
   extra:
-    intangible_start_frame: 5
-    intangible_end_frame: 6
+    intangible_start_frame: 0
+    intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
 special_air_lw_step_b:
@@ -144,6 +165,10 @@ special_air_lw_step_f:
 special_air_n:
   extra:
     cancel_frame: 70
+special_hi_command:
+  extra:
+    xlu_start: 1
+    xlu_end: 9
 special_hi_command_ex:
   game_script: game_specialhicommandex
   flags:
@@ -169,10 +194,14 @@ special_hi_command_ex:
   - sound_specialhicommandex
   - effect_specialhicommandex
   extra:
-    intangible_start_frame: 4
-    intangible_end_frame: 7
+    intangible_start_frame: 1
+    intangible_end_frame: 34
     cancel_frame: 0
     freeze_during_hitstop: false
+special_hi:
+  extra:
+    xlu_start: 3
+    xlu_end: 6
 special_hi_ex:
   game_script: game_specialhiex
   flags:
@@ -198,8 +227,8 @@ special_hi_ex:
   - sound_specialhiex
   - effect_specialhiex
   extra:
-    intangible_start_frame: 5
-    intangible_end_frame: 6
+    intangible_start_frame: 3
+    intangible_end_frame: 34
     cancel_frame: 0
     freeze_during_hitstop: false
 special_lw_step_b:

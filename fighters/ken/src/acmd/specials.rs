@@ -193,14 +193,14 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
+        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            MeterModule::add(fighter.battle_object, 2.0);
+        }
     }
     frame(lua_state, 14.0);
     FT_MOTION_RATE(fighter, 36.0 / (58.0 - 14.0));
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
-            MeterModule::add(fighter.battle_object, 2.0);
-        }
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -226,14 +226,14 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
+        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            MeterModule::add(fighter.battle_object, 2.0);
+        }
     }
     frame(lua_state, 15.0);
     FT_MOTION_RATE(fighter, 36.0 / (70.0 - 15.0));
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
-            MeterModule::add(fighter.battle_object, 2.0);
-        }
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
