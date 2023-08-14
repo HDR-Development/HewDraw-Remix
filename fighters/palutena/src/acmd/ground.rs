@@ -126,9 +126,6 @@ unsafe fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(agent, 0.5);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 16, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11, 16, 0, 0, 0, 1.75, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {

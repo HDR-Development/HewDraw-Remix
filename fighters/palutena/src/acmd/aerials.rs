@@ -109,23 +109,11 @@ unsafe fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
             EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), -4, 7.5, 17, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_RATE(agent, 1.3);
         }
-        wait(lua_state, 1.0);
-        if is_excute(agent) {
-            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), -12, 7.5, 17, 0, 0, 0, 1.75, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
-            LAST_EFFECT_SET_RATE(agent, 0.5);
-        }
     }
     else{
         if is_excute(agent) {
             EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 4, 7.5, 17, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_RATE(agent, 1.3);
-        }
-        wait(lua_state, 1.0);
-        if is_excute(agent) {
-            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 12, 7.5, 17, 0, 0, 0, 1.75, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
-            LAST_EFFECT_SET_RATE(agent, 0.5);
         }
     }
     if is_excute(agent) {
@@ -188,16 +176,9 @@ unsafe fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("palutena_guard"), Hash40::new("top"), -4, 11, -14, 0, 0, 0, 1, true);
     }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), -7, 11, -14, 0, 0, 0, 1.75, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-    }
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_flash"), -1);
-        EFFECT_DETACH_KIND(agent, Hash40::new("sys_smash_flash_s"), -1);
     }
     frame(lua_state, 33.0);
     if is_excute(agent) {
@@ -350,12 +331,6 @@ unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.5, -6, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0.5, -10, 0, 0, 0, 0, 2.25, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
