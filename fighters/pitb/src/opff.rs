@@ -4,15 +4,10 @@ use super::*;
 use globals::*;
 
  
-unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if [*FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT,
-        *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE,
-        *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_DIR,
-        *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN].contains(&status_kind) {
-        if status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT {
-            if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-            }
+unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT) {
+        if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
+            MotionModule::set_frame_sync_anim_cmd(boma, 24.0, true, true, false);
         }
     }
 }
@@ -33,7 +28,7 @@ extern "Rust" {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    bow_lc(boma, status_kind, situation_kind, cat[1], stick_y);
+    bow_lc(boma);
     guardian_orbitar_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pits_common(fighter, boma, status_kind);
 }
