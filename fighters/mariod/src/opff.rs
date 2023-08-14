@@ -4,18 +4,18 @@ use super::*;
 use globals::*;
 
 // Super Sheet Stall
-unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor) {
     if StatusModule::is_changing(boma) {
         return;
     }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
         let motion_vec = Vector3f{x: 0.0, y: 2.5, z: 0.0};
         let motion_vec_2 = Vector3f{x: 0.75, y: 0.0, z: 0.0};
-        if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 2.0 && frame < 3.0 {
+        if boma.is_situation(*SITUATION_KIND_AIR) {
+            if boma.status_frame() >= 2 && boma.status_frame() < 3 {
                 KineticModule::mul_speed(boma, &motion_vec_2, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
-            if frame >= 10.0 && frame <= 13.0 {
+            if boma.status_frame() >= 10 && boma.status_frame() <= 13 {
                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
             }
         }
