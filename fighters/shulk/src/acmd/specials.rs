@@ -1,6 +1,26 @@
 
 use super::*;
 
+#[acmd_script( agent = "shulk", scripts = ["effect_specialnstart", "effect_specialairnstart"], category = ACMD_EFFECT, low_priority )]
+unsafe fn shulk_special_n_start_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if VarModule::is_flag(agent.object(), vars::shulk::instance::MONADO_BEAT) {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("shulk_vision_start"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1.3, true);
+            LAST_EFFECT_SET_RATE(agent, 1.2);
+            EFFECT_FOLLOW(agent, Hash40::new("shulk_vision_start"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1.5, true);
+            LAST_EFFECT_SET_RATE(agent, 1.2);
+            LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        }
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "shulk", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
 unsafe fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -65,6 +85,7 @@ unsafe fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        shulk_special_n_start_effect,
         shulk_special_hi_game,
     );
 }

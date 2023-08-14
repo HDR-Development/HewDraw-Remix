@@ -58,3 +58,39 @@ attack_air_n:
 attack_s4_lw:
   extra:
     cancel_frame: 72
+special_n_end:
+  extra:
+    cancel_frame: 4
+special_n_jump:
+  extra:
+    xlu_end: 5
+special_n_speed:
+  extra:
+    xlu_end: 5
+special_n_shield:
+  extra:
+    xlu_end: 5
+special_n_buster:
+  extra:
+    xlu_end: 5
+special_n_smash:
+  extra:
+    xlu_end: 5
+special_air_n_end:
+  extra:
+    cancel_frame: 4
+special_air_n_jump:
+  extra:
+    xlu_end: 5
+special_air_n_speed:
+  extra:
+    xlu_end: 5
+special_air_n_shield:
+  extra:
+    xlu_end: 5
+special_air_n_buster:
+  extra:
+    xlu_end: 5
+special_air_n_smash:
+  extra:
+    xlu_end: 5

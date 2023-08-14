@@ -1219,6 +1219,13 @@ pub mod vars {
             pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
+    
+    pub mod shulk {
+        pub mod instance {
+            // flags
+            pub const MONADO_BEAT: i32 = 0x0100;
+        }
+    }
 }
 
 pub mod statuses {
