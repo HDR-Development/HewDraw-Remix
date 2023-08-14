@@ -84,14 +84,14 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                         if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-                            VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-                            VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
                         }
                     }
                 }
@@ -165,7 +165,6 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 }
                 if frame >= 50.0 {
                     VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
-                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                 }
             }  
         }
@@ -174,7 +173,6 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT {
         VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
     }
-
     if fighter.is_situation(*SITUATION_KIND_GROUND) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF) 
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
