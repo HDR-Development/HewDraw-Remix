@@ -61,7 +61,7 @@ attack_air_lw:
     animations:
       - name: c05attackairlw.nuanmb
     extra:
-      cancel_frame: 38
+      cancel_frame: 35
 landing_air_lw:
     blend_frames: 2
     animations:
@@ -71,3 +71,33 @@ landing_air_lw:
 attack_air_hi:
   extra:
     cancel_frame: 30
+special_lw_light:
+    game_script: game_speciallwlight
+    flags:
+      turn: false
+      loop: false
+      move: false
+    blend_frames: 5
+    animations:
+      - name: d03speciallwlight.nuanmb
+    scripts:
+      - expression_speciallwlight
+      - sound_speciallwlight
+      - effect_speciallwlight
+    extra:
+      cancel_frame: 55
+special_air_lw_light:
+    game_script: game_specialairlwlight
+    flags:
+      turn: false
+      loop: false
+      move: false
+    blend_frames: 5
+    animations:
+      - name: d03specialairlwlight.nuanmb
+    scripts:
+      - expression_specialairlwlight
+      - sound_specialairlwlight
+      - effect_specialairlwlight
+    extra:
+      cancel_frame: 61

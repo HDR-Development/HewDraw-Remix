@@ -84,12 +84,14 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                         if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+                            VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+                            VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                         }
                     }
                 }
@@ -131,11 +133,81 @@ unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     }
 }
 
+// Once down special is called, imediately uses special low shoot and circumvent the charge mechanic of the og down-b
+unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, true);
+    }
+}
+
+// Aerial SMG spin rise
+unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
+    let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+    let air_fri = Vector3f{x: 0.89, y: 1.0, z: 0.0}; // air friction
+    if motion_kind == hash40("special_air_lw_light") {
+        if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) {
+            if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
+                if frame >= 6.0 && frame < 35.0 {  
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.12);
+                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.06);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
+                }
+                if frame >= 35.0 && frame < 45.0 {
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
+                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                }
+                if frame >= 45.0 && frame < 50.0 {
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.075);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
+                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                }
+                if frame >= 50.0 {
+                    VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+                }
+            }  
+        }
+    }
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY]) 
+    && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT {
+        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+    }
+
+    if fighter.is_situation(*SITUATION_KIND_GROUND) 
+    || fighter.is_situation(*SITUATION_KIND_CLIFF) 
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
+    || fighter.is_situation(*SITUATION_KIND_LADDER) {
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+    }
+}
+
+// Grounded SMG spin movement
+unsafe fn galaxy_spin_move(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32, stick_x: f32, facing: f32) {
+    if motion_kind == hash40("special_lw_light") {
+        let current_speed =  KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) && fighter.is_situation(*SITUATION_KIND_GROUND){
+            if frame >= 6.0 && frame < 20.0 { 
+                if stick_x != 0.0 {
+                    let motion_vec = x_motion_vec(1.2, stick_x);
+                    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+                }
+            }
+            if frame >= 20.0 && frame < 55.0 { 
+                if stick_x != 0.0 {
+                    let motion_value = 1.2 + (frame - 20.0) * ((0.01 - 1.2)/(55.0 - 20.0));
+                    let motion_vec = x_motion_vec(motion_value, stick_x);
+                    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+                }
+            }
+        }
+    }
+}
 
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
-
 
 // NokNok Shell Timer Count
 unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
@@ -174,14 +246,48 @@ unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     //double_fireball(fighter, boma);
+    galaxy_spin_poc(fighter, boma, status_kind);
+    galaxy_spin_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame);
+    galaxy_spin_move(fighter, boma, status_kind, motion_kind, situation_kind, frame, stick_x, facing);
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIO )]
