@@ -99,7 +99,10 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, false);
                         VarModule::inc_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER);
 
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, true);
                         ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)); 
+                        
+
                         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                         
 
@@ -140,6 +143,12 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
                 ControlModule::reset_main_stick(boma);
             }
         }
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, false);
+    }
+    //checking if gordo does not exist, but is not removed by this function
+    else if !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO) && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG){
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, false);
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0); 
     }
 }
 
