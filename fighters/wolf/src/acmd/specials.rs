@@ -108,7 +108,7 @@ unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.75);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }

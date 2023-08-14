@@ -1,56 +1,135 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 0
+attack_11:
+  extra:
+    cancel_frame: 16
 attack_12:
   extra:
     cancel_frame: 18
 attack_13:
   extra:
-    cancel_frame: 28
-special_s:
-  extra:
-    cancel_frame: 46
-attack_11:
-  extra:
-    cancel_frame: 16
-attack_lw3:
-  extra:
-    cancel_frame: 25
-attack_hi4:
+    cancel_frame: 27
+attack_s3_s:
   flags:
     move: false
-  extra:
-    cancel_frame: 44
-attack_lw4:
-  extra:
-    cancel_frame: 48
-attack_s4_s:
-  extra:
-    cancel_frame: 50
-attack_s3_s:
+attack_s3_hi:
   flags:
     move: false
 attack_s3_lw:
   flags:
     move: false
-attack_s4_hi:
+attack_lw3:
+  extra:
+    cancel_frame: 25
+attack_s4_s:
   extra:
     cancel_frame: 50
-attack_air_b:
-  extra:
-    cancel_frame: 32
-attack_air_f:
+attack_s4_hi:
   extra:
     cancel_frame: 50
 attack_s4_lw:
   extra:
     cancel_frame: 50
-attack_s3_hi:
-  flags:
-    move: false
-special_air_s:
+attack_hi4:
+  extra:
+    cancel_frame: 44
+attack_lw4:
+  extra:
+    cancel_frame: 48
+attack_air_f:
   extra:
     cancel_frame: 46
+attack_air_b:
+  extra:
+    cancel_frame: 32
+attack_air_hi:
+  extra:
+    cancel_frame: 30
 attack_air_lw:
   extra:
     cancel_frame: 41
-attack_air_hi:
+special_n:
+  animations:
+  - name: d00specialntoss.nuanmb
   extra:
-    cancel_frame: 28
+    cancel_frame: 47
+special_air_n:
+  animations:
+  - name: d00specialairntoss.nuanmb
+  extra:
+    cencel_frame: 47
+special_n_chill:
+  game_script: game_specialnchill
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialn.nuanmb
+  scripts:
+  - expression_specialnchill
+  - sound_specialnchill
+  - effect_specialnchill
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
+special_air_n_chill:
+  game_script: game_specialairnchill
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialairn.nuanmb
+  scripts:
+  - expression_specialairnchill
+  - sound_specialairnchill
+  - effect_specialairnchill
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
+special_s:
+  extra:
+    cancel_frame: 46
+special_air_s:
+  extra:
+    cancel_frame: 46
+throw_b:
+  extra:
+    cancel_frame: 47

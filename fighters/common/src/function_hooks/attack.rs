@@ -18,7 +18,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         data.power = 6.0;  // damage
         data.vector = 361;  // angle
         data.r_eff = 50;  // KBG
-        data.r_add = 80;  // BKB
+        data.r_add = 75;  // BKB
         data.sub_shield = 0;  // shield damage modifier
         data.lr_check = smash2::app::AttackLRCheck::Pos; // always allow reverse hit
     }
@@ -26,7 +26,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         data.power = 5.0;
         data.vector = 361;
         data.r_eff = 50;
-        data.r_add = 80;
+        data.r_add = 75;
         data.sub_shield = 0;
         data.lr_check = smash2::app::AttackLRCheck::Pos;
     }
@@ -34,7 +34,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         data.power = 8.0;
         data.vector = 361;
         data.r_eff = 50;
-        data.r_add = 70;
+        data.r_add = 65;
         data.sub_shield = 0;
     }
     

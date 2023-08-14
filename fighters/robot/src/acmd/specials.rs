@@ -86,6 +86,18 @@ unsafe fn robot_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "robot", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+unsafe fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        let vec = Vector3f{x: 0.3, y: 0.0, z: 0.0};
+        KineticModule::add_speed(boma, &vec);
+        WorkModule::on_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_TRANSFORM_COMP);
+    }
+}
+
 
 pub fn install() {
     install_acmd_scripts!(
@@ -93,6 +105,6 @@ pub fn install() {
         robot_special_s_end_game,
         robot_special_lw_game,
         robot_special_air_lw_game,
+        robot_special_hi_game,
     );
 }
-
