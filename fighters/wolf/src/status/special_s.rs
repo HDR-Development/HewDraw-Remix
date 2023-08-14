@@ -237,7 +237,10 @@ unsafe extern "C" fn special_s_rush_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-unsafe extern "C" fn special_s_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue { 0.into() }
+unsafe extern "C" fn special_s_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
+    0.into()
+}
 
 unsafe extern "C" fn special_s_rush_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
