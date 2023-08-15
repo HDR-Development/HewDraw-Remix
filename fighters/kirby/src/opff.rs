@@ -500,21 +500,6 @@ unsafe fn repeated_falcon_punch_turnaround(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Warlock Punch Turnarounds
-unsafe fn repeated_warlock_punch_turnaround(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
-    let frame = fighter.motion_frame();
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N_TURN)
-    && 30.0 < frame && frame < 45.0
-    && fighter.is_stick_backward()
-    && fighter.stick_x().abs() > 0.1
-    {
-        fighter.change_status_req(*FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N_TURN, true);
-    }
-}
-
 
 // Blue Eggs Land Cancel
 unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
@@ -949,7 +934,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
                     fighter.clear_lua_stack();
                     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
                     app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                    
+
                     fighter.clear_lua_stack();
                     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     app::sv_kinetic_energy::enable(fighter.lua_state_agent);
@@ -1004,9 +989,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Falcon Punch Turnarounds
     repeated_falcon_punch_turnaround(fighter);
-
-    // Warlock Punch Turnarounds
-    repeated_warlock_punch_turnaround(fighter);
 
     //Blue Eggs Land Cancel
     blue_eggs_land_cancels(fighter);

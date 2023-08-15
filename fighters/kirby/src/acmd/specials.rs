@@ -1705,6 +1705,127 @@ unsafe fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "game_ganonfloatstart" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_DECIDE_ANGLE);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC);
+        VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_ganonfloatstart", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_float_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.8, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 6.0);
+    for _ in 0..5 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "sound_ganonfloatstart", category = ACMD_SOUND , low_priority)]
+unsafe fn ganon_float_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "game_ganonfloatairstart" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 1.0 / 10.0);
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_ganonfloatairstart", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_float_air_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 2.0);
+    for _ in 0..5 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "sound_ganonfloatairstart", category = ACMD_SOUND , low_priority)]
+unsafe fn ganon_float_air_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "game_ganonfloat" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_float_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_ganonfloat", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_float_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
+    }
+    for _ in 0..5 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ganon_final_hand_triforce"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("ganon_entry_aura"), false, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kirby_special_n_eat_game,
@@ -1757,8 +1878,15 @@ pub fn install() {
         ridley_special_air_n_explode_game,
         ridley_special_air_n_explode_effect,
         ridley_special_air_n_explode_sound,
-        ridley_special_air_n_explode_expression
-
+        ridley_special_air_n_explode_expression,
+        ganon_float_start_game,
+        ganon_float_start_effect,
+        ganon_float_start_sound,
+        ganon_float_air_start_game,
+        ganon_float_air_start_effect,
+        ganon_float_air_start_sound,
+        ganon_float_game,
+        ganon_float_effect
     );
 }
 

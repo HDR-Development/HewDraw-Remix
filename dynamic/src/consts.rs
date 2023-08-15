@@ -1267,6 +1267,6 @@ pub mod statuses {
     }
 
     pub mod kirby {
-        pub const SPECIAL_HI_H: i32 = 0;
+        pub const SPECIAL_HI_H: i32 = 69; //Weird value to avoid conflicts with copy ability values
     }
 }

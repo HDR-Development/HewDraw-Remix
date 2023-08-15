@@ -3,6 +3,8 @@ use globals::*;
 mod special_hi_h;
 mod gaogaen_special_n;
 mod ridley_special_n;
+mod ganon_special_n;
+mod ganon_special_n_float;
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
@@ -14,11 +16,13 @@ pub fn install() {
     special_hi_h::install();
     gaogaen_special_n::install();
     ridley_special_n::install();
+    ganon_special_n::install();
 
 }
 
 pub fn add_statuses() {
     special_hi_h::install();
+    ganon_special_n_float::install();
 }
 
 #[smashline::fighter_init]
@@ -28,6 +32,7 @@ fn kirby_init(fighter: &mut L2CFighterCommon) {
         if fighter.kind() == *FIGHTER_KIND_KIRBY {
             fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+            fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(ganon_should_use_special_n_callback as *const () as _));
         }
     }
 }
@@ -52,8 +57,15 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
-        VarModule::off_flag(fighter.battle_object, vars::kirby::instance::DISABLE_SPECIAL_HI);
+            VarModule::off_flag(fighter.battle_object, vars::kirby::instance::DISABLE_SPECIAL_HI);
     }
+
+    /// Ganon: Re-enables the ability to use aerial specials when connecting to ground or cliff
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
+        VarModule::off_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
+    }
+
     return true.into();
 }
 
@@ -142,4 +154,14 @@ pub unsafe fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     0.into()
+}
+
+
+/// Prevents side b from being used again in air when it has been disabled by up-b fall
+unsafe extern "C" fn ganon_should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) {
+        false.into()
+    } else {
+        true.into()
+    }
 }
