@@ -16,22 +16,10 @@ unsafe fn soaring_slash_drift(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Chrome Soaring Slash Cancel
+//Chrom Grounded Soaring Slash
 unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
-    let frame = fighter.motion_frame();
-    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
-    && 28.0 < frame && frame < 31.0
-    && fighter.is_button_on(Buttons::Guard)
-    {
-        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-        } else {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        }
+    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2) && fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.motion_frame() > 40.0 {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
     }
 }
 
@@ -193,7 +181,7 @@ pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon
     common::opff::fighter_common_opff(fighter);
     fe_common(fighter);
     soaring_slash_drift(fighter);
-    //soaring_slash_cancel(fighter);
+    soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
     //soaring_slash(fighter);
     double_edge_dance_vertical_momentum(fighter);
