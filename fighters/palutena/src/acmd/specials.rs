@@ -316,9 +316,15 @@ unsafe fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.7, true);
         LAST_EFFECT_SET_RATE(agent, (45.0/13.0));
-        LAST_EFFECT_SET_COLOR(agent, 0.75, 0.85, 0.3);
+        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.75, 0.1);
     }
-    wait(lua_state, 12.0);
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(agent, (45.0/14.0));
+        LAST_EFFECT_SET_COLOR(agent, 0.65, 1.05, 0.35);
+    }
+    wait(lua_state, 11.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.55, 0.85, 0.3);
