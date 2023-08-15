@@ -129,7 +129,7 @@ unsafe fn palutena_attack_hi4_effect(agent: &mut L2CAgentBase) {
     if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("palutena_pressure"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
+            //LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
             LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
             EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2, 0, -60, 0, 1, true, 0.7);
             LAST_EFFECT_SET_RATE(agent, 1.1);
