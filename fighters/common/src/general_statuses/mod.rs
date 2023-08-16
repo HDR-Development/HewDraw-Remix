@@ -595,7 +595,7 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
         return false.into();
     }
 
-    if ![*FIGHTER_STATUS_KIND_DAMAGE_FLY,
+    if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
@@ -603,41 +603,47 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY,
     ].contains(&status_kind) {
-        let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
-        let some_cliff_param = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
-        if cliff_count > some_cliff_param {
-            return false.into();
-        }
-        
-        if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL)
-        && !KineticModule::is_suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
-            let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            if speed_y >= 0.0 {
-                return false.into();
-            }
-
-            let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
-            let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
-            if [*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
-                *FIGHTER_STATUS_KIND_CLIFF_CATCH,
-                *FIGHTER_STATUS_KIND_CLIFF_WAIT,
-            ].contains(&prev_status_kind) {
-                dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cliff_dive_cont_value"));
-                dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_dive_flick_frame_value"));
-            }
-
-            if fighter.left_stick_y() > dive_cont_value
-            || VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) >= dive_flick_frame_value {
-                return false.into();
-            }
-
-            let dive_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("dive_speed_y"), 0);
-            if speed_y >= -dive_speed_y {
-                return true.into();
-            }
-        }
+        return false.into();
     }
-    false.into()
+
+    // Disallows fastfall from ledge after a certain amount of regrabs
+    let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
+    let cliff_dive_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
+    if cliff_count > cliff_dive_count_max {
+        return false.into();
+    }
+    
+    if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL)
+    || KineticModule::is_suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
+        return false.into();
+    }
+
+    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    if speed_y >= 0.0 {
+        return false.into();
+    }
+
+    let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
+    let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
+    if [*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
+        *FIGHTER_STATUS_KIND_CLIFF_CATCH,
+        *FIGHTER_STATUS_KIND_CLIFF_WAIT,
+    ].contains(&prev_status_kind) {
+        dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cliff_dive_cont_value"));
+        dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_dive_flick_frame_value"));
+    }
+
+    if fighter.left_stick_y() > dive_cont_value
+    || VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) >= dive_flick_frame_value {
+        return false.into();
+    }
+
+    let dive_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("dive_speed_y"), 0);
+    if speed_y < -dive_speed_y {
+        return false.into();
+    }
+    
+    true.into()
 }
 
 pub fn install() {
