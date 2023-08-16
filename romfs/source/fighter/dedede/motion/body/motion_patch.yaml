@@ -32,6 +32,8 @@ attack_s4_s:
   extra:
     cancel_frame: 80
 attack_s3_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 43
 fall_special:

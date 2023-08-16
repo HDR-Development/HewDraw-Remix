@@ -27,11 +27,15 @@ attack_hi4:
 fall_aerial:
   blend_frames: 5
 attack_s3_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 34
 fall_special:
   blend_frames: 5
 attack_s3_lw:
+  flags:
+    move: false
   extra:
     cancel_frame: 34
 attack_air_b:
@@ -44,6 +48,8 @@ attack_air_n:
   extra:
     cancel_frame: 36
 attack_s3_hi:
+  flags:
+    move: false
   extra:
     cancel_frame: 34
 attack_air_lw:

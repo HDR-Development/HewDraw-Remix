@@ -28,6 +28,8 @@ attack_hi3:
 fall_aerial:
   blend_frames: 5
 attack_s4_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 58
 attack_s3_s:
