@@ -196,4 +196,6 @@ pub fn delayed_install() {
     { wolf::delayed_install(); }
     #[cfg(feature = "include-diddy")]
     { diddy::delayed_install(); }
+    #[cfg(feature = "include-falco")]
+    { falco::delayed_install(); }
 }
