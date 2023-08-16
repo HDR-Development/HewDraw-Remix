@@ -104,19 +104,10 @@ unsafe fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 9.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), -4, 7.5, 17, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_RATE(agent, 1.3);
-        }
-    }
-    else{
-        if is_excute(agent) {
-            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 4, 7.5, 17, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_RATE(agent, 1.3);
-        }
-    }
     if is_excute(agent) {
+        let facing = PostureModule::lr(boma);
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 4.0 * facing, 7.5, 17, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8, 4, 0, 0, 0, 0.9, true);
     }
     frame(lua_state, 20.0);

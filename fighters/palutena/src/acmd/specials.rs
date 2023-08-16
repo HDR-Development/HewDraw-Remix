@@ -97,18 +97,8 @@ unsafe fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-            if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
-                LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
-            }
-        }
-        else {
-            if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -55, 0, 1, true);
-                LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
-            }
-        }
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 18.0);
     if power {
@@ -212,27 +202,15 @@ unsafe fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 0.75, true);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_pressure"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, length2, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.3);
+        LAST_EFFECT_SET_RATE(agent, (16.0/10.0));
     }
     frame(lua_state, 16.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2, 0, -60, 0, 1, true, 0.7);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
-            EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, y_pos, 10, 0, 250, 0, 1, true);
-            EffectModule::set_scale_last(boma, &Vector3f::new(0.5, length, 0.5));
-            LAST_EFFECT_SET_RATE(agent, (18.0/10.0));
-        }
-    }
-    else {
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2.5, 0, -60, 0, 1, true);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
-            EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, y_pos, 10, 0, 250, 0, 1, true);
-            EffectModule::set_scale_last(boma, &Vector3f::new(0.5, length, 0.5));
-            LAST_EFFECT_SET_RATE(agent, (18.0/8.0));
-        }
+    if is_excute(agent) {
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2, 0, -60, 0, 1, true, 0.7);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
+        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, y_pos, 10, 0, 250, 0, 1, true);
+        EffectModule::set_scale_last(boma, &Vector3f::new(0.5, length, 0.5));
     }
     wait(lua_state, 10.0);
     if is_excute(agent) {
@@ -317,7 +295,7 @@ unsafe fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.7, true);
         LAST_EFFECT_SET_RATE(agent, (45.0/13.0));
-        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.75, 0.1);
+        LAST_EFFECT_SET_COLOR(agent, 0.25, 0.65, 0.05);
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
@@ -661,24 +639,15 @@ unsafe fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_flash"), Hash40::new("shield"), -1, 0, -3, 0, 0, 0, 0.9, true);
-        EFFECT(agent, Hash40::new("palutena_counter_success"), Hash40::new("top"), 0, 14.8, -1, 0, 90, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 14.8, -1, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_flash"), Hash40::new("shield"), -1, 0, -3, 0, 0, 0, 0.7, true);
+        EFFECT(agent, Hash40::new("palutena_counter_success"), Hash40::new("top"), 0, 14.8, -1, 0, 90, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 14.8, -1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 19.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("waist"), 10, -3, -1, 0, 90, 0, 1, true);
-            EffectModule::set_disable_render_offset_last(boma);
-            LAST_EFFECT_SET_RATE(agent, 2.75);
-        }
-    }
-    else {
-        if is_excute(agent) {
-            EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 0, 21, 5, 0, -90, 0, 1, true);
-            EffectModule::set_disable_render_offset_last(boma);
-            LAST_EFFECT_SET_RATE(agent, 2.75);
-        }
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("waist"), 10, -3, -1, 0, 90, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(agent, 2.75);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {

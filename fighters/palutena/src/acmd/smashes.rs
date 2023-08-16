@@ -58,17 +58,9 @@ unsafe fn palutena_attack_s4_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_smash_s_trace"), Hash40::new("top"), 0, 0, -15, 50, 0, 0, 1, true);
     }
     frame(lua_state, 16.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
-        }
-    }
-    else{
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -55, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
-        }
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
@@ -126,25 +118,13 @@ unsafe fn palutena_attack_hi4_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 0.05, 0.05, 0.90);
     }
     frame(lua_state, 16.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_pressure"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, true);
-            //LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
-            LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-            EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2, 0, -60, 0, 1, true, 0.7);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
-        }
-    }
-    else {
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2.5, 0, -60, 0, 1, true);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
-            EFFECT_FOLLOW(agent, Hash40::new("palutena_pressure"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
-            LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-        }
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_pressure"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 4, 21.5, 2, 0, -60, 0, 1, true, 0.7);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
+        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
     }
     frame(lua_state, 50.0);
     if is_excute(agent) {
