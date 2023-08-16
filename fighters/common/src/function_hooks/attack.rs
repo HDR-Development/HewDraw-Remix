@@ -46,21 +46,6 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
             }
         }
     }
-    if (*boma).is_status(*FIGHTER_STATUS_KIND_SLIP_STAND_ATTACK) {
-        data.power = 5.0;
-        data.vector = 361;
-        data.r_eff = 50;
-        data.r_add = 75;
-        data.sub_shield = 0;
-        data.lr_check = smash2::app::AttackLRCheck::Pos;
-    }
-    if (*boma).is_status(*FIGHTER_STATUS_KIND_CLIFF_ATTACK) {
-        data.power = 8.0;
-        data.vector = 361;
-        data.r_eff = 50;
-        data.r_add = 65;
-        data.sub_shield = 0;
-    }
     
     call_original!(module, id, group, data)
 }

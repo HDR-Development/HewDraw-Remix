@@ -705,7 +705,8 @@ pub fn install() {
         up_taunt_game,
         sound_appealhi,
         sound_appeallwr,
-        sound_appeallwl
+        sound_appeallwl,
+        game_catchattack
     );
 }
 
