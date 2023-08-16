@@ -1686,7 +1686,7 @@ unsafe fn ridley_special_air_n_explode_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_ridley_smash_s01"));
-        PLAY_SE(fighter, Hash40::new("vc_kirby_copy_roy_02"));
+        PLAY_SE(fighter, Hash40::new("vc_kirby_attack05"));
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
@@ -1826,6 +1826,94 @@ unsafe fn ganon_float_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "game_sonicspecialnhit" , category = ACMD_GAME , low_priority)]
+unsafe fn sonic_special_n_hit_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        let temp = Vector3f { x: -0.3, y: 1.0, z: 0.0 };
+		KineticModule::add_speed(boma, &temp);
+    }
+    FT_MOTION_RATE(fighter, 0.5);
+
+}
+
+#[acmd_script( agent = "kirby", script = "effect_sonicspecialnhit" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sonic_special_n_hit_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "kirby", script = "sound_sonicspecialnhit" , category = ACMD_SOUND , low_priority)]
+unsafe fn sonic_special_n_hit_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("vc_kirby_copy_sonic_01"));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_kirby_appeal01"));
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["effect_royspecialnend", "effect_royspecialairnend"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("roy_erupution_hold"), Hash40::new("roy_erupution_hold"), Hash40::new("havel"), 0.0, 0.0, 0.0, -90.0, 90.0, 0.0, 1.4, true, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("roy_sword"), Hash40::new("roy_sword"), Hash40::new("havel"), 0.0, 0.0, 0.0, -90.0, 90.0, 0.0, 1.0, true, *EF_FLIP_NONE);
+
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("roy_attack_fire"), Hash40::new("roy_attack_fire"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.9, true, *EF_FLIP_NONE);
+        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("roy_fire"), Hash40::new("roy_fire"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, true, *EF_FLIP_NONE);
+        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        //AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_roy_sword1"), Hash40::new("tex_roy_sword2"), 7, Hash40::new("havel"), 0.0, 0.0, -0.8, Hash40::new("havel"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
+        //EFFECT(fighter, Hash40::new("roy_eruption_bomb_main"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+        //LAST_EFFECT_SET_RATE(fighter, 1.5);
+        //EFFECT(fighter, Hash40::new("roy_eruption_bomb_start"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 1.05, 0, 0, 0, 0, 0, 0, true);
+        //LAST_EFFECT_SET_RATE(fighter, 1.5);
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 2);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_fire"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_attack_fire"), false, false);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
+    }
+
+}
+
+#[acmd_script( agent = "roy", scripts = ["sound_royspecialnend", "sound_royspecialairnend"] , category = ACMD_SOUND , low_priority)]
+unsafe fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_roy_special_n01"));
+        PLAY_SE(fighter, Hash40::new("se_roy_special_n02"));
+        PLAY_SE(fighter, Hash40::new("vc_kirby_copy_roy_02"));
+        PLAY_SE(fighter, Hash40::new("se_roy_attackl_s01"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kirby_special_n_eat_game,
@@ -1886,7 +1974,13 @@ pub fn install() {
         ganon_float_air_start_effect,
         ganon_float_air_start_sound,
         ganon_float_game,
-        ganon_float_effect
+        ganon_float_effect,
+        sonic_special_n_hit_game,
+        sonic_special_n_hit_effect,
+        sonic_special_n_hit_sound,
+        roy_special_n_end_effect,
+        roy_special_n_end_sound
+
     );
 }
 
