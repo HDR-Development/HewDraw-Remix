@@ -38,9 +38,13 @@ attack_s4_s:
   extra:
     cancel_frame: 57
 attack_s3_s:
+  flags:
+    move: false
 fall_special:
   blend_frames: 5
 attack_s3_lw:
+  flags:
+    move: false
 attack_air_b:
   extra:
     cancel_frame: 38
@@ -48,6 +52,8 @@ attack_air_f:
   extra:
     cancel_frame: 37
 attack_s3_hi:
+  flags:
+    move: false
 attack_air_lw:
   extra:
     cancel_frame: 41
