@@ -9,6 +9,8 @@ special_s:
     move: false
 attack_11:
 attack_lw3:
+  flags:
+    move: false
   extra:
     cancel_frame: 37
 attack_hi4:

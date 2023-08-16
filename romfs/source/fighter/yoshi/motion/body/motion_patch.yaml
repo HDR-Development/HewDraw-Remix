@@ -22,13 +22,19 @@ attack_hi3:
 fall_aerial:
   blend_frames: 5
 attack_s4_s:
+  flags:
+    move: false
 fall_special:
   blend_frames: 5
 attack_s4_hi:
+  flags:
+    move: false
 attack_air_b:
   extra:
     cancel_frame: 40
 attack_s4_lw:
+  flags:
+    move: false
 attack_air_hi:
   extra:
     cancel_frame: 40

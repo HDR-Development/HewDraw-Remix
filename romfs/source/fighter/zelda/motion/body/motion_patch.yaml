@@ -30,6 +30,8 @@ attack_lw4:
   extra:
     cancel_frame: 40
 attack_s4_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 54
 attack_s3_s:
