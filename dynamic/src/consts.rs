@@ -588,7 +588,7 @@ pub mod vars {
     pub mod kirby {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_HI: i32 = 0x00FF; //Weird value to avoid conflicts with copy ability values
         }
         pub mod status {
             // flags
