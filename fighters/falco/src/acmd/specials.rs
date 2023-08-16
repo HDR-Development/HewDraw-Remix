@@ -91,7 +91,7 @@ unsafe fn falco_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
 unsafe fn falco_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {  }
+    if is_excute(fighter) { }
 }
  #[acmd_script( agent = "falco", script = "game_specialhiholdair" , category = ACMD_GAME , low_priority)]
  unsafe fn falco_special_hi_hold(fighter: &mut L2CAgentBase) {
@@ -118,8 +118,8 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 0.5, 367, 60, 0, 60, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("hip"), 0.5, 80, 100, 80, 0, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 0.5, 367, 60, 0, 60, 5.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("hip"), 0.5, 80, 100, 80, 0, 5.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -127,8 +127,8 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     for _ in 0..7 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("hip"), 1.0, 367, 60, 0, 60, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 1, 0, Hash40::new("hip"), 1.0, 65, 100, 80, 0, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("hip"), 1.0, 367, 60, 0, 60, 5.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 1.0, 65, 100, 80, 0, 5.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
        }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -137,44 +137,12 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 2.0, 75, 220, 0, 75, 8.0, -4.0, 3.5, -1.5, None, None, None, 1.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 2.0, 75, 220, 0, 75, 6.0, -4.0, 3.5, -1.5, None, None, None, 1.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
-}
-
-#[acmd_script( agent = "falco", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        // This allows falco jump stalling. DO NOT REMOVE UNLESS YOU FEEL YOU ARE GOING TO STATUS SCRIPT IT.
-        KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        let shine_vec = Vector3f { x: 0.25, y: 0.0, z: 1.0 };
-        KineticModule::mul_speed(boma, &shine_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        let shineGravity = Vector3f { x: 1.0, y: 0.1588, z: 1.0 };
-        KineticModule::mul_accel(boma, &shineGravity, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 92, 6.5, 0.0, 7.0, 0.5, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.7);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {  }frame(lua_state, 51.0);
-    if is_excute(fighter) {
-        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-    }
-    
 }
 
 #[acmd_script( agent = "falco", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
@@ -182,26 +150,73 @@ unsafe fn falco_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-        KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        let shine_vec = Vector3f { x: 0.25, y: 0.0, z: 1.0 };
-        KineticModule::mul_speed(boma, &shine_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        let shineGravity = Vector3f { x: 1.0, y: 0.1588, z: 1.0 };
-        KineticModule::mul_accel(boma, &shineGravity, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 4.0, 4.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 92, 6.5, 0.0, 7.0, -0.4, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 92, 6.5, 0.0, 7.0, -2.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.7);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {  }frame(lua_state, 51.0);
+}
+
+#[acmd_script( agent = "falco", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 4.0, 4.0);
     if is_excute(fighter) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 92, 6.5, 0.0, 7.0, -2.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.7);
     }
-    
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "falco", scripts = ["effect_speciallw", "effect_specialairlw"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn falco_special_lw_effect(fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		//LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 0.8, true);
+		EffectModule::preset_limit_num(fighter.module_accessor, 2);
+		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
+        //FLASH(fighter, 1, 1, 1, 0.627);
+	}
+    // frame(lua_state, 1.0);
+	// if is_excute(fighter) {
+	// 	EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
+    // }
+	// frame(lua_state, 32.0);
+	// if is_excute(fighter) {
+	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_loop"), false, false);
+	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_ref"), false, false);
+	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_flash"), true, false);
+	// 	EFFECT_FLW_POS(fighter, Hash40::new("sys_flash"), Hash40::new("reflector"), 1.4, -0.6, -0.5, 0, 0, 0, 0.5, true);
+	// }
+}
+
+
+#[acmd_script( agent = "falco", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn falco_special_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_shield_on"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
 }
 
 #[acmd_script( agent = "falco", script = "sound_speciallw" , category = ACMD_SOUND , low_priority)]
@@ -210,9 +225,8 @@ unsafe fn falco_special_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_falco_special_l01"));
+        PLAY_SE(fighter, Hash40::new("se_item_item_get"));
     }
-
 }
 
 #[acmd_script( agent = "falco", script = "sound_specialairlw" , category = ACMD_SOUND , low_priority)]
@@ -221,9 +235,107 @@ unsafe fn falco_special_air_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_falco_special_l01"));
+        PLAY_SE(fighter, Hash40::new("se_item_item_get"));
     }
+}
 
+#[acmd_script( agent = "falco", script = "game_speciallwloop", category = ACMD_GAME, low_priority )]
+unsafe fn game_speciallwloop(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "falco", script = "game_specialairlwloop", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairlwloop(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "falco", scripts = ["effect_speciallwloop", "effect_specialairlwloop"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_speciallwloop(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SET_EFFECT) {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2, 0, 0, 0, 0.8, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.2, 0, -0.5, 0, 0, 0, 1, true);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SET_EFFECT);
+        }
+    }
+    if is_excute(fighter) {
+        FLASH(fighter, 0, 0.5, 1, 0.25);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+    wait(lua_state, 1.0);
+}
+
+#[acmd_script( agent = "falco", scripts = ["sound_speciallwloop", "sound_specialairlwloop"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_speciallwloop(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        //STOP_SE(fighter, Hash40::new("se_falco_special_l02"));
+        //PLAY_STATUS(fighter, Hash40::new("se_falco_special_l02"));
+    }
+}
+
+#[acmd_script( agent = "falco", scripts = ["expression_speciallwloop", "expression_specialairlwloop"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_speciallwloop(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    sv_animcmd::wait_loop_sync_mot(fighter.lua_state_agent);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattacks"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
+    ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattacks"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+}
+
+#[acmd_script( agent = "falco", scripts = ["game_speciallwend", "game_specialairlwend"], category = ACMD_GAME, low_priority )]
+unsafe fn game_speciallwend(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "falco", scripts = ["effect_speciallwend", "effect_specialairlwend"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_speciallwend(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "falco", scripts = ["sound_speciallwend", "sound_specialairlwend"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_speciallwend(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "falco", scripts = ["expression_speciallwend", "expression_specialairlwend"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_speciallwend(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_shield_off"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "falco", script = "sound_specialnstart" , category = ACMD_SOUND , low_priority)]
@@ -283,7 +395,19 @@ pub fn install() {
         falco_special_hi_game,
         falco_special_air_lw_game,
         falco_special_lw_game,
+        falco_special_lw_effect,
+        falco_special_lw_expression,
+        falco_special_lw_sound,
         falco_special_air_lw_sound,
+        game_speciallwloop,
+        game_specialairlwloop,
+        effect_speciallwloop,
+        sound_speciallwloop,
+        expression_speciallwloop,
+        game_speciallwend,
+        effect_speciallwend,
+        sound_speciallwend,
+        expression_speciallwend,
         falco_special_n_start_sound,
         falco_special_air_n_start_sound,
         // falco_special_air_hi_sound,

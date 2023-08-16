@@ -16,7 +16,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         let x_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let y_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let facing = PostureModule::lr(boma);
-        if frame <= 28.0 {
+        if frame <= 29.0 {
             if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
                 // Tell the game that you've started rising
                 VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING);
@@ -56,7 +56,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
     if VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING) {
         if motion_kind != hash40("attack_air_lw")
-            || (motion_kind == hash40("attack_air_lw") && frame > 28.0) {
+            || (motion_kind == hash40("attack_air_lw") && frame > 29.0) {
             ColorBlendModule::cancel_main_color(boma, 0);
             VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN);
             VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING);
@@ -73,9 +73,12 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
 // Super Jump Punch Wall Jump
 unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
         if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 23.0 && frame <= 25.0 {
+            if frame >= 22.0 && frame <= 35.0 {
                 if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
@@ -171,6 +174,39 @@ unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE,
+        *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
@@ -179,6 +215,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIO )]

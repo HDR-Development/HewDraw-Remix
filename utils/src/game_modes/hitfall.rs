@@ -16,22 +16,11 @@ pub unsafe fn update() {
     }
 
     //println!("doing hitfall update!");
-    for i in 0..8 {
-        if let Some(object_id) = util::get_active_battle_object_id_from_entry_id(i) {
-            let object = util::get_battle_object_from_id(object_id);
-            if !object.is_null() {
-                let fighter = util::get_fighter_common_from_accessor(&mut *(*object).module_accessor);
-                fighter.check_hitfall();
-                if fighter.kind() == *FIGHTER_KIND_POPO {
-                    let nana_object_id = WorkModule::get_int(fighter.boma(), *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
-                    let object = util::get_battle_object_from_id(nana_object_id);
-                    if !object.is_null() {
-                        let nana_boma = &mut *(*object).module_accessor;
-                        nana_boma.check_hitfall();
-                    }
-                }
-            }
+    for object_id in util::get_all_active_battle_object_ids() {
+        let object = util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let fighter = util::get_fighter_common_from_accessor(&mut *(*object).module_accessor);
+            fighter.check_hitfall();
         }
-
     }
 }

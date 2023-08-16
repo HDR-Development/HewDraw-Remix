@@ -2,8 +2,46 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">20.5</float>
-      <float hash="p2_y">5.5</float>
+      <float hash="p1_y">18.5</float>
+      <float hash="p2_y">7</float>
     </struct>
+  </list>
+    <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="limit_speed_y_2">1.2</float>
+      <float hash="limit_frame">190</float>
+      <float hash="limit_speed_y_1">1.2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+    <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="water_interval">5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_flowerpot">
+    <struct index="0">
+      <int hash="life">120</int>
+      <int hash="bound_life">120</int>
+      <float hash="burst_rate">0</float>
+      <float hash="bound_speed_y">1.1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_sprout">
+    <struct index="0">
+      <int hash="life">99999</int>
+      <int hash="tree_frame">6</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
 </struct>

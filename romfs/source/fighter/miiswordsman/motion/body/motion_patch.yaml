@@ -1,0 +1,267 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+throw_hi:
+  extra:
+    cancel_frame: 46
+attack_12:
+  extra:
+    cancel_frame: 22
+attack_13:
+  extra:
+    cancel_frame: 36
+attack_11:
+attack_hi4:
+  extra:
+    cancel_frame: 55
+special_n2:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 47
+attack_lw4:
+  extra:
+    cancel_frame: 50
+attack_hi3:
+  extra:
+    cancel_frame: 31
+attack_s4_s:
+  extra:
+    cancel_frame: 55
+special_lw1:
+  extra:
+    intangible_start_frame: 5
+attack_air_f:
+  extra:
+    cancel_frame: 41
+attack_air_n:
+  extra:
+    cancel_frame: 43
+special_s3_1:
+  extra:
+    cancel_frame: 41
+attack_air_lw:
+  extra:
+    cancel_frame: 55
+attack_air_hi:
+  extra:
+    cancel_frame: 43
+special_air_n2:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 47
+attack_s4_hold:
+special_s3_1_hi:
+  extra:
+    cancel_frame: 41
+special_air_lw1:
+  extra:
+    intangible_start_frame: 5
+special_s3_1_lw:
+  extra:
+    cancel_frame: 41
+special_lw1_hit:
+  extra:
+    cancel_frame: 50
+special_air_s3_1:
+  extra:
+    cancel_frame: 41
+special_hi1_start:
+  extra:
+    intangible_start_frame: 6
+special_air_s3_1_hi:
+  extra:
+    cancel_frame: 41
+'0x133afd2444':
+  game_script: '0x15991dfa54'
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: h14gekikarawait.nuanmb
+  scripts:
+  - '0x1b4925b9a7'
+  - '0x1665b3a178'
+  - '0x1782223a58'
+  extra:
+    intangible_start_frame: 1
+    intangible_end_frame: 24
+    cancel_frame: 50
+    freeze_during_hitstop: false
+special_air_s3_1_lw:
+  extra:
+    cancel_frame: 41
+'0x13a3f475fe':
+  game_script: '0x150014abee'
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: h14gekikarawaitface.nuanmb
+  scripts:
+  - '0x1bd02ce81d'
+  - '0x16fcbaf0c2'
+  - '0x171b2b6be2'
+  extra:
+    intangible_start_frame: 1
+    intangible_end_frame: 24
+    cancel_frame: 50
+    freeze_during_hitstop: false
+special_air_lw1_hit:
+  blend_frames: 6
+  extra:
+    cancel_frame: 58
+'0x13c0cdd62e':
+  game_script: '0x1635b7121a'
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: '0x1b916a2b86'
+  scripts:
+  - '0x1c11d389ff'
+  - '0x170793d0a2'
+  - '0x183c1a61f1'
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_air_hi1_start:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+'0x174d776a82':
+  game_script: '0x1890704606'
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 6
+  animations:
+  - name: h14gekikarawait.nuanmb
+  scripts:
+  - '0x1ed4a42f07'
+  - '0x19c906f30e'
+  - '0x1ae4f6450a'
+  extra:
+    intangible_start_frame: 1
+    intangible_end_frame: 24
+    cancel_frame: 40
+    freeze_during_hitstop: false
+'0x17b74798e8':
+  game_script: '0x19b0db4f7e'
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: '0x1e6a91323e'
+  scripts:
+  - '0x1fc798ab81'
+  - '0x1abe59b1f9'
+  - '0x1bb9198556'
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+'0x17d47e3b38':
+  game_script: '0x18097917bc'
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 6
+  animations:
+  - name: h14gekikarawaitface.nuanmb
+  scripts:
+  - '0x1e4dad7ebd'
+  - '0x19500fa2b4'
+  - '0x1a7dff14b0'
+  extra:
+    intangible_start_frame: 1
+    intangible_end_frame: 24
+    cancel_frame: 50
+    freeze_during_hitstop: false

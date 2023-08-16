@@ -5,6 +5,7 @@ use globals::*;
 pub fn install() {
     install_status_scripts!(
         dash,
+        special_hi_jump_exit
     );
 }
 
@@ -29,4 +30,11 @@ unsafe extern "C" fn ics_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "popo", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     ics_dash(fighter)
+}
+
+// FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP //
+
+#[status_script(agent = "popo", status = FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+pub unsafe fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
 }

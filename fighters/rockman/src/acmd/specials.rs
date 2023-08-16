@@ -17,10 +17,13 @@ unsafe fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
         else{
             //VarModule::on_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
             ArticleModule::change_status(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, *WEAPON_ROCKMAN_CRASHBOMB_STATUS_KIND_EXPLODE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            FT_MOTION_RATE(fighter, 15.0 / (44.0 - 19.0));
         }
-        
     }
-    
+    frame(lua_state, 44.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
 }
 
 #[acmd_script( agent = "rockman", script = "effect_specials" , category = ACMD_EFFECT , low_priority)]

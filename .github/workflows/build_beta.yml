@@ -11,7 +11,7 @@ on:
 
 jobs:
   version_and_changelog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: startsWith(github.ref, 'refs/tags')
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -48,14 +48,14 @@ jobs:
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
-        stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
-        maxIssues: 500
+        stripHeaders: true
         verbose: false
         issuesWoLabels: false
+        maxIssues: 500
+        stripGeneratorNotice: true
         compareLink: false
         simpleList: true
-
 
     - name: Upload changelog
       uses: actions/upload-artifact@v3
@@ -66,10 +66,10 @@ jobs:
   plugin_build:
     env:
       PLUGIN_NAME: hdr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: hewdrawremix/hewdraw-builder:latest
     outputs: 
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
@@ -92,8 +92,7 @@ jobs:
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
+        cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
       env:
         HOME: /root
 
@@ -109,7 +108,7 @@ jobs:
         name: version
         path: plugin/hdr_version.txt
 
-    - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+    - uses: dev-drprasad/delete-tag-and-release@master
       with:
         delete_release: true # default: false
         tag_name: ${{ steps.trimmed_tag.outputs.tag }} # tag name to delete
@@ -132,7 +131,7 @@ jobs:
         body: ${{ needs.version_and_changelog.outputs.changelog }}
 
   full_package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [version_and_changelog, plugin_build]
     steps:
     - name: checkout version
@@ -163,7 +162,6 @@ jobs:
       if: github.event.inputs.romfs_version == 'latest'
       run: |
         python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ steps.romfs_latest.outputs.release }}
-
 
     # get the most recent latest full release
     - id: package_latest
@@ -217,9 +215,27 @@ jobs:
       with:
         name: version
         
+    # build the lvd files
+    - id: lvd_files
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "techyCoder81/SSBU-LVD-data-dump"
+        tag: release
+        fileName: "lvd_dumper.zip"
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.408'
+
+    - name: extract lvd data
+      id: lvd_extract
+      shell: bash
+      run: |
+        . scripts/extract_lvd_data.sh
+
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
-
 
     - name: Upload full package to betas
       uses: svenstaro/upload-release-action@v2
@@ -237,7 +253,7 @@ jobs:
 
   ################  handle the creation of to-nightly.zip  ################
   to_nightly:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
@@ -245,7 +261,7 @@ jobs:
 
     # download the nightly
     - id: latest_nightly
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Nightlies"
         latest: true

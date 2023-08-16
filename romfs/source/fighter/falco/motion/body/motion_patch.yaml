@@ -1,0 +1,182 @@
+fall:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+throw_lw:
+  extra:
+    cancel_frame: 46
+throw_hi:
+  extra:
+    cancel_frame: 42
+attack_12:
+  extra:
+    cancel_frame: 19
+attack_11:
+  extra:
+    cancel_frame: 16
+attack_lw3:
+  extra:
+    cancel_frame: 28
+attack_hi4:
+  extra:
+    cancel_frame: 53
+attack_lw4:
+  extra:
+    cancel_frame: 51
+attack_hi3:
+  extra:
+    cancel_frame: 31
+fall_aerial:
+  blend_frames: 5
+attack_s4_s:
+  extra:
+    cancel_frame: 54
+attack_s3_s:
+fall_special:
+  blend_frames: 5
+attack_s3_lw:
+attack_air_f:
+  extra:
+    cancel_frame: 43
+attack_air_n:
+  extra:
+    cancel_frame: 43
+attack_s3_hi:
+special_n_end:
+  extra:
+    cancel_frame: 19
+attack_air_lw:
+  extra:
+    cancel_frame: 44
+attack_air_hi:
+  extra:
+    cancel_frame: 33
+attack_100_end:
+  extra:
+    cancel_frame: 36
+special_air_s_end:
+  extra:
+    cancel_frame: 0
+special_air_n_end:
+  extra:
+    cancel_frame: 19
+special_lw:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 0
+special_lw_loop:
+  game_script: game_speciallwloop
+  flags:
+    turn: false
+    loop: true
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d03speciallwloop.nuanmb
+      unk: 0
+  scripts:
+    - expression_speciallwloop
+    - sound_speciallwloop
+    - effect_speciallwloop
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
+special_lw_end:
+  game_script: game_speciallwend
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d03speciallwend.nuanmb
+      unk: 0
+  scripts:
+    - expression_speciallwend
+    - sound_speciallwend
+    - effect_speciallwend
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 14
+    no_stop_intp: false
+special_air_lw:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 0
+special_air_lw_loop:
+  game_script: game_specialairlwloop
+  flags:
+    turn: false
+    loop: true
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d03specialairlwloop.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairlwloop
+    - sound_specialairlwloop
+    - effect_specialairlwloop
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
+special_air_lw_end:
+  game_script: game_specialairlwend
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d03specialairlwend.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairlwend
+    - sound_specialairlwend
+    - effect_specialairlwend
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 14
+    no_stop_intp: false

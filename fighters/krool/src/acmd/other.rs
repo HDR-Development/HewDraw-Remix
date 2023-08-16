@@ -128,6 +128,9 @@ unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_landl"), 0, false, 0x50000000 /* default value */);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        if !fighter.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
     } 
 }
 
@@ -201,6 +204,10 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -212,13 +219,79 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "krool_ironball", script = "game_shoot", category = ACMD_GAME, low_priority )]
+unsafe fn krool_ironball_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 60, 92, 0, 18, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
+#[acmd_script( agent = "krool_ironball", script = "game_spitshoot", category = ACMD_GAME, low_priority )]
+unsafe fn krool_ironball_spit_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 60, 87, 0, 55, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
+#[acmd_script( agent = "krool_backpack", script = "effect_fly", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_backpack_effect_fly(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        let fuel_max = ParamModule::get_int(owner_boma.object(), ParamType::Agent, "param_special_hi.fuel_max") as f32;
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_propeller"), Hash40::new("propeller"), 1, 0, 0, 0, 0, 0, 1, true);
+        if VarModule::get_int(owner_boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32 > fuel_max * 0.33 {
+            EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
+            EffectModule::enable_sync_init_pos_last(boma);
+        }
+        VarModule::set_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER, -1);
+    }
+}
+
+#[acmd_script( agent = "krool", scripts = ["game_appealsl", "game_appealsr"], category = ACMD_GAME, low_priority )]
+unsafe fn krool_appeal_s_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        }
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
+    }
+}
+
+#[acmd_script( agent = "krool", scripts = ["game_appeallwr", "game_appeallwl"] , category = ACMD_GAME , low_priority)]
+unsafe fn krool_appeal_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 361, 43, 30, 0, 3.5, 0.0, 3.5, -8.5, Some(0.0), Some(3.5), Some(16.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -235,7 +308,12 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        krool_ironball_shoot_game,
+        krool_ironball_spit_shoot_game,
+        krool_backpack_effect_fly,
+        krool_appeal_s_game,
+        krool_appeal_lw_game,
     );
 }
 
