@@ -42,12 +42,30 @@ unsafe fn ganon_float_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "expression_ganonfloatstart", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "kirby", script = "sound_ganonfloatstart", category = ACMD_SOUND , low_priority)]
 unsafe fn ganon_float_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_kirby_jump01"));
     }
 }
 
@@ -76,6 +94,15 @@ unsafe fn ganon_float_air_start_effect(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
         }
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "expression_ganonfloatairstart", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_air_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -118,6 +145,15 @@ unsafe fn ganon_float_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_final_hand_triforce"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_entry_aura"), false, false);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "expression_ganonfloat", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -1215,7 +1251,7 @@ unsafe fn ridley_special_n_explode_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
     }
 }
 
@@ -1404,12 +1440,15 @@ pub fn install() {
     install_acmd_scripts!(
         ganon_float_start_game,
         ganon_float_start_effect,
+        ganon_float_start_expression,
         ganon_float_start_sound,
         ganon_float_air_start_game,
         ganon_float_air_start_effect,
+        ganon_float_air_start_expression,
         ganon_float_air_start_sound,
         ganon_float_game,
         ganon_float_effect,
+        ganon_float_expression,
         luigi_special_n_game,
         luigi_special_n_effect,
         luigi_special_n_sound,
