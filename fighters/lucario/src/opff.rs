@@ -38,7 +38,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
     nspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
-    dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
+    dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame, motion_kind);
     meter_module(fighter, boma, status_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_max_meter(fighter, boma, status_kind);
@@ -136,20 +136,17 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     }
 }
 
-unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        if CancelModule::is_enable_cancel(fighter.module_accessor)
-        || frame > 25.0 {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
-        } else {
-            fighter.set_float(10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, false);
-        }
+unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32, motion_kind: u64) {
+    if !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+        return;
     }
-    if (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) || (fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR) && fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))) 
-    && !CancelModule::is_enable_cancel(boma)
+    // landing transition
+    if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+    }
+    // attack canceling
+    if !CancelModule::is_enable_cancel(boma) 
+    && frame + 4.0 < FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), false)
     && fighter.is_button_on(Buttons::Attack)
     && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
@@ -211,9 +208,10 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ESCAPE,
         *FIGHTER_STATUS_KIND_ESCAPE_F,
         *FIGHTER_STATUS_KIND_ESCAPE_B,
-        *FIGHTER_STATUS_KIND_GUARD, 
-        *FIGHTER_STATUS_KIND_GUARD_OFF, 
-        *FIGHTER_STATUS_KIND_GUARD_ON,
+        // *FIGHTER_STATUS_KIND_GUARD,
+        *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
+        // *FIGHTER_STATUS_KIND_GUARD_OFF, 
+        // *FIGHTER_STATUS_KIND_GUARD_ON,
         *FIGHTER_STATUS_KIND_REBIRTH,
         // shieldbreak
         *FIGHTER_STATUS_KIND_SHIELD_BREAK_DOWN,
@@ -240,6 +238,14 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
     ].contains(&status_kind) {
         pause_meter_regen(fighter, 180);
+    } else if [ // shorter lockout for these statuses
+        *FIGHTER_STATUS_KIND_GUARD,
+        // *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+        *FIGHTER_STATUS_KIND_GUARD_OFF, 
+        *FIGHTER_STATUS_KIND_GUARD_ON,
+
+    ].contains(&status_kind) {
+        pause_meter_regen(fighter, 20);
     }
 
     let meter = MeterModule::meter(fighter.object());

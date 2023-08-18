@@ -427,7 +427,10 @@ unsafe fn expression_specialairnbomb(fighter: &mut L2CAgentBase) {
 unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 4.0);
+    frame(lua_state, 10.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "lucario", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
@@ -484,7 +487,6 @@ unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
 unsafe fn sound_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 2.0);
     if is_excute(fighter) {
         PLAY_SE_REMAIN(fighter, Hash40::new("se_lucario_special_l02"));
     }
@@ -498,14 +500,16 @@ unsafe fn sound_speciallw(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 4.0);
+    frame(lua_state, 10.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "lucario", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("lucario_kagebunshin_flash"), Hash40::new("top"), 0, 15, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }

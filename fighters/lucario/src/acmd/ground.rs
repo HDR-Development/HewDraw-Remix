@@ -11,7 +11,7 @@ unsafe fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 5.0);
     }
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 5.0, 7.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 5.0, 6.0);
     frame(lua_state, 5.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 7.0);

@@ -80,7 +80,7 @@ special_air_lw:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 30
+    cancel_frame: 35
 special_air_lw_end:
   extra:
     intangible_start_frame: 0
@@ -151,7 +151,7 @@ special_lw:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 30
+    cancel_frame: 35
 special_lw_end:
   extra:
     intangible_start_frame: 0

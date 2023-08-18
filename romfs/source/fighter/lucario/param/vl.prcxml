@@ -59,7 +59,7 @@
   </list>
   <list hash="param_aurascale">
     <struct index="0">
-      <float hash="min_aura_power">0.8</float>
+      <float hash="min_aura_power">0.85</float>
       <float hash="max_aura_power">1.3</float>
     </struct>
   </list>
