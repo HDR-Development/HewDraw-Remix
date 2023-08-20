@@ -138,6 +138,60 @@ elight_special_air_n2:
 demon_special_air_n_hi:
   extra:
     cancel_frame: 110
+koopa_special_n_max:
+  game_script: game_koopaspecialnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: koopad00specialnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_koopaspecialnmax
+    - sound_koopaspecialnmax
+    - effect_koopaspecialnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 60
+    no_stop_intp: false
+koopa_special_air_n_max:
+  game_script: game_koopaspecialairnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: koopad00specialairnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_koopaspecialairnmax
+    - sound_koopaspecialairnmax
+    - effect_koopaspecialairnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 60
+    no_stop_intp: false
 mewtwo_special_n_shoot:
   extra:
     cancel_frame: 28

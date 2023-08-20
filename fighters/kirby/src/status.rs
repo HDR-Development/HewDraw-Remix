@@ -5,6 +5,7 @@ mod gaogaen_special_n;
 mod ridley_special_n;
 mod ganon_special_n;
 mod ganon_special_n_float;
+mod koopa_special_n;
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
@@ -17,6 +18,7 @@ pub fn install() {
     gaogaen_special_n::install();
     ridley_special_n::install();
     ganon_special_n::install();
+    koopa_special_n::install();
 
 }
 
@@ -33,6 +35,13 @@ fn kirby_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
             fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(ganon_should_use_special_n_callback as *const () as _));
+        }
+
+        if is_training_mode() {
+            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+        }
+        else{
+            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
         }
     }
 }
@@ -64,6 +73,14 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
         VarModule::off_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
+    }
+
+    /// Bowser: Remove fireball ready effect
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
+        EFFECT_OFF_KIND(fighter,Hash40::new("koopa_breath_m_fire"),false,false);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID,0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
     }
 
     return true.into();
