@@ -7,6 +7,9 @@ unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 11.0/(16.0-0.0));
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -44,10 +47,114 @@ unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "palutena", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
+unsafe fn palutena_attack_s3_s_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
+    }
+    frame(lua_state, 14.0);
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_01"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_02"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_03"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_04"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_05"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_06"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_07"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_08"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    frame(lua_state, 40.0);
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_01"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_02"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_03"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_04"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_05"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_06"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_07"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_08"), false, false);
+        }
+    }
+    frame(lua_state, 42.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light4"), false, false);
+    }
+}
+
 #[acmd_script( agent = "palutena", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.778);
@@ -81,10 +188,113 @@ unsafe fn palutena_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "palutena", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn palutena_attack_hi3_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 10.0);
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_01"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_02"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_03"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_04"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_05"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_06"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_07"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_08"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.05, 0.05, 0.90);
+    }
+    frame(lua_state, 32.0);
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_01"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_02"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_03"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_04"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_05"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_06"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_07"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_08"), false, false);
+        }
+    }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light4"), false, false);
+    }
+}
+
 #[acmd_script( agent = "palutena", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.693);
@@ -123,11 +333,114 @@ unsafe fn palutena_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "palutena", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn palutena_attack_lw3_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 13.0);
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_01"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_02"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_03"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_04"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_05"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_06"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_07"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_trace_08"), Hash40::new("stick"), 0, 0, 0, 0, 180, 0, 1, true);
+        }
+    }
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 180, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
+    }
+    frame(lua_state, 29.0);
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_01"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_02"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_03"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_04"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_05"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_06"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_07"), false, false);
+        }
+    }
+    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+        if is_excute(agent) {
+            EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_trace_08"), false, false);
+        }
+    }
+    frame(lua_state, 32.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light4"), false, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         palutena_attack_s3_s_game,
+        palutena_attack_s3_s_effect,
         palutena_attack_hi3_game,
+        palutena_attack_hi3_effect,
         palutena_attack_lw3_game,
+        palutena_attack_lw3_effect
     );
 }
 

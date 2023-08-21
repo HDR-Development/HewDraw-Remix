@@ -14,6 +14,9 @@ attack_12:
 attack_11:
   extra:
     cancel_frame: 17
+attack_dash:
+  extra:
+    cancel_frame: 36
 attack_lw3:
   flags:
     move: false
@@ -41,6 +44,9 @@ attack_air_n:
   extra:
     cancel_frame: 44
 attack_s4_lw:
+  extra:
+    cancel_frame: 56
+special_air_n_hit:
   extra:
     cancel_frame: 56
 jump_aerial_f:
