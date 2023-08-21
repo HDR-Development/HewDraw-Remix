@@ -983,15 +983,22 @@ pub mod vars {
     pub mod palutena {
         pub mod status {
             // flags
-            pub const SPECIAL_LW_AEGIS_REFLECTOR: i32 = 0x1100;
+            pub const CAN_INCREASE_COLOR: i32 = 0x1100;
 
             // floats
-            pub const SPECIAL_LW_LR: i32 = 0x1100;
+            pub const ADD_DAMAGE: i32 = 0x1100;
         }
         pub mod instance {
             // flags
             pub const GROUNDED_TELEPORT: i32 = 0x0100;
             pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
+            pub const FLUSH: i32 = 0x0102;
+            pub const POWERED: i32 = 0x0103;
+
+            // ints
+            pub const POWER_BOARD_SLOT_1: i32 = 0x0100;
+            pub const POWER_BOARD_SLOT_2: i32 = 0x0101;
+            pub const SET_COLOR: i32 = 0x0102;
         }
     }
 
@@ -1281,5 +1288,14 @@ pub mod statuses {
     
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0;
+    }
+
+    pub mod palutena {
+        pub const SPECIAL_N_R: i32 = 0;
+        pub const SPECIAL_N_B: i32 = 1;
+        pub const SPECIAL_N_Y: i32 = 2;
+        pub const SPECIAL_N_P: i32 = 3;
+        pub const SPECIAL_N_O: i32 = 4;
+        pub const SPECIAL_N_G: i32 = 5;
     }
 }
