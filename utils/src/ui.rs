@@ -24,7 +24,7 @@ static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager 
     ex_meter: [ExMeter::default(); 8],
     ff_meter: [FfMeter::default(); 8],
     power_board: [PowerBoard::default(); 8],
-    pichu_meter: [PichuMeter::default(); 8]
+    pichu_meter: [PichuMeter::default(); 8],
     aura_meter: [AuraMeter::default(); 8],
 }));
 
