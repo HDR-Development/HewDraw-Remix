@@ -42,46 +42,13 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
-        if frame < 23.0 && !cooleddown {
+        if frame < 23.0 && !boma.is_motion_one_of(&[Hash40::new("special_n_max"), Hash40::new("special_air_n_max")]) {
             if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                 MotionModule::set_frame(boma, 22.0, true);
             }
         }
     }
 }
-
-// NokNok shell flag reset
-// unsafe fn noknok_reset(boma: &mut BattleObjectModuleAccessor) {
-//     if VarModule::is_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL) {
-//         if boma.is_status_one_of(
-//     &[*FIGHTER_STATUS_KIND_DEAD,
-//             *FIGHTER_STATUS_KIND_REBIRTH,
-//             *FIGHTER_STATUS_KIND_WIN,
-//             *FIGHTER_STATUS_KIND_LOSE,
-//             *FIGHTER_STATUS_KIND_ENTRY]) 
-//         {
-//             VarModule::off_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL);
-//         }
-//     }
-// }
-
-// TRAINING MODE
-// NokNok shell flag reset via taunt
-// unsafe fn noknok_training(boma: &mut BattleObjectModuleAccessor) {
-//     if is_training_mode() {
-//         if boma.is_status(*FIGHTER_STATUS_KIND_APPEAL) {
-//             VarModule::off_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL);
-//         }
-//     }
-// }
-
-unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && StatusModule::prev_status_kind(boma, 1) == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, true);
-    }
-}
-
 
 unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     //Ignore cooldown during respawn,death,entry and nspecial
@@ -98,7 +65,7 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
     //If cooling down, remove ready effect
     if !cooleddown {
         if charged_effect > 0 {
-            VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID,0);
+            VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID, 0);
             if EffectModule::is_exist_effect(boma, charged_effect as u32) {
                 EffectModule::kill(boma, charged_effect as u32, false,false);
             }
@@ -115,7 +82,8 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
         let pos = &Vector3f{x: 0.0, y: 1.0, z: 0.0};
         let rot = &Vector3f{x: 180.0, y: 0.0, z: 50.0};
         let handle = EffectModule::req_follow(boma, Hash40::new("koopa_breath_m_fire"), Hash40::new("jaw"), pos, rot, 1.0, true, 0, 0, 0, 0, 0, false, false) as u32;
-        VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID,handle as i32);
+        EffectModule::set_scale(boma, handle, &Vector3f::new(1.1, 1.3, 1.1));
+        VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID, handle as i32);
     }
 }
 
@@ -150,17 +118,12 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
     fireball_cooldown(boma,status_kind);
-    // noknok_reset(boma);
-    //up_special_land_cancel(boma, status_kind);
-    // noknok_training(boma);
     fastfall_specials(fighter);
 }
-
 
 #[utils::macros::opff(FIGHTER_KIND_KOOPA )]
 pub fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
