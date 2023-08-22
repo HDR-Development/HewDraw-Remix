@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 mod special_hi_h;
 mod gaogaen_special_n;
+mod mariod_special_n;
 mod ridley_special_n;
 mod ganon_special_n;
 mod ganon_special_n_float;

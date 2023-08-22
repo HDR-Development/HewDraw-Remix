@@ -415,20 +415,6 @@ unsafe fn chef_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_k
     }
 }
 
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N {
-        if frame <= 19.0 {
-            MotionModule::set_rate(boma, 2.0);
-        }
-        if frame > 19.0 {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-}
-
 // Nayru's Love Drift and Land Cancel
 unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_ZELDA_SPECIAL_N {
@@ -1017,7 +1003,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Chef Drift and Land Cancel
     chef_drift_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    frame_data(boma, status_kind, motion_kind, frame);
 
     // Nayru's Love Drift and Fast Fall
     nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
