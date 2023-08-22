@@ -92,7 +92,7 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
         if CURRENT_COUNTER == 0 {
             // open session
             utils::open_modes_session();
-            skyline_web::DialogOk::ok(
+            skyline_web::dialog_ok::DialogOk::ok(
                 "Please ensure that all players have the same custom modes enabled!",
             );
         }
