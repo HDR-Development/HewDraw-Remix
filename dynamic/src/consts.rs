@@ -591,10 +591,7 @@ pub mod vars {
             pub const DISABLE_SPECIAL_HI: i32 = 0x00FF; //Weird value to avoid conflicts with copy ability values
         }
         pub mod status {
-            // flags
             // copy ability
-            pub const COPY_CHARGE_ATTACK_LEVEL: i32 = 0x1100;
-            pub const COPY_IS_CHARGE_FINISHED: i32 = 0x1101;
             // flags
             pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
             pub use super::super::mariod::status::CHILL_PILL;
