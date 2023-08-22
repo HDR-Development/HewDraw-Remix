@@ -181,12 +181,8 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
             GroundModule::set_attach_ground(fighter.module_accessor, false);
             VarModule::add_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,1);
         }
-        else if (!in_Air)
-        {
-            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        }
     }
-    else if (side_special_wall)
+    else if (side_special_wall) && VarModule::is_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE)
     {
         beakbomb_wall(fighter,boma);
     }
@@ -248,8 +244,8 @@ unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon, boma: &mut Bat
     if (can_fail)
     {
         //Add damage
-        if (can_damage)
-            {DamageModule::add_damage(fighter.module_accessor, 10.0,0);}
+        //if (can_damage)
+        //    {DamageModule::add_damage(fighter.module_accessor, 10.0,0);}
 
         KineticModule::clear_speed_all(fighter.module_accessor);
         fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, true);
@@ -364,7 +360,7 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 		EffectModule::kill_kind(boma, Hash40::new("buddy_special_s_count"), false, true);
 	}
 }
-//This causes vectoring?
+
 unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
     if StatusModule::is_changing(boma) {
         return;
@@ -374,24 +370,28 @@ unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut Batt
         return;
     }
     let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
-	if (VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
+    let current_cool = VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN);
+	if (current_cool>0.0)
 	{
-		let cool = if (in_Air) {1.0} else {FEATHERS_RED_COOLDOWN_GROUND_RATE};
-		VarModule::add_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,-cool);
-
-        //If RedFeather cooldown ends...
-		if (VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN)<=0.0)
-		{
-			VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,0.0);
-			app::FighterUtil::flash_eye_info(fighter.module_accessor);
-
-            //Show HUD again if already not visible
-			if (VarModule::get_int(boma.object(), vars::buddy::instance::HUD_DISPLAY_TIME)==0)
-			{
-				buddy_meter_update_HUD(fighter,boma,true);
-				VarModule::set_int(boma.object(), vars::buddy::instance::HUD_DISPLAY_TIME,HUD_DISPLAY_TIME_MAX);
-			}
-		}
+        //Only start cooldown if on ground
+        if current_cool < FEATHERS_RED_COOLDOWN_MAX || !in_Air {
+            let cool = if (in_Air) {1.0} else {FEATHERS_RED_COOLDOWN_GROUND_RATE};
+            VarModule::add_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,-cool);
+    
+            //If RedFeather cooldown ends...
+            if (VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN)<=0.0)
+            {
+                VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,0.0);
+                app::FighterUtil::flash_eye_info(fighter.module_accessor);
+    
+                //Show HUD again if already not visible
+                if (VarModule::get_int(boma.object(), vars::buddy::instance::HUD_DISPLAY_TIME)==0)
+                {
+                    buddy_meter_update_HUD(fighter,boma,true);
+                    VarModule::set_int(boma.object(), vars::buddy::instance::HUD_DISPLAY_TIME,HUD_DISPLAY_TIME_MAX);
+                }
+            }
+        }
     }
     //Refund cooldown if immediately caught ledge
     if (fighter.motion_frame() <= 3.0 && in_Air)

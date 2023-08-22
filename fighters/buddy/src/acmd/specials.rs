@@ -370,16 +370,6 @@ unsafe fn buddy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, 2.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    //6 frames of armor
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        //FighterAreaModuleImpl::disable_fix_jostle_area(boma);
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7.0);
-    }
-    wait(lua_state, 6.0);
-    if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0.0);
-    }
 }
 
 // Uses smash_script, if you prefer to use the built-in macros instead.
@@ -389,9 +379,6 @@ unsafe fn buddy_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
 
     if is_excute(fighter) {
-        //Prevents losing a gold feather
-        WorkModule::add_int(boma, 1, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
-
         //Set control
         VarModule::on_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
         VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,0);
