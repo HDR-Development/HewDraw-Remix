@@ -7,7 +7,7 @@ use globals::*;
 unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT) {
         if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
-            MotionModule::set_frame_sync_anim_cmd(boma, 24.0, true, true, false);
+            MotionModule::set_frame_sync_anim_cmd(boma, 26.0, true, true, false);
         }
     }
 }
