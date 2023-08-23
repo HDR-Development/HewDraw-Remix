@@ -173,6 +173,8 @@ pub mod vars {
 
             pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
 
+            pub const IS_ATTACK_CANCEL: i32 = 0x0063;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -200,6 +202,9 @@ pub mod vars {
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
 
             pub const FRAME_COUNTER: i32 = 0x000E;
+
+            pub const LEFT_STICK_FLICK_X: i32 = 0x000F;
+            pub const LEFT_STICK_FLICK_Y: i32 = 0x0010;
 
             // floats
 
