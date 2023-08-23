@@ -7,6 +7,7 @@ mod ridley_special_n;
 mod ganon_special_n;
 mod ganon_special_n_float;
 mod koopa_special_n;
+mod littlemac_special_n_cancel;
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
@@ -20,12 +21,14 @@ pub fn install() {
     ridley_special_n::install();
     ganon_special_n::install();
     koopa_special_n::install();
+    mariod_special_n::install();
 
 }
 
 pub fn add_statuses() {
     special_hi_h::install();
     ganon_special_n_float::install();
+    littlemac_special_n_cancel::install();
 }
 
 #[smashline::fighter_init]
