@@ -77,7 +77,7 @@ unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> 
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME,
         0,
-    ) == 0
+    )
     {
         return L2CValue::I32(0);
     }
