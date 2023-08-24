@@ -16,13 +16,14 @@
   <list hash="param_dein">
     <struct index="0">
       <float hash="speed">1.75</float>
+      <float hash="accel">1.0</float>
       <float hash="speed_max">2.75</float>
       <float hash="angle_add">5.0</float>
       <float hash="angle_max">85</float>
-      <float hash="life">60</float>
-      <float hash="count">60</float>
+      <float hash="life">40</float>
+      <float hash="count">40</float>
       <float hash="size_max">4</float>
-      <float hash="bang_time">180</float>
+      <float hash="bang_time">160</float>
       <float hash="size_min">2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
