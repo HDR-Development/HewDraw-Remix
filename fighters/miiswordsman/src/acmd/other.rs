@@ -264,11 +264,11 @@ unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 55, 60, 0, 38, 9.5, 0.0, 7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 55, 60, 0, 38, 9.5, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-       ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 55, 60, 0, 38, 9.5, 0.0, 7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+       ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 55, 60, 0, 38, 9.5, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
     }
 }
 #[acmd_script( agent = "miiswordsman_lightshuriken", script = "effect_fly" , category = ACMD_EFFECT , low_priority)]
@@ -280,17 +280,28 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
         let mut old_wave : u32 = std::u32::MAX;
         let mut wave_2 : u32 = std::u32::MAX;
         let mut wave_3 : u32 = std::u32::MAX;
-
+        if is_excute(fighter) {
+            EFFECT_OFF_KIND(fighter, Hash40::new("miiswordsman_hikari_syuriken"), false, true);
+        }
         frame(lua_state, 1.0);
         for _ in 0..i32::MAX {
             if is_excute(fighter) {
-                EFFECT_OFF_KIND(fighter, Hash40::new("miiswordsman_hikari_syuriken"), false, true);
-                lead_wave = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 7.0, z: 0.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.9, true, 0, 0, 0, 0, 0, false, false) as u32;
+                lead_wave = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 3.0, z: 0.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.9, true, 0, 0, 0, 0, 0, false, false) as u32;
                 EffectModule::set_rate(boma, lead_wave, 1.4);
 
-                wave_2 = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 7.0, z: -4.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.7, true, 0, 0, 0, 0, 0, false, false) as u32;
+                wave_2 = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 3.0, z: -4.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.7, true, 0, 0, 0, 0, 0, false, false) as u32;
                 EffectModule::set_rate(boma, wave_2, 1.4);
-                EffectModule::set_alpha(boma, wave_2, 0.6);
+                EffectModule::set_alpha(boma, wave_2, 0.4);
+                //Ray check here is used for checking if you're on the ground. Unfortunately is_touch and is_wall_touch_line didnt work for this
+                if GroundModule::ray_check(
+                    fighter.module_accessor, 
+                    &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                    &Vector2f{ x: 0.0, y: -7.0}, true
+                ) == 1 {
+                    FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 3.0, 0, 0, 0, 0, 0, 0, false);
+                    LAST_EFFECT_SET_RATE(fighter, 0.5);
+                    FOOT_EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+                }
             }
             wait(lua_state, 2.0);
             if is_excute(fighter) {
@@ -298,9 +309,18 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
 
                 EffectModule::set_rate(boma, wave_2, 0.2);
                 EffectModule::set_alpha(boma, wave_2, 0.4);
-                wave_3 = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 7.0, z: -8.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.5, true, 0, 0, 0, 0, 0, false, false) as u32;
+                wave_3 = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 3.0, z: -8.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.5, true, 0, 0, 0, 0, 0, false, false) as u32;
                 EffectModule::set_rate(boma, wave_3, 1.4);
-                EffectModule::set_alpha(boma, wave_3, 0.6);
+                EffectModule::set_alpha(boma, wave_3, 0.4);
+                if GroundModule::ray_check(
+                    fighter.module_accessor, 
+                    &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                    &Vector2f{ x: 0.0, y: -7.0}, true
+                ) == 1 {
+                    FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -3.5, 0, 0, 0, 0, 4.5, 0, 0, 0, 0, 0, 0, false);
+                    LAST_EFFECT_SET_RATE(fighter, 0.3);
+                    FOOT_EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+                }
             }
             wait(lua_state, 2.0);
             if is_excute(fighter) {
@@ -309,17 +329,34 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
                 }
 
                 EffectModule::set_rate(boma, wave_3, 0.05);
-                EffectModule::set_alpha(boma, wave_3, 0.4);
-                EffectModule::set_alpha(boma, wave_2, 0.2);
+                EffectModule::detach(boma, wave_2, 0);
+                if GroundModule::ray_check(
+                    fighter.module_accessor, 
+                    &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                    &Vector2f{ x: 0.0, y: -7.0}, true
+                ) == 1 {
+                    FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -3.5, 0, 0, 0, 0, 4.5, 0, 0, 0, 0, 0, 0, false);
+                    LAST_EFFECT_SET_RATE(fighter, 0.3);
+                    FOOT_EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+                }
             }
             wait(lua_state, 2.0);
             if is_excute(fighter) {
-                EffectModule::kill(boma, wave_2, false, true);
-                EffectModule::set_alpha(boma, wave_3, 0.05);
+                //EffectModule::kill(boma, wave_2, false, true);
+                EffectModule::detach(boma, wave_3, 0);
+                if GroundModule::ray_check(
+                    fighter.module_accessor, 
+                    &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                    &Vector2f{ x: 0.0, y: -7.0}, true
+                ) == 1 {
+                    FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -3.5, 0, 0, 0, 0, 4.5, 0, 0, 0, 0, 0, 0, false);
+                    LAST_EFFECT_SET_RATE(fighter, 0.3);
+                    FOOT_EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+                }
             }
             wait(lua_state, 2.0);
             if is_excute(fighter) {
-                EffectModule::kill(boma, wave_3, false, true);
+                //EffectModule::kill(boma, wave_3, false, true);
                 old_wave = lead_wave;
             }
         }
