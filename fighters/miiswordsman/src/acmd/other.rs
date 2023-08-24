@@ -292,7 +292,7 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
                 wave_2 = EffectModule::req_follow(boma, Hash40::new("miiswordsman_counter_arc"), Hash40::new("top"), &Vector3f{x: 0.0, y: 3.0, z: -4.0}, &Vector3f{x: 80.6, y: -69.5, z: 0.0}, 0.7, true, 0, 0, 0, 0, 0, false, false) as u32;
                 EffectModule::set_rate(boma, wave_2, 1.4);
                 EffectModule::set_alpha(boma, wave_2, 0.4);
-                //Ray check here is used for checking if you're on the ground. Unfortunately is_touch and is_wall_touch_line didnt work for this
+                //Ray check here is used for checking if you're on the ground. Unfortunately is_touch and is_wall_touch_line didnt work for this. Sorry!
                 if GroundModule::ray_check(
                     fighter.module_accessor, 
                     &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
