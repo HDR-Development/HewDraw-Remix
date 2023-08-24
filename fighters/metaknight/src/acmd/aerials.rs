@@ -150,10 +150,10 @@ unsafe fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 1.0, 13.0, 11.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.2, 0.0, 14.5, -8.8, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.2, 0.0, 9.1, -9.8, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.2, 0.0, 4.8, -10.0, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.2, 0.0, -0.5, -4.8, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.2, 0.0, 14.5, -8.8, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.3, 0.0, 9.1, -10.0, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.3, 0.0, 4.8, -10.5, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 14.0, 361, 100, 0, 30, 5.2, 0.0, -0.5, -4.8, None, None, None, 1, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 14.0);
      if is_excute(fighter) {
@@ -170,29 +170,28 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut handle: u64 = std::u64::MAX;
-    if is_excute(fighter) {
-        handle = EffectModule::req_follow(boma, Hash40::new("metaknight_air_b"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, false, false);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 6.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) && handle != std::u64::MAX {
-        EffectModule::set_rate(boma, handle as u32, 6.0/4.0);
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+       EFFECT_FOLLOW(fighter, Hash40::new("metaknight_smash_trace"), Hash40::new("top"), 5, 7, 0, 0, -150, 58, 0.73, true);
+       LAST_EFFECT_SET_RATE(agent, 1.5);
+        EffectModule::set_disable_render_offset_last(boma);
     }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) && handle != std::u64::MAX {
-        EffectModule::set_rate(boma, handle as u32, 7.0/4.0);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) && handle != std::u64::MAX {
-        EffectModule::set_rate(boma, handle as u32, 1.0);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(fighter) && handle != std::u64::MAX {
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+#[acmd_script( agent = "metaknight", script = "sound_attackairb", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_metaknight_smash_s01"));
     }
 }
 
@@ -290,6 +289,7 @@ pub fn install() {
         metaknight_attack_air_f_sound,
         metaknight_attack_air_b_game,
         effect_attackairb,
+        sound_attackairb,
         metaknight_attack_air_hi_game,
         effect_attackairhi,
         metaknight_attack_air_lw_game,
