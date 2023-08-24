@@ -1,5 +1,14 @@
 use super::*;
 
+#[acmd_script( agent = "metaknight", script = "game_attack100start", category = ACMD_GAME, low_priority )]
+unsafe fn game_attack100start(agent: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.9);
+    frame(lua_state, 7.0);
+    FT_MOTION_RATE(fighter, 1.0);
+}
 #[acmd_script( agent = "metaknight", script = "game_attack100", category = ACMD_GAME, low_priority )]
 unsafe fn game_attack100(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -206,6 +215,7 @@ unsafe fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        game_attack100start,
         game_attack100,
         effect_attack100,
         sound_attack100start,
