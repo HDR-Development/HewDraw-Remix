@@ -1,9 +1,7 @@
-
 use super::*;
 
-
 #[acmd_script( agent = "samusd", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -23,7 +21,7 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_throwf,
+        samusd_throw_f_game,
     );
 }
 
