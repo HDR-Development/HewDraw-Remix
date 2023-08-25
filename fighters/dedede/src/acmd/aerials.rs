@@ -55,10 +55,6 @@ unsafe fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    if is_excute(fighter) {
-    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
