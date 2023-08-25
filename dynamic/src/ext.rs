@@ -507,7 +507,7 @@ pub trait BomaExt {
     unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
     // Checks for status and enables transition to jump
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool;
     // Checks for status and enables transition to airdodge
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
@@ -960,7 +960,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// If update_lr is true, we set your facing direction based on your stick position
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool {
+    /// If skip_other_checks is true, we do not check for USmash
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(
@@ -971,10 +972,15 @@ impl BomaExt for BattleObjectModuleAccessor {
                 fighter.module_accessor,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
             );
-            if fighter
-                .sub_transition_group_check_ground_jump_mini_attack()
-                .get_bool()
-                || fighter.sub_transition_group_check_ground_jump().get_bool()
+            if !skip_other_checks {
+                WorkModule::enable_transition_term(
+                    fighter.module_accessor,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+                );
+            }
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() // buffered aerials
+            || (!skip_other_checks && fighter.sub_transition_group_check_ground_attack().get_bool()) // up smash
+            || fighter.sub_transition_group_check_ground_jump().get_bool() // regular jumps
             {
                 if update_lr {
                     PostureModule::set_stick_lr(self, 0.0);
