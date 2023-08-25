@@ -308,18 +308,24 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
     };
 
     if do_standard_accel {
+        let mut set_speed_max = true;
+
         energy.accel.x = accel_diff;
-        energy.speed_max.x *= stick.x.abs();
+        let speed_max = energy.speed_max.x * stick.x.abs();
     
         if energy.unk[1] != 0 {
-            if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || energy.speed_max.x.abs() <= energy._x9c.abs()))
-            && (stick.x >= 0.0 || energy._xa0 >= 0.0 || energy.speed_max.x.abs() <= energy._x9c.abs()))
+            if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || speed_max.abs() <= energy._x9c.abs()))
+            && (stick.x >= 0.0 || energy._xa0 >= 0.0 || speed_max.abs() <= energy._x9c.abs()))
             && ((stick.x <= 0.0 || 0.0 <= energy._xa0) && (0.0 <= stick.x || energy._xa0 <= 0.0)))
             {
-                energy._x9c = energy.speed_max.x;
+                energy._x9c = speed_max;
                 energy._xa0 = stick.x;
             }
 
+        }
+
+        if set_speed_max {
+            energy.speed_max.x = speed_max;
         }
     }
 

@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 mod special_hi_h;
+mod sonic;
  
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
@@ -10,6 +11,7 @@ pub fn install() {
     );
 
     special_hi_h::install();
+    sonic::install();
 }
 
 pub fn add_statuses() {
