@@ -147,7 +147,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nspecial_cancels(fighter, boma, status_kind);
     up_special_knockback_canceling(fighter);
     dash_attack_jump_cancels(fighter, boma, status_kind, situation_kind);
-    fastfall_dashattack(fighter);
     dashattack_land_cancel(boma);
     fastfall_specials(fighter);
 }
