@@ -863,6 +863,8 @@ pub mod vars {
         }
         pub mod status {
             // flags
+            pub const SPECIAL_N_BLAST_ATTACK: i32 = 0x1100;
+
             pub const PULSE_HITBOX: i32 = 0x1100;
 
             pub const SPECIAL_S_HOP: i32 = 0x1100;
