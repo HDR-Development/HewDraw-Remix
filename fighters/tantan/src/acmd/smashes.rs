@@ -91,11 +91,16 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
     let mut sfx_level = *ATTACK_SOUND_LEVEL_M;
     let mut ranges = [18.0,22.0,25.0,29.0,31.0];
     let mut size = 1.3;
-
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.5, 4.5);
     }
+    frame(lua_state, 6.0);
+    FT_MOTION_RATE_RANGE(fighter, 6.0, 8.0, 5.0);
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE_RANGE(fighter, 8.0, 15.0, 4.0);
     frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
@@ -108,7 +113,7 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 18.0);
-    FT_MOTION_RATE(fighter,1.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.5, 4.5);
         if (is_doubledragon && is_dragonized) {
@@ -152,11 +157,15 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear(boma,3,false);
         }
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 26.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+    frame(lua_state, 39.0);
+    FT_MOTION_RATE_RANGE(fighter, 39.0, 48.0, 16.0);
+    frame(lua_state, 48.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "tantan", script = "effect_attacks4", category = ACMD_EFFECT , low_priority)]
