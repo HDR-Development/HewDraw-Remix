@@ -25,10 +25,10 @@
   </list>
   <list hash="param_reflectionboard">
     <struct index="0">
-      <float hash="life">112</float>
+      <float hash="life">167</float>
       <int hash="durability">100</int>
-      <int hash="move_frame">240</int>
-      <float hash="move_speed">0.3</float>
+      <int hash="move_frame">80</int>
+      <float hash="move_speed">0.37</float>
       <float hash="effect_rate">5.333</float>
     </struct>
   </list>

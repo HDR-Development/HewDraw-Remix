@@ -60,6 +60,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
                 return 3;
             }
         }
+
         else if fighter_kind == *FIGHTER_KIND_PACKUN {
             if boma_reference.is_motion(Hash40::new("special_hi"))
             && !boma_reference.is_prev_situation(*SITUATION_KIND_AIR)
@@ -195,7 +196,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         
         else if fighter_kind == *FIGHTER_KIND_MIIGUNNER {
             if x1 == hash40("param_special_hi") && x2 == hash40("hi1_first_jump_y_speed") {
-                return 3.5 + 2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) / 29.0;
+                return 3.5 + (2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::CURRENT_CHARGE)) / 29.0;
             }
         }
 
@@ -321,6 +322,14 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
     
+        else if fighter_kind == *WEAPON_KIND_MIIGUNNER_GRENADELAUNCHER {
+            if x1 == hash40("param_grenadelauncher") {
+                if x2 == hash40("angle") {
+                    let charge = VarModule::get_float(owner_module_accessor.object(), vars::miigunner::instance::GRENADE_CHARGE);
+                    return 34.0 + charge;
+                }
+            }
+        }
 
         else if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
             if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
