@@ -13,13 +13,10 @@ mod jumpsquat;
 pub mod jump;
 mod footstool;
 mod run;
-pub mod attack;
+mod attack;
 mod shield;
 mod turn;
 mod walk;
-mod attackdash;
-mod attackhi4;
-mod attacklw4;
 mod passive;
 mod damagefall;
 mod downdamage;
@@ -115,6 +112,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_air_transition_group_check_air_attack_hook,
             // sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
+            change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
@@ -124,7 +122,11 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_FallSub_hook,
             super_jump_punch_main_hook,
             sub_cliff_uniq_process_exec_fix_pos,
-            end_pass_ground
+            end_pass_ground,
+            virtual_ftStatusUniqProcessDamage_exec_common,
+            FighterStatusDamage__correctDamageVectorEffect,
+            sub_fighter_pre_end_status,
+            sub_is_dive,
         );
     }
 }
@@ -236,6 +238,26 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
         }
     }
     false.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_change_status_jump_mini_attack)]
+unsafe fn change_status_jump_mini_attack(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_100,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD
+    ]) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_ATTACK_CANCEL);
+    }
+    call_original!(fighter, arg)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_escape)]
@@ -525,6 +547,105 @@ pub unsafe fn end_pass_ground(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_virtual_ftStatusUniqProcessDamage_exec_common)]
+pub unsafe fn virtual_ftStatusUniqProcessDamage_exec_common(fighter: &mut L2CFighterCommon) {
+    // Adding FIGHTER_STATUS_KIND_DAMAGE_AIR to this check allows for DI on non-tumble knockback
+    if [*FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_LUIGI_FINAL_SHOOT,
+        ].contains(&fighter.global_table[STATUS_KIND].get_i32())
+    {
+        fighter.ftStatusUniqProcessDamageFly_exec_common();
+    }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
+pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
+        return call_original!(fighter);
+    }
+    // This allows us to call the blue DI line effect on non-tumble knockback
+    // Currently not able to be done by reimplementing this function
+    // because an inner function returns multiple L2CValues
+    // which is not currently supported by skyline-smash
+    fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_FLY));
+    let ret = call_original!(fighter);
+    fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_AIR));
+    ret
+}
+
+// Disables aerials canceling fast fall
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_fighter_pre_end_status)]
+pub unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_is_dive)]
+pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+        return false.into();
+    }
+
+    let status_kind = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
+    let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+        return false.into();
+    }
+
+    if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY,
+    ].contains(&status_kind) {
+        return false.into();
+    }
+
+    // Disallows fastfall from ledge after a certain amount of regrabs
+    let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
+    let cliff_dive_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
+    if cliff_count > cliff_dive_count_max {
+        return false.into();
+    }
+    
+    if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL)
+    || KineticModule::is_suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
+        return false.into();
+    }
+
+    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    if speed_y >= 0.0 {
+        return false.into();
+    }
+
+    let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
+    let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
+    if [*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
+        *FIGHTER_STATUS_KIND_CLIFF_CATCH,
+        *FIGHTER_STATUS_KIND_CLIFF_WAIT,
+    ].contains(&prev_status_kind) {
+        dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cliff_dive_cont_value"));
+        dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_dive_flick_frame_value"));
+    }
+
+    if fighter.left_stick_y() > dive_cont_value
+    || VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) >= dive_flick_frame_value {
+        return false.into();
+    }
+
+    let dive_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("dive_speed_y"), 0);
+    if speed_y < -dive_speed_y {
+        return false.into();
+    }
+    
+    true.into()
+}
+
 pub fn install() {
     airdodge::install();
     dash::install();
@@ -536,9 +657,6 @@ pub fn install() {
     shield::install();
     turn::install();
     walk::install();
-    attackdash::install();
-    attackhi4::install();
-    attacklw4::install();
     passive::install();
     damagefall::install();
     downdamage::install();

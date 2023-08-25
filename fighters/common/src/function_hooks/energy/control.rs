@@ -308,18 +308,24 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
     };
 
     if do_standard_accel {
+        let mut set_speed_max = true;
+
         energy.accel.x = accel_diff;
-        energy.speed_max.x *= stick.x.abs();
+        let speed_max = energy.speed_max.x * stick.x.abs();
     
         if energy.unk[1] != 0 {
-            if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || energy.speed_max.x.abs() <= energy._x9c.abs()))
-            && (stick.x >= 0.0 || energy._xa0 >= 0.0 || energy.speed_max.x.abs() <= energy._x9c.abs()))
+            if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || speed_max.abs() <= energy._x9c.abs()))
+            && (stick.x >= 0.0 || energy._xa0 >= 0.0 || speed_max.abs() <= energy._x9c.abs()))
             && ((stick.x <= 0.0 || 0.0 <= energy._xa0) && (0.0 <= stick.x || energy._xa0 <= 0.0)))
             {
-                energy._x9c = energy.speed_max.x;
+                energy._x9c = speed_max;
                 energy._xa0 = stick.x;
             }
 
+        }
+
+        if set_speed_max {
+            energy.speed_max.x = speed_max;
         }
     }
 
@@ -408,6 +414,7 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
             energy.speed_limit = PaddedVec2::new(air_x_speed_max, 0.0);
             energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0);
             energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0);
+            VarModule::set_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.0);
         },
         FlyAdjust => {
             let kind = app::utility::get_kind(boma);

@@ -1,5 +1,3 @@
-use smash::app::sv_battle_object::module_accessor;
-
 use super::*;
 
 // Prevents side special from being used if a missile is present
@@ -25,7 +23,6 @@ fn miigunner_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(miigunner_init);

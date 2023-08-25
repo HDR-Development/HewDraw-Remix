@@ -11,6 +11,7 @@ fn rebuild_xml_to_prc(root_src_path: &Path, root_dst_path: &Path) {
 }
 
 fn rebuild_romfs(root_src_path: &Path, root_dst_path: &Path) {
+    std::fs::remove_dir_all(root_dst_path);
     for entry in WalkDir::new(root_src_path) {
         if let Ok(entry) = entry { 
             if entry.file_type().is_file() {
@@ -40,4 +41,5 @@ fn main() {
     let rom_path = hdr_macros::rom_source_path!();
     println!("cargo:rerun-if-changed=agent_params.txt");
     println!("cargo:rerun-if-changed={}", rom_path);
+    println!("cargo:rustc-env=CARGO_NET_GIT_FETCH_WITH_CLI=true"); // force cargo to use git to fetch repos
 }

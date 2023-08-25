@@ -268,9 +268,8 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const TiltAttack = 0x1;
-        const Wavedash = 0x2;
-        const ShieldDrop = 0x4;
+        const Wavedash = 0x1;
+        const ShieldDrop = 0x2;
     }
 
     pub struct PadFlag: i32 {
@@ -427,7 +426,9 @@ pub trait BomaExt {
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
     unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn prev_left_stick_x(&mut self) -> f32;
     unsafe fn left_stick_y(&mut self) -> f32;
+    unsafe fn prev_left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -648,11 +649,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn prev_left_stick_x(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_x(self);
+        } else {
+            return ControlModule::get_stick_prev_x(self);
+        }
+    }
+
     unsafe fn left_stick_y(&mut self) -> f32 {
         if self.is_button_on(Buttons::CStickOverride) {
             return ControlModule::get_sub_stick_y(self);
         } else {
             return ControlModule::get_stick_y(self);
+        }
+    }
+
+    unsafe fn prev_left_stick_y(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_y(self);
+        } else {
+            return ControlModule::get_stick_prev_y(self);
         }
     }
 
@@ -1432,6 +1449,7 @@ pub struct Controller {
 /// Re-ordered bitfield the game uses for buttons
 #[bitfield]
 #[derive(Debug, Default, Copy, Clone)]
+#[repr(C)]
 pub struct ButtonBitfield {
     pub dpad_up: bool,
     pub dpad_right: bool,
@@ -1497,6 +1515,7 @@ pub struct MappedInputs {
 
 pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
 
+#[repr(C)]
 pub struct StatusInfo {
     pub pre: Option<StatusFunc>,
     pub main: Option<StatusFunc>,
