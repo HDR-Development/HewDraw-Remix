@@ -426,7 +426,9 @@ pub trait BomaExt {
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
     unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn prev_left_stick_x(&mut self) -> f32;
     unsafe fn left_stick_y(&mut self) -> f32;
+    unsafe fn prev_left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -647,11 +649,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn prev_left_stick_x(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_x(self);
+        } else {
+            return ControlModule::get_stick_prev_x(self);
+        }
+    }
+
     unsafe fn left_stick_y(&mut self) -> f32 {
         if self.is_button_on(Buttons::CStickOverride) {
             return ControlModule::get_sub_stick_y(self);
         } else {
             return ControlModule::get_stick_y(self);
+        }
+    }
+
+    unsafe fn prev_left_stick_y(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_y(self);
+        } else {
+            return ControlModule::get_stick_prev_y(self);
         }
     }
 
