@@ -21,7 +21,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH].contains(&status_kind) {
         // Jump and Attack cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if boma.check_jump_cancel(true) {
+        if boma.check_jump_cancel(true, false) {
             return;
         }
         if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
@@ -46,7 +46,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         // Jump cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
         if boma.status_frame() > 6 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(true);
+            boma.check_jump_cancel(true, false);
         }
     }
 }
