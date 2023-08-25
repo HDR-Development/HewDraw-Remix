@@ -42,10 +42,10 @@
       <int hash="remove_turn_num">2</int>
       <float hash="hop_speed_x">0.5</float>
       <float hash="hop_speed_y">1.55</float>
-      <int hash="hop_life">30</int>
+      <int hash="hop_life">40</int>
       <float hash="speed_y_mul">1.05</float>
-      <int hash="wall_stop">100</int>
-      <int hash="wall_stop_life">300</int>
+      <int hash="wall_stop">0</int>
+      <int hash="wall_stop_life">0</int>
       <float hash="shot_accel_y">0.15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -55,6 +55,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="jump_start_speed_y">6.2</float>
+      <float hash="landing_frame">35</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -62,7 +63,7 @@
   </list>
   <list hash="param_star">
     <struct index="0">
-      <int hash="life">14</int>
+      <int hash="life">10</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

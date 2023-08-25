@@ -54,27 +54,6 @@ unsafe fn angled_inhale_shot(fighter: &mut L2CFighterCommon) {
     }
 }
 
-//Gordo stage stick 
-unsafe fn gordo_stage_stick(boma: &mut BattleObjectModuleAccessor, frame: f32, fighter: &mut L2CFighterCommon){
-    if ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
-        let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO);
-        let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
-        let article_boma = sv_battle_object::module_accessor(object_id);
-
-        if KineticModule::get_sum_speed_x(article_boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs() > 2.0 
-        && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG){
-            if GroundModule::is_touch(article_boma, *GROUND_TOUCH_FLAG_ALL as u32){
-                StatusModule::change_status_force(article_boma, *WEAPON_DEDEDE_GORDO_STATUS_KIND_WALL_STOP, false);
-                VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, true);
-                KineticModule::clear_speed_all(article_boma); 
-            } 
-        }
-    }
-    else{
-        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, false);
-    }
-}
-
 //Gordo recatch and waddledash
 unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fighter: &mut L2CFighterCommon){
     if ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
@@ -93,10 +72,9 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
             && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
                 if fighter.status_frame() > 1 
                 && fighter.status_frame() < 4 { //We don't want to go into recatch if we are in the middle of airdodge/landing
-                    if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD {
+                    if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD{
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, true);
-                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_STAGE_STICK_FLAG, false);
                         VarModule::inc_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER);
 
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, true);
@@ -281,7 +259,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //bair_foot_rotation_scaling(boma);
     super_dedede_jump_quickfall(boma, frame);
     gordo_recatch(boma, frame, fighter);
-    gordo_stage_stick(boma, frame, fighter);
     angled_inhale_shot(fighter);
     super_jump_fail_edge_cancel(fighter);
     fastfall_specials(fighter);

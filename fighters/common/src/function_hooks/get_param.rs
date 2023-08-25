@@ -93,14 +93,6 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             //     }
             // }
         }
-
-        else if fighter_kind == *WEAPON_KIND_DEDEDE_GORDO{
-            if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
-                if x1 == hash40("param_gordo") && x2 == hash40("wall_stop"){
-                    return 0;
-                }
-            }
-        }
     }
 
     original!()(x0, x1, x2)

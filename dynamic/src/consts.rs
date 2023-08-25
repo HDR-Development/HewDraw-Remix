@@ -363,16 +363,14 @@ pub mod vars {
             //flags
             pub const CAN_WADDLE_DASH_FLAG: i32 = 0x0100;
             pub const IS_DASH_GORDO: i32 = 0x0101;
-            pub const IS_STAGE_STICK_FLAG: i32 = 0x0102;
-            pub const IS_ANGLED_FLAG: i32 = 0x0103;
-            pub const IS_REMOVED_FLAG: i32 = 0x0107;
+            pub const IS_ANGLED_FLAG: i32 = 0x0102;
+            pub const IS_REMOVED_FLAG: i32 = 0x0103;
 
             //ints
             pub const RECATCH_COUNTER: i32 = 0x0104;
-            pub const INHALE_COUNTER: i32 = 0x0105;
 
             //floats
-            pub const INHALE_STICK_Y: i32 = 0x0106;
+            pub const INHALE_STICK_Y: i32 = 0x0105;
         }
     }
     pub mod demon {
