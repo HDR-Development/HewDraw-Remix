@@ -8,9 +8,11 @@ mod ganon_special_n;
 mod ganon_special_n_float;
 mod koopa_special_n;
 mod littlemac_special_n_cancel;
+mod lucas_special_n;
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
+    smashline::install_agent_resets!(kirby_reset);
     install_status_scripts!(
         pre_jump,
         throw_kirby_map_correction
@@ -22,6 +24,7 @@ pub fn install() {
     ganon_special_n::install();
     koopa_special_n::install();
     mariod_special_n::install();
+    lucas_special_n::install();
 
 }
 
@@ -46,6 +49,19 @@ fn kirby_init(fighter: &mut L2CFighterCommon) {
         }
         else{
             VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+        }
+    }
+}
+
+#[fighter_reset]
+fn kirby_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.kind() == *FIGHTER_KIND_KIRBY {
+            //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
+            VarModule::set_int(fighter.object(), LUCAS_CHARGE_TIME, vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
         }
     }
 }

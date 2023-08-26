@@ -262,6 +262,9 @@ littlemac_special_air_n_cancel:
     intangible_end_frame: 0
     cancel_frame: 39
     freeze_during_hitstop: false
+lucas_special_n_end:
+  extra:
+    cancel_frame: 20
 tantan_special_air_n_end:
   extra:
     cancel_frame: 40

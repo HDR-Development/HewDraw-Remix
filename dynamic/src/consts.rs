@@ -588,7 +588,7 @@ pub mod vars {
     pub mod kirby {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI: i32 = 0x00FF; //Weird value to avoid conflicts with copy ability values
+            pub const DISABLE_SPECIAL_HI: i32 = 0x01FF; //Weird value to avoid conflicts with copy ability values
         }
         pub mod status {
             // copy ability
@@ -616,17 +616,17 @@ pub mod vars {
 
         pub mod instance {
             // flag
-            pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x0100;
-            pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x0101;
-            pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x0102;
+            pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x01EF;
+            pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x01EE;
+            pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x01ED;
             pub const ATTACK_S4_ANGLE_DOWN: i32 = 0x0103;
             pub const ATTACK_S4_ANGLE_UP: i32 = 0x0104;
 
             // int
-            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x0100;
-            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x0101;
-            pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x0102;
-            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x0103;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x01DF;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x01DE;
+            pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x01DD;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x01DC;
         }
 
         pub mod status {
