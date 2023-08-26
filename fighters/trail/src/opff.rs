@@ -202,19 +202,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && ( fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_END,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_TURN,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_ATTACK,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_REBOUND
         ]) 
-        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 7) )
+        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 10) )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {

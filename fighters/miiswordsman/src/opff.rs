@@ -234,15 +234,14 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_3,
             *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
             ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
-            && fighter.is_status_one_of(&[
+            && ( fighter.is_status_one_of(&[
                 *FIGHTER_STATUS_KIND_SPECIAL_N,
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
-                *FIGHTER_STATUS_KIND_SPECIAL_HI,
                 *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END,
                 *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_LOOP,
                 *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END_MAX,
-                *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END,
             ])
+            || (fighter.is_motion(Hash40::new("special_air_hi3")) && fighter.motion_frame() > 49.0) )
         )
     )
     && fighter.is_situation(*SITUATION_KIND_AIR) {

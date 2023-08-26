@@ -10,10 +10,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3,
-        *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_ATTACK,
-        *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

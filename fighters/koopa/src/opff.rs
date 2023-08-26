@@ -119,6 +119,48 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
     }
 }
 
+// opff for handling the "excellent" punch 
+unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
+        if fighter.status_frame() == 51 { // indicates start of "excellent" frame window
+            VarModule::on_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
+            macros::LAST_EFFECT_SET_RATE(fighter, 3.0);
+        } else if fighter.status_frame() == 58 { // window ends
+            VarModule::off_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+        }
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) {
+        if VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH) {
+            if VarModule::is_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                SlowModule::set_whole(fighter.module_accessor, 8, 40);
+                macros::CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
+                macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
+                macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
+                PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+                PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
+                VarModule::off_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM);
+            }
+        }
+    }
+}
+
+unsafe fn ex_punch_effect_reset(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD])
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL ]) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_explosion_sign"), false, false);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -150,11 +192,13 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
     fireball_cooldown(boma,status_kind);
+    koopa_ex_punch(fighter);
+    ex_punch_effect_reset(fighter);
+    fastfall_specials(fighter);
     // noknok_reset(boma);
     //up_special_land_cancel(boma, status_kind);
     // noknok_training(boma);
