@@ -36,11 +36,11 @@ unsafe fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script(  = "metaknight", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn metaknight_attack_air_n_expression(: &mut L2CBase) {
-    let lua_state = .lua_state_;
-    let boma = .boma();
-    if is_excute() {
+#[acmd_script( agent = "metaknight", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
     frame(lua_state, 3.0);
