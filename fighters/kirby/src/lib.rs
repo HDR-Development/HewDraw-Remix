@@ -38,7 +38,7 @@ use utils::{
 };
 use smashline::*;
 
-pub const MAX_COOLDOWN : i32 = 900;
+pub const KOOPA_MAX_COOLDOWN : i32 = 900;
 pub const LUCAS_CHARGE_TIME : i32 = 120;
 
 pub fn install(is_runtime: bool) {

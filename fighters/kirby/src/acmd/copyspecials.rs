@@ -198,7 +198,7 @@ unsafe fn koopa_special_n_end_game(fighter: &mut L2CAgentBase) {
 unsafe fn koopa_special_n_max_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
     }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
