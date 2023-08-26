@@ -31,11 +31,14 @@ unsafe fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         let damage = if stance != 1 { 0.0 } else { 0.3 };
         let effect = if stance != 1 { Hash40::new("collision_attr_normal") } else { Hash40::new("collision_attr_purple") };
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.4 + damage, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.4 + damage, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
         AttackModule::set_catch_only_all(boma, true, false);
     }
     wait(lua_state, 1.0);
