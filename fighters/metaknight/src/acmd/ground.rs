@@ -1,7 +1,7 @@
 use super::*;
 
 #[acmd_script( agent = "metaknight", script = "game_attack100start", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack100start(agent: &mut L2CAgentBase) {
+unsafe fn game_attack100start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
