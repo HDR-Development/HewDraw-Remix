@@ -52,3 +52,6 @@ special_hi:
 attack_air_hi:
   extra:
     cancel_frame: 49
+catch_attack:
+  extra:
+    cancel_frame: 0
