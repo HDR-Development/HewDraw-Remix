@@ -62,6 +62,8 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         if !((boma.get_grabber_boma().kind() == *FIGHTER_KIND_KIRBY
             && [hash40("throw_f"), hash40("throw_b")].contains(&LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE)))
         || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_ROBOT
+            && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi"))
+        || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_WARIO
             && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi")))
         {
             return;
@@ -272,6 +274,66 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Shifts Run, RunBrake, TurnRun, and TurnRunBrake animations to match any horizontal hip bone adjustment to vanilla dash animations
+// otherwise the animations don't transition properly into one another
+// This is so we don't have to edit those 4 other animations if we want to edit a dash anim
+unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_RUN) && fighter.is_motion(Hash40::new("run")) {
+        let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+        let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+        let mut hip_translate = Vector3f::zero();
+        MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+        hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    }
+    else if fighter.is_prev_status(*FIGHTER_STATUS_KIND_RUN)
+    && StatusModule::is_changing(fighter.module_accessor)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN) {
+        ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
+    }
+    
+    if fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN) && fighter.is_motion(Hash40::new("turn_run")) {
+        let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+        let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+        let mut hip_translate = Vector3f::zero();
+        MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+        hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    }
+    else if fighter.is_prev_status(*FIGHTER_STATUS_KIND_TURN_RUN)
+    && StatusModule::is_changing(fighter.module_accessor)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN) {
+        ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
+    }
+}
+
+#[smashline::fighter_frame_callback()]
+pub fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.left_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+        }
+        else if fighter.left_stick_x().signum() != fighter.prev_left_stick_x().signum()
+        || fighter.prev_left_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X);
+        }
+        
+        if fighter.left_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+        }
+        else if fighter.left_stick_y().signum() != fighter.prev_left_stick_y().signum()
+        || fighter.prev_left_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y);
+        }
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
@@ -279,5 +341,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     ecb_shift_disabled_motions(fighter);
     faf_ac_debug(fighter);
     taunt_parry_forgiveness(fighter);
+    custom_dash_anim_support(fighter);
 }
 
