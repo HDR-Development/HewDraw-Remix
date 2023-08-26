@@ -159,7 +159,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.check_jump_cancel(false) {
+            && fighter.check_jump_cancel(false, false) {
                 return;
             }
         }
@@ -177,7 +177,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.check_jump_cancel(false) {
+            && fighter.check_jump_cancel(false, false) {
                 return;
             }
         }
