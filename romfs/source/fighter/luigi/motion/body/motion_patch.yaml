@@ -86,3 +86,6 @@ special_s_discharge:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+catch_attack:
+  extra:
+    cancel_frame: 0

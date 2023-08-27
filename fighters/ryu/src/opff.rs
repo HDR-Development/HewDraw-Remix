@@ -392,7 +392,7 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
     if !boma.is_in_hitlag()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        if boma.check_jump_cancel(false) {
+        if boma.check_jump_cancel(false, false) {
             return;
         }
     }

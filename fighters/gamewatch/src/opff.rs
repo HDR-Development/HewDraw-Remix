@@ -18,7 +18,7 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 // Game & Watch Parachute Double Jump
 unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status_one_of(&[*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE]) {
-        boma.check_jump_cancel(false);
+        boma.check_jump_cancel(false, false);
     }
 }
 
@@ -26,7 +26,7 @@ unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion_one_of(&[Hash40::new("special_s_4"), Hash40::new("special_air_s_4")]) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }
