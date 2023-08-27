@@ -183,16 +183,16 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
 // Grounded SMG spin movement
 unsafe fn galaxy_spin_move(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32, stick_x: f32, facing: f32) {
-    if motion_kind == hash40("special_lw_light") {
-        let current_speed =  KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) && fighter.is_situation(*SITUATION_KIND_GROUND){
-            if frame >= 6.0 && frame < 20.0 { 
+    if motion_kind == hash40("special_lw_light") && !fighter.is_in_hitlag() {
+        let current_speed = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) && fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if frame >= 6.0 && frame < 20.0 {
                 if stick_x != 0.0 {
                     let motion_vec = x_motion_vec(1.2, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
-            if frame >= 20.0 && frame < 55.0 { 
+            if frame >= 20.0 && frame < 55.0 {
                 if stick_x != 0.0 {
                     let motion_value = 1.2 + (frame - 20.0) * ((0.01 - 1.2)/(55.0 - 20.0));
                     let motion_vec = x_motion_vec(motion_value, stick_x);
