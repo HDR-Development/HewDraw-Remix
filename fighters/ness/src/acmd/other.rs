@@ -9,7 +9,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
+                app::sv_math::rand(hash40("fighter"), 10)
             } else {
                 0
             };
@@ -19,7 +19,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(fighter) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
+            app::sv_math::rand(hash40("fighter"), 10)
         } else {
             0
         };
@@ -35,7 +35,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
+                app::sv_math::rand(hash40("fighter"), 10)
             } else {
                 0
             };
@@ -45,7 +45,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(fighter) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
+            app::sv_math::rand(hash40("fighter"), 10)
         } else {
             0
         };
@@ -61,7 +61,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
+                app::sv_math::rand(hash40("fighter"), 10)
             } else {
                 0
             };
@@ -71,7 +71,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(fighter) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
+            app::sv_math::rand(hash40("fighter"), 10)
         } else {
             0
         };
@@ -103,7 +103,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
+                app::sv_math::rand(hash40("fighter"), 4)
             } else {
                 0
             };
@@ -113,7 +113,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(fighter) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
+            app::sv_math::rand(hash40("fighter"), 4)
         } else {
             0
         };
