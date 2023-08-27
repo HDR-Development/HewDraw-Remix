@@ -48,3 +48,6 @@ attack_s3_s:
 attack_air_f:
   extra:
     cancel_frame: 37
+catch_attack:
+  extra:
+    cancel_frame: 0

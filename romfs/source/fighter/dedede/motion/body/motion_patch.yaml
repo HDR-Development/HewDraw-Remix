@@ -40,6 +40,9 @@ attack_s3_s:
     cancel_frame: 43
 fall_special:
   blend_frames: 5
+attack_air_f:
+  extra:
+    cancel_frame: 39
 attack_air_b:
   extra:
     cancel_frame: 34
@@ -82,3 +85,6 @@ special_air_s_miss:
 special_air_s_start:
   extra:
     cancel_frame: 57
+catch_attack:
+  extra:
+    cancel_frame: 0

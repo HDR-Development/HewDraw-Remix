@@ -7,7 +7,7 @@ unsafe fn feint_jump_jc(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion_one_of(&[Hash40::new("special_lw2_start"),Hash40::new("special_air_lw2_start")]) {
         if MotionModule::frame(boma) > 31.0 {
             if !boma.is_in_hitlag() {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
     }
