@@ -48,7 +48,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
         *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END,
         *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP,

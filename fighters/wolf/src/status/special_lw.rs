@@ -54,7 +54,7 @@ pub unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CURRENT_FRAME].get_i32() > 2  // Allows for jump cancel on frame 4 in game
     && !fighter.is_in_hitlag()
-    && fighter.check_jump_cancel(false) {
+    && fighter.check_jump_cancel(false, false) {
         return 0.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {

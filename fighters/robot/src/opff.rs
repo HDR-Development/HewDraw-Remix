@@ -49,7 +49,7 @@ unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i
 unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }

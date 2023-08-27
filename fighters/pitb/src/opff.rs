@@ -22,7 +22,7 @@ unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind
     if [*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if boma.status_frame() > 1 && !boma.is_in_hitlag(){
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }

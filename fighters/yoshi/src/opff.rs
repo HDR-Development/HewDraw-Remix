@@ -13,7 +13,7 @@ use globals::*;
     }
 
     if status_kind == *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_END {
-        boma.check_jump_cancel(true);
+        boma.check_jump_cancel(true, false);
     }
 }
 */

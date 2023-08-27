@@ -40,7 +40,7 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END
     && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC)
     {
-        boma.check_jump_cancel(true);
+        boma.check_jump_cancel(true, false);
     }
 }
 
@@ -68,7 +68,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_HOLD,
         *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END,
         *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_LW_HIT
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {

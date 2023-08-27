@@ -35,15 +35,15 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     && !StatusModule::is_changing(boma)
     && frame >= 13.0
     && !boma.is_in_hitlag() {
-        //boma.check_jump_cancel(true);
+        //boma.check_jump_cancel(true, false);
         CancelModule::enable_cancel(boma);
     }
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP].contains(&status_kind) && boma.status_frame() > 15 && !boma.is_in_hitlag() {
-        boma.check_jump_cancel(true);
+        boma.check_jump_cancel(true, false);
     }
 
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && boma.status_frame() < 10 && !boma.is_in_hitlag() {
-        boma.check_jump_cancel(true);
+        boma.check_jump_cancel(true, false);
     }
 }
 
