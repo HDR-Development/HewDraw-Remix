@@ -194,40 +194,6 @@ unsafe fn koopa_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-// #[acmd_script( agent = "koopa", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
-// unsafe fn koopa_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     frame(lua_state, 10.0);
-//     if is_excute(fighter) {
-//         if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
-//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-//                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-//                 VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
-//                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-//             }
-//         }
-//     }
-    
-// }
-
-// #[acmd_script( agent = "koopa", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
-// unsafe fn koopa_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     frame(lua_state, 10.0);
-//     if is_excute(fighter) {
-//         if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
-//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-//                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-//                 VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
-//                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-//             }
-//         }
-//     }
-    
-// }
-
 #[acmd_script( agent = "koopa", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -259,30 +225,27 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 #[acmd_script( agent = "koopa_breath", script = "game_max", category = ACMD_GAME, low_priority )]
 unsafe fn koopa_breath_max_game(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
-    let mut halflife=30.0;
-
+    //let mut halflife=30.0;
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 10.8, 55, 60, 0, 80, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 16.0, 55, 60, 0, 80, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
         AttackModule::enable_safe_pos(weapon.module_accessor);
-
-        halflife = WorkModule::get_int(weapon.module_accessor,*WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE) as f32 /2.0;
+        //halflife = WorkModule::get_int(weapon.module_accessor,*WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE) as f32 /2.0;
     }
-    frame(lua_state, halflife);
+    frame(lua_state, 11.0);
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 7.2, 55, 60, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 12.0, 55, 60, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
         AttackModule::enable_safe_pos(weapon.module_accessor);
     }
 }
+
 #[acmd_script( agent = "koopa_breath", script = "effect_max", category = ACMD_EFFECT, low_priority )]
 unsafe fn koopa_breath_max_effect(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
-
     for _ in 0..100 {
         if macros::is_excute(weapon) {
             EFFECT_FOLLOW(weapon, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
@@ -336,11 +299,9 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
-        
         koopa_breath_max_game,
         koopa_breath_max_effect,
         koopa_breath_end_game,
         koopa_breath_end_effect,
     );
 }
-

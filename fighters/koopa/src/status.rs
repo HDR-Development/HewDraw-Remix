@@ -80,6 +80,12 @@ unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_wait_ground_check_common(false.into()).get_bool() == false
+    && fighter.sub_air_check_fall_common().get_bool() {
+        return L2CValue::I32(0)
+    }
+    
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.sub_change_motion_by_situation(Hash40::new("special_n_max").into(), Hash40::new("special_air_n_max").into(), true.into());
 
