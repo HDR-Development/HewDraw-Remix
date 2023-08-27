@@ -42,3 +42,6 @@ throw_hi:
 throw_lw:
   extra:
     cancel_frame: 38
+catch_attack:
+  extra:
+    cancel_frame: 0

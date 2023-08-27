@@ -30,6 +30,9 @@ attack_s4_s:
 attack_hi4_r:
   extra:
     cancel_frame: 45
+attack_hi3:
+  extra:
+    cancel_frame: 32
 attack_hi3_l:
   extra:
     cancel_frame: 32
@@ -37,3 +40,6 @@ special_air_hi:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+catch_attack:
+  extra:
+    cancel_frame: 0
