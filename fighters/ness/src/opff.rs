@@ -13,6 +13,15 @@ unsafe fn psi_magnet_turnaround(fighter: &mut L2CFighterCommon) {
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 5)  // Allows for jump cancel on frame 7 in game
+    || fighter.is_status_one_of(&[
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]))
+    && !fighter.is_in_hitlag()
+        {
+            fighter.check_jump_cancel(false, false);
+        }
 }   
 
 unsafe fn psi_magnet_jump_cancel(fighter: &mut L2CFighterCommon) {
@@ -181,7 +190,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_turnaround(fighter);
-    psi_magnet_jump_cancel(fighter);
+    //psi_magnet_jump_cancel(fighter);
     //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //magnet_stall_prevention(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
