@@ -620,6 +620,18 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
+// Colorless Attack Dash Cancel on Hit
+// This is unique to Kirby due to only having access to colorless attack.
+unsafe fn colorless_attack_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 19.0 {
+            boma.check_dash_cancel();
+        }
+    }
+}
+
+
+
 // Dark Pit's Bow Land Cancel
 unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if(WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PITB){
@@ -1138,6 +1150,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Bonus Fruit Airdodge Cancel
     bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
+
+    // Colorless Attack Dash Cancel on Hit
+    colorless_attack_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
 
     // Dark Pit's Bow Land Cancel
     pitb_bow_lc(boma, status_kind, situation_kind, cat[1], stick_y);

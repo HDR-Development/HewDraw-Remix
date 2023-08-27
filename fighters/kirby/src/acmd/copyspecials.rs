@@ -284,6 +284,106 @@ unsafe fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", scripts = ["effect_kroolspecialnfire", "effect_kroolspecialairnfire"], category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_special_n_fire_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB) {
+            EFFECT(fighter, Hash40::new("krool_cannon_shot"), Hash40::new("top"), 16, 10, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["sound_kroolspecialnfire", "sound_kroolspecialairnfire"], category = ACMD_SOUND, low_priority )]
+unsafe fn krool_special_n_fire_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_krool_special_n08"));
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        if !WorkModule::is_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL) {
+            PLAY_SE(fighter, Hash40::new("se_krool_special_n07"));
+        }
+        else if !VarModule::is_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB) {
+            PLAY_SE(fighter, Hash40::new("se_krool_special_n01"));
+        }
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_krool_special_n09"));
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["expression_kroolspecialnfire", "expression_kroolspecialairnfire"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn krool_special_n_fire_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_hide") as i64);
+    }
+    if IS_EXIST_ARTICLE(fighter, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
+        if is_excute(fighter) {
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB) && IS_GENERATABLE_ARTICLE(fighter, *FIGHTER_KROOL_GENERATE_ARTICLE_IRONBALL) {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 76.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_normal") as i64);
+    }
+    if is_excute(fighter) {
+        if IS_EXIST_ARTICLE(fighter, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    frame(lua_state, 89.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["effect_kroolspecialnloop", "effect_kroolspecialairnloop"], category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_special_n_loop_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB) {
+            EFFECT_FOLLOW(fighter, Hash40::new("krool_cannon_vacuum"), Hash40::new("top"), 0, 10, 17, 0, 0, 0, 0.8, true);
+        }
+        else {
+            EFFECT_FOLLOW(fighter, Hash40::new("krool_cannon_vacuum"), Hash40::new("top"), 0, 10, 17, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_SCALE_W(fighter, 0.6, 2.0, 1.0);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.9);
+        }
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 0.6, 10, 0, 4, 0, 0, 0, false);
+        }
+    }
+    wait(lua_state, 10.0);
+}
+
 #[acmd_script( agent = "kirby", script = "game_littlemacspecialnstart" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1362,6 +1462,41 @@ unsafe fn mariod_special_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", scripts = ["effect_palutenaspecialn", "effect_palutenaspecialairn"], category = ACMD_EFFECT, low_priority )]
+unsafe fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -0.2, 22, -1, 10, 90, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+        EFFECT(agent, Hash40::new("palutena_wand_finish"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["sound_palutenaspecialn", "sound_palutenaspecialairn"], category = ACMD_SOUND, low_priority )]
+unsafe fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_palutena_special_n01"));
+    }
+    wait(lua_state, 22.0);
+    if is_excute(agent) {
+        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+    }
+}
 
 #[acmd_script( agent = "kirby", scripts = ["effect_miigunnerspecialn1firemax", "effect_miigunnerspecialairn1firemax"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn miigunner_special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
@@ -1711,6 +1846,10 @@ pub fn install() {
         koopa_special_n_max_effect,
         koopa_special_n_max_sound,
         koopa_special_n_max_expression,
+        krool_special_n_fire_effect,
+        krool_special_n_fire_sound,
+        krool_special_n_fire_expression,
+        krool_special_n_loop_effect,
         littlemac_special_n_start_game,
         littlemac_special_air_n_start_game,
         littlemac_special_n_cancel_game,
@@ -1752,6 +1891,8 @@ pub fn install() {
         mariod_special_n_chill_effect,
         mariod_special_n_chill_sound,
         mariod_special_n_chill_expression,
+        palutena_special_n_effect,
+        palutena_special_n_sound,
 		miigunner_special_n1_fire_max_effect,
 		miigunner_special_n1_fire_max_sound,
         ridley_special_n_explode_game,

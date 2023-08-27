@@ -440,6 +440,12 @@ ganon_float_air_start:
 gekkouga_special_n_shot:
   extra:
     cancel_frame: 29
+kamui_special_n_end_1:
+  extra:
+    cancel_frame: 45
+kamui_special_air_n_end_1:
+  extra:
+    cancel_frame: 45
 koopajr_special_n_shoot:
   extra:
     cancel_frame: 32
@@ -570,10 +576,10 @@ pacman_special_air_n_cancel:
     cancel_frame: 7
 palutena_special_n:
   extra:
-    cancel_frame: 72
+    cancel_frame: 33
 palutena_special_air_n:
   extra:
-    cancel_frame: 72
+    cancel_frame: 26
 pit_special_n_fire_s:
   extra:
     cancel_frame: 30
