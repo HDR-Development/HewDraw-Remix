@@ -120,13 +120,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_MAX,
         *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_SHOOT,
         *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD,
         *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL,
-        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_S_THROW,
         *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {

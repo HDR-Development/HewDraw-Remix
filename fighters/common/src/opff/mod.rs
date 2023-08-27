@@ -129,6 +129,7 @@ pub fn install() {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
     smashline::install_agent_frame_callbacks!(
-        decrease_knockdown_bounce_heights
+        decrease_knockdown_bounce_heights,
+        left_stick_flick_counter,
     );
 }

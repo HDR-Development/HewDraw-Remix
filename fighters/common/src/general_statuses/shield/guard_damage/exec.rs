@@ -53,7 +53,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_execStop_common(fighter: &mut L2CFi
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME,
         0,
-    ) != 0
+    )
     {
         let handle = WorkModule::get_int(
             fighter.module_accessor,

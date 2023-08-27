@@ -90,7 +90,7 @@ unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
             if (boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) && boma.status_frame() > 3)
                 || !boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD)
             {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
         if boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) {
