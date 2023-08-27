@@ -1,5 +1,9 @@
 fall:
   blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
 guard_off:
   blend_frames: 4
   extra:
@@ -7,27 +11,32 @@ guard_off:
 escape:
   flags:
     move: false
-throw_lw:
+attack_11:
   extra:
-    cancel_frame: 30
+    cancel_frame: 18
 attack_12:
   extra:
     cancel_frame: 18
 attack_13:
   extra:
     cancel_frame: 30
-attack_11:
+attack_100_end:
   extra:
-    cancel_frame: 18
+    cancel_frame: 43
+attack_s3_s:
+  extra:
+    cancel_frame: 36
+attack_hi3:
+  extra:
+    cancel_frame: 34
 attack_lw3:
   flags:
     move: false
   extra:
-    cancel_frame: 27
-special_hi:
+    cancel_frame: 30
+attack_dash:
   extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
+    cancel_frame: 37
 attack_hi4:
   extra:
     cancel_frame: 55
@@ -36,40 +45,35 @@ attack_lw4:
     move: false
   extra:
     cancel_frame: 45
-attack_hi3:
-  extra:
-    cancel_frame: 31
-fall_aerial:
-  blend_frames: 5
-attack_dash:
-  extra:
-    cancel_frame: 37
-attack_s3_s:
-  flags:
-    move: false
-  extra:
-    cancel_frame: 36
-fall_special:
-  blend_frames: 5
-attack_air_f:
-  extra:
-    cancel_frame: 40
 attack_air_n:
   extra:
     cancel_frame: 48
+attack_air_f:
+  extra:
+    cancel_frame: 39
+attack_air_b:
+  extra:
+    cancel_frame: 38
 attack_air_hi:
   extra:
-    cancel_frame: 33
-attack_100_end:
+    cancel_frame: 40
+attack_air_lw:
   extra:
-    cancel_frame: 43
+    cancel_frame: 35
+special_air_s_start:
+  extra:
+    cancel_frame: 0
 special_hi_start:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-special_air_s_start:
+special_hi:
   extra:
-    cancel_frame: 0
+    intangible_start_frame: 0
+    intangible_end_frame: 0
 catch_attack:
   extra:
     cancel_frame: 0
+throw_lw:
+  extra:
+    cancel_frame: 30

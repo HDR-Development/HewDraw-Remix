@@ -1,4 +1,3 @@
-
 use super::*;
 
 #[acmd_script( agent = "pitb", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
@@ -245,4 +244,3 @@ pub fn install() {
         damageflytop_sound
     );
 }
-
