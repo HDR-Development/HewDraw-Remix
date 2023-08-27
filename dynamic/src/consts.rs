@@ -711,6 +711,7 @@ pub mod vars {
             pub const NOKNOK_SHELL: i32 = 0x0100;
             pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x0101;
             pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0102;
+            pub const DISABLE_DSPECIAL_STALL:                i32 = 0x0103;
         }
 
         pub mod status {
