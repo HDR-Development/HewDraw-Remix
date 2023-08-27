@@ -7,7 +7,7 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 throw_lw:
   extra:
     cancel_frame: 38
@@ -101,3 +101,6 @@ special_air_lw_light:
       - effect_specialairlwlight
     extra:
       cancel_frame: 61
+catch_attack:
+  extra:
+    cancel_frame: 0

@@ -5,12 +5,14 @@ fall_f:
 fall_b:
   blend_frames: 5
 attack_12:
+  flags:
+    move: false
   extra:
     cancel_frame: 26
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 attack_11:
   extra:
     cancel_frame: 26
@@ -32,6 +34,8 @@ attack_s4_s:
   extra:
     cancel_frame: 80
 attack_s3_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 43
 fall_special:
@@ -47,6 +51,8 @@ fall_aerial_f:
 fall_aerial_b:
   blend_frames: 5
 attack_100_end:
+  flags:
+    move: false
   extra:
     cancel_frame: 47
 fall_special_b:
@@ -76,3 +82,6 @@ special_air_s_miss:
 special_air_s_start:
   extra:
     cancel_frame: 57
+catch_attack:
+  extra:
+    cancel_frame: 0

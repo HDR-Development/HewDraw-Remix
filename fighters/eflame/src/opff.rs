@@ -21,11 +21,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_N_HOLD,
-        *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_N_ATTACK,
-        *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_N_END,
         *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_S_CATCH,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {

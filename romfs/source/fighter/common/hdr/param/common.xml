@@ -7,9 +7,9 @@
     <int hash="ecb_shift_air_trans_frame">9</int>
     <float hash="general_flick_y_sens">-0.66</float>
     <struct hash="drift_di">
-        <float hash="speed_mul_base">0.005</float>
-        <float hash="speed_mul_add_max">0.0025</float>
-        <float hash="speed_lerp_max">3.0</float>
+        <float hash="speed_mul_base">0.0</float>
+        <float hash="speed_mul_add_max">0.0</float>
+        <float hash="speed_lerp_max">0.0</float>
     </struct>
     <int hash="glide_toss_cancel_frame">5</int>
     <int hash="air_escape_snap_frame">5</int>
@@ -38,4 +38,5 @@
     <int hash="escape_air_slide_fall_frame">28</int>
     <int hash="tether_trump_landing_lag">30</int>
     <float hash="guard_off_motion_start_frame">3</float>
+    <int hash="pummel_max_cancel_frame">12</int>
 </struct>

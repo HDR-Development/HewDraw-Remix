@@ -22,7 +22,7 @@ unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor, status_k
         || motion_kind == hash40("special_air_lw_start") {
         if frame > 21.0 {
             if !boma.is_in_hitlag() {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
         // Turn on the vanilla flip jump footstool-enable flag if you're holding the special button and you're in the window to be able to flipstool manually
