@@ -71,6 +71,9 @@ special_hi:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+catch_attack:
+  extra:
+    cancel_frame: 0
 throw_lw:
   extra:
     cancel_frame: 30

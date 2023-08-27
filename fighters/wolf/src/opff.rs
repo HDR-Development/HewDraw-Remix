@@ -35,7 +35,7 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END])
     && !fighter.is_in_hitlag()
     {
-        fighter.check_jump_cancel(false);
+        fighter.check_jump_cancel(false, false);
     }
 }
 
@@ -50,14 +50,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_RUSH_END,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_BOUND,
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

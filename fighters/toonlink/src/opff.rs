@@ -43,15 +43,14 @@ extern "Rust" {
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
+    && ( fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END,
         *FIGHTER_LINK_STATUS_KIND_SPECIAL_S2,
         *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST
-        ]) 
+        ])
+        || (fighter.is_motion(Hash40::new("special_air_hi")) && fighter.motion_frame() > 49.0) )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
