@@ -43,7 +43,7 @@ unsafe fn photon_edge_actionability(fighter: &mut L2CFighterCommon) {
         if VarModule::is_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY){
             CancelModule::enable_cancel(fighter.boma());
         }
-
+        // Disables drifting when stick is held back back
         if PostureModule::lr(fighter.boma()) * ControlModule::get_stick_x(fighter.boma()) < 0.0 {
             KineticModule::unable_energy(fighter.boma(), *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         }
