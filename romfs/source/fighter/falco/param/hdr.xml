@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_lw">
+        <float hash="reflector_air_start_x_mul">0.5</float>
+        <int hash="reflector_air_stop_y_frame">4</int>
+        <int hash="reflector_init_keep_frame">20</int>
+        <int hash="reflector_attack_frame">0</int>
+        <float hash="reflector_air_accel_y">0.027</float>
+    </struct>
+</struct>

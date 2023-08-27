@@ -3,7 +3,7 @@ fall:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 attack_12:
   extra:
     cancel_frame: 25
@@ -28,6 +28,8 @@ attack_s4_s:
   extra:
     cancel_frame: 65
 attack_s3_s:
+  flags:
+    move: false
 fall_special:
   blend_frames: 5
 attack_s4_hi:
@@ -51,3 +53,6 @@ attack_air_hi:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 0

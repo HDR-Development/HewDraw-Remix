@@ -45,7 +45,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {

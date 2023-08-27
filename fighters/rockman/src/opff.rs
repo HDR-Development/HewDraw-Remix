@@ -39,7 +39,7 @@ use globals::*;
 unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if boma.is_motion(Hash40::new("attack_lw3")) {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 12.0 {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }
