@@ -218,19 +218,19 @@ unsafe fn sonic_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0d6dd4defe), Hash40::new_raw(0x0d6dd4defe), Hash40::new("top"), 0.0, 6.0, 0, 0, 0, -7, 1.6, true, *EF_FLIP_YZ);
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0d6dd4defe), Hash40::new_raw(0x0d6dd4defe), Hash40::new("top"), 0.0, 4.0, 0, 0, 180, 7, 1.6, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 5, 1, -180, 150, 7, 1.4, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0d6dd4defe), Hash40::new_raw(0x0d6dd4defe), Hash40::new("top"), 0.0, 6.0, 0, 0, 0, -7, 1.6, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 5, -6, -180, 20, 5, 1.4, true, *EF_FLIP_YZ);
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 25.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0d6dd4defe), Hash40::new_raw(0x0d6dd4defe), Hash40::new("top"), 0.0, 4.0, 0, 0, 180, 7, 1.6, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 5, 1, -180, 150, 7, 1.4, true, *EF_FLIP_YZ);
     }
     
 }

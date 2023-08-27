@@ -79,7 +79,7 @@ unsafe fn sonic_specialsboostend(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 8.0);
-    FT_MOTION_RATE(fighter, 0.8);
+    FT_MOTION_RATE(fighter, 1.6);
 }
 
 #[acmd_script( agent = "sonic", script = "effect_specialsboostend", category = ACMD_EFFECT, low_priority )]
