@@ -168,16 +168,20 @@ unsafe fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 3.0, 3.0, 8.0, 2.0);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        //WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};
-        KineticModule::mul_speed(boma, &stop_rise, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        let attack_air_lw_speed = fighter.get_float(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_ATTACK_AIR_LW_SPEED)
+            * PostureModule::lr(boma);
+        let curr_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, curr_speed_x, attack_air_lw_speed, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        fighter.on_flag(*FIGHTER_LUCARIO_ATTACK_AIR_STATUS_WORK_ID_FLAG_DEC_SPEED);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        fighter.on_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        fighter.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        //WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        fighter.off_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 100, 30, 0, 20, 3.8, 0.0, -2.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 367, 100, 50, 0, 4.6, 0.0, 3.2, 0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
@@ -201,9 +205,10 @@ unsafe fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        fighter.off_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
