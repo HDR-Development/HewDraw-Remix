@@ -191,7 +191,7 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
 unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 11.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_metaknight_smash_s01"));
     }
