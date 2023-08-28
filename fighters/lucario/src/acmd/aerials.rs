@@ -170,9 +170,9 @@ unsafe fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        let attack_air_lw_speed = fighter.get_float(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_ATTACK_AIR_LW_SPEED)
+        let attack_air_lw_speed = fighter.get_float(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_ATTACK_AIR_LW_SPEED);
+        let curr_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
             * PostureModule::lr(boma);
-        let curr_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         SET_SPEED_EX(fighter, curr_speed_x, attack_air_lw_speed, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         fighter.on_flag(*FIGHTER_LUCARIO_ATTACK_AIR_STATUS_WORK_ID_FLAG_DEC_SPEED);
         KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
