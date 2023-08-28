@@ -7,6 +7,7 @@ use smash::app::{
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
+use crate::InputModule;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -142,6 +143,7 @@ impl Into<CommandCat> for CatHdr {
 }
 
 bitflags! {
+    #[derive(Copy, Clone)]
     pub struct Cat1: i32 {
         const AttackN       = 0x1;
         const AttackS3      = 0x2;
@@ -177,6 +179,7 @@ bitflags! {
         const NoCmd         = 0x40000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat2: i32 {
         const AppealSL            = 0x1;
         const AppealSR            = 0x2;
@@ -209,6 +212,7 @@ bitflags! {
         const FinalReverseLR      = 0x8000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat3: i32 {
         const ItemLightThrowFB4    = 0x1;
         const ItemLightThrowHi4    = 0x2;
@@ -237,6 +241,7 @@ bitflags! {
         const ItemLightThrowAirAll = 0x1F80;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat4: i32 {
         const SpecialNCommand       = 0x1;
         const SpecialN2Command      = 0x2;
@@ -267,12 +272,15 @@ bitflags! {
         const Command323Catch       = 0x4000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct CatHdr: i32 {
         const Wavedash = 0x1;
         const ShieldDrop = 0x2;
-        const Parry = 0x3;
+        const WallJumpLeft = 0x4;
+        const WallJumpRight = 0x8;
     }
 
+    #[derive(Copy, Clone)]
     pub struct PadFlag: i32 {
         const AttackTrigger  = 0x1;
         const AttrckRelease  = 0x2;
@@ -284,6 +292,7 @@ bitflags! {
         const GuardRelease   = 0x80;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Buttons: i32 {
         const Attack      = 0x1;
         const Special     = 0x2;
@@ -307,9 +316,8 @@ bitflags! {
         // would get mapped to TiltAttack (issue #776)
         const TiltAttack  = 0x80000;
         const CStickOverride = 0x100000;
-        const SpecialParry = 0x200000;
-        const TauntParry = 0x400000;
-        const Parry = 0x800000;
+        const Parry = 0x200000;
+        const RivalsWallJump = 0x400000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -319,31 +327,31 @@ bitflags! {
 
 impl Cat1 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat1::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 0)) }
+        unsafe { Cat1::from_bits_retain(ControlModule::get_command_flag_cat(boma, 0)) }
     }
 }
 
 impl Cat2 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat2::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 1)) }
+        unsafe { Cat2::from_bits_retain(ControlModule::get_command_flag_cat(boma, 1)) }
     }
 }
 
 impl Cat3 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat3::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 2)) }
+        unsafe { Cat3::from_bits_retain(ControlModule::get_command_flag_cat(boma, 2)) }
     }
 }
 
 impl Cat4 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat4::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 3)) }
+        unsafe { Cat4::from_bits_retain(ControlModule::get_command_flag_cat(boma, 3)) }
     }
 }
 
 impl CatHdr {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { CatHdr::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 4)) }
+        unsafe { CatHdr::from_bits_retain(ControlModule::get_command_flag_cat(boma, 4)) }
     }
 }
 
@@ -563,11 +571,11 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool {
-        PadFlag::from_bits_unchecked(ControlModule::get_pad_flag(self)).intersects(pad_flag)
+        PadFlag::from_bits_retain(ControlModule::get_pad_flag(self)).intersects(pad_flag)
     }
 
     unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_button(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_button(self)).intersects(buttons)
     }
 
     unsafe fn is_button_off(&mut self, buttons: Buttons) -> bool {
@@ -575,15 +583,15 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_button_trigger(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_trigger(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_trigger(self)).intersects(buttons)
     }
 
     unsafe fn is_button_release(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_release(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_release(self)).intersects(buttons)
     }
 
     unsafe fn was_prev_button_on(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_button_prev(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_button_prev(self)).intersects(buttons)
     }
 
     unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool {
@@ -1242,17 +1250,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let max_tap_buffer_window = ControlModule::get_command_life_count_max(self) as i32;
-
-        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < max_tap_buffer_window  // checks if Taunt input was pressed within max tap buffer window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < max_tap_buffer_window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < max_tap_buffer_window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
-        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
-
-        (self.is_button_on(Buttons::Parry))
-        || ((self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
-        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered))
+        let buffer = if self.is_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
+        return InputModule::get_trigger_count(self.object(), Buttons::Parry) < buffer;
     }
 }
 

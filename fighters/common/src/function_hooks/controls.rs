@@ -220,26 +220,26 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (l, gc_l, Parry, Buttons::Parry)(
+            (l, gc_l, Parry, Buttons::Parry | Buttons::Guard)(
                 r,
                 gc_r,
                 Parry,
-                Buttons::Parry
-            )(zl, gc_z, Parry, Buttons::Parry)(
+                Buttons::Parry | Buttons::Guard
+            )(zl, gc_z, Parry, Buttons::Parry | Buttons::Guard)(
                 zr,
                 gc_z,
                 Parry,
-                Buttons::Parry
-            )(a, gc_a, Parry, Buttons::Parry)(
+                Buttons::Parry | Buttons::Guard
+            )(a, gc_a, Parry, Buttons::Parry | Buttons::Guard)(
                 b,
                 gc_b,
                 Parry,
-                Buttons::Parry
-            )(x, gc_x, Parry, Buttons::Parry)(
+                Buttons::Parry | Buttons::Guard
+            )(x, gc_x, Parry, Buttons::Parry | Buttons::Guard)(
                 y,
                 gc_y,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )
         );
         if (*mappings).gc_absmash & 1 != 0 {
@@ -392,36 +392,36 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (l, joy_shoulder, Parry, Buttons::Parry)(
+            (l, joy_shoulder, Parry, Buttons::Parry | Buttons::Guard)(
                 r,
                 joy_shoulder,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 zl,
                 joy_zshoulder,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 zr,
                 joy_zshoulder,
                 Parry,
-                Buttons::Parry
-            )(left_sl, joy_sl, Parry, Buttons::Parry)(
+                Buttons::Parry | Buttons::Guard
+            )(left_sl, joy_sl, Parry, Buttons::Parry | Buttons::Guard)(
                 left_sr,
                 joy_sr,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 right_sl,
                 joy_sl,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 right_sr,
                 joy_sr,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )
         );
 
@@ -579,22 +579,22 @@ unsafe fn map_controls_hook(
                     a,
                     joy_down,
                     Parry,
-                    Buttons::Parry
+                    Buttons::Parry | Buttons::Guard
                 )(
                     y,
                     joy_up,
                     Parry,
-                    Buttons::Parry
+                    Buttons::Parry | Buttons::Guard
                 )(
                     b,
                     joy_left,
                     Parry,
-                    Buttons::Parry
+                    Buttons::Parry | Buttons::Guard
                 )(
                     x,
                     joy_right,
                     Parry,
-                    Buttons::Parry
+                    Buttons::Parry | Buttons::Guard
                 )
             );
         }
@@ -721,42 +721,42 @@ unsafe fn map_controls_hook(
                 l,
                 pro_l,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 r,
                 pro_r,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 zl,
                 pro_zl,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 zr,
                 pro_zr,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 a,
                 pro_a,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 b,
                 pro_b,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 x,
                 pro_x,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )(
                 y,
                 pro_y,
                 Parry,
-                Buttons::Parry
+                Buttons::Parry | Buttons::Guard
             )
         );
 
@@ -855,6 +855,19 @@ unsafe fn map_controls_hook(
         _ => (*mappings).pro_absmash & 2 != 0,
     };
 
+    let is_rivals_walljump = match controller.style {
+        ControllerStyle::GCController => (*mappings).gc_absmash & 4 != 0,
+        ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
+            (*mappings).joy_absmash & 4 != 0
+        }
+        _ => (*mappings).pro_absmash & 4 != 0,
+    };
+
+    if is_rivals_walljump {
+        (*out).buttons |= Buttons::RivalsWallJump;
+    }
+
+
     let (parry, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
     } else {
@@ -863,12 +876,7 @@ unsafe fn map_controls_hook(
 
     if (*out).buttons.intersects(Buttons::Guard) {
         if (*out).buttons.intersects(parry) {
-            if is_parry_taunt {
-                (*out).buttons |= Buttons::TauntParry;
-            }
-            else {
-                (*out).buttons |= Buttons::SpecialParry;
-            }
+            (*out).buttons |= Buttons::Parry
         } else if (*out).buttons.intersects(hold) {
             (*out).buttons |= Buttons::GuardHold;
         }
@@ -988,7 +996,7 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let rstick_x = ((packet >> 0x30) & 0xFF) as i8;
     let rstick_y = ((packet >> 0x38) & 0xFF) as i8;
 
-    inputs.buttons = Buttons::from_bits_unchecked(raw_buttons as _);
+    inputs.buttons = Buttons::from_bits_retain(raw_buttons as _);
     inputs.lstick_x = lstick_x;
     inputs.lstick_y = lstick_y;
     inputs.rstick_x = rstick_x;

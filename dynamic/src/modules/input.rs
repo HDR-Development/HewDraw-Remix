@@ -1,4 +1,5 @@
 use smash::app::BattleObject;
+use crate::ext::Buttons;
 
 extern "Rust" {
     #[link_name = "InputModule__persist_command_one"]
@@ -29,6 +30,9 @@ extern "Rust" {
 
     #[link_name = "InputModule__exec"]
     fn InputModule__exec(object: *mut BattleObject, cats: &mut [&mut [u8]; 4]);
+
+    #[link_name = "InputModule__get_trigger_count"]
+    fn InputModule__get_trigger_count(object: *mut BattleObject, button: Buttons) -> usize;
 
     #[link_name = "InputModule__is_persist"]
     fn InputModule__is_persist(object: *mut BattleObject) -> bool;
@@ -206,5 +210,15 @@ pub mod InputModule {
 
     pub fn get_analog_for_guard(object: *mut BattleObject) -> f32 {
         unsafe { InputModule__get_analog_for_guard(object) }
+    }
+
+    /// Tracks how many frames have elapsed since a button was pressed
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    /// * `button` - The button in question
+    /// # Returns
+    /// The frame count since the button was pressed
+    pub fn get_trigger_count(object: *mut BattleObject, button: Buttons) -> usize {
+        unsafe { InputModule__get_trigger_count(object, button) }
     }
 }
