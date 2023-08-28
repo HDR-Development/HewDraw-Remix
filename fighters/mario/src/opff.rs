@@ -274,12 +274,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn hhhhhhh(fighter: &mut L2CFighterCommon) {
-    if fighter.is_button_on(Buttons::Parry) {
-        println!("the parry");
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
@@ -292,7 +286,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);
     fastfall_specials(fighter);
-    hhhhhhh(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIO )]

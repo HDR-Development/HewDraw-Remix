@@ -1250,7 +1250,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
+        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
         return InputModule::get_trigger_count(self.object(), Buttons::Parry) < buffer;
     }
 }
