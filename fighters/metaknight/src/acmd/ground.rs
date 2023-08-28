@@ -200,7 +200,6 @@ unsafe fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_attack100start,
         game_attack100,
         effect_attack100,
         sound_attack100start,
