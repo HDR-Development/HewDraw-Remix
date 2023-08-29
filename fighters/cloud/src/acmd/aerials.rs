@@ -292,7 +292,7 @@ unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_COLOR(fighter, Hash40::new("cloud_speedline"), Hash40::new("haver"), 0, 4, 0, -90, 0, 0, 0.8, true, 0.627, 1, 0.674);
+        EFFECT_FOLLOW_COLOR(fighter, Hash40::new("cloud_speedline"), Hash40::new("haver"), 0, 4, 0, -90, 0, 0, 0.8, true, 0.627, 1, 0.674);
     }
     frame(lua_state, 38.0);
     if macros::is_excute(fighter) {
