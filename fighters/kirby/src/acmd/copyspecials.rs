@@ -1462,42 +1462,6 @@ unsafe fn mariod_special_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = ["effect_palutenaspecialn", "effect_palutenaspecialairn"], category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -0.2, 22, -1, 10, 90, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
-        EFFECT(agent, Hash40::new("palutena_wand_finish"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
-    }
-}
-
-#[acmd_script( agent = "kirby", scripts = ["sound_palutenaspecialn", "sound_palutenaspecialairn"], category = ACMD_SOUND, low_priority )]
-unsafe fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        PLAY_STATUS(agent, Hash40::new("se_palutena_special_n01"));
-    }
-    wait(lua_state, 22.0);
-    if is_excute(agent) {
-        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
-    }
-}
-
 #[acmd_script( agent = "kirby", scripts = ["effect_miigunnerspecialn1firemax", "effect_miigunnerspecialairn1firemax"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn miigunner_special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1570,6 +1534,62 @@ unsafe fn miigunner_special_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
 		}
 	}
 
+}
+
+
+
+#[acmd_script( agent = "kirby", scripts = ["effect_palutenaspecialn", "effect_palutenaspecialairn"], category = ACMD_EFFECT, low_priority )]
+unsafe fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -0.2, 22, -1, 10, 90, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+        EFFECT(agent, Hash40::new("palutena_wand_finish"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.15);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["sound_palutenaspecialn", "sound_palutenaspecialairn"], category = ACMD_SOUND, low_priority )]
+unsafe fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_palutena_special_n01"));
+    }
+    wait(lua_state, 22.0);
+    if is_excute(agent) {
+        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["expression_palutenaspecialn", "expression_palutenaspecialairn"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "kirby", script = "game_ridleyspecialnexplode", category = ACMD_GAME )]
@@ -1891,10 +1911,11 @@ pub fn install() {
         mariod_special_n_chill_effect,
         mariod_special_n_chill_sound,
         mariod_special_n_chill_expression,
-        palutena_special_n_effect,
-        palutena_special_n_sound,
 		miigunner_special_n1_fire_max_effect,
 		miigunner_special_n1_fire_max_sound,
+        palutena_special_n_effect,
+        palutena_special_n_sound,
+        palutena_special_n_expression,
         ridley_special_n_explode_game,
         ridley_special_n_explode_effect,
         ridley_special_n_explode_sound,
