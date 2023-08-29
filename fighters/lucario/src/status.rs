@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 // status script import
+mod attack_air;
 mod attack_hi4;
 mod special_hi;
 mod special_lw;
@@ -15,6 +16,7 @@ extern "C" {
 }
 
 pub fn install() {
+    attack_air::install();
     attack_hi4::install();
     special_hi::install();
     special_lw::install();

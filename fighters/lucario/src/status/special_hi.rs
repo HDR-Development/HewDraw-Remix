@@ -249,6 +249,7 @@ unsafe extern "C" fn lucario_special_hi_metered_cancel(fighter: &mut L2CFighterC
         MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) * 2.0);
         let frames = 120.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
         VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+        VarModule::on_flag(fighter.object(), vars::lucario::instance::IS_USPECIAL_ATTACK_CANCEL);
         return true.into();
     }
     return false.into();
