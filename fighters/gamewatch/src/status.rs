@@ -1,25 +1,14 @@
 use super::*;
 use globals::*;
 
-mod landing_attack_air;
-
-// #[smashline::fighter_init]
-// fn gamewatch_init(fighter: &mut L2CFighterCommon) {
-//     unsafe {
-//         // set the callbacks on fighter init
-//         if fighter.kind() == *FIGHTER_KIND_GANON {
-//             fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
-//             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-//         }
-//     }
+// #[status_script(agent = "gamewatch", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+// unsafe fn gamewatch_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     original!(fighter);
+//     0.into()
 // }
 
-
-
 pub fn install() {
-    // smashline::install_agent_init_callbacks!(gamewatch_init);
-    //landing_attack_air::install();
     install_status_scripts!(
-        
+        //gamewatch_special_s_init
     );
 }

@@ -14,17 +14,13 @@ unsafe fn laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 // Fox Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
-        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-    }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 2)  // Allows for jump cancel on frame 4 in game
-    || fighter.is_status_one_of(&[
+    if fighter.is_status_one_of(&[
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END]))
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END])
     && !fighter.is_in_hitlag()
         {
-            fighter.check_jump_cancel(false);
+            fighter.check_jump_cancel(false, false);
         }
 }   
 
@@ -54,8 +50,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH_END,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_BOUND,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END
 
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {

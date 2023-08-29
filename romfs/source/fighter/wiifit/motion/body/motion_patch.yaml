@@ -7,7 +7,7 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 attack_12:
   extra:
     cancel_frame: 17
@@ -40,3 +40,6 @@ special_n_cancel:
 special_air_n_cancel:
   extra:
     cancel_frame: 8
+catch_attack:
+  extra:
+    cancel_frame: 0

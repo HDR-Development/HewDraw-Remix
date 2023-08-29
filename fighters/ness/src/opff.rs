@@ -20,7 +20,7 @@ unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon) {
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]))
     && !fighter.is_in_hitlag()
         {
-            fighter.check_jump_cancel(false);
+            fighter.check_jump_cancel(false, false);
         }
 }   
 
