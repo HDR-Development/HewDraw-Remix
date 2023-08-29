@@ -23,9 +23,6 @@ throw_hi:
 attack_11:
   extra:
     cancel_frame: 25
-attack_air_f:
-  extra:
-    cancel_frame: 36
 attack_lw3:
 special_lw:
   flags:
