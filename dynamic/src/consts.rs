@@ -1256,8 +1256,8 @@ pub mod statuses {
     }
 
     pub mod littlemac {
-        pub const SPECIAL_N_CANCEL: i32 = 0;
-        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
+        pub const SPECIAL_N_CANCEL: i32 = 1;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 2;
     }
 
     pub mod wolf {
@@ -1266,8 +1266,8 @@ pub mod statuses {
     }
 
     pub mod diddy {
-        pub const SPECIAL_N_CANCEL: i32 = 0;
-        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
+        pub const SPECIAL_N_CANCEL: i32 = 3;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 4;
     }
 
     pub mod kirby {
