@@ -56,7 +56,7 @@
     <struct index="0">
       <float hash="special_lw_damage_recovery_basic">90</float>
       <float hash="special_lw_damage_recovery">0.03</float>
-      <float hash="start_y_speed_mul">0.38</float>
+      <float hash="start_y_speed_mul">0.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
