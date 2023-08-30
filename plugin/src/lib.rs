@@ -111,7 +111,7 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
             Err(_) => {
                 #[cfg(feature = "main_nro")]
                 if !is_on_ryujinx() {
-                    skyline_web::DialogOk::ok(
+                    skyline_web::dialog_ok::DialogOk::ok(
                         "hdr-assets is not enabled! Please enable hdr-assets in arcropolis config.",
                     );
                 }
@@ -480,7 +480,7 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("No libsmashline_hook.nro found! We will likely crash.");
         } else {
-            skyline_web::DialogOk::ok("No libsmashline_hook.nro found! We will likely crash.");
+            skyline_web::dialog_ok::DialogOk::ok("No libsmashline_hook.nro found! We will likely crash.");
         }
     }
 
@@ -494,7 +494,7 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("No libarcropolis.nro found! We will either crash, or game functionality will be broken.");
         } else {
-            skyline_web::DialogOk::ok("No libarcropolis.nro found! We will either crash, or game functionality will be broken.");
+            skyline_web::dialog_ok::DialogOk::ok("No libarcropolis.nro found! We will either crash, or game functionality will be broken.");
         }
     }
 
@@ -507,7 +507,7 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("No libnro_hook.nro found! We will likely crash.");
         } else {
-            skyline_web::DialogOk::ok("No libnro_hook.nro found! We will likely crash.");
+            skyline_web::dialog_ok::DialogOk::ok("No libnro_hook.nro found! We will likely crash.");
         }
     }
 
@@ -516,14 +516,14 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("libsmashline_hook_development.nro found! This will conflict with hdr! Expect a crash soon.");
         } else {
-            let should_delete = skyline_web::Dialog::yes_no("libsmashline_hook_development.nro found! This will conflict with hdr! Would you like to delete it?");
+            let should_delete = skyline_web::dialog::Dialog::yes_no("libsmashline_hook_development.nro found! This will conflict with hdr! Would you like to delete it?");
             if should_delete {
                 fs::remove_file("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro");
                 unsafe {
                     skyline::nn::oe::RequestToRelaunchApplication();
                 }
             } else {
-                skyline_web::DialogOk::ok(
+                skyline_web::dialog_ok::DialogOk::ok(
                     "Warning, we will likely crash soon because of this conflict.",
                 );
             }
@@ -540,7 +540,7 @@ pub fn quick_validate_install() {
                 "development.nro found, but there is no hdr-dev folder! This is likely a mistake."
             );
         } else {
-            let should_delete = skyline_web::Dialog::yes_no("development.nro found, but there is no hdr-dev folder! This is likely a mistake. Would you like to delete it?");
+            let should_delete = skyline_web::dialog::Dialog::yes_no("development.nro found, but there is no hdr-dev folder! This is likely a mistake. Would you like to delete it?");
             if should_delete {
                 fs::remove_file(
                     "sd:/atmosphere/contents/01006a800016e000/romfs/smashline/development.nro",
@@ -559,7 +559,7 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("stale libhdr.nro found! This will conflict with your newer hdr! Expect a crash soon.");
         } else {
-            let should_delete = skyline_web::Dialog::yes_no("Stale libhdr.nro found in atmos/contents! This will conflict with new hdr packaging! Would you like to delete it?");
+            let should_delete = skyline_web::dialog::Dialog::yes_no("Stale libhdr.nro found in atmos/contents! This will conflict with new hdr packaging! Would you like to delete it?");
             if should_delete {
                 fs::remove_file(
                     "sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libhdr.nro",
@@ -568,7 +568,7 @@ pub fn quick_validate_install() {
                     skyline::nn::oe::RequestToRelaunchApplication();
                 }
             } else {
-                skyline_web::DialogOk::ok("Warning, we will likely crash soon or have undefined behavior because of this conflict.");
+                skyline_web::dialog_ok::DialogOk::ok("Warning, we will likely crash soon or have undefined behavior because of this conflict.");
             }
         }
     }
@@ -580,7 +580,7 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("No hdr-assets found! This installation is incomplete. Please install the full package.");
         } else {
-            skyline_web::DialogOk::ok("No hdr-assets found! This installation is incomplete. Please install the full package.");
+            skyline_web::dialog_ok::DialogOk::ok("No hdr-assets found! This installation is incomplete. Please install the full package.");
         }
     }
 
@@ -591,7 +591,7 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("No hdr-stages found! This installation is incomplete. Please install the full package.");
         } else {
-            skyline_web::DialogOk::ok("No hdr-stages found! This installation is incomplete. Please install the full package.");
+            skyline_web::dialog_ok::DialogOk::ok("No hdr-stages found! This installation is incomplete. Please install the full package.");
         }
     }
 

@@ -85,6 +85,11 @@ pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
     opff::install(is_runtime);
+    use opff::*;
+    smashline::install_agent_frames!(
+        poisonbreath_frame,
+        spikeball_frame
+    );
 
     //smashline::install_status_script!(guard_cont_pre);
 

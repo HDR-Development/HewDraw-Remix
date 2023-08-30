@@ -129,7 +129,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs during dash attack (on hit)
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
                 && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
 
         }
@@ -170,7 +170,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3
             && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             && !boma.is_in_hitlag()) {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
     }
@@ -200,7 +200,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4
             && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             && !boma.is_in_hitlag()) {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
     }
@@ -211,7 +211,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
             // Check for jump inputs
             if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
             // Check for special attack inputs
             if boma.is_cat_flag(Cat1::SpecialN) {
@@ -234,7 +234,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
             || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag())
         {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }
