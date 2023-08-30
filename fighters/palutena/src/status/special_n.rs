@@ -493,6 +493,7 @@ unsafe extern "C" fn special_n_g_main_loop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_g_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    STOP_SE(agent, Hash40::new("se_item_club_wind"));
     return 0.into()
 }
 
