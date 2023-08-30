@@ -272,6 +272,11 @@ unsafe fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "buddy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_landing_air_lw_game(agent: &mut L2CAgentBase) {
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         buddy_attack_air_n_game,
@@ -281,5 +286,7 @@ pub fn install() {
         buddy_attack_air_b_game,
         buddy_attack_air_hi_game,
         buddy_attack_air_lw_game,
+        
+        buddy_landing_air_lw_game,
     );
 }

@@ -134,31 +134,9 @@ unsafe fn buddy_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         return original!(fighter);
     }
     //Prevents losing a gold feather
-    WorkModule::add_int(boma, 1, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
+    WorkModule::add_int(fighter.module_accessor, 1, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
 
     return original!(fighter);
-}
-
-unsafe extern "C" fn buddy_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 0.into();
-    }
-
-    fighter.sub_exec_special_start_common_kinetic_setting(hash40("param_special_s").into());
-    buddy_special_s_armor(fighter);
-
-    if MotionModule::is_end(fighter.module_accessor) {
-        let newStatus = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
-        fighter.change_status(FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK.into(), false.into());
-        return 0.into();
-    }
-    
-    if !StatusModule::is_changing(fighter.module_accessor)
-    && StatusModule::is_situation_changed(fighter.module_accessor) {
-        fighter.sub_change_motion_by_situation(Hash40::new("special_s_start").into(), Hash40::new("special_air_s_start").into(), true.into());
-        fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
-    }
-    0.into()
 }
 
 #[status_script(agent = "buddy", status = FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
