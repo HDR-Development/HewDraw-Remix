@@ -73,7 +73,7 @@ unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
     && situation_kind == *SITUATION_KIND_AIR
     && MotionModule::frame(boma) >= 27.0 {
-        fighter.check_jump_cancel(false, false);
+        fighter.check_jump_cancel(false,false);
     }
 }
 
@@ -401,6 +401,10 @@ unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut Batt
         {
             VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,1.0);
         }
+        else if (status == *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH || status == *FIGHTER_STATUS_KIND_SPECIAL_S)
+        {
+            VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,FEATHERS_RED_COOLDOWN_MAX);
+        }
 	}
 
 	buddy_meter_display(fighter,boma,in_Air);
@@ -453,6 +457,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL,
         *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL,
         *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_LW_SHOOT
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

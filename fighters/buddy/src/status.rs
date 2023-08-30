@@ -53,7 +53,6 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
         }
         else{
             VarModule::on_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
-            VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,FEATHERS_RED_COOLDOWN_MAX);
         }
         return 0.into();
     }
