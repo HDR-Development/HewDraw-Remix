@@ -401,10 +401,6 @@ unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut Batt
         {
             VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,1.0);
         }
-        else if (status == *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)
-        {
-            VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,FEATHERS_RED_COOLDOWN_MAX);
-        }
 	}
 
 	buddy_meter_display(fighter,boma,in_Air);
