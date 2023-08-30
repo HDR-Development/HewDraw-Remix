@@ -44,3 +44,6 @@ throw_hi_nana:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 0

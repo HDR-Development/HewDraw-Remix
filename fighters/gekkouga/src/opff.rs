@@ -37,7 +37,7 @@ unsafe fn dair_jc(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, ca
         if !boma.is_in_hitlag() {
             if frame > 31.0 {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    boma.check_jump_cancel(false);
+                    boma.check_jump_cancel(false, false);
                 }
             }
         }

@@ -247,6 +247,71 @@ unsafe fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Removing flood projectile, properties, and sounds
+#[acmd_script( agent = "mario_pump", script = "effect_light", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_light(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    /*
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("mario_pump_shoot"), Hash40::new("mouth"), 0, 0, 0, 0, 90, 0, 0.9, true);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mario_pump_shoot"), false, true);
+    }
+    */
+}
+
+#[acmd_script( agent = "mario_pumpwater", script = "game_regular", category = ACMD_GAME, low_priority )]
+unsafe fn game_regular(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    /* 
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 55, 100, 70, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_WATER_PUMP, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+    */
+}
+
+#[acmd_script( agent = "mario_pumpwater", script = "effect_regular", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_regular(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    /*
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("mario_pump_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    */
+}
+
+#[acmd_script( agent = "mario_pumpwater", script = "effect_hit", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_hit(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+}
+
+#[acmd_script( agent = "mario_pumpwater", script = "effect_clash", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_clash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "mario_pumpwater", script = "sound_regular", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_regular(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    /*
+    if is_excute(fighter) {
+        SET_TAKEOUT_SE(fighter, Hash40::new("se_common_c_water_m"));
+    }
+    */
+}
+
+
 #[acmd_script( agent = "mario", script = "game_appealsl", category = ACMD_GAME, low_priority )]
 unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -282,6 +347,7 @@ unsafe fn game_appealsr(fighter: &mut L2CAgentBase) {
 }
 
 
+
 pub fn install() {
     install_acmd_scripts!(
         //mario_utauntr,
@@ -297,8 +363,15 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
+        effect_light,
+        game_regular,
+        effect_regular,
+        effect_hit,
+        effect_clash,
+        sound_regular,
         game_appealsl,
         game_appealsr,
+
     );
 }
 

@@ -77,3 +77,6 @@ special_air_n_shoot:
 special_s_wall_clash:
   extra:
     cancel_frame: 1
+catch_attack:
+  extra:
+    cancel_frame: 0
