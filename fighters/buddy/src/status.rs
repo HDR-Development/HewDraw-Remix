@@ -91,8 +91,7 @@ unsafe extern "C" fn buddy_special_s_main_loop(fighter: &mut L2CFighterCommon) -
     buddy_special_s_armor(fighter);
 
     if MotionModule::is_end(fighter.module_accessor) {
-        let newStatus = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
-        fighter.change_status(FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK.into(), false.into());
+        fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH.into(), false.into());
         return 0.into();
     }
     
