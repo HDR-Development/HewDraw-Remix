@@ -274,6 +274,15 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         //         }
         //     }
         // }
+        else if fighter_kind == *FIGHTER_KIND_DIDDY {
+            if x1 == hash40("param_special_hi") {
+                if x2 == hash40("special_hi_jet_ang_f_max") {
+                    if WorkModule::get_int(boma, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_WORK_INT_SITUATION) == *SITUATION_KIND_GROUND {
+                        return 5.0;
+                    }
+                }
+            }
+        }
     
     }
     else if boma_reference.is_weapon() {
