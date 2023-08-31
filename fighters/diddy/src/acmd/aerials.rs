@@ -152,7 +152,7 @@ unsafe fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("diddy_attack_arc"), Hash40::new("diddy_attack_arc"), Hash40::new("top"), 0, 10, -1, -48, 78.5, 51, 1.2, true, *EF_FLIP_YZ, 0.7);
+        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("diddy_attack_arc"), Hash40::new("diddy_attack_arc"), Hash40::new("top"), 0, 10, 1, -48, 78.5, 51, 1.1, true, *EF_FLIP_YZ, 0.7);
         LAST_EFFECT_SET_RATE(agent, 1.9);
     }
     frame(lua_state, 10.0);
