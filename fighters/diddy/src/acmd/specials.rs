@@ -9,7 +9,6 @@ unsafe fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
         KineticModule::clear_speed_all(boma);
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-
         
     }
 }
@@ -62,7 +61,6 @@ unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     //wait_loop_clear();
     if is_excute(fighter) {
-        
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 1, 2.0, 361, 50, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 10.0);
@@ -80,7 +78,10 @@ unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
         AttackModule::set_catch_only_all(boma, true, false);
     }
     wait(lua_state, 1.0);
-    AttackModule::clear_all(boma);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    
 }
 
 #[acmd_script( agent = "diddy", script = "game_specialairsjump", category = ACMD_GAME, low_priority )]
@@ -88,14 +89,7 @@ unsafe fn game_specialairsjump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    {
-        FT_MOTION_RATE(fighter, 0.4);
-    }
-   
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 0);
-    }
+    FT_MOTION_RATE(fighter, 0.4);
 }
 
 #[acmd_script( agent = "diddy", script = "game_specialairskick", category = ACMD_GAME, low_priority )]
@@ -121,9 +115,9 @@ unsafe fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 8.0/(31.0 - 1.0));
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
-        FT_MOTION_RATE(fighter, 8.0/(31.0 - 1.0));
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -157,9 +151,9 @@ unsafe fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 8.0/(35.0 - 1.0));
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
-        FT_MOTION_RATE(fighter, 8.0/(35.0 - 1.0));
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
