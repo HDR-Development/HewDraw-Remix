@@ -93,6 +93,16 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             //     }
             // }
         }
+
+        else if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
+            if x1 == hash40("param_auraball") {
+                if VarModule::is_flag(boma_reference.object(), vars::lucario::instance::IS_POWERED_UP) {
+                    if x2 == hash40("life") {
+                        return 180;
+                    }
+                }
+            }
+        }
     }
 
     original!()(x0, x1, x2)
@@ -264,6 +274,15 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         //         }
         //     }
         // }
+        else if fighter_kind == *FIGHTER_KIND_DIDDY {
+            if x1 == hash40("param_special_hi") {
+                if x2 == hash40("special_hi_jet_ang_f_max") {
+                    if WorkModule::get_int(boma, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_WORK_INT_SITUATION) == *SITUATION_KIND_GROUND {
+                        return 5.0;
+                    }
+                }
+            }
+        }
     
     }
     else if boma_reference.is_weapon() {
@@ -353,6 +372,26 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
+
+        else if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
+            if x1 == hash40("param_auraball") {
+                if VarModule::is_flag(boma_reference.object(), vars::lucario::instance::IS_POWERED_UP) {
+                    // if x2 == hash40("attack_mul") {
+                    //     return 1.0;
+                    // }
+                    // if x2 == hash40("angle") {
+                    //     return VarModule::get_float(boma_reference.object(), vars::lucario::status::SPECIAL_N_ANGLE);
+                    // }
+                    if x2 == hash40("min_speed") {
+                        return 0.7;
+                    }
+                    if x2 == hash40("max_speed") {
+                        return 0.7;
+                    }
+                }
+            }
+        }
+
     }
 
     original!()(x0, x1, x2)
