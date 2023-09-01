@@ -268,9 +268,8 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const TiltAttack = 0x1;
-        const Wavedash = 0x2;
-        const ShieldDrop = 0x4;
+        const Wavedash = 0x1;
+        const ShieldDrop = 0x2;
     }
 
     pub struct PadFlag: i32 {
@@ -307,7 +306,8 @@ bitflags! {
         // would get mapped to TiltAttack (issue #776)
         const TiltAttack  = 0x80000;
         const CStickOverride = 0x100000;
-        const Parry = 0x200000;
+        const SpecialParry = 0x200000;
+        const TauntParry = 0x400000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -426,7 +426,9 @@ pub trait BomaExt {
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
     unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn prev_left_stick_x(&mut self) -> f32;
     unsafe fn left_stick_y(&mut self) -> f32;
+    unsafe fn prev_left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -505,7 +507,7 @@ pub trait BomaExt {
     unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
     // Checks for status and enables transition to jump
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool;
     // Checks for status and enables transition to airdodge
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
@@ -516,6 +518,10 @@ pub trait BomaExt {
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
+
+    unsafe fn get_player_idx_from_boma(&mut self) -> i32;
+
+    unsafe fn is_parry_input(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -643,11 +649,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn prev_left_stick_x(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_x(self);
+        } else {
+            return ControlModule::get_stick_prev_x(self);
+        }
+    }
+
     unsafe fn left_stick_y(&mut self) -> f32 {
         if self.is_button_on(Buttons::CStickOverride) {
             return ControlModule::get_sub_stick_y(self);
         } else {
             return ControlModule::get_stick_y(self);
+        }
+    }
+
+    unsafe fn prev_left_stick_y(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_y(self);
+        } else {
+            return ControlModule::get_stick_prev_y(self);
         }
     }
 
@@ -938,7 +960,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// If update_lr is true, we set your facing direction based on your stick position
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool {
+    /// If skip_other_checks is true, we do not check for USmash
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(
@@ -949,10 +972,15 @@ impl BomaExt for BattleObjectModuleAccessor {
                 fighter.module_accessor,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
             );
-            if fighter
-                .sub_transition_group_check_ground_jump_mini_attack()
-                .get_bool()
-                || fighter.sub_transition_group_check_ground_jump().get_bool()
+            if !skip_other_checks {
+                WorkModule::enable_transition_term(
+                    fighter.module_accessor,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+                );
+            }
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() // buffered aerials
+            || (!skip_other_checks && fighter.sub_transition_group_check_ground_attack().get_bool()) // up smash
+            || fighter.sub_transition_group_check_ground_jump().get_bool() // regular jumps
             {
                 if update_lr {
                     PostureModule::set_stick_lr(self, 0.0);
@@ -1202,6 +1230,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
         return None;
     }
+
+    unsafe fn get_player_idx_from_boma(&mut self) -> i32 {
+        let control_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x48 / 8);
+        let next = *((control_module + 0x118) as *const u64);
+        let next = *((next + 0x58) as *const u64);
+        let next = *((next + 0x8) as *const u64);
+        *((next + 0x8) as *const i32)
+    }
+
+    unsafe fn is_parry_input(&mut self) -> bool {
+        let max_tap_buffer_window = ControlModule::get_command_life_count_max(self) as i32;
+
+        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < max_tap_buffer_window  // checks if Taunt input was pressed within max tap buffer window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
+        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
+
+        (self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
+        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered)
+    }
 }
 
 pub trait LuaUtil {
@@ -1406,6 +1455,7 @@ pub struct Controller {
 /// Re-ordered bitfield the game uses for buttons
 #[bitfield]
 #[derive(Debug, Default, Copy, Clone)]
+#[repr(C)]
 pub struct ButtonBitfield {
     pub dpad_up: bool,
     pub dpad_right: bool,
@@ -1471,6 +1521,7 @@ pub struct MappedInputs {
 
 pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
 
+#[repr(C)]
 pub struct StatusInfo {
     pub pre: Option<StatusFunc>,
     pub main: Option<StatusFunc>,

@@ -24,6 +24,7 @@ unsafe fn grenade_counter_reset(boma: &mut BattleObjectModuleAccessor, id: usize
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
         VarModule::set_int(boma.object(), vars::snake::instance::SNAKE_GRENADE_COUNTER, 0);
+        VarModule::off_flag(boma.object(), vars::snake::instance::TRANQ_NEED_RELEOAD);
     }
 }
 
@@ -52,12 +53,69 @@ unsafe fn fsmash_combo(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+// force reload if hit during the endlag of tranq
+unsafe fn tranq_reload(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
+        && VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE)
+        && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
+    {
+        VarModule::on_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
+    }
+}
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_AIR,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP_AERIAL,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_THROW,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_HI_CUT,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_DROP,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_PRODUCE,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_EXPLODING
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //grab_walk(boma, status_kind, cat[1]);
     fsmash_combo(boma, status_kind);
     grenade_counter_reset(boma, id, status_kind);
-
+    tranq_reload(fighter);
+    fastfall_specials(fighter);
 }
 
 /*#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]
@@ -85,7 +143,7 @@ pub fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn snake_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 

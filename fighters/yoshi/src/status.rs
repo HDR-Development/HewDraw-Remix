@@ -165,10 +165,11 @@ pub unsafe fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
         SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.9, 0);
         SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_yoshi_guardon"), 0);
     } else {
+        let guard_off_motion_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "guard_off_motion_start_frame");
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new_raw(0x97ab1c684),
-            0.0,
+            Hash40::new("guard_off"),
+            guard_off_motion_start_frame,
             rate,
             false,
             0.0,

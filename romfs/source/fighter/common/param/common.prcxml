@@ -3,6 +3,7 @@
   <int hash="precede">5</int>
   <int hash="precede_extension">0</int>
   <float hash="ground_speed_limit">4</float>
+  <float hash="stop_over_speed_brake_mul">1</float>
   <float hash="turn_stick_x">-0.2</float>
   <float hash="dash_stick_x">0.7957</float>
   <float hash="dash_s4_frame">4</float>
@@ -122,6 +123,7 @@
   <int hash="attach_wall_disable_frame">999</int>
   <float hash="damage_ground_mul">1</float>
   <float hash="damage_air_brake">0.051</float>
+  <float hash="damage_speed_no_cliff_stop">999</float>
   <float hash="damage_fly_speed_y_mul_base_accel">0</float>
   <float hash="damage_fly_speed_y_mul">0</float>
   <float hash="damage_fly_correction_max">18</float>
