@@ -264,7 +264,7 @@ unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
         false => Hash40::new("hip")
     };
 
-    frame(lua_state, 3.0);
+    
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
         FT_MOTION_RATE(fighter, 0.013);
