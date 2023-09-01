@@ -216,53 +216,12 @@ unsafe fn special_s_effect(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "donkey", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn special_hi(fighter: &mut L2CAgentBase) {
+unsafe fn game_special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.33);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.667);
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 12.0, 361, 90, 0, 60, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 12.0, 361, 90, 0, 60, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 12.0, 361, 90, 0, 60, 5.0, 0.0, 10.5, -5.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-    }
-    
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        HitModule::set_whole(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        FT_MOTION_RATE(fighter, 1.0);
-    }
-    frame(lua_state, 19.0);
-    
-    // looping decreasingly effective multihits
-    let mut damage = 6.0;
-    for _ in 0..7 {
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), damage + 1.0, 361, 80, 0, 30, 8.0, 0.0, 11.0, 15.0, Some(0.0), Some(11.0), Some(-6.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        }
-        wait(lua_state, 2.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-            damage = damage * 0.5;
-        }
-        wait(lua_state, 5.0);
-    }
-    
     frame(lua_state, 62.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_YACL_DEFAULT);
-        WorkModule::on_flag(boma, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_SPINEND);
-        //old finisher
-        //ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 85, 0, 75, 8.0, 0.0, 11.0, 20.0, Some(0.0), Some(11.0), Some(-4.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 361, 85, 0, 75, 8.0, 0.0, 11.0, 20.0, Some(0.0), Some(11.0), Some(-4.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -273,6 +232,124 @@ unsafe fn special_hi(fighter: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 1.5);
     }
     
+}
+
+#[acmd_script( agent = "donkey", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_special_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    frame(lua_state, 61.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_down_smoke"), Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_XY);
+
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_spin_wind"), Hash40::new("donkey_spin_wind"), Hash40::new("top"), 2, 13, 5, 19, 6, -33, 2, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+}
+
+#[acmd_script( agent = "donkey", script = "sound_specialhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sound_special_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 61.0);
+    if is_excute(fighter) {
+        PLAY_LANDING_SE(fighter, Hash40::new("se_donkey_landing03"));
+    }
+    frame(lua_state, 62.0);
+    if is_excute(fighter) {
+        PLAY_LANDING_SE(fighter, Hash40::new("se_donkey_special_h07"));
+    }
+}
+
+#[acmd_script( agent = "donkey", script = "expression_specialhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_special_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 62.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+    }
+    frame(lua_state, 81.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
+    }
+}
+#[acmd_script( agent = "donkey", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_special_air_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+
+        //Attack can hit a full second later
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 70, 60, 0, 70, 5.0, 0.0, 0.0, 0.0, None,None,None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 60, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+#[acmd_script( agent = "donkey", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_special_air_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("donkey_entry"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+#[acmd_script( agent = "donkey", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_special_air_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_donkey_appear01"));
+    }
+}
+#[acmd_script( agent = "donkey", script = "expression_specialairhi" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn expression_special_air_hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(fighter.lua_state_agent, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "donkey", script = "effect_specialairhistart" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_special_air_hi_start(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_item_arrival"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+#[acmd_script( agent = "donkey", script = "sound_specialairhistart" , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_special_air_hi_start(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_donkey_special_l01"));
+    }
+}
+#[acmd_script( agent = "donkey", script = "expression_specialairhistart" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn expression_special_air_hi_start(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(fighter.lua_state_agent, 1.0);
+    frame(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_stg_power_up"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "donkey", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
@@ -406,54 +483,6 @@ unsafe fn effect_special_air_lw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_special_air_hi(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_MOT_FRAME);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 80, 0, 40, 8.0, 0.0, 11.0, -8.0, Some(0.0), Some(11.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        FT_MOTION_RATE(fighter, 1.0);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        FT_MOTION_RATE(fighter, 0.6);
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-    }
-    wait(lua_state, 8.0);
-
-    // loop increasingly weak multihits
-    let mut damage = 8.0;
-    for _ in 0..8 {
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("arml"), damage + 1.0, 361, 80, 0, 30, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 1, 0, Hash40::new("armr"), damage + 1.0, 361, 80, 0, 30, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        }
-        wait(lua_state, 6.0);
-        if is_excute(fighter) {
-            damage = damage * 0.75;
-            WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
-            AttackModule::clear_all(boma);
-        }
-    }
-    frame(lua_state, 68.0);
-    if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_YACL_DEFAULT); // set on 68 in vanilla (this is frame 72 rn)
-        FT_MOTION_RATE(fighter, 1);
-    }
-}
-
 #[acmd_script( agent = "donkey", script = "effect_speciallwloop" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_special_lw_loop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -470,93 +499,6 @@ unsafe fn effect_special_lw_loop(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_special_hi(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 14.0);
-    for _ in 0..5 {
-        if is_excute(fighter) {
-            let movement_lean = PostureModule::lr(boma) * 15.0 * KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_spin_wind"), Hash40::new("donkey_spin_wind"), Hash40::new("top"), 5, 14, 3, /* rotate along z axis */ movement_lean, 6, /* rotate along left-right axis */ 20, 2, true, *EF_FLIP_YZ);
-        }
-        wait(lua_state, 4.0);
-        if is_excute(fighter) {
-            let movement_lean = PostureModule::lr(boma) * 15.0 * KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_XY);
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_spin_wind"), Hash40::new("donkey_spin_wind"), Hash40::new("top"), 5, 11, 3, /* rotate along z axis */ movement_lean, 6, /* rotate along left-right axis */ 20, 2, true, *EF_FLIP_YZ);
-        }
-        wait(lua_state, 4.0);
-    }
-    frame(lua_state, 63.0);
-    if is_excute(fighter) {
-        //LAST_EFFECT_SET_RATE(fighter, 0.8);
-    }
-    frame(lua_state, 80.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_down_smoke"), Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_XY);
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_spin_wind_flash"), Hash40::new("donkey_spin_wind_flash"), Hash40::new("top"), -3.5, 17, 15.5, 0, 0, 60, 1.3, true, *EF_FLIP_YZ);
-    }
-}
-
-
-#[acmd_script( agent = "donkey", script = "expression_specialhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_specialhi(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
-    }
-
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 7, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 38.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 47.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 53.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 60.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 62.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-    }
-    frame(lua_state, 81.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
-    }
-}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -565,7 +507,19 @@ pub fn install() {
 		special_air_n,
 		special_air_n_max,
 		special_s_common,
-		special_hi,
+
+		game_special_hi,
+        sound_special_hi,
+        effect_special_hi,
+        expression_special_hi,
+		game_special_air_hi,
+        sound_special_air_hi,
+        effect_special_air_hi,
+        expression_special_air_hi,
+        sound_special_air_hi_start,
+        effect_special_air_hi_start,
+        expression_special_air_hi_start,
+
 		special_lw_start,
         special_lw_loop,
         special_air_lw,
@@ -574,8 +528,6 @@ pub fn install() {
         sound_special_air_lw,
         special_s_effect,
         effect_special_lw_loop,
-        effect_special_hi,
-        expression_specialhi
     );
 }
 

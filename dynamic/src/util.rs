@@ -212,6 +212,12 @@ pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObjec
     }
 }
 
+pub unsafe fn get_article_boma(boma: *mut BattleObjectModuleAccessor, article_type: skyline::libc::c_int) -> *mut BattleObjectModuleAccessor {
+    let article = smash::app::lua_bind::ArticleModule::get_article(boma, article_type);
+    let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+    return smash::app::sv_battle_object::module_accessor(object_id);
+}
+
 /// Only pulls the game state to perform actions on
 pub fn get_game_state() -> *const u64 {
     unsafe {

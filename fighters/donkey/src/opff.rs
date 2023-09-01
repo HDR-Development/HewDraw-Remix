@@ -127,6 +127,33 @@ pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn barrel_air_despawn(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor,status: i32, motion: u64)
+{
+    let launched = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_MOT_CHANGE);
+    if status == *FIGHTER_STATUS_KIND_SPECIAL_HI && !launched {return;}
+
+    if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL)
+    {
+        let barrelBoma = get_article_boma(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL);
+        let barrelFrame = MotionModule::frame(barrelBoma);
+    
+        if barrelFrame > 40.0
+        {
+            ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+        else if barrelFrame > 30.0{
+            if (barrelFrame.floor() % 2.0 == 0.0)
+            {
+                ModelModule::set_alpha(barrelBoma, 0.5);
+            }
+            else
+            {
+                ModelModule::set_alpha(barrelBoma, 1.0);
+            }
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -168,6 +195,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     barrel_pull(fighter, boma, status_kind, situation_kind);
     headbutt_aerial_stall(fighter, boma, id, status_kind, situation_kind, frame);
     fastfall_specials(fighter);
+    barrel_air_despawn(fighter,boma,status_kind,motion_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DONKEY )]

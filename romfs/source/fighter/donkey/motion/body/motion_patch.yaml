@@ -26,9 +26,6 @@ attack_lw3:
 throw_f_hi:
   extra:
     cancel_frame: 36
-special_hi:
-  extra:
-    cancel_frame: 111
 attack_hi4:
   extra:
     cancel_frame: 55
@@ -101,3 +98,50 @@ special_air_n_cancel:
 catch_attack:
   extra:
     cancel_frame: 0
+special_hi:
+  flags:
+    move: true
+  animations:
+  - name: d02specialhi.nuanmb
+  extra:
+    cancel_frame: 105
+    freeze_during_hitstop: true
+special_air_hi:
+  flags:
+    loop: true
+    unk_80: true
+  animations:
+  - name: h07itemscrew.nuanmb
+  scripts:
+  - expression_barrelscrew
+  - sound_barrelscrew
+  - effect_barrelscrew
+special_air_hi_start:
+  game_script: game_specialairhistart
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: h07itemscrew.nuanmb
+  scripts:
+  - expression_specialairhistart
+  - sound_specialairhistart
+  - effect_specialairhistart
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false

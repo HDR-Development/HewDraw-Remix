@@ -23,3 +23,4 @@ scripts/artifacts/deletions.json
 **/upgrade/
 **/upgrade_artifacts/
 .DS_Store
+*.bat
