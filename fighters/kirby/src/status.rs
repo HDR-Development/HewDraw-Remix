@@ -10,7 +10,8 @@ mod koopa_special_n;
 mod littlemac_special_n_cancel;
 mod diddy_special_n_cancel;
 mod lucas_special_n;
-
+mod sonic;
+ 
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
     smashline::install_agent_resets!(kirby_reset);
@@ -26,7 +27,7 @@ pub fn install() {
     koopa_special_n::install();
     mariod_special_n::install();
     lucas_special_n::install();
-
+    sonic::install();
 }
 
 pub fn add_statuses() {

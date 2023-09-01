@@ -53,3 +53,6 @@ attack_s3_hi:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 0

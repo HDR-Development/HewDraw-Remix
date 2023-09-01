@@ -19,7 +19,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_PFUSHIGISOU_STATUS_KIND_SPECIAL_N_LOOP,
         *FIGHTER_PFUSHIGISOU_STATUS_KIND_SPECIAL_N_END

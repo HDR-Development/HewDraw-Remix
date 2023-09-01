@@ -117,22 +117,36 @@ unsafe fn jump4_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_check_button_jump)]
-unsafe extern "C" fn sub_check_button_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    //if fighter.is_cat_flag(CatHdr::Shorthop) 
-    //    && 
-    //    (fighter.is_situation(*SITUATION_KIND_GROUND) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON))
-    //    || (fighter.is_situation(*SITUATION_KIND_AIR) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON))
-    //{
-    //    return true.into();
-    //}
-    call_original!(fighter)
+#[skyline::hook(offset = 0x6ce7b0, inline)]
+unsafe fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = (*boma).left_stick_x();
+    asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hook!(sub_check_button_jump);
-    }
+#[skyline::hook(offset = 0x6d05ac, inline)]
+unsafe fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = (*boma).left_stick_x();
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d115c, inline)]
+unsafe fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = (*boma).left_stick_x();
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6ce26c, inline)]
+unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = (*boma).left_stick_x();
+    asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
 pub fn install() {
@@ -145,6 +159,12 @@ pub fn install() {
         skyline::patching::Patch::in_text(0x6d19a4).nop();
         skyline::patching::Patch::in_text(0x6d1af0).nop();
         skyline::patching::Patch::in_text(0x6d0434).nop();
+        
+        // Stubs ControlModule::get_stick_x calls when calculating double jump velocity
+        skyline::patching::Patch::in_text(0x6ce7b0).nop();
+        skyline::patching::Patch::in_text(0x6d05ac).nop();
+        skyline::patching::Patch::in_text(0x6d115c).nop();
+        skyline::patching::Patch::in_text(0x6ce26c).nop();
 
         // Stubs vanilla initial horizontal jump speed calculations
         skyline::patching::Patch::in_text(0x6ce6ec).nop();
@@ -161,7 +181,10 @@ pub fn install() {
         jump3_stick_x_hook,
         jump3_jump_speed_x_max_hook,
         jump4_stick_x_hook,
-        jump4_jump_speed_x_max_hook
+        jump4_jump_speed_x_max_hook,
+        jump_aerial_stick_x_hook,
+        jump_aerial_2_stick_x_hook,
+        jump_aerial_3_stick_x_hook,
+        jump_aerial_4_stick_x_hook,
     );
-    skyline::nro::add_hook(nro_hook);
 }

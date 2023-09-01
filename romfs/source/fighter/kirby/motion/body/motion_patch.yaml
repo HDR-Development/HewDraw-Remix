@@ -79,15 +79,12 @@ attack_air_lw:
 attack_air_hi:
   extra:
     cancel_frame: 35
-demon_special_n:
-  extra:
-    cancel_frame: 134
 special_air_lw2:
   extra:
     cancel_frame: 28
-elight_special_n:
+catch_attack:
   extra:
-    cancel_frame: 71
+    cancel_frame: 0
 special_air_hi_h:
   game_script: game_specialairhih
   flags:
@@ -120,12 +117,18 @@ special_air_hi_h:
 elight_special_n2:
   extra:
     cancel_frame: 71
+demon_special_n:
+  extra:
+    cancel_frame: 134
 demon_special_n_hi:
   extra:
     cancel_frame: 134
 demon_special_air_n:
   extra:
     cancel_frame: 110
+elight_special_n:
+  extra:
+    cancel_frame: 71
 elight_special_air_n:
   extra:
     cancel_frame: 71
