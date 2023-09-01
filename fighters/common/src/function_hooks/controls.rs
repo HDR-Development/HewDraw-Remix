@@ -33,14 +33,6 @@ struct SomeControllerStruct {
     controller: &'static mut Controller,
 }
 
-unsafe fn get_player_idx_from_boma(boma: u64) -> i32 {
-    let control_module = *((boma + 0x48) as *const u64);
-    let next = *((control_module + 0x118) as *const u64);
-    let next = *((next + 0x58) as *const u64);
-    let next = *((next + 0x8) as *const u64);
-    *((next + 0x8) as *const i32)
-}
-
 macro_rules! apply_button_mappings {
     ($controller:ident, $mappings:ident, $(($button:ident, $mapped:ident, $kind:ident, $output:expr))*) => {{
         let mut buttons = Buttons::empty();
@@ -741,7 +733,12 @@ unsafe fn map_controls_hook(
 
     if (*out).buttons.intersects(Buttons::Guard) {
         if (*out).buttons.intersects(parry) {
-            (*out).buttons |= Buttons::Parry;
+            if is_parry_taunt {
+                (*out).buttons |= Buttons::TauntParry;
+            }
+            else {
+                (*out).buttons |= Buttons::SpecialParry;
+            }
         } else if (*out).buttons.intersects(hold) {
             (*out).buttons |= Buttons::GuardHold;
         }
@@ -788,12 +785,6 @@ struct ControlModuleInternal {
     clamped_rstick_y: f32,
 }
 
-unsafe fn get_mapped_controller_inputs(player: usize) -> &'static MappedInputs {
-    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
-    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
-}
-
 static mut LAST_ALT_STICK: [f32; 2] = [0.0, 0.0];
 static mut LAST_ANALOG: f32 = 0.0;
 
@@ -811,7 +802,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     //println!("this.controller_index: {}", this.controller_index);
     // assert!(this.controller_index <= 7);
 
-    let inputs = get_mapped_controller_inputs(this.controller_index as usize);
+    let inputs = util::get_mapped_controller_inputs_from_id(this.controller_index as usize);
 
     let clamp_mul = 1.0 / CLAMP_MAX;
 
@@ -907,6 +898,9 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
         if ninput::any::is_press(ninput::Buttons::PLUS) {
             SHOULD_END_RESULT_SCREEN = true;
         }
+        if ninput::any::is_press(ninput::Buttons::B) {
+            SHOULD_END_RESULT_SCREEN = false;
+        }
         if SHOULD_END_RESULT_SCREEN {
             let mut rng = rand::thread_rng();
             // Need to space apart A-presses so it does not seem like we are holding the button.
@@ -964,6 +958,32 @@ unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+// These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat
+// Both found in ControlModule::exec_command
+#[skyline::hook(offset = 0x6be610)]
+unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
+    // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
+    // Only happens during jumpsquat currently
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    if *((control_module + 0x645) as *const bool)
+    && !VarModule::is_flag((*boma).object(), vars::common::instance::IS_ATTACK_CANCEL) {
+        return;
+    }
+    call_original!(control_module, arg);
+}
+#[skyline::hook(offset = 0x6bd6a4, inline)]
+unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[21].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    // For some reason, the game resets your attack_air_kind value every frame
+    // even though it resets as soon as you perform an aerial attack
+    // We don't want this to reset while in jumpsquat
+    // to allow the game to use your initial C-stick input during jumpsquat for your attack_air_kind
+    if !(*boma).is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        ControlModule::reset_attack_air_kind(boma);
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hook!(is_throw_stick);
@@ -973,6 +993,20 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub fn install() {
     skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
     skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
+
+    // Removes 10f C-stick lockout for tilt stick and special stick
+    skyline::patching::Patch::in_text(0x17527dc).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x17527e0).nop();
+    skyline::patching::Patch::in_text(0x17527e4).nop();
+    skyline::patching::Patch::in_text(0x17527e8).nop();
+
+    // Prevents buffered C-stick aerials from triggering nair
+    skyline::patching::Patch::in_text(0x6be644).data(0x52800040);
+
+    // Prevents attack_air_kind from resetting every frame
+    // Found in ControlModule::exec_command
+    skyline::patching::Patch::in_text(0x6bd6a4).nop();
+
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,
@@ -984,7 +1018,9 @@ pub fn install() {
         after_exec,
         process_inputs_handheld,
         post_gamecube_process,
-        apply_triggers
+        apply_triggers,
+        set_attack_air_stick_hook,
+        exec_command_reset_attack_air_kind_hook,
     );
     skyline::nro::add_hook(nro_hook);
 }

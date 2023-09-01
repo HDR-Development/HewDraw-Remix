@@ -1,7 +1,9 @@
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
+use crate::ext::*;
 use std::arch::asm;
+use smash::phx::Vector2f;
 
 #[macro_export]
 macro_rules! dump_trace {
@@ -229,6 +231,32 @@ pub fn get_game_state() -> *const u64 {
     }
 }
 
+pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x52c30f0) as *const u64);
+    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
+}
+
+pub unsafe fn get_controller_mapping_from_id(player: usize) -> &'static ControllerMapping {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x52c30f0) as *const u64);
+    &*((base + 0x18) as *const ControllerMapping).add(player as usize)
+}
+
+#[repr(C)]
+struct SomeControllerStruct {
+    padding: [u8; 0x10],
+    controller: &'static mut Controller,
+}
+
+pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x5337860) as *const u64);
+    let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
+    let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
+    (*controller_struct).controller
+}
+
 /// Triggers a match exit (all the way back to the stage select screen) by entering into the `StateExit` game state.
 /// Note: Calling this function otuside of a match shouldn't crash but it has undefined behavior. If you do that, don't
 pub fn trigger_match_exit() {
@@ -284,4 +312,13 @@ extern "C"{
     /// gets whether we are in training mode
     #[link_name = "\u{1}_ZN3app9smashball16is_training_modeEv"]
     pub fn is_training_mode() -> bool;
+}
+
+extern "C" {
+    #[link_name = "_ZN3app13sv_debug_draw11draw_circleERKN3phx8Vector2fEfi"]
+    pub fn debug_draw_circle(center: &Vector2f, radius: f32, num_frames: i32);
+   #[link_name = "_ZN3app13sv_debug_draw9draw_lineERKN3phx8Vector2fES4_i"]
+    pub fn debug_draw_line(a: &Vector2f, b: &Vector2f, num_frames: i32);
+    #[link_name = "_ZN3app13sv_debug_draw14set_draw_colorEffff"]
+    pub fn debug_set_draw_color(r: f32, g: f32, b: f32, a: f32);
 }

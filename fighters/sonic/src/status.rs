@@ -1,9 +1,11 @@
 use super::*;
 
 mod dash;
+mod special_n;
 mod special_s;
 mod special_s_dash;
 mod special_lw_hold;
+mod special_hi;
 
 /// Prevents side b from being used again in air
 unsafe extern "C" fn should_use_special_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -38,7 +40,9 @@ fn sonic_init(fighter: &mut L2CFighterCommon) {
 pub fn install() {
     install_agent_init_callbacks!(sonic_init);
     dash::install();
+    special_n::install();
     special_s::install();
     special_s_dash::install();
     special_lw_hold::install();
+    special_hi::install();
 }

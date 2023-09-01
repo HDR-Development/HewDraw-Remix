@@ -104,12 +104,75 @@ unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+// steve table respawn
+unsafe fn pickel_table_recreate(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
+    let prev_status = StatusModule::prev_status_kind(boma, 0);
+    let flash_timer = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER); 
+    if !smash::app::sv_information::is_ready_go() {
+        VarModule::off_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE); // turns flag off at start of game
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
+    }
+    if flash_timer > 0 {
+        VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+    }
+    if (1..3).contains(&flash_timer) { // gimmick flash when table is ready for respawn
+        gimmick_flash(boma);
+        VarModule::on_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE);
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
+    }
+    if VarModule::is_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE)
+    && status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT // if steve is in stationary mining status
+    && MotionModule::frame(boma) <= 5.0 //during first 5 frames of animation
+    && ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK_BACK].contains(&prev_status)  // and is not returning to still from a walking mine
+    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) { 
+        StatusModule::change_status_force(boma, *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE, true); 
+        VarModule::off_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE);
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL_SPECIAL
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     elytra_cancel(boma, id, status_kind, situation_kind, cat[0], frame);
     hitstun_tumble_glow(boma, id, status_kind);
     //buildwalk_crouch_disable(boma, status_kind);
     build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
+    pickel_table_recreate(fighter, boma, id, status_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICKEL )]
@@ -122,7 +185,7 @@ pub fn pickel_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn pickel_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 
@@ -149,6 +212,24 @@ pub fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 if pickel_boma.get_num_used_jumps() >= pickel_boma.get_jump_count_max() {
                     WorkModule::dec_int(pickel_boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                 }
+            }
+        }
+    }
+}
+
+// set timer for table respawn when table breaks
+#[smashline::weapon_frame(agent = WEAPON_KIND_PICKEL_TABLE, main)]
+pub fn pickel_table_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
+            let pickel = utils::util::get_battle_object_from_id(owner_id);
+            let pickel_boma = &mut *(*pickel).module_accessor;
+            if !VarModule::is_flag(pickel_boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE)
+            && VarModule::get_int(pickel_boma.object(), vars::common::instance::GIMMICK_TIMER) == 0
+            && boma.is_status(*WEAPON_PICKEL_TABLE_STATUS_KIND_BREAK) {
+                VarModule::set_int(pickel_boma.object(), vars::common::instance::GIMMICK_TIMER, 242);
             }
         }
     }

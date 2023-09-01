@@ -97,6 +97,9 @@ pub fn install() {
        hero_rng_hook,
        psych_up_hit,
     );
+    skyline::install_hooks!(
+        krool_belly_damage_hook,
+    );
 }
 
 #[skyline::hook(replace=TeamModule::set_hit_team)]
@@ -111,7 +114,8 @@ unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
 #[skyline::hook(replace=TeamModule::set_hit_team_second)]
 unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
-    if (boma.kind() == *ITEM_KIND_BARREL) {
+    if (boma.is_item()
+    && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set hit team second called for barrel: {:x}", arg2);
         return;
     }
@@ -122,7 +126,7 @@ unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: 
 /// because editing item statuses is not possible
 #[skyline::hook(replace=TeamModule::set_team)]
 unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: bool) {
-    if (smash::app::utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM 
+    if (boma.is_item() 
       && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set team ignored for barrel: {:x}", arg2);
     } else {
@@ -133,7 +137,8 @@ unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: 
 #[skyline::hook(replace=TeamModule::set_team_second)]
 unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
-    if (boma.kind() == *ITEM_KIND_BARREL) {
+    if (boma.is_item()
+    && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set team second called for barrel: {:x}", arg2);
         return;
     }
@@ -142,7 +147,8 @@ unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32)
 #[skyline::hook(replace=TeamModule::set_team_owner_id)]
 unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
-    if (boma.kind() == *ITEM_KIND_BARREL) {
+    if (boma.is_item()
+    && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set team owner id called for barrel: {:x}", arg2);
         return;
     }
@@ -179,6 +185,11 @@ extern "C" {
     fn hero_rng_hook_impl(fighter: *mut BattleObject);
 }
 
+extern "C" {
+    #[link_name = "krool_belly_damage_hook_impl"]
+    fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut Fighter, unk: bool);
+}
+
 #[skyline::hook(replace = special_lw_open_command)]
 pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
     hero_rng_hook_impl(fighter);
@@ -187,4 +198,14 @@ pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
 #[skyline::hook(offset = 0x853df0)]
 pub unsafe fn psych_up_hit() {
     // do nothing
+}
+
+// #[skyline::hook(offset = 0xc050d8, inline)]
+// pub unsafe fn krool_belly_toggle_hook(ctx: &mut skyline::hooks::InlineCtx) {
+//     krool_belly_toggle_hook_impl(ctx);
+// }
+
+#[skyline::hook(offset = 0xc055d0)]
+pub unsafe fn krool_belly_damage_hook(damage: f32, fighter: *mut Fighter, unk: bool) {
+    krool_belly_damage_hook_impl(damage, fighter, unk);
 }

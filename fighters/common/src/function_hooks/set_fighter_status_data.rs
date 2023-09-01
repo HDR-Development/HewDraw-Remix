@@ -25,7 +25,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_KIRBY
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S]))
         || (boma.kind() == *FIGHTER_KIND_KROOL
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START]))
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_LINK
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST]))
         || (boma.kind() == *FIGHTER_KIND_LITTLEMAC
