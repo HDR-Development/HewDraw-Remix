@@ -126,7 +126,7 @@ unsafe fn pickel_table_recreate(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
     if VarModule::is_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE)
     && status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT // if steve is in stationary mining status
-    && MotionModule::frame(boma) <= 5.0 //during first 5 frames of animation
+    && MotionModule::frame(boma) <= 5.0 // during first 5 frames of animation
     && ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK_BACK].contains(&prev_status)  // and is not returning to still from a walking mine
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) { 
         StatusModule::change_status_force(boma, *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE, true); 
