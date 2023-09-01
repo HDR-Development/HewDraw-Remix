@@ -242,7 +242,7 @@ unsafe fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
             WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
             SET_SPEED_EX(fighter, 0, 1.625, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            FT_MOTION_RATE(fighter, 20.0/(57.0-46.0));
+            FT_MOTION_RATE_RANGE(fighter,46.0,57.0,26.0);
         }
     }
     frame(lua_state, 55.0);
@@ -260,7 +260,7 @@ unsafe fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "buddy", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_landing_air_lw_game(agent: &mut L2CAgentBase) {
 }
 

@@ -19,7 +19,7 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
             fighter.module_accessor,
             app::SituationKind(*SITUATION_KIND_AIR),
             *FIGHTER_KINETIC_TYPE_UNIQ,
-            *GROUND_CORRECT_KIND_AIR as u32,
+            *GROUND_CORRECT_KIND_KEEP as u32,
             app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
             true,
             *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
@@ -35,9 +35,10 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
             false,
             false,
             false,
-            0,
-            0,
-            0,
+            (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK 
+                | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+            *FIGHTER_STATUS_ATTR_START_TURN as u32,
+            *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
             0
         );
 
@@ -83,9 +84,10 @@ unsafe fn buddy_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn buddy_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    /* 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
-    }
+    }*/
 
     fighter.sub_exec_special_start_common_kinetic_setting(hash40("param_special_s").into());
     buddy_special_s_armor(fighter);
@@ -93,12 +95,6 @@ unsafe extern "C" fn buddy_special_s_main_loop(fighter: &mut L2CFighterCommon) -
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH.into(), false.into());
         return 0.into();
-    }
-    
-    if !StatusModule::is_changing(fighter.module_accessor)
-    && StatusModule::is_situation_changed(fighter.module_accessor) {
-        fighter.sub_change_motion_by_situation(Hash40::new("special_s_start").into(), Hash40::new("special_air_s_start").into(), true.into());
-        fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
     }
     0.into()
 }
@@ -122,6 +118,35 @@ pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
         return true.into();
     }
+    else if (fighter.is_situation(*SITUATION_KIND_AIR) )
+    {
+        StatusModule::init_settings(
+            fighter.module_accessor,
+            app::SituationKind(*SITUATION_KIND_AIR),
+            *FIGHTER_KINETIC_TYPE_UNIQ,
+            *GROUND_CORRECT_KIND_AIR as u32,
+            app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+            true,
+            *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+            *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+            *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+            0
+        );
+
+        FighterStatusModuleImpl::set_fighter_status_data(
+            fighter.module_accessor,
+            false,
+            *FIGHTER_TREADED_KIND_NO_REAC,
+            false,
+            false,
+            false,
+            (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW |*FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+            0,
+            *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+            0
+        );
+        return 0.into();
+    }
     return original!(fighter);
 }
 
@@ -141,7 +166,6 @@ unsafe fn buddy_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 pub unsafe fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR))
     {
-
         if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED)
         {
             sv_kinetic_energy!(
@@ -151,7 +175,18 @@ pub unsafe fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CVal
             );
             VarModule::off_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
         }
-
+    }
+    else if (VarModule::get_int(fighter.battle_object, vars::buddy::instance::BEAKBOMB_FRAME) > 0){
+        let ground_brake = sv_fighter_util::get_default_fighter_param_ground_brake(fighter.lua_state_agent);
+        KineticModule::clear_speed_all(fighter.module_accessor);
+        sv_kinetic_energy!(
+            set_brake,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ground_brake,
+            0.0
+        );
+        
     }
     return original!(fighter);
 }

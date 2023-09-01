@@ -167,7 +167,7 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     let side_special_dash = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH);
     let side_special_wall = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL);
     let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
-
+    
     //While in Beakbomb / Wonderwing
     if (side_special_dash)
     {
