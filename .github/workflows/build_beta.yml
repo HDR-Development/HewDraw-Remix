@@ -145,7 +145,7 @@ jobs:
     # validate that the chosen release exists
     - name: get the specified release
       uses: cardinalby/git-get-release-action@v1
-      if: github.event.inputs.romfs_version != 'latest'
+      if: ${{ contains(github.event.inputs.romfs_version, 'latest') != true }}
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
@@ -154,12 +154,12 @@ jobs:
 
     # make package depending on version chosen
     - name: make package with chosen version
-      if: github.event.inputs.romfs_version != 'latest'
+      if: ${{ contains(github.event.inputs.romfs_version, 'latest') != true }}
       run: |
         python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ github.event.inputs.romfs_version }} 
 
     - name: make package with latest
-      if: github.event.inputs.romfs_version == 'latest'
+      if: ${{ contains(github.event.inputs.romfs_version, 'latest') }}
       run: |
         python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ steps.romfs_latest.outputs.release }}
 
