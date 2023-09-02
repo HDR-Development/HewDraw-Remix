@@ -621,9 +621,27 @@ pub mod vars {
     }
 
     pub mod lucario {
+        pub mod instance {
+            // flags
+            pub const METER_IS_BURNOUT: i32 = 0x0100;
+            pub const IS_SPECIAL_LW_AIR: i32 = 0x0101;
+            pub const DISABLE_SPECIAL_LW: i32 = 0x0102;
+            pub const IS_POWERED_UP: i32 = 0x0103;
+            pub const IS_USPECIAL_ATTACK_CANCEL: i32 = 0x0104;
+
+            // ints
+            pub const METER_PAUSE_REGEN_FRAME: i32 = 0x0100;
+
+            // float
+            pub const METER_PASSIVE_RATE: i32 = 0x0100;
+        }
         pub mod status {
             // ints
             pub const FORCE_PALM_ROT_ANGLE: i32 = 0x1100;
+
+            // floats
+            pub const SPECIAL_N_ANGLE: i32 = 0x1100;
+            pub const AURA_OVERRIDE: i32 = 0x1101;
         }
     }
     pub mod lucas {
@@ -711,6 +729,7 @@ pub mod vars {
             pub const NOKNOK_SHELL: i32 = 0x0100;
             pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x0101;
             pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0102;
+            pub const DISABLE_DSPECIAL_STALL:                i32 = 0x0103;
         }
 
         pub mod status {
@@ -762,6 +781,7 @@ pub mod vars {
             pub const TUMBLE_START: i32 = 0x0101;
             pub const IS_IN_TUMBLE: i32 = 0x0102;
             pub const DISABLE_SPECIAL_S: i32 = 0x0103;
+            pub const CAN_RESPAWN_TABLE: i32 = 0x0104;
         }
         pub mod status {
             // floats
@@ -1176,6 +1196,7 @@ pub mod vars {
             // flags
             pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
             pub const STANCE_INIT: i32 = 0x0101;
+            pub const PTOOIE_SHOULD_EXPLODE: i32 = 0x0102;
 
             // floats
             pub const PTOOIE_SCALE: i32 = 0x0100;
@@ -1183,6 +1204,10 @@ pub mod vars {
             // ints
             pub const CURRENT_STANCE: i32 = 0x0100; // 0 = Normal, 1 = Putrid, 2 = Prickly
             pub const STANCE_STATUS: i32 = 0x0101;
+        }
+        pub mod status {
+            // flags
+            pub const FLAME_ACTIVE: i32 = 0x1100;
         }
     }
 
