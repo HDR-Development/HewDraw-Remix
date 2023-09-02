@@ -48,6 +48,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //sonic_moveset(boma, situation_kind, status_kind, motion_kind, frame, cat[0], id);
     //sonic_lightspeed_dash(boma, status_kind, motion_kind, situation_kind, cat[0], id);
     fastfall_specials(fighter);
+    
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SONIC )]
