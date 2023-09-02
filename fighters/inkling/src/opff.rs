@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-const INKLING_COLORS: [Vector3f; 8] = [
+const INKLING_COLORS: [Vector3f; 10] = [
     // used to tint the hitbox effects - have at least one value be 0, unless you want white ink. Values between 0 and 1.
     Vector3f {
         x: 0.758027,
@@ -21,9 +21,9 @@ const INKLING_COLORS: [Vector3f; 8] = [
         z: 0.04,
     }, // (yellow)
     Vector3f {
-        x: 0.347369,
-        y: 0.582004,
-        z: 0.04,
+        x: 0.0,
+        y: 0.7333,
+        z: 0.003921,
     }, // (green)
     Vector3f {
         x: 0.758027,
@@ -31,20 +31,30 @@ const INKLING_COLORS: [Vector3f; 8] = [
         z: 0.273385,
     }, // (pink)
     Vector3f {
-        x: 0.04,
-        y: 0.47948,
-        z: 0.388556,
+        x: 0.08,
+        y: 0.3,
+        z: 0.65,
     }, // (sky blue)
     Vector3f {
-        x: 0.47948,
-        y: 0.04,
-        z: 0.582004,
-    }, // (violet)
+        x: 1.0,
+        y: 0.26667,
+        z: 0.525,
+    }, // (monika)
     Vector3f {
-        x: 0.04,
-        y: 0.0462798,
-        z: 0.114017,
-    }, // (purple)
+        x: 0.2549,
+        y: 0.6549,
+        z: 0.5098,
+    }, // (splat tim)
+    Vector3f {
+        x: 0.79,
+        y: 0.008,
+        z: 0.09875,
+    }, // (octoling 1)
+    Vector3f {
+        x: 0.76,
+        y: 0.025,
+        z: 0.025,
+    }, // (octoling 2)
 ];
 
 unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
