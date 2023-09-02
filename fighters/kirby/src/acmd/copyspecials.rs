@@ -1,71 +1,5 @@
 use super::*;
 
-#[acmd_script( agent = "kirby", script = "game_diddyspecialncancel" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
-        FT_MOTION_RATE(fighter, 8.0/(31.0 - 1.0));
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "effect_diddyspecialncancel" , category = ACMD_EFFECT , low_priority)]
-unsafe fn diddy_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-}
-
-#[acmd_script( agent = "kirby", script = "sound_diddyspecialncancel" , category = ACMD_SOUND , low_priority)]
-unsafe fn diddy_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-}
-
-#[acmd_script( agent = "kirby", script = "expression_diddyspecialncancel" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn diddy_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-}
-
-#[acmd_script( agent = "kirby", script = "game_diddyspecialairncancel" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
-        FT_MOTION_RATE(fighter, 8.0/(35.0 - 1.0));
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "effect_diddyspecialairncancel" , category = ACMD_EFFECT , low_priority)]
-unsafe fn diddy_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-}
-
-#[acmd_script( agent = "kirby", script = "sound_diddyspecialairncancel" , category = ACMD_SOUND , low_priority)]
-unsafe fn diddy_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-}
-
-#[acmd_script( agent = "kirby", script = "expression_diddyspecialairncancel" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-}
-
 #[acmd_script( agent = "kirby", script = "game_ganonfloatstart" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1914,14 +1848,6 @@ unsafe fn sonic_special_n_hit_sound(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        diddy_special_n_cancel_game,
-        diddy_special_n_cancel_effect,
-        diddy_special_n_cancel_sound,
-        diddy_special_n_cancel_expression,
-        diddy_special_air_n_cancel_game,
-        diddy_special_air_n_cancel_effect,
-        diddy_special_air_n_cancel_sound,
-        diddy_special_air_n_cancel_expression,
         ganon_float_start_game,
         ganon_float_start_effect,
         ganon_float_start_expression,

@@ -785,40 +785,13 @@ unsafe fn pzenigame_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, stat
 }
 
 // Diddy Kong
-unsafe fn diddy_nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            if fighter.is_cat_flag(Cat2::StickEscape) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-            }
-            else if fighter.is_cat_flag(Cat2::StickEscapeF) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_F);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-            }
-            else if fighter.is_cat_flag(Cat2::StickEscapeB) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_B);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-            }
-            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-            }
-            if fighter.sub_check_command_guard().get_bool() {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GUARD);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-            }
-        }
-        else {
+unsafe fn diddy_nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE) {
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
             if fighter.is_cat_flag(Cat1::AirEscape)  {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-            }
-            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
-            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
-            {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL_JUMP, true, false);
+                ControlModule::reset_trigger(boma);
+                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
+                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             }
         }
     }
@@ -1210,7 +1183,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sheik_nspecial_cancels(fighter, boma, status_kind, situation_kind);
     mewtwo_nspecial_cancels(boma, status_kind, situation_kind);
     pzenigame_nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
-    diddy_nspecial_cancels(fighter, boma, status_kind);
+    diddy_nspecial_cancels(fighter, boma);
     lucario_nspecial_cancels(boma, status_kind, situation_kind, cat[2]);
     wiifit_nspecial_cancels(boma, status_kind, situation_kind);
     littlemac_nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);

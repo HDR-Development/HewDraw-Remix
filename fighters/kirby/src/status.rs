@@ -8,7 +8,6 @@ mod ganon_special_n;
 mod ganon_special_n_float;
 mod koopa_special_n;
 mod littlemac_special_n_cancel;
-mod diddy_special_n_cancel;
 mod lucas_special_n;
 mod sonic;
  
@@ -34,7 +33,6 @@ pub fn add_statuses() {
     special_hi_h::install();
     ganon_special_n_float::install();
     littlemac_special_n_cancel::install();
-    diddy_special_n_cancel::install();
 }
 
 #[smashline::fighter_init]
