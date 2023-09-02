@@ -110,7 +110,7 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
 
 #[status_script(agent = "wolf", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP {
+    if ![*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
         WorkModule::set_flag(fighter.module_accessor, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING);
     }
     0.into()
@@ -118,7 +118,7 @@ pub unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "wolf", status = FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END {
+    if ![*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
         WorkModule::set_flag(fighter.module_accessor, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING);
     }
     0.into()
