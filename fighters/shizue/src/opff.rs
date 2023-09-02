@@ -244,9 +244,14 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
     reel_in(boma, status_kind, situation_kind, frame);
-    lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
+    //lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     boost_ready(boma);
     fastfall_specials(fighter);
+    balloon_cancel(fighter);
+    balloon_dash(fighter);
+    balloon_special_cancel(fighter);
+    fuel_indicators(fighter);
+    fair_scale(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SHIZUE )]
@@ -254,12 +259,6 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
-        balloon_cancel(fighter);
-        balloon_dash(fighter);
-        balloon_special_cancel(fighter);
-        fuel_indicators(fighter);
-        fair_scale(fighter);
-        lloid_special_cancel(fighter);
     }
 }
 
