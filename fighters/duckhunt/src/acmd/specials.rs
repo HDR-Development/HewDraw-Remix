@@ -31,10 +31,12 @@ unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
+    FT_MOTION_RATE_RANGE(fighter, 16.0, 42.0, 20.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CAN);
     }
-    FT_MOTION_RATE(fighter, 0.65);
+    frame(lua_state, 42.0);
+    FT_MOTION_RATE(fighter, 1.0);
 
 }
 
