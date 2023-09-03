@@ -179,6 +179,14 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) 
+    && fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
+        fighter.set_int(*FIGHTER_STATUS_KIND_FALL, *FIGHTER_NESS_STATUS_SPECIAL_HI_WORK_INT_NEXT_STATUS)
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_turnaround(fighter);
     psi_magnet_jump_cancel(fighter);
@@ -190,6 +198,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pk_fire_drift(boma, stick_y);
     uair_scaling(boma);
     fastfall_specials(fighter);
+    pkt2_edgeslipoff(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_NESS )]
