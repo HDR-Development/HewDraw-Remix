@@ -2087,10 +2087,10 @@
     <struct index="59">
       <float hash="walk_speed_max">1.228</float>
       <float hash="ground_brake">0.0825</float>
-      <float hash="dash_speed">1.763</float>
+      <float hash="dash_speed">1.7215</float>
       <float hash="run_accel_mul">0.04238</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.68</float>
+      <float hash="run_speed_max">1.7215</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_mul">0.75</float>
