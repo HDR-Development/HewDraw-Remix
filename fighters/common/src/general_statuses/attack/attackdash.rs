@@ -108,8 +108,8 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
 
         // Add one because it is 0 based
         let current_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME) + 1;
-        let start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.start_frame");
-        let end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.end_frame");
+        let start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus.start_frame");
+        let end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus.end_frame");
         if start_frame <= current_frame && current_frame < end_frame {
             VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);

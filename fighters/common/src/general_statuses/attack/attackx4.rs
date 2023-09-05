@@ -15,7 +15,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_end_attackxx4start,
+            //status_AttackHi4Start,
             status_AttackHi4Start_Main,
+            //status_AttackHi4Start_Common,
             status_AttackLw4Start_Main,
         );
     }
@@ -61,6 +63,24 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
             }
         }
     }
+    else {
+        // This should only reduce the highest speed the dacus will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
+        if fighter.status_frame() == 1 {
+            let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+            let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+            println!("Unadjusted speed: {}", speed_x);
+            println!("speed.abs: {}", speed_x.abs());
+            println!("min: {}, max: {}", min_speed, max_speed);
+            if !(min_speed..max_speed).contains(&speed_x.abs()) {
+                speed_x = speed_x.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+                let dacus_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacus_mul");
+                println!("Adjusted speed: {}", speed_x * dacus_mul);
+                println!();
+                sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x * dacus_mul, 0.0);
+            }
+        }
+    }
     let log_attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if sha_frame == 1 && !fighter.global_table[8].get_bool() && log_attack_kind > 0 {
         FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log_attack_kind);
@@ -87,6 +107,19 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         }
     }
     return 0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start)]
+unsafe fn status_AttackHi4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion = Hash40::new("attack_hi4");
+    fighter.status_AttackHi4Start_common(L2CValue::Hash40(motion));
+    return 0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start_common)]
+unsafe fn status_AttackHi4Start_Common(fighter: &mut L2CFighterCommon, motion: L2CValue) {
+    fighter.sub_status_AttackHi4Start_common(motion);
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackHi4Start_Main as *const () as _));
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_HI4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
@@ -119,6 +152,24 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
                 WorkModule::set_int64(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
                 fighter.change_status_jump_mini_attack(L2CValue::Bool(true));
                 return L2CValue::I32(1);
+            }
+        }
+    }
+    else {
+        // This should only reduce the highest speed the dacus will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
+        if fighter.status_frame() == 1 {
+            let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+            let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+            println!("Unadjusted speed: {}", speed_x);
+            println!("speed.abs: {}", speed_x.abs());
+            println!("min: {}, max: {}", min_speed, max_speed);
+            if !(min_speed..max_speed).contains(&speed_x.abs()) {
+                speed_x = speed_x.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+                let dacds_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacds_mul");
+                println!("Adjusted speed: {}", speed_x * dacds_mul);
+                println!();
+                sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x * dacds_mul, 0.0);
             }
         }
     }
