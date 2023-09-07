@@ -71,9 +71,13 @@ unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
-    && situation_kind == *SITUATION_KIND_AIR
-    && MotionModule::frame(boma) >= 27.0 {
-        fighter.check_jump_cancel(false,false);
+    && situation_kind == *SITUATION_KIND_AIR {
+        if MotionModule::frame(boma) >= 41.0 {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
+        }
+        else if MotionModule::frame(boma) >= 27.0 {
+            fighter.check_jump_cancel(false,false);
+        }
     }
 }
 
