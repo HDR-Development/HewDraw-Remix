@@ -49,9 +49,6 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon){
     {
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
-            EFFECT_OFF_KIND(fighter, Hash40::new("buddy_air_lw"),false,false);
-            lua_args!(fighter, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            sv_animcmd::EFFECT_WORK(fighter.lua_state_agent);
         }
     }
 }

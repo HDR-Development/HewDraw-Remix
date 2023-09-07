@@ -232,13 +232,13 @@ unsafe fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
         JostleModule::set_status(boma, true);
         /* Ground-only */
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 270, 60, 0, 54, 5.0, 0.0, -0.8, 0.0, Some(0.0), Some(1.8), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 270, 60, 0, 54, 5.0, 0.0, 1.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
         /* Air-only */
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 270, 50, 0, 23, 5.0, 0.0, -0.8, 0.0, Some(0.0), Some(1.8), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 270, 50, 0, 23, 5.0, 0.0, 1.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 76, 63, 0, 67, 5.5, 0.0, 0.8, 0.0, Some(0.0), Some(1.8), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 76, 63, 0, 67, 5.5, 0.0, 1.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
         AttackModule::clear(boma, 1, false);
     }
     frame(lua_state, 46.0);
@@ -273,6 +273,33 @@ unsafe fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
 }
+#[acmd_script( agent = "buddy", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn buddy_attack_air_lw_effect(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 14.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FLW_POS(agent, Hash40::new("buddy_air_lw"), Hash40::new("top"), 0, -7, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, true);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
+    }
+    frame(agent.lua_state_agent, 46.0);
+    if macros::is_excute(agent) {
+        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            EFFECT_OFF_KIND(agent, Hash40::new("buddy_air_lw"),false,false);
+            macros::EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1.1, true);
+            sv_animcmd::EFFECT_WORK(agent.lua_state_agent);
+        }
+    }
+    frame(agent.lua_state_agent, 50.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
+    }
+}
 
 #[acmd_script( agent = "buddy", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_landing_air_lw_game(agent: &mut L2CAgentBase) {
@@ -288,6 +315,7 @@ pub fn install() {
         buddy_attack_air_b_game,
         buddy_attack_air_hi_game,
         buddy_attack_air_lw_game,
+        buddy_attack_air_lw_effect,
 
         buddy_landing_air_lw_game,
     );
