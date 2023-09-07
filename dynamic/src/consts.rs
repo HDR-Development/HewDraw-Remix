@@ -272,6 +272,8 @@ pub mod vars {
 
             pub const PUMMEL_OVERRIDE_GLOBAL_STATS: i32 = 0x1000;
 
+            pub const CSTICK_IRAR: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
