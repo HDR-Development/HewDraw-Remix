@@ -53,6 +53,70 @@ unsafe fn diddy_attack_13(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
+    
+}
+
+#[acmd_script( agent = "diddy", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn diddy_attack_dash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+        smash::app::lua_bind::KineticEnergy::reset_energy(fighter.get_controller_energy() as *mut _ as _, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, &Vector2f::zero(), &Vector3f::zero(), fighter.module_accessor);
+        smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_mul(fighter.get_controller_energy(), 0.0);
+        smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_add(fighter.get_controller_energy(), 0.0);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter){
+        ATTACK(fighter, 0, 0, Hash40::new("bust"), 9.0, 75, 70, 0, 65, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("legl"), 9.0, 75, 70, 0, 65, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("legr"), 9.0, 75, 70, 0, 65, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 13.0);
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
+    }
+    if is_excute(fighter){
+        ATTACK(fighter, 0, 0, Hash40::new("bust"), 5.0, 90, 80, 0, 35, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("legl"), 5.0, 90, 80, 0, 35, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("legr"), 5.0, 90, 80, 0, 35, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter){
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 26.0);
+    FT_MOTION_RATE(fighter, 0.7);
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    
+}
+
+#[acmd_script( agent = "diddy", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7, -0.5, 90, 90, 20, 0.95, true);
+        LAST_EFFECT_SET_RATE(fighter, 1);
+    }
+   
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_spin_wind_s"), true, true);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 10, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
 }
 
 pub fn install() {
@@ -60,6 +124,8 @@ pub fn install() {
         diddy_attack_11,
         diddy_attack_12,
         diddy_attack_13,
+        diddy_attack_dash,
+        effect_attackdash,
     );
 }
 
