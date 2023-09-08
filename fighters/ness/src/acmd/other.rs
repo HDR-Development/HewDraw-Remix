@@ -226,10 +226,38 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ness", script = "effect_jumpaerialfront", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_jumpaerialfront(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    for _ in 0..4 {
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
+        }
+        wait(lua_state, 6.0);
+    }
+}
+
+#[acmd_script( agent = "ness", script = "effect_jumpaerialback", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_jumpaerialback(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    for _ in 0..4 {
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
+        }
+        wait(lua_state, 6.0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
+        effect_jumpaerialfront,
+        effect_jumpaerialback,
         dash_sound,
 		ness_turn_dash_game,
         ness_pkfire_pillar_game,
