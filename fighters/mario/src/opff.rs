@@ -148,7 +148,7 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) {
             if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
                 if frame >= 6.0 && frame < 35.0 {  
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.12);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.0);
                     KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.06);
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
