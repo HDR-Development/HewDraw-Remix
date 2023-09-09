@@ -3,7 +3,7 @@ fall:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 throw_lw:
   extra:
     cancel_frame: 46
@@ -180,3 +180,6 @@ special_air_lw_end:
     xlu_end: 0
     cancel_frame: 14
     no_stop_intp: false
+catch_attack:
+  extra:
+    cancel_frame: 0

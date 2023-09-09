@@ -21,9 +21,9 @@ impl From<i32> for StanceInfo {
         match other {
             0 => StanceInfo { // Regular
                 label: 0,
-                damage_bite: 1.0,
-                damage_head: 1.0,
-                damage_other: 1.0,
+                damage_bite: 0.9,
+                damage_head: 0.9,
+                damage_other: 0.9,
                 da_speed: 0.8
             },
             1 => StanceInfo { // Putrid
@@ -38,13 +38,13 @@ impl From<i32> for StanceInfo {
                 damage_bite: 1.05,
                 damage_head: 1.4,
                 damage_other: 1.2,
-                da_speed: (0.8 * 0.75)
+                da_speed: (0.8 * 0.88)
             },
             _ => StanceInfo { // same as regular
                 label: 3,
-                damage_bite: 1.0,
-                damage_head: 1.0,
-                damage_other: 1.0,
+                damage_bite: 0.9,
+                damage_head: 0.9,
+                damage_other: 0.9,
                 da_speed: 0.8
             },
         }

@@ -89,7 +89,9 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_WAIT.into(), false.into());
         return true.into()
     }
-    else if CancelModule::is_enable_cancel(fighter.module_accessor) {
+    else if {let pummel_max_cancel_frame = ParamModule::get_int(fighter.object(), ParamType::Common, "pummel_max_cancel_frame") as f32;
+            fighter.global_table[CURRENT_FRAME].get_i32() as f32 + 1.0 >= MotionModule::end_frame(fighter.module_accessor).min(pummel_max_cancel_frame)}
+    {
         let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if ControlModule::get_stick_y(fighter.module_accessor) < -0.7 {
             fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
@@ -126,8 +128,9 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 return true.into()
             }
         }
-        else if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_attack"), 0.0, 1.0, false, 0.0, false, false);
+        else if fighter.global_table[PAD_FLAG].get_i32() & (*FIGHTER_PAD_FLAG_ATTACK_TRIGGER | *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) != 0 {
+            fighter.change_status(FIGHTER_STATUS_KIND_CATCH_ATTACK.into(), true.into());
+            return true.into()
         }
     }
     return false.into()
