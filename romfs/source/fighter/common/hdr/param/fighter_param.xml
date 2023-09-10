@@ -28,8 +28,8 @@
     <struct index="4">
       <hash40 hash="fighter_kind">SAMUSD</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="5">
       <hash40 hash="fighter_kind">YOSHI</hash40>
@@ -52,8 +52,8 @@
     <struct index="8">
       <hash40 hash="fighter_kind">PIKACHU</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.85</float>
+      <float hash="dacds_mul">0.85</float>
     </struct>
     <struct index="9">
       <hash40 hash="fighter_kind">LUIGI</hash40>
@@ -88,8 +88,8 @@
     <struct index="14">
       <hash40 hash="fighter_kind">DAISY</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.95</float>
+      <float hash="dacds_mul">0.95</float>
     </struct>
     <struct index="15">
       <hash40 hash="fighter_kind">KOOPA</hash40>
@@ -100,8 +100,8 @@
     <struct index="16">
       <hash40 hash="fighter_kind">SHEIK</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="17">
       <hash40 hash="fighter_kind">ZELDA</hash40>
@@ -172,8 +172,8 @@
     <struct index="28">
       <hash40 hash="fighter_kind">GAMEWATCH</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.8</float>
+      <float hash="dacds_mul">0.8</float>
     </struct>
     <struct index="29">
       <hash40 hash="fighter_kind">METAKNIGHT</hash40>
@@ -184,20 +184,20 @@
     <struct index="30">
       <hash40 hash="fighter_kind">PIT</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="31">
       <hash40 hash="fighter_kind">PITB</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="32">
       <hash40 hash="fighter_kind">SZEROSUIT</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
       <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacds_mul">0.95</float>
     </struct>
     <struct index="33">
       <hash40 hash="fighter_kind">WARIO</hash40>
@@ -220,8 +220,8 @@
     <struct index="36">
       <hash40 hash="fighter_kind">PZENIGAME</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="37">
       <hash40 hash="fighter_kind">PFUSHIGISOU</hash40>
@@ -244,8 +244,8 @@
     <struct index="40">
       <hash40 hash="fighter_kind">LUCAS</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="41">
       <hash40 hash="fighter_kind">SONIC</hash40>
@@ -280,8 +280,8 @@
     <struct index="46">
       <hash40 hash="fighter_kind">TOONLINK</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.95</float>
+      <float hash="dacds_mul">0.95</float>
     </struct>
     <struct index="47">
       <hash40 hash="fighter_kind">WOLF</hash40>
@@ -316,14 +316,14 @@
     <struct index="52">
       <hash40 hash="fighter_kind">LITTLEMAC</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.775</float>
+      <float hash="dacds_mul">0.825</float>
     </struct>
     <struct index="53">
       <hash40 hash="fighter_kind">GEKKOUGA</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="54">
       <hash40 hash="fighter_kind">PALUTENA</hash40>
@@ -394,14 +394,14 @@
     <struct index="65">
       <hash40 hash="fighter_kind">INKLING</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.875</float>
+      <float hash="dacds_mul">0.875</float>
     </struct>
     <struct index="66">
       <hash40 hash="fighter_kind">RIDLEY</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="67">
       <hash40 hash="fighter_kind">SIMON</hash40>
@@ -436,8 +436,8 @@
     <struct index="72">
       <hash40 hash="fighter_kind">MIIFIGHTER</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.75</float>
+      <float hash="dacds_mul">0.75</float>
     </struct>
     <struct index="73">
       <hash40 hash="fighter_kind">MIISWORDSMAN</hash40>
@@ -490,14 +490,14 @@
     <struct index="81">
       <hash40 hash="fighter_kind">PACKUN</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.95</float>
+      <float hash="dacds_mul">0.95</float>
     </struct>
     <struct index="82">
       <hash40 hash="fighter_kind">JACK</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="83">
       <hash40 hash="fighter_kind">BRAVE</hash40>
@@ -520,14 +520,14 @@
     <struct index="86">
       <hash40 hash="fighter_kind">MASTER</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.875</float>
+      <float hash="dacds_mul">0.875</float>
     </struct>
     <struct index="87">
       <hash40 hash="fighter_kind">TANTAN</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="88">
       <hash40 hash="fighter_kind">PICKEL</hash40>
@@ -539,7 +539,7 @@
       <hash40 hash="fighter_kind">EDGE</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
       <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacds_mul">0.95</float>
     </struct>
     <struct index="90">
       <hash40 hash="fighter_kind">EFLAME</hash40>
@@ -550,20 +550,20 @@
     <struct index="91">
       <hash40 hash="fighter_kind">ELIGHT</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.9</float>
+      <float hash="dacds_mul">0.9</float>
     </struct>
     <struct index="92">
       <hash40 hash="fighter_kind">DEMON</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
       <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacds_mul">0.8</float>
     </struct>
     <struct index="93">
       <hash40 hash="fighter_kind">TRAIL</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.0</float>
-      <float hash="dacds_mul">1.0</float>
+      <float hash="dacus_mul">0.925</float>
+      <float hash="dacds_mul">0.925</float>
     </struct>
   </list>
 </struct>

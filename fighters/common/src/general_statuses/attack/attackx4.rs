@@ -54,10 +54,6 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
 
     if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_DACUS) {
         if sha_frame > 0 && !StopModule::is_stop(fighter.module_accessor) {
-            let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-            println!("UP SMASH MOTION: {}", speed_x);
-            speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-            println!("UP SMASH STOP: {}", speed_x);
             if fighter.sub_check_button_jump().get_bool() {
                 let script_name = fighter.status_attack()[0xf40d7b92u64]["attack_hi4"].get_hash();
                 MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, script_name, -1);
@@ -70,35 +66,15 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     else {
         // This should only reduce the highest speed the dacus will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
         if StatusModule::is_changing(fighter.module_accessor) {
-            println!();
-            println!("UP SMASH");
             let spdx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-            println!("old stop speed: {}", spdx);
             let speed_x = VarModule::get_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, 0.0);
             let spx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-            println!("new stop speed: {}", spx);
         }
-        // Account for added MOTION energy (only if the dacus has a non-default multiplier)
-        let dacus_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacus_mul");
-        if dacus_mul != 1.0 {
-            let mut motion = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-            if motion.abs() > 0.0 {
-                println!("extra motion energy found: {}", motion);
-                let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
-                let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
-                if !(min_speed..max_speed).contains(&motion.abs()) {
-                    motion = motion.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
-                    println!("multiplied motion: {}", motion);
-                }
-                motion = motion * dacus_mul;
-                sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, motion, 0.0);
-            }
-        }
-        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        println!("DACUS MOTION: {}", speed_x);
-        speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-        println!("DACUS STOP: {}", speed_x);
+        // let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        // println!("DACUS MOTION: {}", speed_x);
+        // speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+        // println!("DACUS STOP: {}", speed_x);
     }
     let log_attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if sha_frame == 1 && !fighter.global_table[8].get_bool() && log_attack_kind > 0 {
@@ -164,10 +140,6 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     }
 
     if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_DACUS) {
-        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        println!("DOWN SMASH MOTION: {}", speed_x);
-        speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-        println!("DOWN SMASH STOP: {}", speed_x);
         if sha_frame > 0 && !StopModule::is_stop(fighter.module_accessor) {
             if fighter.sub_check_button_jump().get_bool() {
                 let script_name = fighter.status_attack()[0xf40d7b92u64]["attack_lw4"].get_hash();
@@ -181,36 +153,32 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     else {
         // This should only reduce the highest speed the dacds will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
         if StatusModule::is_changing(fighter.module_accessor) {
-            println!();
-            println!("DOWN SMASH");
             let spdx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-            println!("old motion speed: {}", spdx);
+            //println!("old motion speed: {}", spdx);
             let speed_x = VarModule::get_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed_x, 0.0);
             let spx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-            println!("new motion speed: {}", spx);
+            //println!("new motion speed: {}", spx);
         }
         // Account for added STOP energy (only if the dacds has a non-default multiplier)
         let dacds_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacds_mul");
         if dacds_mul != 1.0 {
             let mut stop = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
             if stop.abs() > 0.0 {
-                println!("extra stop energy found: {}", stop);
+                //println!("extra stop energy: {}", stop);
                 let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
                 let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
-                
                 if !(min_speed..max_speed).contains(&stop.abs()) {
                     stop = stop.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
-                    println!("multiplied stop: {}", stop);
                 }
                 stop = stop * dacds_mul;
                 sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, stop, 0.0);
             }
         }
-        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        println!("DACDS MOTION: {}", speed_x);
-        speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-        println!("DACDS STOP: {}", speed_x);
+        // let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        // println!("DACDS MOTION: {}", speed_x);
+        // speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+        // println!("DACDS STOP: {}", speed_x);
     }
     let log_attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if sha_frame == 1 && !fighter.global_table[8].get_bool() && log_attack_kind > 0 {
