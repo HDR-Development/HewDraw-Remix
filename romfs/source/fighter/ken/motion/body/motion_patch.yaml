@@ -168,6 +168,9 @@ special_air_lw_step_f:
 special_air_n:
   extra:
     cancel_frame: 70
+special_air_s_end:
+  extra:
+    cancel_frame: 21
 special_hi_command:
   extra:
     xlu_start: 1
