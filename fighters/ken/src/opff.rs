@@ -63,9 +63,12 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KEN )]
+#[fighter_frame_callback]
 pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if fighter.kind() != FIGHTER_KIND_KEN {
+            return;
+        }
         MeterModule::update(fighter.battle_object, false);
         MeterModule::set_meter_cap(fighter.object(), 10);
         MeterModule::set_meter_per_level(fighter.object(), 30.0);
