@@ -164,6 +164,10 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
             }
         }
     }
+    if (2..9).contains(&fighter.status_frame()) {
+        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        println!("MOTION: {}", speed_x);
+    }
     // This block checks if you want to enable air drift. This code will only run once, and only while in the air,
     // but it enables another flag that will be checked when your situation changes and renable the right kinetic type there.
     if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT)
@@ -271,6 +275,22 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if sub_attack_dash_is_attackhi4_cancel(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
+        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        println!("DACUS TRANSITION");
+        let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+        let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+        println!("Unadjusted speed: {}", speed_x);
+        println!("speed.abs: {}", speed_x.abs());
+        println!("min: {}, max: {}", min_speed, max_speed);
+        let dacus_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacus_mul");
+        if !(min_speed..max_speed).contains(&speed_x.abs()) {
+            speed_x = speed_x.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+            println!("multiplied speed: {}", speed_x);
+        }
+        speed_x = speed_x * dacus_mul;
+        println!("Adjusted speed: {}", speed_x);
+        println!();
+        VarModule::set_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED, speed_x);
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
             L2CValue::Bool(true)
@@ -279,6 +299,22 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     }
     if sub_attack_dash_is_attacklw4_cancel(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
+        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        println!("DACDS TRANSITION");
+        let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+        let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+        println!("Unadjusted speed: {}", speed_x);
+        println!("speed.abs: {}", speed_x.abs());
+        println!("min: {}, max: {}", min_speed, max_speed);
+        let dacds_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacds_mul");
+        if !(min_speed..max_speed).contains(&speed_x.abs()) {
+            speed_x = speed_x.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+            println!("multiplied speed: {}", speed_x);
+        }
+        speed_x = speed_x * dacds_mul;
+        println!("Adjusted speed: {}", speed_x);
+        println!();
+        VarModule::set_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED, speed_x);
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_LW4_START),
             L2CValue::Bool(true)
