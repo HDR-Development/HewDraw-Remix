@@ -147,8 +147,8 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
     // only check EX if this is a heavy shoryu with A+B on f4
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
-    && boma.is_button_on(Buttons::AttackRaw)
-    && boma.is_button_on(Buttons::SpecialRaw)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch)
+    && boma.is_button_on(Buttons::SpecialAll)
     && frame == 4.0 {
         // change into different motions depending on current motion
         // MeterModule and VarModule calls are repeated so that I know
@@ -189,8 +189,8 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     // EX Hado
     if !boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND])
     && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN)
-    && boma.is_button_on(Buttons::AttackRaw)
-    && boma.is_button_on(Buttons::SpecialRaw)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch)
+    && boma.is_button_on(Buttons::SpecialAll)
     && frame <= 4.0
     && MeterModule::drain(boma.object(), 1) {
         boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, true);
@@ -233,8 +233,8 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
     ])
     && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
-    && boma.is_button_on(Buttons::AttackRaw)
-    && boma.is_button_on(Buttons::SpecialRaw)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch)
+    && boma.is_button_on(Buttons::SpecialAll)
     && frame <= 4.0
     && MeterModule::drain(boma.object(), 2) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
@@ -247,7 +247,7 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     // params have been modified to make us fall otherwise
     if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
     && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_button_on(Buttons::Special)
+    && boma.is_button_on(Buttons::SpecialAll)
     && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
     {
         KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
