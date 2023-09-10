@@ -1,6 +1,9 @@
 use super::*;
 use globals::*;
 
+mod finals;
+mod special_s;
+
 utils::import_noreturn!(common::shoto_status::{
     fgc_end_dashback,
     ryu_idkwhatthisis2
@@ -27,6 +30,8 @@ extern "C" {
 // status script import
 
 pub fn install() {
+    finals::install();
+    special_s::install();
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_ryu"),
         statuses::ryu::AIR_DASH,
@@ -46,10 +51,20 @@ pub fn install() {
         //wait_main,
         landing_main,
         guard,
-        init_special_s,
-        init_special_s_command
     );
     smashline::install_agent_init_callbacks!(ryu_init);
+}
+
+#[smashline::fighter_init]
+fn ryu_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // set the callbacks on fighter init
+        if fighter.kind() == *FIGHTER_KIND_RYU {
+            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+            fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ryu_check_special_command as *const () as _));
+        }
+    }
 }
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
@@ -193,35 +208,81 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[smashline::fighter_init]
-fn ryu_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_RYU {
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
+/// determines the command inputs
+/// I have divided these inputs into command normals (A) and command specials (B)
+/// NOTE: order is important! early order has higher priority
+pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
+    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+    let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
+    let is_normal = fighter.is_cat_flag(
+        Cat1::AttackN | 
+        Cat1::AttackHi3 | 
+        Cat1::AttackS3 | 
+        Cat1::AttackLw3 | 
+        Cat1::AttackHi4 | 
+        Cat1::AttackS4 | 
+        Cat1::AttackLw4
+    );
+
+    // the shinku hadouken
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
+    && MeterModule::level(fighter.object()) >= 6 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        return true.into();
     }
-}
 
-// FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND //
-
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    // the shin shoryuken
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    && MeterModule::level(fighter.object()) >= 6 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+        return true.into();
     }
-    original!(fighter)
-}
 
-// FIGHTER_STATUS_KIND_SPECIAL_S //
-
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    // shoryu
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_HI_CALLBACK].clone()).get_bool() {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND.into(), true.into());
+        return true.into();
     }
-    original!(fighter)
+
+    // shaku
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // hado
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // tatsu
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_S_CALLBACK].clone()).get_bool()
+    && FighterSpecializer_Ryu::check_special_air_s_command(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    false.into()
 }
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
