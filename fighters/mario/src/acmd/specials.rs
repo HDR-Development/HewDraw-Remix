@@ -770,8 +770,7 @@ unsafe fn effect_special_air_lw_light(fighter: &mut L2CAgentBase) {
 unsafe fn sound_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
-    frame(lua_state, 6.0);
+    frame(lua_state, 10.0);
 	if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will change if you used galaxy spin in the air
 			PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));

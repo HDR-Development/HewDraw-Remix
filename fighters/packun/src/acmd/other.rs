@@ -143,11 +143,15 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+        }
     }
 }
 
@@ -171,20 +175,28 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+        }
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+        }
     }
     frame(lua_state, 46.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+        }
     }
 }
 
@@ -208,12 +220,16 @@ unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+        }
     }
 }
 
