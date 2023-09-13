@@ -45,27 +45,18 @@ unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 }
 
 // Mega Man Metal Blad Toss Airdodge Cancel
-unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if boma.status_frame() > 16 {
-            boma.check_airdodge_cancel();
-        }
-    }
-}
-
-unsafe fn side_special_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && situation_kind == *SITUATION_KIND_AIR {
-        if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-        }
-    }
-}
+// unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+//     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
+//         if boma.status_frame() > 16 {
+//             boma.check_airdodge_cancel();
+//         }
+//     }
+// }
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP,
         *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_LW_SHOOT
@@ -96,8 +87,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // light_utilt_cancel(boma, id, status_kind, situation_kind, cat[0], frame);
     // utilt_command_input(boma, id, status_kind, situation_kind, frame);
     jc_dtilt_hit(boma, status_kind, situation_kind, cat[0], frame);
-    blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
-    side_special_drift(boma, status_kind, situation_kind, cat[1], stick_y);
+    // blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
     fastfall_specials(fighter);
 }
 
