@@ -30,61 +30,62 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 		VarModule::off_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
 	}
 	//Teleport!
-	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
-		let frame = MotionModule::frame(boma);
-		let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
-		let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
-		let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
-		let tico_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
-		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_RAYCAST, (GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: rosa_x, y: rosa_y}, &Vector2f{ x: tico_x, y: tico_y}, false)) as i32);
-		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST, (rosa_x-tico_x) as i32);
-		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (rosa_y-tico_y) as i32);
-		if frame == 13.0 {
-			macros::EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-			VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 1);
+	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+		if !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
+			let frame = MotionModule::frame(boma);
+			let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
+			let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
+			let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
+			let tico_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
+			VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST, (rosa_x-tico_x) as i32);
+			VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (rosa_y-tico_y) as i32);
+			if frame == 13.0 {
+				macros::EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+				VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 1);
+			}
+			if !VarModule::is_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT) {
+				if frame > 17.0 && frame < 20.0 {
+					HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+					VisibilityModule::set_whole(boma, false);
+					JostleModule::set_status(boma, false);	
+					let new_x = tico_x;
+					let new_y = tico_y;
+					let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
+					PostureModule::set_pos(boma, &pos);
+					PostureModule::init_pos(boma, &pos, true, true);
+					VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 2);
+				}
+				if frame == 26.0 {
+					macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+					VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 3);
+				}
+				if frame > 26.0{
+					VisibilityModule::set_whole(boma, true);
+					JostleModule::set_status(boma, true);	
+					VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 4);
+					HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+				}
+				if frame > 38.0 {
+					CancelModule::enable_cancel(boma);
+				}
+			}
 		}
-		if !VarModule::is_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT) {
-			if frame > 17.0 && frame < 20.0 {
-				HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
-				VisibilityModule::set_whole(boma, false);
-				JostleModule::set_status(boma, false);	
-				let new_x = tico_x;
-				let new_y = tico_y;
-				let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
-				PostureModule::set_pos(boma, &pos);
-				PostureModule::init_pos(boma, &pos, true, true);
-				VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 2);
-			}
-			if frame == 26.0 {
-				macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-				VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 3);
-			}
-			if frame > 26.0{
-				VisibilityModule::set_whole(boma, true);
-				JostleModule::set_status(boma, true);	
-				VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 4);
+		else if MotionModule::frame(boma) > 13.0 && MotionModule::frame(boma) <= 17.0 && VarModule::get_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE) > 0 {
+			// prevent the successful teleport logic if Luma is put into hitstun or killed during startup
+			VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 0);
+			VarModule::on_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
+		}
+		else {
+			VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_X, PostureModule::pos_x(boma) as i32);
+			VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y, PostureModule::pos_y(boma) as i32);
+			if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
 				HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-			}
-			if frame > 38.0 {
-				CancelModule::enable_cancel(boma);
-			}
-		}
-	}
-	else if MotionModule::frame(boma) > 13.0 && MotionModule::frame(boma) <= 17.0 && VarModule::get_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE) > 0 {
-		// prevent the successful teleport logic if Luma is put into hitstun or killed during startup
-		VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 0);
-		VarModule::on_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
-	}
-	else {
-		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_X, PostureModule::pos_x(boma) as i32);
-		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y, PostureModule::pos_y(boma) as i32);
-		if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-			HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-			JostleModule::set_status(boma, true);	
-			VisibilityModule::set_whole(boma, true);
-			if MotionModule::frame(boma) > 38.0 {
-				VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
-				CancelModule::enable_cancel(boma);
+				JostleModule::set_status(boma, true);	
+				VisibilityModule::set_whole(boma, true);
+				if MotionModule::frame(boma) > 38.0 {
+					VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
+					CancelModule::enable_cancel(boma);
+				}
 			}
 		}
 	}
