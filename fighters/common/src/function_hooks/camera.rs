@@ -69,8 +69,8 @@ unsafe fn normal_camera(ptr: u64, float: f32) {
 #[skyline::hook(offset = 0x26207f0)]
 pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCameraParams) {
     call_original!(param_obj, params);
-    params.normal_camera_min_distance = params.normal_camera_min_distance.max(145.0);
-    params.normal_camera_min_distance_2 = params.normal_camera_min_distance_2.max(145.0);
+    params.normal_camera_min_distance = params.normal_camera_min_distance.max(140.0);
+    params.normal_camera_min_distance_2 = params.normal_camera_min_distance_2.max(140.0);
     params.swing_rate_x = 0.0;
     params.swing_rate_y = 0.0;
     params.normal_camera_vertical_angle = params.normal_camera_vertical_angle.max(-5.0_f32.to_radians());
