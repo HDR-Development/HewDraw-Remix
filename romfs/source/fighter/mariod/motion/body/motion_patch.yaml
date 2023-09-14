@@ -55,7 +55,7 @@ attack_air_hi:
     cancel_frame: 30
 attack_air_lw:
   extra:
-    cancel_frame: 41
+    cancel_frame: 43
 special_n:
   animations:
   - name: d00specialntoss.nuanmb
