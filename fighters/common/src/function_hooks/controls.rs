@@ -966,7 +966,8 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // Only happens during jumpsquat currently
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     if *((control_module + 0x645) as *const bool)
-    && !VarModule::is_flag((*boma).object(), vars::common::instance::IS_ATTACK_CANCEL) {
+    && !VarModule::is_flag((*boma).object(), vars::common::instance::IS_ATTACK_CANCEL)
+    && !VarModule::is_flag((*boma).object(), vars::common::status::CSTICK_IRAR) {
         return;
     }
     call_original!(control_module, arg);
@@ -982,6 +983,18 @@ unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::Inli
     if !(*boma).is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
         ControlModule::reset_attack_air_kind(boma);
     }
+}
+
+#[skyline::hook(replace=ControlModule::reset_flick_x)]
+unsafe fn reset_flick_x(boma: &mut BattleObjectModuleAccessor) {
+    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+    call_original!(boma);
+}
+
+#[skyline::hook(replace=ControlModule::reset_flick_y)]
+unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
+    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+    call_original!(boma);
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -1021,6 +1034,8 @@ pub fn install() {
         apply_triggers,
         set_attack_air_stick_hook,
         exec_command_reset_attack_air_kind_hook,
+        reset_flick_x,
+        reset_flick_y,
     );
     skyline::nro::add_hook(nro_hook);
 }
