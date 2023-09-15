@@ -58,8 +58,10 @@ unsafe fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
         else {
             let offset = if fighter.is_situation(*SITUATION_KIND_GROUND) { 0 } else { 2 };
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("koopajr_cannon_shot_r"), Hash40::new("koopajr_cannon_shot_l"), Hash40::new("top"), 0, 7 + offset, 8, 90, 0, 0, 0.5, true, *EF_FLIP_NONE);
-            EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+                LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            }
         }
     }
 }
