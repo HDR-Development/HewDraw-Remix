@@ -81,7 +81,7 @@ unsafe fn sheik_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 5.5, -2, -90, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 6.5, -2, -90, 0, 0, 1, true);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
