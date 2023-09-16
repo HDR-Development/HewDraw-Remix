@@ -14,7 +14,7 @@ unsafe fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
         0
     );
-
+ 
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
         false,
