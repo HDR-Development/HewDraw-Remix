@@ -270,6 +270,197 @@ unsafe fn pickel_fire_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pickel", script = "game_appealsl", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_appealsl_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+    }
+    frame(lua_state, 90.0);
+    if is_excute(fighter){
+        if DamageModule::damage(boma, 0) > 4.0 {
+            DamageModule::add_damage(boma, -4.0, 0);
+        }
+    }
+}
+
+#[acmd_script( agent = "pickel", script = "game_appealsr", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_appealsr_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+    }
+    frame(lua_state, 90.0);
+    if is_excute(fighter){
+        if DamageModule::damage(boma, 0) > 4.0 {
+            DamageModule::add_damage(boma, -4.0, 0);
+        }
+    }
+}
+
+
+#[acmd_script( agent = "pickel", script = "game_catch", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("catch"), false, -1.0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {        
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -4.0, -1.0, Some(0.0), Some(-4.8), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 7.0, 3.2, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 3.6, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_G);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(-0.5), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(0.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 45.0);
+    FT_MOTION_RATE(fighter, 2.0);
+}
+
+#[acmd_script( agent = "pickel", script = "game_catchdash", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_catchdash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("catch_dash"), false, -1.0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.8), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 7.0, 3.2, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 3.6, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_G);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(-0.5), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(0.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 51.0);
+    FT_MOTION_RATE(fighter, 2.0);
+}
+
+#[acmd_script( agent = "pickel", script = "game_catchturn", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_catchturn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("catch_turn"), false, -1.0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.8), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 7.0, -3.2, Some(0.0), Some(7.0), Some(-10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 3.6, 0.0, 7.0, -5.0, Some(0.0), Some(7.0), Some(-9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_G);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(-0.5), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(0.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 52.0);
+    FT_MOTION_RATE(fighter, 2.0);
+}
+
 #[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
 unsafe fn pickel_trolley_drive_empty(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -294,6 +485,67 @@ unsafe fn pickel_trolley_drive_empty(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pickel_forge", script = "game_fall", category = ACMD_GAME, low_priority )]
+unsafe fn forge_fall_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        JostleModule::set_status(boma, false);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        JostleModule::set_status(boma, true);
+        WorkModule::on_flag(boma, *WEAPON_PICKEL_FORGE_INSTANCE_WORK_ID_FLAG_UPDATE_ATTACK);
+    }
+}
+
+#[acmd_script( agent = "pickel_forge", script = "game_fallattackride", category = ACMD_GAME, low_priority )]
+unsafe fn forge_fall_attack_ride_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let pickel = utils::util::get_battle_object_from_id(owner_id);
+    let pickel_boma = &mut *(*pickel).module_accessor;
+    
+    let fall_distance = VarModule::get_float(pickel, vars::pickel::instance::FORGE_START_Y_POS) - PostureModule::pos_y(boma);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0 + (fall_distance / 3.2), 70, (60.0 - (fall_distance / 2.5)), 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0 + (fall_distance / 3.2), 58, (60.0 - (fall_distance / 2.5)), 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+        AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+    }
+}
+
+#[acmd_script( agent = "pickel_forge", script = "game_fallattack", category = ACMD_GAME, low_priority )]
+unsafe fn forge_fall_attack_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let pickel = utils::util::get_battle_object_from_id(owner_id);
+    let fall_distance = VarModule::get_float(pickel, vars::pickel::instance::FORGE_START_Y_POS) - PostureModule::pos_y(boma);
+    if is_excute(agent) {
+        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
+            let pickel = utils::util::get_battle_object_from_id(owner_id);
+            let pickel_boma = &mut *(*pickel).module_accessor;
+            if pickel_boma.is_motion_one_of(&[Hash40::new("attack_air_lw"),
+            Hash40::new("attack_air_lw_2"),
+            Hash40::new("attack_air_lw_fall"),]){
+                //below hitbox shows for 1 frame if this isnt here lol
+           }
+            else{
+                wait(lua_state, 2.0);
+                ATTACK(agent, 0, 0, Hash40::new("top"), 5.0 + (fall_distance / 3.2) , 70, (60.0 - (fall_distance / 1.25)), 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 1, 0, Hash40::new("top"), 5.0 + (fall_distance / 3.2) , 58, (60.0 - (fall_distance / 1.25)), 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+                AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+            }
+        }
+        else{
+            ATTACK(agent, 0, 0, Hash40::new("top"), 5.0 + (fall_distance / 3.2) , 70, (60.0 - (fall_distance / 1.25)), 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("top"), 5.0 + (fall_distance / 3.2) , 58, (60.0 - (fall_distance / 1.25)), 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+            AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -306,10 +558,18 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
+        pickel_appealsl_game,
+        pickel_appealsr_game,
+        pickel_catch_game,
+        pickel_catchdash_game,
+        pickel_catchturn_game,
 
         pickel_fire_attack_lw3_game,
         pickel_fire_attack_lw3_effect,
-        pickel_trolley_drive_empty
+        pickel_trolley_drive_empty,
+        forge_fall_game,
+        forge_fall_attack_ride_game,
+        forge_fall_attack_game,
 
     );
 }
