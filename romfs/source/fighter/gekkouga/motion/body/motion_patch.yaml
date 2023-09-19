@@ -23,6 +23,9 @@ guard_off:
 attack_11:
   extra:
     cancel_frame: 16
+attack_dash:
+  extra:
+    cancel_frame: 37
 attack_hi3:
   extra:
     cancel_frame: 31
