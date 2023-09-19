@@ -880,6 +880,7 @@ pub mod vars {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
             pub const IS_DETACH_BOOST: i32 = 0x1101;
+            pub const IS_LLOID_READY: i32 = 0x1102;
         }
     }
 
