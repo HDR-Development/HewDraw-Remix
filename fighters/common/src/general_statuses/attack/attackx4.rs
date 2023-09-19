@@ -66,10 +66,8 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     else {
         // This should only reduce the highest speed the dacus will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
         if StatusModule::is_changing(fighter.module_accessor) {
-            let spdx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = VarModule::get_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, 0.0);
-            let spx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
         // let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
         // println!("DACUS MOTION: {}", speed_x);
