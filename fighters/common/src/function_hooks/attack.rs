@@ -39,10 +39,8 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
             data.sub_shield = 0;
         }
         if (*boma).is_status(*FIGHTER_STATUS_KIND_CATCH_ATTACK) {
-            // damage
             if !VarModule::is_flag((*boma).object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS) {
-                data.power = 2.0;  // damage
-                data.stop_frame = 2.5;  // hitlag mul
+                data.stop_frame = 3.5;  // hitlag mul
             }
         }
     }

@@ -17,10 +17,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_CatchAttack_Main)]
 unsafe fn status_CatchAttack_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        MotionModule::set_rate(fighter.module_accessor, 0.5);
-    }
-    // Your pummel FAF is equal to your animation's length, with a cap at 12f
+    // Your pummel FAF is equal to your animation's length, with a cap at this param's number of frames
     let pummel_max_cancel_frame = ParamModule::get_int(fighter.object(), ParamType::Common, "pummel_max_cancel_frame") as f32;
     if fighter.global_table[CURRENT_FRAME].get_i32() as f32 + 1.0 >= MotionModule::end_frame(fighter.module_accessor).min(pummel_max_cancel_frame)
     || CancelModule::is_enable_cancel(fighter.module_accessor) {

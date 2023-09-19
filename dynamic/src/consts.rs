@@ -272,6 +272,8 @@ pub mod vars {
 
             pub const PUMMEL_OVERRIDE_GLOBAL_STATS: i32 = 0x1000;
 
+            pub const CSTICK_IRAR: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -441,8 +443,6 @@ pub mod vars {
         pub mod instance {
             // int
             pub const GUNMAN_TIMER: i32 = 0x0100;
-            pub const SPECIAL_HI_FUEL: i32 = 0x0101;
-            pub const FUEL_EFFECT_HANDLER: i32 = 0x0102;
         }
         pub mod status {
             // flag
@@ -878,6 +878,7 @@ pub mod vars {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
             pub const IS_DETACH_BOOST: i32 = 0x1101;
+            pub const IS_LLOID_READY: i32 = 0x1102;
         }
     }
 

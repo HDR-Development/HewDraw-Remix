@@ -266,7 +266,7 @@ unsafe fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
 unsafe fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 1.2);
+    FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 90, 45, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
@@ -280,8 +280,9 @@ unsafe fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 1.2);
+    FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
+        KineticModule::add_speed(boma, &Vector3f::new(0.0, 0.5, 0.0));   
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 90, 45, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 22.0);
@@ -372,7 +373,8 @@ unsafe fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma(); 
     wait(lua_state, 20.0);
     if is_excute(fighter) {
-        SEARCH(fighter, 0, 0, Hash40::new("top"), 3.0, 0.0, 4.0, 0.0, Some(0.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false);
+        //Should never automatically activate
+        //SEARCH(fighter, 0, 0, Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false);
     }
     FT_MOTION_RATE(fighter, 0.1);
 }
@@ -390,6 +392,19 @@ unsafe fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.9, 89, 10, 0, 70, 6.0, 0.0, 0.5, 0.0, None, None, None, 0.3, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 9, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    }
+}
+
+#[acmd_script( agent = "shizue_clayrocket", script = "game_burst", category = ACMD_GAME, low_priority )]
+unsafe fn shizue_clayrocket_burst_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 60, 70, 0, 50, 17.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -417,6 +432,7 @@ pub fn install() {
         //Clayrocet
         shizue_clayrocket_ready_game,
         shizue_clayrocket_fly_game,
+        shizue_clayrocket_burst_game
     );
 }
 
