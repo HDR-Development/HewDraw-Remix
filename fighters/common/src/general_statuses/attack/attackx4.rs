@@ -153,11 +153,11 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     else {
         // This should only reduce the highest speed the dacds will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
         if StatusModule::is_changing(fighter.module_accessor) {
-            let spdx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            //let spdx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
             //println!("old motion speed: {}", spdx);
             let speed_x = VarModule::get_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed_x, 0.0);
-            let spx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            //let spx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
             //println!("new motion speed: {}", spx);
         }
         // Account for added STOP energy (only if the dacds has a non-default multiplier)
