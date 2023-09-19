@@ -60,13 +60,13 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 12.0);
     if is_excute(fighter) {        
-        macros::HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_OFF);
-        macros::HIT_NODE(agent, Hash40::new("arml5"), *HIT_STATUS_OFF);
-        macros::HIT_NODE(agent, Hash40::new("arml4"), *HIT_STATUS_OFF);
-        macros::HIT_NODE(agent, Hash40::new("arml3"), *HIT_STATUS_OFF);
-        macros::HIT_NODE(agent, Hash40::new("arml2"), *HIT_STATUS_OFF);
-        macros::HIT_NODE(agent, Hash40::new("arml1"), *HIT_STATUS_OFF);
-        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("arml5"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("arml4"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("arml3"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("arml2"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("arml1"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_OFF);
     }
     frame(lua_state, 13.0);
     FT_MOTION_RATE_RANGE(fighter,13.0,24.0,8.0);
@@ -94,13 +94,13 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        macros::HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(agent, Hash40::new("arml5"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(agent, Hash40::new("arml4"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(agent, Hash40::new("arml3"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(agent, Hash40::new("arml2"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(agent, Hash40::new("arml1"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml5"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml4"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml3"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml2"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml1"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
     }
 }
 
