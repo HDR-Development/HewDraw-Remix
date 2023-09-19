@@ -255,7 +255,7 @@ pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CV
     *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_FALL,*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_AIR_TURN,*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_END].contains(&next_status);
 
     if !is_still_blasting {
-        ArticleModule::remove_exist(fighter.module_accessor, FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(0));
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(0));
         ItemModule::set_change_status_event(fighter.module_accessor, true);
         WorkModule::set_int(fighter.module_accessor, 0,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
     }
