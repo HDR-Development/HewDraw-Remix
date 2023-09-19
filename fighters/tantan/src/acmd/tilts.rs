@@ -67,6 +67,7 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("arml2"), *HIT_STATUS_OFF);
         macros::HIT_NODE(fighter, Hash40::new("arml1"), *HIT_STATUS_OFF);
         macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
     }
     frame(lua_state, 13.0);
     FT_MOTION_RATE_RANGE(fighter,13.0,24.0,8.0);
@@ -101,6 +102,7 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("arml2"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("arml1"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
     }
 }
 
