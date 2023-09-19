@@ -58,9 +58,19 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let mut sizeFactor = 1.0;
     let mut powerFactor = 1.0;
 
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {        
+        macros::HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml5"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml4"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml3"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml2"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml1"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_OFF);
+    }
     frame(lua_state, 13.0);
     FT_MOTION_RATE_RANGE(fighter,13.0,24.0,8.0);
-    if is_excute(fighter) {        
+    if is_excute(fighter) {     
         let is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
         let bigScale = WorkModule::get_param_float(boma,hash40("param_private"),hash40("arm_l_big_scale"));
         let sizeFactor = if is_dragonized {bigScale} else {1.0};
@@ -81,6 +91,16 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        macros::HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml5"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml4"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml3"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml2"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml1"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
     }
 }
 
