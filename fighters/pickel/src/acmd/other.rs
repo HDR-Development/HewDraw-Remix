@@ -279,8 +279,8 @@ unsafe fn pickel_appealsl_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 90.0);
     if is_excute(fighter){
-        if DamageModule::damage(boma, 0) > 4.0 {
-            DamageModule::add_damage(boma, -4.0, 0);
+        if DamageModule::damage(boma, 0) > 2.0 {
+            DamageModule::add_damage(boma, -2.0, 0);
         }
     }
 }
@@ -294,8 +294,8 @@ unsafe fn pickel_appealsr_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 90.0);
     if is_excute(fighter){
-        if DamageModule::damage(boma, 0) > 4.0 {
-            DamageModule::add_damage(boma, -4.0, 0);
+        if DamageModule::damage(boma, 0) > 2.0 {
+            DamageModule::add_damage(boma, -2.0, 0);
         }
     }
 }
