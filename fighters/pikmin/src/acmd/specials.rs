@@ -52,7 +52,7 @@ unsafe fn pikmin_special_n(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1);
+        MotionModule::set_rate(boma, 1.0);
     }
 }
 
@@ -66,7 +66,7 @@ unsafe fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1);
+        MotionModule::set_rate(boma, 1.0);
     }
 }
 
