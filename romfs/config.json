@@ -103,6 +103,9 @@
 		"fighter/sheik/cmn": [
 			"fighter/sheik/param/hdr.prc"
 		],
+		"fighter/ness/cmn": [
+			"fighter/ness/param/hdr.prc"
+		],
 		"fighter/miigunner/cmn": [
 			"fighter/miigunner/param/hdr.prc"
 		],
