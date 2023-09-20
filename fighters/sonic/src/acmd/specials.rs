@@ -268,7 +268,7 @@ unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
         FT_MOTION_RATE(fighter, 0.013);
-        ATTACK(fighter, 0, 0, bone_hash, 8.0, 80, 80, 0, 45, 5.0, 0.5, 1.5, 0.0, Some(0.5), Some(1.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, bone_hash, 8.0, 80, 90, 0, 50, 5.0, 0.5, 1.5, 0.0, Some(0.5), Some(1.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
         AttackModule::set_captured_same_time_attack(boma, 0, true);
         AttackModule::set_attack_keep_rumble(boma, 0, true);
@@ -333,7 +333,7 @@ unsafe fn sonic_special_n_hit_game(fighter: &mut L2CAgentBase) {
         let temp = Vector3f { x: -0.3, y: 1.0, z: 0.0 };
 		KineticModule::add_speed(boma, &temp);
     }
-    FT_MOTION_RATE(fighter, 0.5);
+    FT_MOTION_RATE(fighter, 0.25);
     
 }
 
