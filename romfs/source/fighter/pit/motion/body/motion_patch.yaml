@@ -1,72 +1,91 @@
 fall:
   blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 escape:
   flags:
     move: false
-attack_12:
-  extra:
-    cancel_frame: 21
 attack_11:
   extra:
     cancel_frame: 20
-attack_lw3:
+attack_12:
+  extra:
+    cancel_frame: 21
+attack_13:
   extra:
     cancel_frame: 30
-special_hi:
+attack_100_end:
   extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-attack_hi4:
+    cancel_frame: 45
+attack_s3_s:
   extra:
-    cancel_frame: 56
-attack_lw4:
-  extra:
-    cancel_frame: 49
+    cancel_frame: 33
 attack_hi3:
   extra:
-    cancel_frame: 29
-fall_aerial:
-  blend_frames: 5
+    cancel_frame: 34
+attack_lw3:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 30
 attack_dash:
   extra:
     cancel_frame: 33
 attack_s4_s:
   extra:
     cancel_frame: 58
-attack_s3_s:
+attack_hi4:
   extra:
-    cancel_frame: 33
-fall_special:
-  blend_frames: 5
-attack_air_b:
+    cancel_frame: 56
+attack_lw4:
+  flags:
+    move: false
   extra:
-    cancel_frame: 40
-attack_air_f:
-  extra:
-    cancel_frame: 45
+    cancel_frame: 49
 attack_air_n:
   extra:
     cancel_frame: 50
-attack_100_end:
+attack_air_f:
   extra:
-    cancel_frame: 45
-special_hi_start:
+    cancel_frame: 46
+attack_air_b:
   extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
+    cancel_frame: 38
+attack_air_hi:
+  extra:
+    cancel_frame: 44
 special_n_fire_s:
   extra:
-    cancel_frame: 30
+    cancel_frame: 32
+special_air_n_fire_s:
+  extra:
+    cancel_frame: 32
 special_n_fire_hi:
+  extra:
+    cancel_frame: 30
+special_air_n_fire_hi:
   extra:
     cancel_frame: 30
 special_air_s_start:
   extra:
     cancel_frame: 0
-special_air_n_fire_hi:
+special_air_s_end:
   extra:
-    cancel_frame: 30
+    cancel_frame: 0
+special_hi_start:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+special_hi:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+catch_attack:
+  extra:
+    cancel_frame: 0

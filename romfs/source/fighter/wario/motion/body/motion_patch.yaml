@@ -7,30 +7,74 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
-throw_hi:
-  extra:
-    cancel_frame: 43
-attack_12:
-  extra:
-    cancel_frame: 26
+    cancel_frame: 12
 attack_11:
   extra:
     cancel_frame: 22
-attack_hi4:
-attack_lw4:
+attack_12:
+  extra:
+    cancel_frame: 26
 attack_hi3:
   extra:
     cancel_frame: 32
 attack_s4_s:
-attack_air_b:
+  flags:
+    move: false
+attack_hi4:
+  flags:
+    move: false
+attack_lw4:
+  flags:
+    move: false
   extra:
-    cancel_frame: 42
+    cancel_frame: 43
 attack_air_f:
   extra:
     cancel_frame: 31
+attack_air_b:
+  extra:
+    cancel_frame: 42
 attack_air_hi:
   extra:
     cancel_frame: 42
-attack_s4_hold:
-attack_hi4_hold:
+attack_air_lw:
+  extra:
+    cancel_frame: 58
+attack_air_lw2:
+  game_script: game_attackairlw2
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03specialairlwflyr.nuanmb
+  scripts:
+  - expression_attackairlw2
+  - sound_attackairlw2
+  - effect_attackairlw2
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 45
+    freeze_during_hitstop: false
+catch_attack:
+  extra:
+    cancel_frame: 8
+throw_f:
+  extra:
+    cancel_frame: 55
+throw_hi:
+  extra:
+    cancel_frame: 85

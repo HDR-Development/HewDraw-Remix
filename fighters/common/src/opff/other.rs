@@ -62,6 +62,8 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         if !((boma.get_grabber_boma().kind() == *FIGHTER_KIND_KIRBY
             && [hash40("throw_f"), hash40("throw_b")].contains(&LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE)))
         || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_ROBOT
+            && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi"))
+        || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_WARIO
             && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi")))
         {
             return;
@@ -302,6 +304,33 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
     && StatusModule::is_changing(fighter.module_accessor)
     && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN) {
         ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
+    }
+}
+
+#[smashline::fighter_frame_callback()]
+pub fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.left_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+        }
+        else if fighter.left_stick_x().signum() != fighter.prev_left_stick_x().signum()
+        || fighter.prev_left_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X);
+        }
+        
+        if fighter.left_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+        }
+        else if fighter.left_stick_y().signum() != fighter.prev_left_stick_y().signum()
+        || fighter.prev_left_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y);
+        }
     }
 }
 
