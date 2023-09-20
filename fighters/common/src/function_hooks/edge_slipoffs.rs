@@ -203,6 +203,15 @@ unsafe fn check_fighter_edge_slipoffs(boma: &mut BattleObjectModuleAccessor) -> 
     
     // CHARIZARD
     if (fighter_kind == *FIGHTER_KIND_PLIZARDON && status_kind == *FIGHTER_PLIZARDON_STATUS_KIND_SPECIAL_S_END) { return true.into(); }
+
+    //KING DEDEDE
+    if fighter_kind == *FIGHTER_KIND_DEDEDE 
+    && [
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE
+    ].contains(&status_kind){
+            return true.into();
+    }
     
     // FOX
     if fighter_kind == *FIGHTER_KIND_FOX 
