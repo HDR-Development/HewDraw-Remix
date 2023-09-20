@@ -101,6 +101,33 @@ unsafe fn lucas_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucas", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
+unsafe fn lucas_attack_air_n_sound (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 7.0);
+	if is_excute(fighter) {
+		PLAY_SEQUENCE(fighter, Hash40::new("seq_lucas_rnd_attack"));
+		PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l03"));
+	}
+    frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l03"));
+	}
+    frame(lua_state, 14.0);
+	if is_excute(fighter) {
+		PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l03"));
+	}
+    frame(lua_state, 18.0);
+	if is_excute(fighter) {
+		PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l03"));
+	}
+	frame(lua_state, 26.0);
+	if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_lucas_attackhard_s01"));
+	}
+}
+
 #[acmd_script( agent = "lucas", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -480,6 +507,7 @@ pub fn install() {
     install_acmd_scripts!(
         lucas_attack_air_n_game,
         lucas_attack_air_n_effect,
+        lucas_attack_air_n_sound,
         lucas_landing_air_n_game,
         lucas_landing_air_n_effect,
         lucas_attack_air_f_game,
