@@ -8,7 +8,12 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="special_n_start_enable_attack_frame">18</int>
+      <int hash="special_n_start_enable_attack_frame">21</int>
+	<float hash="special_n_fail_rot">-25</float>
+	<float hash="special_n_fail_speed">3</float>
+	<int hash="special_n_fail_brake_start_frame">6</int>
+	<float hash="special_n_fail_x_brake">0.1</float>
+	<float hash="special_n_fail_y_brake">0.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -20,6 +25,14 @@
       <float hash="special_hi_jump_accel_x_mul">1.05</float>
       <float hash="special_hi_jump_stable_speed_x_mul">0.7</float>
       <int hash="special_hi_landing_frame">14</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_gimmickjump">
+    <struct index="0">
+      <float hash="shoot_speed">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

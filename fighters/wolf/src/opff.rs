@@ -29,18 +29,14 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 
 // Wolf Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
-        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    if fighter.is_status_one_of(&[
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END])
+    && !fighter.is_in_hitlag()
+    {
+        fighter.check_jump_cancel(false, false);
     }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 2)  // Allows for jump cancel on frame 4 in game
-        || fighter.is_status_one_of(&[
-            *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
-            *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
-            *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END]))
-        && !fighter.is_in_hitlag()
-        {
-            fighter.check_jump_cancel(false);
-        }
 }
 
 unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
@@ -54,14 +50,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_RUSH_END,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_BOUND,
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

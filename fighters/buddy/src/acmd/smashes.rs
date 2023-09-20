@@ -80,7 +80,7 @@ unsafe fn buddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(fighter.module_accessor, 0, false);
     }
     let bkb = 40;
-    let kbg = 110;
+    let kbg = 122;
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 1, 1, Hash40::new("legr"), 13.0, 86, kbg, 0, bkb, 4.4, 1.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

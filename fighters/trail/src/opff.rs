@@ -178,7 +178,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.check_jump_cancel(false) {
+            && fighter.check_jump_cancel(false, false) {
                 return;
             }
         }
@@ -196,7 +196,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.check_jump_cancel(false) {
+            && fighter.check_jump_cancel(false, false) {
                 return;
             }
         }
@@ -221,19 +221,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && ( fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_END,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_TURN,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_ATTACK,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_REBOUND
         ]) 
-        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 7) )
+        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 10) )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
