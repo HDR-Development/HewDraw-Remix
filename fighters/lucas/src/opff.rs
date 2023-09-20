@@ -411,6 +411,14 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) 
+    && fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
+        fighter.set_int(*FIGHTER_STATUS_KIND_FALL, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_NEXT_STATUS)
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     smash_s_angle_handler(fighter, frame);
     dashgrab_position_fix(fighter, frame);
@@ -418,12 +426,13 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
     //djc_momentum_helper(boma, id, status_kind, frame);
-    pk_fire_drift(boma, stick_y);
+    //pk_fire_drift(boma, stick_y);
     offense_charge(fighter, boma, situation_kind);
     offense_effct_handler(fighter);
     reset_flags(fighter, status_kind, situation_kind);
     upspecialend(fighter);
     fastfall_specials(fighter);
+    pkt2_edgeslipoff(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCAS)]

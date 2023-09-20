@@ -19,7 +19,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <int hash="flap_times">7</int>
+      <int hash="flap_times">6</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
