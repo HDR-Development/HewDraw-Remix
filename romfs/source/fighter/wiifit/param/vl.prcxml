@@ -7,9 +7,9 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <int hash="hulahoop_jump_frame">45</int>
-      <float hash="hulahoop_jump_y_speed">0.88</float>
-      <float hash="hulahoop_jump_stick_x_speed_rate">0.3</float>
+      <int hash="hulahoop_jump_frame">40</int>
+      <float hash="hulahoop_jump_y_speed">0.82</float>
+      <float hash="hulahoop_jump_stick_x_speed_rate">0.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
