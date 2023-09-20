@@ -48,6 +48,8 @@ appeal_s_r:
 special_lw:
   blend_frames: 3
   extra:
+    xlu_start: 0
+    xlu_end: 0
     intangible_end_frame: 15
     cancel_frame: 66
 attack_hi3:
