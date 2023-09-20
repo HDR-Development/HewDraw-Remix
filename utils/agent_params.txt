@@ -33,3 +33,4 @@ miifighter: fighter/miifighter/param/hdr.prc
 sheik: fighter/sheik/param/hdr.prc
 miigunner: fighter/miigunner/param/hdr.prc
 falco: fighter/falco/param/hdr.prc
+ness: fighter/ness/param/hdr.prc

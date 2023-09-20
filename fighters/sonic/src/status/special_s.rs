@@ -92,7 +92,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     && !fighter.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(fighter.module_accessor) {
-        fighter.check_jump_cancel(false);
+        fighter.check_jump_cancel(false, false);
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if step != vars::sonic::SPECIAL_S_STEP_START {
