@@ -284,6 +284,28 @@ unsafe fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "effect_koopajrspecialnshoot", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_STATUS_SPECIAL_N_FLAG_FAIL) {
+            EFFECT(fighter, Hash40::new("koopajr_cannon_miss"), Hash40::new("clowntongue2"), 3, 0, 0, 0, 0, -90, 0.5, 0, 0, 0, 0, 0, 0, true);
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+                LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            }
+        }
+        else {
+            let offset = if fighter.is_situation(*SITUATION_KIND_GROUND) { 0 } else { 2 };
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+                LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            }
+        }
+    }
+}
+
 #[acmd_script( agent = "kirby", scripts = ["effect_kroolspecialnfire", "effect_kroolspecialairnfire"], category = ACMD_EFFECT, low_priority )]
 unsafe fn krool_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1866,6 +1888,7 @@ pub fn install() {
         koopa_special_n_max_effect,
         koopa_special_n_max_sound,
         koopa_special_n_max_expression,
+        koopajr_special_n_shoot_effect,
         krool_special_n_fire_effect,
         krool_special_n_fire_sound,
         krool_special_n_fire_expression,

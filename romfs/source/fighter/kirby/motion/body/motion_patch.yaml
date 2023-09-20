@@ -482,13 +482,13 @@ mariod_special_air_n:
   animations:
   - name: mariodd00specialairntoss.nuanmb
   extra:
-    cencel_frame: 47
+    cancel_frame: 47
 mariod_special_n_chill:
   game_script: game_mariodspecialnchill
   flags:
     turn: false
     loop: false
-    move: true
+    move: false
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -517,7 +517,7 @@ mariod_special_air_n_chill:
   flags:
     turn: false
     loop: false
-    move: true
+    move: false
     fix_trans: false
     fix_rot: false
     fix_scale: false

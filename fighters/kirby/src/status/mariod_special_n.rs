@@ -5,9 +5,12 @@ use globals::*;
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         GroundModule::correct(fighter.module_accessor, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("mariod_special_n"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
+        GroundModule::correct(fighter.module_accessor, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("mariod_special_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }
 
