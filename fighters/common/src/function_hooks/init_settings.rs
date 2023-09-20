@@ -164,9 +164,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
             mask += VarModule::RESET_STATUS_FLOAT;
         }
         VarModule::reset(object, mask);
-        
-        VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
-        VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
     }
 
     original!()(boma, situation, kinetic_type, fix, cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)

@@ -38,6 +38,14 @@ attack_s3_s:
 attack_air_f:
   extra:
     cancel_frame: 36
+special_n:
+  extra:
+    xlu_start: 5
+    xlu_end: 8
+special_air_n:
+  extra:
+    xlu_start: 5
+    xlu_end: 8
 special_s_throw_lw:
   extra:
     cancel_frame: 31
