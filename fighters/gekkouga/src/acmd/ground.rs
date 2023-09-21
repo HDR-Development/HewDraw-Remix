@@ -38,7 +38,6 @@ unsafe fn gekkouga_attack_dash_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), 0.0, 2.0, 12.5, 0, 0, 0, 0.9, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -48,7 +47,7 @@ unsafe fn gekkouga_attack_dash_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("gekkouga_water_impact"), false, false);
     }

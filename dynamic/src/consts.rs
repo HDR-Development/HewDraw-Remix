@@ -888,7 +888,7 @@ pub mod vars {
 
     pub mod simon {
         pub mod status {
-            pub const AIR_CROSS: i32 = 0x1100;
+            
         }
     }
 
@@ -1213,6 +1213,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FLAME_ACTIVE: i32 = 0x1100;
+            pub const CLOUD_COVER: i32 = 0x1101;
         }
     }
 

@@ -67,6 +67,17 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
+unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+    && situation_kind == *SITUATION_KIND_AIR {
+        if frame > 13.0 {
+            if boma.is_button_on(Buttons::Attack) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
+            }
+        }
+    }
+}
+
 unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
     if boma.get_aerial() == Some(AerialKind::Bair) && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_CSTICK_ON) {
         if boma.is_cat_flag(Cat1::AttackS4){
@@ -223,6 +234,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
+    uspecial_cancels(boma, situation_kind, frame);
     dair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);
