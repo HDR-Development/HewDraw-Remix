@@ -67,11 +67,11 @@ unsafe fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
     }
