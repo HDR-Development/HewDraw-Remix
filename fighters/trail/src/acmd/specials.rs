@@ -182,15 +182,7 @@ unsafe fn game_specialairs1(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Sped up starting animation of Sonic Blade
-#[smashline::acmd_script(agent = "trail", script = "game_specialsstart", category = ACMD_GAME , low_priority)]
-unsafe fn game_specials_start(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 0.875);
-    frame(lua_state, 16.0);
-    FT_MOTION_RATE(fighter, 1.0);
-}
+
 
 // Is now effectively Sonic Blade 1
 #[acmd_script( agent = "trail", script = "game_specials2" , category = ACMD_GAME , low_priority)]
