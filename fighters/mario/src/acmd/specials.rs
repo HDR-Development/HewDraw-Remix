@@ -684,7 +684,10 @@ unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
         frame(lua_state, 45.0);
         FT_MOTION_RATE_RANGE(fighter, 45.0, 48.0, 3.0);
         frame(lua_state, 48.0);
-        FT_MOTION_RATE_RANGE(fighter, 48.0, 52.0, 7.0); 
+        FT_MOTION_RATE_RANGE(fighter, 48.0, 52.0, 7.0);
+        if is_excute(fighter) {
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        }
         frame(lua_state, 52.0);
         FT_MOTION_RATE_RANGE(fighter, 52.0, 95.0, 35.0);
     }
