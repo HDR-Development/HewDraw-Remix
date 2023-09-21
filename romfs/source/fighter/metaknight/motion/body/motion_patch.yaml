@@ -6,7 +6,7 @@ fall_b:
   blend_frames: 5
 throw_lw:
   extra:
-    cancel_frame: 82
+    cancel_frame: 86
 guard_off:
   blend_frames: 4
   extra:

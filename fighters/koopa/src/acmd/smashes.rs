@@ -40,7 +40,8 @@ unsafe fn koopa_attack_s4_game(fighter: &mut L2CAgentBase) {
         let damage = if excellent { 2.5 } else { 0.0 };
         let attr = if excellent { Hash40::new("collision_attr_magic") } else { Hash40::new("collision_attr_normal") };
         let sound = if excellent { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 23.0 + damage, 361, 97, 0, 28, 8.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 23.0 + damage, 361, 97, 0, 28, 8.0, 0.0, 8.5, 20.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 23.0 + damage, 361, 97, 0, 28, 6.0, 0.0, 8.5, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 26.0);
     FT_MOTION_RATE_RANGE(fighter, 26.0, 40.0, 8.0);

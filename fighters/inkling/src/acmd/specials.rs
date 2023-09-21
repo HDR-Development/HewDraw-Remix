@@ -64,11 +64,25 @@ unsafe fn inkling_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "inkling", script = "game_specialhijump", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhijump(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("head"), 5.0, 361, 55, 0, 75, 3.0, 0.0, -7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("head"), 5.0, 361, 55, 0, 75, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         inkling_special_n_end_game,
         inkling_special_air_n_end_game,
         inkling_special_s_end_effect,
+        game_specialhijump
     );
 }
 
