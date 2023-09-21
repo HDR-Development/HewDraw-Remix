@@ -10,16 +10,16 @@ unsafe fn simon_attack_air_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 7.0);
+    FT_DESIRED_RATE(fighter, 25.0-7.0, 10.0);
     if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 25.0-7.0, 10.0);
         //Air-only hitboxes
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 367, 10, 0, 55, 10.0, 0.0, 10.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         //Ground-only hitboxes
         ATTACK(fighter, 1, 0, Hash40::new("top"), 2.5, 93, 10, 0, 45, 10.0, 0.0, 10.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
     }
     frame(lua_state, 25.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 26.0);
@@ -28,9 +28,9 @@ unsafe fn simon_attack_air_n_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 60, 115, 0, 50, 11.0, 0.0, 10.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
     }
     frame(lua_state, 31.0);
+    FT_DESIRED_RATE(fighter, 43.0-31.0, 17.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_DESIRED_RATE(fighter, 43.0-31.0, 17.0);
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
@@ -47,17 +47,11 @@ unsafe fn simon_whip_attack_air_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 25.0-7.0, 10.0);
-    }
+    FT_DESIRED_RATE(fighter, 25.0-7.0, 10.0);
     frame(lua_state, 25.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 29.0);
-    if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 43.0-29.0, 19.0);
-    }
+    FT_DESIRED_RATE(fighter, 43.0-29.0, 19.0);
 
 }
 
@@ -86,8 +80,8 @@ unsafe fn simon_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK);
     }
     frame(lua_state, 16.0);
+    FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
     if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 45, 65, 0, 65, 2.4, 0.0, 23.0, 39.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 55, 65, 0, 65, 2.4, 0.0, 10.0, 7.0, Some(0.0), Some(23.0), Some(39.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 50, 55, 0, 70, 5.5, 0.0, 10.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -98,6 +92,7 @@ unsafe fn simon_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK);
     }
     frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -147,8 +142,8 @@ unsafe fn simon_attack_air_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK);
     }
     frame(lua_state, 16.0);
+    FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
     if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 45, 65, 0, 65, 2.4, 0.0, 8.0, 41.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 55, 65, 0, 65, 2.4, 0.0, 8.0, 7.0, Some(0.0), Some(8.0), Some(41.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 50, 55, 0, 70, 5.5, 0.0, 8.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -159,8 +154,8 @@ unsafe fn simon_attack_air_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK);
     }
     frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 31.0);
@@ -209,8 +204,8 @@ unsafe fn simon_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK);
     }
     frame(lua_state, 16.0);
+    FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
     if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 45, 65, 0, 65, 2.4, 0.0, -7.0, 39.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 55, 65, 0, 65, 2.4, 0.0, 6.0, 7.0, Some(0.0), Some(-7.0), Some(39.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 50, 55, 0, 70, 5.5, 0.0, 6.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -221,8 +216,8 @@ unsafe fn simon_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK);
     }
     frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 31.0);

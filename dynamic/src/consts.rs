@@ -888,7 +888,7 @@ pub mod vars {
 
     pub mod simon {
         pub mod status {
-            pub const AIR_CROSS: i32 = 0x1100;
+            
         }
     }
 
