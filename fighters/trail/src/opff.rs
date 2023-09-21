@@ -129,7 +129,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Blizzard jump cancel
     if (boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
         && MotionModule::frame(boma) > 12.0) {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
                 WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
                 WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
     }
