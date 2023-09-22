@@ -103,7 +103,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_N_SHOOT,
 		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_N_CHARGE,
 		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_N_RETURN,
-		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

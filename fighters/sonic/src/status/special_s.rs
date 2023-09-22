@@ -72,7 +72,7 @@ pub unsafe fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Lets you grabl edge once it's enabled
+    // Lets you grab edge once it's enabled
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
@@ -89,22 +89,32 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
     if situation == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     && !fighter.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(fighter.module_accessor) {
         fighter.check_jump_cancel(false, false);
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        if step != vars::sonic::SPECIAL_S_STEP_START {
-            let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                WorkModule::set_float(fighter.module_accessor, 15.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+        if step == vars::sonic::SPECIAL_S_STEP_END {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                WorkModule::set_float(fighter.module_accessor, 8.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                return 1.into();
             }
             else {
-                FIGHTER_STATUS_KIND_FALL
-            };
-            fighter.change_status(status.into(), false.into());
-            return 1.into();
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_boost_end"), -1.0, 1.0, false, 0.0, false, false);
+               
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+                return 1.into();
+            }
+        }
+        else {
+            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_boost_end"), -1.0, 1.0, false, 0.0, false, false);
+                
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+                return 1.into();
+            }
         }
         if situation == *SITUATION_KIND_GROUND {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);

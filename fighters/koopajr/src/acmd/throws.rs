@@ -20,13 +20,15 @@ unsafe fn game_throwlw (fighter: &mut L2CAgentBase) {
 		AttackModule::set_catch_only_all(fighter.module_accessor, true, false);
 	}
 	frame(lua_state, 50.0);
-	FT_MOTION_RATE(fighter, 22.0/(78.0-50.0));
+	FT_MOTION_RATE(fighter, 14.0/(78.0-50.0));
 	if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
 		AttackModule::clear_all(fighter.module_accessor);
 		let opponent_boma = fighter.get_grabbed_opponent_boma();
         VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
 	}
+	frame(lua_state, 78.0);
+	FT_MOTION_RATE(fighter, 1.0);
 }
 
 pub fn install() {

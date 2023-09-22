@@ -12,8 +12,8 @@ mod tilts;
 #[repr(C)]
 pub struct PikminInfo {
     damage: f32,
-    //kbg: i32,
-    //bkb: i32,
+    kbg: i32,
+    bkb: i32,
     shield_damage: f32,
     hitlag: f32,
     attr: &'static str,
@@ -26,8 +26,8 @@ impl From<i32> for PikminInfo {
         match other {
             0 => PikminInfo { // Red
                 damage: 1.0,
-                //kbg: 1,
-                //bkb: 1,
+                kbg: 8,
+                bkb: 0,
                 shield_damage: 0.1,
                 delta_angle: 0,
                 hitlag: 1.1,
@@ -36,8 +36,8 @@ impl From<i32> for PikminInfo {
             },
             1 => PikminInfo { // yellow
                 damage: 0.75,
-                //kbg: 1,
-                //bkb: 1,
+                kbg: 0,
+                bkb: 0,
                 shield_damage: 0.0,
                 delta_angle: 8,
                 hitlag: 1.0,
@@ -46,8 +46,8 @@ impl From<i32> for PikminInfo {
             },
             2 => PikminInfo { // Blue
                 damage: 0.8,
-                //kbg: 1,
-                //bkb: 1,
+                kbg: 0,
+                bkb: 0,
                 shield_damage: 0.0,
                 delta_angle: 5,
                 hitlag: 1.0,
@@ -56,8 +56,8 @@ impl From<i32> for PikminInfo {
             },
             3 => PikminInfo { // White
                 damage: 0.6,
-                //kbg: 1,
-                //bkb: 1,
+                kbg: 0,
+                bkb: 0,
                 shield_damage: 0.75,
                 delta_angle: 8,
                 hitlag: 1.0,
@@ -66,8 +66,8 @@ impl From<i32> for PikminInfo {
             },
             _ => PikminInfo { // Violet (Rock), also default
                 damage: 0.8,
-                //kbg: 1,
-                //bkb: 1,
+                kbg: 0,
+                bkb: 0,
                 shield_damage: 0.5,
                 delta_angle: 0,
                 hitlag: 1.2,
