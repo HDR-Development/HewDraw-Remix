@@ -1,23 +1,23 @@
 use super::*;
 
 
-const BACKGROUND_WHITE: [f32; 4] = [244.0 / 255.0, 177.0 / 255.0, 31.0 / 255.0, 1.0];
-const BACKGROUND_BLACK: [f32; 4] = [88.0 / 255.0, 61.0 / 255.0, 4.0 / 255.0, 1.0];
+const BACKGROUND_WHITE: [f32; 4] = [90.0 / 255.0, 90.0 / 255.0, 90.0 / 255.0, 1.0];
+const BACKGROUND_BLACK: [f32; 4] = [24.0 / 255.0, 24.0 / 255.0, 24.0 / 255.0, 1.0];
 
 const FOREGROUND_COLORLESS_WHITE: [f32; 4] = [90.0 / 255.0, 90.0 / 255.0, 90.0 / 255.0, 1.0];
 const FOREGROUND_COLORLESS_BLACK: [f32; 4] = [24.0 / 255.0, 24.0 / 255.0, 24.0 / 255.0, 1.0];
 
-const FOREGROUND_RED_WHITE: [f32; 4] = [244.0 / 255.0, 34.0 / 255.0, 34.0 / 255.0, 1.0];
+const FOREGROUND_RED: [f32; 4] = [197.0 / 255.0, 3.0 / 255.0, 16.0 / 255.0, 1.0];
 
-const FOREGROUND_BLUE_WHITE: [f32; 4] = [7.0 / 255.0, 82.0 / 255.0, 220.0 / 255.0, 1.0];
+const FOREGROUND_BLUE: [f32; 4] = [7.0 / 255.0, 33.0 / 255.0, 194.0 / 255.0, 1.0];
 
-const FOREGROUND_YELLOW_WHITE: [f32; 4] = [244.0 / 255.0, 177.0 / 255.0, 31.0 / 255.0, 1.0];
+const FOREGROUND_YELLOW: [f32; 4] = [244.0 / 255.0, 177.0 / 255.0, 31.0 / 255.0, 1.0];
 
-const FOREGROUND_PURPLE_WHITE: [f32; 4] = [165.0 / 255.0, 54.0 / 255.0, 249.0 / 255.0, 1.0];
+const FOREGROUND_PURPLE: [f32; 4] = [135.0 / 255.0, 29.0 / 255.0, 186.0 / 255.0, 1.0];
 
-const FOREGROUND_ORANGE_WHITE: [f32; 4] = [226.0 / 255.0, 112.0 / 255.0, 29.0 / 255.0, 1.0];
+const FOREGROUND_ORANGE: [f32; 4] = [200.0 / 255.0, 63.0 / 255.0, 27.0 / 255.0, 1.0];
 
-const FOREGROUND_GREEN_WHITE: [f32; 4] = [66.0 / 255.0, 221.0 / 255.0, 55.0 / 255.0, 1.0];
+const FOREGROUND_GREEN: [f32; 4] = [26.0 / 255.0, 170.0 / 255.0, 12.0 / 255.0, 1.0];
 
 const FULL_TEXCOORDS: [f32; 8] = [
     0.0, 0.0,
@@ -258,44 +258,44 @@ impl PowerBoard {
         
         if self.color_1 == 1 {
             if self.color_2 == 2 {
-                self.current_color = FOREGROUND_PURPLE_WHITE;
+                self.current_color = FOREGROUND_PURPLE;
                 //println!("and why he ourple");
 
             }
             else if self.color_2 == 3 {
-                self.current_color = FOREGROUND_ORANGE_WHITE;
+                self.current_color = FOREGROUND_ORANGE;
                 //println!("bornana");
             }
             else {
-                self.current_color = FOREGROUND_RED_WHITE;
+                self.current_color = FOREGROUND_RED;
                 //println!("red");
             }
         }
         else if self.color_1 == 2 {
             if self.color_2 == 1 {
-                self.current_color = FOREGROUND_PURPLE_WHITE;
+                self.current_color = FOREGROUND_PURPLE;
                 //println!("and why he ourple");
             }
             else if self.color_2 == 3 {
-                self.current_color = FOREGROUND_GREEN_WHITE;
+                self.current_color = FOREGROUND_GREEN;
                 //println!("i like cash from my hair to my ass");
             }
             else {
-                self.current_color = FOREGROUND_BLUE_WHITE;
+                self.current_color = FOREGROUND_BLUE;
                 //println!("blud");
             }
         }
         else if self.color_1 == 3 {
             if self.color_2 == 1 {
-                self.current_color = FOREGROUND_ORANGE_WHITE;
+                self.current_color = FOREGROUND_ORANGE;
                 //println!("bornana");
             }
             else if self.color_2 == 2 {
-                self.current_color = FOREGROUND_GREEN_WHITE;
+                self.current_color = FOREGROUND_GREEN;
                 //println!("i like cash from my hair to my ass");
             }
             else {
-                self.current_color = FOREGROUND_YELLOW_WHITE;
+                self.current_color = FOREGROUND_YELLOW;
                 //println!("ielo");
             }
         }

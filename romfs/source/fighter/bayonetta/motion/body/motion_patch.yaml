@@ -41,7 +41,8 @@ special_hi:
     cancel_frame: 46
 special_lw:
   extra:
-    intangible_end_frame: 15
+    xlu_start: 0
+    xlu_end: 0
     cancel_frame: 66
 attack_hi3:
   extra:

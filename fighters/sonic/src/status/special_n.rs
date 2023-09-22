@@ -77,7 +77,7 @@ unsafe extern "C" fn special_n_main_loop2(fighter: &mut L2CFighterCommon) -> L2C
     let attack_frame_diff = advance_counter - enable_attack_frame as f32;
     let mut add_power = 0.0;
     if 0.0 < attack_frame_diff {
-        let auto_frame_diff = auto_attack_frame - auto_attack_frame;
+        let auto_frame_diff = auto_attack_frame - enable_attack_frame; 
         let ratio = attack_frame_diff / auto_frame_diff as f32;
         add_power = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_add_attack_power"));
         add_power *= ratio;
@@ -92,6 +92,7 @@ unsafe extern "C" fn special_n_main_loop2(fighter: &mut L2CFighterCommon) -> L2C
         if pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SONIC_INSTANCE_WORK_ID_FLOAT_SPECIAL_N_ADD_ATTACK_POWER);
             VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
             fighter.change_status(FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START.into(), true.into());
         }
     }
