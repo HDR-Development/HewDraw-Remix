@@ -1,5 +1,6 @@
 use super::*;
 
+mod wait;
 mod dash;
 mod special_n;
 mod special_s;
@@ -50,6 +51,7 @@ fn sonic_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     install_agent_init_callbacks!(sonic_init);
+    wait::install();
     dash::install();
     special_n::install();
     special_s::install();
