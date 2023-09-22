@@ -48,6 +48,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <int hash="wall_hit_max">1</int>
       <float hash="jump_speed_y">2.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>

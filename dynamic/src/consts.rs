@@ -142,6 +142,9 @@ pub mod vars {
 
             pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x0025; // Luigi, Ivysaur, and Young Link use this
             pub const IS_TELEPORT_WALL_RIDE: i32 = 0x0026; // Mewtwo, Palutena, Sheik, and Zelda use this
+
+            pub const STALL_PREVENTION: i32 = 0x0027; //Ness and Lucas down b stall prevention
+
             pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
             pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D; // Used by Kazuya and Sora
 
@@ -242,6 +245,7 @@ pub mod vars {
             pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
             pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
             pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
+            pub const DACUS_TRANSITION_SPEED: i32 = 0x0022;
         }
         pub mod status {
             // flags
@@ -271,6 +275,8 @@ pub mod vars {
             pub const ENABLE_UCF: i32 = 0x1000;
 
             pub const PUMMEL_OVERRIDE_GLOBAL_STATS: i32 = 0x1000;
+
+            pub const CSTICK_IRAR: i32 = 0x1000;
 
             // ints
 
@@ -441,8 +447,6 @@ pub mod vars {
         pub mod instance {
             // int
             pub const GUNMAN_TIMER: i32 = 0x0100;
-            pub const SPECIAL_HI_FUEL: i32 = 0x0101;
-            pub const FUEL_EFFECT_HANDLER: i32 = 0x0102;
         }
         pub mod status {
             // flag
@@ -878,12 +882,13 @@ pub mod vars {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
             pub const IS_DETACH_BOOST: i32 = 0x1101;
+            pub const IS_LLOID_READY: i32 = 0x1102;
         }
     }
 
     pub mod simon {
         pub mod status {
-            pub const AIR_CROSS: i32 = 0x1100;
+            
         }
     }
 
@@ -1208,6 +1213,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FLAME_ACTIVE: i32 = 0x1100;
+            pub const CLOUD_COVER: i32 = 0x1101;
         }
     }
 
@@ -1255,6 +1261,7 @@ pub mod vars {
             // flags
             pub const DEEP_BREATHING_COOLDOWN: i32 = 0x0100;
             pub const IS_RING_VISIBLE: i32 = 0x0101;
+            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0102;
 
             // ints
             pub const SHOW_RING_MOTION: i32 = 0x0100;
