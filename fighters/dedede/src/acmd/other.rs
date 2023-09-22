@@ -294,8 +294,23 @@ unsafe fn dedede_gordo_special_s_shot_effect(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+
+    //Disables vanilla regrab searchbox, this ALWAYS needs to be on due to new regrab
+    WorkModule::on_flag(owner_module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_PERSONAL); 
+
     if is_excute(fighter) {
-        StatusModule::change_status_force(boma, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD, true);
+        KineticModule::mul_speed(boma, &Vector3f{x: 0.7, y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    }
+    for _ in 0..181{
+        if is_excute(fighter) {
+            if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
+                /* Reduces damage on every bounce, by 12.5% of its last damage in this case */
+                let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 5.0) * 0.125);
+                ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+            }
+        }
+        wait(lua_state, 1.0);
     }
  
 }
@@ -313,7 +328,7 @@ unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-
+        
     }
 }
 

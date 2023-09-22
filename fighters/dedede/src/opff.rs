@@ -65,8 +65,8 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         let gordo_pos = *PostureModule::pos(article_boma); //position of gordo
         let char_lr = PostureModule::lr(boma); // LR value before we check everything
         let offset = Vector3f::new(6.0 * char_lr, 9.0, 0.0); //offset, if we need to move the area
-        
-        if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 15.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 10.0){
+
+        if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 18.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 15.0){
             if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) 
             || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) 
             && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
@@ -79,11 +79,9 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
 
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, true);
                         ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)); 
-                        
 
                         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                         
-
                         if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
                             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.5, y: 0.0, z:1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
                             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_get"), 0.0, 1.0, false, 0.0, false, false);
