@@ -3,9 +3,12 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
+#[fighter_frame_callback]
 pub fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if fighter.kind() != FIGHTER_KIND_LUCARIO {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 6);
         MeterModule::set_meter_per_level(fighter.object(), 50.0);
