@@ -540,8 +540,6 @@ unsafe fn expression_attacks42charge(agent: &mut L2CAgentBase) {
             ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_smashhold1"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
             LinkModule::send_event_nodes(agent.module_accessor, *LINK_NO_ARTICLE, Hash40::new_raw(0x1c5609e30f), 0);
         }
-
-        println!("Charge expression");
     }
     frame(agent.lua_state_agent, 61.0);
     if macros::is_excute(agent) {

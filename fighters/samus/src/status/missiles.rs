@@ -8,7 +8,6 @@ unsafe fn missile_homing_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if owner_kind == *FIGHTER_KIND_SAMUS {
         let samus_status = StatusModule::status_kind(owner_boma);
         if samus_status == *FIGHTER_STATUS_KIND_THROW {
-            println!("Throw");
             PostureModule::set_rot(weapon.module_accessor,
             &Vector3f{x:-90.90,y:0.0,z:0.0},
             0
@@ -66,7 +65,6 @@ unsafe fn missile_homing_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
 unsafe fn missile_homing_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     //let rot_x = PostureModule::rot_x(weapon.module_accessor, 0);
     let rot_x = WorkModule::get_float(weapon.module_accessor, *WEAPON_SAMUS_MISSILE_INSTANCE_WORK_ID_FLOAT_ROT);
-    println!("Main Posture: {rot_x}");
 
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_missile"), hash40("h_life"));
     WorkModule::set_int(weapon.module_accessor, life,*WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);

@@ -15,7 +15,6 @@ unsafe fn attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor) + (16.0 * lr), y: PostureModule::pos_y(fighter.module_accessor) + 2.0}, 
         &Vector2f{ x: 0.0, y: -4.0}, true
     ) == 1;
-    println!("Near Ground: {nearGround}");
     VarModule::set_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR, nearGround);
     fighter.sub_shift_status_main(L2CValue::Ptr(attacklw3_main_loop as *const () as _))
 }

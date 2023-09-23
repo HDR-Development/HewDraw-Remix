@@ -3,7 +3,6 @@ use super::*;
 #[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::samus::instance::SPECIAL_LW_CRAWL) {
-        println!("Crawl bomb");
         return original!(fighter);
     }
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_INSTANCE_WORK_ID_FLAG_ST_INIT);

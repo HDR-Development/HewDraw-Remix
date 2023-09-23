@@ -264,12 +264,12 @@ unsafe fn game_specialnice(agent: &mut L2CAgentBase) {
         if c < 1.0 {
             let level = if c < 0.5 {*ATTACK_SOUND_LEVEL_S} else {*ATTACK_SOUND_LEVEL_M};
             let offset = 13.0-((1.0-c)*7.5);
-            println!("Length: {length}");
 
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage as f32, angle, kbg as i32, 0, bkb as i32, size, 0.0, 10.0, offset as f32, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), level, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
         }
         else{
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage as f32, angle-10, (kbg as i32)-10, 0, (bkb as i32)-10, size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage as f32, angle, (kbg as i32)-10, 0, (bkb as i32)-20, size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
+            macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage as f32, angle, (kbg as i32)-10, 0, (bkb as i32)-20, size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
         }
     }
     wait(agent.lua_state_agent, 3.0);
@@ -326,7 +326,6 @@ unsafe fn sound_specialnice(agent: &mut L2CAgentBase) {
         let charge = WorkModule::get_int(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_N_WORK_INT_COUNT) as f32;
         let charge_max = WorkModule::get_param_float(agent.module_accessor, hash40("param_special_n"), hash40("cshot_charge_frame"));
         let c = charge / charge_max;
-        println!("Charge: {charge} Ratio: {c}");
         if c <= 0.25 {
             macros::PLAY_SE_REMAIN(agent, Hash40::new("se_samus_special_n02"));
         }

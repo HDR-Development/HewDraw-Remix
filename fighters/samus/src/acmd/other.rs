@@ -163,7 +163,6 @@ unsafe fn effect_ice_punch(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "effect_ice_punch_break", category = ACMD_EFFECT)]
 unsafe fn effect_ice_punch_break(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        println!("Punch break!");
         EFFECT_OFF_KIND(agent,Hash40::new("sys_ice"),false,false);
         macros::EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("handr"), 0.0, 0.0, 0.0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, true);
     }
@@ -310,7 +309,7 @@ pub fn install() {
         samus_cshot_shoot_game,
         escape_air_game,
         escape_air_slide_game,
-        
+
         effect_appeals,
         sound_appeals,
         expression_appeals,
