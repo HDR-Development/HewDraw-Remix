@@ -16,7 +16,7 @@ throw_lw:
     cancel_frame: 41
 throw_hi:
   extra:
-    cancel_frame: 35
+    cancel_frame: 36
 attack_12:
   blend_frames: 4
   extra:
@@ -115,7 +115,7 @@ special_air_s_u:
     cancel_frame: 43
 special_s_hold_end:
   extra:
-    cancel_frame: 60
+    cancel_frame: 61
 special_air_s_d:
   blend_frames: 2
 special_air_s_d_hit:

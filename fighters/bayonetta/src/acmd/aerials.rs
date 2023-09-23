@@ -387,6 +387,7 @@ unsafe fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 5, false);
     }
     frame(lua_state, 43.0); //35
+    FT_MOTION_RATE_RANGE(fighter, 43.0, 58.0, 13.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
