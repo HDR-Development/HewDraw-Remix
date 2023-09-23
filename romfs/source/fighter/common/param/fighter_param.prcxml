@@ -109,6 +109,7 @@
     </struct>
     <!-- SAMUS -->
     <struct index="3">
+      <bool hash="squat_walk_type">true</bool>
       <float hash="ground_brake">0.06</float>
       <float hash="dash_speed">1.674</float>
       <float hash="run_accel_mul">0.10113</float>

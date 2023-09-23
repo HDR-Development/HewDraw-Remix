@@ -974,6 +974,20 @@ pub mod vars {
             // flags
             pub const SHINESPARK_USED: i32 = 0x0100;
             pub const SHINESPARK_READY: i32 = 0x0101;
+
+            pub const ICE_MODE: i32 = 0x0102;
+            pub const SPECIAL_LW_CRAWL: i32 = 0x0103;
+            pub const SPECIAL_LW_CAN_EXIT: i32 = 0x0104;
+            pub const SPECIAL_LW_EXIT: i32 = 0x0105;
+            
+            // ints
+            pub const SPECIAL_LW_ROTATIONS: i32 = 0x0100;
+            pub const BOMB_COOLDOWN: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const ATTACK_LW3_ICE_PILLAR: i32 = 0x1000;
+            pub const ATTACK_HAS_ICE: i32 = 0x1001;
         }
     }
 

@@ -29,13 +29,19 @@
     <struct index="0">
       <float hash="cshot_charge_frame">100</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="cshot_shot_spd_min">-0.1</float>
+      <float hash="cshot_shot_spd_max">-0.8</float>
+      <float hash="cshot_charge_frame">112</float>
+      <int hash="0x2bf59db69d">0</int>
+      <int hash="cshot_land_f">0</int>
+    </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="supermissile_max_req">2</int>
+      <int hash="supermissile_max_req">1</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -43,12 +49,13 @@
   </list>
   <list hash="param_missile">
     <struct index="0">
-      <int hash="h_life">70</int>
-      <float hash="h_angle">0.75</float>
-      <float hash="h_spd">1.15</float>
-      <int hash="h_homingf">85</int>
-      <float hash="h_spdmul">0.95</float>
-      <float hash="h_spdmin">0.4</float>
+      <int hash="h_life">55</int>
+      <float hash="h_spd">1.625</float>
+      <float hash="h_anglemax">45</float>
+      <float hash="h_angle">0.1</float>
+      <int hash="h_homingf">45</int>
+      <float hash="h_spdmul">1.625</float>
+      <float hash="h_spdmin">1.625</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -77,6 +84,14 @@
       <float hash="sp_lw_ar_vy0">1.28</float>
       <float hash="sp_lw_bj_ang_max">50</float>
       <float hash="sp_lw_bj_spd0">1.65</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_bomb">
+    <struct index="0">
+      <float hash="sp_lw_set_oy">0.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
