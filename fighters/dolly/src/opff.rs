@@ -47,7 +47,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
 
         // Triple Geyser
         if boma.is_cat_flag( Cat4::SpecialN2Command) {
-            if MeterModule::drain(boma.object(), 10) {
+            if MeterModule::drain(boma.object(), 6) {
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
@@ -79,7 +79,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&status_kind) {
         // Triple Geyser
         if boma.is_cat_flag( Cat4::SpecialN2Command) {
-            if MeterModule::drain(boma.object(), 10) {
+            if MeterModule::drain(boma.object(), 6) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -94,7 +94,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         && motion_kind == 0x13434c5490 as u64 {
         if boma.is_cat_flag( Cat4::SpecialN2Command) {
-            if MeterModule::drain(boma.object(), 6) {
+            if MeterModule::drain(boma.object(), 4) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -198,13 +198,94 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 
 // TRAINING MODE
 // Full Meter Gain via shield during taunt
-unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+unsafe fn training_mode_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let mut agent_base = fighter.fighter_base.agent_base;
     if is_training_mode() {
+        MeterModule::set_meter_cap(boma.object(), 10);
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                let meter_max = ParamModule::get_float(boma.object(), ParamType::Common, "meter_max_damage");
+                let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
                 MeterModule::add(boma.object(), meter_max);
+            }
+        }
+    }
+}
+
+unsafe fn meter_cap_control(boma: &mut BattleObjectModuleAccessor) {
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
+    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
+        MeterModule::reset(boma.object());
+        // println!("is result mode");
+    }
+    
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,]) {
+        MeterModule::reset(boma.object());
+        // println!("is victory");
+    }
+
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ENTRY,]) || !sv_information::is_ready_go() {
+        VarModule::on_flag(boma.object(), vars::dolly::instance::IS_INIT_METER);
+        // println!("is entry, add 1 bar");
+    }
+
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) && !is_training_mode() {
+        VarModule::on_flag(boma.object(), vars::dolly::instance::INCREASE_METER_STOCKS);
+        // println!("is death, add 1 bar and extend cap");
+    }
+
+    if VarModule::is_flag(boma.object(), vars::dolly::instance::IS_INIT_METER) {
+        MeterModule::reset(boma.object());
+        VarModule::set_int(boma.object(), vars::dolly::instance::METER_STOCKS, 0);
+        VarModule::set_int(boma.object(), vars::dolly::instance::CURRENT_STOCKS, app::lua_bind::FighterInformation::stock_count(info) as i32);
+        MeterModule::set_meter_cap(boma.object(), 4);
+        MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()) * 2.0);
+        VarModule::off_flag(boma.object(), vars::dolly::instance::IS_INIT_METER);
+    }
+
+    if VarModule::is_flag(boma.object(), vars::dolly::instance::INCREASE_METER_STOCKS) {
+        if VarModule::get_int(boma.object(), vars::dolly::instance::CURRENT_STOCKS) > app::lua_bind::FighterInformation::stock_count(info) as i32 {
+            VarModule::set_int(boma.object(), vars::dolly::instance::CURRENT_STOCKS, app::lua_bind::FighterInformation::stock_count(info) as i32);
+            if VarModule::get_int(boma.object(), vars::dolly::instance::METER_STOCKS) < 3 {
+                VarModule::set_int(boma.object(), vars::dolly::instance::METER_STOCKS, VarModule::get_int(boma.object(), vars::dolly::instance::METER_STOCKS) + 1);
+            }
+            MeterModule::set_meter_cap(boma.object(), 4 + (VarModule::get_int(boma.object(), vars::dolly::instance::METER_STOCKS) * 2));
+            MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()) * 2.0);
+        }
+        VarModule::off_flag(boma.object(), vars::dolly::instance::INCREASE_METER_STOCKS);
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END,
+        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
             }
         }
     }
@@ -218,10 +299,12 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // super_special_meter_activation(boma);
     cancel_supers_early(boma, status_kind, situation_kind, frame);
     super_cancels(fighter, boma, id, status_kind, cat[3], motion_kind);
-    full_meter_training_taunt(fighter, boma, status_kind);
+    training_mode_meter(fighter, boma, status_kind);
     power_dunk_break(boma);
     special_cancels(boma);
     ex_special_scripting(boma);
+    meter_cap_control(boma);
+    fastfall_specials(fighter);
 
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
@@ -373,7 +456,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_special_special_cancel{
         if !StopModule::is_stop(boma){
-            if MeterModule::drain(boma.object(), 2) {
+            if MeterModule::drain(boma.object(), 1) {
                 boma.change_status_req(new_status, false);
             }
         }
@@ -523,7 +606,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_metered_cancel{
         if !StopModule::is_stop(boma) && !VarModule::is_flag(boma.object(), vars::dolly::status::UNABLE_CANCEL_S3_DASH){
-            if MeterModule::drain(boma.object(), 2) {
+            if MeterModule::drain(boma.object(), 1) {
                 if new_status == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
                     boma.change_status_req(new_status, true);
                 }
@@ -703,7 +786,7 @@ unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
-    if MeterModule::drain(boma.object(), 10) {
+    if MeterModule::drain(boma.object(), 6) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
@@ -761,7 +844,7 @@ pub fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         utils::ui::UiManager::set_ff_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             MeterModule::meter_per_level(fighter.object())
         );
     }

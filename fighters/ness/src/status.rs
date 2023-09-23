@@ -59,6 +59,18 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
         }
         // [insert stubbed redirection/bonk function here]
         // LOL good riddance fucker
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && fighter.status_frame() >= 38 {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+            let fall_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "fall_max_x_mul");
+            sv_kinetic_energy!(
+                set_stable_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                air_speed_x_stable * fall_x_mul,
+                0.0
+            );
+        }
         0.into()
     }
     else {

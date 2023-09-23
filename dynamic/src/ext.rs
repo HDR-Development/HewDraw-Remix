@@ -268,9 +268,8 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const TiltAttack = 0x1;
-        const Wavedash = 0x2;
-        const ShieldDrop = 0x4;
+        const Wavedash = 0x1;
+        const ShieldDrop = 0x2;
     }
 
     pub struct PadFlag: i32 {
@@ -307,7 +306,8 @@ bitflags! {
         // would get mapped to TiltAttack (issue #776)
         const TiltAttack  = 0x80000;
         const CStickOverride = 0x100000;
-        const Parry = 0x200000;
+        const SpecialParry = 0x200000;
+        const TauntParry = 0x400000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -426,7 +426,9 @@ pub trait BomaExt {
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
     unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn prev_left_stick_x(&mut self) -> f32;
     unsafe fn left_stick_y(&mut self) -> f32;
+    unsafe fn prev_left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -454,6 +456,7 @@ pub trait BomaExt {
     // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
+    unsafe fn is_item(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
     // gets the boma of the player who you are grabbing
     unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
@@ -495,7 +498,8 @@ pub trait BomaExt {
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
-    // tech/general subroutine
+
+    // tech/general subroutines
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
@@ -503,7 +507,7 @@ pub trait BomaExt {
     unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
     // Checks for status and enables transition to jump
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool;
     // Checks for status and enables transition to airdodge
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
@@ -511,6 +515,13 @@ pub trait BomaExt {
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
+
+    /// try to pickup an item nearby
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
+
+    unsafe fn get_player_idx_from_boma(&mut self) -> i32;
+
+    unsafe fn is_parry_input(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -638,11 +649,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn prev_left_stick_x(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_x(self);
+        } else {
+            return ControlModule::get_stick_prev_x(self);
+        }
+    }
+
     unsafe fn left_stick_y(&mut self) -> f32 {
         if self.is_button_on(Buttons::CStickOverride) {
             return ControlModule::get_sub_stick_y(self);
         } else {
             return ControlModule::get_stick_y(self);
+        }
+    }
+
+    unsafe fn prev_left_stick_y(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_y(self);
+        } else {
+            return ControlModule::get_stick_prev_y(self);
         }
     }
 
@@ -733,6 +760,10 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn is_weapon(&mut self) -> bool {
         return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_WEAPON;
+    }
+
+    unsafe fn is_item(&mut self) -> bool {
+        return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_ITEM;
     }
 
     unsafe fn kind(&mut self) -> i32 {
@@ -929,7 +960,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// If update_lr is true, we set your facing direction based on your stick position
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool {
+    /// If skip_other_checks is true, we do not check for USmash
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(
@@ -940,10 +972,15 @@ impl BomaExt for BattleObjectModuleAccessor {
                 fighter.module_accessor,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
             );
-            if fighter
-                .sub_transition_group_check_ground_jump_mini_attack()
-                .get_bool()
-                || fighter.sub_transition_group_check_ground_jump().get_bool()
+            if !skip_other_checks {
+                WorkModule::enable_transition_term(
+                    fighter.module_accessor,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+                );
+            }
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() // buffered aerials
+            || (!skip_other_checks && fighter.sub_transition_group_check_ground_attack().get_bool()) // up smash
+            || fighter.sub_transition_group_check_ground_jump().get_bool() // regular jumps
             {
                 if update_lr {
                     PostureModule::set_stick_lr(self, 0.0);
@@ -1135,6 +1172,84 @@ impl BomaExt for BattleObjectModuleAccessor {
                 WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
+    }
+
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> {
+        use smash2::app::ItemManager;
+
+        // non fighters cant pickup items
+        if !self.is_fighter() {
+            return None;
+        }
+
+        // item manager singleton instance
+        let item_manager = ItemManager::instance().unwrap();
+
+        // if you already have an item, return that item instead
+        if ItemModule::is_have_item(self, 0) {
+            let have_id = ItemModule::get_have_item_id(self, 0);
+            let item = item_manager.find_active_item_from_id(have_id as u32) as *mut smash::app::Item;
+            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
+            return Some(item_boma);
+        }
+        
+        // get the global position of the bone, defaulting to "top"
+        let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        let bone_hash = bone.unwrap_or(Hash40::new("top"));
+        ModelModule::joint_global_position(self, bone_hash, fighter_pos, false);
+        // zero out the z axis
+        fighter_pos.z = 0.0;
+        match offset {
+            Some(offset) => {
+                fighter_pos.x += offset.x * PostureModule::lr(self);
+                fighter_pos.y += offset.y;
+            },
+            None => {}
+        }
+        
+        let total = item_manager.get_num_of_active_item_all();
+        for id in 0..total {
+            // pointer to the item
+            let item_ptr = item_manager.get_active_item(id as u64);
+            if item_ptr.is_null() {
+                continue;
+            }
+
+            // if this item is close to us, grab it
+            let item = item_ptr as *mut smash::app::Item;
+            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
+            let item_pos = PostureModule::pos(item_boma);
+
+            if ((*item_pos).x - (*fighter_pos).x).abs() < range
+                && ((*item_pos).y - (*fighter_pos).y).abs() < range {
+                ItemModule::have_item_instance(self, item, 0, false, false, false, false);
+                return Some(item_boma);
+            }
+        }
+        return None;
+    }
+
+    unsafe fn get_player_idx_from_boma(&mut self) -> i32 {
+        let control_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x48 / 8);
+        let next = *((control_module + 0x118) as *const u64);
+        let next = *((next + 0x58) as *const u64);
+        let next = *((next + 0x8) as *const u64);
+        *((next + 0x8) as *const i32)
+    }
+
+    unsafe fn is_parry_input(&mut self) -> bool {
+        let max_tap_buffer_window = ControlModule::get_command_life_count_max(self) as i32;
+
+        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < max_tap_buffer_window  // checks if Taunt input was pressed within max tap buffer window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
+        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
+
+        (self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
+        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered)
     }
 }
 
@@ -1340,6 +1455,7 @@ pub struct Controller {
 /// Re-ordered bitfield the game uses for buttons
 #[bitfield]
 #[derive(Debug, Default, Copy, Clone)]
+#[repr(C)]
 pub struct ButtonBitfield {
     pub dpad_up: bool,
     pub dpad_right: bool,
@@ -1405,6 +1521,7 @@ pub struct MappedInputs {
 
 pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
 
+#[repr(C)]
 pub struct StatusInfo {
     pub pre: Option<StatusFunc>,
     pub main: Option<StatusFunc>,

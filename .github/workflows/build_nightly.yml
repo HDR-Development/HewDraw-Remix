@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:3.2.0-no-dkp
+      image: hewdrawremix/hewdraw-builder:latest
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -90,6 +90,13 @@ jobs:
     
     - name: checkout version
       uses: actions/checkout@v2
+
+    #- name: Rust Cache
+    #  uses: Swatinem/rust-cache@v2.5.1
+    #  with:
+    #    workspaces: "plugin"
+    #    cache-targets: true
+    #    cache-all-crates: true
 
     # build the project
     - run: |
@@ -242,6 +249,18 @@ jobs:
 
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
+
+    - name: Push lvd file to Suddy's HDRStageTool
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
+      with:
+        source_file: 'artifacts/lvd.zip'
+        destination_folder: 'nightly'
+        destination_repo: 'SuddyN/HDRStageTool'
+        user_email: 'suddy121800@hotmail.com'
+        user_name: 'SuddyN'
+        destination_branch: 'gh-pages'
 
     - name: Upload full package to nightlies
       uses: svenstaro/upload-release-action@v2

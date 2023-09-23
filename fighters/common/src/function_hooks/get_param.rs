@@ -18,6 +18,7 @@ pub fn install() {
 static INT_OFFSET: usize = 0x4e5380; // 12.0.0
 static FLOAT_OFFSET: usize = 0x4e53C0; // 12.0.0
 
+
 #[skyline::hook(offset=0x720540)]
 unsafe fn get_offset(arg0: u64, arg1: u64) {
     static mut ONCE: bool = true;
@@ -59,6 +60,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
                 return 3;
             }
         }
+
         else if fighter_kind == *FIGHTER_KIND_PACKUN {
             if boma_reference.is_motion(Hash40::new("special_hi"))
             && !boma_reference.is_prev_situation(*SITUATION_KIND_AIR)
@@ -76,10 +78,10 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
         if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
-            if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+            if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) {
                 if x1 == hash40("param_spikeball") { 
                     if x2 == hash40("hop_life") {
-                        return 45;
+                        return 105;
                     }
                 }
             }
@@ -90,6 +92,16 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             //         }
             //     }
             // }
+        }
+
+        else if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
+            if x1 == hash40("param_auraball") {
+                if VarModule::is_flag(boma_reference.object(), vars::lucario::instance::IS_POWERED_UP) {
+                    if x2 == hash40("life") {
+                        return 180;
+                    }
+                }
+            }
         }
     }
 
@@ -121,10 +133,36 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
         */
 
+        // handle reduction of the tumble threshold for DK when in barrel carry
+        if x2 == hash40("damage_level3") 
+        && boma_reference.kind() == *FIGHTER_KIND_DONKEY
+         {
+            let status = boma_reference.status();
+
+            // if you are in any of the FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_* statuses,
+            // reduce the dumble threshold.
+            if status >= 481 && status <= 489 {
+                return original!()(x0, x1, x2) * 0.5;
+            }
+        }
+
         // Coupled with "landing_heavy" change in change_motion hook
         // Because we start heavy landing anims on f2 rather than f1, we need to push back the heavy landing FAF by 1 frame so it is accurate to the defined per-character param
         if x1 == hash40("landing_frame") {
             return original!()(x0, hash40("landing_frame"), 0) + 1.0;
+        }
+
+        // Ken aerial hadouken modified offsets for aerial version
+        else if fighter_kind == *FIGHTER_KIND_KEN {
+            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR) {
+                if x1 == hash40("param_special_n") {
+                    if x2 == hash40("shoot_x") {
+                        return 11.0;
+                    } else if x2 == hash40("shoot_y") {
+                        return 6.0;
+                    }
+                }
+            }
         }
         
         else if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN {
@@ -168,7 +206,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         
         else if fighter_kind == *FIGHTER_KIND_MIIGUNNER {
             if x1 == hash40("param_special_hi") && x2 == hash40("hi1_first_jump_y_speed") {
-                return 3.5 + 2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) / 29.0;
+                return 3.5 + (2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::CURRENT_CHARGE)) / 29.0;
             }
         }
 
@@ -186,7 +224,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
-
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
@@ -237,6 +274,15 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         //         }
         //     }
         // }
+        else if fighter_kind == *FIGHTER_KIND_DIDDY {
+            if x1 == hash40("param_special_hi") {
+                if x2 == hash40("special_hi_jet_ang_f_max") {
+                    if WorkModule::get_int(boma, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_WORK_INT_SITUATION) == *SITUATION_KIND_GROUND {
+                        return 5.0;
+                    }
+                }
+            }
+        }
     
     }
     else if boma_reference.is_weapon() {
@@ -286,15 +332,26 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
     
+        else if fighter_kind == *WEAPON_KIND_MIIGUNNER_GRENADELAUNCHER {
+            if x1 == hash40("param_grenadelauncher") {
+                if x2 == hash40("angle") {
+                    let charge = VarModule::get_float(owner_module_accessor.object(), vars::miigunner::instance::GRENADE_CHARGE);
+                    return 34.0 + charge;
+                }
+            }
+        }
 
         else if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
-            if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+            if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) {
                 if x1 == hash40("param_spikeball") {
                     if x2 == hash40("hop_speed_x") {
                         return 0.0;
                     }
                     else if x2 == hash40("hop_speed_y") {
                         return 0.0;
+                    }
+                    else if x2 == hash40("hop_clear_attack_speed") && MotionModule::motion_kind(boma_reference) == hash40("explode") {
+                        return -0.1;
                     }
                 }
             }
@@ -315,6 +372,26 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
+
+        else if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
+            if x1 == hash40("param_auraball") {
+                if VarModule::is_flag(boma_reference.object(), vars::lucario::instance::IS_POWERED_UP) {
+                    // if x2 == hash40("attack_mul") {
+                    //     return 1.0;
+                    // }
+                    // if x2 == hash40("angle") {
+                    //     return VarModule::get_float(boma_reference.object(), vars::lucario::status::SPECIAL_N_ANGLE);
+                    // }
+                    if x2 == hash40("min_speed") {
+                        return 0.7;
+                    }
+                    if x2 == hash40("max_speed") {
+                        return 0.7;
+                    }
+                }
+            }
+        }
+
     }
 
     original!()(x0, x1, x2)

@@ -28,20 +28,22 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
             VarModule::on_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT);
         } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK {
             VarModule::on_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT);
-        }
-    }
-    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
+        } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
             VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
         }
     }
+    // if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    //     if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
+    //         VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
+    //     }
+    // }
 }
 
 // Transition to fall after side special rebound on hit/shield
 unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
         if (boma.is_prev_status(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END) && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
-            || (boma.is_prev_status_one_of(&[*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK]) && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
+        || (boma.is_prev_status_one_of(&[*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK]) && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
@@ -84,7 +86,7 @@ unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommo
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.0, y: 1.0, z: 1.0};
+	let long_sword_scale = Vector3f{x: 1.0, y: 0.85, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }				 
@@ -105,6 +107,54 @@ unsafe fn up_special_proper_landing(fighter: &mut smash::lua2cpp::L2CFighterComm
     }
 }
 
+unsafe fn attack_100_end_early(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if motion_kind == hash40("attack_100") && frame >= 22.0 {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
+    }
+}
+
+unsafe fn special_lw_landing_lag(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if [
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END,
+    ].contains(&status_kind)
+    && situation_kind == *SITUATION_KIND_GROUND
+    && StatusModule::prev_situation_kind(boma) != *SITUATION_KIND_GROUND {
+        StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     dim_cape_early_attack_cancel(boma, status_kind, frame);
@@ -113,6 +163,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     reset_flags(boma, id, status_kind, situation_kind);
     sword_length(boma);
     up_special_proper_landing(fighter);
+    //attack_100_end_early(fighter, boma, motion_kind, frame);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_METAKNIGHT )]

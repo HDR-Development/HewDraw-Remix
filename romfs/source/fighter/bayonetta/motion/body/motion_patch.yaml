@@ -1,0 +1,210 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+throw_b:
+  extra:
+    cancel_frame: 47
+throw_lw:
+  extra:
+    cancel_frame: 41
+throw_hi:
+  extra:
+    cancel_frame: 35
+attack_12:
+  blend_frames: 4
+  extra:
+    cancel_frame: 25
+attack_13:
+  extra:
+    cancel_frame: 27
+special_s:
+  extra:
+    cancel_frame: 66
+attack_11:
+  blend_frames: 3
+  extra:
+    cancel_frame: 25
+attack_lw3:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 32
+special_hi:
+  extra:
+    cancel_frame: 45
+appeal_s_l:
+  extra:
+    cancel_frame: 31
+appeal_s_r:
+  extra:
+    cancel_frame: 31
+special_lw:
+  blend_frames: 3
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 66
+attack_hi3:
+  extra:
+    cancel_frame: 25
+appeal_lw_r:
+  blend_frames: 5
+  animations:
+  - name: j02win1.nuanmb
+  scripts:
+  - expression_win1
+  - sound_appeallwr
+  - effect_win1
+appeal_hi_l:
+  extra:
+    cancel_frame: 24
+attack_s4_s:
+attack_s3_s:
+  blend_frames: 5
+  extra:
+    cancel_frame: 46
+appeal_hi_r:
+  extra:
+    cancel_frame: 24
+appeal_lw_l:
+  blend_frames: 10
+  animations:
+  - name: j02win2.nuanmb
+  scripts:
+  - expression_win2b
+  - sound_appeallwl
+  - effect_win2
+attack_s4_hi:
+attack_air_f:
+  extra:
+    cancel_frame: 32
+attack_s3_s3:
+  blend_frames: 3
+  extra:
+    cancel_frame: 47
+attack_s4_lw:
+attack_s3_s2:
+  blend_frames: 3
+  extra:
+    cancel_frame: 49
+attack_air_f2:
+  extra:
+    cancel_frame: 37
+attack_air_f3:
+  extra:
+    cancel_frame: 45
+attack_air_hi:
+  extra:
+    cancel_frame: 37
+special_air_lw:
+  blend_frames: 3
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 66
+attack_100_end:
+  extra:
+    cancel_frame: 41
+special_air_hi:
+  extra:
+    cancel_frame: 45
+special_air_s_u:
+  blend_frames: 3
+  extra:
+    cancel_frame: 45
+special_n_end_f:
+  flags:
+    move: true
+  blend_frames: 5
+special_n_end_h:
+  flags:
+    move: true
+special_n_loop_f:
+  flags:
+    move: true
+special_n_fire_h:
+  flags:
+    move: true
+escape_batwithin:
+  extra:
+    cancel_frame: 50
+special_n_fire_f:
+  flags:
+    move: true
+special_n_loop_h:
+  flags:
+    move: true
+special_n_start_f:
+  flags:
+    move: true
+special_n_start_h:
+  flags:
+    move: true
+escape_b_batwithin:
+  extra:
+    cancel_frame: 50
+special_n_charge_h:
+  flags:
+    move: true
+special_n_charge_f:
+  flags:
+    move: true
+special_s_hold_end:
+  extra:
+    cancel_frame: 53
+escape_f_batwithin:
+  extra:
+    cancel_frame: 50
+special_air_n_end_f:
+  flags:
+    move: true
+  blend_frames: 5
+special_air_s_d:
+  blend_frames: 2
+special_air_s_d_hit:
+  extra:
+    cancel_frame: 32
+special_air_n_end_h:
+  flags:
+    move: true
+special_air_n_fire_f:
+  flags:
+    move: true
+escape_air_batwithin:
+  extra:
+    cancel_frame: 50
+special_lw_batwithin:
+  blend_frames: 3
+special_air_n_loop_h:
+  flags:
+    move: true
+special_air_n_loop_f:
+  flags:
+    move: true
+special_air_n_fire_h:
+  flags:
+    move: true
+special_air_n_start_f:
+  flags:
+    move: true
+special_air_n_start_h:
+  flags:
+    move: true
+special_air_n_charge_f:
+  flags:
+    move: true
+special_air_n_charge_h:
+  flags:
+    move: true
+special_air_lw_batwithin:
+  blend_frames: 3
+catch_attack:
+  extra:
+    cancel_frame: 0

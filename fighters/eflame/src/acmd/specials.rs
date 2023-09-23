@@ -19,9 +19,9 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 95, 100, 53, 20, 2.5, 0.0, 21.5, 5.0, Some(0.0), Some(15.0), Some(5.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 100, 100, 53, 20, 4.0, 0.0, 20.0, 11.0, Some(0.0), Some(14.0), Some(11.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 100, 100, 53, 20, 4.0, 0.0, 20.0, 15.0, Some(0.0), Some(14.0), Some(15.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 2, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 2, 10.0, false);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -29,9 +29,9 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 95, 100, 50, 20, 2.5, 0.0, 23.0, 5.0, Some(0.0), Some(19.0), Some(5.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 100, 100, 50, 20, 4.0, 0.0, 24.0, 11.0, Some(0.0), Some(20.0), Some(11.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 100, 100, 50, 20, 4.0, 0.0, 24.0, 15.0, Some(0.0), Some(20.0), Some(15.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 2, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 2, 10.0, false);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -70,7 +70,6 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        println!("31");
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
     frame(lua_state, 32.0);
@@ -79,7 +78,7 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
         KineticModule::add_speed(boma, &Vector3f{x: 0.0, y: -7.0, z: 0.0});
         WorkModule::on_flag(boma, *FIGHTER_EFLAME_STATUS_SPECIAL_HI_FLAG_END_CONTROL);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 280, 130, 39, 0, 6.0, 0.0, 3.0, 9.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
+        // AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {

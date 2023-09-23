@@ -102,12 +102,12 @@ unsafe fn littlemac_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 7.5, 2.5, 25, 0, 0, 0.9, false);
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 7.5, -5.5, 25, 0, 0, 0.9, false);
+        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, -7, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 2, 17.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, true);
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 2, 10.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, true);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {

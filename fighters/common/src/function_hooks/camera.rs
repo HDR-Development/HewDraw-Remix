@@ -1,14 +1,6 @@
 use super::*;
 use utils::ext::*;
 
-
-// Doubles camera speed
-#[skyline::hook(offset = 0x4fdbf0)]
-unsafe fn normal_camera(ptr: u64, float: f32) {
-    call_original!(ptr, float);
-    call_original!(ptr, float);
-}
-
 #[repr(C)]
 pub struct NormalCameraParams {
     pub normal_camera_min_distance: f32,
@@ -22,18 +14,6 @@ pub struct NormalCameraParams {
     pub target_interpolation_rate: f32,
     // others...
 }
-
-#[skyline::hook(offset = 0x26207f0)]
-pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCameraParams) {
-    call_original!(param_obj, params);
-    params.normal_camera_min_distance = params.normal_camera_min_distance.max(120.0);
-    params.normal_camera_min_distance_2 = params.normal_camera_min_distance_2.max(120.0);
-    params.swing_rate_x = 0.0;
-    params.swing_rate_y = 0.0;
-    params.normal_camera_vertical_angle = params.normal_camera_vertical_angle.max(-5.0_f32.to_radians());
-    params.target_interpolation_rate = 0.9;
-}
-
 
 #[repr(C)]
 pub struct PauseCameraParams {
@@ -58,6 +38,45 @@ pub struct PauseCameraParams {
     // others...
 }
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[repr(i32)]
+pub enum QuakeKind {
+    None = 0x0,
+    KeepSmall,
+    SmallHalf,
+    Small,
+    KeepMiddle,
+    Middle,
+    KeepLarge,
+    Large,
+    KeepExtraLarge,
+    ExtraLarge,
+    PowerBlock,
+    Knockout,
+    DollyStage,
+    ExtraExtraLarge,
+    Invalid,
+}
+
+
+// Doubles camera speed
+#[skyline::hook(offset = 0x4fdbf0)]
+unsafe fn normal_camera(ptr: u64, float: f32) {
+    call_original!(ptr, float);
+    call_original!(ptr, float);
+}
+
+#[skyline::hook(offset = 0x26207f0)]
+pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCameraParams) {
+    call_original!(param_obj, params);
+    params.normal_camera_min_distance = params.normal_camera_min_distance.max(140.0);
+    params.normal_camera_min_distance_2 = params.normal_camera_min_distance_2.max(140.0);
+    params.swing_rate_x = 0.0;
+    params.swing_rate_y = 0.0;
+    params.normal_camera_vertical_angle = params.normal_camera_vertical_angle.max(-5.0_f32.to_radians());
+    params.target_interpolation_rate = 0.9;
+}
+
 // The following function hook handles Unrestricted Camera
 #[skyline::hook(offset = 0x26226b0)]
 pub fn parse_stprm_pause_camera_params(param_obj: u64, params: &mut PauseCameraParams) {
@@ -80,10 +99,25 @@ pub fn parse_stprm_pause_camera_params(param_obj: u64, params: &mut PauseCameraP
     params.pause_camera_gyro_limit_angle_left = 0.0;
 }
 
+#[skyline::hook(offset = 0x3ebe00)]
+unsafe fn camera_module__req_quake(camera_module: *const u64, quake_kind: i32) {
+    use QuakeKind::*;
+    let mut quake_kind = std::mem::transmute(quake_kind.clone());
+    let quake_kind = match quake_kind {
+        Middle => { Small },
+        Large => { Middle },
+        ExtraLarge => { Large },
+        ExtraExtraLarge => { ExtraLarge },
+        _ => { quake_kind }
+    };
+    call_original!(camera_module, quake_kind as i32);
+}
+
 pub fn install() {
     skyline::install_hooks!(
         normal_camera,
         parse_stprm_active_camera_params,
-        parse_stprm_pause_camera_params
+        parse_stprm_pause_camera_params,
+        camera_module__req_quake
     );
 }

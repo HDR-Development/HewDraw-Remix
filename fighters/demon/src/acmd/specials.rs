@@ -86,6 +86,7 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -110,22 +111,22 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
 
-        ATTACK(fighter, 0, 0, Hash40::new("handr"), 14.5, 86, 20, 0, 85, 4.5, 0.0, 0.0, 0.0, None, None, None, 0.31, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 14.5, 86, 20, 0, 85, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), 14.5, 86, 20, 0, 85, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("bust"), 14.5, 86, 20, 0, 85, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 4, 0, Hash40::new("top"), 14.5, 86, 20, 0, 85, 5.0, 0.0, 13.0, 6.0, None, None, None, 0.31, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 5, 0, Hash40::new("top"), 14.5, 86, 20, 0, 85, 3.0, -1.0, 9.0, 3.5, None, None, None, 0.31, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 3, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 4, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 5, 1.2);
+        ATTACK(fighter, 0, 0, Hash40::new("handr"), 14.5, 86, 20, 0, 85, 4.5, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("armr"), 14.5, 86, 20, 0, 85, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), 14.5, 86, 20, 0, 85, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 3, 0, Hash40::new("bust"), 14.5, 86, 20, 0, 85, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 4, 0, Hash40::new("top"), 14.5, 86, 20, 0, 85, 5.0, 0.0, 13.0, 6.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 5, 0, Hash40::new("top"), 14.5, 86, 20, 0, 85, 3.0, -1.0, 9.0, 3.5, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 2.8);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 2.8);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 2.8);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 3, 2.8);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 4, 2.8);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 5, 2.8);
 
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 5, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.2);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 1.2);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 2.8);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 2.8);
         AttackModule::set_add_reaction_frame_revised(boma, 0, 12.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 1, 12.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 2, 12.0, false);
@@ -138,6 +139,10 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_attack_camera_quake_forced(boma, 3, *CAMERA_QUAKE_KIND_S, false);
         AttackModule::set_attack_camera_quake_forced(boma, 4, *CAMERA_QUAKE_KIND_S, false);
         AttackModule::set_attack_camera_quake_forced(boma, 5, *CAMERA_QUAKE_KIND_S, false);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -766,6 +771,13 @@ unsafe fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "demon", script = "game_attackstep2fhitshield", category = ACMD_GAME, low_priority )]
+unsafe fn game_attackstep2fhitshield(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        //macros::ATTACK_FP(fighter, 6, 1, Hash40::new("top"), 0, 361, 100, 65, 0, 12, 0, 10, 10, Hash40::new("collision_attr_normal"), 0, 0, 0, false, false, 0, *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SITUATION_MASK_G, true, *ATTACK_REGION_NONE, *COLLISION_CATEGORY_MASK_FIGHTER, false, *COLLISION_PART_MASK_ALL, false, false, false, false, 0, false, false, *ATTACK_LR_CHECK_POS, false, false, true, true, false, *COLLISION_SHAPE_TYPE_SPHERE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kazuya_wind_god_fist_game,
@@ -779,6 +791,7 @@ pub fn install() {
         kazuya_special_hi_game,
         kazuya_special_hi_air_game,
         kazuya_special_hi_start_effect,
+        game_attackstep2fhitshield,
     );
 }
 

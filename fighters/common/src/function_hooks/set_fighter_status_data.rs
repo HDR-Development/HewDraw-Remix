@@ -25,7 +25,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_KIRBY
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S]))
         || (boma.kind() == *FIGHTER_KIND_KROOL
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START]))
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_LINK
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST]))
         || (boma.kind() == *FIGHTER_KIND_LITTLEMAC
@@ -51,7 +51,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_ZELDA
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2]))
         || (boma.kind() == *FIGHTER_KIND_SHIZUE
-            && boma.is_status_one_of(&[*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_START, *FIGHTER_STATUS_KIND_SPECIAL_S]))
+            && boma.is_status_one_of(&[*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_START, *FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE]))
         || (boma.kind() == *FIGHTER_KIND_PALUTENA
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_KAMUI
@@ -62,7 +62,10 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_DEDEDE
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S]))
         || (boma.kind() == *FIGHTER_KIND_MIIFIGHTER
-            && boma.is_status_one_of(&[*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_AIR, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND]))
+            && ((WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1 && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))
+            || (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3 && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))))
+        || (boma.kind() == *FIGHTER_KIND_MIISWORDSMAN
+            && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3 && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)))
         {
             // if b-reverse flag does not already exist in status_attr bitmask
             if status_attr & *FIGHTER_STATUS_ATTR_START_TURN as u32 == 0 {

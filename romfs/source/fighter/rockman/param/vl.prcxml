@@ -11,6 +11,11 @@
       <int hash="life_max">40</int>
     </struct>
   </list>
+    <list hash="param_rockbuster">
+    <struct index="0">
+      <int hash="life">34</int>
+    </struct>
+  </list>
   <list hash="param_airshooter">
     <struct index="0">
       <int hash="life">55</int>
@@ -31,6 +36,14 @@
       <float hash="jump_accel_x_mul">0.85</float>
       <float hash="jump_stable_speed_x_mul">0.85</float>
       <int hash="jump_accel_recover_frame">5</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_rushcoil">
+    <struct index="0">
+      <float hash="shoot_speed">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -144,7 +144,7 @@ unsafe fn setup_buttons(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d3339c, inline)]
 unsafe fn hijack_animation_get(ctx: &skyline::hooks::InlineCtx) {
-    // this memleaks but I DON'T GIVE A FUCK
+    // this memleaks but I DON'T GIVE A FUCK (Askew: doesn't actually memleak you schmuck)
     let ptr = *ctx.registers[0].x.as_ref();
     let our_ptr = SHARED_PTR1[0];
     layout_get(ptr, our_ptr, 0);
@@ -241,10 +241,14 @@ static mut SHARED_PTR2: [u64; 2] = [0, 0];
 #[skyline::hook(offset = 0x1d32de4, inline)]
 unsafe fn frank_talk_think_tankk(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
+        SHARED_PTR1[0] = 0;
+        SHARED_PTR1[1] = 0;
         *ctx.registers[19].x.as_mut() = SHARED_PTR1.as_ptr() as u64;
     }
 
     if *ctx.registers[22].x.as_ref() == 5 {
+        SHARED_PTR2[0] = 0;
+        SHARED_PTR2[1] = 0;
         *ctx.registers[19].x.as_mut() = SHARED_PTR2.as_ptr() as u64;
     }
 }

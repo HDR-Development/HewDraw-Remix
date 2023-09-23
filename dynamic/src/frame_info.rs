@@ -23,7 +23,7 @@ use crate::{
 };
 
 
-
+#[repr(C)]
 pub struct FrameInfo {
   pub lua_state: u64,
   pub agent: *mut L2CAgent,

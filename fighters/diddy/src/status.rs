@@ -2,6 +2,8 @@ use super::*;
 use globals::*;
 
 mod special_s;
+mod special_n;
+mod special_hi;
 
 
 pub fn install() {
@@ -10,6 +12,12 @@ pub fn install() {
     );
     smashline::install_agent_init_callbacks!(diddy_init);
     special_s::install();
+    special_n::install();
+    special_hi::install();
+}
+
+pub fn add_statuses() {
+    special_n::install_custom();
 }
 
 // FIGHTER_STATUS_KIND_JUMP_SQUAT
@@ -32,7 +40,7 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
 // Re-enables the ability to use sideB when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::diddy::instance::DISABLE_SPECIAL_S);
     }
     true.into()

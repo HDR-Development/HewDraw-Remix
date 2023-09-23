@@ -434,7 +434,7 @@ unsafe extern "C" fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon)
         let lw4_combo_max = 2;
         if combo < lw4_combo_max && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)  {
             ComboModule::set(fighter.module_accessor, 2);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_lw4pt2"), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_lw4_2"), 0.0, 1.0, false, 0.0, false, false);
         }
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor)

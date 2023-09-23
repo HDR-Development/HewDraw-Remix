@@ -81,7 +81,7 @@ unsafe fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
     let sound_level = if stance.label != 2 { *ATTACK_SOUND_LEVEL_M } else { *ATTACK_SOUND_LEVEL_S };
     let sound = if stance.label != 2 { *COLLISION_SOUND_ATTR_PUNCH } else { *COLLISION_SOUND_ATTR_HEAVY };
     if stance.label == 2 {
-        FT_MOTION_RATE(fighter, (10.0/7.0));
+        FT_DESIRED_RATE(fighter, 7.0, 9.0);
     }
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);
@@ -146,7 +146,7 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
     // base 0.93
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
     if stance.label == 2 {
-        FT_MOTION_RATE(fighter, (11.0/7.0));
+        FT_MOTION_RATE(fighter, (10.0/7.0));
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -158,6 +158,10 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new_raw(0x0496187f8d), 12.0 * stance.damage_other, 45, 100, 0, 45, 5.3, -5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0 * stance.damage_other, 45, 100, 0, 45, 4.0, 0.0, 11.0, 0.0, Some(0.0), Some(5.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.3);
+        if stance.label == 2 {
+            HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_XLU);
+            HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
+        }
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -176,6 +180,8 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 10.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {

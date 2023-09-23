@@ -40,12 +40,22 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
             *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+            *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP,
             *FIGHTER_STATUS_KIND_DAMAGE,
-            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING].contains(&status_kind) {
+            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_RV,
+            *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+            *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
+            *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE].contains(&status_kind) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
 
-        if    (fighter_kind == *FIGHTER_KIND_EDGE && [*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, /* *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH,*/ *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind) && StatusModule::prev_status_kind(boma, 0) != *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH)
+        if    (fighter_kind == *FIGHTER_KIND_EDGE && [*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind) && StatusModule::prev_status_kind(boma, 0) != *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH)
            || (fighter_kind == *FIGHTER_KIND_KAMUI && [*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B,
                                                        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F,
                                                        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B_LANDING,
@@ -83,6 +93,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
            || (boma.kind() == *FIGHTER_KIND_PIKMIN && boma.is_status(*FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_LANDING))
            || (boma.kind() == *FIGHTER_KIND_FALCO && boma.is_status(*FIGHTER_FALCO_STATUS_KIND_SPECIAL_S_FALL_LANDING))
            || (boma.kind() == *FIGHTER_KIND_MURABITO && boma.is_status(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_NESS && boma.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END))
+           || (boma.kind() == *FIGHTER_KIND_LUCAS && boma.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END))
         {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
@@ -96,39 +108,145 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
 //=================================================================
 #[skyline::hook(replace=GroundModule::correct)]
 unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrectKind) -> u64 {
+
+    // don't run if boma is not fighter or grounded
+    if !boma.is_fighter() || !boma.is_situation(*SITUATION_KIND_GROUND) {
+        return original!()(boma, kind);
+    }
+
     let status_kind = StatusModule::status_kind(boma);
-    let situation_kind = StatusModule::situation_kind(boma);
-    let fighter_kind = boma.kind();
-
-    // It seems like everything gets caught as "landing"
-    if boma.is_fighter()
-    && boma.is_situation(*SITUATION_KIND_GROUND) {
-        if [
-            *FIGHTER_STATUS_KIND_LANDING,
-            *FIGHTER_STATUS_KIND_TURN_DASH,
-            *FIGHTER_STATUS_KIND_DASH,
-            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&status_kind) {
-            return original!()(boma, GroundCorrectKind(1));
-        }
-
-        if ((fighter_kind == *FIGHTER_KIND_PIKACHU || fighter_kind == *FIGHTER_KIND_PICHU) &&
-                [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_WEAK,
-                 *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_ATTACK,
-                 *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END].contains(&status_kind))
-            || (fighter_kind == *FIGHTER_KIND_CAPTAIN && status_kind == *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END)
-            || (fighter_kind == *FIGHTER_KIND_GANON && status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END)
-            || (fighter_kind == *FIGHTER_KIND_MIISWORDSMAN && [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind))
-            || (fighter_kind == *FIGHTER_KIND_KOOPA && status_kind == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G)
-            || (fighter_kind == *FIGHTER_KIND_DONKEY && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
-            || (fighter_kind == *FIGHTER_KIND_GAOGAEN && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
-            || (fighter_kind == *FIGHTER_KIND_LUIGI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
-            || (fighter_kind == *FIGHTER_KIND_PEACH && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)
-            || (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) {
-            return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        }
+    if [
+        // common statuses that should edge slipoff
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_TURN_DASH,
+        *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_TREAD_DAMAGE,
+        *FIGHTER_STATUS_KIND_TREAD_DAMAGE_RV,
+        *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+        *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+        *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
+        *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+        *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
+        *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+        *FIGHTER_STATUS_KIND_SAVING_DAMAGE
+    ].contains(&status_kind)
+    || check_fighter_edge_slipoffs(boma).get_bool() {
+        return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
 
     original!()(boma, kind)
+}
+
+unsafe fn check_fighter_edge_slipoffs(boma: &mut BattleObjectModuleAccessor) -> L2CValue {
+    let status_kind = StatusModule::status_kind(boma);
+    let fighter_kind = boma.kind();
+
+    // PIKACHU & PICHU
+    if (fighter_kind == *FIGHTER_KIND_PIKACHU || fighter_kind == *FIGHTER_KIND_PICHU) 
+    && [
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_WEAK,
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_ATTACK,
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END
+    ].contains(&status_kind) {
+        return true.into();
+    }
+    
+    // CAPTAIN FALCON
+    if fighter_kind == *FIGHTER_KIND_CAPTAIN && status_kind == *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END { return true.into(); }
+    
+    // GANONDORF
+    if (fighter_kind == *FIGHTER_KIND_GANON && status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END) { return true.into(); }
+    
+    // MII SWORDFIGHTER
+    if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN
+    && (
+        [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind) 
+        || (
+            WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3 
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
+        )
+    ) { 
+        return true.into(); 
+    }
+    
+    // BOWSER
+    if (fighter_kind == *FIGHTER_KIND_KOOPA && status_kind == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G) { return true.into(); }
+
+    // DONKEY KONG
+    if (fighter_kind == *FIGHTER_KIND_DONKEY && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) { return true.into(); }
+
+    // GAOGAEN
+    if (fighter_kind == *FIGHTER_KIND_GAOGAEN && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N) { return true.into(); }
+
+    // LUIGI
+    if (fighter_kind == *FIGHTER_KIND_LUIGI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N) { return true.into(); }
+
+    // PEACH
+    if (fighter_kind == *FIGHTER_KIND_PEACH && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) { return true.into(); }
+
+    // DAISY
+    if (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) { return true.into(); }
+
+    // SEPHIROTH
+    if (fighter_kind == *FIGHTER_KIND_EDGE && status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH) { return true.into(); }
+    
+    // YOSHI
+    if (fighter_kind == *FIGHTER_KIND_YOSHI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) { return true.into(); }
+    
+    // PAC-MAN
+    if (fighter_kind == *FIGHTER_KIND_PACMAN && status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN) { return true.into(); }
+    
+    // SORA
+    if (fighter_kind == *FIGHTER_KIND_TRAIL && status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END) { return true.into(); }
+    
+    // CHARIZARD
+    if (fighter_kind == *FIGHTER_KIND_PLIZARDON && status_kind == *FIGHTER_PLIZARDON_STATUS_KIND_SPECIAL_S_END) { return true.into(); }
+    
+    // FOX
+    if fighter_kind == *FIGHTER_KIND_FOX 
+    && [
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END
+    ].contains(&status_kind) { 
+        return true.into();
+    }
+    
+    // WOLF
+    if fighter_kind == *FIGHTER_KIND_WOLF 
+    && [
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, 
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT, 
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END
+    ].contains(&status_kind) { 
+        return true.into(); 
+    }
+    
+    // NESS
+    if fighter_kind == *FIGHTER_KIND_NESS 
+    && [
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_REFLECT,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END
+    ].contains(&status_kind) {
+        return true.into();
+    }
+
+    // LUCAS
+    if fighter_kind == *FIGHTER_KIND_LUCAS 
+    && [
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_REFLECT,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END
+    ].contains(&status_kind) {
+        return true.into();
+    }
+
+    return false.into();
 }
 
 extern "C" {

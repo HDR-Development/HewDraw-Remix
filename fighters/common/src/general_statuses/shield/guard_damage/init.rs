@@ -6,6 +6,20 @@ use super::super::fighter_status_guard;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
 unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CFighterCommon) {
+
+    if fighter.kind() == *FIGHTER_KIND_LUCARIO {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+            let mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.parry_meter_gain_mul");
+            MeterModule::add(fighter.object(), mul * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER));
+            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 0);
+        } else {
+            let mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.shield_damage_meter_drain_mul");
+            MeterModule::drain_direct(fighter.object(), mul * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER));
+            let frames = 90.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+            VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+        }
+    }
+
     let shield_power = WorkModule::get_float(
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER,
@@ -135,13 +149,13 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
     } else {
         let mut cancel_frame = FighterMotionModuleImpl::get_cancel_frame(
             fighter.module_accessor,
-            Hash40::new_raw(0xfefe225e5),
+            Hash40::new("just_shield_off"),
             true,
         );
         if cancel_frame == 0.0 {
             cancel_frame = MotionModule::end_frame_from_hash(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
             );
         }
 
@@ -154,7 +168,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         {
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
                 0.0,
                 adjusted.max(1.0),
                 false,
@@ -165,11 +179,11 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         } else {
             let end_frame = MotionModule::end_frame_from_hash(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
             );
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
                 end_frame,
                 adjusted.max(1.0),
                 false,
@@ -184,6 +198,8 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
             Hash40::new_raw(0x1a29f56bfb),
             -1,
         );
+        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_genesis_end"), true, true);
+        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_item_backshield_guard01"), 0);
     }
 
     if WorkModule::is_flag(
@@ -270,18 +286,23 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR,
     );
     let directed_speed = setoff_speed * -shield_lr;
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
-        ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
-        directed_speed,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-    );
-    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    if !WorkModule::is_flag(
+        fighter.module_accessor,
+        *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD,
+    ) {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
+            ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
+            directed_speed,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    }
     let stop_frame = WorkModule::get_float(
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_HIT_STOP_FRAME,
@@ -293,8 +314,11 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         stop_frame as i32,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME,
     );
-    let hit_stop_mul =
-        WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64);
+    let hit_stop_mul = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        1.0
+    } else {
+        WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64)
+    };
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
 }
 

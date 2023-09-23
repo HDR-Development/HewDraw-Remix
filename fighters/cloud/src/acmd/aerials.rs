@@ -97,6 +97,25 @@ unsafe fn cloud_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "cloud", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn cloud_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+
 #[acmd_script( agent = "cloud", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -129,6 +148,20 @@ unsafe fn cloud_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "cloud", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn cloud_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 #[acmd_script( agent = "cloud", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -149,7 +182,7 @@ unsafe fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("haver"), 8.0, 80, 80, 0, 42, 4.0, 0.0, 9.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CLOUD_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 8.0, 80, 80, 0, 42, 4.0, 0.0, 14.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CLOUD_HIT, *ATTACK_REGION_SWORD);
     }
-    wait(lua_state, 19.0);
+    wait(lua_state, 17.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -159,6 +192,46 @@ unsafe fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+#[acmd_script( agent = "cloud", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn cloud_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+#[acmd_script( agent = "cloud", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma(); 
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_cloud_sword3"), Hash40::new("tex_cloud_sword4"), 3, Hash40::new("haver"), 0.0, 1.5, -1.2, Hash40::new("haver"), 0.0, 20.5, -1.2, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, 0.14);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 3);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, false, true);
+    }
+}
+
 
 #[acmd_script( agent = "cloud", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
@@ -193,7 +266,7 @@ unsafe fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 4, false);
         AttackModule::clear(boma, 5, false);
     }
-    wait(lua_state, 29.0);
+    wait(lua_state, 24.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -204,13 +277,42 @@ unsafe fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "cloud", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, 0.5);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("cloud_speedline"), Hash40::new("haver"), 0, 4, 0, -90, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.627, 1, 0.674);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         cloud_attack_air_n_game,
         cloud_attack_air_f_game,
+        cloud_attack_air_f_expression,
         cloud_attack_air_b_game,
+        cloud_attack_air_b_expression,
         cloud_attack_air_hi_game,
+        cloud_attack_air_hi_expression,
+        effect_attackairhi,
         cloud_attack_air_lw_game,
+        effect_attackairlw,
     );
 }
 

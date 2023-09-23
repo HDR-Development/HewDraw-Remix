@@ -49,6 +49,22 @@ unsafe fn dedede_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "dedede", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_special_n_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+        FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
+}
+
+#[acmd_script( agent = "dedede", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+        FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
+}
+
 #[acmd_script( agent = "dedede", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -56,21 +72,92 @@ unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
     }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
+    frame(lua_state, 7.0);
+    if is_excute(fighter){
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
-        FT_MOTION_RATE(fighter, 18.0/(29.0-6.0));
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 100, 0, 30, 7.5, 0.0, 8.0, 14.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
     }
-    wait(lua_state, 2.0);
+    frame(lua_state, 25.0);
+    FT_MOTION_RATE(fighter, 35.0 / (65.0-26.0));    
+}
+
+#[acmd_script( agent = "dedede", script = "effect_specialsstart" , category = ACMD_EFFECT , low_priority)]
+unsafe fn dedede_special_s_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        if (PostureModule::lr(boma) == -1.0){
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), 2.0, -2.0, -2.0, 90.0, 0.0, 0.0 , 0.6, true);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), -2.0, -2.0, -2.0, 90.0, 180.0, 0.0 , 0.6, true);
+        }
+        LAST_EFFECT_SET_COLOR(fighter, 0.96, 0.6, 0.26); 
+        
     }
+    frame(lua_state, 18.0);
+    if is_excute(fighter){     
+    FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
+
+    }
+    frame(lua_state,21.0);
+    if is_excute(fighter){
+        EFFECT_OFF_KIND(fighter, Hash40::new("dedede_hammer_arc_wind"), true, true);
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "sound_specialsstart", category = ACMD_SOUND, low_priority )]
+unsafe fn dedede_special_s_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_dedede_wad_throw"));
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "expression_specialsstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dedede_special_s_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "effect_specialairsstart" , category = ACMD_EFFECT , low_priority)]
+unsafe fn dedede_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        if (PostureModule::lr(boma) == -1.0){
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), 2.0, -2.0, -2.0, 90.0, 0.0, 0.0 , 0.6, true);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), -2.0, -2.0, -2.0, 90.0, 180.0, 0.0 , 0.6, true);
+        }
+        LAST_EFFECT_SET_COLOR(fighter, 0.96, 0.6, 0.26);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter){     
+       FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state,21.0);
+    if is_excute(fighter){
+        EFFECT_OFF_KIND(fighter, Hash40::new("dedede_hammer_arc_wind"), true, true);
+    }
+
 }
 
 #[acmd_script( agent = "dedede", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
@@ -80,20 +167,86 @@ unsafe fn dedede_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
     }
+    frame(lua_state, 7.0);
+    if is_excute(fighter){
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
+    }
+    frame(lua_state, 25.0);
+    FT_MOTION_RATE(fighter, 35.0 / (65.0-26.0));
+}
+
+#[acmd_script( agent = "dedede", script = "sound_specialairsstart", category = ACMD_SOUND, low_priority )]
+unsafe fn dedede_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_dedede_wad_throw"));
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "expression_specialairsstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialsstart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "game_specialsmiss", category = ACMD_GAME, low_priority )]
+unsafe fn dedede_special_s_miss_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_MISS_SEARCH);
+    }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
-        FT_MOTION_RATE(fighter, 18.0/(29.0-6.0));
+        WorkModule::off_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_MISS_SEARCH);
     }
-    frame(lua_state, 29.0);
+}
+
+#[acmd_script( agent = "dedede", script = "game_specialairsmiss", category = ACMD_GAME, low_priority )]
+unsafe fn dedede_special_air_s_miss_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_MISS_SEARCH);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_MISS_SEARCH);
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "game_specialsget", category = ACMD_GAME, low_priority )]
+unsafe fn dedede_special_s_get_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 100, 0, 30, 7.5, 0.0, 8.0, 14.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
     }
-    wait(lua_state, 2.0);
+}
+
+#[acmd_script( agent = "dedede", script = "game_specialairsget", category = ACMD_GAME, low_priority )]
+unsafe fn dedede_special_air_s_get_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
     }
 }
 
@@ -279,9 +432,9 @@ unsafe fn dedede_special_hi_landing_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter){
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 90, 82, 0, 95, 10.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 70, 82, 0, 95, 10.0, 0.0, 8.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 70, 82, 0, 95, 10.0, 0.0, 8.0, -10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 90, 82, 0, 95, 6.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 70, 82, 0, 95, 6.0, 0.0, 6.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 70, 82, 0, 95, 6.0, 0.0, 6.0, -10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter){
@@ -301,8 +454,18 @@ pub fn install() {
     install_acmd_scripts!(
         dedede_special_n_start_game,
         dedede_special_air_n_start_game,
+        dedede_special_n_end_game,
+        dedede_special_air_n_end_game,
         dedede_special_s_start_game,
+        dedede_special_s_start_effect,
+        dedede_special_s_start_sound,
+        dedede_special_air_s_start_effect,
         dedede_special_air_s_start_game,
+        dedede_special_air_s_start_sound,
+        dedede_special_s_miss_game,
+        dedede_special_air_s_miss_game,
+        dedede_special_s_get_game,
+        dedede_special_air_s_get_game,
         dedede_special_lw_game,
         dedede_special_lw_max_game,
         dedede_special_air_lw_game,

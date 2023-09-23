@@ -4,12 +4,57 @@ use super::*;
 use globals::*;
 
  
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_FALL,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK_TURN
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     special_fadc_super_cancels(boma);
     target_combos(boma);
     rotate_forward_bair(boma);
     joudan_sokutogeri(boma, frame);
+
+    tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
+    hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
+    fastfall_specials(fighter);
 }
 
 // symbol-based call for the shotos' common opff
@@ -25,7 +70,7 @@ pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         utils::ui::UiManager::set_ex_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             MeterModule::meter_per_level(fighter.object())
         );
     }
@@ -113,14 +158,14 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
         if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC){
             if boma.is_cat_flag(Cat1::SpecialLw){
                 if !StopModule::is_stop(boma) {
-                    if MeterModule::drain(boma.object(), 2){
+                    if MeterModule::drain(boma.object(), 1){
                         boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                     }
                 }
             }
             if boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialHiCommand){
                 if !StopModule::is_stop(boma){
-                    if MeterModule::drain(boma.object(), 10) {
+                    if MeterModule::drain(boma.object(), MeterModule::meter_cap(boma.object())) {
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
                         boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, true);
@@ -347,7 +392,7 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
     if !boma.is_in_hitlag()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        if boma.check_jump_cancel(false) {
+        if boma.check_jump_cancel(false, false) {
             return;
         }
     }
@@ -460,3 +505,90 @@ pub fn hadoken_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     }
 }
 */
+
+// Shotos Tatsumaki Land Cancel, hover, and EX momentum handling
+unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    let jump_rising = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};
+	let ex_momentum = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+    let prev_situation_kind = StatusModule::prev_situation_kind(boma);
+
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
+    ])
+    {
+        return;
+    }
+
+    if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+    }
+
+    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+
+    if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_button_on(Buttons::Special | Buttons::Attack)
+    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
+    {
+        KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+}
+
+// The actual super fs cancel code since it's used on both ryu and ken w/ separate inputs
+unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
+    if MeterModule::drain(boma.object(), MeterModule::meter_cap(boma.object())) {
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
+        true
+    } else {
+        false
+    }
+}
+
+// Shotos Hadoken FADC and Super (FS) cancels
+unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat: [i32; 4], frame: f32) {
+
+    let mut agent_base = fighter.fighter_base.agent_base;
+    let cat1 = cat[0];
+    let cat4 = cat[3];
+    let fighter_kind = boma.kind();
+
+    let frame = MotionModule::frame(boma);
+
+    if boma.kind() == *FIGHTER_KIND_KEN
+    && boma.is_cat_flag(Cat4::SuperSpecialCommand)
+    && super_fs_cancel(boma) {
+        return;
+    }
+
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+    ])
+    || frame <= 5.0 {
+        return;
+    }
+
+
+    if boma.kind() == *FIGHTER_KIND_RYU
+    && boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialN2Command | Cat4::SpecialHiCommand)
+    && super_fs_cancel(boma) {
+        return;
+    }
+
+
+    if frame > 15.0
+    && boma.is_cat_flag(Cat1::SpecialLw)
+    && MeterModule::drain(boma.object(), 1)
+    {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+    }
+}
