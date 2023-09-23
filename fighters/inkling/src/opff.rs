@@ -2,60 +2,32 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
+use skyline::hooks::InlineCtx;
 
-const INKLING_COLORS: [Vector3f; 10] = [
-    // used to tint the hitbox effects - have at least one value be 0, unless you want white ink. Values between 0 and 1.
-    Vector3f {
-        x: 0.758027,
-        y: 0.115859,
-        z: 0.04,
-    }, // (orange)
-    Vector3f {
-        x: 0.04,
-        y: 0.0608165,
-        z: 0.758027,
-    }, // (blue)
-    Vector3f {
-        x: 0.79,
-        y: 0.504014,
-        z: 0.04,
-    }, // (yellow)
+static mut INKLING_COLORS: [Vector3f; 256] = [
+    // used to tint the hitbox effects
     Vector3f {
         x: 0.0,
-        y: 0.7333,
-        z: 0.003921,
-    }, // (green)
-    Vector3f {
-        x: 0.758027,
-        y: 0.0608165,
-        z: 0.273385,
-    }, // (pink)
-    Vector3f {
-        x: 0.08,
-        y: 0.3,
-        z: 0.65,
-    }, // (sky blue)
-    Vector3f {
-        x: 1.0,
-        y: 0.26667,
-        z: 0.525,
-    }, // (monika)
-    Vector3f {
-        x: 0.2549,
-        y: 0.6549,
-        z: 0.5098,
-    }, // (splat tim)
-    Vector3f {
-        x: 0.79,
-        y: 0.008,
-        z: 0.09875,
-    }, // (octoling 1)
-    Vector3f {
-        x: 0.76,
-        y: 0.025,
-        z: 0.025,
-    }, // (octoling 2)
+        y: 0.0,
+        z: 0.0,
+    };256
 ];
+
+#[skyline::hook(offset = 0x07674f0, inline)]
+pub fn get_ink_colors(ctx: &mut InlineCtx) {
+    // assigns color to the above vector based on the effect.prc RGB values for the current slot
+    unsafe {
+      let base_address = *(ctx.registers[12].x.as_ref());
+      let red = *((base_address) as *const f32);
+      let green = *((base_address + 4) as *const f32);
+      let blue = *((base_address + 8) as *const f32);
+
+      let index = (*(ctx.registers[8].x.as_ref()) -1) as usize;
+      INKLING_COLORS[index].x = red;
+      INKLING_COLORS[index].y = green;
+      INKLING_COLORS[index].z = blue;
+    }
+}
 
 unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
     if motion_kind == hash40("attack_air_lw")
