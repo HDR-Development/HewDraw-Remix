@@ -44,6 +44,12 @@ special_lw:
     move: false
   extra:
     cancel_frame: 64
+    xlu_start: 0
+    xlu_end: 0
+special_air_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 attack_hi3:
   extra:
     cancel_frame: 28

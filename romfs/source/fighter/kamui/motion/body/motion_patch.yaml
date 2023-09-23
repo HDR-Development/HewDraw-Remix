@@ -72,7 +72,7 @@ special_s_wall_jump:
 special_air_hi:
   extra:
     intangible_start_frame: 10
-    intangible_end_frame: 17
+    intangible_end_frame: 18
 special_lw_hit:
   extra:
     intangible_start_frame: 0

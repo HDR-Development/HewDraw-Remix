@@ -44,4 +44,5 @@ pub fn install(is_runtime: bool) {
     opff::install(is_runtime);
     use opff::*;
     smashline::install_agent_frame_callback!(fishingrod_callback);
+    smashline::install_agent_frame_callback!(lloid_callback);
 }

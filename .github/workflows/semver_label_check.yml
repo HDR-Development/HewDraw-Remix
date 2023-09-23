@@ -26,6 +26,15 @@ jobs:
           script: |
               core.setFailed('This PR is labeled to wait until next beta cycle for release.')
 
+      # ensure that this is not a character change waiting for discussion
+      - name: check_discussion_label
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'discussion needed')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This change has not yet been discussed.')
+
       # ensure that this is not a character change waiting for backroom approval
       - name: check_backroom_labels
         if: >
