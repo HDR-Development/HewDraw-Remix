@@ -445,5 +445,5 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     if motion_rate < 1.0 {
         motion_rate += 0.001;
     }
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 1.0, motion_rate, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 3.0, motion_rate, false, 0.0, false, false);
 }
