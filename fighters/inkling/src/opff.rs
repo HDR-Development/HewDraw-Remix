@@ -15,13 +15,12 @@ static mut INKLING_COLORS: [Vector3f; 256] = [
 
 #[skyline::hook(offset = 0x07674f0, inline)]
 pub fn get_ink_colors(ctx: &mut InlineCtx) {
-    // assigns color to the above vector based on the effect.prc RGB values for the current slot
+    // assigns RGB values for the relevant slot in the effect.prc to the above vector
     unsafe {
-      let base_address = *(ctx.registers[12].x.as_ref());
-      let red = *((base_address) as *const f32);
-      let green = *((base_address + 4) as *const f32);
-      let blue = *((base_address + 8) as *const f32);
-
+      let color_address = *(ctx.registers[12].x.as_ref());
+      let red = *((color_address) as *const f32);
+      let green = *((color_address + 4) as *const f32);
+      let blue = *((color_address + 8) as *const f32);
       let index = (*(ctx.registers[8].x.as_ref()) -1) as usize;
       INKLING_COLORS[index].x = red;
       INKLING_COLORS[index].y = green;
