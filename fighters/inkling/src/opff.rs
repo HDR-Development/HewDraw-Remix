@@ -104,11 +104,9 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn special_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-    ]) && boma.status_frame() <= 5
-        && boma.is_button_on(Buttons::Guard)
+    if (boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_SHOOT])
+    || (boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && boma.status_frame() <= 5))
+    && boma.is_button_on(Buttons::Guard)
     {
         boma.change_status_req(*FIGHTER_INKLING_STATUS_KIND_CHARGE_INK_START, false);
     }

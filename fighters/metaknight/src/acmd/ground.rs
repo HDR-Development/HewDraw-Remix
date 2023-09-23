@@ -175,7 +175,7 @@ unsafe fn sound_attack100start(fighter: &mut L2CAgentBase) {
 unsafe fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.84);
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.78);
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 3.0);
     frame(lua_state, 7.0);
