@@ -110,11 +110,12 @@ unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         if ((ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))) {
+            ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
             ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_RICHTERHOLYWATER), 0, 0, false, false);
             MotionModule::set_rate(boma, 0.8);
         }
         else{
-            WorkModule::on_flag(boma,  *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
+            WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
         }
     }
     
@@ -130,10 +131,11 @@ unsafe fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         if ((ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))) {
+            ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
             ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_RICHTERHOLYWATER), 0, 0, false, false);
         }
         else{
-            WorkModule::on_flag(boma,  *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
+            WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
         }
     }
     

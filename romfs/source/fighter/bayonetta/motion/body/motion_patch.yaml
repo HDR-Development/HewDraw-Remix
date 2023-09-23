@@ -50,7 +50,6 @@ special_lw:
   extra:
     xlu_start: 0
     xlu_end: 0
-    intangible_end_frame: 15
     cancel_frame: 66
 attack_hi3:
   extra:

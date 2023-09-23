@@ -23,7 +23,7 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
         // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         let landing_lag = 12.0;
         if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n"), 49.0 - landing_lag, 1.0, 0.0, false, false);
         }
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
