@@ -45,29 +45,6 @@ throw_lw:
 catch_attack:
   extra:
     cancel_frame: 0
-special_n2:
-    game_script: game_specialn2
-    flags:
-      turn: false
-      loop: false
-      move: false
-      fix_trans: false
-      fix_rot: false
-      fix_scale: false
-      unk_40: false
-      unk_80: false
-      unk_100: false
-      unk_200: false
-      unk_400: false
-      unk_800: false
-      unk_1000: false
-      unk_2000: false
-    blend_frames: 0
-    animations:
-      - name: d00specialn2.nuanmb
-        unk: 0
-    scripts: ~
-    extra: ~    
 special_lw:
   extra:
     xlu_start: 0
