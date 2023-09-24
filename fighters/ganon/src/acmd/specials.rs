@@ -59,12 +59,15 @@ unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0 / 10.0);
     frame(lua_state, 9.0);
     FT_MOTION_RATE(fighter, 1.0);
-    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
