@@ -694,6 +694,5 @@ pub fn install() {
         effect_specialairsup,
         effect_specialairsdown,
         game_specialhi,
-        game_specials_start
     );
 }
