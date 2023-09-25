@@ -175,7 +175,7 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 
     // save current tail position relative to fighter
     VarModule::set_vec2(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_BOUNCE_PREV_POS, Vector2f{x: v3f_tail_pos.x - pos_x_global, y: v3f_tail_pos.y - pos_y_global});
-    
+
     if check_hit {
         let ground_hit_pos = &mut Vector2f{x: 0.0, y: 0.0};
         if GroundModule::ray_check_hit_pos(
