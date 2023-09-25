@@ -8,7 +8,13 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="special_n_start_enable_attack_frame">18</int>
+      <int hash="special_n_start_enable_attack_frame">21</int>
+        <float hash="special_n_add_attack_power">0</float>
+	<float hash="special_n_fail_rot">-25</float>
+	<float hash="special_n_fail_speed">3</float>
+	<int hash="special_n_fail_brake_start_frame">6</int>
+	<float hash="special_n_fail_x_brake">0.1</float>
+	<float hash="special_n_fail_y_brake">0.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -25,6 +31,14 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_gimmickjump">
+    <struct index="0">
+      <float hash="shoot_speed">1.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
  <list hash="param_special_lw">
     <struct index="0">
   <float hash="special_lw_start_rot_speed">15</float>
@@ -33,6 +47,7 @@
   <float hash="special_lw_motion_rate_min_mul">0.3</float>       
   <float hash="special_lw_dash_attack_power_min">3.0</float>
   <float hash="special_lw_dash_attack_power_max">6.0</float>
+  <float hash="special_lw_shield_inflict_dec_speed">1.65</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

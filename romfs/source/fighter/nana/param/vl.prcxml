@@ -21,7 +21,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="air_stick_accel_mul_x">0.05</float>
-      <float hash="start_air_speed_single_y">0.6</float>
+      <float hash="start_air_speed_single_y">0.8</float>
       <float hash="start_air_speed_couple_y">1.2</float>
       <float hash="accel_single_y">0.08</float>
       <float hash="accel_couple_y">0.087</float>

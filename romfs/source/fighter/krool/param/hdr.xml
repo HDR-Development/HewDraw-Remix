@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-    <struct hash="param_special_hi">
-        <int hash="fuel_max">540</int>
-        <int hash="fuel_burn_rate">3</int>
-        <int hash="fuel_recharge_rate">1</int>
-    </struct>
+  <struct hash="param_waist">
+    <float hash="deplete_damage_min">4.0</float>
+    <float hash="max_charge_frames">20.0</float>
+    <float hash="attack_s3_charge_start">8.0</float>
+    <float hash="attack_s3_charge_end">10.0</float>
+    <float hash="attack_hi3_charge_start">2.0</float>
+    <float hash="attack_hi3_charge_end">3.0</float>
+    <float hash="attack_lw3_charge_start">9.0</float>
+    <float hash="attack_lw3_charge_end">11.0</float>
+    <float hash="special_lw_charge_start">1.0</float>
+    <float hash="special_lw_charge_end">2.0</float>
+  </struct>
+  <struct hash="param_special_hi">
+    <int hash="fuel_max">540</int>
+    <int hash="fuel_burn_rate">3</int>
+    <int hash="fuel_recharge_rate">1</int>
+  </struct>
 </struct>

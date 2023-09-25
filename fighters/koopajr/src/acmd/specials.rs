@@ -28,6 +28,42 @@ unsafe fn koopajr_remainclown_special_air_hi_clownfall_game(weapon: &mut L2CAgen
 
 // ATTACK(weapon,0, 0, Hash40::new("top"), 13.0, 55, 70, 0, 85, 14.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB)
 
+#[acmd_script( agent = "koopajr", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
+unsafe fn koopajr_special_n_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        if ArticleModule::is_exist(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_CANNONBALL) {
+           WorkModule::on_flag(boma, *FIGHTER_KOOPAJR_STATUS_SPECIAL_N_FLAG_FAIL);
+        }
+        else {
+            WorkModule::on_flag(boma, *FIGHTER_KOOPAJR_STATUS_SPECIAL_N_FLAG_SHOOT);
+        }
+    }
+}
+
+#[acmd_script( agent = "koopajr", script = "effect_specialnshoot", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_STATUS_SPECIAL_N_FLAG_FAIL) {
+            EFFECT(fighter, Hash40::new("koopajr_cannon_miss"), Hash40::new("clowntongue2"), 3, 0, 0, 0, 0, -90, 0.5, 0, 0, 0, 0, 0, 0, true);
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+                LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            }
+        }
+        else {
+            let offset = if fighter.is_situation(*SITUATION_KIND_GROUND) { 0 } else { 2 };
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+                LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            }
+        }
+    }
+}
 
 #[acmd_script( agent = "koopajr", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
@@ -173,6 +209,8 @@ unsafe fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        koopajr_special_n_shoot_game,
+        koopajr_special_n_shoot_effect,
         koopajr_special_lw_game,
         koopajr_special_air_lw_game,
         koopajr_special_s_game,

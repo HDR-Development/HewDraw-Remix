@@ -6,13 +6,14 @@ use super::*;
 unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
-    let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
+    let charged = if fighter.kind() == *FIGHTER_KIND_KIRBY {false} else {VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1};
+    let charge_state_time = if fighter.kind() == *FIGHTER_KIND_KIRBY {1} else {ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time")};
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if !charged {
             FT_MOTION_RATE(fighter, (14.0/18.0));
-        }else if charged {
+        }
+        else if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
             VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
             MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
@@ -235,6 +236,7 @@ unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
             MeterModule::watch_damage(fighter.battle_object, true);
+            MeterModule::add(fighter.battle_object, 2.0);
             FT_ADD_DAMAGE(fighter, 3.5);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 71, 0, 90, 11.0, 0.0, 10.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         }

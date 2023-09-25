@@ -22,6 +22,7 @@ pub mod attack;
 pub mod collision;
 pub mod camera;
 pub mod shotos;
+pub mod aura;
 
 #[repr(C)]
 pub struct TempModule {
@@ -112,7 +113,8 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND,
         *FIGHTER_STATUS_KIND_ITEM_THROW,
         *FIGHTER_STATUS_KIND_ITEM_THROW_DASH,
-        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY].contains(&status_kind)
+        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY,
+        *FIGHTER_STATUS_KIND_FINAL].contains(&status_kind)
 
         || ((*boma).kind() == *FIGHTER_KIND_RICHTER
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
@@ -139,7 +141,9 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_MIIFIGHTER
             && [*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_END, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_WEAK, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_ATTACK, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
-            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
+            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_LITTLEMAC
+            && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind)) )
     {
         return true;
     }
@@ -718,6 +722,15 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
     call_original!(status_module, status_kind_next);
 }
 
+// Only extra elec hitlag for hit character
+#[skyline::hook(offset = 0x406804, inline)]
+unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
+  let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
+  if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
+    *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
+  }
+}
+
 pub fn install() {
     energy::install();
     effect::install();
@@ -740,6 +753,7 @@ pub fn install() {
     collision::install();
     camera::install();
     shotos::install();
+    aura::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -763,10 +777,13 @@ pub fn install() {
         // Simon and Richter
         skyline::patching::Patch::in_text(0x1195204).data(0x7100001F);
         // Krool and Pyra are in their respective modules.
+        // Gives attacker less clank hitlag than defender
+        skyline::patching::Patch::in_text(0x3e0b28).data(0x1E204160);
     }
     skyline::install_hooks!(
         before_collision,
         after_collision,
-        status_module__change_status
+        status_module__change_status,
+        change_elec_hitlag_for_attacker
     );
 }

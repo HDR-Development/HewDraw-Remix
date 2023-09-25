@@ -190,6 +190,7 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
     VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, 0);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_ATTACK_CANCEL);
     0.into()
 }
 
@@ -225,6 +226,7 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     // `lr_update` comes from a dif subroutine
     if lr_update.get_bool() {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::CSTICK_IRAR);
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }

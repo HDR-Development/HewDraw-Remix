@@ -5,6 +5,7 @@ mod other;
 mod smashes;
 mod specials;
 mod tilts;
+mod throws;
 
 pub fn install() {
     aerials::install();
@@ -13,4 +14,5 @@ pub fn install() {
     smashes::install();
     specials::install();
     ground::install();
+    throws::install();
 }
