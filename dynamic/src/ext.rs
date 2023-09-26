@@ -2,7 +2,7 @@ use crate::consts::globals::*;
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
 use smash::app::{
-    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyMotion, *,
+    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyGravity, FighterKineticEnergyMotion, *,
 };
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
@@ -497,6 +497,7 @@ pub trait BomaExt {
 
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
+    unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
 
     // tech/general subroutines
@@ -891,6 +892,14 @@ impl BomaExt for BattleObjectModuleAccessor {
         std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(
             self,
             *FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        ))
+    }
+
+    /// gets the FighterKineticEnergyGravity object
+    unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity {
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyGravity>(KineticModule::get_energy(
+            self,
+            *FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
         ))
     }
 

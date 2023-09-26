@@ -407,10 +407,10 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            // ints 
+            // ints
             pub const METER_STOCKS: i32 = 0x0150;
             pub const CURRENT_STOCKS: i32 = 0x0151;
-            
+
             // flags
             pub const SUPER_CANCEL: i32 = 0x0150;
             pub const DISABLE_SPECIAL_S: i32 = 0x0151;
@@ -599,12 +599,13 @@ pub mod vars {
     pub mod kirby {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_HI: i32 = 0x01FF; //Weird value to avoid conflicts with copy ability values
         }
         pub mod status {
+            // copy ability
             // flags
-            pub const FINAL_CUTTER_HIT: i32 = 0x1100;
-            pub const FINAL_CUTTER_CANCEL: i32 = 0x1101;
+            pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
+            pub use super::super::mariod::status::CHILL_PILL;
         }
     }
 
@@ -652,17 +653,17 @@ pub mod vars {
 
         pub mod instance {
             // flag
-            pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x0100;
-            pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x0101;
-            pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x0102;
+            pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x01EF;
+            pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x01EE;
+            pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x01ED;
             pub const ATTACK_S4_ANGLE_DOWN: i32 = 0x0103;
             pub const ATTACK_S4_ANGLE_UP: i32 = 0x0104;
 
             // int
-            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x0100;
-            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x0101;
-            pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x0102;
-            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x0103;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x01DF;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x01DE;
+            pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x01DD;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x01DC;
         }
 
         pub mod status {
@@ -813,7 +814,7 @@ pub mod vars {
 
     pub mod pzenigame {
         pub mod instance {
-            
+
         }
     }
 
@@ -944,7 +945,7 @@ pub mod vars {
             pub const IS_GRAB_WALK : i32 = 0x0105;
             pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
             pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
-            
+
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
             pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
@@ -1242,7 +1243,7 @@ pub mod vars {
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
         }
     }
-    
+
     pub mod tantan {
         pub mod instance {
             //ints
@@ -1264,7 +1265,7 @@ pub mod vars {
             pub const STORED_DAMAGE: i32 = 0x0100;
 
             // flags
-            pub const BLUNDERBUSS_GRAB: i32 = 0x0100;
+            pub const BLUNDERBUSS_GRAB: i32 = 0x01CF;
         }
         pub mod status {
             // ints
@@ -1327,8 +1328,8 @@ pub mod statuses {
     }
 
     pub mod littlemac {
-        pub const SPECIAL_N_CANCEL: i32 = 0;
-        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
+        pub const SPECIAL_N_CANCEL: i32 = 1;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 2;
     }
 
     pub mod wolf {
@@ -1337,12 +1338,12 @@ pub mod statuses {
     }
 
     pub mod diddy {
-        pub const SPECIAL_N_CANCEL: i32 = 0;
-        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
+        pub const SPECIAL_N_CANCEL: i32 = 3;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 4;
     }
-    
+
     pub mod kirby {
-        pub const SPECIAL_HI_H: i32 = 0;
+        pub const SPECIAL_HI_H: i32 = 69; //Weird value to avoid conflicts with copy ability values
     }
 
     pub mod palutena {
