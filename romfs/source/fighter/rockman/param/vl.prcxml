@@ -46,6 +46,14 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_rushcoil">
+    <struct index="0">
+      <float hash="shoot_speed">1.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_lw">
     <struct index="0">
       <int hash="hold_frame">120</int>
@@ -57,11 +65,6 @@
   <list hash="param_leafshield">
     <struct index="0">
       <int hash="is_penetration">0</int>
-    </struct>
-  </list>
-  <list hash="param_rushcoil">
-    <struct index="0">
-      <float hash="shoot_speed">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
