@@ -83,6 +83,8 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
      if is_excute(fighter){
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"),WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT),WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP),WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
      }
+     frame(lua_state,35.0);
+        FT_MOTION_RATE(fighter, 5.0/(38.0-3.0));
 }
 
 #[acmd_script( agent = "purin", script = "game_throwlw" , category = ACMD_GAME , low_priority)]

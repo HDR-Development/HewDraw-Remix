@@ -3,6 +3,17 @@
   <list hash="param_special_n">
     <struct index="0">
       <int hash="hold_count">25</int>
+      <float hash="shot_object_offset_y">10</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+    <list hash="param_starmissile">
+    <struct index="0">
+      <float hash="map_correct_up">0.5</float>
+      <float hash="map_correct_down">-0.5</float>
+      <float hash="map_correct_half_w">0.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -10,11 +21,12 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="start_speed_x">1.5</float>
       <float hash="throw_angle_max">75</float>
       <float hash="throw_angle_min">310</float>
-      <float hash="search_radius">1</float>
-      <float hash="search_offset_x">-8</float>
-      <float hash="search_offset_2x">-5</float>
+      <float hash="search_radius">0</float>
+      <float hash="search_offset_x">0</float>
+      <float hash="search_offset_2x">0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -23,13 +35,18 @@
   <list hash="param_gordo">
     <struct index="0">
       <int hash="life">180</int>
+      <float hash="accel_y">0.15</float>
       <float hash="0x1f6c5eefa5">5</float>
       <float hash="turn_speed_min">4</float>
-      <int hash="remove_turn_num">4</int>
-      <int hash="hop_life">45</int>
+      <int hash="remove_bound_num">2</int>
+      <int hash="remove_turn_num">2</int>
+      <float hash="hop_speed_x">0.5</float>
+      <float hash="hop_speed_y">1.55</float>
+      <int hash="hop_life">40</int>
       <float hash="speed_y_mul">1.05</float>
-      <int hash="wall_stop">100</int>
-      <int hash="wall_stop_life">200</int>
+      <int hash="wall_stop">0</int>
+      <int hash="wall_stop_life">0</int>
+      <float hash="shot_accel_y">0.15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -37,7 +54,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="jump_start_speed_y">6.4</float>
+      <float hash="jump_start_speed_y">6.2</float>
+      <float hash="landing_frame">35</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -45,7 +63,16 @@
   </list>
   <list hash="param_star">
     <struct index="0">
-      <int hash="life">14</int>
+      <int hash="life">10</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="hold_max_damage">15</float>
+      <float hash="hold_max_damage_max">999</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

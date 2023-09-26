@@ -28,7 +28,7 @@ special_hi:
     cancel_frame: 74
 attack_hi4:
   extra:
-    cancel_frame: 74
+    cancel_frame: 60
 attack_lw4:
   extra:
     cancel_frame: 56

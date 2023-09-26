@@ -371,7 +371,21 @@ pub mod vars {
             pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
+    pub mod dedede{
+        pub mod instance{
+            //flags
+            pub const CAN_WADDLE_DASH_FLAG: i32 = 0x0100;
+            pub const IS_DASH_GORDO: i32 = 0x0101;
+            pub const IS_ANGLED_FLAG: i32 = 0x0102;
+            pub const IS_REMOVED_FLAG: i32 = 0x0103;
 
+            //ints
+            pub const RECATCH_COUNTER: i32 = 0x0104;
+
+            //floats
+            pub const INHALE_STICK_Y: i32 = 0x0105;
+        }
+    }
     pub mod demon {
         pub mod instance {
             // flags

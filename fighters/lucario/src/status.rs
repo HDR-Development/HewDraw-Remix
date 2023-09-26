@@ -87,6 +87,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 unsafe fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
     VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
     original!(fighter)
 }
 
