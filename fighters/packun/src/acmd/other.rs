@@ -38,7 +38,7 @@ unsafe fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let damage = if stance != 1 { 0.0 } else { 0.3 };
         let effect = if stance != 1 { Hash40::new("collision_attr_normal") } else { Hash40::new("collision_attr_purple") };
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.4 + damage, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.4 + damage, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 3.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
         AttackModule::set_catch_only_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -143,11 +143,15 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+        }
     }
 }
 
@@ -171,20 +175,28 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+        }
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+        }
     }
     frame(lua_state, 46.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+        }
     }
 }
 
@@ -208,12 +220,16 @@ unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+        }
     }
 }
 

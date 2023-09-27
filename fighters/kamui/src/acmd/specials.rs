@@ -395,12 +395,12 @@ unsafe fn kamui_special_hi_game (fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 2, Hash40::new("rot"), 3.0, 65, 170, 0, 70, 6.5, 0.0, 3.5, -7.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
 		ATTACK(fighter, 1, 2, Hash40::new("rot"), 3.0, 65, 170, 0, 70, 6.5, 0.0, 3.5, 7.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-	wait(lua_state, 2.0);
+	frame(lua_state, 34.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(fighter.module_accessor);
 		notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
 	}
-	frame(lua_state, 38.0);
+	frame(lua_state, 36.0);
 	if is_excute(fighter) {
 		WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_TILT_BODY_ON);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);

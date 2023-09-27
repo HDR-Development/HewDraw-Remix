@@ -24,10 +24,10 @@ attack_11:
     cancel_frame: 16
 attack_lw3:
   extra:
-    cancel_frame: 33
+    cancel_frame: 29
 attack_hi3:
   extra:
-    cancel_frame: 28
+    cancel_frame: 31
 fall_aerial:
   blend_frames: 5
 fall_special:

@@ -2,50 +2,31 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
+use skyline::hooks::InlineCtx;
 
-const INKLING_COLORS: [Vector3f; 8] = [
-    // used to tint the hitbox effects - have at least one value be 0, unless you want white ink. Values between 0 and 1.
+static mut INKLING_COLORS: [Vector3f; 256] = [
+    // used to tint the hitbox effects
     Vector3f {
-        x: 0.758027,
-        y: 0.115859,
-        z: 0.04,
-    }, // (orange)
-    Vector3f {
-        x: 0.04,
-        y: 0.0608165,
-        z: 0.758027,
-    }, // (blue)
-    Vector3f {
-        x: 0.79,
-        y: 0.504014,
-        z: 0.04,
-    }, // (yellow)
-    Vector3f {
-        x: 0.347369,
-        y: 0.582004,
-        z: 0.04,
-    }, // (green)
-    Vector3f {
-        x: 0.758027,
-        y: 0.0608165,
-        z: 0.273385,
-    }, // (pink)
-    Vector3f {
-        x: 0.04,
-        y: 0.47948,
-        z: 0.388556,
-    }, // (sky blue)
-    Vector3f {
-        x: 0.47948,
-        y: 0.04,
-        z: 0.582004,
-    }, // (violet)
-    Vector3f {
-        x: 0.04,
-        y: 0.0462798,
-        z: 0.114017,
-    }, // (purple)
+        x: 0.0,
+        y: 0.0,
+        z: 0.0,
+    };256
 ];
+
+#[skyline::hook(offset = 0x07674f0, inline)]
+pub fn get_ink_colors(ctx: &mut InlineCtx) {
+    // assigns RGB values for the relevant slot in the effect.prc to the above vector
+    unsafe {
+      let color_address = *(ctx.registers[12].x.as_ref());
+      let red = *((color_address) as *const f32);
+      let green = *((color_address + 4) as *const f32);
+      let blue = *((color_address + 8) as *const f32);
+      let index = (*(ctx.registers[8].x.as_ref()) -1) as usize;
+      INKLING_COLORS[index].x = red;
+      INKLING_COLORS[index].y = green;
+      INKLING_COLORS[index].z = blue;
+    }
+}
 
 unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
     if motion_kind == hash40("attack_air_lw")
@@ -104,11 +85,9 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn special_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-    ]) && boma.status_frame() <= 5
-        && boma.is_button_on(Buttons::Guard)
+    if (boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_SHOOT])
+    || (boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && boma.status_frame() <= 5))
+    && boma.is_button_on(Buttons::Guard)
     {
         boma.change_status_req(*FIGHTER_INKLING_STATUS_KIND_CHARGE_INK_START, false);
     }

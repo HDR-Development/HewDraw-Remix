@@ -75,12 +75,22 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn luigi_missile_edge_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
+        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND
+        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     luigi_always_misfire_training_mode(fighter, status_kind);
     luigi_missle_ledgegrab(fighter);
     special_s_charge_init(fighter, status_kind);
     special_hi_proper_landing(fighter);
     fastfall_specials(fighter);
+    luigi_missile_edge_cancel(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUIGI )]

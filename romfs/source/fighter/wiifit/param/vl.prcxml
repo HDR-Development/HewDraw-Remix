@@ -5,6 +5,16 @@
       <float hash="p1_y">23</float>
     </struct>
   </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <int hash="hulahoop_jump_frame">40</int>
+      <float hash="hulahoop_jump_y_speed">0.82</float>
+      <float hash="hulahoop_jump_stick_x_speed_rate">0.1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_lw">
     <struct index="0">
       <float hash="0x1d19c540e7">1.2</float>

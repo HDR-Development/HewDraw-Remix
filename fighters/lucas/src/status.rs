@@ -50,19 +50,14 @@ unsafe extern "C" fn lucas_attack_lw_4_main_loop(fighter: &mut L2CFighterCommon)
 // SPECIAL N //
 
 #[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    if fighter.kind() == *FIGHTER_KIND_KIRBY {
-        original!(fighter)
-    } else {
-        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
-            return 0.into();
-        }
-        else {
-            original!(fighter)
-        }
+unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{  
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
+        return 0.into();
     }
-    
+    else {
+        original!(fighter)
+    }
 }
 
 // SPECIAL N HOLD //
@@ -83,16 +78,12 @@ unsafe fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     // }
     // fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
     // fighter.main_shift(lucas_special_n_hold_main_loop)
-    if fighter.kind() == *FIGHTER_KIND_KIRBY {
-        original!(fighter)
-    } else {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            lucas_special_n_hold_main_sub_status(fighter, false.into());
-        }
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_hold"), 0.0, 1.0, false, 0.0, false, false);
-        fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
-        fighter.main_shift(lucas_special_n_hold_main_loop)
+    if !StopModule::is_stop(fighter.module_accessor) {
+        lucas_special_n_hold_main_sub_status(fighter, false.into());
     }
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_hold"), 0.0, 1.0, false, 0.0, false, false);
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
+    fighter.main_shift(lucas_special_n_hold_main_loop)
     
 }
 
