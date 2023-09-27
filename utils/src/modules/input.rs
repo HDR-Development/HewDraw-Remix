@@ -549,18 +549,12 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         && triggered_buttons.intersects(Buttons::Jump) {
             if ControlModule::get_stick_x((*input_module.owner).module_accessor) > 0.0 {
                 if input_module.hdr_cat.valid_frames[walljump_right_offset] == 0 {
-                    input_module.hdr_cat.valid_frames[walljump_right_offset] = unsafe {
-                        ControlModule::get_command_life_count_max((*input_module.owner).module_accessor)
-                            as u8
-                    };
+                    input_module.hdr_cat.valid_frames[walljump_right_offset] = 2;
                 }
             }
             else if ControlModule::get_stick_x((*input_module.owner).module_accessor) < 0.0 {
                 if input_module.hdr_cat.valid_frames[walljump_left_offset] == 0 {
-                    input_module.hdr_cat.valid_frames[walljump_left_offset] = unsafe {
-                        ControlModule::get_command_life_count_max((*input_module.owner).module_accessor)
-                            as u8
-                    };
+                    input_module.hdr_cat.valid_frames[walljump_left_offset] = 2;
                 }
             }
         }
