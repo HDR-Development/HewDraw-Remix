@@ -117,6 +117,7 @@ unsafe fn map_controls_hook(
     }
 
     let mappings = mappings.add(player_idx as usize);
+    let parry_map = if (*out).buttons.intersects(Buttons::Guard) { Buttons::Parry | Buttons::GuardHold } else { Buttons::Parry | Buttons::Guard };
 
     if controller.style == ControllerStyle::GCController {
         (*out).buttons |= apply_button_mappings!(
@@ -220,26 +221,26 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (l, gc_l, Parry, Buttons::Parry | Buttons::Guard)(
+            (l, gc_l, Parry, parry_map)(
                 r,
                 gc_r,
                 Parry,
-                Buttons::Parry | Buttons::Guard
-            )(zl, gc_z, Parry, Buttons::Parry | Buttons::Guard)(
+                parry_map
+            )(zl, gc_z, Parry, parry_map)(
                 zr,
                 gc_z,
                 Parry,
-                Buttons::Parry | Buttons::Guard
-            )(a, gc_a, Parry, Buttons::Parry | Buttons::Guard)(
+                parry_map
+            )(a, gc_a, Parry, parry_map)(
                 b,
                 gc_b,
                 Parry,
-                Buttons::Parry | Buttons::Guard
-            )(x, gc_x, Parry, Buttons::Parry | Buttons::Guard)(
+                parry_map
+            )(x, gc_x, Parry, parry_map)(
                 y,
                 gc_y,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )
         );
         if (*mappings).gc_absmash & 1 != 0 {
@@ -392,36 +393,36 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (l, joy_shoulder, Parry, Buttons::Parry | Buttons::Guard)(
+            (l, joy_shoulder, Parry, parry_map)(
                 r,
                 joy_shoulder,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 zl,
                 joy_zshoulder,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 zr,
                 joy_zshoulder,
                 Parry,
-                Buttons::Parry | Buttons::Guard
-            )(left_sl, joy_sl, Parry, Buttons::Parry | Buttons::Guard)(
+                parry_map
+            )(left_sl, joy_sl, Parry, parry_map)(
                 left_sr,
                 joy_sr,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 right_sl,
                 joy_sl,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 right_sr,
                 joy_sr,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )
         );
 
@@ -579,22 +580,22 @@ unsafe fn map_controls_hook(
                     a,
                     joy_down,
                     Parry,
-                    Buttons::Parry | Buttons::Guard
+                    parry_map
                 )(
                     y,
                     joy_up,
                     Parry,
-                    Buttons::Parry | Buttons::Guard
+                    parry_map
                 )(
                     b,
                     joy_left,
                     Parry,
-                    Buttons::Parry | Buttons::Guard
+                    parry_map
                 )(
                     x,
                     joy_right,
                     Parry,
-                    Buttons::Parry | Buttons::Guard
+                    parry_map
                 )
             );
         }
@@ -721,42 +722,42 @@ unsafe fn map_controls_hook(
                 l,
                 pro_l,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 r,
                 pro_r,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 zl,
                 pro_zl,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 zr,
                 pro_zr,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 a,
                 pro_a,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 b,
                 pro_b,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 x,
                 pro_x,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )(
                 y,
                 pro_y,
                 Parry,
-                Buttons::Parry | Buttons::Guard
+                parry_map
             )
         );
 

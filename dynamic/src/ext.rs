@@ -315,8 +315,8 @@ bitflags! {
         // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
         // would get mapped to TiltAttack (issue #776)
         const TiltAttack  = 0x80000;
-        const CStickOverride = 0x100000;
-        const Parry = 0x200000;
+        const Parry = 0x100000;
+        const CStickOverride = 0x200000;
         const RivalsWallJump = 0x400000;
 
         const SpecialAll  = 0x20802;
