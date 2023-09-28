@@ -125,7 +125,7 @@ unsafe fn packun_attack_100_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if stance.label == 1 {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 3.4 * stance.damage_bite, 50, 150, 0, 40, 6.0, 0.0, 7.5, 9.0, None, Some(7.5), Some(15.0), 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-            AttackModule::set_poison_param(boma, 0, 136, 45, 2.0, false);
+            AttackModule::set_poison_param(boma, 0, 121, 30, 2.0, false);
         }
         else {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 3.4 * stance.damage_bite, 50, 150, 0, 40, 6.0, 0.0, 7.5, 9.0, None, Some(7.5), Some(15.0), 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);

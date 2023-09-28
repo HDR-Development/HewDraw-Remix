@@ -11,10 +11,20 @@
       <float hash="p1_y">26</float>
     </struct>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <int hash="charge_max_frame">60</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_poisonbreath">
     <struct index="0">
       <int hash="no_charge_life">150</int>
       <int hash="max_charge_life">200</int>
+      <float hash="speed_x">0.1</float>
+      <float hash="speed_x_max">0.25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

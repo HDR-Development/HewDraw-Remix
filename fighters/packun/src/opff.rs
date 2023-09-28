@@ -92,7 +92,7 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_PASSIVE_FB]) {
                 apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            apply_status_speed_mul(fighter, 0.84);
+            apply_status_speed_mul(fighter, 0.94);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
             apply_status_speed_mul(fighter, 0.84);
         }
@@ -268,6 +268,12 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
 		let status_kind = StatusModule::status_kind(boma);
 		let motion_kind = MotionModule::motion_kind(boma);
         if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
+            if weapon.status_frame() <= 1 && weapon.status_frame() % 35 == 0 && (motion_kind != hash40("explode") && motion_kind != hash40("burst")) {
+                macros::ATTACK(weapon, 4, 1, Hash40::new("top"), 1.2, 361, 0, 0, 0, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_FEB, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_bind_extra"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            }
+            else {
+                AttackModule::clear(boma, 4, false);
+            }
             let pos_x = PostureModule::pos_x(boma);
             let pos_y = PostureModule::pos_y(boma);
             let packun_pos_x = PostureModule::pos_x(owner_module_accessor);
@@ -280,9 +286,14 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
                     VarModule::on_flag(owner_object, vars::packun::status::CLOUD_COVER);
                 }
                 if VarModule::is_flag(owner_object, vars::packun::status::FLAME_ACTIVE) &&
-                motion_kind != hash40("explode") {
+                (motion_kind != hash40("explode") && motion_kind != hash40("burst")) {
                     //println!("Woo!");
                     MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+                }
+                if VarModule::is_flag(owner_object, vars::packun::status::BURST_BITE) &&
+                (motion_kind != hash40("explode") && motion_kind != hash40("burst")) {
+                    //println!("Woo!");
+                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("burst"), 0.0, 1.0, false, 0.0, false, false);
                 }
             }
 		}

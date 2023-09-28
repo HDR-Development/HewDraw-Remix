@@ -52,9 +52,9 @@ unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
             ATTACK(agent, 0, 0, Hash40::new("top"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 6.5, 0.0, 7.5, 15.0, Some(0.0), Some(10.5), Some(15.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
             ATTACK(agent, 1, 0, Hash40::new("virtualhit3"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
             ATTACK(agent, 2, 0, Hash40::new("virtualhit2"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-            AttackModule::set_poison_param(boma, 0, 136, 45, 2.0, false);
-            AttackModule::set_poison_param(boma, 1, 136, 45, 2.0, false);
-            AttackModule::set_poison_param(boma, 2, 136, 45, 2.0, false);
+            AttackModule::set_poison_param(boma, 0, 121, 30, 2.0, false);
+            AttackModule::set_poison_param(boma, 1, 121, 30, 2.0, false);
+            AttackModule::set_poison_param(boma, 2, 121, 30, 2.0, false);
         }
         else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 6.5, 0.0, 7.5, 15.0, Some(0.0), Some(10.5), Some(15.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
@@ -66,12 +66,14 @@ unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
                 HIT_NODE(agent, Hash40::new("lipd3"), *HIT_STATUS_XLU);
                 HIT_NODE(agent, Hash40::new("neck6"), *HIT_STATUS_XLU);
                 HIT_NODE(agent, Hash40::new("neck8"), *HIT_STATUS_XLU);
+                VarModule::on_flag(boma.object(), vars::packun::status::BURST_BITE);
             }
         }
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        VarModule::off_flag(boma.object(), vars::packun::status::BURST_BITE);
         HIT_NODE(agent, Hash40::new("mouth"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("lipu3"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("lipd3"), *HIT_STATUS_NORMAL);

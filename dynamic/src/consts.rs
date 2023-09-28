@@ -1229,6 +1229,7 @@ pub mod vars {
             // flags
             pub const FLAME_ACTIVE: i32 = 0x1100;
             pub const CLOUD_COVER: i32 = 0x1101;
+            pub const BURST_BITE: i32 = 0x1102;
         }
     }
 
