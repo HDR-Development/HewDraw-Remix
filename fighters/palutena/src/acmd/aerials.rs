@@ -99,9 +99,9 @@ unsafe fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -158,9 +158,9 @@ unsafe fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -307,9 +307,9 @@ unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_smash_flash"), -1);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.8, 0.40, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.8, 0.40, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {

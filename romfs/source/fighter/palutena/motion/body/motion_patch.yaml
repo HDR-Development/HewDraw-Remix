@@ -262,7 +262,7 @@ special_n_p:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 67
+    cancel_frame: 69
     no_stop_intp: false
 special_air_n_p:
   game_script: game_specialairnp
@@ -289,7 +289,7 @@ special_air_n_p:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 67
+    cancel_frame: 69
     no_stop_intp: false
 special_n_o:
   game_script: game_specialno

@@ -58,7 +58,7 @@ unsafe fn palutena_attack_s3_s_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 14.0);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
@@ -384,7 +384,7 @@ unsafe fn palutena_attack_lw3_effect(agent: &mut L2CAgentBase) {
     }
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 180, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
     }
     frame(lua_state, 29.0);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
