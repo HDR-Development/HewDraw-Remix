@@ -971,7 +971,6 @@ pub mod vars {
             pub const IS_CURRENT_FIRAGA_GRAND_MAGIC: i32 = 0x1102;
             pub const IS_CURRENT_BLIZZAGA_GRAND_MAGIC: i32 = 0x1103;
             pub const IS_CURRENT_THUNDAGA_GRAND_MAGIC: i32 = 0x1104;
-            pub const IS_JUMP_CANCEL_BLIZZ: i32 = 0x1105;
 
             pub const SIDE_SPECIAL_HIT: i32 = 0x1100;
             pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1101;
