@@ -19,6 +19,5 @@ special_n2:
     animations:
       - name: d00specialn2.nuanmb
         unk: 0
-    scripts:
-      - effect_specialn2
+    scripts: ~
     extra: ~
