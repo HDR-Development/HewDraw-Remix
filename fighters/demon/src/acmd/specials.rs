@@ -103,7 +103,6 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
         JostleModule::set_team(boma, 1);
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
     }
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.7);
