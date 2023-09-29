@@ -7,7 +7,7 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 throw_f:
   extra:
     cancel_frame: 36
@@ -94,3 +94,14 @@ special_air_n_buster:
 special_air_n_smash:
   extra:
     xlu_end: 5
+catch_attack:
+  extra:
+    cancel_frame: 0
+special_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0

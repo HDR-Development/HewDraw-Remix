@@ -7,7 +7,7 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 attack_11:
   extra:
     cancel_frame: 16
@@ -55,7 +55,7 @@ attack_air_hi:
     cancel_frame: 30
 attack_air_lw:
   extra:
-    cancel_frame: 41
+    cancel_frame: 43
 special_n:
   animations:
   - name: d00specialntoss.nuanmb
@@ -65,13 +65,13 @@ special_air_n:
   animations:
   - name: d00specialairntoss.nuanmb
   extra:
-    cencel_frame: 47
+    cancel_frame: 47
 special_n_chill:
   game_script: game_specialnchill
   flags:
     turn: false
     loop: false
-    move: true
+    move: false
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -100,7 +100,7 @@ special_air_n_chill:
   flags:
     turn: false
     loop: false
-    move: true
+    move: false
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -133,3 +133,6 @@ special_air_s:
 throw_b:
   extra:
     cancel_frame: 47
+catch_attack:
+  extra:
+    cancel_frame: 0

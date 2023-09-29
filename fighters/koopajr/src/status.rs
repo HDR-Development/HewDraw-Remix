@@ -7,7 +7,8 @@ pub fn install() {
         //pre_special_hi_escape,
         special_hi_escape,
         end_special_hi_escape,
-        special_s_jump_init
+        special_s_jump_init,
+        special_hi_damage_end_main
     );
 }
 
@@ -292,4 +293,23 @@ pub unsafe fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
     0.into()
+}
+
+// FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END
+
+#[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_hi_damage_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    original!(fighter);
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+    }
+    else {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_DAMAGE_FLY) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_DAMAGE_FALL, false);
+        }
+        else {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
+    }
+    1.into()
 }

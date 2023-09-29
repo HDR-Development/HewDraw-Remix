@@ -28,7 +28,7 @@ attack_12:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 attack_11:
   extra:
     cancel_frame: 16
@@ -36,6 +36,8 @@ attack_hi4:
   extra:
     cancel_frame: 54
 attack_lw4:
+  flags:
+    move: false
 special_s1:
   extra:
     cancel_frame: 35
@@ -64,3 +66,6 @@ fall_special_f:
   blend_frames: 5
 attack_hi4_hold:
 attack_lw4_hold:
+catch_attack:
+  extra:
+    cancel_frame: 0

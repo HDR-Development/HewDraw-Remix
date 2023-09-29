@@ -50,9 +50,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_N_HOLD,
-        *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_N_END,
         *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -77,10 +74,20 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn side_special_landing_lag(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_ELIGHT )]
 pub unsafe fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     hit_cancel_blade_switch(fighter);
     photon_edge_actionability(fighter);
     fastfall_specials(fighter);
+    side_special_landing_lag(fighter);
 }

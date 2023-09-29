@@ -43,7 +43,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="special_lw_throw_ang">135</float>
+      <float hash="special_lw_throw_ang">110</float>
       <float hash="special_lw_throw_spd_x">1.35</float>
       <float hash="special_lw_smash_throw_spd_mul">1.55</float>
       <int hash="special_lw_banana_num_max">1</int>

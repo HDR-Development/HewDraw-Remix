@@ -76,7 +76,7 @@
     <struct index="0">
       <float hash="sp_lw_ar_vy0">1.28</float>
       <float hash="sp_lw_bj_ang_max">50</float>
-      <float hash="sp_lw_bj_spd0">2.33</float>
+      <float hash="sp_lw_bj_spd0">1.65</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

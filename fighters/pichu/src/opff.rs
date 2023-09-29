@@ -140,7 +140,7 @@ unsafe fn discharge_momentum(fighter: &mut L2CFighterCommon) {
 unsafe fn zippy_zap_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::pichu::instance::IS_CHARGE_ATTACK) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }

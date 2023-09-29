@@ -22,6 +22,8 @@ pub mod attack;
 pub mod collision;
 pub mod camera;
 pub mod shotos;
+pub mod aura;
+pub mod sound;
 
 #[repr(C)]
 pub struct TempModule {
@@ -752,6 +754,8 @@ pub fn install() {
     collision::install();
     camera::install();
     shotos::install();
+    aura::install();
+    sound::install();
 
     unsafe {
         // Handles getting rid of the kill zoom

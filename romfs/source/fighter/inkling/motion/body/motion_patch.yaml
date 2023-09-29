@@ -7,7 +7,7 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 throw_f:
   extra:
     cancel_frame: 45
@@ -36,6 +36,8 @@ attack_dash:
   extra:
     cancel_frame: 35
 attack_s4_s:
+  flags:
+    move: false
   extra:
     cancel_frame: 56
 attack_s3_s:
@@ -46,7 +48,7 @@ attack_air_n:
     cancel_frame: 32
 attack_air_lw:
   extra:
-    cancel_frame: 45
+    cancel_frame: 47
 attack_100_end:
   extra:
     cancel_frame: 42
@@ -62,3 +64,6 @@ special_ink_charge_end:
 special_air_s_jump_end:
   extra:
     cancel_frame: 45
+catch_attack:
+  extra:
+    cancel_frame: 0

@@ -7,7 +7,7 @@ fall_special:
 guard_off:
   blend_frames: 4
   extra:
-    cancel_frame: 0
+    cancel_frame: 12
 attack_11:
   extra:
     cancel_frame: 18
@@ -66,25 +66,25 @@ special_air_s_get:
   extra:
     cancel_frame: 1
 special_lw:
-  game_script: game_speciallwhit
+  game_script: game_speciallw
   animations:
-  - name: d03speciallwhit.nuanmb
+  - name: d03speciallw.nuanmb
   scripts:
-  - expression_speciallwhit
-  - sound_speciallwhit
-  - effect_speciallwhit
+  - expression_speciallw
+  - sound_speciallw
+  - effect_speciallw
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 48
 special_air_lw:
-  game_script: game_specialairlwhit
+  game_script: game_specialairlw
   animations:
-  - name: d03specialairlwhit.nuanmb
+  - name: d03specialairlw.nuanmb
   scripts:
-  - expression_specialairlwhit
-  - sound_specialairlwhit
-  - effect_specialairlwhit
+  - expression_specialairlw
+  - sound_specialairlw
+  - effect_specialairlw
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -96,3 +96,6 @@ item_light_throw_f:
   flags:
     move: false
     cancel_frame: 44
+catch_attack:
+  extra:
+    cancel_frame: 0
