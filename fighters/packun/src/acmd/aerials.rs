@@ -230,7 +230,7 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
-    let angle = if stance.label == 1 {25} else {0};
+    let angle = if stance.label == 1 {105} else {70};
     let bkb = if stance.label == 1 {15} else if stance.label == 0 {10} else {0};
     let sound = if stance.label != 2 { *COLLISION_SOUND_ATTR_PUNCH } else { *COLLISION_SOUND_ATTR_HEAVY };
     if stance.label != 2 {
@@ -246,7 +246,7 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("mouth"), 9.0 * stance.damage_head, 85 + angle, 87, 0, 53 + bkb, 7.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("mouth"), 9.0 * stance.damage_head, angle, 87, 0, 53 + bkb, 7.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_HEAD);
         if stance.label == 2 {
             HIT_NODE(fighter, Hash40::new("mouth"), *HIT_STATUS_XLU);
             HIT_NODE(fighter, Hash40::new("lipu3"), *HIT_STATUS_XLU);
@@ -264,7 +264,7 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("neck6"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("neck8"), *HIT_STATUS_NORMAL);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 25.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
