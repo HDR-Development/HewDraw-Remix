@@ -243,8 +243,8 @@ unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
 
 // properly cycles Sora's HUD to fire in training mode on reset
 unsafe fn training_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) { 
-    if VarModule::is_flag(boma.object(), vars::trail::instance::CYCLE_MAGIC)
-    && smash::app::sv_information::is_ready_go() {
+    if smash::app::sv_information::is_ready_go()
+    && VarModule::is_flag(boma.object(), vars::trail::instance::CYCLE_MAGIC) {
         let magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
         let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
         if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_FIRE 
