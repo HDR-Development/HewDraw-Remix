@@ -1,5 +1,32 @@
 use super::*;
 
+// swapping the cycle order of thundaga and blizzaga
+#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let prev_status = fighter.global_table[0x10].get_i32();
+    WorkModule::set_int(fighter.module_accessor, prev_status, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_STATUS_KIND_ATTACK_PREV);
+    let mut magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
+    let fire = *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_FIRE;
+    let blizzard = *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_BLIZZARD;
+    let thunder = *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER;
+    if magic_kind == blizzard { // change to fire
+        magic_kind = fire;
+    } else if magic_kind == fire { // change to blizzard
+        magic_kind = blizzard;
+    }
+    if ![fire, blizzard, thunder].contains(&magic_kind) {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1);
+    } else if magic_kind == fire {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1);
+    } else if magic_kind == blizzard { 
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2);
+    } else if magic_kind == thunder {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3); 
+    }
+
+    return 1.into();
+}
+
 #[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
@@ -132,6 +159,7 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
+        special_n_pre,
         special_n2_pre,
         special_n2_main
     );
