@@ -1412,12 +1412,18 @@ unsafe fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     FT_MOTION_RATE(fighter, 3.0);
+    if is_excute(fighter) {
+        if boma.is_button_on(Buttons::Special) {
+            VarModule::on_flag(fighter.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD);
+        }
+    }
     frame(lua_state, 12.0);
     FT_MOTION_RATE(fighter, 1.2);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_REVERSE_SLASH_FLAG_SPECIAL_FALL);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 60, 55, 0, 40, 5.0, 0.0, 9.0, 25.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 15, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 60, 55, 0, 40, 2.0, 0.0, 2.0, 25.0, Some(0.0), Some(25.0), Some(25.0), 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_OBJECT);
+        let hold = if VarModule::is_flag(fighter.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 10.0 } else { 0.0 };
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 60, 55, 0, 40, 5.0, 0.0, 9.0, 15.0 + hold, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 15, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 60, 55, 0, 40, 2.0, 0.0, 2.0, 15.0 + hold, Some(0.0), Some(25.0), Some(15.0 + hold), 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -1446,9 +1452,14 @@ unsafe fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
+        let mut offset = 0;
         EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("arml"), 4, 0, 0, 0, 0, 0, 0.4, true);
+        if VarModule::is_flag(fighter.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) {
+            offset = 8;
+            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15.0, 8.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        }
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_smokescreen"), Hash40::new("top"), 0, 25, 21, 0, 0.0, 0, 0.4, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_smokescreen"), Hash40::new("top"), 0, 25, 13 + offset, 0, 0.0, 0, 0.4, true);
             LAST_EFFECT_SET_SCALE_W(fighter, 0.4, 0.25, 0.4);
             LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.1, 0.1);
             LAST_EFFECT_SET_RATE(fighter, 1.1);
@@ -1457,7 +1468,8 @@ unsafe fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if fighter.is_situation(*SITUATION_KIND_AIR) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_smokescreen"), Hash40::new("top"), 0, 25, 21, 0, 0.0, 0, 0.4, true);
+            let hold = if VarModule::is_flag(fighter.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 8 } else { 0 };
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_smokescreen"), Hash40::new("top"), 0, 25, 13 + hold, 0, 0.0, 0, 0.4, true);
             LAST_EFFECT_SET_SCALE_W(fighter, 0.4, 0.25, 0.4);
             LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.1, 0.1);
             LAST_EFFECT_SET_RATE(fighter, 1.1);
@@ -1465,17 +1477,19 @@ unsafe fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.5);
     if is_excute(fighter) {
+        let hold = if VarModule::is_flag(fighter.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 8 } else { 0 };
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0.5, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
         }
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder_flash"), Hash40::new("top"), 0, 15, 21, 0, 0, 180, 0.15, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder_flash"), Hash40::new("top"), 0, 15, 13 + hold, 0, 0, 180, 0.15, true);
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
+        let hold = if VarModule::is_flag(fighter.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 8 } else { 0 };
         EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_paralysis"), Hash40::new("arml"), 4, 0, 0, 0, 0, 0, 0.35, true);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_smokescreen"), false, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec"), Hash40::new("top"), 0, 8.0, 21.0, 0, 0.0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec"), Hash40::new("top"), 0, 8, 13 + hold, 0, 0, 0, 0.4, true);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
     }
     frame(lua_state, 16.0);
