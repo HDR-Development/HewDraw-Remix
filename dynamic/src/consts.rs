@@ -854,6 +854,25 @@ pub mod vars {
         }
     }
 
+    pub mod rockman {
+        pub mod instance {
+            // flags
+            pub const CHARGE_SHOT_CHARGING : i32 = 0x0100;
+            pub const CHARGE_SHOT_PLAYED_FX : i32 = 0x0101;
+            pub const CHARGE_SHOT_RELEASE : i32 = 0x0102;
+            
+            // ints
+            pub const CHARGE_SHOT_FRAME : i32 = 0x0100;
+            pub const CHARGE_SHOT_EFF_HANDLE : i32 = 0x0101;
+            pub const CHARGE_SHOT_SND_HANDLE : i32 = 0x0102;
+            pub const CHARGE_SHOT_RELEASE_FRAME : i32 = 0x0103;
+        }
+        pub mod status {
+            // flags
+            pub const CHARGE_SHOT_KEEP_CHARGE : i32 = 0x1100;
+        }
+    }
+
     pub mod roy {
         pub mod instance {
             // flags
