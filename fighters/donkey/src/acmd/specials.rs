@@ -342,7 +342,7 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 0.5);
     }
@@ -351,9 +351,8 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 0.1);
         JostleModule::set_status(boma, false);
         //VarModule::on_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP);
-        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 14.0, 5.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 12.0, 9.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(fighter, 1, Hash40::new("top"), 7.0, 0.0, 10.0, 13.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
-        CATCH(fighter, 2, Hash40::new("top"), 8.0, 0.0, 10.0, 13.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
     }
     wait(lua_state, 0.5);
     if is_excute(fighter) {

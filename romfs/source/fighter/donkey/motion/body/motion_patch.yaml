@@ -25,7 +25,7 @@ attack_lw3:
     cancel_frame: 23
 throw_f_hi:
   extra:
-    cancel_frame: 36
+    cancel_frame: 38
 special_hi:
   extra:
     cancel_frame: 111
