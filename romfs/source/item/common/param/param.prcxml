@@ -9,7 +9,7 @@
       <float hash="hp">999</float><!--vanilla is 14-->
       <!-- force barrel to incur hitlag-->
       <hash40 hash="attack_hitstop_kind">item_attack_hitstop_kind_normal</hash40>
-      <float hash="pickup_range_sizew">10.0</float>
+      <float hash="pickup_range_sizew">7.0</float>
       <float hash="pickup_range_sizeh">12.0</float>
     </struct>
     <hash40 index="2">dummy</hash40>
