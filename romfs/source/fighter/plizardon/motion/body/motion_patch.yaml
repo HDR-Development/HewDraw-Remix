@@ -48,7 +48,7 @@ attack_air_f:
     cancel_frame: 36
 attack_air_n:
   extra:
-    cancel_frame: 36
+    cancel_frame: 40
 attack_s3_hi:
   flags:
     move: false
