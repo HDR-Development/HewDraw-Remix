@@ -6,8 +6,6 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
-mod vtable_hook;
-pub mod vl;
 
 use smash::{
     lib::{
@@ -19,8 +17,7 @@ use smash::{
         self,
         sv_animcmd::{
             frame,
-            wait,
-            execute
+            wait
         },
         lua_bind::*
     },
@@ -45,6 +42,5 @@ use smashline::*;
 pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    vtable_hook::install(is_runtime);
     opff::install(is_runtime);
 }

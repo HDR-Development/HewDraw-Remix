@@ -5,20 +5,15 @@
       <float hash="p1_y">19</float>
     </struct>
   </list>
-  <list hash="param_rockbuster">
-    <struct index="0">
-      <int hash="life">36</int>
-      <float hash="speed">1.77</float>
-    </struct>
-  </list>
   <list hash="param_chargeshot">
     <struct index="0">
-      <float hash="scale_min">1.1</float>
-      <float hash="scale_max">2.82</float>
-      <int hash="life_min">36</int>
-      <int hash="life_max">24</int>
-      <float hash="speed_min">1.77</float>
-      <float hash="speed_max">3</float>
+      <int hash="life_min">30</int>
+      <int hash="life_max">40</int>
+    </struct>
+  </list>
+    <list hash="param_rockbuster">
+    <struct index="0">
+      <int hash="life">34</int>
     </struct>
   </list>
   <list hash="param_airshooter">
@@ -49,22 +44,6 @@
   <list hash="param_rushcoil">
     <struct index="0">
       <float hash="shoot_speed">1.0</float>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
-  </list>
-  <list hash="param_special_lw">
-    <struct index="0">
-      <int hash="hold_frame">120</int>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
-  </list>
-  <list hash="param_leafshield">
-    <struct index="0">
-      <int hash="is_penetration">0</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
