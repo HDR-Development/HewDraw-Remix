@@ -123,7 +123,7 @@ unsafe fn game_throwfhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     let weight = WorkModule::get_param_float(boma.get_grabbed_opponent_boma(), hash40("weight"), 0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 36.0, 35.0 + 26.0 * (weight / 100.0 - 1.0));
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 36.0, 39.0 + 18.0 * (weight / 100.0 - 1.0));
     if is_excute(fighter) {
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 90, 30, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
