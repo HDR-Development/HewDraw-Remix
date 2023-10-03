@@ -1,16 +1,13 @@
-
 use super::*;
 
 #[acmd_script( agent = "demon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        JostleModule::set_team(boma, 1);
         WorkModule::set_int(boma, -1, *FIGHTER_DEMON_STATUS_ATTACK_S4_WORK_INT_CRITICAL_HIT_NO);
     }
     FT_MOTION_RATE(fighter, 1.0);
@@ -23,21 +20,14 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
     }
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
+
     frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
     frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 4.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 4.0);
     frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 3.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 3.0);
     frame(lua_state, 21.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 25.0);
@@ -55,49 +45,35 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.75);
     }
     frame(lua_state, 28.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
         if !WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_S4_FLAG_HIT) {
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         }
     }
     frame(lua_state, 51.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 4.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 4.0);
     frame(lua_state, 53.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
     frame(lua_state, 57.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
     frame(lua_state, 58.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
     frame(lua_state, 59.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
     frame(lua_state, 61.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
 #[acmd_script( agent = "demon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        JostleModule::set_team(boma, 1);
         FT_DESIRED_RATE(fighter, 14.0-1.0, 9.0);
     }
     frame(lua_state, 7.0);
@@ -105,21 +81,17 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 9.0);
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
     if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 6.0);
     }
     frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
     frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 16.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0.0);
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -142,39 +114,27 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.8);
-    }
+    FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 51.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
     frame(lua_state, 53.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
     frame(lua_state, 54.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 9.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 9.0);
     frame(lua_state, 56.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
 #[acmd_script( agent = "demon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.8);
+        JostleModule::set_team(boma, 1);
     }
+    FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -184,26 +144,16 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 6.0);
     }
     frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
     frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
     frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
     frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
     frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 3.0);
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 3.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0.0);
@@ -261,30 +211,18 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 46.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
     frame(lua_state, 47.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
     frame(lua_state, 48.0);
     if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
     frame(lua_state, 50.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
     frame(lua_state, 52.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 9.0);
-    }
+    smash::app::FighterSpecializer_Demon::set_devil(boma, true, 9.0);
     frame(lua_state, 53.0);
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
-    }
-
+    smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
 pub fn install() {

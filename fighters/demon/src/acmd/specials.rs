@@ -1,5 +1,24 @@
-
 use super::*;
+
+#[acmd_script( agent = "demon", script = "game_attackstep", category = ACMD_GAME, low_priority )]
+unsafe fn game_attackstep(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 0.8);
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        JostleModule::set_team(boma, 1);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+}
 
 #[acmd_script( agent = "demon", script = "game_attackstep2" , category = ACMD_GAME , low_priority)]
 unsafe fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
@@ -12,20 +31,17 @@ unsafe fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        JostleModule::set_team(boma, 1);
     }
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.7);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(0.15, 0.0, 0.0));
-        FT_MOTION_RATE(fighter, 0.7);
     }
     frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.5);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }  
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(-0.15, 0.0, 0.0));
@@ -61,14 +77,14 @@ unsafe fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         //AttackModule::set_attack_camera_quake_forced(boma, 5, *CAMERA_QUAKE_KIND_M, false);
     }
     frame(lua_state, 12.0);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
         AttackModule::clear(boma, 4, false);
         AttackModule::clear(boma, 5, false);
     }
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
@@ -86,21 +102,17 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
+        JostleModule::set_team(boma, 1);
     }
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.7);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(0.15, 0.0, 0.0));
-        FT_MOTION_RATE(fighter, 0.7);
     }
     frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.5);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(-0.15, 0.0, 0.0));
@@ -110,7 +122,6 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-
         ATTACK(fighter, 0, 0, Hash40::new("handr"), 14.5, 86, 20, 0, 85, 4.5, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 14.5, 86, 20, 0, 85, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), 14.5, 86, 20, 0, 85, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.31, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
@@ -123,7 +134,6 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 3, 2.8);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 4, 2.8);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 5, 2.8);
-
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 5, 1.2);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 2.8);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 2.8);
@@ -145,8 +155,8 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
     }
     frame(lua_state, 12.0);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
         AttackModule::clear(boma, 4, false);
         AttackModule::clear(boma, 5, false);
     }
@@ -158,14 +168,12 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 3, false);
     }
     frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
         AttackModule::clear(boma, 6, false);
-        FT_MOTION_RATE(fighter, 0.9);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-        
-        
-    
+
 }
 
 #[acmd_script( agent = "demon", script = "game_attackstep2s" , category = ACMD_GAME , low_priority)]
@@ -187,11 +195,12 @@ unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 2, 20.0, false);
     }
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.8);
     }
     frame(lua_state, 33.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(-0.1, 0.0, 0.0));
         FT_MOTION_RATE(fighter, 1.0);
@@ -219,18 +228,16 @@ unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             ATTACK(fighter, 5, 1, Hash40::new("top"), 0.0, 235, 100, 16, 0, 10.0, 0.0, 10.0, 10.0, Some(0.0), Some(10.0), Some(18.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PUNCH);
         }
-        
     }
     frame(lua_state, 45.0);
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        FT_MOTION_RATE(fighter, 0.25);
+    }
+    else{
+        FT_MOTION_RATE(fighter, 0.6);
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            FT_MOTION_RATE(fighter, 0.25);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 0.6);
-        }
-        
     }
     
 }
@@ -239,10 +246,15 @@ unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
 unsafe fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
+        JostleModule::set_team(boma, 1);
     }
     frame(lua_state, 7.0);
+    if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
+        FT_MOTION_RATE_RANGE(fighter, 7.0, 19.0, 10.0);
+    }
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
@@ -250,14 +262,9 @@ unsafe fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
-            FT_MOTION_RATE(fighter, 10.0/(19.0-7.0));
-        }
     }
     frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
@@ -316,7 +323,7 @@ unsafe fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
-    AttackModule::clear_all(boma);
+        AttackModule::clear_all(boma);
     }
     
 }
@@ -326,17 +333,15 @@ unsafe fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        JostleModule::set_team(boma, 1);
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     }
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.5);
-    }
-    frame(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 1.5);
     frame(lua_state, 5.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 5.0);
-        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -403,12 +408,11 @@ unsafe fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 1.0);
-    }
     frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 49.0, 40.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 40.0/(49.0-1.0));
+        JostleModule::set_team(boma, 1);
+        smash::app::FighterSpecializer_Demon::set_devil(boma, true, 1.0);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -439,9 +443,9 @@ unsafe fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
     }
     frame(lua_state, 49.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
-        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
@@ -449,21 +453,20 @@ unsafe fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 1.5);
+    FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     if is_excute(fighter) {
         boma.select_cliff_hangdata_from_name("special_s");
     }
-    FighterSpecializer_Demon::set_devil(boma, true, 10.0);
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 1.5);
-    frame(lua_state, 4.0);
     frame(lua_state, 5.0);
-    FighterSpecializer_Demon::set_devil(boma, true, 5.0);
     FT_MOTION_RATE(fighter, 1.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 5.0);
     frame(lua_state, 12.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 4.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
-    FighterSpecializer_Demon::set_devil(boma, true, 4.0);
     frame(lua_state, 14.0);
     FighterSpecializer_Demon::set_devil(boma, true, 3.0);
     if is_excute(fighter) {
@@ -506,9 +509,7 @@ unsafe fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 1.0);
     }
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 30.0/(49.0-1.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 49.0, 30.0);
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 2.0);
@@ -546,9 +547,9 @@ unsafe fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
     }
     frame(lua_state, 49.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
-        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
@@ -779,8 +780,86 @@ unsafe fn game_attackstep2fhitshield(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "demon", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
+unsafe fn game_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FighterSpecializer_Demon::set_devil(boma, true, 10.0);
+    if is_excute(agent) {
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10);
+    }
+    frame(lua_state, 6.0);
+    FT_MOTION_RATE(agent, 0.6);
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 8.75, 5.0, None, None, None, *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_G);
+        CATCH(agent, 1, Hash40::new("top"), 3.5, 0.0, 7.75, 12.0, Some(0.0), Some(7.75), Some(10.0), *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_G);
+        CATCH(agent, 2, Hash40::new("top"), 3.0, 0.0, 8.75, 5.0, None, None, None, *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_A);
+        CATCH(agent, 3, Hash40::new("top"), 2.0, 0.0, 7.75, 12.5, Some(0.0), Some(7.75), Some(9.5), *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_A);
+        GrabModule::set_constraint(boma, 0, true);
+        GrabModule::set_constraint(boma, 1, true);
+        GrabModule::set_constraint(boma, 2, true);
+        GrabModule::set_constraint(boma, 3, true);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 14.0, 5.0, Some(0.0), Some(8.75), Some(5.0), *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_G);
+        CATCH(agent, 1, Hash40::new("top"), 3.5, 0.0, 19.0, 9.0, Some(0.0), Some(7.75), Some(10.0), *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_G);
+        CATCH(agent, 2, Hash40::new("top"), 3.0, 0.0, 14.0, 5.0, Some(0.0), Some(8.75), Some(5.0), *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_A);
+        CATCH(agent, 3, Hash40::new("top"), 2.0, 0.0, 19.0, 9.0, Some(0.0), Some(7.75), Some(10.0), *FIGHTER_STATUS_KIND_DEMON_DIVED, *COLLISION_SITUATION_MASK_A);
+        GrabModule::set_constraint(boma, 0, true);
+        GrabModule::set_constraint(boma, 1, true);
+        GrabModule::set_constraint(boma, 2, true);
+        GrabModule::set_constraint(boma, 3, true);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        SET_SPEED_EX(agent, 0.1, 1.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    }
+    FT_MOTION_RATE(agent, 0.9);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        GrabModule::set_rebound(boma, false);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 70, 60, 0, 80, 3.0, 0.0, 19.0, 4.5, Some(0.0), Some(23.0), Some(4.5), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 60, 60, 0, 80, 3.0, 0.0, 12.0, 6.0, Some(0.0), Some(16.0), Some(6.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 2, 0, Hash40::new("top"), 8.0, 64, 50, 0, 75, 3.0, 0.0, 3.0, 4.0, Some(0.0), Some(3.0), Some(5.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        AttackModule::set_down_only(boma, 2, true);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        AttackModule::clear(boma, 2, false);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 70, 60, 0, 80, 3.0, 0.0, 19.5, 4.5, Some(0.0), Some(23.5), Some(3.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 60, 60, 0, 80, 3.0, 0.0, 12.0, 6.0, Some(0.0), Some(16.0), Some(6.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 70, 60, 0, 80, 3.0, 0.0, 20.0, 4.5, Some(0.0), Some(24.0), Some(3.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        AttackModule::clear(boma, 1, false);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 25.0);
+    FighterSpecializer_Demon::set_devil(boma, false, 0.0);
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        game_attackstep,
         kazuya_wind_god_fist_game,
         kazuya_electric_wind_god_fist_game,
         kazuya_spinning_demon_to_left_hook_game,
@@ -793,6 +872,7 @@ pub fn install() {
         kazuya_special_hi_air_game,
         kazuya_special_hi_start_effect,
         game_attackstep2fhitshield,
+        game_speciallw,
     );
 }
 
