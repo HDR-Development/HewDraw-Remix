@@ -1,136 +1,5 @@
 use super::*;
 
-#[acmd_script( agent = "demon", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::demon::instance::DEVASTATOR){
-            MotionModule::change_motion(boma, Hash40::new("flash_punch"), 0.0, 1.0, false, 0.0, false, false);
-        }
-        else{
-            JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
-        }
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 6.0-2.0, 3.0);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 3.0, 80, 100, 25, 0, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 3.0, 80, 100, 25, 0, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 3.0, 80, 100, 25, 0, 3.0, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 80, 100, 25, 0, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        // Jab lock hitbox
-        ATTACK(fighter, 4, 0, Hash40::new("top"), 3.0, 361, 10, 0, 30, 3.0, 0.0, 4.0, 3.0, Some(0.0), Some(4.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        AttackModule::set_down_only(boma, 4, false);
-
-        AttackModule::set_add_reaction_frame_revised(boma, 0, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 1, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 2, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 3, 2.0, false);
-
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.3);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.3);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 1.3);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 3, 1.3);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
-    }   
-}
-
-#[acmd_script( agent = "demon", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        //JostleModule::set_push_speed_x_overlap_rate_status(boma, 20);
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
-        FT_DESIRED_RATE(fighter, 7.0-1.0, 4.0);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-        WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_ENABLE_COMBO);
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 3.0, 75, 100, 25, 0, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 3.0, 75, 100, 25, 0, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 3.0, 75, 100, 25, 0, 3.0, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 75, 100, 25, 0, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        // Jab lock hitbox
-        ATTACK(fighter, 4, 0, Hash40::new("top"), 3.0, 361, 10, 0, 30, 3.0, 0.0, 4.0, 3.0, Some(0.0), Some(4.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x193bdcb0cc), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        AttackModule::set_down_only(boma, 4, false);
-
-        AttackModule::set_add_reaction_frame_revised(boma, 0, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 1, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 2, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 3, 2.0, false);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        //JostleModule::set_push_speed_x_overlap_rate_status(boma, 0);
-        AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
-        WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_FLASH_PUNCH);
-    }
-    frame(lua_state, 27.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_FLASH_PUNCH);
-    }
-}
-
-#[acmd_script( agent = "demon", script = "game_flashpunch" , category = ACMD_GAME , low_priority)]
-unsafe fn game_flashpunch(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::demon::instance::DEVASTATOR){
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 0.0, 368, 100, 40, 0, 7.0, 0.0, 15.0, 5.0, Some(0.0), Some(7.0), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-            ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 368, 100, 40, 0, 7.0, 0.0, 15.0, 0.0, Some(0.0), Some(7.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-            AttackModule::set_vec_target_pos(boma, 0, smash::phx::Hash40::new("top"), &Vector2f::new(5.0, 15.0), 5, false);
-            AttackModule::set_vec_target_pos(boma, 1, smash::phx::Hash40::new("top"), &Vector2f::new(5.0, 15.0), 5, false);
-        }
-        else{
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 0.0, 361, 100, 35, 0, 4.0, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        }
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::demon::instance::DEVASTATOR){
-            VarModule::off_flag(boma.object(), vars::demon::instance::DEVASTATOR);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 40, 40, 0, 76, 2.0, 0.0, 9.5, 9.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 40, 40, 0, 76, 4.0, 0.0, 8.0, 4.0, Some(0.0), Some(8.0), Some(8.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 40, 40, 0, 76, 4.0, 0.0, 10.5, 4.0, Some(0.0), Some(10.5), Some(8.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        }
-        else{
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 43, 70, 0, 76, 2.0, 0.0, 9.5, 9.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 43, 70, 0, 76, 4.0, 0.0, 8.0, 4.0, Some(0.0), Some(8.0), Some(8.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 43, 70, 0, 76, 4.0, 0.0, 10.5, 4.0, Some(0.0), Some(10.5), Some(8.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        }
-        
-    }
-    wait(lua_state, 4.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    
-}
-
 #[acmd_script( agent = "demon", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -365,7 +234,6 @@ unsafe fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
         if !VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         }
-        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -772,9 +640,6 @@ unsafe fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_attack11,
-        game_attack12,
-        game_flashpunch,
         game_attackdash,
         kazuya_left_splits_kick_game,
         kazuya_triple_spin_kicks_1_game,

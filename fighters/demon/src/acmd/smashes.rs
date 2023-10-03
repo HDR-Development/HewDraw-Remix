@@ -215,7 +215,6 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     frame(lua_state, 47.0);
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 6.0);
     frame(lua_state, 48.0);
-    if is_excute(fighter) {
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 7.0);
     frame(lua_state, 50.0);
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 8.0);
