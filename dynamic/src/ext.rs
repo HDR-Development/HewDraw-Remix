@@ -2,11 +2,12 @@ use crate::consts::globals::*;
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
 use smash::app::{
-    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyMotion, *,
+    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyGravity, FighterKineticEnergyMotion, *,
 };
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
+use crate::InputModule;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -142,6 +143,7 @@ impl Into<CommandCat> for CatHdr {
 }
 
 bitflags! {
+    #[derive(Copy, Clone)]
     pub struct Cat1: i32 {
         const AttackN       = 0x1;
         const AttackS3      = 0x2;
@@ -177,6 +179,7 @@ bitflags! {
         const NoCmd         = 0x40000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat2: i32 {
         const AppealSL            = 0x1;
         const AppealSR            = 0x2;
@@ -209,6 +212,7 @@ bitflags! {
         const FinalReverseLR      = 0x8000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat3: i32 {
         const ItemLightThrowFB4    = 0x1;
         const ItemLightThrowHi4    = 0x2;
@@ -237,6 +241,7 @@ bitflags! {
         const ItemLightThrowAirAll = 0x1F80;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat4: i32 {
         const SpecialNCommand       = 0x1;
         const SpecialN2Command      = 0x2;
@@ -267,12 +272,15 @@ bitflags! {
         const Command323Catch       = 0x4000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct CatHdr: i32 {
-        const TiltAttack = 0x1;
-        const Wavedash = 0x2;
-        const ShieldDrop = 0x4;
+        const Wavedash = 0x1;
+        const ShieldDrop = 0x2;
+        const WallJumpLeft = 0x4;
+        const WallJumpRight = 0x8;
     }
 
+    #[derive(Copy, Clone)]
     pub struct PadFlag: i32 {
         const AttackTrigger  = 0x1;
         const AttrckRelease  = 0x2;
@@ -284,6 +292,7 @@ bitflags! {
         const GuardRelease   = 0x80;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Buttons: i32 {
         const Attack      = 0x1;
         const Special     = 0x2;
@@ -306,9 +315,9 @@ bitflags! {
         // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
         // would get mapped to TiltAttack (issue #776)
         const TiltAttack  = 0x80000;
-        const CStickOverride = 0x100000;
-        const SpecialParry = 0x200000;
-        const TauntParry = 0x400000;
+        const Parry = 0x100000;
+        const CStickOverride = 0x200000;
+        const RivalsWallJump = 0x400000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -318,31 +327,31 @@ bitflags! {
 
 impl Cat1 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat1::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 0)) }
+        unsafe { Cat1::from_bits_retain(ControlModule::get_command_flag_cat(boma, 0)) }
     }
 }
 
 impl Cat2 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat2::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 1)) }
+        unsafe { Cat2::from_bits_retain(ControlModule::get_command_flag_cat(boma, 1)) }
     }
 }
 
 impl Cat3 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat3::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 2)) }
+        unsafe { Cat3::from_bits_retain(ControlModule::get_command_flag_cat(boma, 2)) }
     }
 }
 
 impl Cat4 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { Cat4::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 3)) }
+        unsafe { Cat4::from_bits_retain(ControlModule::get_command_flag_cat(boma, 3)) }
     }
 }
 
 impl CatHdr {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
-        unsafe { CatHdr::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 4)) }
+        unsafe { CatHdr::from_bits_retain(ControlModule::get_command_flag_cat(boma, 4)) }
     }
 }
 
@@ -427,7 +436,9 @@ pub trait BomaExt {
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
     unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn prev_left_stick_x(&mut self) -> f32;
     unsafe fn left_stick_y(&mut self) -> f32;
+    unsafe fn prev_left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -496,6 +507,7 @@ pub trait BomaExt {
 
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
+    unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
 
     // tech/general subroutines
@@ -506,7 +518,7 @@ pub trait BomaExt {
     unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
     // Checks for status and enables transition to jump
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool;
     // Checks for status and enables transition to airdodge
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
@@ -560,11 +572,11 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool {
-        PadFlag::from_bits_unchecked(ControlModule::get_pad_flag(self)).intersects(pad_flag)
+        PadFlag::from_bits_retain(ControlModule::get_pad_flag(self)).intersects(pad_flag)
     }
 
     unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_button(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_button(self)).intersects(buttons)
     }
 
     unsafe fn is_button_off(&mut self, buttons: Buttons) -> bool {
@@ -572,15 +584,15 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_button_trigger(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_trigger(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_trigger(self)).intersects(buttons)
     }
 
     unsafe fn is_button_release(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_release(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_release(self)).intersects(buttons)
     }
 
     unsafe fn was_prev_button_on(&mut self, buttons: Buttons) -> bool {
-        Buttons::from_bits_unchecked(ControlModule::get_button_prev(self)).intersects(buttons)
+        Buttons::from_bits_retain(ControlModule::get_button_prev(self)).intersects(buttons)
     }
 
     unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool {
@@ -648,11 +660,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn prev_left_stick_x(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_x(self);
+        } else {
+            return ControlModule::get_stick_prev_x(self);
+        }
+    }
+
     unsafe fn left_stick_y(&mut self) -> f32 {
         if self.is_button_on(Buttons::CStickOverride) {
             return ControlModule::get_sub_stick_y(self);
         } else {
             return ControlModule::get_stick_y(self);
+        }
+    }
+
+    unsafe fn prev_left_stick_y(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_prev_y(self);
+        } else {
+            return ControlModule::get_stick_prev_y(self);
         }
     }
 
@@ -877,6 +905,14 @@ impl BomaExt for BattleObjectModuleAccessor {
         ))
     }
 
+    /// gets the FighterKineticEnergyGravity object
+    unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity {
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyGravity>(KineticModule::get_energy(
+            self,
+            *FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        ))
+    }
+
     /// gets the FighterKineticEnergyController object
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController {
         std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(
@@ -943,7 +979,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// If update_lr is true, we set your facing direction based on your stick position
-    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool {
+    /// If skip_other_checks is true, we do not check for USmash
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(
@@ -954,10 +991,15 @@ impl BomaExt for BattleObjectModuleAccessor {
                 fighter.module_accessor,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
             );
-            if fighter
-                .sub_transition_group_check_ground_jump_mini_attack()
-                .get_bool()
-                || fighter.sub_transition_group_check_ground_jump().get_bool()
+            if !skip_other_checks {
+                WorkModule::enable_transition_term(
+                    fighter.module_accessor,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+                );
+            }
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() // buffered aerials
+            || (!skip_other_checks && fighter.sub_transition_group_check_ground_attack().get_bool()) // up smash
+            || fighter.sub_transition_group_check_ground_jump().get_bool() // regular jumps
             {
                 if update_lr {
                     PostureModule::set_stick_lr(self, 0.0);
@@ -1217,16 +1259,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let max_tap_buffer_window = ControlModule::get_command_life_count_max(self) as i32;
-
-        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < max_tap_buffer_window  // checks if Taunt input was pressed within max tap buffer window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < max_tap_buffer_window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < max_tap_buffer_window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
-        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
-
-        (self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
-        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered)
+        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
+        return InputModule::get_trigger_count(self.object(), Buttons::Parry) < buffer;
     }
 }
 
@@ -1319,6 +1353,7 @@ pub enum InputKind {
     Unset = 0xD,
     JumpMini = 0x12,   // this is ours :), also start at 0x12 to avoid masking errors
     TiltAttack = 0x13, // also custom, this one is for tilts!
+    Parry = 0x14,      // The H man was here
 }
 
 /// 0x50 Byte struct containing the information for controller mappings
@@ -1432,6 +1467,7 @@ pub struct Controller {
 /// Re-ordered bitfield the game uses for buttons
 #[bitfield]
 #[derive(Debug, Default, Copy, Clone)]
+#[repr(C)]
 pub struct ButtonBitfield {
     pub dpad_up: bool,
     pub dpad_right: bool,
@@ -1497,6 +1533,7 @@ pub struct MappedInputs {
 
 pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
 
+#[repr(C)]
 pub struct StatusInfo {
     pub pre: Option<StatusFunc>,
     pub main: Option<StatusFunc>,

@@ -40,6 +40,7 @@ macro_rules! require_meter_module {
     }}
 }
 
+#[repr(C)]
 pub struct MeterModule {
     owner: *mut BattleObject,
     current_meter: f32,
@@ -313,6 +314,13 @@ impl MeterModule {
 
         let new_levels = if module.watch && module.has_hit {
             let difference = VarModule::get_float(module.owner, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
+            // if lucario causes valid damage, reset regen pause timer
+            unsafe { 
+                let obj = &mut *module.owner ;
+                if difference > 0.0 && obj.is_fighter() && obj.kind() == *FIGHTER_KIND_LUCARIO {
+                    VarModule::set_int(module.owner, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 0);
+                }
+            }
             let current = Self::level(module.owner);
             module.current_meter += difference * module.damage_gain_mul;
             module.watch = false;

@@ -22,6 +22,8 @@ pub mod attack;
 pub mod collision;
 pub mod camera;
 pub mod shotos;
+pub mod aura;
+pub mod sound;
 
 #[repr(C)]
 pub struct TempModule {
@@ -112,7 +114,8 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND,
         *FIGHTER_STATUS_KIND_ITEM_THROW,
         *FIGHTER_STATUS_KIND_ITEM_THROW_DASH,
-        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY].contains(&status_kind)
+        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY,
+        *FIGHTER_STATUS_KIND_FINAL].contains(&status_kind)
 
         || ((*boma).kind() == *FIGHTER_KIND_RICHTER
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
@@ -139,7 +142,9 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_MIIFIGHTER
             && [*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_END, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_WEAK, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_ATTACK, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
-            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
+            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_LITTLEMAC
+            && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind)) )
     {
         return true;
     }
@@ -749,6 +754,8 @@ pub fn install() {
     collision::install();
     camera::install();
     shotos::install();
+    aura::install();
+    sound::install();
 
     unsafe {
         // Handles getting rid of the kill zoom

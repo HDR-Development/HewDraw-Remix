@@ -64,7 +64,7 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Re-enables the ability to use sideB when connecting to ground or cliff
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
     }
     
@@ -286,10 +286,11 @@ pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
         SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.9, 0);
         SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_guardon"), 0);
     } else {
+        let guard_off_motion_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "guard_off_motion_start_frame");
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("guard_off"),
-            0.0,
+            guard_off_motion_start_frame,
             rate,
             false,
             0.0,

@@ -34,14 +34,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                     return false;
             }
         }
-        
-        // handle tilt attack input stopping you from getting a smash attack
-        if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,].contains(&flag)
-            && boma.is_cat_flag(CatHdr::TiltAttack) {
-                return false;
-        }
     
         // Disallow airdodge out of tumble until you reach your stable fall speed
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
@@ -154,8 +146,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         // disable palutena projectiles during aegis reflector
         if fighter_kind == *FIGHTER_KIND_PALUTENA 
             && ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S
-            || flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
+            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
                 return false;
         }
 
@@ -213,6 +204,6 @@ unsafe fn enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, fla
 pub fn install() {
     skyline::install_hooks!(
         is_enable_transition_term_hook,
-        enable_transition_term_hook
+        enable_transition_term_hook,
     );
 }

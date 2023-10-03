@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 attack_12:
   extra:
     cancel_frame: 20
@@ -8,8 +18,6 @@ attack_lw3:
   extra:
     cancel_frame: 38
 attack_hi4:
-  flags:
-    move: false
 attack_hi3:
   extra:
     cancel_frame: 37
@@ -33,3 +41,6 @@ item_light_throw_f:
 attack_lw32_landing:
   extra:
     cancel_frame: 18
+catch_attack:
+  extra:
+    cancel_frame: 0

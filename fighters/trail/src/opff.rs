@@ -3,6 +3,18 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+// Blizzaga turnaround handling
+unsafe fn special_n2_turnaround_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2) {
+        let facing = PostureModule::lr(fighter.module_accessor);
+        let stick_x = fighter.stick_x();
+        if stick_x * facing < 0.0 {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+    }
+}
+
  
 unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     // Fair/nair's external velocity setting might be handled via an on hit event or smth as I could not locate them in the status scripts, once we find those and edit as appropriate we should come back and remove this functionality here
@@ -114,6 +126,13 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
         }
     }
+    // Blizzard jump cancel
+    if (boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
+        && MotionModule::frame(boma) > 12.0) {
+                boma.check_jump_cancel(false, false);
+                WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+                WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+    }
 }
 
 // Actionability after hitting aerial sweep
@@ -122,7 +141,7 @@ unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) 
         return;
     }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI){
-        if MotionModule::frame(boma) > 38.0 {
+        if MotionModule::frame(boma) > 35.0 {
             if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -159,7 +178,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.check_jump_cancel(false) {
+            && fighter.check_jump_cancel(false, false) {
                 return;
             }
         }
@@ -177,7 +196,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.check_jump_cancel(false) {
+            && fighter.check_jump_cancel(false, false) {
                 return;
             }
         }
@@ -198,6 +217,60 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     }
 }
 
+// handles the speed and disappearance of blizzaga effects
+unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if ArticleModule::is_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        let article_motion = MotionModule::motion_kind(article_boma);
+        if article_motion == hash40("special_n2") {
+            let blizz_frame = MotionModule::frame(article_boma) as i32;
+            if blizz_frame == 1 {
+                MotionModule::set_rate(article_boma, 1.1);
+            }
+            if (12..64).contains(&blizz_frame)
+            && status_kind != *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2 {
+                MotionModule::set_rate(article_boma, 1.7);;
+            }
+            if (65..90).contains(&blizz_frame) {
+                MotionModule::set_rate(article_boma, 1.1);
+                ArticleModule::remove_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER, app::ArticleOperationTarget(0));
+            }
+        }
+    }
+}
+    
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && ( fighter.is_status_one_of(&[
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
+        ]) 
+        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 10) )
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jab_2_ftilt_cancel(boma, cat[0], status_kind, situation_kind, motion_kind);
     //fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
@@ -205,6 +278,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_fair_momentum_handling(fighter, boma);
     magic_cancels(boma);
     aerial_sweep_hit_actionability(boma);
+    flower_frame(boma, status_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]

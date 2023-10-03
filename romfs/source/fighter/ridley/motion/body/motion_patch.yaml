@@ -12,14 +12,12 @@ attack_12:
     cancel_frame: 20
 guard_off:
   blend_frames: 4
+  extra:
+    cancel_frame: 12
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 18
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 53
 attack_lw4:
@@ -247,3 +245,6 @@ special_lw_pogo_landing:
     intangible_end_frame: 0
     cancel_frame: 35
     freeze_during_hitstop: false
+catch_attack:
+  extra:
+    cancel_frame: 0

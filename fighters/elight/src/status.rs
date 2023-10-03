@@ -38,7 +38,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
 
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
-    || fighter.is_status_one_of(damage_statuses) { 
+    || fighter.is_status_one_of(damage_statuses) || fighter.is_status(*FIGHTER_STATUS_KIND_LANDING){ 
         //Re-enable Mythra UpB 
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
         //Re-enable Mythra SideB

@@ -100,7 +100,7 @@ jobs:
 
     # build the project
     - run: |
-        cargo skyline update-std && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
+        cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
       env:
         HOME: /root
 
@@ -249,6 +249,18 @@ jobs:
 
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
+
+    - name: Push lvd file to Suddy's HDRStageTool
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
+      with:
+        source_file: 'artifacts/lvd.zip'
+        destination_folder: 'nightly'
+        destination_repo: 'SuddyN/HDRStageTool'
+        user_email: 'suddy121800@hotmail.com'
+        user_name: 'SuddyN'
+        destination_branch: 'gh-pages'
 
     - name: Upload full package to nightlies
       uses: svenstaro/upload-release-action@v2

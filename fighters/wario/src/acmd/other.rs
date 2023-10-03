@@ -7,7 +7,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
+        if !StopModule::is_stop(boma) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
@@ -33,7 +33,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
+        if !StopModule::is_stop(boma) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
@@ -59,7 +59,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
+        if !StopModule::is_stop(boma) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
@@ -85,7 +85,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
+        if !StopModule::is_stop(boma) {
             PLAY_FLY_VOICE(fighter, Hash40::new("seq_wario_rnd_futtobi01"), Hash40::new("seq_wario_rnd_futtobi02"));
         }
     }
@@ -101,7 +101,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
+        if !StopModule::is_stop(boma) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
@@ -127,7 +127,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_wario_dash_start"), true, false, false, false, app::enSEType(0));
+        let dash_sfx_handle = SoundModule::play_se(boma, Hash40::new("se_wario_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 18.0);

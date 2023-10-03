@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 catch:
   extra:
     cancel_frame: 43
@@ -24,16 +34,12 @@ attack_11:
     cancel_frame: 18
 attack_lw3:
   extra:
-    cancel_frame: 34
+    cancel_frame: 42
 attack_hi4:
-  flags:
-    move: false
 attack_lw4:
   extra:
     cancel_frame: 53
 attack_hi3:
-  flags:
-    move: false
   extra:
     cancel_frame: 34
 attack_dash:
@@ -53,21 +59,46 @@ attack_s4_s:
     unk_100: false
     unk_200: false
     unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
   blend_frames: 0
   animations:
-  - name: c03attacks4s.nuanmb
+    - name: c03attacks4s.nuanmb
+      unk: 0
   scripts:
-  - expression_attacks4
-  - sound_attacks4
-  - effect_attacks4
+    - expression_attacks4
+    - sound_attacks4
+    - effect_attacks4
   extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 45
-    freeze_during_hitstop: false
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 53
+    no_stop_intp: false
+attack_s4_hold:
+  game_script: game_attacks4charge
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: c03attacks4charge.nuanmb
+      unk: 0
+  scripts:
+    - expression_attacks4charge
+    - sound_attacks4charge
+    - effect_attacks4charge
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
 attack_s3_s:
   game_script: game_attacks3
   flags:
@@ -672,3 +703,6 @@ attack_legs_twist_walk_brake_l_b:
 attack_legs_twist_walk_brake_r_b:
   flags:
     unk_800: false
+catch_attack:
+  extra:
+    cancel_frame: 0

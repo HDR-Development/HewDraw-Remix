@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 attack_hi4:
   extra:
     cancel_frame: 55
@@ -69,15 +79,12 @@ attack_air_lw:
 attack_air_hi:
   extra:
     cancel_frame: 35
-demon_special_n:
-  extra:
-    cancel_frame: 134
 special_air_lw2:
   extra:
     cancel_frame: 28
-elight_special_n:
+catch_attack:
   extra:
-    cancel_frame: 71
+    cancel_frame: 0
 special_air_hi_h:
   game_script: game_specialairhih
   flags:
@@ -110,12 +117,18 @@ special_air_hi_h:
 elight_special_n2:
   extra:
     cancel_frame: 71
+demon_special_n:
+  extra:
+    cancel_frame: 134
 demon_special_n_hi:
   extra:
     cancel_frame: 134
 demon_special_air_n:
   extra:
     cancel_frame: 110
+elight_special_n:
+  extra:
+    cancel_frame: 71
 elight_special_air_n:
   extra:
     cancel_frame: 71
@@ -128,27 +141,602 @@ elight_special_air_n2:
 demon_special_air_n_hi:
   extra:
     cancel_frame: 110
+koopa_special_n_max:
+  game_script: game_koopaspecialnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: koopad00specialnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_koopaspecialnmax
+    - sound_koopaspecialnmax
+    - effect_koopaspecialnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 60
+    no_stop_intp: false
+koopa_special_air_n_max:
+  game_script: game_koopaspecialairnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: koopad00specialairnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_koopaspecialairnmax
+    - sound_koopaspecialairnmax
+    - effect_koopaspecialairnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 60
+    no_stop_intp: false
 mewtwo_special_n_shoot:
   extra:
     cancel_frame: 28
 littlemac_special_n_dash:
   extra:
     cancel_frame: 45
-tantan_special_air_n_end:
-  extra:
-    cancel_frame: 40
-mewtwo_special_air_n_shoot:
-  extra:
-    cancel_frame: 28
 littlemac_special_n_dash_turn:
   extra:
     cancel_frame: 54
 littlemac_special_air_n_dash_turn:
   extra:
     cancel_frame: 60
+littlemac_special_n_cancel:
+  game_script: game_littlemacspecialncancel
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: littlemacd00specialncancel.nuanmb
+  scripts:
+  - expression_littlemacspecialncancel
+  - sound_littlemacspecialncancel
+  - effect_littlemacspecialncancel
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 39
+    freeze_during_hitstop: false
+littlemac_special_air_n_cancel:
+  game_script: game_littlemacspecialairncancel
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: littlemacd00specialairncancel.nuanmb
+  scripts:
+  - expression_littlemacspecialairncancel
+  - sound_littlemacspecialairncancel
+  - effect_littlemacspecialairncancel
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 39
+    freeze_during_hitstop: false
+lucas_special_n_end:
+  extra:
+    cancel_frame: 20
+lucas_special_air_n_end:
+  extra:
+    cancel_frame: 20
+tantan_special_air_n_end:
+  extra:
+    cancel_frame: 40
+mewtwo_special_air_n_shoot:
+  extra:
+    cancel_frame: 28
 dedede_special_n_shot_object_spit:
   extra:
     cancel_frame: 22
 dedede_special_air_n_shot_object_spit:
   extra:
     cancel_frame: 22
+zelda_special_n:
+  extra:
+    intangible_start_frame: 5
+    intangible_end_frame: 13
+    cancel_frame: 64
+zelda_special_air_n:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 64
+brave_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+brave_special_air_n_jump_cancel:
+  extra:
+    cancel_frame: 8
+buddy_special_n_shoot_end:
+  extra:
+    cancel_frame: 8
+buddy_special_air_n_shoot_end:
+  extra:
+    cancel_frame: 8
+captain_special_n:
+  extra:
+    cancel_frame: 103
+captain_special_n_turn:
+  extra:
+    cancel_frame: 103
+captain_special_air_n:
+  extra:
+    cancel_frame: 103
+captain_special_air_n_turn:
+  extra:
+    cancel_frame: 103
+chrom_special_n_end:
+  extra:
+    cancel_frame: 38
+chrom_special_n_end2:
+  extra:
+    cancel_frame: 38
+chrom_special_n_end3:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end:
+  extra:
+    cancel_frame: 38
+chrom_special_n_end_max:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end3:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end2:
+  extra:
+    cancel_frame: 38
+chrom_special_air_n_end_max:
+  extra:
+    cancel_frame: 38
+dolly_special_air_n:
+  extra:
+    cancel_frame: 40
+donkey_special_n_cancel:
+  extra:
+    cancel_frame: 9
+donkey_special_air_n_cancel:
+  extra:
+    cancel_frame: 9
+falco_special_n_end:
+  extra:
+    cancel_frame: 19
+falco_special_air_n_end:
+  extra:
+    cancel_frame: 19
+ganon_float:
+  game_script: game_ganonfloat
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: ganond00float.nuanmb
+  scripts:
+  - expression_ganonfloat
+  - sound_ganonfloat
+  - effect_ganonfloat
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 60
+    freeze_during_hitstop: false
+ganon_float_start:
+  game_script: game_ganonfloatstart
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: ganond00floatstart.nuanmb
+  scripts:
+  - expression_ganonfloatstart
+  - sound_ganonfloatstart
+  - effect_ganonfloatstart
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+ganon_float_air_start:
+  game_script: game_ganonfloatairstart
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: ganond00floatairstart.nuanmb
+  scripts:
+  - expression_ganonfloatairstart
+  - sound_ganonfloatairstart
+  - effect_ganonfloatairstart
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+gekkouga_special_n_shot:
+  extra:
+    cancel_frame: 29
+kamui_special_n_end_1:
+  extra:
+    cancel_frame: 45
+kamui_special_air_n_end_1:
+  extra:
+    cancel_frame: 45
+koopajr_special_n_shoot:
+  extra:
+    cancel_frame: 32
+koopajr_special_air_n_shoot:
+  extra:
+    cancel_frame: 32
+lucario_special_n_cancel:
+  extra:
+    cancel_frame: 7
+lucario_special_air_n_cancel:
+  extra:
+    cancel_frame: 7
+lucina_special_n_end:
+  extra:
+    cancel_frame: 45
+luigi_special_n:
+  extra:
+    cancel_frame: 41
+luigi_special_air_n:
+  extra:
+    cancel_frame: 41
+mario_special_n:
+  extra:
+    cancel_frame: 41
+mariod_special_n:
+  animations:
+  - name: mariodd00specialntoss.nuanmb
+  extra:
+    cancel_frame: 47
+mariod_special_air_n:
+  animations:
+  - name: mariodd00specialairntoss.nuanmb
+  extra:
+    cancel_frame: 47
+mariod_special_n_chill:
+  game_script: game_mariodspecialnchill
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: mariodd00specialn.nuanmb
+  scripts:
+  - expression_mariodspecialnchill
+  - sound_mariodspecialnchill
+  - effect_mariodspecialnchill
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
+mariod_special_air_n_chill:
+  game_script: game_mariodspecialairnchill
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: mariodd00specialairn.nuanmb
+  scripts:
+  - expression_mariodspecialairnchill
+  - sound_mariodspecialairnchill
+  - effect_mariodspecialairnchill
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
+master_special_n:
+  extra:
+    cancel_frame: 46
+master_special_air_n:
+  extra:
+    cancel_frame: 46
+master_special_n_cancel:
+  extra:
+    cancel_frame: 10
+master_special_air_n_cancel:
+  extra:
+    cancel_frame: 10
+mewtwo_special_n_cancel:
+  extra:
+    cancel_frame: 9
+mewtwo_special_air_n_cancel:
+  extra:
+    cancel_frame: 9
+miigunner_special_n1_cancel:
+  extra:
+    cancel_frame: 9
+miigunner_special_air_n1_cancel:
+  extra:
+    cancel_frame: 9
+pacman_special_n_shoot:
+  extra:
+    cancel_frame: 40
+pacman_special_air_n_shoot:
+  extra:
+    cancel_frame: 40
+pacman_special_n_cancel:
+  extra:
+    cancel_frame: 7
+pacman_special_air_n_cancel:
+  extra:
+    cancel_frame: 7
+palutena_special_n:
+  extra:
+    cancel_frame: 33
+palutena_special_air_n:
+  extra:
+    cancel_frame: 26
+pit_special_n_fire_s:
+  extra:
+    cancel_frame: 30
+pit_special_n_fire_hi:
+  extra:
+    cancel_frame: 30
+pit_special_air_n_fire_hi:
+  extra:
+    cancel_frame: 30
+reflet_special_n_cancel:
+  extra:
+    cancel_frame: 8
+reflet_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+ridley_special_n_shoot:
+  extra:
+    cancel_frame: 37
+ridley_special_n_failure:
+  extra:
+    cancel_frame: 30
+ridley_special_n_explode:
+  game_script: game_ridleyspecialnexplode
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: ridleyd00specialnexplode.nuanmb
+  scripts:
+  - expression_ridleyspecialnexplode
+  - sound_ridleyspecialnexplode
+  - effect_ridleyspecialnexplode
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 60
+    freeze_during_hitstop: false
+ridley_special_air_n_shoot:
+  extra:
+    cancel_frame: 37
+ridley_special_air_n_failure:
+  extra:
+    cancel_frame: 30
+ridley_special_air_n_explode:
+  game_script: game_ridleyspecialairnexplode
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: ridleyd00specialairnexplode.nuanmb
+  scripts:
+  - expression_ridleyspecialairnexplode
+  - sound_ridleyspecialairnexplode
+  - effect_ridleyspecialairnexplode
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 60
+    freeze_during_hitstop: false
+rockman_special_n:
+  extra:
+    cancel_frame: 39
+rockman_special_n_empty:
+  extra:
+    cancel_frame: 33
+rockman_special_n_turn:
+  extra:
+    cancel_frame: 41
+rockman_special_n_turn_empty:
+  extra:
+    cancel_frame: 35
+rockman_special_air_n:
+  extra:
+    cancel_frame: 39
+rockman_special_air_n_empty:
+  extra:
+    cancel_frame: 33
+rockman_special_air_n_turn:
+  extra:
+    cancel_frame: 41
+rockman_special_air_n_turn_empty:
+  extra:
+    cancel_frame: 35
+samus_special_n_c:
+  extra:
+    cancel_frame: 9
+samus_special_air_n_c:
+  extra:
+    cancel_frame: 9
+samusd_special_n_f_max:
+  extra:
+    cancel_frame: 38
+samusd_special_n_c:
+  extra:
+    cancel_frame: 9
+samusd_special_air_n_c:
+  extra:
+    cancel_frame: 9
+sheik_special_air_n_end:
+  extra:
+    cancel_frame: 32
+sheik_special_n_cancel:
+  extra:
+    cancel_frame: 8
+sheik_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+simon_special_n:
+  extra:
+    cancel_frame: 60
+simon_special_air_n:
+  extra:
+    cancel_frame: 60
+szerosuit_special_n_landing:
+  extra:
+    cancel_frame: 15
+wiifit_special_n_cancel:
+  extra:
+    cancel_frame: 8
+wiifit_special_air_n_cancel:
+  extra:
+    cancel_frame: 8
+younglink_special_n_end:
+  extra:
+    cancel_frame: 23
+younglink_special_air_n_end:
+  extra:
+    cancel_frame: 23

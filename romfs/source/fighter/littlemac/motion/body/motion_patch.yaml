@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 catch:
   flags:
     move: false
@@ -20,21 +30,13 @@ attack_13:
   extra:
     cancel_frame: 19
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 15
 attack_lw3:
-  flags:
-    move: false
   extra:
     cancel_frame: 24
 attack_hi4:
-  flags:
-    move: false
 attack_lw4:
-  flags:
-    move: false
   extra:
     cancel_frame: 48
 special_lw:
@@ -42,6 +44,12 @@ special_lw:
     move: false
   extra:
     cancel_frame: 64
+    xlu_start: 0
+    xlu_end: 0
+special_air_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 attack_hi3:
   extra:
     cancel_frame: 28
@@ -77,11 +85,7 @@ special_n_dash:
   extra:
     cancel_frame: 45
 attack_s4_hold:
-  flags:
-    move: false
 attack_hi4_hold:
-  flags:
-    move: false
 special_n_cancel:
   game_script: game_specialncancel
   flags:
@@ -154,3 +158,6 @@ special_air_hi_start:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+catch_attack:
+  extra:
+    cancel_frame: 0

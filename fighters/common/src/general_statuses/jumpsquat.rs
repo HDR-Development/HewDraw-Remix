@@ -190,6 +190,7 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
     VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, 0);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_ATTACK_CANCEL);
     0.into()
 }
 
@@ -225,6 +226,7 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     // `lr_update` comes from a dif subroutine
     if lr_update.get_bool() {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::CSTICK_IRAR);
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
@@ -436,40 +438,12 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     // This cuts a single frame off of the end of the specified characters' jumpsquat animations
     // This is a purely aesthetic change, makes for snappier jumps
-    let end_frame = if [*FIGHTER_KIND_SAMUS,
-        *FIGHTER_KIND_FOX,
-        *FIGHTER_KIND_PIKACHU,
-        *FIGHTER_KIND_LUIGI,
-        *FIGHTER_KIND_NESS,
-        *FIGHTER_KIND_FALCO,
-        *FIGHTER_KIND_POPO,
-        *FIGHTER_KIND_NANA,
-        *FIGHTER_KIND_PICHU,
-        *FIGHTER_KIND_YOUNGLINK,
-        *FIGHTER_KIND_PZENIGAME,
-        *FIGHTER_KIND_DIDDY,
-        *FIGHTER_KIND_LUCAS,
-        *FIGHTER_KIND_WOLF,
-        *FIGHTER_KIND_LITTLEMAC,
-        *FIGHTER_KIND_DUCKHUNT,
-        *FIGHTER_KIND_RYU,
-        *FIGHTER_KIND_KEN,
-        *FIGHTER_KIND_CLOUD,
-        *FIGHTER_KIND_SIMON,
-        *FIGHTER_KIND_RICHTER,
-        *FIGHTER_KIND_DOLLY,
-        *FIGHTER_KIND_EDGE,].contains(&fighter.kind())
-    {
-        MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash()) - 1.0
-    }
-    else {
-        MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash())
-    };
+    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("landing_heavy")) * 0.25;
 
     // vanilla logic
     let mut motion_rate = end_frame / jump_squat_frame;
     if motion_rate < 1.0 {
         motion_rate += 0.001;
     }
-    MotionModule::change_motion(fighter.module_accessor, motion_hash.get_hash(), 0.0, motion_rate, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 3.0, motion_rate, false, 0.0, false, false);
 }

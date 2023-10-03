@@ -1,3 +1,13 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 throw_f:
   extra:
     cancel_frame: 26
@@ -40,6 +50,14 @@ attack_air_f:
 attack_air_n:
   extra:
     cancel_frame: 51
+special_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_hi2_f:
   extra:
     intangible_start_frame: 0
@@ -55,3 +73,6 @@ special_air_hi2:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 0

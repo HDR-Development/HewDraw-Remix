@@ -117,6 +117,7 @@ unsafe fn map_controls_hook(
     }
 
     let mappings = mappings.add(player_idx as usize);
+    let parry_map = if (*out).buttons.intersects(Buttons::Guard) { Buttons::Parry | Buttons::GuardHold } else { Buttons::Parry | Buttons::Guard };
 
     if controller.style == ControllerStyle::GCController {
         (*out).buttons |= apply_button_mappings!(
@@ -215,6 +216,31 @@ unsafe fn map_controls_hook(
                 gc_y,
                 TiltAttack,
                 Buttons::TiltAttack | Buttons::AttackAll
+            )
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+            (l, gc_l, Parry, parry_map)(
+                r,
+                gc_r,
+                Parry,
+                parry_map
+            )(zl, gc_z, Parry, parry_map)(
+                zr,
+                gc_z,
+                Parry,
+                parry_map
+            )(a, gc_a, Parry, parry_map)(
+                b,
+                gc_b,
+                Parry,
+                parry_map
+            )(x, gc_x, Parry, parry_map)(
+                y,
+                gc_y,
+                Parry,
+                parry_map
             )
         );
         if (*mappings).gc_absmash & 1 != 0 {
@@ -362,6 +388,41 @@ unsafe fn map_controls_hook(
                 joy_sr,
                 TiltAttack,
                 Buttons::TiltAttack | Buttons::AttackAll
+            )
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+            (l, joy_shoulder, Parry, parry_map)(
+                r,
+                joy_shoulder,
+                Parry,
+                parry_map
+            )(
+                zl,
+                joy_zshoulder,
+                Parry,
+                parry_map
+            )(
+                zr,
+                joy_zshoulder,
+                Parry,
+                parry_map
+            )(left_sl, joy_sl, Parry, parry_map)(
+                left_sr,
+                joy_sr,
+                Parry,
+                parry_map
+            )(
+                right_sl,
+                joy_sl,
+                Parry,
+                parry_map
+            )(
+                right_sr,
+                joy_sr,
+                Parry,
+                parry_map
             )
         );
 
@@ -512,6 +573,31 @@ unsafe fn map_controls_hook(
                     Buttons::TiltAttack | Buttons::AttackAll
                 )
             );
+            (*out).buttons |= apply_button_mappings!(
+                controller,
+                mappings,
+                (
+                    a,
+                    joy_down,
+                    Parry,
+                    parry_map
+                )(
+                    y,
+                    joy_up,
+                    Parry,
+                    parry_map
+                )(
+                    b,
+                    joy_left,
+                    Parry,
+                    parry_map
+                )(
+                    x,
+                    joy_right,
+                    Parry,
+                    parry_map
+                )
+            );
         }
         if (*mappings).joy_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
@@ -629,6 +715,51 @@ unsafe fn map_controls_hook(
                 Buttons::TiltAttack | Buttons::AttackAll
             )
         );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+            (
+                l,
+                pro_l,
+                Parry,
+                parry_map
+            )(
+                r,
+                pro_r,
+                Parry,
+                parry_map
+            )(
+                zl,
+                pro_zl,
+                Parry,
+                parry_map
+            )(
+                zr,
+                pro_zr,
+                Parry,
+                parry_map
+            )(
+                a,
+                pro_a,
+                Parry,
+                parry_map
+            )(
+                b,
+                pro_b,
+                Parry,
+                parry_map
+            )(
+                x,
+                pro_x,
+                Parry,
+                parry_map
+            )(
+                y,
+                pro_y,
+                Parry,
+                parry_map
+            )
+        );
 
         if (*mappings).pro_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
@@ -725,6 +856,19 @@ unsafe fn map_controls_hook(
         _ => (*mappings).pro_absmash & 2 != 0,
     };
 
+    let is_rivals_walljump = match controller.style {
+        ControllerStyle::GCController => (*mappings).gc_absmash & 4 != 0,
+        ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
+            (*mappings).joy_absmash & 4 != 0
+        }
+        _ => (*mappings).pro_absmash & 4 != 0,
+    };
+
+    if is_rivals_walljump {
+        (*out).buttons |= Buttons::RivalsWallJump;
+    }
+
+
     let (parry, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
     } else {
@@ -733,12 +877,7 @@ unsafe fn map_controls_hook(
 
     if (*out).buttons.intersects(Buttons::Guard) {
         if (*out).buttons.intersects(parry) {
-            if is_parry_taunt {
-                (*out).buttons |= Buttons::TauntParry;
-            }
-            else {
-                (*out).buttons |= Buttons::SpecialParry;
-            }
+            (*out).buttons |= Buttons::Parry
         } else if (*out).buttons.intersects(hold) {
             (*out).buttons |= Buttons::GuardHold;
         }
@@ -858,7 +997,7 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let rstick_x = ((packet >> 0x30) & 0xFF) as i8;
     let rstick_y = ((packet >> 0x38) & 0xFF) as i8;
 
-    inputs.buttons = Buttons::from_bits_unchecked(raw_buttons as _);
+    inputs.buttons = Buttons::from_bits_retain(raw_buttons as _);
     inputs.lstick_x = lstick_x;
     inputs.lstick_y = lstick_y;
     inputs.rstick_x = rstick_x;
@@ -897,6 +1036,9 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
     {
         if ninput::any::is_press(ninput::Buttons::PLUS) {
             SHOULD_END_RESULT_SCREEN = true;
+        }
+        if ninput::any::is_press(ninput::Buttons::B) {
+            SHOULD_END_RESULT_SCREEN = false;
         }
         if SHOULD_END_RESULT_SCREEN {
             let mut rng = rand::thread_rng();
@@ -955,6 +1097,53 @@ unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+// These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat
+// Both found in ControlModule::exec_command
+#[skyline::hook(offset = 0x6be610)]
+unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
+    // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
+    // Only happens during jumpsquat currently
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    if *((control_module + 0x645) as *const bool)
+    && !VarModule::is_flag((*boma).object(), vars::common::instance::IS_ATTACK_CANCEL)
+    && !VarModule::is_flag((*boma).object(), vars::common::status::CSTICK_IRAR) {
+        return;
+    }
+    call_original!(control_module, arg);
+}
+#[skyline::hook(offset = 0x6bd6a4, inline)]
+unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[21].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    // For some reason, the game resets your attack_air_kind value every frame
+    // even though it resets as soon as you perform an aerial attack
+    // We don't want this to reset while in jumpsquat
+    // to allow the game to use your initial C-stick input during jumpsquat for your attack_air_kind
+    if !(*boma).is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        ControlModule::reset_attack_air_kind(boma);
+    }
+}
+
+#[skyline::hook(replace=ControlModule::reset_flick_x)]
+unsafe fn reset_flick_x(boma: &mut BattleObjectModuleAccessor) {
+    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+    call_original!(boma);
+}
+
+#[skyline::hook(replace=ControlModule::reset_flick_y)]
+unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
+    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+    call_original!(boma);
+}
+
+#[skyline::hook(replace=ControlModule::set_rumble)]
+unsafe fn set_rumble_hook(boma: &mut BattleObjectModuleAccessor, kind: smash::phx::Hash40, arg3: i32, arg4: bool, arg5: u32) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        return;
+    }
+    call_original!(boma, kind, arg3, arg4, arg5);
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hook!(is_throw_stick);
@@ -964,6 +1153,20 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub fn install() {
     skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
     skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
+
+    // Removes 10f C-stick lockout for tilt stick and special stick
+    skyline::patching::Patch::in_text(0x17527dc).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x17527e0).nop();
+    skyline::patching::Patch::in_text(0x17527e4).nop();
+    skyline::patching::Patch::in_text(0x17527e8).nop();
+
+    // Prevents buffered C-stick aerials from triggering nair
+    skyline::patching::Patch::in_text(0x6be644).data(0x52800040);
+
+    // Prevents attack_air_kind from resetting every frame
+    // Found in ControlModule::exec_command
+    skyline::patching::Patch::in_text(0x6bd6a4).nop();
+
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,
@@ -975,7 +1178,12 @@ pub fn install() {
         after_exec,
         process_inputs_handheld,
         post_gamecube_process,
-        apply_triggers
+        apply_triggers,
+        set_attack_air_stick_hook,
+        exec_command_reset_attack_air_kind_hook,
+        reset_flick_x,
+        reset_flick_y,
+        set_rumble_hook,
     );
     skyline::nro::add_hook(nro_hook);
 }
