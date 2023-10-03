@@ -41,4 +41,5 @@
     <int hash="tether_trump_landing_lag">30</int>
     <float hash="guard_off_motion_start_frame">3</float>
     <int hash="pummel_max_cancel_frame">8</int>
+    <int hash="button_walljump_leniency_frame">3</int>
 </struct>

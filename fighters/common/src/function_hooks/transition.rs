@@ -204,6 +204,6 @@ unsafe fn enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, fla
 pub fn install() {
     skyline::install_hooks!(
         is_enable_transition_term_hook,
-        enable_transition_term_hook
+        enable_transition_term_hook,
     );
 }

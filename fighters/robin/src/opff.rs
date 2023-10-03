@@ -36,7 +36,7 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) 
     && boma.status_frame() <= 5 
     && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
-    && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw) 
+    && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard) 
     && !StatusModule::is_changing(boma) {
         let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
         if WorkModule::get_int(boma, levin) > 0 {
