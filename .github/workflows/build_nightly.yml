@@ -241,11 +241,11 @@ jobs:
       with:
         dotnet-version: '5.0.408'
 
-    - name: extract lvd data
-      id: lvd_extract
-      shell: bash
-      run: |
-        . scripts/extract_lvd_data.sh
+    # - name: extract lvd data
+    #   id: lvd_extract
+    #   shell: bash
+    #   run: |
+    #     . scripts/extract_lvd_data.sh
 
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
