@@ -11,11 +11,8 @@ unsafe fn shulk_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    FT_DESIRED_RATE(fighter, 9.0, 7.0);
-    frame(lua_state, 12.0);
-    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 14.0);
-    FT_MOTION_RATE_RANGE(fighter, 14.0, 32.0, 14.0);
+    FT_DESIRED_RATE(fighter, 18.0, 16.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("swordr"), 8.5, 68, 100, 0, 55, 3.6, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("swordr"), 7.5, 58, 100, 0, 45, 4.0, 7.75, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -70,7 +67,7 @@ unsafe fn shulk_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_DESIRED_RATE(fighter, 17.0, 13.0);
+    FT_DESIRED_RATE(fighter, 17.0, 15.0);
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
