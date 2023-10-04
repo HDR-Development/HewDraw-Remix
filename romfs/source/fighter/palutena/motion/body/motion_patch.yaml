@@ -37,6 +37,9 @@ attack_s3_s:
 attack_air_b:
   extra:
     cancel_frame: 41
+attack_air_hi:
+  extra:
+    cancel_frame: 55
 attack_air_f:
   extra:
     cancel_frame: 34
@@ -208,7 +211,7 @@ special_n_y:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 60
+    cancel_frame: 43
     no_stop_intp: false
 special_air_n_y:
   game_script: game_specialairny
@@ -235,7 +238,7 @@ special_air_n_y:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 60
+    cancel_frame: 43
     no_stop_intp: false
 special_n_p:
   game_script: game_specialnp

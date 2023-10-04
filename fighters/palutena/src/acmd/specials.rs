@@ -210,6 +210,7 @@ unsafe fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(agent, 1.1);
         LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
         EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, y_pos, 10, 0, 250, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.5, length, 0.5));
     }
     wait(lua_state, 10.0);
@@ -264,17 +265,9 @@ unsafe fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
         }
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 365, 40, 75, 0, 8.0, 0.0, 12.0, 10.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, power, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-    }
-    wait(lua_state, 12.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 65, 40, 0, 75, 10.0, 0.0, 12.0, 10.0, None, None, None, paralyze, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
+        ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GODWING, false, -1);
     }
 }
 
@@ -291,24 +284,13 @@ unsafe fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.7, true);
-        LAST_EFFECT_SET_RATE(agent, (45.0/13.0));
+        LAST_EFFECT_SET_RATE(agent, (40.0/20.0));
         LAST_EFFECT_SET_COLOR(agent, 0.25, 0.65, 0.05);
     }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.8, true);
-        LAST_EFFECT_SET_RATE(agent, (45.0/14.0));
-        LAST_EFFECT_SET_COLOR(agent, 0.65, 1.05, 0.35);
-    }
-    wait(lua_state, 11.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 1.0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.55, 0.85, 0.3);
-    }
-    frame(lua_state, 50.0);
+    frame(lua_state, 35.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
@@ -404,6 +386,10 @@ unsafe fn palutena_special_n_p_effect(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
+        if agent.is_situation(*SITUATION_KIND_AIR){
+            EFFECT_FOLLOW(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
+            LAST_EFFECT_SET_COLOR(agent, 0.75, 0.01, 0.35);
+        }
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 3, 8, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.75, 0.01, 0.35);
     }

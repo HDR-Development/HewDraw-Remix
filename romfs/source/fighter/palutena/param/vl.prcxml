@@ -13,6 +13,12 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_autoaimbullet">
+    <struct index="0">
+      <float hash="speed">2.4</float>
+      <int hash="life">280</int>
+    </struct>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_wrap_speed_multi">3.25</float>
