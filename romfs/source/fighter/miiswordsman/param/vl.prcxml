@@ -10,7 +10,7 @@
   <list hash="param_special_n">
     <struct index="0">
       <float hash="n1_offset_ground_x">9.0</float>
-      <float hash="n1_offset_ground_y">5.0</float>
+      <float hash="n1_offset_ground_y">2.0</float>
       <float hash="n1_offset_air_x">9.0</float>
       <float hash="n1_offset_air_y">2.0</float>
     </struct>
@@ -39,9 +39,12 @@
   </list>
   <list hash="param_tornadoshot">
     <struct index="0">
-      <float hash="life">40</float>
-      <float hash="speed_x">0.0</float>
-      <float hash="limit_speed_x">0.4</float>
+      <float hash="life">50</float>
+      <float hash="speed_x">0.3</float>
+      <float hash="limit_speed_x">2.0</float>
+      <float hash="speed_y">0.05</float>
+      <float hash="accel_y">-0.025</float>
+      <float hash="limit_speed_y">-1.8</float>
     </struct>
   </list>
   <list hash="param_lightshuriken">
