@@ -127,7 +127,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
+    let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + 1) % 3);
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -155,8 +156,22 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME , low_priority)]
-unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "packun", script = "game_appealsl", category = ACMD_GAME , low_priority)]
+unsafe fn appeal_s_l_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
+    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+    }
+}
+
+#[acmd_script( agent = "packun", script = "game_appealsr", category = ACMD_GAME , low_priority)]
+unsafe fn appeal_s_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 2);
@@ -538,7 +553,8 @@ pub fn install() {
         turn_dash_game,
         appeal_hi_game,
         appeal_hi_sound,
-        appeal_s_game,
+        appeal_s_l_game,
+        appeal_s_r_game,
         appeal_s_sound,
         appeal_lw_game,
         appeal_lw_sound,
