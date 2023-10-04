@@ -222,7 +222,7 @@ unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 3, false);
         AttackModule::clear(boma, 4, false);
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            ATTACK(fighter, 5, 1, Hash40::new("top"), 0.0, 235, 100, 16, 0, 10.0, 0.0, 10.0, 10.0, Some(0.0), Some(10.0), Some(20.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 5, 1, Hash40::new("top"), 0.0, 235, 100, 15, 0, 10.0, 0.0, 10.0, 10.0, Some(0.0), Some(10.0), Some(20.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PUNCH);
         }
     }
     frame(lua_state, 45.0);
@@ -782,6 +782,7 @@ unsafe fn game_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     if is_excute(agent) {
+        JostleModule::set_team(boma, 1);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 1.0);
