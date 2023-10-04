@@ -71,3 +71,6 @@ special_air_s1_blank:
 catch_attack:
   extra:
     cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 13

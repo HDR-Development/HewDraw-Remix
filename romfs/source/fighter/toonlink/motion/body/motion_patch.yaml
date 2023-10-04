@@ -59,3 +59,6 @@ item_light_throw_hi4:
 catch_attack:
   extra:
     cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 16

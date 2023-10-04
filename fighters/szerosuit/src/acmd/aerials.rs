@@ -361,9 +361,6 @@ unsafe fn szerosuit_air_catch_game(fighter: &mut L2CAgentBase) {
 unsafe fn szerosuit_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 7.0/25.0);
-    frame(lua_state, 26.0);
-    FT_MOTION_RATE(fighter, 9.0/(33.0-26.0));
 }
 
 pub fn install() {
