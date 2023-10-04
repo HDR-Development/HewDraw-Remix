@@ -1520,10 +1520,15 @@ unsafe fn miiswordsman_special_lw2_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_miiswordsman_special_c2_l01"));
         PLAY_SEQUENCE(fighter, Hash40::new("seq_miiswordsman_rnd_special_c2_l01"));
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 10.5);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_electric_hit_m"));
     }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_electric_hit_s"));
+    }
+
 }
 
 
