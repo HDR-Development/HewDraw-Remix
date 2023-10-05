@@ -42,4 +42,6 @@
     <float hash="guard_off_motion_start_frame">3</float>
     <int hash="pummel_max_cancel_frame">8</int>
     <int hash="button_walljump_leniency_frame">3</int>
+    <int hash="fgc_dash_pass_disable_frame">10</int>
+    <int hash="fgc_dashback_pass_disable_frame">10</int>
 </struct>
