@@ -389,7 +389,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
     && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
     {
-        if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_RYU || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_KEN || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DEMON {
+        if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_RYU || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_KEN || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DOLLY || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DEMON {
             if fighter.global_table[CURRENT_FRAME].get_i32() >= fgc_dash_pass_disable_frame {
                 interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
             }
