@@ -1,5 +1,6 @@
 use super::*;
 mod aerials;
+mod jabs;
 mod ground;
 mod other;
 mod smashes;
@@ -9,6 +10,7 @@ mod tilts;
 
 pub fn install() {
     aerials::install();
+    jabs::install();
     ground::install();
     other::install();
     smashes::install();
