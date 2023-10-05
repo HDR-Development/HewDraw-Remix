@@ -384,16 +384,18 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
     let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
-    let fgc_dash_pass_disable_frame = ParamModule::get_int(fighter.object(), ParamType::Common, "fgc_dash_pass_disable_frame");
     if GroundModule::is_passable_ground(fighter.module_accessor)
     && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
     && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
     {
+        // Param-based plat drop lockout window for Ryu, Ken, Terry, and Kazuya
         if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_RYU || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_KEN || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DOLLY || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DEMON {
-            if fighter.global_table[CURRENT_FRAME].get_i32() >= fgc_dash_pass_disable_frame {
+            let dash_pass_disable_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "dash_pass_disable_frame");
+            if fighter.global_table[CURRENT_FRAME].get_i32() >= dash_pass_disable_frame {
                 interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
             }
         }
+        // Normal behavior for all other fighters
         else{
             interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
         }
