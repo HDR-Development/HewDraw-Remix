@@ -310,6 +310,12 @@ unsafe fn snake_side_special_game(fighter : &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, false, 0);
     }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if boma.is_button_on(Buttons::Guard) {
+            VarModule::on_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
+        }
+    }
     frame(lua_state, 16.0);
     if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
         FT_MOTION_RATE_RANGE(fighter, 16.0, 38.0, 1.0);
@@ -382,7 +388,7 @@ unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE) {
             let sfx_handle = SoundModule::play_se(fighter.module_accessor, smash::phx::Hash40::new("vc_snake_heavyget"), true, false, false, false, app::enSEType(0));
-            SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 2.0, 0);
+            SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 3.0, 0);
         }
     }
     frame(lua_state, 41.0);
@@ -406,6 +412,12 @@ unsafe fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -3, 10, 0, 0, 0, 0, 0.4, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), -1, 10, 10, 0, 0, 0, 0.6, true);
+        }
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
