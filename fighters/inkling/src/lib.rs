@@ -28,4 +28,5 @@ pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
     opff::install(is_runtime);
+    skyline::install_hook!(opff::get_ink_colors);
 }

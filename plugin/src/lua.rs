@@ -401,7 +401,7 @@ unsafe fn set_pane_text_values(ctx: &skyline::hooks::InlineCtx) {
 
     crate::online::set_text_string(
         *((pane[1] + 0x10) as *const u64),
-        "To Be Decided\0".as_ptr(),
+        "Wall Jump Input\0".as_ptr(),
     );
 }
 
@@ -413,6 +413,9 @@ unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
         crate::online::set_text_string(*((ptr + 0x10) as *const u64), "Special\0".as_ptr());
     }
+    if *ctx.registers[22].x.as_ref() == 5 {
+        crate::online::set_text_string(*((ptr + 0x10) as *const u64), "Flick\0".as_ptr());
+    }
 }
 
 #[skyline::hook(offset = 0x1d331a0, inline)]
@@ -422,6 +425,9 @@ unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
 
     if *ctx.registers[22].x.as_ref() == 4 {
         crate::online::set_text_string(*((ptr + 0x10) as *const u64), "Taunt\0".as_ptr());
+    }
+    if *ctx.registers[22].x.as_ref() == 5 {
+        crate::online::set_text_string(*((ptr + 0x10) as *const u64), "Button\0".as_ptr());
     }
 }
 

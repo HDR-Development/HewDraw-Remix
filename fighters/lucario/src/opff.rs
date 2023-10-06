@@ -3,9 +3,12 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
+#[fighter_frame_callback]
 pub fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if fighter.kind() != FIGHTER_KIND_LUCARIO {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 6);
         MeterModule::set_meter_per_level(fighter.object(), 50.0);
@@ -39,7 +42,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame, motion_kind);
-    meter_module(fighter, boma, status_kind);
+    meter_module(fighter, boma, status_kind, situation_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_max_meter(fighter, boma, status_kind);
 }
@@ -156,7 +159,7 @@ unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     }
 }
 
-unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     let damage_gain_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.damage_meter_gain_mul");
     MeterModule::set_damage_gain_mul(fighter.object(), damage_gain_mul);
     if [ // list of statuses that should pause passive meter regen
@@ -238,47 +241,61 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
     ].contains(&status_kind) {
         pause_meter_regen(fighter, 180);
-    } else if [ // shorter lockout for these statuses
-        *FIGHTER_STATUS_KIND_GUARD,
-        // *FIGHTER_STATUS_KIND_GUARD_DAMAGE
-        *FIGHTER_STATUS_KIND_GUARD_OFF, 
-        *FIGHTER_STATUS_KIND_GUARD_ON,
-
-    ].contains(&status_kind) {
-        pause_meter_regen(fighter, 20);
     }
 
     let meter = MeterModule::meter(fighter.object());
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
     let meter_max = (MeterModule::meter_cap(fighter.object()) as f32) * meter_per_level;
     if (meter <= 0.0) {
-        VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-    } else if (meter >= meter_max) {
-        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+        if !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+            PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
+        }
+    } else if (meter >= meter_per_level * 2.0) { // exit burnout at 1 full bar
+        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+            PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
+        }
+    }
+    
+    // guard clause
+    if boma.is_in_hitlag() {
+        return;
     }
 
-    if !boma.is_in_hitlag() {
-        // Set faster passive regeneration rate in burnout
-        let is_burnout = VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-        if !is_burnout {
-            // regular rate
-            let rate = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate");
-            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, rate);
+    // determine if we should use the burnout regen rate
+    let meter_regen_type = {
+        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+            "aura.regen_rate_burnout"
         } else {
-            // burnout rate
-            let rate = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate_burnout");
-            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, rate);
+            "aura.regen_rate"
         }
+    };
+    // determine if we should use the defensive regen multiplier
+    let meter_regen_mul = {
+        if [
+            *FIGHTER_STATUS_KIND_GUARD,
+            *FIGHTER_STATUS_KIND_GUARD_OFF, 
+            *FIGHTER_STATUS_KIND_GUARD_ON,
+        ].contains(&status_kind)
+        || situation_kind == *SITUATION_KIND_AIR {
+            ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate_defensive_mul")
+        } else {
+            1.0
+        }
+    };
+    // set final meter regen rate
+    let meter_regen_rate = meter_regen_mul * ParamModule::get_float(fighter.battle_object, ParamType::Agent, meter_regen_type);
+    VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, meter_regen_rate);
 
-        let passive_rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE);
-        let lockout_frame = VarModule::get_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME);
-        if lockout_frame > 0 {
-            // decrement passive regen lockout frame
-            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, (lockout_frame - 1).max(0));
-        } else {
-            // add passive regen
-            MeterModule::add(boma.object(), passive_rate);
-        }
+    // determine if we should increment meter, or decrement lockout
+    let lockout_frame = VarModule::get_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME);
+    if lockout_frame > 0 {
+        // decrement passive regen lockout frame
+        VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, (lockout_frame - 1).max(0));
+    } else {
+        // add passive regen
+        MeterModule::add(boma.object(), meter_regen_rate);
     }
 }
 

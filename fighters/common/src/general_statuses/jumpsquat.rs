@@ -438,40 +438,12 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     // This cuts a single frame off of the end of the specified characters' jumpsquat animations
     // This is a purely aesthetic change, makes for snappier jumps
-    let end_frame = if [*FIGHTER_KIND_SAMUS,
-        *FIGHTER_KIND_FOX,
-        *FIGHTER_KIND_PIKACHU,
-        *FIGHTER_KIND_LUIGI,
-        *FIGHTER_KIND_NESS,
-        *FIGHTER_KIND_FALCO,
-        *FIGHTER_KIND_POPO,
-        *FIGHTER_KIND_NANA,
-        *FIGHTER_KIND_PICHU,
-        *FIGHTER_KIND_YOUNGLINK,
-        *FIGHTER_KIND_PZENIGAME,
-        *FIGHTER_KIND_DIDDY,
-        *FIGHTER_KIND_LUCAS,
-        *FIGHTER_KIND_WOLF,
-        *FIGHTER_KIND_LITTLEMAC,
-        *FIGHTER_KIND_DUCKHUNT,
-        *FIGHTER_KIND_RYU,
-        *FIGHTER_KIND_KEN,
-        *FIGHTER_KIND_CLOUD,
-        *FIGHTER_KIND_SIMON,
-        *FIGHTER_KIND_RICHTER,
-        *FIGHTER_KIND_DOLLY,
-        *FIGHTER_KIND_EDGE,].contains(&fighter.kind())
-    {
-        MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash()) - 1.0
-    }
-    else {
-        MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash())
-    };
+    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("landing_heavy")) * 0.25;
 
     // vanilla logic
     let mut motion_rate = end_frame / jump_squat_frame;
     if motion_rate < 1.0 {
         motion_rate += 0.001;
     }
-    MotionModule::change_motion(fighter.module_accessor, motion_hash.get_hash(), 0.0, motion_rate, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 3.0, motion_rate, false, 0.0, false, false);
 }

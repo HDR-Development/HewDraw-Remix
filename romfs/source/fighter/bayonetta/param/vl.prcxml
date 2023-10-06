@@ -8,8 +8,8 @@
   <struct hash="param_private">
     <int hash="attack_air_n_loop_max">8</int>
     <int hash="attack_air_hi_loop_max">8</int>
-    <float hash="attack_air_f_hit_speed_y">1.3</float>
-    <float hash="attack_air_f2_hit_speed_y">1.3</float>
+    <float hash="attack_air_f_hit_speed_y">1.33</float>
+    <float hash="attack_air_f2_hit_speed_y">1.33</float>
     <float hash="combo_attack_ari_f2_end">1</float>
     <float hash="combo_attack_ari_f3_end">1</float>
     <int hash="attack_air_n_shoot_landing_frame">3</int>

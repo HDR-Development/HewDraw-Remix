@@ -137,11 +137,11 @@ unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: 
 #[skyline::hook(replace=TeamModule::set_team_second)]
 unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
-    if (boma.is_item()
-    && boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set team second called for barrel: {:x}", arg2);
-        return;
-    }
+    // if (boma.is_item()
+    // && boma.kind() == *ITEM_KIND_BARREL) {
+    //     //println!("set team second called for barrel: {:x}", arg2);
+    //     return;
+    // }
 }
 
 #[skyline::hook(replace=TeamModule::set_team_owner_id)]

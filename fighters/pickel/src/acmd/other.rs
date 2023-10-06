@@ -253,11 +253,12 @@ unsafe fn pickel_fire_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE){
             EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
             EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.25, 1.0);
+            LAST_EFFECT_SET_COLOR(fighter, 0.29, 0.941, 0.957);
         }
         else {
             EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
             EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
+            LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.568, 0.0);
         }
     }
     frame(lua_state, 30.0);
