@@ -156,7 +156,7 @@ unsafe fn krool_special_n_loop_effect(fighter: &mut L2CAgentBase) {
         else {
             EFFECT_FOLLOW(fighter, Hash40::new("krool_cannon_vacuum"), Hash40::new("top"), 0, 10, 17, 0, 0, 0, 1.0, true);
             LAST_EFFECT_SET_SCALE_W(fighter, 0.6, 2.0, 1.0);
-            LAST_EFFECT_SET_ALPHA(fighter, 0.9);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.75);
         }
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 0.6, 10, 0, 4, 0, 0, 0, false);
