@@ -1005,11 +1005,15 @@ pub mod vars {
     pub mod robot {
         pub mod instance {
             // flags
-            pub const AIRTIME_DAIR: i32 = 0x0100;
-            pub const AIRTIME_BAIR: i32 = 0x0101;
+            pub const AIRTIME_BAIR: i32 = 0x0100;
+            pub const AIRTIME_SIDEB: i32 = 0x0101;
             // ints
             pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
             pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
+            // floats
+            pub const STICK_ANGLE: i32 = 0x0100;
+            pub const FRAMES_SINCE_UPB: i32 = 0x0101;
+            pub const FRAMES_SINCE_UPB_RISE: i32 = 0x0102;
         }
         pub mod status {
             // flags
