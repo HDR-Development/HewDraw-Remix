@@ -267,7 +267,14 @@ unsafe fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GODWING, false, -1);
+        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+            WorkModule::set_float(boma, PostureModule::pos_x(boma) - 100.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_X);
+        }
+        else {
+            WorkModule::set_float(boma, PostureModule::pos_x(boma) + 100.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_X);
+        }
+        WorkModule::set_float(boma, PostureModule::pos_y(boma) + 5.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_Y);
+        ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_AUTOAIMBULLET, false, -1);
     }
 }
 
@@ -283,12 +290,6 @@ unsafe fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.7, true);
-        LAST_EFFECT_SET_RATE(agent, (40.0/20.0));
-        LAST_EFFECT_SET_COLOR(agent, 0.25, 0.65, 0.05);
     }
     frame(lua_state, 35.0);
     if is_excute(agent) {
@@ -386,7 +387,7 @@ unsafe fn palutena_special_n_p_effect(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
-        if agent.is_situation(*SITUATION_KIND_AIR){
+        if !agent.is_situation(*SITUATION_KIND_AIR){
             EFFECT_FOLLOW(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
             LAST_EFFECT_SET_COLOR(agent, 0.75, 0.01, 0.35);
         }

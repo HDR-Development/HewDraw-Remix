@@ -241,7 +241,8 @@ unsafe fn palutena_autoaimbullet_shot_effect(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let palutena = owner_module_accessor.kind() == *FIGHTER_KIND_PALUTENA;
-    let power = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {"sys_hit_elec"} else {"sys_hit_elec_s"};
+    let power = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {Hash40::new("sys_hit_elec")} else {Hash40::new("sys_hit_elec_s")};
+    let size = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {2.0} else {1.0};
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_bullet_shot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         if palutena {
@@ -251,68 +252,68 @@ unsafe fn palutena_autoaimbullet_shot_effect(agent: &mut L2CAgentBase) {
     if palutena {
         for _ in 0..99 {
             if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new(power), Hash40::new("top"), 0.0, 14.7, 4.3, 0, 0, 0, 0.23, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, power, Hash40::new("top"), 0.0, 2.2, 1.2, 0, 0, 0, 0.23 * size, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
                 LAST_EFFECT_SET_RATE(agent, 3.0);
-                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 12.0, 1.0, 0, 0, 0, 1.8, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 0.0, 0.0, 0, 0, 0, 1.3, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(power), false, true);
+                EFFECT_OFF_KIND(agent, power, false, true);
                 EFFECT_OFF_KIND(agent, Hash40::new("sys_damage_elec"), false, true);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new(power), Hash40::new("top"), 0.0, 3.5, -6.1, 0, 0, 0, 0.17, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, power, Hash40::new("top"), 0.0, 0.2, -1.4, 0, 0, 0, 0.17 * size, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
                 LAST_EFFECT_SET_RATE(agent, 3.0);
-                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 12.0, 1.0, 0, 0, 0, 1.8, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 0.0, 0.0, 0, 0, 0, 1.3, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(power), false, true);
+                EFFECT_OFF_KIND(agent, power, false, true);
                 EFFECT_OFF_KIND(agent, Hash40::new("sys_damage_elec"), false, true);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new(power), Hash40::new("top"), 0.0, 8.4, 0.2, 0, 0, 0, 0.32, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, power, Hash40::new("top"), 0.0, 1.7, 0.1, 0, 0, 0, 0.32 * size, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
                 LAST_EFFECT_SET_RATE(agent, 3.0);
-                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 12.0, 1.0, 0, 0, 0, 1.8, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 0.0, 0.0, 0, 0, 0, 1.3, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(power), false, true);
+                EFFECT_OFF_KIND(agent, power, false, true);
                 EFFECT_OFF_KIND(agent, Hash40::new("sys_damage_elec"), false, true);
                 LAST_EFFECT_SET_RATE(agent, 1);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new(power), Hash40::new("top"), 0.0, 6.2, 5.6, 0, 0, 0, 0.2, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, power, Hash40::new("top"), 0.0, 1.4, 1.0, 0, 0, 0, 0.2 * size, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
                 LAST_EFFECT_SET_RATE(agent, 3.0);
-                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 12.0, 1.0, 0, 0, 0, 1.8, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 0.0, 0.0, 0, 0, 0, 1.3, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(power), false, true);
+                EFFECT_OFF_KIND(agent, power, false, true);
                 EFFECT_OFF_KIND(agent, Hash40::new("sys_damage_elec"), false, true);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW(agent, Hash40::new(power), Hash40::new("top"), 0.0, 16.3, -6.1, 0, 0, 0, 0.15, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, power, Hash40::new("top"), 0.0, 2.3, -1.4, 0, 0, 0, 0.15 * size, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
                 LAST_EFFECT_SET_RATE(agent, 3.0);
-                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 12.0, 1.0, 0, 0, 0, 1.8, true);
-                LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+                EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0.0, 0.0, 0.0, 0, 0, 0, 1.3, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.75, 0.40, 0.001);
             }
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(power), false, true);
+                EFFECT_OFF_KIND(agent, power, false, true);
                 EFFECT_OFF_KIND(agent, Hash40::new("sys_damage_elec"), false, true);
             }
             wait(lua_state, 1.0);

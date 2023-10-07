@@ -43,7 +43,7 @@ pub fn install(is_runtime: bool) {
     status::install();
     opff::install(is_runtime);
     use opff::*;
-    smashline::install_agent_callbacks!(
+    smashline::install_agent_frame_callbacks!(
         palu_power_board,
         reflection_board_callback
     );
