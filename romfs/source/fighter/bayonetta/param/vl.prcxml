@@ -8,8 +8,8 @@
   <struct hash="param_private">
     <int hash="attack_air_n_loop_max">8</int>
     <int hash="attack_air_hi_loop_max">8</int>
-    <float hash="attack_air_f_hit_speed_y">1.33</float>
-    <float hash="attack_air_f2_hit_speed_y">1.33</float>
+    <float hash="attack_air_f_hit_speed_y">1.35</float>
+    <float hash="attack_air_f2_hit_speed_y">1.35</float>
     <float hash="combo_attack_ari_f2_end">1</float>
     <float hash="combo_attack_ari_f3_end">1</float>
     <int hash="attack_air_n_shoot_landing_frame">3</int>
@@ -49,7 +49,7 @@
       <int hash="ab_u_landing_frame">18</int>
       <int hash="ab_u_landing_frame_2nd">22</int>
       <float hash="ab_d_hit_after_speed_y">2.6</float>
-      <float hash="ab_d_hit_after_max_accel_x">0.04</float>
+      <float hash="ab_d_hit_after_max_accel_x">0.041</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
       <float hash="ab_u_motion_speed_mul">0.81</float>
       <float hash="ab_u_rotate">-25</float>
@@ -94,7 +94,6 @@
       <float hash="batwithin_slow_frame_mul">1.0</float>
       <int hash="0x1f3421e7d7">15</int>
       <float hash="recover_slow_frame">0.08</float>
-      <float hash="witch_time_smash_hold_rate">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
