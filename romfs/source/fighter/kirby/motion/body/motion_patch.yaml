@@ -268,6 +268,9 @@ littlemac_special_air_n_cancel:
 lucas_special_n_end:
   extra:
     cancel_frame: 20
+lucas_special_air_n_end:
+  extra:
+    cancel_frame: 20
 tantan_special_air_n_end:
   extra:
     cancel_frame: 40

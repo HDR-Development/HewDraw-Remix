@@ -217,11 +217,34 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     }
 }
 
+// handles the speed and disappearance of blizzaga effects
+unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if ArticleModule::is_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        let article_motion = MotionModule::motion_kind(article_boma);
+        if article_motion == hash40("special_n2") {
+            let blizz_frame = MotionModule::frame(article_boma) as i32;
+            if blizz_frame == 1 {
+                MotionModule::set_rate(article_boma, 1.1);
+            }
+            if (12..64).contains(&blizz_frame)
+            && status_kind != *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2 {
+                MotionModule::set_rate(article_boma, 1.7);;
+            }
+            if (65..90).contains(&blizz_frame) {
+                MotionModule::set_rate(article_boma, 1.1);
+                ArticleModule::remove_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER, app::ArticleOperationTarget(0));
+            }
+        }
+    }
+}
+    
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && ( fighter.is_status_one_of(&[
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3,
         *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
         ]) 
@@ -255,6 +278,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_fair_momentum_handling(fighter, boma);
     magic_cancels(boma);
     aerial_sweep_hit_actionability(boma);
+    flower_frame(boma, status_kind);
     fastfall_specials(fighter);
 }
 
