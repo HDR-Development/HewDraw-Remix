@@ -9,7 +9,8 @@ unsafe fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(fighter, 1.0, 8.0, 3.0);
     if is_excute(fighter) {
-        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 3.5);
+        JostleModule::set_team(boma, 1);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, true, false, 10, 3, 10, 5, true);
     }
     frame(lua_state, 8.0);
@@ -25,6 +26,7 @@ unsafe fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0); //9
     if is_excute(fighter) {
+        JostleModule::set_team(boma, 0);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 16.0); 
@@ -57,11 +59,11 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
 }

@@ -38,7 +38,7 @@ attack_lw3:
     cancel_frame: 32
 special_hi:
   extra:
-    cancel_frame: 46
+    cancel_frame: 45
 special_lw:
   extra:
     xlu_start: 0
@@ -109,7 +109,7 @@ attack_100_end:
     cancel_frame: 41
 special_air_hi:
   extra:
-    cancel_frame: 46
+    cancel_frame: 45
 special_air_s_u:
   extra:
     cancel_frame: 43
