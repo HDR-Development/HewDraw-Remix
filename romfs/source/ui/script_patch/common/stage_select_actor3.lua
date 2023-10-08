@@ -79,6 +79,8 @@ local SCENE_STATE_EXITED      = 3 -- R25
 
 --
 local INPUT_STRIKE = VI_BUTTON_EXTRA29
+local INPUT_ALT_R = VI_BUTTON_EXTRA28
+local INPUT_ALT_L = VI_BUTTON_EXTRA27
 
 exit_code_ = nil
 
@@ -153,6 +155,7 @@ Members:
 local StagePreview = {           -- R42
     new = function()
         return  {
+            selected_alt_ = 0,
             enable_ = false,
             panel_id_ = UI_INVALID_INDEX,
             form_type_ = 0,
@@ -289,6 +292,97 @@ end
 -- CLOSURE_5, R65
 local get_stage_preview_name = function(preview_index)
     return string.format("set_preview_st_0%d", preview_index)
+end
+
+local set_alt_texture = function(left, texture_index, preview_idx)
+  local base_alt_name = left and "alt_l" or "alt_r"
+  local texture_name = left and "set_rep_alt_l" or "set_rep_alt_r"
+    local parts_name = get_stage_preview_name(preview_idx)
+    local parts = root_view:get_parts(parts_name)
+
+  local base_pane = parts:get_pane(base_alt_name)
+  local texture_pane = parts:get_pane(texture_name)
+
+  if texture_index == nil then
+    base_pane:set_visible(false)
+  else
+    base_pane:set_visible(true)
+    texture_pane:replace_texture(texture_index)
+  end
+end
+
+local set_alt_panel_textures = function(is_forward)
+    if current_selected_preview == UI_INVALID_INDEX then
+        Alts.send_message("Can't change alt on invalid preview")
+        return
+    end
+
+    local preview = stage_previews[current_selected_preview + 1]
+    if current_selected_panel == UI_INVALID_INDEX then
+        set_alt_texture(true, nil, current_selected_preview)
+        set_alt_texture(false, nil, current_selected_preview)
+        Alts.send_message("Preview's panel id is invalid")
+        return
+    end
+
+    local count = Alts.get_panel_alt_count(current_selected_panel, preview.form_type_)
+
+    if is_forward == true then
+        if count == preview.selected_alt_ then
+            preview.selected_alt_ = 0
+        else
+            preview.selected_alt_ = preview.selected_alt_ + 1
+        end
+    elseif is_forward == false then
+        if preview.selected_alt_ == 0 then
+            preview.selected_alt_ = count
+        else
+            preview.selected_alt_ = preview.selected_alt_ - 1
+        end
+    end
+
+    local texture_idx = Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, preview.selected_alt_)
+
+    local parts_name = get_stage_preview_name(current_selected_preview)
+    local parts = root_view:get_parts(parts_name)
+
+    if count == 0 then
+      set_alt_texture(true, nil, current_selected_preview)
+      set_alt_texture(false, nil, current_selected_preview)
+    elseif count == 1 then
+      set_alt_texture(true, nil, current_selected_preview)
+
+      local idx = preview.selected_alt_ == 0 and 1 or 0
+      set_alt_texture(false, Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, idx), current_selected_preview)
+    else
+      local left_idx = preview.selected_alt_ == 0 and count or preview.selected_alt_ - 1
+      local right_idx = preview.selected_alt_ == count and 0 or preview.selected_alt_ + 1
+
+      set_alt_texture(
+        true,
+        Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, left_idx),
+        current_selected_preview
+      )
+
+      set_alt_texture(
+        false,
+        Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, right_idx),
+        current_selected_preview
+      )
+    end
+
+    if texture_idx < 0 then
+        return
+    end
+    local pane_name = "set_rep_stage"
+    if preview.form_type_ == STAGE_FORM_TYPE_BATTLE then
+        pane_name = "set_rep_stage_battle"
+    elseif preview.form_type_ == STAGE_FORM_TYPE_END then
+        pane_name = "set_rep_stage_end"
+    end
+
+    local texture_pane = parts:get_pane(pane_name)
+    texture_pane:replace_texture(texture_idx)
 end
 
 -- Gets the name of the stage icon part in the layout file
@@ -519,6 +613,7 @@ local set_stage_preview_from_stage_panel = function(preview_index, panel_index)
 
     UiScriptPlayer.invoke("set_stage_preview_from_panel", preview_index, panel_index)
     set_stage_preview_form(preview_index, stage_previews[preview_index + 1].form_type_)
+    Alts.write_alt_field_to_bgm_id(preview_index, stage_previews[preview_index + 1].selected_alt_)
 end
 
 -- Sets the stage preview based on the selected custom stage panel
@@ -1056,7 +1151,11 @@ local setup = function()
     end
 
     INPUT_STRIKE = VI_BUTTON_EXTRA29
+    INPUT_ALT_R = VI_BUTTON_EXTRA28
+    INPUT_ALT_L = VI_BUTTON_EXTRA27
     virtual_input:set_assign(INPUT_STRIKE, LIB_BUTTON_ZR, nil)
+    virtual_input:set_assign(INPUT_ALT_R, LIB_BUTTON_R, nil)
+    virtual_input:set_assign(INPUT_ALT_L, LIB_BUTTON_L, nil)
 end
 
 -- Initializes the medal position, presumably at the beginning of the SSS load
@@ -1092,12 +1191,21 @@ local setup_from_environment = function()
         current_id = i - 1
         local preview = stage_previews[i]
         preview.enable_ = UiScriptPlayer.invoke("is_valid_entrance_param", current_id)
+        set_alt_texture(true, nil, current_id)
+        set_alt_texture(false, nil, current_id)
         if preview.enable_ == true then
             last_enabled_preview = i
             preview.form_type_ = UiScriptPlayer.invoke("get_stage_form_type_entrance_param", current_id)
             preview.is_sub_stage_ = UiScriptPlayer.invoke("is_sub_entrance_param", current_id)
             if preview.is_sub_stage_ == false then
                 preview.panel_id_ = UiScriptPlayer.invoke("get_panel_id_entrance_param", current_id)
+                local backup_a = current_selected_preview
+                local backup_b = current_selected_panel
+                current_selected_preview = current_id
+                current_selected_panel = preview.panel_id_
+                set_alt_panel_textures(nil)
+                current_selected_preview = backup_a
+                current_selected_panel = backup_b
                 local page, front_panel = find_page_for_panel(preview.panel_id_)
                 change_sub_page(page)
                 set_stage_preview_from_stage_panel(current_id, preview.panel_id_)
@@ -1750,6 +1858,8 @@ local normal_tab_main_update = function()
             local panel_id = UiScriptPlayer.invoke("get_hand_on_stage_panel_id")
             panel_id = find_proper_panel(panel_id)
             if change_panel(panel_id) == true or is_hand_interpolated_moving == true then
+                stage_previews[current_selected_preview + 1].selected_alt_ = 0
+                set_alt_panel_textures(nil)
                 if UiScriptPlayer.invoke("is_training_stage_preview", current_selected_preview) == true then
                     local preview = stage_previews[current_selected_preview + 1]
                     if preview.form_type_ ~= STAGE_FORM_TYPE_NORMAL and preview.form_type_blink_counter_ <= 0 then
@@ -2315,6 +2425,51 @@ local try_handle_exiting_scene = function()
     return true
 end
 
+local change_selected_alt = function(is_forward)
+    if current_selected_preview == UI_INVALID_INDEX then
+        Alts.send_message("Can't change alt on invalid preview")
+        return
+    end
+
+    local preview = stage_previews[current_selected_preview + 1]
+    if current_selected_panel == UI_INVALID_INDEX then
+        Alts.send_message("Preview's panel id is invalid")
+        return
+    end
+
+    local count = Alts.get_panel_alt_count(current_selected_panel, preview.form_type_)
+
+    if is_forward then
+        if count == preview.selected_alt_ then
+            preview.selected_alt_ = 0
+        else
+            preview.selected_alt_ = preview.selected_alt_ + 1
+        end
+    else
+        if preview.selected_alt_ == 0 then
+            preview.selected_alt_ = count
+        else
+            preview.selected_alt_ = preview.selected_alt_ - 1
+        end
+    end
+
+    local texture_idx = Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, preview.selected_alt_)
+    if texture_idx < 0 then
+        return
+    end
+    local parts_name = get_stage_preview_name(current_selected_preview)
+    local parts = root_view:get_parts(parts_name)
+    local pane_name = "set_rep_stage"
+    if preview.form_type_ == STAGE_FORM_TYPE_BATTLE then
+        pane_name = "set_rep_stage_battle"
+    elseif preview.form_type_ == STAGE_FORM_TYPE_END then
+        pane_name = "set_rep_stage_end"
+    end
+
+    local texture_pane = parts:get_pane(pane_name)
+    texture_pane:replace_texture(texture_idx)
+end
+
 -- CLOSURE_80, R139
 local regular_main_update = function()
     set_scene_enable(true)
@@ -2436,6 +2591,10 @@ local regular_main_update = function()
                             index = highlighed_preview
                         end
                         open_bgm_select(index, false)
+                    elseif virtual_input:is_pressed(INPUT_ALT_L) then
+                        set_alt_panel_textures(false)
+                    elseif virtual_input:is_pressed(INPUT_ALT_R) then
+                        set_alt_panel_textures(true)
                     else
                         update_both_tabs()
                     end
@@ -2543,6 +2702,57 @@ main = function()
         regular_main_update()
     end
 
+    local first = {
+        alt_ = -1,
+        panel_ = -1,
+        form_ = -1
+    }
+
+    local second = {
+        alt_ = -1,
+        panel_ = -1,
+        form_ = -1
+    }
+
+    local third = {
+        alt_ = -1,
+        panel_ = -1,
+        form_ = -1
+    }
+
+    if USE_STAGE_NUM > 0 then
+        first.alt_ = stage_previews[1].selected_alt_
+        first.panel_ = stage_previews[1].panel_id_
+        first.form_ = stage_previews[1].form_type_
+        Alts.write_alt_field_to_bgm_id(0, first.alt_)
+    end
+
+    if USE_STAGE_NUM > 1 then
+        second.alt_ = stage_previews[2].selected_alt_
+        second.panel_ = stage_previews[2].panel_id_
+        second.form_ = stage_previews[2].form_type_
+        Alts.write_alt_field_to_bgm_id(1, second.alt_)
+    end
+
+    if USE_STAGE_NUM > 2 then
+        third.alt_ = stage_previews[3].selected_alt_
+        third.panel_ = stage_previews[3].panel_id_
+        third.form_ = stage_previews[3].form_type_
+        Alts.write_alt_field_to_bgm_id(2, third.alt_)
+    end
+
+    Alts.set_alts(
+        first.alt_,
+        first.panel_,
+        first.form_,
+        second.alt_,
+        second.panel_,
+        second.form_,
+        third.alt_,
+        third.panel_,
+        third.form_
+    )
+
     stop_long_cancel_se()
     UiScriptPlayer.invoke("finalize_bgm")
 end
@@ -2615,4 +2825,4 @@ end
                                                                                        
                                                                                        
                                                                                        
-                                                                                       
+                                                                                 

@@ -188,7 +188,11 @@ unsafe fn falco_special_lw_effect(fighter: &mut L2CAgentBase) {
 		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 0.8, true);
 		EffectModule::preset_limit_num(fighter.module_accessor, 2);
 		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
         //FLASH(fighter, 1, 1, 1, 0.627);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 5.0, 0, 0, 0, 0, 2.8, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
 	}
     // frame(lua_state, 1.0);
 	// if is_excute(fighter) {
