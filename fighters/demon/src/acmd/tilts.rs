@@ -5,6 +5,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 12.0, 10.0);
     if is_excute(fighter) {
         JostleModule::set_team(boma, 1);
     }
@@ -48,6 +49,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 4.0);
+    FT_MOTION_RATE_RANGE(fighter, 4.0, 8.0, 3.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
@@ -90,7 +92,7 @@ unsafe fn game_attackhi32(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.6);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 4.0);
     if is_excute(fighter) {
         JostleModule::set_team(boma, 1);
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -142,6 +144,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 8.0, 5.0);
     if is_excute(fighter) {
         JostleModule::set_team(boma, 1);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
