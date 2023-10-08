@@ -301,7 +301,13 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
     WorkModule::on_flag(owner_module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_PERSONAL); 
 
     if is_excute(fighter) {
-        KineticModule::mul_speed(boma, &Vector3f{x: 0.7, y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        let damage = DamageModule::damage(boma, 0);
+        if (damage - 5.0) > 7.0{
+            KineticModule::mul_speed(boma, &Vector3f{x: 0.7, y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        } 
+        else{
+            KineticModule::mul_speed(boma, &Vector3f{x: 0.10 * (damage - 5.0), y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        }
     }
     for _ in 0..181{
         if is_excute(fighter) {

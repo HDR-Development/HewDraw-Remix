@@ -27,6 +27,7 @@
       <float hash="search_radius">0</float>
       <float hash="search_offset_x">0</float>
       <float hash="search_offset_2x">0</float>
+      <float hash="search_offset_y">0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
