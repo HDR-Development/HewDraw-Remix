@@ -2809,9 +2809,9 @@
       <float hash="landing_attack_air_frame_hi">14</float>
       <float hash="landing_attack_air_frame_lw">30</float>
       <int hash="landing_heavy_frame">4</int>
-      <int hash="attack_combo_max">1</int>
-      <float hash="combo_attack_12_end">0</float>
-      <float hash="combo_attack_13_end">0</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_12_end">28</float>
+      <float hash="combo_attack_13_end">30</float>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>

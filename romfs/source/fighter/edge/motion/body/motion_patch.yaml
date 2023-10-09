@@ -21,10 +21,8 @@ attack_12:
   extra:
     cancel_frame: 19
 attack_11:
-  animations:
-  - name: c00attack13.nuanmb
   extra:
-    cancel_frame: 36
+    cancel_frame: 18
 attack_lw3:
   extra:
     cancel_frame: 42
