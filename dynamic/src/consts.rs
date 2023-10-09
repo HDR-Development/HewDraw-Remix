@@ -507,6 +507,13 @@ pub mod vars {
         }
     }
 
+    pub mod edge {
+        pub mod status {
+            // flags
+            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x1100;
+        }
+    }
+
     pub mod eflame {
         pub mod instance {
             // flags

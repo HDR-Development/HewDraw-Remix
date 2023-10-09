@@ -117,6 +117,39 @@ unsafe fn edge_special_air_n2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "edge", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhistart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VarModule::off_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        if !boma.is_button_on(Buttons::Attack) && boma.is_situation(*SITUATION_KIND_GROUND) {
+            VarModule::on_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+        }
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
+    }
+
+}
+
+#[acmd_script( agent = "edge", script = "game_specialairhistart", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairhistart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VarModule::off_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
+    }
+}
+
+
 #[acmd_script( agent = "edge", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
 unsafe fn edge_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -256,12 +289,38 @@ unsafe fn edge_special_hi2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "edge", script = "game_specialhi1", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhi1(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        JostleModule::set_status(boma, false);
+        if !VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+            ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 107, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        }
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_specialhi1end" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.08);
+        if VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+            MotionModule::set_rate(boma, 1.5);
+        }
+        else{
+            MotionModule::set_rate(boma, 1.08);
+        }
     }
 }
 
@@ -335,8 +394,10 @@ pub fn install() {
         edge_special_air_n1_game,
         edge_special_n2_game,
         edge_special_air_n2_game,
+        game_specialhistart,
         edge_special_hi2_game,
         edge_special_hi2_effect,
+        game_specialhi1,
         edge_special_hi1_end_game,
         game_specialairhi1end,
         edge_special_hi2_end_game,
