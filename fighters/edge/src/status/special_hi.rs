@@ -2,6 +2,78 @@ use super::*;
 use globals::*;
 
 
+unsafe extern "C" fn edge_special_hi_param_int_helper(fighter: &mut L2CFighterCommon, hash: L2CValue, charged_rush: L2CValue) -> L2CValue {
+    let param = edge_special_hi_param_helper_inner(hash, charged_rush).get_u64();
+    WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), param).into()
+}
+
+unsafe extern "C" fn edge_special_hi_param_float_helper(fighter: &mut L2CFighterCommon, hash: L2CValue, charged_rush: L2CValue) -> L2CValue {
+    let param = edge_special_hi_param_helper_inner(hash, charged_rush).get_u64();
+    WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), param).into()
+}
+
+unsafe extern "C" fn edge_special_hi_param_helper_inner(hash: L2CValue, charged_rush: L2CValue) -> L2CValue {
+    let hash = hash.get_u64();
+    if !charged_rush.get_bool() {
+        return hash.into();
+    }
+    let new_hash = if hash == hash40("rot_decide_frame") {
+        hash40("charged_rot_decide_frame")
+    }
+    else if hash == hash40("rot_end_frame") {
+        hash40("charged_rot_end_frame")
+    }
+    else if hash == hash40("rush_frame") {
+        hash40("charged_rush_frame")
+    }
+    else if hash == hash40("rush_speed") {
+        hash40("charged_rush_speed")
+    }
+    else if hash == hash40("rush_brake_frame") {
+        hash40("charged_rush_brake_frame")
+    }
+    else if hash == hash40("rush_brake") {
+        hash40("charged_rush_brake")
+    }
+    else if hash == hash40("ground_speed_x_mul") {
+        hash40("charged_ground_speed_x_mul")
+    }
+    else if hash == hash40("landing_speed_x_mul") {
+        hash40("charged_landing_speed_x_mul")
+    }
+    else if hash == hash40("landing_brake_x") {
+        hash40("charged_landing_brake_x")
+    }
+    else if hash == hash40("landing_fix_frame") {
+        hash40("charged_landing_fix_frame")
+    }
+    else if hash == hash40("rotate_back_begin_frame") {
+        hash40("charged_rotate_back_begin_frame")
+    }
+    else if hash == hash40("rotate_back_end_frame") {
+        hash40("charged_rotate_back_end_frame")
+    }
+    else if hash == hash40("rush_end_speed_mul") {
+        hash40("charged_rush_end_speed_mul")
+    }
+    else if hash == hash40("rush_end_brake_x") {
+        hash40("charged_rush_end_brake_x")
+    }
+    else if hash == hash40("rush_end_gravity_accel") {
+        hash40("charged_rush_end_gravity_accel")
+    }
+    else if hash == hash40("control_accel_x_mul") {
+        hash40("charged_control_accel_x_mul")
+    }
+    else if hash == hash40("control_speed_x_max_mul") {
+        hash40("charged_control_speed_x_max_mul")
+    }
+    else{
+        hash
+    };
+    new_hash.into()
+}
+
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
 #[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -37,6 +109,215 @@ unsafe fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn edge_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DIRECTION_EFFECT_VISIBLE);
+    WorkModule::set_int(fighter.module_accessor, *EFFECT_HANDLE_NULL, *FIGHTER_EDGE_STATUS_SPECIAL_HI_INT_DIRECTION_EFFECT_HANDLE);
+    fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_hi").into());
+    edge_special_hi_set_kinetics(fighter, true.into());
+    let mot = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        Hash40::new("special_air_hi_start")
+    }
+    else {
+        Hash40::new("special_hi_start")
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    fighter.sub_shift_status_main(L2CValue::Ptr(edge_special_hi_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn edge_special_hi_set_kinetics(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        if param_1.get_bool() && fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            return;
+        }
+        sv_kinetic_energy!(
+            set_needs_set_param,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            false
+        );
+        if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
+            sv_kinetic_energy!(
+                set_needs_set_param,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                false
+            );
+        }
+    }
+}
+
+unsafe extern "C" fn edge_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        fighter.sub_exec_special_start_common_kinetic_setting(hash40("param_special_hi").into());
+        edge_special_hi_set_kinetics(fighter, false.into());
+        fighter.sub_change_motion_by_situation(Hash40::new("special_hi_start").into(), Hash40::new("special_air_hi_start").into(), true.into());
+    }
+    edge_special_hi_set_accel(fighter);
+    let stick_x = fighter.global_table[STICK_X].get_f32();
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+    let mut stick = fighter.Vector2__create(stick_x.into(), stick_y.into());
+    if stick["x"].get_f32().abs() + stick["y"].get_f32().abs() < 0.5 {
+        stick["x"].assign(&L2CValue::F32(0.0));
+        stick["y"].assign(&L2CValue::F32(1.0));
+    }
+    let normalize = fighter.Vector2__normalize(stick);
+    edge_special_hi_set_dir_handle(fighter, normalize["x"].clone(), normalize["y"].clone());
+    let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
+    let param = edge_special_hi_param_int_helper(fighter, hash40("rot_decide_frame").into(), charged_rush.into()).get_i32();
+    if param as f32 <= fighter.global_table[CURRENT_FRAME].get_f32() {
+        WorkModule::set_float(fighter.module_accessor, normalize["x"].get_f32(), *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_X);
+        WorkModule::set_float(fighter.module_accessor, normalize["y"].get_f32(), *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_Y);
+        if 0.125 < fighter.global_table[STICK_X].get_f32().abs() {
+            PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+        let direction = edge_special_hi_ground_touch_down(fighter, normalize["x"].clone(), normalize["y"].clone());
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let angle = sv_math::vec2_angle(lr, 0.0, direction["x"].get_f32(), direction["y"].get_f32());
+        let degrees = angle.to_degrees();
+        let sign = fighter.sign((angle * -1.0).into()).get_f32();
+        WorkModule::set_float(fighter.module_accessor, degrees * sign, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_ROT_DEGREE);
+        fighter.shift(L2CValue::Ptr(edge_special_hi_main_loop_shift as *const () as _));
+    }
+    0.into()
+}
+
+unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_exec_special_start_common_kinetic_setting(hash40("param_special_hi").into());
+    edge_special_hi_set_kinetics(fighter, false.into());
+    fighter.sub_change_motion_by_situation(Hash40::new("special_hi_start").into(), Hash40::new("special_air_hi_start").into(), true.into());
+    edge_special_hi_set_accel(fighter);
+    let stick_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_X);
+    let stick_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_Y);
+    edge_special_hi_set_dir_handle(fighter, stick_x.into(), stick_y.into());
+    let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
+    let rot_decide_frame = edge_special_hi_param_int_helper(fighter, hash40("rot_decide_frame").into(), charged_rush.into()).get_i32();
+    let rot_end_frame = edge_special_hi_param_int_helper(fighter, hash40("rot_end_frame").into(), charged_rush.into()).get_i32();
+    let frame = fighter.global_table[CURRENT_FRAME].get_f32();
+    let diff = rot_end_frame - rot_decide_frame;
+    let ratio = (frame - rot_decide_frame as f32) / diff as f32;
+    let clamp = ratio.clamp(0.0, 1.0);
+    let degree = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_ROT_DEGREE);
+    let rot_step = clamp * degree;
+    WorkModule::set_float(fighter.module_accessor, rot_step, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_RUSH_DEGREE);
+    slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, MA_MSC_CMD_SLOEP_SLOPE_KIND_NONE);
+    if !charged_rush {
+        if rot_end_frame as f32 <= frame {
+            fighter.change_status(FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH.into(), false.into());
+        }
+    }
+    else {
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH.into(), false.into());
+        }
+    }
+    0.into()
+}
+
+unsafe extern "C" fn edge_special_hi_set_accel(fighter: &mut L2CFighterCommon) {
+    let start_stop_y_frame_air = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("start_stop_y_frame_air"));
+    if start_stop_y_frame_air as f32 <= fighter.global_table[CURRENT_FRAME].get_f32() + 1.0 {
+        let start_gravity = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("start_gravity"));
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -start_gravity
+        );
+    }
+}
+
+unsafe extern "C" fn edge_special_hi_set_dir_handle(fighter: &mut L2CFighterCommon, stick_x: L2CValue, stick_y: L2CValue) {
+    let vec2 = fighter.Vector2__create(stick_x, stick_y);
+    let normalize = fighter.Vector2__normalize(vec2.clone());
+    let angle = sv_math::vec2_angle(0.0, 1.0, normalize["x"].get_f32(), normalize["y"].get_f32());
+    let degrees = angle.to_degrees();
+    let sign = fighter.sign((-normalize["x"].get_f32()).into());
+    let degrees = sign.get_f32() * degrees;
+    let pos = PostureModule::pos(fighter.module_accessor);
+    let direction_effect_offset_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("direction_effect_offset_y"));
+    let scale = PostureModule::scale(fighter.module_accessor);
+    let offset = scale * direction_effect_offset_y + (*pos).y;
+    let pos = Vector3f{
+        x: (*pos).x,
+        y: offset,
+        z: (*pos).z
+    };
+    let direction_effect_radius = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("direction_effect_radius"));
+    let radius = scale * direction_effect_radius;
+    let x_pos = radius * vec2["x"].get_f32() + pos.x;
+    let y_pos = radius * vec2["y"].get_f32() + pos.y;
+    let handle = WorkModule::get_int(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_INT_DIRECTION_EFFECT_HANDLE) as u32;
+    if handle != *EFFECT_HANDLE_NULL as u32 {
+        EffectModule::set_pos(
+            fighter.module_accessor,
+            handle,
+            &Vector3f{x: x_pos, y: y_pos, z: 0.0}
+        );
+        EffectModule::set_rot(
+            fighter.module_accessor,
+            handle,
+            &Vector3f{x: 0.0, y: 0.0, z: degrees}
+        );
+    }
+    else {
+        let effect = EffectModule::req(
+            fighter.module_accessor,
+            Hash40::new("edge_octaslash_direction"),
+            &Vector3f{x: x_pos, y: y_pos, z: 0.0},
+            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            1.0,
+            0,
+            -1,
+            false,
+            0
+        ) as u32;
+        EffectModule::set_rot(
+            fighter.module_accessor,
+            effect,
+            &Vector3f{x: 0.0, y: 0.0, z: degrees}
+        );
+        let color = FighterUtil::get_team_color(fighter.module_accessor);
+        let effect_color = FighterUtil::get_effect_team_color(EColorKind(color as i32), Hash40::new("direction_effect_color"));
+        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_color.x, effect_color.y, 0.0);
+        WorkModule::set_int(fighter.module_accessor, effect as i32, *FIGHTER_EDGE_STATUS_SPECIAL_HI_INT_DIRECTION_EFFECT_HANDLE);
+    }
+    let visible = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DIRECTION_EFFECT_VISIBLE);
+    EffectModule::set_visible_kind(fighter.module_accessor, Hash40::new("edge_octaslash_direction"), visible);
+}
+
+unsafe extern "C" fn edge_special_hi_ground_touch_down(fighter: &mut L2CFighterCommon, stick_x: L2CValue, stick_y: L2CValue) -> L2CValue {
+    let vec2 = fighter.Vector2__create(stick_x.clone(), stick_y.clone());
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        let normal_x = GroundModule::get_touch_normal_x(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        let normal_y = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        let angle = sv_math::vec2_angle(normal_x, normal_y, stick_x.get_f32(), stick_y.get_f32());
+        let rad = 90.0_f32.to_radians();
+        if rad < angle {
+            let rad = (-90.0_f32).to_radians();
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let _rot = sv_math::vec2_rot(stick_x.get_f32(), stick_y.get_f32(), rad * lr);
+            let mut normalize = fighter.Vector2__normalize(vec2);
+            normalize["z"].assign(&L2CValue::Bool(true));
+            return normalize;
+        }
+    }
+    let mut normalize = fighter.Vector2__normalize(vec2);
+    normalize["z"].assign(&L2CValue::Bool(false));
+    normalize
+}
+
 // FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -59,6 +340,7 @@ pub unsafe fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CVa
 pub fn install() {
     install_status_scripts!(
         edge_special_hi_pre,
+        edge_special_hi_main,
         edge_special_hi_rush_main
     );
 }
