@@ -211,7 +211,7 @@ unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCom
     let degree = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_ROT_DEGREE);
     let rot_step = clamp * degree;
     let mut heavy_blade_dash_frame_delay = 0;
-    if !VarModule::is_flag(fighter.battle_object, vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+    if !VarModule::is_flag(fighter.battle_object, vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         heavy_blade_dash_frame_delay = 10;
     }
     let transition_frame = rot_end_frame + heavy_blade_dash_frame_delay;

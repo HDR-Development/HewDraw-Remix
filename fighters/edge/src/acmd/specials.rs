@@ -132,6 +132,9 @@ unsafe fn game_specialhistart(fighter: &mut L2CAgentBase) {
         }
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
     }
+    if VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
+        FT_MOTION_RATE(fighter, 2.0);
+    }
 
 }
 
@@ -325,7 +328,12 @@ unsafe fn game_specialhi1(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
         if !VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 107, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            if boma.is_situation(*SITUATION_KIND_GROUND) {
+                ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 89, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            }
+            else{
+                ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 89, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            }
         }
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
     }
