@@ -212,11 +212,11 @@ unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCom
     let rot_step = clamp * degree;
     let mut blade_dash_frame_delay = 0;
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if !VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
+        if !VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             blade_dash_frame_delay = 10;
         }
         else{
-            blade_dash_frame_delay = (-1*diff + 1);
+            blade_dash_frame_delay = (-1*diff + 2);
         }
     }
     let transition_frame = rot_end_frame + blade_dash_frame_delay;
