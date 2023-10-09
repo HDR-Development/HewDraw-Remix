@@ -212,7 +212,7 @@ unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCom
     let rot_step = clamp * degree;
     let mut blade_dash_frame_delay = 0;
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if !VarModule::is_flag(fighter.battle_object, vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
+        if !VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
             blade_dash_frame_delay = 10;
         }
         else{
@@ -341,7 +341,7 @@ pub unsafe fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CVa
         let rush_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rush_speed"));
         let stopEnergy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergyNormal;
         let mut movement_mul = 1.0;
-        if VarModule::is_flag(fighter.battle_object, vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        if VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             movement_mul = 0.5;
         }
         let vec2 = Vector2f{x: rush_speed * dir_x * movement_mul, y: 0.0};

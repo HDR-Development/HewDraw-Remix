@@ -508,9 +508,9 @@ pub mod vars {
     }
 
     pub mod edge {
-        pub mod status {
+        pub mod instance {
             // flags
-            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x1100;
+            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x1000;
         }
     }
 

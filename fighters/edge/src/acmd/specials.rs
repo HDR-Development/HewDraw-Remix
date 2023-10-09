@@ -123,16 +123,16 @@ unsafe fn game_specialhistart(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+        VarModule::off_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         if !boma.is_button_on(Buttons::Attack) && boma.is_situation(*SITUATION_KIND_GROUND) {
-            VarModule::on_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+            VarModule::on_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
         }
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
     }
-    if VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
+    if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
         FT_MOTION_RATE(fighter, 2.0);
     }
 
@@ -147,7 +147,7 @@ unsafe fn effect_specialhistart(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
             LAST_EFFECT_SET_RATE(fighter, 3);
             EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
@@ -171,7 +171,7 @@ unsafe fn game_specialairhistart(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+        VarModule::off_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
@@ -327,7 +327,7 @@ unsafe fn game_specialhi1(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
-        if !VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             if boma.is_situation(*SITUATION_KIND_GROUND) {
                 ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 89, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             }
@@ -352,7 +352,7 @@ unsafe fn effect_specialhi1(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("edge_octaslash_charge"), false, false);
 
-        if !VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("handr"), 2, 0, 0, 0, 0, 0, 1.25, true);
             LAST_EFFECT_SET_RATE(fighter, 1.5);
             EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 0.8, true);
@@ -484,7 +484,7 @@ unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::edge::status::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             MotionModule::set_rate(boma, 1.75);
         }
         else{
