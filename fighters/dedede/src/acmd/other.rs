@@ -299,14 +299,44 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
 
     //Disables vanilla regrab searchbox, this ALWAYS needs to be on due to new regrab
     WorkModule::on_flag(owner_module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_PERSONAL); 
+    let mut speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let mut speed_y = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
 
     if is_excute(fighter) {
-        let damage = DamageModule::damage(boma, 0);
-        if (damage - 5.0) > 7.0{
-            KineticModule::mul_speed(boma, &Vector3f{x: 0.7, y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-        } 
-        else{
-            KineticModule::mul_speed(boma, &Vector3f{x: 0.10 * (damage - 5.0), y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        WorkModule::set_int(boma, 300, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+        let num_players = Fighter::get_fighter_entry_count();
+        if StopModule::is_hit(boma){
+            for i in 0..num_players{
+                let opponent_boma = sv_battle_object::module_accessor(Fighter::get_id_from_entry_id(i));
+                if AttackModule::is_infliction(opponent_boma, *COLLISION_KIND_MASK_HIT){
+                    let data = AttackModule::attack_data(opponent_boma, 0, false);
+                    let mut angle = (*data).vector as f32;
+                    let mut damage = (*data).power;
+
+                    if angle > 360.0{
+                        angle = 38.0;
+                    }
+                    if damage > 14.0{
+                        damage = 14.0;
+                    }
+
+                    let radians = angle.to_radians();
+                    let cos = radians.cos();
+                    let sin = radians.sin();
+
+                    KineticModule::mul_speed(boma, &Vector3f{x: cos, y: sin  *  (damage / 3.0) / speed_y, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL); 
+                }
+            }
+        if speed_x == KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) &&  speed_y == KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL){
+            let damage = DamageModule::damage(boma, 0);
+            if damage > 11.0{
+                KineticModule::mul_speed(boma, &Vector3f{x: 0.8, y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            }
+            else{
+                KineticModule::mul_speed(boma, &Vector3f{x: 0.4 + 0.05 * (damage - 5.0), y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            }
+                println!{"NON DIRECT HIT!!!!!"};
+        }
         }
     }
     for _ in 0..181{
@@ -314,12 +344,19 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
             if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
                 /* Reduces damage on every bounce, by 12.5% of its last damage in this case */
                 let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 5.0) * 0.125);
-                ATTACK(fighter, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+                if !StopModule::is_stop(boma){
+                    speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs();
+                    speed_y = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs();
+                }
+                let mut speed = speed_x.max(speed_y);
+                let mut damage = (7.5 * (speed/2.0));
+                damage = damage.max(7.5);
+
+                ATTACK(fighter, 0, 0, Hash40::new("hip"), damage * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
             }
         }
         wait(lua_state, 1.0);
     }
- 
 }
 
 #[acmd_script( agent = "dedede_gordo", script = "effect_specialsattack" , category = ACMD_EFFECT , low_priority)]

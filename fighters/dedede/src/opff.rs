@@ -109,7 +109,8 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         // Re enables gordo dash if d3 has either done a gordodash, has landed, or is in jump squat
         if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S 
         || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_LANDING 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT{
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+        || WorkModule::is_flag(boma, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD){
             VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, true);
         }
         //Prevents B reversing when we are in the dash
