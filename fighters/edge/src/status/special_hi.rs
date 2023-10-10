@@ -210,16 +210,26 @@ unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCom
     let clamp = ratio.clamp(0.0, 1.0);
     let degree = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_ROT_DEGREE);
     let rot_step = clamp * degree;
+    //HDR
+    // Handle logic for grounded blade dash
+    let attack_extra_startup_frames_ground = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "blade_dash.attack_extra_startup_frames_ground");
+    let fakeout_extra_startup_frames_ground = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "blade_dash.fakeout_extra_startup_frames_ground");
+    let attack_decision_frame_ground = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "blade_dash.attack_decision_frame_ground");
     let mut blade_dash_frame_delay = 0;
+    let mut grounded_blade_dash = false;
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if !VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            blade_dash_frame_delay = 10;
+        grounded_blade_dash = true;
+        if VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+            blade_dash_frame_delay = fakeout_extra_startup_frames_ground;
         }
         else{
-            blade_dash_frame_delay = (-1*diff + 2);
+            blade_dash_frame_delay = attack_extra_startup_frames_ground;
         }
     }
-    let transition_frame = rot_end_frame + blade_dash_frame_delay;
+    let mut transition_frame = rot_end_frame;
+    if grounded_blade_dash {
+        transition_frame = attack_decision_frame_ground + blade_dash_frame_delay;
+    }
     WorkModule::set_float(fighter.module_accessor, rot_step, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_RUSH_DEGREE);
     slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, MA_MSC_CMD_SLOEP_SLOPE_KIND_NONE);
     if !charged_rush {
@@ -342,7 +352,7 @@ pub unsafe fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CVa
         let stopEnergy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergyNormal;
         let mut movement_mul = 1.0;
         if VarModule::is_flag(fighter.battle_object, vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            movement_mul = 0.65;
+            movement_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "blade_dash.fakeout_dash_movement_mul");;
         }
         let vec2 = Vector2f{x: rush_speed * dir_x * movement_mul, y: 0.0};
         app::lua_bind::KineticEnergyNormal::set_speed(stopEnergy, &vec2);

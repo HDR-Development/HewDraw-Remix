@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <struct hash="blade_dash">
+        <float hash="fakeout_dash_movement_mul">0.65</float>
+        <int hash="attack_extra_startup_frames_ground">15</int>
+        <int hash="attack_extra_startup_frames_air">0</int>
+        <int hash="fakeout_extra_startup_frames_ground">2</int>
+        <int hash="fakeout_extra_startup_frames_air">0</int>
+        <int hash="attack_decision_frame_ground">18</int>
+        <int hash="attack_decision_frame_air">18</int>
+    </struct>
     <struct hash="cliff_hang_data">
         <struct hash="special_hi">
             <float hash="p1_x">16</float>
