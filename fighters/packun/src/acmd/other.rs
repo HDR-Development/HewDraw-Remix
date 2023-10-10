@@ -264,7 +264,8 @@ unsafe fn packun_spikeball_game_start(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -285,7 +286,8 @@ unsafe fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -303,7 +305,8 @@ unsafe fn packun_spikeball_game_loop(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -336,7 +339,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
                 AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
             }
             else {
-                ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                let kbg = if stance == 0 { 0 } else { 15 };
+                ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             }
         }
     }
@@ -347,7 +351,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
                 AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
             }
             else {
-                ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                let kbg = if stance == 0 { 0 } else { 15 };
+                ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             }
         }
     }
@@ -358,7 +363,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -394,7 +400,8 @@ unsafe fn packun_spikeball_game_fall(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -426,7 +433,8 @@ unsafe fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
     /*frame(lua_state, 55.0);
