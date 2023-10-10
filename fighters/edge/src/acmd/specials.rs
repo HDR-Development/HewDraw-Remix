@@ -485,7 +485,7 @@ unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            MotionModule::set_rate(boma, 1.75);
+            MotionModule::set_rate(boma, 2.0);
         }
         else{
             MotionModule::set_rate(boma, 0.9);

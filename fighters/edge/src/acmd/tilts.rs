@@ -69,7 +69,7 @@ unsafe fn sephiroth_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -7, 0, -1.6, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.4);
-        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.5, 12.85, 6.9, -20.3, 33, -8.8, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.5, 12.85, 2.9, -20.3, 33, -8.8, 1, true);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -156,7 +156,7 @@ unsafe fn sephiroth_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -7, 0, -1.6, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.4);
-        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.8, 10.4, 7.6, 0.84, 35, 4.1, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.8, 10.4, 3.6, 0.84, 35, 4.1, 1, true);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -247,7 +247,7 @@ unsafe fn sephiroth_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -7, 0, -1.6, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.4);
-        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.4, 9.75, 7.8, 19, 33, 13.8, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.4, 9.75, 3.8, 19, 33, 13.8, 1, true);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
