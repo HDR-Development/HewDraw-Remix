@@ -96,7 +96,7 @@ special_air_lw1:
     xlu_end: 0
 special_lw1_hit:
   extra:
-    cancel_frame: 50
+    cancel_frame: 47
 special_air_s3_1:
   extra:
     cancel_frame: 41
