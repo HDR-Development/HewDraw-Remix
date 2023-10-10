@@ -360,6 +360,12 @@ pub mod vars {
         }
     }
 
+    pub mod captain {
+        pub mod status {
+            pub const YES: i32 = 0x1100;
+        }
+    }
+
     pub mod chrom {
         pub mod instance {
             // flags
