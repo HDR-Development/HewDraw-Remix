@@ -304,18 +304,21 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
 
     if is_excute(fighter) {
         WorkModule::set_int(boma, 300, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-        let num_players = Fighter::get_fighter_entry_count();
-        if StopModule::is_hit(boma){
+        /* below grabs the boma of the opponent hitting gordo, the attack data of that hit, and adjusts the speed accordingly */
+        let num_players = Fighter::get_fighter_entry_count(); 
+        if StopModule::is_hit(boma){ 
             for i in 0..num_players{
                 let opponent_boma = sv_battle_object::module_accessor(Fighter::get_id_from_entry_id(i));
                 if AttackModule::is_infliction(opponent_boma, *COLLISION_KIND_MASK_HIT){
                     let data = AttackModule::attack_data(opponent_boma, 0, false);
                     let mut angle = (*data).vector as f32;
                     let mut damage = (*data).power;
-
-                    if angle > 360.0{
-                        angle = 38.0;
+                    
+                    //Covering sakurai angle and other funky angles
+                    if angle > 360.0{ 
+                        angle = 32.0;
                     }
+                    //Damage cap, gordo goes to the moon otherwise
                     if damage > 14.0{
                         damage = 14.0;
                     }
@@ -327,6 +330,7 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
                     KineticModule::mul_speed(boma, &Vector3f{x: cos, y: sin  *  (damage / 3.0) / speed_y, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL); 
                 }
             }
+        /* Seeing the speed is still the same. This only occurs if the above did not run, which happens on projectiles or non-direct hits (Bayo smash attacks) */
         if speed_x == KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) &&  speed_y == KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL){
             let damage = DamageModule::damage(boma, 0);
             if damage > 11.0{
@@ -335,7 +339,6 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
             else{
                 KineticModule::mul_speed(boma, &Vector3f{x: 0.4 + 0.05 * (damage - 5.0), y: 1.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             }
-                println!{"NON DIRECT HIT!!!!!"};
         }
         }
     }
