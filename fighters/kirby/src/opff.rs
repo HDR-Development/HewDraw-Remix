@@ -373,8 +373,9 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
     }
 }
 
-// Firaga Airdodge Cancel
+// Sora Magic Cancels
 unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    // Firaga Airdodge Cancel
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_SHOOT {
         if frame > 2.0 {
             boma.check_airdodge_cancel();
@@ -1072,12 +1073,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_HOLD,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_END,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_FIRE
+            *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2,
+            *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3
             ])
-        || (0x206..0x37c).contains(&copystatus) {
+        || (0x206..0x377).contains(&copystatus) {
             fighter.sub_air_check_dive();
             if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
                 if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
@@ -1121,7 +1120,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Water Shuriken Max Dash Cancel
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
 
-    // Firaga and Thundaga Cancels
+    // Sora Magic Cancels
     magic_cancels(boma, status_kind, situation_kind, cat[0], frame);
 
     // Bite Early Throw and Turnaround
