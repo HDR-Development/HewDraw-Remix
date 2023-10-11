@@ -61,7 +61,6 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 #[smashline::weapon_frame_callback(main)]
 pub fn lloid_callback(weapon : &mut L2CFighterBase) {
     unsafe {
-        println!("{}", weapon.kind());
         if weapon.kind() != *WEAPON_KIND_SHIZUE_CLAYROCKET {
             return
         }

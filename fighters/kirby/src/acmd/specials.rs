@@ -175,7 +175,7 @@ unsafe fn kirby_special_air_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairss" , category = ACMD_GAME , low_priority)]
@@ -209,7 +209,7 @@ unsafe fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
@@ -546,7 +546,7 @@ pub fn install() {
         kirby_special_air_hi_h_effect,
         kirby_special_air_hi_h_sound,
         kirby_special_air_lw_game,
-        kirby_special_air_lw_effect,
+        kirby_special_air_lw_effect
     );
 }
 

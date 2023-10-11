@@ -216,7 +216,7 @@ unsafe fn escape_air_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_falco_escapeair"));
-        PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_cliffcatch"));
     }
 
 }
@@ -228,7 +228,7 @@ unsafe fn escape_air_slide_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("falco"));
-        PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_cliffcatch"));
     }
 
 }
@@ -240,7 +240,7 @@ unsafe fn escape_n_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_falco_escapeair"));
-        PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_cliffcatch"));
     }
 
 }

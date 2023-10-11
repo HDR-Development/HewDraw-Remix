@@ -59,10 +59,15 @@ unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0 / 10.0);
     frame(lua_state, 9.0);
     FT_MOTION_RATE(fighter, 1.0);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
@@ -119,6 +124,37 @@ unsafe fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_final_hand_triforce"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_entry_aura"), false, false);
+    }
+}
+
+#[acmd_script( agent = "ganon", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairsstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 350, 100, 30, 0, 5.0, 0.0, 9.0, 1.0, Some(0.0), Some(9.0), Some(6.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FEB, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+    }
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 0.8);
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+        CATCH(agent, 0, Hash40::new("top"), 5.0, 0.0, 6.0, 7.5, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, *COLLISION_SITUATION_MASK_G);
+        CATCH(agent, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 7.5, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, *COLLISION_SITUATION_MASK_GA);
+    }
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 29.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_GANON_STATUS_WORK_ID_FLAG_EXPLOSION_GRAVITY_ONOFF);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -231,13 +267,13 @@ unsafe fn ganon_special_hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if is_excute(fighter) {
         CATCH(fighter, 0, Hash40::new("top"), 6.5, 0.0, 16.0, 6.5, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 8.8, 11.7, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 6.75, 7.75, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 0, 50, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
     wait(fighter.lua_state_agent, 1.0);
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
-        CATCH(fighter, 0, Hash40::new("bust"), 4.4, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("bust"), 5.25, 0.0, 0.0, 2.25, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
     }
     frame(fighter.lua_state_agent, 18.0);
     if is_excute(fighter) {
@@ -330,33 +366,6 @@ unsafe fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
     */
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_raijin_hold"), false, true);
-    }
-}
-
-#[acmd_script( agent = "ganon", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairsstart(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        boma.select_cliff_hangdata_from_name("special_s");
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.8);
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 6.0, 7.5, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, *COLLISION_SITUATION_MASK_G);
-        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 7.5, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, *COLLISION_SITUATION_MASK_GA);
-    }
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 29.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GANON_STATUS_WORK_ID_FLAG_EXPLOSION_GRAVITY_ONOFF);
-    }
-    frame(lua_state, 32.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        AttackModule::clear_all(boma);
     }
 }
 

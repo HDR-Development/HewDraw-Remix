@@ -260,6 +260,9 @@ impl UiObject for AuraMeter {
         if self.burnout {
             set_pane_visible(self.bars[0], false);
             set_pane_visible(self.bars[1], false);
+            set_pane_visible(self.number, false);
+        } else {
+            set_pane_visible(self.number, true);
         }
     }
 
