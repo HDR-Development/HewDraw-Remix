@@ -555,7 +555,8 @@ pub unsafe fn end_pass_ground(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_virtual_ftStatusUniqProcessDamage_exec_common)]
 pub unsafe fn virtual_ftStatusUniqProcessDamage_exec_common(fighter: &mut L2CFighterCommon) {
     // Adding FIGHTER_STATUS_KIND_DAMAGE_AIR to this check allows for DI on non-tumble knockback
-    if [*FIGHTER_STATUS_KIND_DAMAGE_AIR,
+    if [*FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,

@@ -186,10 +186,23 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "effect_landingheavy", category = ACMD_EFFECT, low_priority )]
+unsafe fn landingheavy_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        if !fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+            EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
+        landingheavy_effect,
         dash_sound,
         kirby_turn_dash_game,
         damageflyhi_sound,
