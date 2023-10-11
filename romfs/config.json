@@ -111,6 +111,12 @@
 		],
 		"fighter/falco/cmn": [
 			"fighter/falco/param/hdr.prc"
+		],
+		"fighter/ryu/cmn": [
+			"fighter/ryu/param/hdr.prc"
+		],
+		"fighter/ken/cmn": [
+			"fighter/ken/param/hdr.prc"
 		]
 	}
 }
