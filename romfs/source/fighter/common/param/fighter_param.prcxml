@@ -2786,13 +2786,13 @@
     <struct index="79">
       <float hash="walk_speed_max">1.105</float>
       <float hash="ground_brake">0.079</float>
-      <float hash="dash_speed">1.65</float>
+      <float hash="dash_speed">1.625</float>
       <float hash="run_accel_mul">0.06</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.8</float>
+      <float hash="run_speed_max">1.7</float>
       <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x">0.95</float>
-      <float hash="jump_speed_x_max">1.4</float>
+      <float hash="jump_speed_x_max">1.325</float>
       <float hash="jump_initial_y">9.975</float>
       <float hash="mini_jump_y">10</float>
       <float hash="air_accel_x_mul">0.03</float>
