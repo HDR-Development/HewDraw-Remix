@@ -235,12 +235,22 @@ unsafe fn robot_special_s_air_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+
+    frame(lua_state, 14.0);
+        if is_excute(fighter) {
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        }
 }
 
 #[acmd_script( agent = "robot", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn robot_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+
+    frame(lua_state, 14.0);
+        if is_excute(fighter) {
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        }
 }
 
 #[acmd_script( agent = "robot", script = "game_specialhirise", category = ACMD_GAME, low_priority )]
@@ -251,6 +261,7 @@ unsafe fn robot_special_hi_keep_game (fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, vars::robot::status::HELD_BUTTON);
         let mut workingDamage = robotFrames/4.0;
 
         if (workingDamage < 4.0) {
@@ -281,6 +292,7 @@ unsafe fn robot_special_hi_keep_game (fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 0.6);
     }
 }
 
@@ -566,7 +578,7 @@ unsafe fn robot_special_s_hi_effect(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("handr1"), 0.0, 6.0, 0, 90, 0, 0, 1.0, true, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("handr1"), 0.0, 8.0, 0, 75, 0, 0, 1.0, true, *EF_FLIP_NONE);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 
@@ -657,7 +669,7 @@ unsafe fn robot_special_air_s_hi_effect(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("handr1"), 0.0, 6.0, 0, 90, 0, 0, 1.0, true, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("handr1"), 0.0, 8.0, 0, 75, 0, 0, 1.0, true, *EF_FLIP_NONE);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 

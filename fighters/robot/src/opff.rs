@@ -230,6 +230,7 @@ unsafe fn upb_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut Ba
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP {
         VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB, 0.0);
         VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB_RISE, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 0.0);
     }
 
     if StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_SPECIAL_HI

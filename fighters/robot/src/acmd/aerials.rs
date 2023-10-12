@@ -557,12 +557,14 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let mut effectX = 48.0;
 
     frame(lua_state, 6.0);
         for _ in 0..5 {
             if is_excute(fighter) {
-                EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 7, 0, 80, 0, 0, 1.0, true, *EF_FLIP_NONE);
+                EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 7, 0, effectX, 0, 0, 1.3, true, *EF_FLIP_NONE);
                 LAST_EFFECT_SET_RATE(fighter, 3.0);
+                effectX += 8.0;
             }
 
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
@@ -600,7 +602,7 @@ unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
                 LAST_EFFECT_SET_COLOR(fighter, 0.118, 0.039, 0.051);
             }
 
-            LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 90, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+            LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 7, 0, 90, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
             LAST_EFFECT_SET_RATE(fighter, 3.0);
             wait(lua_state, 3.0);
         }

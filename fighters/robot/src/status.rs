@@ -47,6 +47,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     let lr = PostureModule::lr(fighter.module_accessor);
     let stickX = ControlModule::get_stick_x(fighter.module_accessor);
     let mut rotX = PostureModule::rot_x(fighter.module_accessor, 0);
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
 
     //caps angle of rotation
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -77,34 +78,66 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
 
     //rotates model based off stick direction
-    if lr == 1.0 {
-        if stickX > 0.1 {
-            PostureModule::set_rot(
-                fighter.module_accessor,
-                &Vector3f::new(rotX+1.5, 0.0, 0.0),
-                0
-            );
-        } else if stickX < -0.1 {
-            PostureModule::set_rot(
-                fighter.module_accessor,
-                &Vector3f::new(rotX-1.5, 0.0, 0.0),
-                0
-            );
+      if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if lr == 1.0 {
+            if stickX > 0.1 {
+                VarModule::add_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 1.5);
+                let jointX = VarModule::get_float(fighter.battle_object, vars::robot::instance::JOINT_ROT);
+                rotation = Vector3f{x: 0.0, y: 0.0, z: jointX};
+                ModelModule::set_joint_rotate(fighter.module_accessor, Hash40::new("waist1"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            } else if stickX < -0.1 {
+                VarModule::sub_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 1.5);
+                let jointX = VarModule::get_float(fighter.battle_object, vars::robot::instance::JOINT_ROT);
+                rotation = Vector3f{x: 0.0, y: 0.0, z: jointX};
+                ModelModule::set_joint_rotate(fighter.module_accessor, Hash40::new("waist1"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            }
+        } else {
+            if stickX > 0.1 {
+                VarModule::sub_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 1.5);
+                let jointX = VarModule::get_float(fighter.battle_object, vars::robot::instance::JOINT_ROT);
+                rotation = Vector3f{x: 0.0, y: 0.0, z: jointX};
+                ModelModule::set_joint_rotate(fighter.module_accessor, Hash40::new("waist1"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            } else if stickX < -0.1 {
+                VarModule::add_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 1.5);
+                let jointX = VarModule::get_float(fighter.battle_object, vars::robot::instance::JOINT_ROT);
+                rotation = Vector3f{x: 0.0, y: 0.0, z: jointX};
+                ModelModule::set_joint_rotate(fighter.module_accessor, Hash40::new("waist1"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            }
         }
-    } else {
-        if stickX > 0.1 {
-            PostureModule::set_rot(
-                fighter.module_accessor,
-                &Vector3f::new(rotX-1.5, 0.0, 0.0),
-                0
-            );
-        } else if stickX < -0.1 {
-            PostureModule::set_rot(
-                fighter.module_accessor,
-                &Vector3f::new(rotX+1.5, 0.0, 0.0),
-                0
-            );
+    } else { 
+        if lr == 1.0 {
+            if stickX > 0.1 {
+                PostureModule::set_rot(
+                    fighter.module_accessor,
+                    &Vector3f::new(rotX+1.5, 0.0, 0.0),
+                    0
+                );
+            } else if stickX < -0.1 {
+                PostureModule::set_rot(
+                    fighter.module_accessor,
+                    &Vector3f::new(rotX-1.5, 0.0, 0.0),
+                    0
+                );
+            }
+        } else {
+            if stickX > 0.1 {
+                PostureModule::set_rot(
+                    fighter.module_accessor,
+                    &Vector3f::new(rotX-1.5, 0.0, 0.0),
+                    0
+                );
+            } else if stickX < -0.1 {
+                PostureModule::set_rot(
+                    fighter.module_accessor,
+                    &Vector3f::new(rotX+1.5, 0.0, 0.0),
+                    0
+                );
+            }
         }
+    }
+
+    if rotX == 0.0 {
+        rotX = VarModule::get_float(fighter.battle_object, vars::robot::instance::JOINT_ROT);
     }
 
     //determines strength of upb release
@@ -112,7 +145,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::resume_energy_all(fighter.module_accessor);
 
-        let vec = Vector3f{x: (0.05*rotX), y: ((0.05*robotFrames)-(0.025*rotX.abs())), z: 0.0};
+        let vec = Vector3f{x: (0.05*rotX.abs()), y: ((0.05*robotFrames)-(0.025*rotX.abs())), z: 0.0};
         KineticModule::add_speed(fighter.module_accessor, &vec);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         
@@ -133,7 +166,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::resume_energy_all(fighter.module_accessor);
 
         if robotFrames < 10.0 {
-            let vec = Vector3f{x: (0.05*rotX), y: 1.5-(0.025*rotX.abs()), z: 0.0};
+            let vec = Vector3f{x: (0.05*rotX.abs()), y: 1.5-(0.025*rotX.abs()), z: 0.0};
             KineticModule::add_speed(fighter.module_accessor, &vec);
             if (current_fuel - 20.0) > 0.0 {
                 WorkModule::set_float(fighter.module_accessor, (current_fuel) - (20.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
@@ -144,7 +177,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
 
         } else {
-            let vec = Vector3f{x: (0.05*rotX), y: (1.5 + (0.05*robotFrames))-(0.025*rotX.abs()), z: 0.0};
+            let vec = Vector3f{x: (0.05*rotX.abs()), y: (1.5 + (0.05*robotFrames))-(0.025*rotX.abs()), z: 0.0};
             KineticModule::add_speed(fighter.module_accessor, &vec);
             if ((current_fuel) - (robotFrames * 2.0) > 0.0) {
                 WorkModule::set_float(fighter.module_accessor, (current_fuel) - (robotFrames * 2.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
@@ -163,7 +196,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::resume_energy_all(fighter.module_accessor);
         
-        let vec = Vector3f{x: (0.05*rotX), y: 3.75-(0.025*rotX.abs()), z: 0.0};
+        let vec = Vector3f{x: (0.05*rotX.abs()), y: 3.75-(0.025*rotX.abs()), z: 0.0};
         KineticModule::add_speed(fighter.module_accessor, &vec);
 
         if ((current_fuel) - (100.0) > 0.0) {
@@ -247,10 +280,33 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
         }
     }
 
+    /*Cancels status transition if button is being held
+    if robotKeepFrames == 17.0 {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) || 
+        ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        WorkModule::off_flag(fighter.module_accessor, vars::robot::status::HELD_BUTTON);
+        }
+    }
+
+    if (robotKeepFrames > 18.0) &&
+    WorkModule::is_flag(fighter.module_accessor, vars::robot::status::HELD_BUTTON) {
+        if fighter.is_button_on(Buttons::Attack) || fighter.is_button_on(Buttons::Special) || fighter.is_button_on(Buttons::Guard) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+        }
+    } */
+
     if (robotKeepFrames > 22.0) {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
     } 
+
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), true.into());
+    }
     
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+    } 
+
     0.into()
 }
 

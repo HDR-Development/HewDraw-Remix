@@ -1014,6 +1014,7 @@ pub mod vars {
             pub const STICK_ANGLE: i32 = 0x0100;
             pub const FRAMES_SINCE_UPB: i32 = 0x0101;
             pub const FRAMES_SINCE_UPB_RISE: i32 = 0x0102;
+            pub const JOINT_ROT: i32 = 0x1103;
         }
         pub mod status {
             // flags
@@ -1021,6 +1022,7 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const IS_CHARGE_MAX: i32 = 0x1102;
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
+            pub const HELD_BUTTON: i32 = 0x1104;
         }
     }
 
