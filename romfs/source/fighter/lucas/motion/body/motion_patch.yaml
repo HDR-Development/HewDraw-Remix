@@ -95,3 +95,6 @@ special_air_lw_end:
 catch_attack:
   extra:
     cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 13

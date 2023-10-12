@@ -149,7 +149,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         // Coupled with "landing_heavy" change in change_motion hook
         // Because we start heavy landing anims on f2 rather than f1, we need to push back the heavy landing FAF by 1 frame so it is accurate to the defined per-character param
         if x1 == hash40("landing_frame") {
-            return original!()(x0, hash40("landing_frame"), 0) + 1.0;
+            return original!()(x0, hash40("landing_frame"), 0) + 3.0;
         }
 
         // Ken aerial hadouken modified offsets for aerial version
@@ -293,6 +293,12 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         if fighter_kind == *WEAPON_KIND_SNAKE_TRENCHMORTAR_BULLET {
             if x1 == hash40("param_trenchmortarbullet") && x2 == hash40("speed_x") {
                 return ControlModule::get_stick_x(boma) / 1.5 * PostureModule::lr(boma);
+            }
+        }
+
+        else if fighter_kind == *WEAPON_KIND_DEDEDE_GORDO {
+            if x1 == hash40("param_gordo") && x2 == hash40("shot_start_angle"){
+                return 20.0 * ControlModule::get_stick_y(owner_module_accessor);
             }
         }
 

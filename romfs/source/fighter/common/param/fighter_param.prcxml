@@ -59,7 +59,7 @@
       <float hash="damage_fly_top_speed_y_stable">2.4</float>
       <float hash="dive_speed_y">2.96</float>
       <float hash="weight">110</float>
-      <float hash="landing_attack_air_frame_n">8</float>
+      <float hash="landing_attack_air_frame_n">10</float>
       <float hash="landing_attack_air_frame_f">13</float>
       <float hash="landing_attack_air_frame_b">9</float>
       <float hash="landing_attack_air_frame_hi">11</float>
@@ -123,14 +123,14 @@
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">0.942</float>
       <float hash="air_brake_x">0.0125</float>
-      <float hash="air_accel_y">0.076</float>
+      <float hash="air_accel_y">0.066</float>
       <float hash="air_speed_y_stable">1.43</float>
       <float hash="damage_fly_top_air_accel_y">0.09</float>
       <float hash="damage_fly_top_speed_y_stable">1.43</float>
       <float hash="dive_speed_y">2.24</float>
       <float hash="weight">108</float>
       <float hash="landing_attack_air_frame_n">7</float>
-      <float hash="landing_attack_air_frame_f">8</float>
+      <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">9</float>
       <float hash="landing_attack_air_frame_hi">10</float>
       <int hash="landing_heavy_frame">5</int>
@@ -349,8 +349,10 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.055</float>
       <float hash="shield_radius">9</float>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_y_speed">1.9</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -794,6 +796,7 @@
       <float hash="landing_attack_air_frame_n">8</float>
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_b">7</float>
+      <float hash="landing_attack_air_frame_hi">14</float>
       <float hash="landing_attack_air_frame_lw">16</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">10.4</float>
@@ -1244,7 +1247,7 @@
       <float hash="damage_fly_top_air_accel_y">0.1</float>
       <float hash="damage_fly_top_speed_y_stable">1.75</float>
       <float hash="weight">112</float>
-      <float hash="landing_attack_air_frame_n">8</float>
+      <float hash="landing_attack_air_frame_n">11</float>
       <float hash="landing_attack_air_frame_f">12</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_hi">12</float>
@@ -1312,6 +1315,7 @@
       <float hash="air_speed_y_stable">2.3</float>
       <float hash="damage_fly_top_air_accel_y">0.125</float>
       <float hash="damage_fly_top_speed_y_stable">2.3</float>
+      <float hash="air_brake_y">0.0225</float>
       <float hash="dive_speed_y">2.7</float>
       <float hash="weight">85</float>
       <float hash="landing_attack_air_frame_n">9</float>
@@ -1716,7 +1720,7 @@
       <float hash="damage_fly_top_air_accel_y">0.09</float>
       <float hash="damage_fly_top_speed_y_stable">1.6</float>
       <float hash="dive_speed_y">2.287</float>
-      <float hash="weight">94</float>
+      <float hash="weight">89</float>
       <float hash="landing_attack_air_frame_n">7</float>
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_hi">9</float>
@@ -2091,13 +2095,14 @@
     <!-- CORRIN -->
     <struct index="59">
       <float hash="walk_speed_max">1.228</float>
-      <float hash="ground_brake">0.0625</float>
-      <float hash="dash_speed">1.763</float>
+      <float hash="ground_brake">0.0825</float>
+      <float hash="dash_speed">1.7215</float>
       <float hash="run_accel_mul">0.04238</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.68</float>
+      <float hash="run_speed_max">1.7215</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_mul">0.75</float>
       <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">10.6071</float>
       <float hash="air_accel_x_mul">0.027</float>

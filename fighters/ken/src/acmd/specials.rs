@@ -193,7 +193,7 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
-        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+        if fighter.kind() != *FIGHTER_KIND_KIRBY && !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
             MeterModule::add(fighter.battle_object, 2.0);
         }
     }
@@ -226,7 +226,7 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
-        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+        if fighter.kind() != *FIGHTER_KIND_KIRBY && !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
             MeterModule::add(fighter.battle_object, 2.0);
         }
     }
@@ -541,7 +541,7 @@ unsafe fn ken_special_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
         AttackModule::set_size(boma, 0, 0.1);
-    }       
+    }
 }
 
 #[acmd_script( agent = "ken", scripts = ["game_specialsend", "game_specialairsend"] , category = ACMD_GAME , low_priority)]
@@ -550,7 +550,7 @@ unsafe fn ken_special_s_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);    
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_GROUND {
             shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         }
@@ -707,7 +707,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W 
+        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
         || WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 80, 54, 0, 80, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         } else {
@@ -719,7 +719,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
-        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W 
+        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
         || WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             ATTACK(fighter, 0, 0, Hash40::new("armr"), 6.0, 80, 112, 0, 78, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         } else {
@@ -764,7 +764,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W 
+        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
         || WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         } else {
@@ -776,7 +776,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
-        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W 
+        if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
         || WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             ATTACK(fighter, 0, 0, Hash40::new("armr"), 6.0, 80, 121, 0, 78, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         } else {

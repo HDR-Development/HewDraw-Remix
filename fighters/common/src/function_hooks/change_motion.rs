@@ -16,8 +16,7 @@ unsafe fn change_motion_hook(boma: &mut BattleObjectModuleAccessor, motion_hash:
     if boma.is_fighter() {
         // Starts landing animations on frame 2
         // This is a purely aesthetic change, makes for snappier landings
-        if [Hash40::new("landing_heavy"),
-            Hash40::new("landing_air_n"),
+        if [Hash40::new("landing_air_n"),
             Hash40::new("landing_air_f"),
             Hash40::new("landing_air_b"),
             Hash40::new("landing_air_hi"),
@@ -25,6 +24,9 @@ unsafe fn change_motion_hook(boma: &mut BattleObjectModuleAccessor, motion_hash:
             Hash40::new("landing_fall_special")].contains(&motion_hash)
         {
             start_frame = 1.0;
+        }
+        else if motion_hash == Hash40::new("landing_heavy") {
+            start_frame = 3.0;
         }
 
         // Allows a frame-perfect edge canceled waveland to still generate landing smoke GFX

@@ -31,7 +31,7 @@ unsafe fn buddy_special_s_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag( boma, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR);
         JostleModule::set_status( boma, false);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 43, 72, 0, 66, 3.8, 0.0, 4.2, 1.8, Some(0.0), Some(4.2), Some(3.2), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 43, 72, 0, 66, 3.8, 0.0, 6.2, 1.8, Some(0.0), Some(6.2), Some(3.2), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 43, 72, 0, 66, 4.2, 0.0, 9.2, 3.8, Some(0.0), Some(9.2), Some(5.4), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         //AttackModule::set_captured_same_time_attack(boma, 0, true);
         //AttackModule::set_captured_same_time_attack(boma, 1, true);
@@ -56,7 +56,7 @@ unsafe fn buddy_special_s_dash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 43, 63, 0, 66, 3.8, 0.0, 4.2, 1.8, Some(0.0), Some(4.2), Some(3.2), 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 43, 63, 0, 66, 3.8, 0.0, 6.2, 1.8, Some(0.0), Some(6.2), Some(3.2), 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 43, 63, 0, 66, 4.2, 0.0, 9.2, 3.8, Some(0.0), Some(9.2), Some(5.4), 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 12.0);
@@ -370,16 +370,6 @@ unsafe fn buddy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, 2.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    //6 frames of armor
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        //FighterAreaModuleImpl::disable_fix_jostle_area(boma);
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7.0);
-    }
-    wait(lua_state, 6.0);
-    if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0.0);
-    }
 }
 
 // Uses smash_script, if you prefer to use the built-in macros instead.
@@ -389,9 +379,6 @@ unsafe fn buddy_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
 
     if is_excute(fighter) {
-        //Prevents losing a gold feather
-        WorkModule::add_int(boma, 1, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
-
         //Set control
         VarModule::on_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
         VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,0);
@@ -431,7 +418,7 @@ unsafe fn buddy_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
         HIT_NO(fighter, 17, *HIT_STATUS_NORMAL);
     }
     //Weaker hitbox
-    frame(lua_state, 18.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 43, 57, 0, 66, 3.2, 0.0, 9.2, 8.8, Some(0.0), Some(9.2), Some(12.4), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
 

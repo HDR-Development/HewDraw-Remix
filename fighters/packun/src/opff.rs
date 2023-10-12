@@ -60,15 +60,17 @@ unsafe fn stance_head(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
-        EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-        if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
-        }
-        else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), 0, 15.5, 0, 0, 0, 0, 1.2, false);
-        }
-        else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
+            if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
+            }
+            else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+                EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), 0, 15.5, 0, 0, 0, 0, 1.2, false);
+            }
+            else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
+            }
         }
         VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
@@ -273,13 +275,16 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
             let scale = PostureModule::scale(boma);
             if ((pos_x - packun_pos_x).abs() < 12.0*scale) && 
                 ((pos_y - packun_pos_y).abs() < 12.0*scale) && 
-                pos_y != 0.0 && 
-                VarModule::is_flag(owner_object, vars::packun::status::FLAME_ACTIVE) &&
-				motion_kind != hash40("explode")
-			    {
-					//println!("Woo!");
-					MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
-			}
+                pos_y != 0.0 {
+                if owner_module_accessor.is_status(*FIGHTER_STATUS_KIND_APPEAL){
+                    VarModule::on_flag(owner_object, vars::packun::status::CLOUD_COVER);
+                }
+                if VarModule::is_flag(owner_object, vars::packun::status::FLAME_ACTIVE) &&
+                motion_kind != hash40("explode") {
+                    //println!("Woo!");
+                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+                }
+            }
 		}
     }
 }

@@ -186,7 +186,7 @@ unsafe fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 5, 2, 7.5, 1, 5, 5, 0.925, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 5, 2, 2, 1, 5, 5, 0.925, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 6.0);

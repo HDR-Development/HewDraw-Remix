@@ -58,12 +58,9 @@ unsafe fn captain_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
 unsafe fn captain_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-	    EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 10.75, 10.0, -20.0, 0.0, 0.0, 0.7, true);
-    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 7.75, 8.5, -20.0, 0.0, 0.0, 0.7, true);
 	    EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 2.0, 7.75, 8.0, 0.0, 0.0, 0.0, 1.3, true);
 	    EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("captain_at_thrust"), Hash40::new("top"), 0.0, 5.75, 2.0, -20.0, 10.0, 0.0, 0.85, true, 0.5);
 	    LAST_EFFECT_SET_RATE(fighter, 1);
@@ -155,21 +152,8 @@ unsafe fn captain_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x124ee81be1));
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if boma.is_button_on(Buttons::AppealAll) {
-                PLAY_SE(fighter, Hash40::new("se_captain_special_h03"));
-            }
-            else{
-                PLAY_SEQUENCE(fighter, Hash40::new_raw(0x162af730db));
-            }
-        }
-        else{
-            PLAY_SEQUENCE(fighter, Hash40::new_raw(0x162af730db));
-        }
+        PLAY_SE(fighter, Hash40::new("se_captain_swing_l"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_captain_rnd_attack"));
     }
     
 }
