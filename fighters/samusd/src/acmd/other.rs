@@ -57,9 +57,8 @@ unsafe fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 0.0);
     if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new("se_samusd_special_n01"));
         if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.25 {
             PLAY_SE_REMAIN(fighter, Hash40::new("se_samusd_special_n02"));
         }
