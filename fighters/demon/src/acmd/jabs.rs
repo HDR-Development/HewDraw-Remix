@@ -312,9 +312,9 @@ unsafe fn game_flashpunch(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::demon::instance::DEVASTATOR){
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 0.0, 368, 100, 40, 0, 7.0, 0.0, 15.0, 5.0, Some(0.0), Some(7.0), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-            ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 368, 100, 40, 0, 7.0, 0.0, 15.0, 0.0, Some(0.0), Some(7.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-            let x_pos = 13.0*PostureModule::lr(boma);
+            ATTACK(fighter, 0, 1, Hash40::new("top"), 0.0, 368, 100, 40, 0, 7.0, 0.0, 15.0, 5.0, Some(0.0), Some(7.0), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+            ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 368, 100, 40, 0, 7.0, 0.0, 15.0, 0.0, Some(0.0), Some(7.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+            let x_pos = 13.0;
             let y_pos = 6.0;
             AttackModule::set_vec_target_pos(boma, 0, smash::phx::Hash40::new("top"), &Vector2f::new(x_pos, y_pos), 4, false);
             AttackModule::set_vec_target_pos(boma, 1, smash::phx::Hash40::new("top"), &Vector2f::new(x_pos, y_pos), 4, false);
