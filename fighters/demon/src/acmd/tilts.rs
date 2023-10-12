@@ -59,6 +59,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 8.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("arml"), 6.0, 88, 5, 0, 71, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("arml"), 6.0, 88, 5, 0, 71, 3.0, 5.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);

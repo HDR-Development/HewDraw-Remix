@@ -31,8 +31,8 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 25.0);
+    FT_DESIRED_RATE(fighter, 28.0-25.0, 4.0);
     if is_excute(fighter) {
-        FT_DESIRED_RATE(fighter, 28.0-25.0, 4.0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         WorkModule::set_int(boma, 2, *FIGHTER_DEMON_STATUS_ATTACK_S4_WORK_INT_CRITICAL_HIT_NO);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 361, 65, 0, 50, 3.0, 0.0, 6.0, 4.0, Some(0.0), Some(13.0), Some(4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEMON_PUNCH02, *ATTACK_REGION_PUNCH);
@@ -72,9 +72,9 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
     frame(lua_state, 1.0);
+    FT_DESIRED_RATE(fighter, 14.0-1.0, 9.0);
     if is_excute(fighter) {
         JostleModule::set_team(boma, 1);
-        FT_DESIRED_RATE(fighter, 14.0-1.0, 9.0);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
