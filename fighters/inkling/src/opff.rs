@@ -76,6 +76,14 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
     {
         boma.check_jump_cancel(true, false);
     }
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.status_frame() <= 5
+    && boma.is_cat_flag(Cat1::AirEscape) {
+        ControlModule::reset_trigger(boma);
+        StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
+        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    }
     if boma.is_motion(Hash40::new("special_air_s_jump_end"))
     && !StatusModule::is_changing(boma) {
         if MotionModule::frame(boma) > 6.0 {
@@ -84,10 +92,9 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn special_cancel(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn ink_charge_cancel(boma: &mut BattleObjectModuleAccessor) {
     if (boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_SHOOT])
-    || (boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && boma.status_frame() <= 5))
-    && boma.is_button_on(Buttons::Guard)
+    && boma.is_button_on(Buttons::Guard))
     {
         boma.change_status_req(*FIGHTER_INKLING_STATUS_KIND_CHARGE_INK_START, false);
     }
@@ -130,22 +137,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(
-    fighter: &mut L2CFighterCommon,
-    boma: &mut BattleObjectModuleAccessor,
-    id: usize,
-    cat: [i32; 4],
-    status_kind: i32,
-    situation_kind: i32,
-    motion_kind: u64,
-    stick_x: f32,
-    stick_y: f32,
-    facing: f32,
-    frame: f32,
-) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, nstick_x: f32, stick_y: f32, facing: f32, frame: f32,) {
     dair_splatter(boma, motion_kind, id);
     roller_jump_cancel(boma);
-    special_cancel(boma);
+    ink_charge_cancel(boma);
     fastfall_specials(fighter);
 }
 
@@ -159,18 +154,6 @@ pub fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn inkling_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(
-            fighter,
-            &mut *info.boma,
-            info.id,
-            info.cat,
-            info.status_kind,
-            info.situation_kind,
-            info.motion_kind.hash,
-            info.stick_x,
-            info.stick_y,
-            info.facing,
-            info.frame,
-        );
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

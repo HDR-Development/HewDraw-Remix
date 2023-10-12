@@ -464,9 +464,6 @@ unsafe fn samusd_air_catch_game(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 16.0/27.0);
-    }
     
 }
 

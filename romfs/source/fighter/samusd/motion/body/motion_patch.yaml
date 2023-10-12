@@ -90,3 +90,6 @@ air_catch_landing:
 catch_attack:
   extra:
     cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 17

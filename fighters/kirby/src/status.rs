@@ -16,7 +16,8 @@ pub fn install() {
     smashline::install_agent_resets!(kirby_reset);
     install_status_scripts!(
         pre_jump,
-        throw_kirby_map_correction
+        throw_kirby_map_correction,
+        special_n_pre
     );
 
     special_hi_h::install();
@@ -243,5 +244,39 @@ unsafe extern "C" fn ganon_should_use_special_n_callback(fighter: &mut L2CFighte
         false.into()
     } else {
         true.into()
+    }
+}
+
+// FIGHTER_STATUS_KIND_SPECIAL_N //
+
+#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let copy_chara = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA);
+    if copy_chara == *FIGHTER_KIND_TRAIL { // swaps the cycle order of thundaga and blizzaga when copying sora
+        let prev_status = fighter.global_table[0x10].get_i32();
+        WorkModule::set_int(fighter.module_accessor, prev_status, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_STATUS_KIND_ATTACK_PREV);
+        let mut magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
+        let fire = *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_FIRE;
+        let blizzard = *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_BLIZZARD;
+        let thunder = *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER;
+        if magic_kind == blizzard { // change to fire
+            magic_kind = fire;
+        } else if magic_kind == fire { // change to blizzard
+            magic_kind = blizzard;
+        }
+        if ![fire, blizzard, thunder].contains(&magic_kind) {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1);
+        } else if magic_kind == fire {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1);
+        } else if magic_kind == blizzard { 
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2);
+        } else if magic_kind == thunder {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3); 
+        }
+    
+        return 1.into();
+    } else {
+
+    return original!(fighter);
     }
 }

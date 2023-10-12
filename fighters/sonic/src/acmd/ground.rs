@@ -153,19 +153,42 @@ unsafe fn sonic_attack_dash_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -10, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11, -5, 0, 180, 0, 1.0, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 3, 0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
-        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -7, 0, 9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 16.5);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 0, -10, -15, 0, 0, 1.3, true);
     }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -1, 0, 10, 0, 0, 0, 1.4, true);
+    }
+    
+}
+
+#[acmd_script( agent = "sonic", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
+unsafe fn sonic_attack_dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_sonic_rnd_attack"));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_sonic_swing_ll"));
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_sonic_swing_l"));
+    }
+    
 }
 
 pub fn install() {
@@ -177,6 +200,7 @@ pub fn install() {
         sonic_attack_13_game,
         sonic_attack_13_effect,
         sonic_attack_dash_effect,
+        sonic_attack_dash_sound,
     );
 }
 
