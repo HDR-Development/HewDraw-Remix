@@ -125,14 +125,21 @@ unsafe fn game_specialhistart(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VarModule::off_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if !boma.is_button_on(Buttons::Attack) && boma.is_situation(*SITUATION_KIND_GROUND) {
+        if !boma.is_button_on(Buttons::Special) && boma.is_situation(*SITUATION_KIND_GROUND) {
             VarModule::on_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
         }
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
     }
-    if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX){
+    frame(lua_state, 21.0);
+    if WorkModule::is_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH) {
+        FT_MOTION_RATE(fighter, 1.5);
+    }
+    else if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
         FT_MOTION_RATE(fighter, 2.0);
     }
 
@@ -145,7 +152,7 @@ unsafe fn effect_specialhistart(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_charge"), Hash40::new("swordl1"), 0, 0, 0, 0, 180, -90, 0.9, true);
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
             EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
