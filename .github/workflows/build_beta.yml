@@ -216,23 +216,23 @@ jobs:
         name: version
         
     # build the lvd files
-    - id: lvd_files
-      uses: robinraju/release-downloader@v1.7
-      with:
-        repository: "techyCoder81/SSBU-LVD-data-dump"
-        tag: release
-        fileName: "lvd_dumper.zip"
+    # - id: lvd_files
+    #  uses: robinraju/release-downloader@v1.7
+    #  with:
+    #    repository: "techyCoder81/SSBU-LVD-data-dump"
+    #    tag: release
+    #    fileName: "lvd_dumper.zip"
 
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.408'
+    # - name: Setup dotnet
+    #  uses: actions/setup-dotnet@v1
+    #  with:
+    #    dotnet-version: '5.0.408'
 
-    - name: extract lvd data
-      id: lvd_extract
-      shell: bash
-      run: |
-        . scripts/extract_lvd_data.sh
+    #- name: extract lvd data
+    #  id: lvd_extract
+    #  shell: bash
+    #  run: |
+    #    . scripts/extract_lvd_data.sh
 
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
