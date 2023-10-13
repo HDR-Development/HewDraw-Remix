@@ -126,7 +126,7 @@ special_s:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 32
     no_stop_intp: false
 special_s_hi:
   game_script: game_specialshi
@@ -156,7 +156,7 @@ special_s_hi:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 32
     no_stop_intp: false
 special_s_lw:
   game_script: game_specialslw
@@ -186,7 +186,7 @@ special_s_lw:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 32
     no_stop_intp: false
 special_air_s:
   game_script: game_specialairs
@@ -216,7 +216,7 @@ special_air_s:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 32
     no_stop_intp: false
 special_air_s_lw:
   game_script: game_specialairslw
@@ -246,7 +246,7 @@ special_air_s_lw:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 32
     no_stop_intp: false
 special_air_s_hi:
   game_script: game_specialairshi
@@ -276,7 +276,7 @@ special_air_s_hi:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 32
     no_stop_intp: false
 special_hi:
   game_script: game_specialhi
