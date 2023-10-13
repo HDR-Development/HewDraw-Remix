@@ -113,22 +113,6 @@ unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe fn ex_punch_effect_reset(fighter: &mut L2CFighterCommon) {
-    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD])
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE,
-        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL ]) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_explosion_sign"), false, false);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -165,7 +149,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     flame_cancel(boma, status_kind, situation_kind, frame);
     fireball_cooldown(boma,status_kind);
     koopa_ex_punch(fighter);
-    ex_punch_effect_reset(fighter);
     fastfall_specials(fighter);
     fastfall_specials(fighter);
 }

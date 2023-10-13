@@ -293,3 +293,10 @@ pub unsafe fn miiswordsman_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon)
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
+
+#[weapon_frame( agent = WEAPON_KIND_MIISWORDSMAN_TORNADOSHOT )]
+pub fn tornadoshot_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        ModelModule::set_joint_scale(weapon.module_accessor, Hash40::new("top"), &Vector3f::new(0.6, 0.6, 0.6));
+    }
+}
