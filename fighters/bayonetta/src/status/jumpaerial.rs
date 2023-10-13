@@ -8,7 +8,7 @@ pub fn install() {
     );
 }
 
-// FIGHTER_STATUS_KIND_ATTACK //
+// FIGHTER_STATUS_KIND_JUMP_AERIAL //
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {

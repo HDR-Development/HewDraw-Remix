@@ -16,7 +16,7 @@ throw_hi:
     cancel_frame: 47
 special_s:
   extra:
-    cancel_frame: 21
+    cancel_frame: 29
 attack_11:
   extra:
     cancel_frame: 16
@@ -40,7 +40,7 @@ attack_air_n:
     cancel_frame: 40
 special_air_s:
   extra:
-    cancel_frame: 21
+    cancel_frame: 29
 attack_air_lw:
   extra:
     cancel_frame: 41
@@ -49,7 +49,7 @@ attack_air_hi:
     cancel_frame: 34
 special_n_start:
   extra:
-    cancel_frame: 10
+    cancel_frame: 9
 special_n_failure:
   extra:
     cancel_frame: 29

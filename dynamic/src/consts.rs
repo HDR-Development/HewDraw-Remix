@@ -1061,10 +1061,9 @@ pub mod vars {
         pub mod status {
             // flags
             pub const WAVE_SPECIAL_N: i32 = 0x1100;
-
-            pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1100;
-
-            pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1100;
+            pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1101;
+            pub const SHOCK_SPELL_HOLD: i32 = 0x1102;
+            pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1103;
         }
     }
 
