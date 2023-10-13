@@ -403,7 +403,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }*/
 
-    if frame == 12.0 {
+    if frame >= 12.0 {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         /*} else {
