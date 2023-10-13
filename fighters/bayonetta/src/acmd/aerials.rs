@@ -103,7 +103,6 @@ unsafe fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
         } else if fair == 2 {
             MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_air_f3"), 0.0, 1.0, false, 0.0, false, false);
         } else {
-            JostleModule::set_team(boma, 1);
             FT_MOTION_RATE_RANGE(fighter, 1.0, 5.5, 2.0);
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, true, 10, 3, 10, 0, true);
         }
@@ -121,12 +120,12 @@ unsafe fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 66, 10, 0, 63, 4.2, 0.0, 12.0, 4.2, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 79, 10, 0, 56, 4.2, 0.0, 12.0, 4.2, Some(0.0), Some(12.0), Some(12.0), 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(boma, 3, 3.0, false);
+        VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 1);
     }
     frame(lua_state, 11.0);//7
     FT_MOTION_RATE_RANGE(fighter, 11.0, 31.0, 19.0); //26 faf
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        VarModule::inc_int(boma.object(), vars::bayonetta::instance::FAIR_STATE);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
@@ -146,7 +145,6 @@ unsafe fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        JostleModule::set_team(boma, 1);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, true, 10, 3, 10, 0, true);
     }
     frame(lua_state, 3.0);
@@ -161,12 +159,12 @@ unsafe fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 66, 10, 0, 63, 4.2, 0.0, 12.8, 6.3, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 79, 10, 0, 56, 4.2, 0.0, 12.8, 6.3, Some(0.0), Some(12.8), Some(16.2), 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(boma, 3, 3.0, false);
+        VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 2);
     }
     wait(lua_state, 2.0);//10
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        VarModule::inc_int(boma.object(), vars::bayonetta::instance::FAIR_STATE);
     }
     frame(lua_state, 11.0);//12
     FT_MOTION_RATE_RANGE(fighter, 11.0, 35.0, 14.0); //26
@@ -190,7 +188,6 @@ unsafe fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 2.0);
     if is_excute(fighter) {
-        JostleModule::set_team(boma, 1);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, false, false, true, 10, 3, 10, 5, true);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, false, false, true, 10);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, false, false, true, 10);

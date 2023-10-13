@@ -80,7 +80,7 @@
       <int hash="act_landing_frame">18</int>
       <int hash="landing_frame_2nd">20</int>
       <int hash="act_landing_frame_2nd">27</int>
-      <float hash="jump_count_reset_frame">0</float>
+      <float hash="jump_count_reset_frame">5</float>
 	</struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
