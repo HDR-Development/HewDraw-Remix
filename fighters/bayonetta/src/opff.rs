@@ -8,17 +8,9 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
     && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) 
     && !CancelModule::is_enable_cancel(boma) {
-        if fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
-            if fighter.is_button_off(Buttons::Attack) {
-                fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
-                fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_FLAG_CHECK_HOLD);
-            }
-        }
         let mut new_status = 0;
         let mut is_input_cancel = false;
-        if fighter.is_cat_flag(Cat1::SpecialN) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
+        if fighter.is_cat_flag(Cat1::SpecialN) {fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
         } else if fighter.is_cat_flag(Cat1::SpecialS) {
             if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) < 2 && !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL) {
                 is_input_cancel = true;
@@ -124,7 +116,7 @@ unsafe fn abk_angling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
         sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.003);
         let facing = PostureModule::lr(boma);
         let anglestick = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
-        joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -18.8*anglestick, y:90.0*facing, z:0.0}, 10.0, 13.0, 43.0, 50.0);
+        joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -18.8*anglestick, y:90.0*facing, z:0.0}, 10.0, 13.0, 43.0, 53.0);
         if boma.status_frame() <= 7 { VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, boma.left_stick_y());}
         //trajectory
         else if boma.status_frame() <= 25 && !fighter.is_in_hitlag() {
