@@ -53,25 +53,6 @@ unsafe fn fsmash_combo(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
     }
 }
 
-// force reload if hit during the endlag of tranq
-unsafe fn tranq_reload(fighter: &mut L2CFighterCommon) {
-    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
-        && VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE)
-        && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE,
-        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
-    {
-        VarModule::on_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -114,7 +95,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //grab_walk(boma, status_kind, cat[1]);
     fsmash_combo(boma, status_kind);
     grenade_counter_reset(boma, id, status_kind);
-    tranq_reload(fighter);
     fastfall_specials(fighter);
 }
 

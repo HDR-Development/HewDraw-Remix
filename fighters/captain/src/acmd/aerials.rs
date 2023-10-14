@@ -152,21 +152,8 @@ unsafe fn captain_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x124ee81be1));
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if boma.is_button_on(Buttons::AppealAll) {
-                PLAY_SE(fighter, Hash40::new("se_captain_special_h03"));
-            }
-            else{
-                PLAY_SEQUENCE(fighter, Hash40::new_raw(0x162af730db));
-            }
-        }
-        else{
-            PLAY_SEQUENCE(fighter, Hash40::new_raw(0x162af730db));
-        }
+        PLAY_SE(fighter, Hash40::new("se_captain_swing_l"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_captain_rnd_attack"));
     }
     
 }

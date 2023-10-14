@@ -68,6 +68,28 @@ unsafe fn samus_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "samus_cshot", script = "sound_shoot", category = ACMD_SOUND, low_priority)]
+unsafe fn samus_cshot_shoot_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 0.0);
+    if is_excute(fighter) {
+        if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.25 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n02"));
+        }
+        else if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.625 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n03"));
+        }
+        else if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.875 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n04"));
+        }
+        else {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n05"));
+        }
+    }
+    
+}
+
 #[acmd_script( agent = "samus", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -106,6 +128,7 @@ pub fn install() {
         samus_supermissile_ready_game,
         samus_supermissile_straight_game,
         samus_cshot_shoot_game,
+        samus_cshot_shoot_sound,
         escape_air_game,
         escape_air_slide_game,
     );

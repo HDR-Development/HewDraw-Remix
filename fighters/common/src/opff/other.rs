@@ -221,12 +221,11 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_KIND_GUARD_OFF]) {
                 if fighter.status_frame() == 0 {
                     if (!fighter.is_prev_status_one_of(&[
-                        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
                         *FIGHTER_STATUS_KIND_ATTACK_S4_START,
                         *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
                         *FIGHTER_STATUS_KIND_ATTACK_LW4_START])) {
                         println!();
-                        //println!("Starting status");
+                        //println!("Starting status {}", fighter.status());
                         if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
                             VarModule::on_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG);
                         }
@@ -234,7 +233,7 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
                         VarModule::off_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
                     }
                     else {
-                        //println!("Smash attack/landing lag transition");
+                        //println!("Smash attack transition");
                         VarModule::dec_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER);
                     }
                 }
@@ -252,6 +251,7 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
                             println!("FAF: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
                         }
                         VarModule::on_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
+                        VarModule::set_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER, 1);
                     }
                     else {
                         if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {

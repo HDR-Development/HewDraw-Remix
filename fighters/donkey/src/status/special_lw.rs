@@ -103,7 +103,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = if is_air {
-            FIGHTER_STATUS_KIND_FALL
+            FIGHTER_STATUS_KIND_FALL_SPECIAL
         }
         else {
             FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP
