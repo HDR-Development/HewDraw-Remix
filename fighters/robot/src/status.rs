@@ -85,6 +85,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
         
+        KineticModule::clear_speed_all(fighter.module_accessor);
         KineticModule::suspend_energy_all(fighter.module_accessor);
         KineticModule::unable_energy_all(fighter.module_accessor);
         let air_brake = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
@@ -103,6 +104,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
             PostureModule::add_pos(fighter.module_accessor, &Vector3f{x: 0.00, y: 3.0, z: 0.0});
             
+            KineticModule::clear_speed_all(fighter.module_accessor);
             KineticModule::suspend_energy_all(fighter.module_accessor);
             KineticModule::unable_energy_all(fighter.module_accessor);
             let air_brake = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
@@ -122,7 +124,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);
-    let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
+    let robotFrames =  fighter.global_table[CURRENT_FRAME].get_f32();
     let current_fuel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
     let lr = PostureModule::lr(fighter.module_accessor);
     let stickX = ControlModule::get_stick_x(fighter.module_accessor);

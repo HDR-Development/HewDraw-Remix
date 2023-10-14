@@ -288,9 +288,9 @@ unsafe fn robot_special_hi_keep_game (fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 1, 0, Hash40::new("knee"), workingDamage, 280, 80, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             ATTACK(fighter, 2, 0, Hash40::new("knee"), workingDamage, 280, 80, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             /* Air-only */
-            ATTACK(fighter, 3, 0, Hash40::new("knee"), workingDamage, 280, 67, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(fighter, 4, 0, Hash40::new("knee"), workingDamage, 280, 68, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(fighter, 5, 0, Hash40::new("knee"), workingDamage, 280, 90, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 3, 0, Hash40::new("knee"), workingDamage, 280, 50, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 4, 0, Hash40::new("knee"), workingDamage, 280, 50, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 5, 0, Hash40::new("knee"), workingDamage, 280, 50, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
     }
 
@@ -981,6 +981,25 @@ unsafe fn robot_special_s_sound(fighter: &mut L2CAgentBase) {
 unsafe fn robot_special_s_end_sound(fighter: &mut L2CAgentBase) {
 }
 
+#[acmd_script( agent = "robot", script = "expression_specialhirise", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn robot_special_hi_keep_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
+
+    frame(lua_state, 1.0);
+    ControlModule::set_rumble(boma, Hash40::new("rbkind_jet"), 13, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    if is_excute(fighter) {
+        if (robotFrames/4.0) >= 12.0 {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        } else if (robotFrames/4.0) >= 8.0 {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        } else if (robotFrames/4.0) >= 4.0 {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         robot_special_lw_game,
@@ -1012,6 +1031,8 @@ pub fn install() {
         robot_special_air_s_end_sound,
         robot_special_s_start_sound,
         robot_special_s_sound,
-        robot_special_s_end_sound
+        robot_special_s_end_sound,
+
+        robot_special_hi_keep_expression
     );
 }
