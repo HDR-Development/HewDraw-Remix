@@ -57,32 +57,85 @@ unsafe fn attack_13 (fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "link", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
+unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 19.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 14.0, 45, 82, 0, 70, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 14.0, 45, 82, 0, 70, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("sword2"), 14.0, 45, 82, 0, 70, 3.5, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-		ATTACK(fighter, 3, 0, Hash40::new("sword2"), 14.0, 45, 82, 0, 70, 3.6, 8.7, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATK_SET_SHIELD_SETOFF_MUL_arg5(fighter, 0, 1, 2, 3, 1.4);
-        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_INVINCIBLE);
+        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_INVINCIBLE);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_INVINCIBLE);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 55, 70, 0, 65, 3.5, 0.0, 4.0, 6.0, Some(0.0), Some(12.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 3.25, 0.0, 4.0, 8.0, 0.0, 12.0, 8.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
-    wait(lua_state, 5.0);
+	frame(lua_state, 10.0);
     if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 70, 60, 0, 40, 4.0, 0.0, 9.0, 8.0, Some(0.0), Some(9.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 4.0, 0.0, 7.0, 6.0, 0.0, 12.0, 6.0, 1.2, 1.2, 999, false, 1.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         AttackModule::clear_all(boma);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
     }
-	frame(lua_state, 40.0);
-    FT_MOTION_RATE(fighter, 0.75);
-    
-	frame(lua_state, 50.0);
-    FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "link", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 11, 0, -3, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8, 1.5, 0, 0, 45, 0.82, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "link", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attackdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_link_dash_start_ft"));
+    }
+    wait(lua_state, 6.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_link_rnd_attack"));
+        PLAY_SE(agent, Hash40::new("se_link_swing_m"));
+    }
+    wait(lua_state, 19.0);
+    if is_excute(agent) {
+        PLAY_LANDING_SE(agent, Hash40::new("se_link_landing01"));
+    }
+}
 
 #[acmd_script( agent = "link", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe fn expression_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -90,15 +143,15 @@ unsafe fn attack_dash_expression(fighter: &mut L2CAgentBase) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
@@ -118,8 +171,10 @@ pub fn install() {
         attack_11,
         attack_12,
         attack_13,
-        attack_dash,
-        attack_dash_expression
+        game_attackdash,
+        effect_attackdash,
+        sound_attackdash,
+        expression_attackdash
     );
 }
 
