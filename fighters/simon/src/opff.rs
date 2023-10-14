@@ -35,7 +35,8 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+        && fighter.status_frame() >= 19 {
             // Current FAF in motion list is 42, frame is 0 indexed so subtract a frame
             let special_s1_cancel_frame_ground = 41.0;
             // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag

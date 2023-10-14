@@ -344,6 +344,15 @@ pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
 }
 
+// FIGHTER_STATUS_KIND_ATTACK_AIR //
+// For fixing momentum transfer
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    original!(fighter)
+}
+
 pub fn install() {
     //skyline::install_hooks!(demon_ongrab);
     install_status_scripts!(
@@ -355,7 +364,8 @@ pub fn install() {
         demon_attackcombo_main,
         wait_pre,
         //wait_main,
-        landing_main
+        landing_main,
+        attackair_pre
         
     );
 }

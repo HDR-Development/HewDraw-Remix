@@ -141,12 +141,15 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 
     let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
     let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
+    let dashback_pass_disable_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "dashback_pass_disable_frame");
     if GroundModule::is_passable_ground(fighter.module_accessor)
     && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
     && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
     {
-        fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
-        return 1.into();
+        if fighter.global_table[CURRENT_FRAME].get_i32() >= dashback_pass_disable_frame {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+            return 1.into();
+        }
     }
 
     if fighter.sub_transition_group_check_ground_attack().get_bool() {
