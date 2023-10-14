@@ -224,6 +224,7 @@ unsafe fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, false);
     }
     frame(lua_state, 6.0);
+    FT_MOTION_RATE_RANGE(fighter, 6.0, 16.0, 8.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -240,7 +241,7 @@ unsafe fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
     }
-    frame(lua_state, 35.0);
+    frame(lua_state, 36.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }

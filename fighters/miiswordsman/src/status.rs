@@ -404,7 +404,7 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
-        if fighter.check_jump_cancel(true) {
+        if fighter.check_jump_cancel(true, false) {
             return 1.into()
         }
     }
@@ -792,7 +792,7 @@ pub unsafe fn pre_special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
+        *GROUND_CORRECT_KIND_GROUND as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_MIISWORDSMAN_SPECIAL_HI3_END_FLAG,
@@ -828,16 +828,11 @@ unsafe extern "C" fn special_hi3_end_Main(fighter: &mut L2CFighterCommon) -> L2C
     let mut motion_value = 0.7;
 
     if !fighter.sub_transition_group_check_air_cliff().get_bool() {
-        if frame < 46.0 {
-            if stick_x != 0.0 {
-                KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f { x: (motion_value * stick_x.signum()), y: 0.0, z: 0.0});
-            }
-        }
         if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
             if miisword_situation_helper(fighter).get_bool() {
                 if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_RSLASH_END_FLAG_FIRST) {
                         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_hi3"), -1.0, 1.0, 0.0, false, false);
                     }

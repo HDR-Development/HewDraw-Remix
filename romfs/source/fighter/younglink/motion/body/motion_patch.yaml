@@ -20,6 +20,9 @@ attack_13:
 attack_11:
   extra:
     cancel_frame: 17
+attack_dash:
+  extra:
+    cancel_frame: 47
 air_catch:
   extra:
     cancel_frame: 60
@@ -28,7 +31,7 @@ special_hi:
     cancel_frame: 74
 attack_hi4:
   extra:
-    cancel_frame: 74
+    cancel_frame: 60
 attack_lw4:
   extra:
     cancel_frame: 56
@@ -65,3 +68,9 @@ special_air_n_end:
 special_air_s1_blank:
   extra:
     cancel_frame: 43
+catch_attack:
+  extra:
+    cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 13

@@ -31,7 +31,7 @@ attack_hi4:
     cancel_frame: 48
 attack_lw4:
   extra:
-    cancel_frame: 48
+    cancel_frame: 50
 attack_hi3:
 attack_dash:
   extra:
@@ -60,3 +60,6 @@ special_air_n_end:
 special_air_n_cancel:
   extra:
     cancel_frame: 8
+catch_attack:
+  extra:
+    cancel_frame: 0

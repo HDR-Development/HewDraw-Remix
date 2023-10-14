@@ -40,7 +40,7 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END
     && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC)
     {
-        boma.check_jump_cancel(true);
+        boma.check_jump_cancel(true, false);
     }
 }
 
@@ -49,6 +49,7 @@ pub unsafe fn electric_rats_moveset(fighter: &mut L2CFighterCommon, boma: &mut B
     reset_jc_disable_flag(boma, id, status_kind, situation_kind);
     jc_qa_agility(boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     fastfall_specials(fighter);
+    skull_bash_edge_cancel(fighter);
 }
 
 
@@ -67,7 +68,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_HOLD,
         *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END,
         *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_LW_HIT
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -88,6 +88,15 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
                 KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
             }
+        }
+    }
+}
+
+unsafe fn skull_bash_edge_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END) {
+        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND
+        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
         }
     }
 }

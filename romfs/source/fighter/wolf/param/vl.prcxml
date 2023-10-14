@@ -22,7 +22,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="min_stick_y">0.3</float>
-      <float hash="max_rush_degree">20</float>
+      <float hash="max_rush_degree">10</float>
       <float hash="illusion_end_speed_x">2.3</float>
       <float hash="illusion_end_air_speed_x">2.2</float>
     </struct>

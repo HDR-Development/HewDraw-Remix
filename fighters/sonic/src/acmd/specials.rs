@@ -79,7 +79,7 @@ unsafe fn sonic_specialsboostend(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 8.0);
-    FT_MOTION_RATE(fighter, 0.8);
+    FT_MOTION_RATE(fighter, 1.6);
 }
 
 #[acmd_script( agent = "sonic", script = "effect_specialsboostend", category = ACMD_EFFECT, low_priority )]
@@ -206,7 +206,8 @@ unsafe fn sonic_special_lw_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
         AttackModule::clear_all(boma);
-        macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 60, 57, 0, 97, 3.5, 0.0, 1.5, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 60, 57, 0, 97, 3.5, 0.0, 1.5, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter,0, 0.5);
         AttackModule::set_captured_same_time_attack(boma, *FIGHTER_SONIC_STATUS_SPECIAL_S_DASH_ATTACK_ID_DEFAULT, true);
         AttackModule::set_attack_keep_rumble(boma, 0, true);
     }
@@ -246,10 +247,11 @@ unsafe fn sonic_special_air_lw_dash_game(agent: &mut L2CAgentBase) {
 unsafe fn sonic_special_n_homing_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
- if is_excute(fighter) {
-        SEARCH(fighter, 0, 0, Hash40::new("top"), 40.0, 0.0, 10.0, 10.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
+    if !VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK) {
+        if is_excute(fighter) {
+            SEARCH(fighter, 0, 0, Hash40::new("top"), 40.0, 0.0, 10.0, 10.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
         }
-
+    }
 }
 
 #[acmd_script( agent = "sonic", script = "game_specialnhoming" , category = ACMD_GAME , low_priority)]
@@ -262,16 +264,47 @@ unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
         false => Hash40::new("hip")
     };
 
-    frame(lua_state, 3.0);
+    
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
         FT_MOTION_RATE(fighter, 0.013);
-        ATTACK(fighter, 0, 0, bone_hash, 8.0, 80, 80, 0, 45, 5.0, 0.5, 1.5, 0.0, Some(0.5), Some(1.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, bone_hash, 8.0, 80, 90, 0, 50, 5.0, 0.5, 1.5, 0.0, Some(0.5), Some(1.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
         AttackModule::set_captured_same_time_attack(boma, 0, true);
         AttackModule::set_attack_keep_rumble(boma, 0, true);
     }
     
+}
+
+#[acmd_script( agent = "sonic", script = 0x195dc47911, category = ACMD_GAME, low_priority )]
+unsafe fn hash_0x195dc47911(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        JostleModule::set_status(boma, false);
+        UNABLE_AREA(agent, *FIGHTER_AREA_KIND_TREAD_JUMP_CHECK);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        AttackModule::set_captured_same_time_attack(boma, 0, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+         WorkModule::on_flag(boma, *FIGHTER_SONIC_STATUS_SPIN_JUMP_WORK_ID_FLAG_ENABLE_JUMP_AERIAL);
+        ENABLE_AREA(agent, *FIGHTER_AREA_KIND_TREAD_JUMP_CHECK);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+    ATTACK(agent, 0, 0, Hash40::new("hip"), 6.0, 60, 60, 0, 80, 4.0, 0.0, 1.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+}
+    frame(lua_state, 34.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
 }
 
 #[acmd_script( agent = "sonic", script = "sound_specialnhoming" , category = ACMD_SOUND )]
@@ -300,7 +333,7 @@ unsafe fn sonic_special_n_hit_game(fighter: &mut L2CAgentBase) {
         let temp = Vector3f { x: -0.3, y: 1.0, z: 0.0 };
 		KineticModule::add_speed(boma, &temp);
     }
-    FT_MOTION_RATE(fighter, 0.5);
+    FT_MOTION_RATE(fighter, 1.0);
     
 }
 
@@ -334,7 +367,8 @@ pub fn install() {
         sonic_special_n_homing_sound,
         sonic_special_n_landing,
         sonic_gimmick_jump_game,
-        sonic_special_n_homing_start_game
+        sonic_special_n_homing_start_game,
+        hash_0x195dc47911,
         
     );
 }

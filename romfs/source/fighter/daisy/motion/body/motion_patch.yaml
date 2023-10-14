@@ -52,9 +52,20 @@ special_s_end:
 attack_air_hi:
   extra:
     cancel_frame: 33
+special_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_s_hit_end:
   extra:
     cancel_frame: 23
 special_air_s_end:
   extra:
     cancel_frame: 43
+catch_attack:
+  extra:
+    cancel_frame: 0

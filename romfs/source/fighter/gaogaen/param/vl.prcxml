@@ -26,7 +26,7 @@
       <float hash="special_hi_pass_mul">0.87</float>
       <float hash="special_air_hi_pass_mul">0.87</float>
       <float hash="special_air_hi_turn_accel_y">0.05</float>
-      <int hash="special_hi_end_landing_frame">30</int>
+      <int hash="special_hi_end_landing_frame">26</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

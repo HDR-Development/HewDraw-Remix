@@ -59,3 +59,14 @@ attack_air_hi:
   extra:
     cancel_frame: 43
 attack_s4_hold:
+catch_attack:
+  extra:
+    cancel_frame: 0
+special_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0

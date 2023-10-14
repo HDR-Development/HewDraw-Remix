@@ -14,9 +14,11 @@
     <int hash="glide_toss_cancel_frame">5</int>
     <int hash="air_escape_snap_frame">5</int>
     <float hash="waveland_distance_threshold">6</float>
-    <struct hash="dacus_enable">
+    <struct hash="dacus">
         <int hash="start_frame">3</int>
         <int hash="end_frame">10</int>
+        <float hash="min_speed">0.0</float>
+        <float hash="max_speed">3.5</float>
     </struct>
     <int hash="dash_perfect_pivot_window">3</int>
     <float hash="perfect_pivot_speed_mul">-0.75</float>
@@ -38,4 +40,6 @@
     <int hash="escape_air_slide_fall_frame">28</int>
     <int hash="tether_trump_landing_lag">30</int>
     <float hash="guard_off_motion_start_frame">3</float>
+    <int hash="pummel_max_cancel_frame">8</int>
+    <int hash="button_walljump_leniency_frame">3</int>
 </struct>

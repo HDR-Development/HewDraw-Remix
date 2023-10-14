@@ -21,43 +21,6 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && situation_kind == *SITUATION_KIND_AIR {
-        //if !StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-            if frame > 13.0 {
-                if boma.is_button_on(Buttons::Attack) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
-                }
-            }
-        //}
-    }
-}
-
-unsafe fn uspecial_cancels2(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if StatusModule::status_kind(boma) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP
-    && situation_kind == *SITUATION_KIND_AIR {
-        if boma.is_button_on(Buttons::Attack) {
-
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-            } 
-
-        }
-    }
-}
-
-// JC grounded sideb on hit
-unsafe fn jc_sideb(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
-    if ([*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
-    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
-                boma.check_jump_cancel(false);
-    }
-}
-
 // Dair only bounces once per airtime
 unsafe fn dair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if boma.is_situation(*SITUATION_KIND_GROUND)
@@ -86,7 +49,7 @@ unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i
 unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            boma.check_jump_cancel(false);
+            boma.check_jump_cancel(false, false);
         }
     }
 }
@@ -99,6 +62,17 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            }
+        }
+    }
+}
+
+unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+    && situation_kind == *SITUATION_KIND_AIR {
+        if frame > 13.0 {
+            if boma.is_button_on(Buttons::Attack) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
             }
         }
     }
@@ -164,7 +138,7 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
             Hash40::new("waist1"),
             &Vector3f::zero(),
             &Vector3f::zero(),
-            2.0,
+            1.75,
             true,
             0,
             0,
@@ -191,7 +165,7 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
                 Hash40::new("waist1"),
                 &Vector3f::new(0.0, 0.0, 0.0),
                 &Vector3f::zero(),
-                2.0,
+                1.75,
                 true,
                 0,
                 0,
@@ -259,10 +233,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
-    //jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     uspecial_cancels(boma, situation_kind, frame);
-    //uspecial_cancels2(boma, situation_kind, frame);
     dair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);

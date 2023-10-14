@@ -30,7 +30,8 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
             let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
             if touch_left || touch_right {
-                if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+                if boma.is_cat_flag(Cat1::WallJumpLeft) || boma.is_cat_flag(Cat1::WallJumpRight)
+                || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
                     VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                 }
@@ -47,7 +48,7 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
     if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
         if situation_kind == *SITUATION_KIND_GROUND {
             VarModule::set_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.346);  // 1.75 max jump speed out of Quick Draw
-            boma.check_jump_cancel(true);
+            boma.check_jump_cancel(true, false);
         }
     }
 }

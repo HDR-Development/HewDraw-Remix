@@ -48,7 +48,8 @@ appeal_s_r:
 special_lw:
   blend_frames: 3
   extra:
-    intangible_end_frame: 15
+    xlu_start: 0
+    xlu_end: 0
     cancel_frame: 66
 attack_hi3:
   extra:
@@ -204,3 +205,6 @@ special_air_n_charge_h:
     move: true
 special_air_lw_batwithin:
   blend_frames: 3
+catch_attack:
+  extra:
+    cancel_frame: 0
