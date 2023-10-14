@@ -220,8 +220,8 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         } else if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_CANCEL) {
             if StopModule::is_damage(weapon.module_accessor) {
                 if weapon.is_prev_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
-                    MotionModule::set_rate(weapon.module_accessor, 0.25); //8 second death anim if hit
-                } else { MotionModule::set_rate(weapon.module_accessor, 0.5); } //4 seconds if hit after release
+                    MotionModule::set_rate(weapon.module_accessor, 0.4); //5s death if destroyed while building
+                }
             }
         } else if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
             let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);

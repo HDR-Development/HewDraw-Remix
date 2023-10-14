@@ -60,7 +60,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="pos_offset_x">1.6</float>
+      <float hash="pos_offset_x">1.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
