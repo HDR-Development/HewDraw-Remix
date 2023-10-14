@@ -192,7 +192,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_HOLD,

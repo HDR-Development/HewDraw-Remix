@@ -5,39 +5,116 @@ use globals::*;
 #[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+    let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
+    *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+    *FIGHTER_STATUS_KIND_DAMAGE_FALL];
+
+    let prev_status_kind = StatusModule::prev_status_kind(fighter.module_accessor, 0);
+    let prev_status_kind_2 = StatusModule::prev_status_kind(fighter.module_accessor, 1);
+
+    if damage_statuses.contains(&prev_status_kind) || damage_statuses.contains(&prev_status_kind_2) {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
+            
+            //KineticModule::suspend_energy_all(fighter.module_accessor);
+            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            //KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                0.0
+            );
+            sv_kinetic_energy!(
+                set_stable_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                air_speed_y_stable * 0.2
+            );
+
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                0.0
+            );
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                0.0
+            );
+    
+        } else {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
+            
+            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+            PostureModule::add_pos(fighter.module_accessor, &Vector3f{x: 0.00, y: 3.0, z: 0.0});
+            
+            //KineticModule::suspend_energy_all(fighter.module_accessor);
+            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            //KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                0.0
+            );
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                0.0
+              );
+            sv_kinetic_energy!(
+                set_stable_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                air_speed_y_stable * 0.2
+            );
+        }
+    } else {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
-        KineticModule::clear_speed_all(fighter.module_accessor);
+        
         KineticModule::suspend_energy_all(fighter.module_accessor);
         KineticModule::unable_energy_all(fighter.module_accessor);
-        let ground_brake = sv_fighter_util::get_default_fighter_param_ground_brake(fighter.lua_state_agent);
+        let air_brake = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
         sv_kinetic_energy!(
             set_brake,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_STOP,
-            ground_brake,
+            air_brake,
             0.0
         );
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
 
-    } else {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
-        
-        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
-        PostureModule::add_pos(fighter.module_accessor, &Vector3f{x: 0.00, y: 3.0, z: 0.0});
-        
-        KineticModule::clear_speed_all(fighter.module_accessor);
-        KineticModule::suspend_energy_all(fighter.module_accessor);
-        KineticModule::unable_energy_all(fighter.module_accessor);
-        let ground_brake = sv_fighter_util::get_default_fighter_param_ground_brake(fighter.lua_state_agent);
-        sv_kinetic_energy!(
-            set_brake,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            ground_brake,
-            0.0
-        );
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        } else {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
+            
+            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+            PostureModule::add_pos(fighter.module_accessor, &Vector3f{x: 0.00, y: 3.0, z: 0.0});
+            
+            KineticModule::suspend_energy_all(fighter.module_accessor);
+            KineticModule::unable_energy_all(fighter.module_accessor);
+            let air_brake = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                set_brake,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                air_brake,
+                0.0
+            );
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        }
     }
 
     fighter.main_shift(special_hi_main_loop)
@@ -141,6 +218,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     //determines strength of upb release
     if (current_fuel <= (robotFrames * 2.0)) {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::resume_energy_all(fighter.module_accessor);
 
         let vec = Vector3f{x: (0.05*rotX.abs()), y: ((0.05*robotFrames)-(0.025*rotX.abs())), z: 0.0};
@@ -153,6 +231,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
     } else if (current_fuel <= 0.0) {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::resume_energy_all(fighter.module_accessor);
 
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
@@ -161,6 +240,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
 
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::resume_energy_all(fighter.module_accessor);
 
         if robotFrames < 10.0 {
@@ -192,6 +272,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     && MotionModule::is_end(fighter.module_accessor) {
 
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::resume_energy_all(fighter.module_accessor);
         
         let vec = Vector3f{x: (0.05*rotX.abs()), y: 3.75-(0.025*rotX.abs()), z: 0.0};
@@ -217,6 +298,9 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 #[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_TRANSFORM_COMP);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    KineticModule::resume_energy_all(fighter.module_accessor);
     0.into()
 }
 
@@ -322,6 +406,9 @@ unsafe fn special_hi_keep_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    KineticModule::resume_energy_all(fighter.module_accessor);
     0.into()
 }
 
@@ -376,6 +463,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
 
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 KineticModule::resume_energy_all(fighter.module_accessor);
 
                 let vec = Vector3f{x: 0.35, y: 1.55, z: 0.0};
@@ -396,6 +484,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
 
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 KineticModule::resume_energy_all(fighter.module_accessor);
 
                 let vec = Vector3f{x: 0.45, y: 0.0, z: 0.0};
