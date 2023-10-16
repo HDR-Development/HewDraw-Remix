@@ -831,6 +831,30 @@ unsafe fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
+#[acmd_script( agent = "zelda_phantom", script = "effect_cancel", category = ACMD_EFFECT, low_priority )]
+unsafe fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("zelda_phantom_hit"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, false);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("zelda_phantom_end2"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 85.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("zelda_phantom_end"), Hash40::new("trans"), 0, 2, 0, 0, 0, 0, 1.18, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.75);
+        EFFECT(fighter, Hash40::new("zelda_phantom_build"), Hash40::new("trans"), 0, 1.5, 0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 89.0);
+    if is_excute(fighter) {
+        fighter.on_flag(*WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_FLAG_END);
+    }
+}
+
 #[acmd_script( agent = "zelda", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -883,6 +907,7 @@ pub fn install() {
 		zelda_phantom_attack_l_effect,
 		zelda_phantom_attack_max_game,
 		zelda_phantom_attack_max_effect,
+		zelda_phantom_cancel_effect,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
