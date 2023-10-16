@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+  <list hash="fly_data">
+    <struct index="0">
+      <list hash="speed_y_table">
+        <float index="0">2.55</float>
+        <float index="1">2.17</float>
+        <float index="2">1.80</float>
+        <float index="3">1.54</float>
+      </list>
+    </struct>
+  </list>
   <list hash="param_special_n">
     <struct index="0">
       <int hash="hold_count">25</int>
