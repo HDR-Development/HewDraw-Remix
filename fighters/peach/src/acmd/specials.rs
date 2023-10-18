@@ -60,7 +60,7 @@ unsafe fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("havel"), 1.0, 368, 100, 80, 0, 1.5, 2.0, 5.0, 3.5, Some(2.0), Some(2.5), Some(3.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PARASOL);
         ATTACK(fighter, 2, 0, Hash40::new("havel"), 1.0, 368, 100, 70, 0, 5.0, 0.0, 6.5, 0.0, Some(0.0), Some(-1.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PARASOL);
-        let hit1 = Vector2f { x: 6.0, y: 25.0 };
+        let hit1 = Vector2f { x: 5.0, y: 24.0 };
         AttackModule::set_vec_target_pos(boma, 1, Hash40::new("top"), &hit1, 12, false);
         AttackModule::set_vec_target_pos(boma, 2, Hash40::new("top"), &hit1, 12, false);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
@@ -123,7 +123,7 @@ unsafe fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("havel"), 1.0, 368, 100, 80, 0, 1.5, 2.0, 5.0, 3.5, Some(2.0), Some(2.5), Some(3.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PARASOL);
         ATTACK(fighter, 2, 0, Hash40::new("havel"), 1.0, 368, 100, 70, 0, 5.0, 0.0, 6.5, 0.0, Some(0.0), Some(-1.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PARASOL);
-        let hit1 = Vector2f { x: 6.0, y: 25.0 };
+        let hit1 = Vector2f { x: 5.0, y: 24.0 };
         AttackModule::set_vec_target_pos(boma, 1, Hash40::new("top"), &hit1, 12, false);
         AttackModule::set_vec_target_pos(boma, 2, Hash40::new("top"), &hit1, 12, false);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
@@ -146,10 +146,70 @@ unsafe fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "peach", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+unsafe fn peach_special_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        let item_kind = fighter.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND); 
+        if item_kind == *ITEM_KIND_NONE {
+            ArticleModule::generate_article(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_DAIKON, false, -1);
+        } else if item_kind == *ITEM_KIND_BOMBHEI {
+            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_BOMBHEI), 0, 0, false, false);
+        } else if item_kind == *ITEM_KIND_DOSEISAN {
+            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_DOSEISAN), 0, 0, false, false);
+        } else if item_kind == *ITEM_KIND_BEAMSWORD {
+            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_BEAMSWORD), 0, 0, false, false);
+        }
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "peach", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+unsafe fn peach_special_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("peach_hikkonuki"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1.0, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("peach_hikkonuki"), -1);
+        LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "peach", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
+unsafe fn peach_special_lw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_peach_special_l02"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_peach_special_l01"));
+        if fighter.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND) != *ITEM_KIND_NONE 
+        && ItemModule::is_have_item(fighter.module_accessor, 0) {
+            PLAY_SE(fighter, Hash40::new("vc_peach_appeal01"));
+        } 
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         peach_special_s_hit_end_game,
         peach_special_hi_start_game,
         peach_special_air_hi_start_game,
+        peach_special_lw_game,
+        peach_special_lw_effect,
+        peach_special_lw_sound
     );
 }
