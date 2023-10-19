@@ -5,6 +5,7 @@ use skyline::{hook, install_hook};
 extern "C" {
     #[link_name = "_ZN3app5stage12get_stage_idEv"]
     fn get_stage_id() -> u32;
+    fn get_current_stage_alt() -> usize;
 }
 
 #[skyline::hook(offset = 0x5209a0)]
@@ -48,7 +49,9 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
 
 #[skyline::hook(offset = 0x178a090, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
-    if HAZARDLESS_STAGE_IDS.contains(&*ctx.registers[1].w.as_ref()) {
+    let stage_id = *ctx.registers[1].w.as_ref();
+    let is_lylat_haz_off =  [0x59].contains(&stage_id) && dbg!(get_current_stage_alt()) == 0;
+    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_lylat_haz_off {
         *ctx.registers[3].w.as_mut() = 0;
     }
 }
@@ -63,7 +66,8 @@ unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
   let ptr = *ctx.registers[1].x.as_ref();
   let stage_id = *(ptr as *const u16) as u32;
-  if HAZARDLESS_STAGE_IDS.contains(&stage_id) {
+  let is_lylat_haz_off =  [0x59].contains(&stage_id) && dbg!(get_current_stage_alt()) == 0;
+  if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_lylat_haz_off {
     *(ptr as *mut bool).add(0x10) = false;
   }
 }
