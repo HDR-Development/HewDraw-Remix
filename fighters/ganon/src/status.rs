@@ -7,8 +7,14 @@ mod special_s;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) {
-        false.into()
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
+        if VarModule::is_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) || fighter.is_status(float_status) {
+            false.into()
+        }
+        else {
+            true.into()
+        }
     } else {
         true.into()
     }
