@@ -79,6 +79,20 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+// 0x0 - asteroids
+// 0x1 - space battle (big ships)
+// 0x2 - corneria
+// 0x3 - space battle (small ships)
+// 0x4 - default haz off space
+#[skyline::hook(offset = 0x297ca0c, inline)]
+unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
+    if get_current_stage_alt() == 0 {
+        *ctx.registers[8].x.as_mut() = 0x2;
+    } else {
+        *ctx.registers[8].x.as_mut() = 0x4;
+    }
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x298236c).data(0x52800008u32);
     skyline::patching::Patch::in_text(0x28444cc).data(0x52800009u32);
@@ -96,5 +110,6 @@ pub fn install() {
         handle_movement_grav_update,
         fix_hazards_for_online,
         lylat_no_rot,
+        // lylat_set_form_hazards_off
     );
 }
