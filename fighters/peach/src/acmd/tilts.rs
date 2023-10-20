@@ -34,6 +34,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 115, 20, 0, 85, 4.0, 0.0, 6.5, 3.0, Some(0.0), Some(6.5), Some(-2.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 110, 20, 0, 60, 4.0, 0.0, 13.5, 0.5, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 11.0, 90, 90, 0, 60, 8.0, 0.0, 24.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
     }
     frame(lua_state, 11.0);
