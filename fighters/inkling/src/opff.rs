@@ -95,6 +95,7 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn ink_charge_cancel(boma: &mut BattleObjectModuleAccessor) {
     if (boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_SHOOT])
     && boma.is_button_on(Buttons::Guard))
+    && boma.is_situation(*SITUATION_KIND_GROUND)
     {
         boma.change_status_req(*FIGHTER_INKLING_STATUS_KIND_CHARGE_INK_START, false);
     }
