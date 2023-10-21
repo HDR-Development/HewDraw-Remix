@@ -35,12 +35,12 @@ unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Motion Kind change depending on situation.
+    VarModule::on_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("float_start"), L2CValue::Hash40s("float_air_start"), false.into());
     if fighter.global_table[globals::SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        VarModule::on_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         let speed_y = {
             fighter.clear_lua_stack();
