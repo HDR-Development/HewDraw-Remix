@@ -240,7 +240,25 @@ unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
         }
     }
 }
-    
+
+// properly cycles Sora's HUD to fire in training mode on reset
+unsafe fn training_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) { 
+    if smash::app::sv_information::is_ready_go()
+    && VarModule::is_flag(boma.object(), vars::trail::instance::CYCLE_MAGIC) {
+        let magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
+        let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
+        if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_FIRE 
+        && frame > 3.0 {
+            WorkModule::on_flag(fighter.boma(), *FIGHTER_TRAIL_STATUS_SPECIAL_N1_FLAG_CHANGE_MAGIC);
+            FighterSpecializer_Trail::change_magic(trail); // cycles to thunder
+        } else if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER
+        && frame > 4.0 {
+            FighterSpecializer_Trail::change_magic(trail); // cycles to "blizzard", which is now fire
+            VarModule::off_flag(boma.object(), vars::trail::instance::CYCLE_MAGIC);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -279,6 +297,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     magic_cancels(boma);
     aerial_sweep_hit_actionability(boma);
     flower_frame(boma, status_kind);
+    training_cycle(fighter, boma, frame);
     fastfall_specials(fighter);
 }
 

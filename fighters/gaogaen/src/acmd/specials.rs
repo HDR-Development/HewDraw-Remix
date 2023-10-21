@@ -611,7 +611,8 @@ unsafe fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
     }
     frame(lua_state, 20.0);
-    if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB) {
+    if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB)
+    || VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_AIR_GRAB) {
         FT_MOTION_RATE_RANGE(fighter, 20.0, 50.0, 26.0);
     }
     if is_excute(fighter) {

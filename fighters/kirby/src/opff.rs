@@ -30,6 +30,18 @@ unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn dash_attack_jump_cancels(boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
+    && boma.is_situation(*SITUATION_KIND_AIR) {
+        if MotionModule::frame(boma) >= 43.0 {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
+        }
+    }
+}
+
 // unsafe fn disable_dash_attack_slideoff(fighter: &mut L2CFighterCommon) {
 //     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
 //         VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
@@ -66,12 +78,12 @@ pub fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCom
 
 // Magic Series
 unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    let cat1 = cat[0];
-    let cat4 = cat[3];
     if(    (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_RYU)
         || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_KEN)
         || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCARIO)
         || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DOLLY)){
+        let cat1 = cat[0];
+        let cat4 = cat[3];
         // Level 1: Jab and Dash Attack Cancels
         if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
             if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
@@ -382,6 +394,22 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
     }
 }
 
+// cycles Kirby to firaga after copying Sora
+unsafe fn trail_magic_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) { 
+    if fighter.is_motion(Hash40::new("special_n_drink"))
+    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_TRAIL {
+        let magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
+        let kirby = fighter.global_table[0x4].get_ptr() as *mut Fighter;
+        if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_FIRE 
+        && frame > 3.0 {
+            WorkModule::on_flag(fighter.boma(), *FIGHTER_TRAIL_STATUS_SPECIAL_N1_FLAG_CHANGE_MAGIC);
+            FighterSpecializer_Trail::change_magic(kirby); // cycles to thunder
+        } else if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER
+        && frame > 4.0 {
+            FighterSpecializer_Trail::change_magic(kirby); // cycles to "blizzard", which is now fire
+        }
+    }
+}
 
 // Bite Early Throw and Turnaround
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
@@ -1090,6 +1118,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
+    dash_attack_jump_cancels(boma);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
     fastfall_specials(fighter);
@@ -1109,6 +1138,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Sora Magic Cancels
     magic_cancels(boma, status_kind, situation_kind, cat[0], frame);
+
+    // Sora Magic Cycle Adjustment
+    trail_magic_cycle(fighter, boma, frame);
 
     // Bite Early Throw and Turnaround
     bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);

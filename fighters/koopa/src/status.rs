@@ -31,8 +31,13 @@ fn koopa_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A
+#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+unsafe fn attack_s4_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_explosion_sign"), false, false);
+    return original!(fighter);
+}
 
+// FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A
 #[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 pub unsafe fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
     if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL && fighter.global_table[PREV_STATUS_KIND] == FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G {
@@ -57,7 +62,6 @@ pub unsafe fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // NEUTRAL SPECIAL
-
 #[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
@@ -120,7 +124,6 @@ unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-
 #[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
@@ -151,7 +154,6 @@ unsafe fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIREBREATH
-
 #[status_script(agent = "koopa_breath", status = WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let boma = weapon.boma();
@@ -220,6 +222,7 @@ unsafe extern "C" fn breath_move_max_substatus(weapon: &mut L2CWeaponCommon, par
     }
     0.into()
 }
+
 unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
     {
@@ -249,15 +252,14 @@ unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> 
     0.into()
 }
 
-
 pub fn install() {
     smashline::install_agent_init_callbacks!(koopa_init);
     install_status_scripts!(
+        attack_s4_charge_exit,
         exec_special_hi_a,
         special_n_main,
         special_n_exec,
         special_n_execstop,
-
         breath_move_main,
     );
 }
