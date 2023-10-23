@@ -63,4 +63,9 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_elwind">
+    <struct index="0">
+      <float hash="first_life">12</float>
+    </struct>
+  </list>
 </struct>
