@@ -190,8 +190,11 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
+    frame(lua_state, 12.0);
+    // checking SITUATION_KIND_AIR so we don't get a ground hadouken on the 1 frame of landing
+    // I could just rewrite the status script to prevent this but thats a lot.
+    if is_excute(fighter) && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
         if fighter.kind() != *FIGHTER_KIND_KIRBY && !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
             MeterModule::add(fighter.battle_object, 2.0);
@@ -223,8 +226,9 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
         if fighter.kind() != *FIGHTER_KIND_KIRBY && !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
             MeterModule::add(fighter.battle_object, 2.0);

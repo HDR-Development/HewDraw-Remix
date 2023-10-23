@@ -196,13 +196,6 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
         boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, true);
     }
 
-    // set VarModule flag on f12 - this flag changes hado properties
-    if frame == 12.0 && fighter.is_motion_one_of(&[
-        Hash40::new("special_air_n"), 
-    ]) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
-    }
-
     // disallow changing from aerial to grounded hadoken
     // instead, we enter a landing animation
     if boma.is_situation(*SITUATION_KIND_GROUND) 
