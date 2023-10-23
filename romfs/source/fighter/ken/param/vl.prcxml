@@ -38,6 +38,11 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <struct hash="map_collision_hadoken">
+    <float hash="up">2.0</float>
+    <float hash="down">-2.0</float>
+    <float hash="half_width">2.0</float>
+  </struct>
   <list hash="param_special_s">
     <struct index="0">
       <float hash="speed_x_mul">0.5</float>

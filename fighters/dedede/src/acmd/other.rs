@@ -273,6 +273,7 @@ unsafe fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
     for _ in 0..181{
         if is_excute(fighter) {
             if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
+                GroundModule::update_force(boma);
                 /* Reduces damage on every bounce, by 12.5% of its last damage in this case */
                 let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 5.0) * 0.125);
                 ATTACK(fighter, 0, 0, Hash40::new("hip"), 12.8 * bounce_dmg_multiplier, 60, 50, 0, 60, 0.9, 3.8, 3.8, 0.0, Some(-3.8), Some(-3.8), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -8.4, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
