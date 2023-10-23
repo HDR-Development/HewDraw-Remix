@@ -15,6 +15,7 @@
     <int hash="grimoire_giga_fire_revival_time">540</int>
     <int hash="grimoire_rizaia_revival_time">780</int>
     <int hash="thunder_sword_smash_attack_revival_time">0</int>
+    <int hash="grimoire_el_window_revival_time">450</int>
   </struct>
   <list hash="param_special_n">
     <struct index="0">
