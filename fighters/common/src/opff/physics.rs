@@ -1,7 +1,8 @@
 use utils::{
     *,
     ext::*,
-    consts::*
+    consts::*,
+    consts::globals::*
 };
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
@@ -12,114 +13,6 @@ use smash::hash40;
 use smash::phx::Hash40;
 use smash_script::{self, *, macros::*};
 
-mod groups {
-    pub const SMALL: i32 = 0;
-    pub const MEDIUM: i32 = 1;
-    pub const LARGE: i32 = 2;
-    pub const XLARGE: i32 = 3;
-    pub const XXLARGE: i32 = 4;
-}
-
-
-/// Shifts fighter's ECB (Environment Collision Box) rhombus up to around their knees when they are in the air for over
-/// a certain amount of frames *and* they are in the proper status
-unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
-    if !boma.is_prev_status_one_of(&[
-        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-        *FIGHTER_STATUS_KIND_CAPTURE_CUT,
-        *FIGHTER_STATUS_KIND_THROWN
-    ]) && !boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-        *FIGHTER_STATUS_KIND_CAPTURE_CUT,
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_THROWN,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-        *FIGHTER_STATUS_KIND_TREAD_DAMAGE_AIR,
-        *FIGHTER_STATUS_KIND_BURY,
-        *FIGHTER_STATUS_KIND_BURY_WAIT
-    ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame")
-    && app::sv_information::is_ready_go()
-    {
-        let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
-    
-        let mut sh_amount: f32 = match group {
-            groups::SMALL   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.small"),
-            groups::MEDIUM  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.medium"),
-            groups::LARGE   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
-            groups::XLARGE  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
-            groups::XXLARGE => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
-            _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group.to_string())
-        };
-
-        if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-            sh_amount += ParamModule::get_float(boma.object(), ParamType::Common, "ecb_shift_for_waveland");
-        }
-
-        // this is required for other ecb shift operations to perform correctly.
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
-
-        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, sh_amount));
-    } else {
-
-        // reset the rhombus to 0,0
-        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
-
-    }
-}
-
-//=================================================================
-//== EXTRA TRACTION
-//=================================================================
-
-/// Sets the extra traction flag depending on current speed and current status in order to prevent
-/// the game feeling too slippery
-unsafe fn extra_traction(boma: &mut BattleObjectModuleAccessor) {    
-    let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-    let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
-    if speed_x.abs() > max_walk
-    && boma.is_situation(*SITUATION_KIND_GROUND)
-    && boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_WAIT,
-        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
-        *FIGHTER_STATUS_KIND_LANDING,
-        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
-        *FIGHTER_STATUS_KIND_CATCH_PULL,
-        *FIGHTER_STATUS_KIND_JUMP_SQUAT,
-        *FIGHTER_STATUS_KIND_WAIT,
-        *FIGHTER_STATUS_KIND_SQUAT,
-        *FIGHTER_STATUS_KIND_SQUAT_RV,
-        *FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4
-    ]) 
-    {
-        VarModule::on_flag(boma.object(), vars::common::ENABLE_DOUBLE_TRACTION);
-    } else {
-        VarModule::off_flag(boma.object(), vars::common::ENABLE_DOUBLE_TRACTION);
-    }
-}
 
 //=================================================================
 //== GRAB JUMP REFRESH
@@ -132,17 +25,45 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_CAPTURE_CUT,
-        *FIGHTER_STATUS_KIND_CAPTURE_JUMP
+        *FIGHTER_STATUS_KIND_CAPTURE_JUMP,
+        *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+        *FIGHTER_STATUS_KIND_SWALLOWED,
+        *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN,
+        *FIGHTER_STATUS_KIND_KOOPA_DIVED,
+        *FIGHTER_STATUS_KIND_CLUNG_GANON,
+        *FIGHTER_STATUS_KIND_MEWTWO_THROWN,
+        *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
+        *FIGHTER_STATUS_KIND_CLUNG_DIDDY,
+        *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
+        *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+        *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
+        *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED,
+        *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+        *FIGHTER_STATUS_KIND_DEMON_DIVED
     ]) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
     {
         WorkModule::dec_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
 }
 
+unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        let hitlag_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
+        let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
+        
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
+        && hitlag_frame <= 0
+        && fighter.global_table[STICK_Y].get_f32() > pass_stick_y
+        {
+            GroundModule::clear_pass_floor(fighter.module_accessor);
+        }
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    ecb_shifts(boma);
-    extra_traction(boma);
     grab_jump_refresh(boma);
+    plat_cancels(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }

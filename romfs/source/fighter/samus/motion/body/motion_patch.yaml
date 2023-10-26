@@ -1,0 +1,73 @@
+fall:
+  blend_frames: 6
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+special_s:
+  flags:
+    move: false
+attack_11:
+attack_lw3:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 37
+attack_hi4:
+  extra:
+    cancel_frame: 62
+attack_lw4:
+  extra:
+    cancel_frame: 52
+special_lw:
+  extra:
+    cancel_frame: 45
+attack_hi3:
+  extra:
+    cancel_frame: 35
+special_n_c:
+  extra:
+    cancel_frame: 9
+attack_dash:
+  extra:
+    cancel_frame: 35
+attack_s4_s:
+  extra:
+    cancel_frame: 54
+attack_s3_s:
+  extra:
+    cancel_frame: 32
+attack_s3_lw:
+  extra:
+    cancel_frame: 32
+attack_s4_hi:
+  extra:
+    cancel_frame: 54
+attack_air_b:
+  extra:
+    cancel_frame: 37
+attack_air_f:
+  extra:
+    cancel_frame: 53
+attack_air_n:
+  extra:
+    cancel_frame: 41
+attack_s4_lw:
+  extra:
+    cancel_frame: 54
+attack_s3_hi:
+  extra:
+    cancel_frame: 32
+special_air_lw:
+  extra:
+    cancel_frame: 45
+attack_hi4_hold:
+special_air_n_c:
+  extra:
+    cancel_frame: 9
+catch_attack:
+  extra:
+    cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 19

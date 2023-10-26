@@ -4,6 +4,7 @@ use globals::*;
 // This file contains code for wavedashing out of jumpsquat, fullhop buffered aerials/attack canceling
 
 pub fn install() {
+    skyline::nro::add_hook(nro_hook);
     install_status_scripts!(
         //status_pre_JumpSquat,
         status_JumpSquat,
@@ -22,6 +23,15 @@ pub fn install() {
         sub_status_JumpSquat_check_stick_lr_update
     );
 }
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            sub_jump_squat_uniq_process_init_param
+        );
+    }
+}
+
 /***
 // pre status stuff
 #[common_status_script(status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
@@ -79,6 +89,9 @@ unsafe extern "C" fn status_pre_JumpSquat_param(fighter: &mut L2CFighterCommon, 
 unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
+    if fighter.is_cat_flag(CatHdr::Wavedash) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
 
@@ -100,52 +113,64 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // begin testing for transitions out of jump squat
-    let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
-    if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_PICKEL || ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
-                L2CValue::Bool(true)
-            );
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
-                L2CValue::Bool(true)
-            );
-            return L2CValue::I32(0);
-        }
+    
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
+            L2CValue::Bool(true)
+        );
+        return 0.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_JUMP),
             L2CValue::Bool(false)
         );
-    } else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
-            && situation_kind == *SITUATION_KIND_AIR {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && fighter.is_situation(*SITUATION_KIND_AIR)  {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
             L2CValue::Bool(false)
         );
-    } else if !fighter.sub_transition_group_check_ground_item().get_bool() {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
+    if !fighter.sub_transition_group_check_ground_item().get_bool() {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
             && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-            && situation_kind == *SITUATION_KIND_GROUND {
+            && fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_SPECIAL_HI),
                 L2CValue::Bool(true)
             );
         } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
-            let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+            // let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-                && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-                && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
-                && situation_kind == *SITUATION_KIND_GROUND {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
-                    L2CValue::Bool(true)
-                );
+            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                if fighter.global_table[0x58].get_bool() != false && {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x58].get_ptr());
+                    callable(fighter).get_bool()
+                } {
+                    return L2CValue::I32(0);
+                }
+                // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0 // original
+                if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0 // check if there is a valid stick flick using the original flag
+                    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+                    fighter.change_status(
+                        L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
+                        L2CValue::Bool(true)
+                    );
+                }
             }
         }
     }
@@ -158,8 +183,14 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_JumpSquatEv" )]
 unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
-    BufferModule::disable_persist(fighter.battle_object);
+    InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
+    VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, 0);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_ATTACK_CANCEL);
     0.into()
 }
 
@@ -181,8 +212,8 @@ unsafe fn uniq_process_JumpSquat_exec_status(fighter: &mut L2CFighterCommon) -> 
 unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2CValue) {
     let is_button_jump = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE) == 0
                                 || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0;
-    BufferModule::set_persist_lifetime(fighter.battle_object, 10);
-    BufferModule::enable_persist(fighter.battle_object);
+    InputModule::set_persist_lifetime(fighter.battle_object, 10);
+    InputModule::enable_persist(fighter.battle_object);
     if is_button_jump {
         //println!("button jump");
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_BUTTON);
@@ -195,12 +226,14 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     // `lr_update` comes from a dif subroutine
     if lr_update.get_bool() {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::CSTICK_IRAR);
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
-    ControlModule::reset_flick_y(fighter.module_accessor);
-    ControlModule::reset_flick_sub_y(fighter.module_accessor);
-    fighter.global_table[FLICK_Y].assign(&0xFE.into());
+    // Commented out so we can keep our current stick flick.
+    // ControlModule::reset_flick_y(fighter.module_accessor);
+    // ControlModule::reset_flick_sub_y(fighter.module_accessor);
+    // fighter.global_table[FLICK_Y].assign(&0xFE.into());
 
     // not a conditional enable, so it's not in potential_enables
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
@@ -208,7 +241,9 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND
     ];
     for x in potential_enables.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *x);
@@ -231,17 +266,12 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
             WorkModule::unable_transition_term(fighter.module_accessor, *x);
         }
     }
-
-    let magnet_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "air_escape_snap_frame");
-    VarModule::set_int(fighter.battle_object, vars::common::AIR_ESCAPE_MAGNET_FRAME, magnet_frame);
-    // println!("magnet_frame {}", magnet_frame);
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
     
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
-    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, 0);
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
+    // if you are jumping oos, we do not want to trigger jc grab. This avoids getting grabs when buffering an aerial oos.
+
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
+    }
 }
 
 // The main exec block, for some reason it's not found in the exec status
@@ -262,69 +292,59 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
         fighter.sub_jump_squat_uniq_check_sub_mini_attack();
     }
 
-    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
-    let frame = MotionModule::frame(fighter.module_accessor);
-    let update_rate = MotionModule::update_rate(fighter.module_accessor);
+    let frame = VarModule::get_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
-        VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD))
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
+        if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
+        && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        }
     }
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
-        && !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
-    }
-    else {
-        let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
-        if end_frame <= (frame + update_rate) {
-            StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
-            let situation_kind = fighter.global_table[SITUATION_KIND].clone();
-            fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
-            if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
-                // check if we are doing directional airdodge
-                let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
-                if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick")) {
-                    VarModule::on_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
-                    // change kinetic/ground properties for wavedash
-                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_ESCAPE);
-                    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
-                } else {
-                    VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
-                    // change kinetic properties for rising nairdodge
-                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
-                }
+    let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
+    if frame >= end_frame {
+        StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
+        let situation_kind = fighter.global_table[SITUATION_KIND].clone();
+        fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
+            if fighter.global_table[STICK_Y].get_f32() <= 0.2
+            {
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
+                // change kinetic/ground properties for wavedash
+                //GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
                 WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
             } else {
-                // change kinetic/ground properties for jump
-                VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
+                VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
+                // change kinetic properties for rising airdodge
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
-                WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
             }
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+        } else {
+            // change kinetic/ground properties for jump
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
+            GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
         }
-        else {
-            //println!("js_vel: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
-            VarModule::set_float(fighter.battle_object, vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-            VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-            VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-        }
+    }
+    else {
+        //println!("js_vel: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
+        VarModule::set_float(fighter.battle_object, vars::common::instance::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
     }
 }
 
 // subroutine for checking for aerial macro
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon29sub_jump_squat_uniq_check_subEN3lib8L2CValueE")]
 unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2CValue) {
-    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
-    let js_frame = VarModule::get_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME);
-    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, js_frame + 1);
+    VarModule::inc_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
 
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP) { return; }
     // flag is basically always going to be the jump button flag
     // checks if we are pressing a jump **button**
     if WorkModule::is_flag(fighter.module_accessor, flag.get_i32()){
-        let frame = VarModule::get_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME);
+        let frame = VarModule::get_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
         let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
         //println!("button jump 2");
         // checks if we have released or if we are pressing two jump buttons, if so, reserve shorthop
@@ -335,80 +355,35 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2
         }
         // prevents cstick drift if inputting cstick on last 2 frames of jumpsquat
         if frame >= (end_frame - 1) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE) {
                 //println!("2nd frame override");
-                VarModule::on_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
                 ControlModule::reset_main_stick_x(fighter.module_accessor);
             }
             if frame >= (end_frame - 1) && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
                 //println!("override");
-                VarModule::on_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE);
                 ControlModule::reset_main_stick_x(fighter.module_accessor);
             }
         }
     } else {
         // if we are here, it means that we are using tap jump
-        VarModule::on_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
-        /*if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            println!("CSTICK TRIGGER");
-        }*/
-        let stick_y_first = ControlModule::get_stick_y(fighter.module_accessor); 
-        if stick_y_first == 0.0 {
-            ControlModule::set_main_stick_y(fighter.module_accessor, 0.0001);
-        }
-        let frame = VarModule::get_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME);
-        let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP);
 
-        // detect when left stick position is overridden by cstick (fuck you ult devs)
-        if (ControlModule::get_attack_air_stick_y(fighter.module_accessor) - stick_y_first).abs() < 0.03 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE) {
-                //println!("2nd frame override");
-                VarModule::on_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
-                ControlModule::reset_main_stick_x(fighter.module_accessor);
-                ControlModule::set_main_stick_y(fighter.module_accessor, 0.0);
-            }
-            if frame >= (end_frame - 1) && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-                //println!("override");
-                VarModule::on_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
-                ControlModule::reset_main_stick_x(fighter.module_accessor);
-                ControlModule::set_main_stick_y(fighter.module_accessor, 0.0);
-            }
+        // remove buffered aerial cstick drift
+        if fighter.is_button_on(Buttons::CStickOverride) {
+            ControlModule::reset_main_stick_x(fighter.module_accessor);
         }
-
-        //println!("get_stick_prev_y: {}", ControlModule::get_stick_prev_y(fighter.module_accessor));
-        //println!("get_attack_air_stick_y: {}", ControlModule::get_attack_air_stick_y(fighter.module_accessor));
-        //println!("get_stick_y: {}", ControlModule::get_stick_y(fighter.module_accessor));
-        //println!(".");
 
         // compare the value of the left stick with the threshold for stick jumping
-        let prev_stick_y = ControlModule::get_stick_prev_y(fighter.module_accessor);
-        let stick_y = ControlModule::get_stick_y(fighter.module_accessor);
-        if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            if stick_y != 0.0 && stick_y < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
-                if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                }
-            }
-            else {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+        if fighter.left_stick_y() < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
+            // used to buffer specials and make sure that we aren't detecting when c stick is off
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
             }
         }
         else {
-            if prev_stick_y != 0.0 && prev_stick_y < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
-                // used to buffer specials and make sure that we aren't detecting when c stick is off
-                if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                    if frame == end_frame && !VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE) {
-                        if stick_y > WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
-                            //println!("edge case fullhop");
-                            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                        }
-                    }
-                }
-            }
-            else {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-            }
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         }
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
             && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
@@ -453,5 +428,22 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon42sub_status_JumpSquat_check_stick_lr_updateEv")]
 unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    L2CValue::Bool((prev_status == *FIGHTER_STATUS_KIND_DASH || prev_status == *FIGHTER_STATUS_KIND_TURN) && !VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP))
+    // only allow jumpsquat to flip you around if your previous status was Dash and your directional input was caused by cstick (cstick input 2 frames within jumpsquat)
+    // allows for cstick IRAR
+    L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && fighter.is_button_on(Buttons::CStickOverride))
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
+unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, motion_hash: L2CValue) {
+    let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
+    // This cuts a single frame off of the end of the specified characters' jumpsquat animations
+    // This is a purely aesthetic change, makes for snappier jumps
+    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("landing_heavy")) * 0.25;
+
+    // vanilla logic
+    let mut motion_rate = end_frame / jump_squat_frame;
+    if motion_rate < 1.0 {
+        motion_rate += 0.001;
+    }
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 3.0, motion_rate, false, 0.0, false, false);
 }

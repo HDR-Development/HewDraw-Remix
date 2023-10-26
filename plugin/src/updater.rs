@@ -3,6 +3,7 @@ use std::{path::Path, io::Cursor};
 use gh_updater::ReleaseFinderConfig;
 use semver::Version;
 use zip::ZipArchive;
+use super::*;
 
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum WhichVersion {
@@ -12,9 +13,10 @@ enum WhichVersion {
 }
 
 fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<&Version>) -> WhichVersion {
-    if !current.pre.is_empty() {
+    if current.pre.as_str() == "nightly" {
+        println!("Currently on nightly.");
         if let Some(prerelease) = prerelease {
-            if current != prerelease {
+            if current < prerelease {
                 WhichVersion::Prerelease
             } else {
                 WhichVersion::Current
@@ -22,9 +24,10 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
         } else {
             WhichVersion::Current
         }
-    } else {
+    } else if current.pre.as_str() == "beta" {
+        println!("Currently on beta.");
         if let Some(release) = release {
-            if current != release {
+            if current < release {
                 WhichVersion::Release
             } else {
                 WhichVersion::Current
@@ -32,16 +35,14 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
         } else {
             WhichVersion::Current
         }
+    } else {
+        WhichVersion::Current
     }
 }
 
 pub fn check_for_updates() {
-    unsafe { // Ryujinx skip based on text addr
-        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8400000 {
-            println!("HDR cannot auto-update on Ryujinx");
-            return;
-        }
+    if is_on_ryujinx() {
+        return
     }
 
     let release = ReleaseFinderConfig::new("HewDraw-Remix")
@@ -58,8 +59,26 @@ pub fn check_for_updates() {
         }
     };
 
+    match release.as_ref() {
+      Some(i) => println!("Found a release!"),
+      _ => println!("No release.")
+    }
+
+    match prerelease.as_ref() {
+        Some(i) => println!("Found a prerelease!"),
+        _ => println!("No prerelease.")
+      }
+
+    println!("Current version: {}", env!("CARGO_PKG_VERSION"));
+
     // Get the current version
     let current_version = Version::parse(env!("CARGO_PKG_VERSION").trim_start_matches("v")).unwrap();
+
+    // Don't update dev or release builds
+    if current_version.pre.as_str() == "dev" || current_version.pre.is_empty() {
+        println!("Not updating, because dev or release build.");
+        return;
+    }
 
     // Get the release version after getting rid of everything before the "v" (SemVer comes after "v")
     let release_version = release
@@ -77,30 +96,48 @@ pub fn check_for_updates() {
         .map(|x| Version::parse(x).ok())
         .flatten();
 
-    // Don't bother updating if we are a dev build because it's in development
-    if current_version.pre.as_str() == "dev" {
-        return;
+    if let Some(prerelease_version) = prerelease_version.as_ref() {
+        println!("Found a prerelease: {}", prerelease_version);
+    } else {
+        println!("Did not find a prerelease.");
     }
-    
+
+    if let Some(release_version) = release_version.as_ref() {
+        println!("Found a release: {}", release_version);
+    } else {
+        println!("Did not find a release.");
+    }
+
     // get which version to update to and get the asset
     let ver = get_version(&current_version, release_version.as_ref(), prerelease_version.as_ref());
 
+    match ver {
+        WhichVersion::Prerelease => println!("We want the prerelease."),
+        WhichVersion::Release => println!("We want the release."),
+        WhichVersion::Current => println!("We want to stay on the current version."),
+    }
+
     // prompt user if they want to update
     let should_update = match ver {
-        WhichVersion::Prerelease => skyline_web::Dialog::yes_no("A new version of HDR (nightly) was encountered.<br>Do you want to install it?"),
-        WhichVersion::Release => skyline_web::Dialog::yes_no("A new version of HDR was encountered.<br>Do you want to install it?"),
-        WhichVersion::Current => return,
+        WhichVersion::Prerelease => skyline_web::dialog::Dialog::yes_no("A new version of HDR (nightly) was encountered.<br>Do you want to install it?"),
+        WhichVersion::Release => skyline_web::dialog::Dialog::yes_no("A new version of HDR (beta) was encountered.<br>Do you want to install it?"),
+        WhichVersion::Current => { println!("Don't need to update."); return },
     };
 
+    // return if we shouldnt update
     if !should_update {
         return;
     }
+
+    println!("downloading the build...");
 
     let asset = match ver {
         WhichVersion::Prerelease => prerelease.unwrap().get_asset_by_name("hdr-switch.zip"),
         WhichVersion::Release => release.unwrap().get_asset_by_name("hdr-switch.zip"),
         WhichVersion::Current => unreachable!(),
     };
+
+    println!("building zip reader...");
 
     // get the zip reader on the zip archive to extract to SD root
     let mut zip = match asset {
@@ -114,10 +151,12 @@ pub fn check_for_updates() {
         None => return
     };
 
+    println!("Unzipping data...");
+
     // try to extract the zip to the SD root and restart the application
     match zip.extract("sd:/") {
         Ok(_) => unsafe { 
-            skyline_web::DialogOk::ok("The applicatio will now restart.");
+            skyline_web::dialog_ok::DialogOk::ok("The application will now restart.");
             skyline::nn::oe::RequestToRelaunchApplication();
         },
         Err(e) => {

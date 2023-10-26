@@ -12,7 +12,7 @@ macro_rules! interrupt {
 unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
-	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if ![*FIGHTER_STATUS_KIND_DASH].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
 		//println!("not after dash");
@@ -21,7 +21,7 @@ unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	//println!("walk initial speed: {}", initial_speed);
 
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     call_original!(fighter)
 }
@@ -41,8 +41,7 @@ unsafe fn status_walk_common(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
 
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
-    VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
 }
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_walk_uniq_checkEv")]
@@ -83,18 +82,10 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
     let walk_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_mul"), 0);
     let walk_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_add"), 0);
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
-    let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
     let walk_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_speed_max"), 0);
 	let stick_x = fighter.global_table[STICK_X].get_f32();
-	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 	let mut lr_modifier = 1.0;
-
-    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-        VarModule::on_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
-    }
-    if stick_x == 0.0 {
-        VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
-    }
 
 	if [hash40("walk_slow_b"), hash40("walk_middle_b"), hash40("walk_fast_b")].contains(&MotionModule::motion_kind(fighter.module_accessor)) { // for auto-turn characters
 		lr_modifier = -1.0;
@@ -113,7 +104,7 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed - speed_motion);
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-		VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, applied_speed);
+		VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, applied_speed);
 	}
 	else if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
 		fighter.clear_lua_stack();

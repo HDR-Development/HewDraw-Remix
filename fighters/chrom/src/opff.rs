@@ -18,13 +18,16 @@ unsafe fn soaring_slash_drift(fighter: &mut L2CFighterCommon) {
 
 // Chrome Soaring Slash Cancel
 unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     let frame = fighter.motion_frame();
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
-    && 27.0 < frame && frame < 30.0
+    && 28.0 < frame && frame < 31.0
     && fighter.is_button_on(Buttons::Guard)
     {
-        if VarModule::is_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         } else {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
@@ -36,6 +39,7 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
 unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_ROY_STATUS_KIND_SPECIAL_S3, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_in_hitlag()
     {
         return;
     }
@@ -95,16 +99,8 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
-        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if fighter.is_input_jump() => {
-            if fighter.is_situation(*SITUATION_KIND_AIR)
-            && fighter.get_jump_count() < fighter.get_jump_count_max()
-            {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                return;
-            } 
-
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
+        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if !fighter.is_in_hitlag() => {
+            if fighter.check_jump_cancel(false, false) {
                 return;
             }
 
@@ -126,7 +122,7 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3
     ])
     {
-        VarModule::off_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
     }
 
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3) {
@@ -134,21 +130,79 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
     }
 
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT);
+        VarModule::on_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
+    }
+}
+
+pub unsafe fn double_edge_dance_vertical_momentum(fighter: &mut L2CFighterCommon){
+    let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && fighter.is_situation(*SITUATION_KIND_AIR) {
+        smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
+        smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
+    }
+
+    if fighter.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED);
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END2,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END3,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_TURN,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
     }
 }
 
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
-    fn fe_common(fighter: &mut L2CFighterCommon);
+    fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_CHROM )]
-pub unsafe fn chrom_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
-    
+    fe_common(fighter);
     soaring_slash_drift(fighter);
-    soaring_slash_cancel(fighter);
+    //soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
-    soaring_slash(fighter);
+    //soaring_slash(fighter);
+    double_edge_dance_vertical_momentum(fighter);
+    fastfall_specials(fighter);
+    
+    // Sword remains the same size throughout jab and utilt
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_ATTACK]) {
+        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.015, 1.115, 1.045));
+    }
 }

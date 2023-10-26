@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">20.5</float>
+    </struct>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="escape_speed_x">1.25</float>
+      <float hash="escape_speed_y">2.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_wariobike">
+    <struct index="0">
+      <float hash="start_speed_x_air">1.5</float>
+      <float hash="brake_x_air">0.025</float>
+      <float hash="speed_x_min_air">0.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+    <float hash="adjust_angle">30</float>
+      <float hash="jump_y_spd_mul">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="gass_max_time">60</float>
+      <float hash="gass_large_time">30</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

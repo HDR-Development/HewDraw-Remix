@@ -1,9 +1,11 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
-//pub mod status;
 pub mod opff;
+pub mod status;
 
 use smash::{
     lib::{
@@ -38,6 +40,11 @@ use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
+    use opff::*;
+    /*smashline::install_agent_frames!(
+        snake_c4_frame
+    );*/
+    smashline::install_agent_frame_callback!(c4_callback);
 }

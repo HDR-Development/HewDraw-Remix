@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 
 utils::import_noreturn!(common::shoto_status::{
-    fgc_pre_dashback,
     fgc_end_dashback,
     ryu_idkwhatthisis2
 });
@@ -15,6 +14,7 @@ extern "Rust" {
     fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
     fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
     fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+    fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
  
 #[skyline::hook(offset = offsets::demon_on_link_capture_event())]
@@ -71,17 +71,12 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
         }
     }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
     return 1.into()
 }
 
 // FIGHTER_DEMON_STATUS_KIND_DASH_BACK //
-
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    common::shoto_status::fgc_pre_dashback(fighter);
-    original!(fighter)
-}
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -302,17 +297,75 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
     status
 }
 
+// FIGHTER_STATUS_KIND_WAIT //
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Wait()
+}
+
+// vanilla script
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_wait_common();
+    fighter.sub_wait_motion_mtrans();
+    fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
+}
+
+pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.status_Wait_Main().get_bool() {
+        return 0.into();
+    }
+    let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        let stick_x_corrected = fighter.global_table[STICK_X].get_f32() * (PostureModule::lr(fighter.module_accessor) * -1.0);
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
+        let walk_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("walk_stick_x"));
+        let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK) {
+            if walk_stick_x <= stick_x_corrected {
+                if squat_stick_y < stick_y {
+                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_WALK_BACK.into(), true.into());
+                    return 0.into();
+                }
+            }
+        }
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_TURN_AUTO.into(), false.into());
+        return 0.into();
+    }
+    0.into()
+}
+
+// FIGHTER_STATUS_KIND_LANDING //
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_landing_main(fighter)
+}
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR //
+// For fixing momentum transfer
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    original!(fighter)
+}
 
 pub fn install() {
-    skyline::install_hooks!(demon_ongrab);
+    //skyline::install_hooks!(demon_ongrab);
     install_status_scripts!(
         pre_turndash,
-        pre_dashback,
         main_dashback,
         end_dashback,
         status_dash,
         demon_attack_main,
         demon_attackcombo_main,
+        wait_pre,
+        //wait_main,
+        landing_main,
+        attackair_pre
         
     );
 }

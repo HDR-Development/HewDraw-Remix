@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">26.4</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="shoot_x">10.0</float>
+      <float hash="speed_x_mul">1.0</float>
+      <float hash="air_speed_x_mul">1.0</float>
+      <float hash="air_speed_y_mul">0.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_hadoken">
+    <struct index="0">
+      <float hash="speed_w">0.8</float>
+      <float hash="speed_m">1.3</float>
+      <float hash="speed_s">1.8</float>
+      <float hash="speed_w_sp">0.8</float>
+      <float hash="speed_m_sp">1.3</float>
+      <float hash="speed_s_sp">1.8</float>
+      <int hash="life_w">100</int>
+      <int hash="life_m">62</int>
+      <int hash="life_s">45</int>
+      <int hash="life_w_sp">100</int>
+      <int hash="life_m_sp">62</int>
+      <int hash="life_s_sp">45</int>
+      <int hash="max_hit_num">2</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <struct hash="map_collision_hadoken">
+    <float hash="up">2.0</float>
+    <float hash="down">-2.0</float>
+    <float hash="half_width">2.0</float>
+  </struct>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="speed_x_mul">0.5</float>
+      <float hash="add_speed_x">1</float>
+      <float hash="speed_y_mul">1</float>
+      <float hash="air_add_speed_y">0</float>
+      <float hash="air_accel_y">0.13</float>
+      <float hash="air_max_speed_y">2.17</float>
+      <int hash="air_loop_num_w">1</int>
+      <int hash="loop_num_m">2</int>
+      <int hash="air_loop_num_m">2</int>
+      <float hash="speed_x_w">1</float>
+      <float hash="air_speed_x_w">0.6</float>
+      <float hash="speed_x_m">1.1</float>
+      <float hash="air_speed_x_m">0.8</float>
+      <float hash="speed_x_s">1.2</float>
+      <float hash="air_speed_x_s">1.04</float>
+      <int hash="end_weak_frame_w">36</int>
+      <int hash="air_end_weak_frame_w">24</int>
+      <int hash="end_weak_frame_m">39</int>
+      <int hash="air_end_weak_frame_m">30</int>
+      <int hash="end_weak_frame_s">41</int>
+      <float hash="air_end_x_speed_mul">1</float>
+      <float hash="end_air_accel_y">0.13</float>
+      <float hash="end_air_max_speed_y">2.17</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="command_power_mul">1.25</float>
+      <float hash="speed_y_mul_w">0.3</float>
+      <float hash="speed_y_mul_m">0.525</float>
+      <float hash="speed_y_mul_s">0.77</float>
+      <float hash="fall_brake_y_mul">2</float>
+      <int hash="fall_frame">5</int>
+      <int hash="landing_frame_w">7</int>
+      <int hash="landing_frame_m">11</int>
+      <int hash="pad_release_w">3</int>
+      <float hash="command_landing_frame_mul">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="start_speed_x_mul">1.0</float>
+      <float hash="start_speed_y_mul">0.0</float>
+      <float hash="hit_stop_frame_mul">2.3</float>
+      <float hash="step_cancel_invalid_frame">5</float>
+      <float hash="hit_cancel_frame">5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

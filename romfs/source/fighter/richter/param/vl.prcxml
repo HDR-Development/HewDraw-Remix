@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">26</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_x">50</float>
+      <float hash="p1_y">34</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">0</float>
+    </struct>
+    <struct index="2">
+      <float hash="p1_x">52</float>
+      <float hash="p1_y">25</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-9</float>
+    </struct>
+    <struct index="3">
+      <float hash="p1_x">50</float>
+      <float hash="p1_y">16</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-18</float>
+    </struct>
+    <struct index="4">
+      <float hash="p1_x">-50</float>
+      <float hash="p1_y">34</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">0</float>
+    </struct>
+    <struct index="5">
+      <float hash="p1_x">-52</float>
+      <float hash="p1_y">25</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-9</float>
+    </struct>
+    <struct index="6">
+      <float hash="p1_x">-50</float>
+      <float hash="p1_y">16</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-18</float>
+    </struct>
+    <struct index="7">
+      <float hash="p1_x">17</float>
+      <float hash="p1_y">65</float>
+      <float hash="p2_x">-17</float>
+      <float hash="p2_y">18</float>
+    </struct>
+    <hash40 index="8">dummy</hash40>
+  </list>
+  <list hash="param_whipwire">
+    <struct index="0">
+      <int hash="rewind_frame">18</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="air_lasso_data">
+    <struct index="0">
+      <float hash="rewind_frame">18</float>
+    </struct>
+  </list>
+  <list hash="param_axe">
+    <struct index="0">
+      <float hash="gravity">0.13</float>
+      <float hash="limit_gravity">1.9</float>
+      <int hash="life">75</int>
+      <float hash="throw_angle_stick_back">70</float>
+      <float hash="throw_angle_stick_front">50</float>
+      <float hash="throw_speed_stick_back">9</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_cross">
+    <struct index="0">
+      <int hash="life">145</int>
+      <float hash="speed">1.6</float>
+      <float hash="speed_flick">2.2</float>
+      <float hash="attack_mul_flick">1.2</float>
+      <int hash="turn_frame">56</int>
+      <int hash="turn_frame_flick">66</int>
+      <int hash="turn_stay_frame">15</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="start_x_mul_air">1.1</float>
+      <float hash="dir_mul">20</float>
+      <float hash="pass_mul_ground">0.9</float>
+      <float hash="pass_mul_air">0.9</float>
+      <float hash="fall_accel_x_mul">0.03</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="throw_speed_ground">2.65</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

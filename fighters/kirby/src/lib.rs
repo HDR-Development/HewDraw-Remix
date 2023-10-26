@@ -1,4 +1,6 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
@@ -36,8 +38,25 @@ use utils::{
 };
 use smashline::*;
 
+pub const KOOPA_MAX_COOLDOWN : i32 = 900;
+pub const LUCAS_CHARGE_TIME : i32 = 120;
+
 pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
     opff::install(is_runtime);
+    use opff::*;
+    if !is_runtime {
+        smashline::install_agent_frames!(
+            hammer_swing_drift_landcancel
+        );
+    }
+
+    if !is_runtime || is_hdr_available() {
+        status::add_statuses();
+    }
+}
+
+pub fn delayed_install() {
+    status::add_statuses();
 }

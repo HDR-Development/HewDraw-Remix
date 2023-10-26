@@ -1,4 +1,6 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
@@ -35,6 +37,8 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+
+pub const MAX_COOLDOWN : i32 = 900;
 
 pub fn install(is_runtime: bool) {
     acmd::install();

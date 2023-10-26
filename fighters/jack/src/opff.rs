@@ -3,35 +3,72 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
-/// Allows Joker to cancel Wings of Rebellion by pressing Shield during the move
-unsafe fn wings_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH)
-    && fighter.is_button_on(Buttons::Guard) {
-        fighter.change_status_req(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END, true);
+ 
+unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if status_kind == *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END, true);
+        }
+        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+            if boma.get_aerial() != None {
+                WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+            }
+        }
+        
     }
 }
 
-/// Changes Joker's aerial grappling hook to also have the pull down hitbox that grounded grappling hook does
-/// TODO: Change this to be in ACMD instead, if possible
-unsafe fn aerial_grappling_hook(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_hi_start")) {
-        MotionModule::change_motion_kind(fighter.module_accessor, Hash40::new("special_hi"));
+unsafe fn arsene_summon_desmummon(boma: &mut BattleObjectModuleAccessor) {
+
+    //if boma.is_motion_one_of(&[Hash40::new("special_lw_start"), Hash40::new("special_lw_loop")]) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR){
+        if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_GUARD) {
+            let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+            //DamageModule::add_damage(boma, 1.0, 0);
+            ArticleModule::generate_article(boma, *FIGHTER_JACK_GENERATE_ARTICLE_DOYLE, false, 0);
+            WorkModule::on_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE);
+            WorkModule::on_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_RESERVE_SUMMON_DISPATCH);
+            WorkModule::on_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST);
+            //WorkModule::on_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_RESERVE_SUMMON_DISPATCH);
+            //boma.change_status_req(*FIGHTER_JACK_STATUS_KIND_SUMMON, false);
+            //smash::app::FighterSpecializer_Jack::add_rebel_gauge(boma, app::FighterEntryID(entry_id), 100.0);
+        }
+    }
+    
+}
+
+// Joker Arsene Grappling Hook
+unsafe fn arsene_grappling_hook(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, motion_kind: u64) {
+    if motion_kind == hash40("special_hi_start") {//&& situation_kind == *SITUATION_KIND_GROUND {
+        MotionModule::change_motion_kind(boma, smash::phx::Hash40::new("special_hi"));
     }
 }
 
-/// Disables gravity during the first 36 frames of Joker's grapple throw if he is in air.
-/// This prevents Joker from dying due to gravity
-unsafe fn aerial_grappling_hook_stall(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_motion(Hash40::new("special_air_hi_throw")) {
-        return;
+// Joker Aerial Grappling Hook stall
+unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if motion_kind == hash40("special_air_hi_throw") {
+        if frame < 37.0 {
+            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+        if frame >= 37.0 {
+            KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
     }
+}
 
-    if fighter.motion_frame() < 36.0 {
-        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    } else {
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+// Joker Grappling Hook Spike Cancel
+unsafe fn grappling_hook_spike_cancel (fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.is_situation(*SITUATION_KIND_AIR) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+        MotionModule::set_rate(boma, 2.0);
     }
+}
+
+// Lengthen knife
+unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
+	let long_sword_scale = Vector3f{x: 1.01, y: 1.1, z: 1.01};
+	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("knife"), &long_sword_scale);
 }
 
 /// Gets the last damage dealt and adds it to rebel's guage
@@ -39,29 +76,77 @@ unsafe fn damage_to_meter(fighter: &mut L2CFighterCommon) {
     const MULTIPLIER: f32 = 1.0;
 
     // Exit if the last dealt damage was 0.0 or if we currently have Arsene out
-    let last_damage = VarModule::get_float(fighter.battle_object, vars::common::LAST_ATTACK_DAMAGE_DEALT);
+    let last_damage = VarModule::get_float(fighter.battle_object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
     if last_damage == 0.0 || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
         return;
     }
 
-    app::FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, app::FighterEntryID(fighter.get_work_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)), last_damage * MULTIPLIER);
+    app::FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, app::FighterEntryID(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)), last_damage * MULTIPLIER);
 
     // Set the const to 0.0 since we don't have a different way to detect when we hit someone
     // (need to implement something beter for this, probably in MeterModule refactor)
-    VarModule::set_float(fighter.battle_object, vars::common::LAST_ATTACK_DAMAGE_DEALT, 0.0);
+    VarModule::set_float(fighter.battle_object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT, 0.0);
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI_THROW,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_ATTACK,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_ENDURE,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW2_COUNTER,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW2_REFLECTOR
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    wings_of_rebellion_cancel(boma, status_kind);
+    //arsene_grappling_hook(boma, situation_kind, motion_kind);
+    aerial_grappling_hook_stall(boma, motion_kind, frame);
+    grappling_hook_spike_cancel(fighter, boma);
+	knife_length(boma);
+    //arsene_summon_desmummon(boma);
+    fastfall_specials(fighter);
+    damage_to_meter(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_JACK )]
-pub unsafe fn jack_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    common::opff::fighter_common_opff(fighter);
-    wings_cancel(fighter);
-    aerial_grappling_hook(fighter);
-    aerial_grappling_hook_stall(fighter);
-    damage_to_meter(fighter);
-    // Sets Joker's knife to be a little bit longer
-    ModelModule::set_joint_scale(
-        fighter.module_accessor,
-        Hash40::new("knife"),
-        &Vector3f::new(1.01, 1.1, 1.01)
-    );
+pub fn jack_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        common::opff::fighter_common_opff(fighter);
+		jack_frame(fighter)
+    }
+}
+
+pub unsafe fn jack_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
 }

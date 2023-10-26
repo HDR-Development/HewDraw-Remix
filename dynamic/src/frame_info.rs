@@ -23,7 +23,7 @@ use crate::{
 };
 
 
-
+#[repr(C)]
 pub struct FrameInfo {
   pub lua_state: u64,
   pub agent: *mut L2CAgent,
@@ -54,7 +54,7 @@ impl FrameInfo {
       let cat3 = ControlModule::get_command_flag_cat(boma, 2);
       let cat4 = ControlModule::get_command_flag_cat(boma, 3);
       let cur_frame = MotionModule::frame(boma);
-      VarModule::set_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
+      VarModule::set_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
       Some(Self {
           lua_state: lua_state,
           agent: fighter as *mut L2CFighterCommon as *mut L2CAgent,

@@ -1,11 +1,11 @@
 name: Comment PR artifacts links
 on:
   workflow_run:
-    workflows: ['rust build']
+    workflows: ['pr_build']
     types: [completed]
 jobs:
   pr_comment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/github-script@v3
@@ -34,16 +34,9 @@ jobs:
               return core.error(`No artifacts found`);
             }
             let body = `Download the artifacts for this pull request:\n`;
-            let hidden_debug_artifacts = `\n\n <details><summary>Only for Developers</summary>\n`;
             for (const art of artifacts) {
-              if(art.name.includes('Debug')){
-                hidden_debug_artifacts += `\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)`;
-              }else{
-                body += `\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)`;
-              }
+              body += `\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)`;
             }
-            hidden_debug_artifacts += `\n</details>`;
-            body += hidden_debug_artifacts;
             const {data: comments} = await github.issues.listComments({repo, owner, issue_number});
             const existing_comment = comments.find((c) => c.user.login === 'github-actions[bot]');
             if (existing_comment) {

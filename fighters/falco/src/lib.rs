@@ -1,8 +1,10 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -38,6 +40,14 @@ use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
+
+    if !is_runtime || is_hdr_available() {
+        status::add_statuses();
+    }
+}
+
+pub fn delayed_install() {
+    status::add_statuses();
 }

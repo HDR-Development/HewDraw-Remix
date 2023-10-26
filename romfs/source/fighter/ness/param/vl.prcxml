@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">17</float>
+      <float hash="p2_y">5</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_y">14.5</float>
+    </struct>
+  </list>
+  <list hash="param_pkflash">
+    <struct index="0">
+      <float hash="accel_x">0.04</float>
+      <float hash="speed_max_x">0.875</float>
+      <int hash="bang_time">11</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <int hash="stop_y_time">40</int>
+      <float hash="accel_y">0.00035</float>
+      <int hash="time">0</int>
+      <float hash="landing_frame">20</float>
+      <float hash="attack_speed">3.5</float>
+      <float hash="bound_angle">85</float>
+      <float hash="attack_brake">0.08</float>
+      <float hash="attack_hit_brake">0</float>
+      <int hash="critical_frame">0</int>
+      <int hash="critical_slow_rate">1</int>
+      <float hash="critical_zoom_rate">1</float>
+      <int hash="critical_zoom_in_frame">0</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+    <list hash="param_pkthunder">
+    <struct index="0">
+      <float hash="speed">2</float>
+      <float hash="angle">90</float>
+      <float hash="life">120</float>
+      <float hash="stick_min">0.5</float>
+      <float hash="add_angle">9</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <struct hash="map_collision_pkthunder">
+    <hash40 hash="shape_type">grcorrect_shape_circle</hash40>
+    <float hash="center_y">0</float>
+    <float hash="radius">0.2</float>
+  </struct>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="accel_y">0.02</float>
+      <float hash="brake_x_on_air">0.015</float>
+      <float hash="start_ymul">0.1</float>
+      <float hash="phy_magnet_size">9.3</float>
+      <float hash="phy_magnet_effect_scale">0.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

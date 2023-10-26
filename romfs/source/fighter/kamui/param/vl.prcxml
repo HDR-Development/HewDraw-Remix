@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">25</float>
+    </struct>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="special_s_jump_y">2</float>
+      <int hash="jump_landing_frame">4</int>
+      <int hash="kick_landing_frame">44</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="dir_mul">23</float>
+      <float hash="special_hi_pass_mul">1.4</float>
+      <float hash="special_air_hi_pass_mul">1.4</float>
+      <float hash="fall_x_mul">0.8</float>
+      <float hash="end_air_brake_x">0.01</float>
+      <float hash="end_air_accel_y">0.075</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <int hash="slow_mul">6</int>
+      <int hash="slow_frame">25</int>
+      <float hash="special_air_lw_accel_y">0.05</float>
+      <float hash="special_air_lw_speed_max_y">1.75</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

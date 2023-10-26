@@ -1,8 +1,11 @@
-use std::collections::HashMap;
+use std::convert::TryInto;
+use std::io::Seek;
+use std::{collections::HashMap, borrow::BorrowMut};
 use std::sync::Arc;
 
 use arcropolis_api::{arc_callback, load_original_file};
-use prc::{hash40::{Hash40, to_hash40}, ParamKind};
+use prc::{hash40::{Hash40}, ParamKind};
+use prc::hash40::hash40 as to_hash40;
 use smash::{hash40, app::BattleObject};
 use smash::phx::Hash40 as Hash40_2;
 use parking_lot::RwLock;
@@ -196,6 +199,7 @@ impl ParamListing {
     }
 }
 
+#[repr(C)]
 struct FighterParam {
     pub fighter_list: ParamListing
 }
@@ -273,6 +277,249 @@ lazy_static! {
         }
         hashes
     };
+}
+
+const STAGE_DB_PRC: &str = "ui/param/database/ui_stage_db.prc";
+const STAGE_SELECT_LAYOUT: &str = "ui/layout/menu/stage_select/stage_select/layout.arc";
+const STAGE_SELECT_PATCH_LAYOUT: &str = "ui/layout/patch/stage_select2/stage_select2/layout.arc";
+const STAGE_SELECT_TOURNEY_LAYOUT: &str = "ui/layout/menu/stage_select/stage_select/layout.tourney.arc";
+const DEFAULT_ROW_LENGTH: usize = 7;
+
+const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lc";
+const STAGE_SELECT_ACTOR_LUA_TOURNEY: &str = "mods:/ui/script_patch/common/stage_select_actor3.tourney.lc";
+
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
+use prc::{ParamList, ParamStruct};
+
+/// stores the tournament mode configuration
+#[derive(Serialize, Deserialize, Debug)]
+#[repr(C)]
+struct TourneyConfig {
+    /// whether the tourney mode is enabled
+    enabled: bool,
+    /// the ordered list of starters stages which should be enabled,
+    /// or `None` if there are no starters
+    starters: Option<Vec<String>>,
+    /// the ordered list of counterpick stages which should be enabled,
+    /// or `None` if there are no counterpicks
+    counterpicks: Option<Vec<String>>
+}
+
+impl TourneyConfig {
+    fn is_valid(&self) -> bool {
+        // if tourney mode is not enabled, we are not configured
+        if !self.enabled {
+            println!("tourney mode stages are not enabled");
+            return false;
+        }
+
+        // if the stages are not defined, we are not configured
+        if self.starters.is_none() && self.starters.is_none() {
+            println!("tourney mode stages are enabled, but the stages are missing!");
+            return false;
+        }
+
+        // if there are too many stages for the allowed number per row, this is invalid.
+        if self.starters.as_ref().unwrap().len() > DEFAULT_ROW_LENGTH 
+        || self.counterpicks.as_ref().unwrap().len() > DEFAULT_ROW_LENGTH {
+            println!("Too many starters or counterpicks were enabled! Invalid stage config!")
+        }
+
+        // otherwise, we are configured
+        return true;
+    }
+    /// loads the tourney config from the sdcard
+    fn load() -> Option<TourneyConfig> {
+        // load the tourney config
+        let config: Option<TourneyConfig> = match std::fs::read_to_string("sd:/ultimate/hdr-config/tourney_mode.json") {
+            Ok(json) => serde_json::from_str(&json).expect("A tourney_mode.json was found, but its contents were invalid!"),
+            Err(e) => {
+                println!("No tourney mode config was found. Assuming tourney mode is disabled.");
+                None
+            }
+        };
+        return config;
+    }
+}
+
+/// This is used for tournament mode. Modifies on-the-fly whether individual stages will 
+/// be shown or not on the stage select screen.
+/// 
+/// This logic works by modifying the display order (`disp_order`) of the stages, based
+/// on what has been configured in the tournament configuration json file, and then
+/// recreating the prc file contents to *only* include those stages.
+/// 
+/// More specifically, if both counterpicks and starters are specified, then
+/// the `Training` stage is used as a buffer between the two sets of stages.
+/// - Starter stages are given 1
+/// - Training is given 2
+/// - Counterpick stages are given 3
+/// 
+/// The result is that the stages are given to the UI in a list,
+/// ordered as `[(starters), Training...Training, (counterpicks)]`. The UI then hides
+/// all Training stages, and makes them non-interactable, so that the UI looks as expected.
+#[arc_callback]
+fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+    // ensure this is the file data it should be
+    assert_eq!(hash, hash40(STAGE_DB_PRC));
+
+    let config = TourneyConfig::load();
+    if config.is_none() {
+        return None;
+    }
+    let config = config.unwrap();
+    if !config.is_valid() {
+        println!("not loading tourney config for stage PRC - config is not valid.");
+        return None;
+    }
+    
+    // load the original file data first
+    let size = load_original_file(hash, &mut data).expect("Unable to load ui_stage_db.prc!");
+
+    // get the slice of the allocated buffer which was *actually filled* via loading the original file
+    let loaded_data = &data[..size];
+    let mut base_struct = match prc::read_stream(&mut std::io::Cursor::new(loaded_data)) {
+        Ok(struc) => struc,
+        Err(e) => {
+            panic!("Unable to parse '{}'. Reason: {:?}", STAGE_DB_PRC, e)
+        }
+    };
+
+    // get the db_root list
+    let db_root = &mut (&mut (&mut base_struct).0)[0];
+    assert_eq!(*db_root.0, hash40("db_root"));
+    let list_kind = (&mut db_root.1);
+    let param_list = list_kind.try_into_mut::<ParamList>().expect("Failed to load db_root list from ui_stage_db.prc!");
+    let list = &mut param_list.0;
+    let mut out_list: Vec<ParamKind> = vec!();
+
+    let starters = config.starters.unwrap();
+    let counterpicks = config.counterpicks.unwrap();
+
+    // disable and enable the appropriate stages in the original structure
+    for entry in list.iter_mut() {
+        let stage_entry = &mut (entry.try_into_mut::<ParamStruct>().expect("failed to get struct from ui_stage_db.prc entry!").0);
+        
+        // the name_id of the stage: BattleField, Yoshi_Story, Kirby_Pupupu64, etc
+        let name_id = stage_entry.iter()
+            .find(|param| param.0 == prc::hash40::Hash40(hash40("name_id")))
+            .unwrap()
+            .1
+            .try_into_ref::<String>()
+            .expect("Could not get name_id as String for a stage entry in tourney mode!")
+            .clone();
+
+        // the display order for the stage
+        let disp_order = stage_entry.iter_mut()
+            .find(|param| param.0 == prc::hash40::Hash40(hash40("disp_order")))
+            .unwrap()
+            .1
+            .try_into_mut::<i8>()
+            .expect("Could not get disp_order as an i8 for a stage entry in tourney mode");
+
+
+        *disp_order = -1;
+
+        // set the disp_order if this is a starter to 1 (see fn docs)
+        match starters.contains(&name_id) {
+            true => {
+                *disp_order = 1;
+                out_list.push(entry.clone());
+                continue;
+            },
+            false => {}
+        };
+
+        // set Random to 2 (see fn docs)
+        if name_id == "Training" {
+            *disp_order = 2;
+            // pad with a bunch of Training stages, which will be hidden
+            let len = starters.len();
+            for _ in 0..(DEFAULT_ROW_LENGTH-len) {
+                out_list.push(entry.clone());
+            }
+            continue;
+        }
+
+        // set the disp_order if this is a counterpick to 3 (see fn docs)
+        match counterpicks.contains(&name_id) {
+            true => {
+                *disp_order = 3;
+                out_list.push(entry.clone());
+                continue;
+            },
+            false => {}
+        };
+
+        // otherwise, push this as hidden
+        *disp_order = -1;
+        out_list.push(entry.clone());
+        continue;
+    }
+
+    *list = out_list;
+
+    // write the data back into the buffer
+    let buf = &mut std::io::Cursor::new(data);
+    prc::write_stream(buf, &base_struct);
+    let size = buf.stream_len().unwrap() as usize;
+
+    Some(size)
+}
+
+#[arc_callback]
+fn stage_select_layout_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+    // ensure that the tourney config is loaded, and if not, return
+    match TourneyConfig::load() {
+        Some(config) => match config.is_valid() {
+            true => {},
+            false => return None
+        },
+        None => return None
+    }
+
+    println!("loading tourney mode layout");
+
+    // load the tourney layout
+    let size = load_original_file(hash40(STAGE_SELECT_TOURNEY_LAYOUT), &mut data).expect("Unable to load '/ui/layout/menu/stage_select/stage_select/layout.tourney.arc'");
+    Some(size)
+}
+
+/// this callback is used to allocate more space than normal for the stage
+#[arc_callback]
+fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+    // ensure that the tourney config is loaded, and if not, return
+    match TourneyConfig::load() {
+        Some(config) => match config.is_valid() {
+            true => {},
+            false => return None
+        },
+        None => return None
+    }
+
+    println!("loading tourney mode sss lua");
+
+    // load the actor lua in hdr-dev (REMOVE THIS)
+    let mut bytes = match std::fs::read(STAGE_SELECT_ACTOR_LUA_TOURNEY) {
+        Ok(b) => b,
+        Err(e) => {
+            println!("\n\n\n\n\nFAILED TO LOAD DEV STAGE SELECT ACTOR!\n\n\n\n\n");
+            return None;
+        }
+    };
+
+    // pad the file bytes
+    let last = *bytes.last().unwrap();
+    while bytes.len() < data.len() {
+        bytes.push(last as u8)
+    }
+
+    let bytes_slice = bytes.as_slice();
+    data.copy_from_slice(&bytes_slice);
+    
+    let size = data.len();
+    Some(size)
 }
 
 #[arc_callback]
@@ -354,6 +601,7 @@ pub enum ParamType {
 
 // An additional module to be used with Smash's `BattleObject` class. This uses an ARCropolis API to load (new) files and store them as global param data
 // that objects can access at runtime. This allows for storing constants in data modifiable for easy balancing.
+#[repr(C)]
 pub struct ParamModule {
     owner: *mut BattleObject,
     agent_params: Option<Arc<ParamListing>>
@@ -410,7 +658,7 @@ impl ParamModule {
         match ty {
             ParamType::Common => {
                 let read = GLOBAL_COMMON_PARAM.read();
-                println!("{}", read.is_none());
+                //println!("{}", read.is_none());
                 read
                 .as_ref()
                 .map(|x| x.index(key))
@@ -643,5 +891,24 @@ pub(crate) fn init() {
     common_param_callback::install("fighter/common/hdr/param/common.prc", hdr_macros::size_of_rom_file!("fighter/common/hdr/param/common.prc"));
     for (file, (_, size)) in AGENT_PARAM_REVERSE.iter() {
         agent_param_callback::install(arcropolis_api::Hash40(file.hash), *size);
+    }
+    
+
+
+    // if TourneyConfig isn't valid, then don't bother installing callbacks
+    match TourneyConfig::load() {
+        Some(config) => match config.is_valid() {
+            true => {
+                // install the callback for selectively displaying stages
+                // max_size is technically unknown, but since we aren't adding new data to the prc, and the
+                // hdr file is presently 16kb, this should be sufficient.
+                ui_stage_db_prc_callback::install(STAGE_DB_PRC, /* 20kb */ 20480);
+                stage_select_layout_callback::install(STAGE_SELECT_LAYOUT, /* 10mb */ 10485760);
+                stage_select_layout_callback::install(STAGE_SELECT_PATCH_LAYOUT, /* 10mb */ 10485760);
+                stage_select_actor_callback::install(STAGE_SELECT_ACTOR_LUA, /* 10mb */ hdr_macros::size_of_rom_file!("ui/script_patch/common/stage_select_actor3.lc"));
+            },
+            false => {}
+        },
+        None => {}
     }
 }

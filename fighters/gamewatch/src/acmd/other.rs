@@ -1,42 +1,6 @@
 
 use super::*;
 
-#[acmd_script( agent = "gamewatch", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_landing_air_f_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BOMB, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    }
-    
-}
-
-#[acmd_script( agent = "gamewatch", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_landing_air_b_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ArticleModule::change_motion(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, Hash40::new("landing_air_b"), false, 1.0);
-    }
-    
-}
-
-#[acmd_script( agent = "gamewatch", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn gamewatch_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        VisibilityModule::set_int64(boma, Hash40::new("head").hash as i64, Hash40::new("head_close").hash as i64);
-        VisibilityModule::set_int64(boma, Hash40::new("hand").hash as i64, Hash40::new("hand_hold_lr").hash as i64);
-        VisibilityModule::set_int64(boma, Hash40::new("lhand").hash as i64, Hash40::new("lhand_key").hash as i64);
-        ItemModule::set_have_item_visibility(boma, false, 0);
-        slope!(fighter, *DAMAGE_NO_REACTION_MODE_NORMAL, *WEAPON_INKLING_ROLLER_INSTANCE_WORK_ID_FLOAT_B);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, 0 as u32);
-    }
-    
-}
-
 #[acmd_script( agent = "gamewatch", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,18 +40,23 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gamewatch", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_gamewatch_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 17.0);
+    wait(lua_state, 2.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_step_right_m"));
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_step_left_m"));
+    }
 }
 
 #[acmd_script( agent = "gamewatch", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -105,15 +74,65 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gamewatch", script = "sound_appealhil", category = ACMD_SOUND, low_priority)]
+unsafe fn sound_appealhil(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_special_s01"));
+    }
+}
+
+#[acmd_script( agent = "gamewatch", script = "sound_appealhir", category = ACMD_SOUND, low_priority)]
+unsafe fn sound_appealhir(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_special_s01"));
+    }
+}
+
+#[acmd_script( agent = "gamewatch", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
+
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+    frame(lua_state, escape_air_cancel_frame);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "gamewatch", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
-        gamewatch_landing_air_f_game,
-        gamewatch_landing_air_b_game,
-        gamewatch_landing_air_lw_expression,
+        escape_air_game,
+        escape_air_slide_game,
         gamewatch_catch_game,
         dash_game,
-        dash_effect,
+        dash_sound,
         turn_dash_game,
+        sound_appealhil,
+        sound_appealhir,
     );
 }
 

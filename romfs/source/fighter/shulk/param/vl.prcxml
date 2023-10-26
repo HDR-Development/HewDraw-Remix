@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">22.5</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="active_time_jump">6</float>
+      <float hash="active_time_speed">8</float>
+      <float hash="active_time_shield">6</float>
+      <float hash="active_time_buster">10</float>
+      <float hash="active_time_smash">6</float>
+      <float hash="unavailable_time_jump">18</float>
+      <float hash="unavailable_time_speed">16</float>
+      <float hash="unavailable_time_shield">18</float>
+      <float hash="unavailable_time_buster">14</float>
+      <float hash="unavailable_time_smash">16</float>
+      <float hash="jump_special_hi_height_mul">1.4</float>
+      <float hash="spd_walk_speed_mul">1.6</float>
+      <float hash="spd_dash_speed_mul">1.7</float>
+      <float hash="spd_run_speed_mul">1.7</float>
+      <float hash="spd_ground_brake_mul">1.4</float>
+      <float hash="spd_air_speed_x_mul">1.35</float>
+      <float hash="spd_air_speed_y_mul">1.25</float>
+      <float hash="spd_height_mul">0.9</float>
+      <float hash="shield_damage_mul">0.6</float>
+      <float hash="shield_blown_mul">0.75</float>
+      <float hash="buster_attack_power_mul">1.3</float>
+      <float hash="buster_damage_mul">1.25</float>
+      <float hash="buster_blow_mul">0.65</float>
+      <float hash="smash_blow_mul">1.25</float>
+      <float hash="smash_blown_mul">1.12</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="special_hi_pass_mul">0.9</float>
+      <float hash="special_air_hi_pass_mul">0.9</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

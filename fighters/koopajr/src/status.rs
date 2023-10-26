@@ -6,7 +6,9 @@ pub fn install() {
     install_status_scripts!(
         //pre_special_hi_escape,
         special_hi_escape,
-        end_special_hi_escape
+        end_special_hi_escape,
+        special_s_jump_init,
+        special_hi_damage_end_main
     );
 }
 
@@ -67,68 +69,8 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_escape_air_uniq as *const () as _));
 }
 
-unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
-    let mut fighter_pos = Vector3f {
-        x: PostureModule::pos_x(fighter.module_accessor),
-        y: PostureModule::pos_y(fighter.module_accessor),
-        z: PostureModule::pos_z(fighter.module_accessor)
-    };
-
-    let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-    let correction = VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-    fighter_pos.y += correction;
-    loop {
-        let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::Y_POS);
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
-        let new_dist = GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true);
-        if GroundModule::attach_ground(fighter.module_accessor, false) != 0 { break; }
-        if new_dist <= threshold {
-            fighter_pos.y -= new_dist;
-            PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, new_dist);
-        }
-        else {
-            //println!("break");
-            if prev_y_pos < fighter_pos.y {
-                fighter_pos.y -= ((fighter_pos.y - prev_y_pos) + dist);
-            }
-            else {
-                fighter_pos.y -= (dist - (prev_y_pos - fighter_pos.y));
-            }
-            PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            GroundModule::attach_ground(fighter.module_accessor, false);
-            break;
-        }
-    }
-}
-
-unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
-    if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
-        let mut fighter_pos = Vector3f {
-            x: PostureModule::pos_x(fighter.module_accessor),
-            y: PostureModule::pos_y(fighter.module_accessor),
-            z: PostureModule::pos_z(fighter.module_accessor),
-        };
-        let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-        fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-        VarModule::set_float(fighter.battle_object, vars::common::Y_POS, fighter_pos.y);
-        VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
-        //println!("dist: {}", dist);
-        if 0.0 <= dist && dist <= threshold {
-            //println!("should_waveland");
-            fighter_pos.y -= dist;
-            PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            VarModule::on_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-        }
-    }
-}
-
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        sub_escape_air_waveland_check(fighter);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
@@ -203,7 +145,7 @@ unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2
 }
 
 unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
+    let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
 
     // RoA airdodge stalling [
     if  MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_hi_jr_escape") {
@@ -224,21 +166,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         if sub_escape_air_common_strans_main(fighter).get_bool() {
             return L2CValue::Bool(true);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND) {
-            // VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-            // GroundModule::attach_ground(fighter.module_accessor, false);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
-            force_ground_attach(fighter);
-            fighter.change_status(FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
-            VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-            return true.into();
-            // fighter.change_status(
-            //     L2CValue::I32(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING),
-            //     L2CValue::Bool(false)
-            // );
-            // return true.into();
-        }
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING),
                 L2CValue::Bool(false)
@@ -353,4 +281,35 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
 #[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_special_hi_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_EscapeAir()
+}
+
+// FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
+
+#[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Burn double jump when jumping out of Clown Kart Dash
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR
+    && fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    }
+    0.into()
+}
+
+// FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END
+
+#[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_hi_damage_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    original!(fighter);
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+    }
+    else {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_DAMAGE_FLY) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_DAMAGE_FALL, false);
+        }
+        else {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
+    }
+    1.into()
 }

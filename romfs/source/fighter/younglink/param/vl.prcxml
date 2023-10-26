@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list size="3" hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_x">17</float>
+      <float hash="p1_y">20</float>
+      <float hash="p2_x">-10.2</float>
+      <float hash="p2_y">8</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_x">42</float>
+      <float hash="p1_y">33</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-23</float>
+    </struct>
+    <struct index="2">
+      <float hash="p1_x">13</float>
+      <float hash="p1_y">12</float>
+      <float hash="p2_x">-3</float>
+      <float hash="p2_y">-8</float>
+    </struct>
+  </list>
+  <struct hash="param_private">
+    <int hash="air_lw_max_hit">99</int>
+  </struct>
+  <list hash="param_hookshot">
+    <struct index="0">
+      <int hash="rewind_frame">18</int>
+    </struct>
+  </list>
+  <list hash="air_lasso_data">
+    <struct index="0">
+      <float hash="rewind_frame">18</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="bow_charge_max">40</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_bowarrow">
+    <struct index="0">
+      <int hash="life">42</int>
+      <float hash="speed_min">1.65</float>
+      <float hash="power_min">5</float>
+      <float hash="accel_y">0.045</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="rslash_air_start_spd_y">2.3</float>
+      <float hash="rslash_air_accel_x_mul">0.01</float>
+      <float hash="rslash_air_max_x_mul">0.8</float>
+      <float hash="rslash_end_air_accel_x_mul">0.01</float>
+      <float hash="rslash_end_air_max_x">0.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

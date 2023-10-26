@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="hit_data">
+    <struct index="0">
+      <float hash="size">2.2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <hash40 index="5">dummy</hash40>
+    <hash40 index="6">dummy</hash40>
+    <struct index="7">
+      <float hash="size">2.2</float>
+    </struct>
+    <struct index="8">
+      <float hash="size">2.2</float>
+    </struct>
+    <struct index="9">
+      <float hash="size">2.3</float>
+    </struct>
+    <struct index="10">
+      <float hash="size">2.3</float>
+    </struct>
+    <hash40 index="11">dummy</hash40>
+    <hash40 index="12">dummy</hash40>
+    <hash40 index="13">dummy</hash40>
+  </list>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">25.5</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_y">26</float>
+    </struct>
+    <struct index="2">
+      <float hash="p1_y">26</float>
+    </struct>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="jump_speed_f">2.7</float>
+      <float hash="jump_speed_n">2.5</float>
+      <float hash="jump_speed_b">2.3</float>
+      <float hash="end_accel_y_mul">1.3</float>
+      <float hash="fall_special_limit_speed">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_tico">
+    <struct index="0">
+      <float hash="hp">35</float>
+      <float hash="follow_damage_air_brake">0.075</float>
+      <float hash="free_damage_for_reaction">70</float>
+      <float hash="free_damage_air_brake">0.15</float>
+      <float hash="yellow_rate">0.3</float>
+      <float hash="black_rate">0.3</float>
+      <float hash="pink_rate">0.3</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

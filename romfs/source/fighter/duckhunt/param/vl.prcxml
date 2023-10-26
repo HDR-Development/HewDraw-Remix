@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="hit_data">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <hash40 index="5">dummy</hash40>
+    <hash40 index="6">dummy</hash40>
+    <hash40 index="7">dummy</hash40>
+    <hash40 index="8">dummy</hash40>
+  </list>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">22</float>
+      <float hash="p2_y">10</float>
+    </struct>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <int hash="flap_times">6</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_gunman">
+    <struct index="0">
+      <float hash="hp">7</float>
+      <float hash="shoot_frames">5</float>
+      <float hash="wait_frames_after_shoot">130</float>
+      <float hash="0x1299abf278">5</float>
+      <float hash="0x13d5bf3825">5</float>
+      <float hash="0x1620e4f178">5</float>
+      <float hash="0x17483ac873">5</float>
+      <float hash="0x1228e10caa">5</float>
+      <float hash="0x135b0c4a01">2.5</float>
+      <float hash="0x14fca45605">2.5</float>
+      <float hash="0x1769b23874">2.5</float>
+      <float hash="0x1841c5d291">2.5</float>
+      <float hash="0x13ea46b4d3">2.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <struct hash="param_private">
+    <float hash="0x1e66f59d2e">0.5</float>
+  </struct>
+</struct>

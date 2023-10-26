@@ -1,4 +1,6 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
@@ -15,6 +17,7 @@ use smash::{
         self,
         sv_animcmd::{
             frame,
+            execute,
             wait
         },
         lua_bind::*
