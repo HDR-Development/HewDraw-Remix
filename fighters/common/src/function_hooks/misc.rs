@@ -10,12 +10,12 @@ struct LinkEventRebelGaugeUpdate {
 }
 
 unsafe fn handle_max_rebel_gauge(boma: &mut app::BattleObjectModuleAccessor) {
-    boma.set_work_float(100.0, 0x4D); // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
-    if boma.is_work_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL_STATUS) {
+    boma.set_float(100.0, 0x4D); // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
+    if boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL_STATUS) {
         return;
     }
 
-    if boma.is_work_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST) {
+    if boma.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST) {
         return;
     }
 
@@ -80,7 +80,7 @@ unsafe fn send_rebel_gauge_event(entry_id: i32, gauge: f32) {
 /// Replaces add_rebel_gauge by a function which still adds to the rebel gauge but doesn't trigger arsene
 #[skyline::hook(replace = app::FighterSpecializer_Jack::add_rebel_gauge)]
 pub unsafe fn add_rebel_gauge(boma: &mut app::BattleObjectModuleAccessor, entry_id: i32, amount: f32) {
-    if !boma.is_work_flag(0x200000e9) { // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_ADD_REBEL_GAUGE
+    if !boma.is_flag(0x200000e9) { // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_ADD_REBEL_GAUGE
         return;
     }
 
@@ -88,31 +88,31 @@ pub unsafe fn add_rebel_gauge(boma: &mut app::BattleObjectModuleAccessor, entry_
         return;
     }
 
-    if boma.is_work_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST) {
-        let customize = boma.get_work_int(*FIGHTER_INSTANCE_WORK_ID_INT_CUSTOMIZE_SPECIAL_N_NO);
+    if boma.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST) {
+        let customize = boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_CUSTOMIZE_SPECIAL_N_NO);
         if customize != 0 {
             return;
         }
     }
 
-    if boma.is_work_flag(0x200000e7) { // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUSPEND
+    if boma.is_flag(0x200000e7) { // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUSPEND
+        return
+    }
+
+    if boma.is_flag(0x200000e3) { // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUMMON
         return;
     }
 
-    if boma.is_work_flag(0x200000e3) { // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUMMON
+    if boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
         return;
     }
 
-    if boma.is_work_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
-        return;
-    }
-
-    let current_gauge = boma.get_work_float(0x4D); // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
+    let current_gauge = boma.get_float(0x4D); // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
     let new_gauge = current_gauge + amount;
     if new_gauge >= 100.0 {
         handle_max_rebel_gauge(boma);
     } else {
-        boma.set_work_float(new_gauge.max(0.0), 0x4D); // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
+        boma.set_float(new_gauge.max(0.0), 0x4D); // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
     }
 
     send_rebel_gauge_event(entry_id, new_gauge.min(100.0).max(0.0));

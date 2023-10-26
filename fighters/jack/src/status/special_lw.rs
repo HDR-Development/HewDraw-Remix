@@ -27,21 +27,15 @@ pub unsafe fn update_special_lw_by_situation(
 }
 
 pub unsafe fn update_special_lw_in_air(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let gravity = -fighter.work_param_float("param_special_lw", "air_accel_y");
+    let gravity = -fighter.get_param_float("param_special_lw", "air_accel_y");
     
-    { // Set the acceleration, TODO: Make this a macro since we use sv_kinetic_energy a lot
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, gravity);
-        app::sv_kinetic_energy::set_accel(fighter.lua_state_agent);
-    }
+    // Set the acceleration, TODO: Make this a macro since we use sv_kinetic_energy a lot
+    sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, gravity);
 
-    let stable_speed = fighter.work_param_float("param_special_lw", "air_speed_max_y");
+    let stable_speed = fighter.get_param_float("param_special_lw", "air_speed_max_y");
     
-    { // Set the stable fall speed
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, stable_speed);
-        app::sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
-    }
+    // Set the stable fall speed
+    sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, stable_speed);
 
     0.into()
 }
@@ -94,10 +88,10 @@ unsafe extern "C" fn status_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         return 0.into();
     }
     
-    if fighter.is_work_flag(*FIGHTER_JACK_STATUS_SPECIAL_LW_FLAG_GUARD_START) {
-        fighter.off_work_flag(*FIGHTER_JACK_STATUS_SPECIAL_LW_FLAG_GUARD_START);
-        fighter.on_work_flag(*FIGHTER_JACK_STATUS_SPECIAL_LW_FLAG_GUARD_START);
-        let hit_stop_mul = fighter.work_param_float("param_special_lw", "hit_stop_mul");
+    if fighter.is_flag(*FIGHTER_JACK_STATUS_SPECIAL_LW_FLAG_GUARD_START) {
+        fighter.off_flag(*FIGHTER_JACK_STATUS_SPECIAL_LW_FLAG_GUARD_START);
+        fighter.on_flag(*FIGHTER_JACK_STATUS_SPECIAL_LW_FLAG_GUARD_START);
+        let hit_stop_mul = fighter.get_param_float("param_special_lw", "hit_stop_mul");
         HitModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul, app::HitStopMulTarget { _address: *HIT_STOP_MUL_TARGET_ALL as u8 }, 0.0);
         DamageModule::set_no_reaction_mode_status(fighter.module_accessor, app::DamageNoReactionMode { _address: *DAMAGE_NO_REACTION_MODE_ALWAYS as u8 }, -1.0, -1.0, -1);
     }
@@ -128,26 +122,22 @@ pub unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         update_special_lw_in_air
     );
 
-    let speed_mul = fighter.work_param_float("param_special_lw", "start_speed_mul_x");
+    let speed_mul = fighter.get_param_float("param_special_lw", "start_speed_mul_x");
     let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP) * speed_mul;
 
     fighter.set_speed(Vector2f::new(speed_x, 0.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
 
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        let mul = fighter.work_param_float("param_special_lw", "air_start_speed_mul_y");
+        let mul = fighter.get_param_float("param_special_lw", "air_start_speed_mul_y");
         let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY) * mul;
 
         fighter.set_speed(Vector2f::new(speed_x, speed_y), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 
-    let hold_frame = fighter.work_param_int("param_special_lw", "hold_frame");
-    fighter.set_work_int(hold_frame, *FIGHTER_JACK_STATUS_SPECIAL_LW_INT_HOLD_FRAME);
+    let hold_frame = fighter.get_param_int("param_special_lw", "hold_frame");
+    fighter.set_int(hold_frame, *FIGHTER_JACK_STATUS_SPECIAL_LW_INT_HOLD_FRAME);
     
-    {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_13 - 1);
-        app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-    }
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_13 - 1);
 
     fighter.main_shift(status_lw_main_loop)
 }

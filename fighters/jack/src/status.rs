@@ -5,7 +5,7 @@ pub mod special_lw;
 
 pub unsafe fn special_check_summon(fighter: &mut L2CFighterCommon) -> bool {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_RESERVE_SUMMON_DISPATCH)
-    && dbg!(WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_INT_CUSTOMIZE_TO)) < 0 {
+    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_INT_CUSTOMIZE_TO) < 0 {
         return false;
     }
 
@@ -25,8 +25,8 @@ pub unsafe fn try_interrupt_with_summon(fighter: &mut L2CFighterCommon) -> bool 
 }
 
 pub unsafe fn summon_arsene(fighter: &mut L2CFighterCommon) -> bool {
-    let rebel_gauge = fighter.get_work_float(0x4D);
-    fighter.on_work_flag(0x200000e3);
+    let rebel_gauge = fighter.get_float(0x4D);
+    fighter.on_flag(0x200000e3);
     VarModule::set_float(fighter.battle_object, vars::jack::REBEL_GAUGE_ON_SUMMON, rebel_gauge);
     let status_kind = app::FighterSpecializer_Jack::check_doyle_summon_dispatch(fighter.module_accessor, true, true) as i32;
     if status_kind == *FIGHTER_JACK_STATUS_KIND_SUMMON {
@@ -41,10 +41,10 @@ unsafe fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe
         return;
     }
 
-    let clone = fighter.global_table[globals::MOVE_CUSTOMIZER].clone();
+    let clone = fighter.global_table[globals::WAZA_CUSTOMIZE_CONTROL].clone();
     fighter.global_table["move_customizer_set"].assign(&L2CValue::Bool(true));
     fighter.global_table["move_customizer_original"].assign(&clone);
-    fighter.global_table[globals::MOVE_CUSTOMIZER].assign(&L2CValue::Ptr(customizer as *const () as _));
+    fighter.global_table[globals::WAZA_CUSTOMIZE_CONTROL].assign(&L2CValue::Ptr(customizer as *const () as _));
 }
 
 unsafe fn get_original_customizer(fighter: &mut L2CFighterCommon) -> Option<unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue> {
