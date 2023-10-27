@@ -175,15 +175,6 @@ unsafe fn samusd_attack_hi3_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 5, 0, Hash40::new("legr"), 6.0, 100, 110, 0, 75, 4.5, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 6, 0, Hash40::new("legr"), 6.0, 100, 110, 0, 75, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
-    //frame(lua_state, 18.0);
-    //if is_excute(fighter) {
-        //HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
-        //HIT_NODE(fighter, Hash40::new("footl"), *HIT_STATUS_NORMAL);
-        //HIT_NODE(fighter, Hash40::new("toel"), *HIT_STATUS_NORMAL);
-        //HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
-        //HIT_NODE(fighter, Hash40::new("footr"), *HIT_STATUS_NORMAL);
-        //HIT_NODE(fighter, Hash40::new("toer"), *HIT_STATUS_NORMAL);
-    //}
     frame(lua_state, 19.0); 
     if is_excute(fighter) {
         ATTACK(fighter, 4, 0, Hash40::new("legr"), 3.0, 110, 100, 0, 65, 5.0, 9.0, 0.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
