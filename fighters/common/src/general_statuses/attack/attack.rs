@@ -156,12 +156,12 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
     }
     let attack100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack100_type"), 0);
     if attack100_type != *FIGHTER_ATTACK100_TYPE_NONE {
+        let combo = ComboModule::count(fighter.module_accessor) as i32;
+        let attack_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_max"), 0);
         if AttackModule::is_infliction_status(fighter.module_accessor, 0x7f) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100) {
                 if ControlModule::check_button_on(fighter.module_accessor, param_1.get_i32())
                 && only_jabs(fighter) {
-                    let combo = ComboModule::count(fighter.module_accessor) as i32;
-                    let attack_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_max"), 0);
                     if attack_combo_max <= combo {
                         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -183,6 +183,14 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
                         return 1.into();
                     }
                 }
+            }
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+            if (attack_combo_max - combo) == 1 
+            && fighter.is_button_trigger(Buttons::Special) 
+            && only_jabs(fighter) {
+                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), true.into());
+                return 1.into();
             }
         }
     }
