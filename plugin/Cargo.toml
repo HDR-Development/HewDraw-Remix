@@ -95,7 +95,7 @@ default = [
     "brave",
     "richter",
     "miiswordsman",
-    "robin",
+    "reflet",
     "master",
     "robot",
     "szerosuit",
@@ -191,7 +191,7 @@ ken = ["fighters/include-ken"]
 brave = ["fighters/include-brave"]
 richter = ["fighters/include-richter"]
 miiswordsman = ["fighters/include-miiswordsman"]
-robin = ["fighters/include-robin"]
+reflet = ["fighters/include-reflet"]
 master = ["fighters/include-master"]
 robot = ["fighters/include-robot"]
 szerosuit = ["fighters/include-szerosuit"]
