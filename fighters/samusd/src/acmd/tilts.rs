@@ -153,17 +153,7 @@ unsafe fn samusd_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    //FT_MOTION_RATE_RANGE(fighter, 0.0, 9.0, 6.0);
     FT_MOTION_RATE(fighter, 0.8);
-    //frame(lua_state, 7.0); 
-    //if is_excute(fighter) {
-        //HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
-        //HIT_NODE(fighter, Hash40::new("footl"), *HIT_STATUS_XLU);
-        //HIT_NODE(fighter, Hash40::new("toel"), *HIT_STATUS_XLU);
-        //HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
-        //HIT_NODE(fighter, Hash40::new("footr"), *HIT_STATUS_XLU);
-        //HIT_NODE(fighter, Hash40::new("toer"), *HIT_STATUS_XLU);
-    //}
     frame(lua_state, 7.0); 
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 100, 95, 70, 0, 5.5, 0.0, 8.0, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -227,8 +217,9 @@ unsafe fn samusd_attack_hi3_sound(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 4.0); 
     if is_excute(fighter) {
-        //FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -10, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false)
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -238,13 +229,13 @@ unsafe fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 15, 0, 10, 75, 90, 1.3, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 20, 0, 25, 100, 100, 1.3, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1);
     }
-    frame(lua_state, 26.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
-        //LANDING_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false)
     }
 }
 
