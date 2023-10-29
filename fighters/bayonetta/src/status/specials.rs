@@ -25,24 +25,37 @@ unsafe fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
-        GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        fighter.set_int(*FIGHTER_BAYONETTA_SHOOTING_STEP_WAIT_END, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SHOOTING_STEP);
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.55);
-        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_run_smoke"), false, false);
-        if fighter.motion_frame() >= 44.0 {fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
-    }
-    if MotionModule::is_end(fighter.module_accessor) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()); }
-    if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_WALL_CHECK) {
-        let mut touch_wall = false;
-        if PostureModule::lr(fighter.module_accessor) > 0.0 {
-            touch_wall = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT as u32);
-        } else {
-            touch_wall = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32);
+    if fighter.is_situation(*SITUATION_KIND_GROUND) { //gr checks
+        if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
+            if fighter.is_button_trigger(Buttons::Attack)
+            && fighter.is_button_on(Buttons::Special)
+            && fighter.global_table[CURRENT_FRAME].get_i32() <= 40 {
+                fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_HOLD_END.into(), false.into());
+            }
+        } else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+            GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         }
-        if touch_wall {fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_WALL_END.into(), false.into()); }
+        if MotionModule::is_end(fighter.module_accessor) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()); }
+        if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_WALL_CHECK) {
+            let mut touch_wall = false;
+            if PostureModule::lr(fighter.module_accessor) > 0.0 {
+                touch_wall = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT as u32);
+            } else {
+                touch_wall = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32);
+            }
+            if touch_wall {fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_WALL_END.into(), false.into()); }
+        }
+    } else { //slide-off
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.6);
+            sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.4);
+        }
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_run_smoke"), false, false);
+        if fighter.motion_frame() >= 46.0 {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
     }
     0.into()
 }

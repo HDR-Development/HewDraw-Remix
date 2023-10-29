@@ -46,8 +46,9 @@
       <float hash="ab_d_hit_after_speed_y">2.6</float>
       <float hash="ab_d_hit_after_max_accel_x">0.035</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
-      <float hash="ab_u_motion_speed_mul">0.81</float>
-      <float hash="ab_u_rotate">-25</float>
+      <float hash="ab_u_motion_speed_mul">0.79</float>
+      <float hash="ab_d_motion_speed_mul">0.9</float>
+      <float hash="ab_u_rotate">-22</float>
       <int hash="ab_d_hit_after_landing_frame">15</int>
       <int hash="ab_d_hit_after_landing_frame_2nd">30</int>
       <int hash="ab_d_landing_frame">30</int>
