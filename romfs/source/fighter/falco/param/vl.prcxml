@@ -38,7 +38,7 @@
       <float hash="illusion_end_speed_x">2</float>
       <float hash="illusion_end_brake_x">0.1</float>
       <float hash="illusion_end_air_speed_x">2</float>
-      <float hash="illusion_end_air_brake_x">0.07</float>
+      <float hash="illusion_end_air_brake_x">0.05</float>
       <float hash="illusion_end_control_air_speed_x_mul">0</float>
       <float hash="illusion_end_control_air_speed_x_stable">0</float>
     </struct>
