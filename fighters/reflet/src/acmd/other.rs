@@ -210,10 +210,11 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "reflet_elwind", script = "game_shoot0" , category = ACMD_GAME , low_priority)]
-unsafe fn robin_elwind_shoot0_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_elwind_shoot0_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        GroundModule::modify_rhombus(boma, 0.0, 1.0, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 80, 30, 0, 100, 6.0, 0.0, 2.0, 0.5, Some(0.0), Some(-3.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 4.0);
@@ -224,7 +225,7 @@ unsafe fn robin_elwind_shoot0_game(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "reflet_elwind", script = "game_landing" , category = ACMD_GAME , low_priority)]
-unsafe fn robin_elwind_landing_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_elwind_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -238,7 +239,7 @@ unsafe fn robin_elwind_landing_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "reflet_thunder", script = "game_shoot2" , category = ACMD_GAME , low_priority)]
-unsafe fn robin_arcthunder_shoot2_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_arcthunder_shoot2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -254,7 +255,7 @@ unsafe fn robin_arcthunder_shoot2_game(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "reflet_thunder", script = "game_gigaspark" , category = ACMD_GAME , low_priority)]
-unsafe fn robin_arcthunder_spark_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_arcthunder_spark_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -275,10 +276,10 @@ unsafe fn robin_arcthunder_spark_game(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "reflet_thunder", script = "game_tron0" , category = ACMD_GAME , low_priority)]
-unsafe fn robin_thoron_game(agent: &mut L2CAgentBase) {
+unsafe fn reflet_thoron_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let robin_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(agent.boma(), *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let charge = VarModule::get_int(robin_boma.object(), vars::robin::instance::THUNDER_CHARGE);
+    let reflet_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(agent.boma(), *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    let charge = VarModule::get_int(reflet_boma.object(), vars::reflet::instance::THUNDER_CHARGE);
     //let damage = (1 + (charge-1)*9/14) as f32;
     let damage = 1.5 + (charge/2) as f32;
     if is_excute(agent) {
@@ -293,7 +294,7 @@ unsafe fn robin_thoron_game(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "reflet_gigafire", script = "game_burn", category = ACMD_GAME, low_priority )]
-unsafe fn robin_arcfire_burn_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_arcfire_burn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -311,7 +312,7 @@ unsafe fn robin_arcfire_burn_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "reflet_gigafire", script = "game_rise", category = ACMD_GAME, low_priority )]
-unsafe fn robin_arcfire_rise_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_arcfire_rise_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -326,7 +327,7 @@ unsafe fn robin_arcfire_rise_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "reflet_gigafire", script = "effect_rise", category = ACMD_EFFECT, low_priority )]
-unsafe fn robin_arcfire_rise_effect(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_arcfire_rise_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("reflet_gigafire_firepillar"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 1.45);
@@ -345,14 +346,14 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
-        robin_elwind_shoot0_game,
-        robin_elwind_landing_game,
-        robin_arcthunder_shoot2_game,
-        robin_arcthunder_spark_game,
-        robin_thoron_game,
-        robin_arcfire_burn_game,
-        robin_arcfire_rise_game,
-        robin_arcfire_rise_effect
+        reflet_elwind_shoot0_game,
+        reflet_elwind_landing_game,
+        reflet_arcthunder_shoot2_game,
+        reflet_arcthunder_spark_game,
+        reflet_thoron_game,
+        reflet_arcfire_burn_game,
+        reflet_arcfire_rise_game,
+        reflet_arcfire_rise_effect
     );
 }
 

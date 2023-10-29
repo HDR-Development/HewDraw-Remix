@@ -15,10 +15,8 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="attack_speed_x">2</float>
-      <float hash="attack_speed_y">0</float>
-      <int hash="push_b_max">1</int>
-      <float hash="0x164fbe4f35">0.7</float>
+      <float hash="start_spd_x_mul">0.8</float>
+      <float hash="air_spd_y">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -26,16 +24,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="blow_accel_y">0.14</float>
-      <float hash="air_start_speed_y">0.3</float>
-      <float hash="up_speed_limit">1.15</float>
-      <float hash="up_power_limit_power">0.0025</float>
-      <float hash="speed_max_y">1.15</float>
-      <float hash="hovering_accel_y">0.09</float>
-      <float hash="hovering_speed_max_y">1.5</float>
-      <float hash="hovering_speed_max_x">0.9</float>
-      <float hash="energy_max_frame">95</float>
-      <float hash="recovery_energy">0.2</float>
+      <float hash="energy_max_frame">200</float>
+      <float hash="recovery_energy">0.75</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
