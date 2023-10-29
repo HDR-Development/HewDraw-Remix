@@ -109,8 +109,8 @@ pub fn install() {
     { richter::install(cfg!(feature = "runtime")); }
     #[cfg(feature = "include-miiswordsman")]
     { miiswordsman::install(cfg!(feature = "runtime")); }
-    #[cfg(feature = "include-robin")]
-    { robin::install(cfg!(feature = "runtime")); }
+    #[cfg(feature = "include-reflet")]
+    { reflet::install(cfg!(feature = "runtime")); }
     #[cfg(feature = "include-master")]
     { master::install(cfg!(feature = "runtime")); }
     #[cfg(feature = "include-robot")]
