@@ -44,6 +44,13 @@ unsafe fn nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
             sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
             sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.005);
             sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
+        } else {
+            if fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"))
+            && fighter.global_table[FLICK_Y].get_i32() < WorkModule::get_param_int(boma, hash40("common"), hash40("pass_flick_y"))
+            && GroundModule::is_passable_ground(boma) {
+                GroundModule::pass_floor(fighter.module_accessor);
+                ControlModule::clear_command;
+            }
         }
     }
 }

@@ -73,9 +73,6 @@ appeal_lw_l:
   - expression_win2b
   - sound_appeallwl
   - effect_win2
-attack_air_n:
-  extra:
-    cancel_frame: 51
 attack_air_f:
   extra:
     cancel_frame: 31
@@ -112,7 +109,7 @@ special_air_hi:
     cancel_frame: 45
 special_air_s_u:
   extra:
-    cancel_frame: 44
+    cancel_frame: 43
 special_s_hold_end:
   extra:
     cancel_frame: 61

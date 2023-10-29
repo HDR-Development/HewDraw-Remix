@@ -24,9 +24,6 @@
       <int hash="charge_frame_max">150</int>
       <int hash="cancel_frame">18</int>
       <float hash="air_start_speed_mul_x">0.35</float>
-      <float hash="air_start_max_speed_y">1.4</float>
-      <float hash="air_fire_max_speed_y">1.4</float>
-      <int hash="add_fire_max">1</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -37,8 +34,6 @@
       <float hash="shoot_angle_f">3</float>
       <float hash="shoot_angle_h">6</float>
       <float hash="attack_scale_mul">1.25</float>
-      <float hash="speed">15.0</float>
-      <int hash="life">10</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -49,7 +44,7 @@
       <int hash="ab_u_landing_frame">18</int>
       <int hash="ab_u_landing_frame_2nd">22</int>
       <float hash="ab_d_hit_after_speed_y">2.6</float>
-      <float hash="ab_d_hit_after_max_accel_x">0.039</float>
+      <float hash="ab_d_hit_after_max_accel_x">0.035</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
       <float hash="ab_u_motion_speed_mul">0.81</float>
       <float hash="ab_u_rotate">-25</float>
@@ -71,11 +66,11 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="speed_mul_y">1.18</float>
-      <float hash="air_speed_mul_y">1.18</float>
+      <float hash="speed_mul_y">1.15</float>
+      <float hash="air_speed_mul_y">1.15</float>
       <float hash="speed_mul_y_2nd">1.05</float>
       <float hash="air_start_speed_mul_y">0.17</float>
-      <float hash="air_start_speed_mul_x">0.34</float>
+      <float hash="air_start_speed_mul_x">0.4</float>
       <int hash="landing_frame">15</int>
       <int hash="act_landing_frame">18</int>
       <int hash="landing_frame_2nd">20</int>
