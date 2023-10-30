@@ -128,13 +128,25 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + 1) % 3);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
+    let mut advance = 0;
+    frame(lua_state, 1.0);
+    if is_excute{
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
+    }
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        if boma.is_button_on(Button::AppealAll) {
+            advance = 2
+        }
+        else {
+            advance = 1
+        }
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
 }
 
@@ -142,7 +154,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
@@ -156,31 +168,22 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_appealsl", category = ACMD_GAME , low_priority)]
-unsafe fn appeal_s_l_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "packun", scripts = ["game_appealsl", "game_appealsr"] , category = ACMD_GAME , low_priority)]
+unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
+    let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    let mut advance = 0;
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
-    }
-}
-
-#[acmd_script( agent = "packun", script = "game_appealsr", category = ACMD_GAME , low_priority)]
-unsafe fn appeal_s_r_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 2);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        if boma.is_button_on(Button::AppealAll) {
+            advance = 2
+        }
+        else {
+            advance = 1
+        }
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
 
@@ -192,6 +195,11 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
         }
     }
@@ -219,13 +227,18 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 1);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
+    let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    let mut advance = 0;
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        if boma.is_button_on(Button::AppealAll) {
+            advance = 2
+        }
+        else {
+            advance = 1
+        }
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
 
@@ -237,6 +250,11 @@ unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
         }
     }
@@ -561,10 +579,7 @@ pub fn install() {
         turn_dash_game,
         appeal_hi_game,
         appeal_hi_sound,
-        appeal_s_l_game,
-        appeal_s_r_game,
         appeal_s_sound,
-        appeal_lw_game,
         appeal_lw_sound,
         packun_spikeball_game_start,
         packun_spikeball_game_start_air,
