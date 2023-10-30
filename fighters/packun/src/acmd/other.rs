@@ -129,17 +129,71 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     let mut advance = 0;
+    let mut holding = true;
     frame(lua_state, 1.0);
-    if is_excute{
+    if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if boma.is_button_on(Button::AppealAll) {
-            advance = 2
+        if holding {
+            advance = 2;
         }
         else {
-            advance = 1
+            advance = 1;
         }
         VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
@@ -174,13 +228,70 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     let mut advance = 0;
+    let mut holding = true;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if boma.is_button_on(Button::AppealAll) {
-            advance = 2
+        if holding {
+            advance = 2;
         }
         else {
-            advance = 1
+            advance = 1;
         }
         VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
@@ -229,13 +340,70 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     let mut advance = 0;
+    let mut holding = true;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if holding {
+            if !boma.is_button_on(Button::AppealAll) {
+                holding = false;
+            }
+        }
+    }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if boma.is_button_on(Button::AppealAll) {
-            advance = 2
+        if holding {
+            advance = 2;
         }
         else {
-            advance = 1
+            advance = 1;
         }
         VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
