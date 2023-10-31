@@ -8,9 +8,9 @@ def collect_plugin(package_name: str, package_path: str, build_type: str, plugin
   print("COLLECTING " + package_name + " plugins!")
   # get nro
   if build_subdir != None:
-    plugin_source = os.path.join("plugin/target/" + build_subdir + "/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+    plugin_source = os.path.join("target/" + build_subdir + "/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
   else:
-    plugin_source = os.path.join("plugin/target/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+    plugin_source = os.path.join("target/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
     
   print("plugin source: " + plugin_source)
 
@@ -43,9 +43,7 @@ def build(build_type: str, dev_args: str) -> bool:
   print(build_command)
 
   # build the plugin
-  os.chdir('plugin')
   retval = os.system(build_command)
-  os.chdir('..')
 
   if retval == 0:
     return True
