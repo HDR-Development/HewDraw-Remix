@@ -2,6 +2,103 @@
 use super::*;
 
 
+#[acmd_script( agent = "purin", script = "game_specialnstartr", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_n_start_r_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialairnstartr", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_air_n_start_r_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialn", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        JostleModule::set_status(boma, false);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 30, 60, 0, 60, 2.5, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        AttackModule::set_attack_keep_rumble(boma, 0, true);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialairn", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_air_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        JostleModule::set_status(boma, false);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 30, 60, 0, 60, 2.5, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        AttackModule::set_attack_keep_rumble(boma, 0, true);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialnhold", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_n_hold_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialairnhold", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_air_n_hold_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialnturn", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_n_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+}
+
+#[acmd_script( agent = "purin", script = "game_specialairnturn", category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+}
+
+#[acmd_script( agent = "purin", scripts = ["game_specialairnendl", "game_specialairnendr", "game_specialnendr", "game_specialnendl"], category = ACMD_GAME, low_priority )]
+unsafe fn purin_special_n_end(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, false);
+    }
+}
+
 #[acmd_script( agent = "purin", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn purin_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -77,6 +174,15 @@ unsafe fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        purin_special_n_start_r_game,
+        purin_special_air_n_start_r_game,
+        purin_special_n_game,
+        purin_special_air_n_game,
+        purin_special_n_hold_game,
+        purin_special_air_n_hold_game,
+        purin_special_n_turn_game,
+        purin_special_air_n_turn_game,
+        purin_special_n_end,
         purin_special_s_game,
         purin_special_air_s_game,
         purin_special_lw_game,
