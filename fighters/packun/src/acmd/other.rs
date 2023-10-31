@@ -134,7 +134,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -142,7 +142,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -150,7 +150,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -158,7 +158,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -166,7 +166,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -174,7 +174,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -182,7 +182,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -232,7 +232,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -240,7 +240,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -248,7 +248,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -256,7 +256,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -264,7 +264,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -272,7 +272,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -280,7 +280,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -344,7 +344,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -352,7 +352,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -360,7 +360,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -368,7 +368,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -376,7 +376,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -384,7 +384,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
@@ -392,7 +392,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if holding {
-            if !boma.is_button_on(Button::AppealAll) {
+            if !boma.is_button_on(Buttons::AppealAll) {
                 holding = false;
             }
         }
