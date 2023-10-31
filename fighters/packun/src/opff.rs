@@ -108,12 +108,12 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
     // dash & momentum transfer speeds
     if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-        VarModule::set_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 0.88);
+        VarModule::set_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.0);
 
         // if you are initial dash, slow them down slightly
         if fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
             let motion_vec = Vector3f {
-                x: -0.15 * PostureModule::lr(fighter.boma()) * (1.0 - (MotionModule::frame(fighter.boma()) / MotionModule::end_frame(fighter.boma()))),
+                x: -0.05 * PostureModule::lr(fighter.boma()) * (1.0 - (MotionModule::frame(fighter.boma()) / MotionModule::end_frame(fighter.boma()))),
                 y: 0.0, 
                 z: 0.0
             };
@@ -187,10 +187,28 @@ unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Allows hold input to transition to rapid jab if in Putrid stance
-unsafe fn putrid_gentleman(boma: &mut BattleObjectModuleAccessor) {
+// Allows hold input to transition to rapid jab if in Putrid stance, and handles changed animations per stance
+unsafe fn motion_handler(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_13")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+    }
+    if boma.is_motion(Hash40::new("attack_s3_s")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    if boma.is_motion(Hash40::new("attack_s4_s")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("attack_s4_s_2"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    if boma.is_motion(Hash40::new("attack_s4_hold")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("attack_s4_hold_2"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    if boma.is_motion(Hash40::new("attack_air_b")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("attack_air_b_s"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    if boma.is_motion(Hash40::new("special_s_shoot")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("special_s_shoot_s"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    if boma.is_motion(Hash40::new("special_air_s_shoot")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("special_air_s_shoot_s"), 0.0, 1.0, false, 0.0, false, false);
     }
 }
 
@@ -241,7 +259,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     check_reset(fighter);
     check_apply_speeds(fighter);
     stance_init_effects(fighter);
-    putrid_gentleman(boma);
+    motion_handler(boma);
     fastfall_specials(fighter);
 }
 
@@ -268,12 +286,6 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
 		let status_kind = StatusModule::status_kind(boma);
 		let motion_kind = MotionModule::motion_kind(boma);
         if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
-            if weapon.status_frame() <= 1 && weapon.status_frame() % 35 == 0 && (motion_kind != hash40("explode") && motion_kind != hash40("burst")) {
-                macros::ATTACK(weapon, 4, 1, Hash40::new("top"), 1.2, 361, 0, 0, 0, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_FEB, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_bind_extra"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-            }
-            else {
-                AttackModule::clear(boma, 4, false);
-            }
             let pos_x = PostureModule::pos_x(boma);
             let pos_y = PostureModule::pos_y(boma);
             let packun_pos_x = PostureModule::pos_x(owner_module_accessor);
@@ -286,14 +298,15 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
                     VarModule::on_flag(owner_object, vars::packun::status::CLOUD_COVER);
                 }
                 if VarModule::is_flag(owner_object, vars::packun::status::FLAME_ACTIVE) &&
-                (motion_kind != hash40("explode") && motion_kind != hash40("burst")) {
+                motion_kind != hash40("explode") {
                     //println!("Woo!");
                     MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
                 }
-                if VarModule::is_flag(owner_object, vars::packun::status::BURST_BITE) &&
-                (motion_kind != hash40("explode") && motion_kind != hash40("burst")) {
+                if VarModule::is_flag(owner_object, vars::packun::status::BITE_START) &&
+                motion_kind != hash40("explode") {
                     //println!("Woo!");
-                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("burst"), 0.0, 1.0, false, 0.0, false, false);
+                    VarModule::on_flag(owner_object, vars::packun::status::BURST);
+                    WorkModule::set_int(boma, 1, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
                 }
             }
 		}

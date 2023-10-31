@@ -42,19 +42,26 @@ unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     let shield_damage = if stance.label != 2 { 0 } else { 2 };
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if stance.label == 2 {
+            VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
+        }
+    }
     if stance.label == 2 {
         FT_MOTION_RATE(agent, (7.0/5.0));
     }
     frame(lua_state, 5.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
+        VarModule::off_flag(boma.object(), vars::packun::status::BITE_START);
         if stance.label == 1 {
             ATTACK(agent, 0, 0, Hash40::new("top"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 6.5, 0.0, 7.5, 15.0, Some(0.0), Some(10.5), Some(15.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
             ATTACK(agent, 1, 0, Hash40::new("virtualhit3"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
             ATTACK(agent, 2, 0, Hash40::new("virtualhit2"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-            AttackModule::set_poison_param(boma, 0, 121, 30, 2.0, false);
-            AttackModule::set_poison_param(boma, 1, 121, 30, 2.0, false);
-            AttackModule::set_poison_param(boma, 2, 121, 30, 2.0, false);
+            AttackModule::set_poison_param(boma, 0, 121, 30, 1.8, false);
+            AttackModule::set_poison_param(boma, 1, 121, 30, 1.8, false);
+            AttackModule::set_poison_param(boma, 2, 121, 30, 1.8, false);
         }
         else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 6.5, 0.0, 7.5, 15.0, Some(0.0), Some(10.5), Some(15.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
@@ -66,14 +73,25 @@ unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
                 HIT_NODE(agent, Hash40::new("lipd3"), *HIT_STATUS_XLU);
                 HIT_NODE(agent, Hash40::new("neck6"), *HIT_STATUS_XLU);
                 HIT_NODE(agent, Hash40::new("neck8"), *HIT_STATUS_XLU);
-                VarModule::on_flag(boma.object(), vars::packun::status::BURST_BITE);
+            }
+            if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+                ATTACK(agent, 0, 0, Hash40::new("top"), 7.5 * stance.damage_bite, 361, 125, 0, 40, 6.5, 0.0, 7.5, 15.0, Some(0.0), Some(10.5), Some(15.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 361, 125, 0, 40, 6.5, 0.0, 10.0, 15.0, Some(0.0), Some(10.5), Some(15.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
+                ATTACK(agent, 2, 0, Hash40::new("virtualhit2"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                ATTACK(agent, 3, 0, Hash40::new("virtualhit3"), 6.0 * stance.damage_bite, 361, 125, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
             }
         }
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+            ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 361, 125, 0, 40, 6.5, 0.0, 10.0, 15.0, Some(0.0), Some(10.5), Some(15.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
+        }
+    }
+    wait(lua_state, 2.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        VarModule::off_flag(boma.object(), vars::packun::status::BURST_BITE);
+        VarModule::off_flag(boma.object(), vars::packun::status::BURST);
         HIT_NODE(agent, Hash40::new("mouth"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("lipu3"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("lipd3"), *HIT_STATUS_NORMAL);
@@ -81,6 +99,47 @@ unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("neck8"), *HIT_STATUS_NORMAL);
     }
     
+}
+
+#[acmd_script( agent = "packun", script = "effect_attacks32", category = ACMD_EFFECT, low_priority )]
+unsafe fn packun_attack_s3_s2_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_NO_STOP_FLIP(agent, Hash40::new("packun_bite_line"), Hash40::new("packun_bite_line"), Hash40::new("top"), -5, 11, 19, 0, -130, 35, 1, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite_line2"), Hash40::new("packun_bite_line2"), Hash40::new("top"), -12, 9, 20, 10, 50, 10, 0.8, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite"), Hash40::new("packun_bite"), Hash40::new("top"), -9, 11, 18, 0, -120, 20, 1, true, *EF_FLIP_YZ);
+        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(agent, 0.15, 0.01, 0.6);
+		    LAST_EFFECT_SET_RATE(agent, 0.7);
+        }
+    }
+}
+
+#[acmd_script( agent = "packun", script = "sound_attacks32", category = ACMD_SOUND, low_priority )]
+unsafe fn packun_attack_s3_s2_sound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_packun_attackhard_s03"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_packun_attackhard_s04"));
+        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+            PLAY_SE(agent, Hash40::new("se_common_bomb_s"));
+        }
+    }
 }
 
 #[acmd_script( agent = "packun", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -167,6 +226,8 @@ pub fn install() {
     install_acmd_scripts!(
         packun_attack_s3_s_game,
         packun_attack_s3_s2_game,
+        packun_attack_s3_s2_effect,
+        packun_attack_s3_s2_sound,
         packun_attack_hi3_game,
         packun_attack_lw3_game,
         packun_attack_lw3_effect,
