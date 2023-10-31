@@ -360,6 +360,12 @@ pub mod vars {
         }
     }
 
+    pub mod captain {
+        pub mod status {
+            pub const YES: i32 = 0x1100;
+        }
+    }
+
     pub mod chrom {
         pub mod instance {
             // flags
@@ -843,7 +849,7 @@ pub mod vars {
         }
     }
 
-    pub mod robin {
+    pub mod reflet {
         pub mod status {
             // flags
             pub const ELWIND1_CANCEL: i32 = 0x1100;
@@ -851,6 +857,25 @@ pub mod vars {
         pub mod instance {
             //flags
             pub const THUNDER_CHARGE: i32 = 0x0100;
+        }
+    }
+
+    pub mod rockman {
+        pub mod instance {
+            // flags
+            pub const CHARGE_SHOT_CHARGING : i32 = 0x0100;
+            pub const CHARGE_SHOT_PLAYED_FX : i32 = 0x0101;
+            pub const CHARGE_SHOT_RELEASE : i32 = 0x0102;
+            
+            // ints
+            pub const CHARGE_SHOT_FRAME : i32 = 0x0100;
+            pub const CHARGE_SHOT_EFF_HANDLE : i32 = 0x0101;
+            pub const CHARGE_SHOT_SND_HANDLE : i32 = 0x0102;
+            pub const CHARGE_SHOT_RELEASE_FRAME : i32 = 0x0103;
+        }
+        pub mod status {
+            // flags
+            pub const CHARGE_SHOT_KEEP_CHARGE : i32 = 0x1100;
         }
     }
 
@@ -932,18 +957,19 @@ pub mod vars {
     pub mod snake {
         pub mod instance {
             // flags
-            pub const SELF_STICK : i32 = 0x0100;
-            pub const KNIFE_COMBO_ENABLE : i32 = 0x0101;
-            pub const KNIFE_COMBO_IS_BUFFERED : i32 = 0x0102;
-            pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
-            pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
-            pub const IS_GRAB_WALK : i32 = 0x0105;
+            pub const SELF_STICK: i32 = 0x0100;
+            pub const KNIFE_COMBO_ENABLE: i32 = 0x0101;
+            pub const KNIFE_COMBO_IS_BUFFERED: i32 = 0x0102;
+            pub const DTAUNT_C4_EXLPODE: i32 = 0x0103;
+            pub const DTAUNT_GRENADE_WAIT_COUNT: i32 = 0x0104;
+            pub const IS_GRAB_WALK: i32 = 0x0105;
             pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
             pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
 
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
-            pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
+            pub const KNIFE_COMBO_COUNT: i32 = 0x0101;
+            pub const TRANQ_AMMO_COUNT: i32 = 0x0102;
         }
     }
 
@@ -961,6 +987,7 @@ pub mod vars {
             pub const ATTACK_12_INTO_S3: i32 = 0x0100;
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
+            pub const CYCLE_MAGIC: i32 = 0x0103; // used to properly cycle Sora's HUD to fire in training mode
         }
         pub mod status {
             // flags
@@ -1005,11 +1032,16 @@ pub mod vars {
     pub mod robot {
         pub mod instance {
             // flags
-            pub const AIRTIME_DAIR: i32 = 0x0100;
-            pub const AIRTIME_BAIR: i32 = 0x0101;
+            pub const AIRTIME_BAIR: i32 = 0x0100;
+            pub const AIRTIME_SIDEB: i32 = 0x0101;
             // ints
             pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
             pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
+            // floats
+            pub const STICK_ANGLE: i32 = 0x0100;
+            pub const FRAMES_SINCE_UPB: i32 = 0x0101;
+            pub const FRAMES_SINCE_UPB_RISE: i32 = 0x0102;
+            pub const JOINT_ROT: i32 = 0x1103;
         }
         pub mod status {
             // flags
@@ -1017,6 +1049,7 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const IS_CHARGE_MAX: i32 = 0x1102;
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
+            pub const HELD_BUTTON: i32 = 0x1104;
         }
     }
 
@@ -1054,10 +1087,9 @@ pub mod vars {
         pub mod status {
             // flags
             pub const WAVE_SPECIAL_N: i32 = 0x1100;
-
-            pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1100;
-
-            pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1100;
+            pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1101;
+            pub const SHOCK_SPELL_HOLD: i32 = 0x1102;
+            pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1103;
         }
     }
 
