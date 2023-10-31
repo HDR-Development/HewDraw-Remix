@@ -38,6 +38,12 @@ def collect_romfs(package_name: str, context_path: str, mod_name: str):
 
 ## returns whether the build was successful
 def build(build_type: str, dev_args: str) -> bool:
+  build_romfs_command = "cargo run --release -p build-tools"
+  print("BUILD ROMFS COMMAND:")
+  print(build_romfs_command)
+
+  os.system(build_romfs_command)
+
   build_command = "cargo skyline build " + build_type + " " + dev_args
   print("BUILD COMMAND:")
   print(build_command)
