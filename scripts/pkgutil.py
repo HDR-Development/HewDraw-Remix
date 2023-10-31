@@ -33,7 +33,7 @@ def collect_romfs(package_name: str, context_path: str, mod_name: str):
     os.path.join(romfs_destination),
     dirs_exist_ok=True)
   shutil.copyfile(os.path.join("romfs/config.json"), os.path.join(romfs_destination, "config.json"))
-  shutil.copyfile(os.path.join("plugin/hdr_version.txt"), os.path.join(romfs_destination, "ui/hdr_version.txt"))
+  shutil.copyfile(os.path.join("hdr_version.txt"), os.path.join(romfs_destination, "ui/hdr_version.txt"))
   return
 
 ## returns whether the build was successful
