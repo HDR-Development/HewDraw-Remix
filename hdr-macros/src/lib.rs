@@ -1,4 +1,3 @@
-#![feature(box_into_inner)]
 use std::path::Path;
 
 use proc_macro::TokenStream;
@@ -65,7 +64,9 @@ pub fn size_of_rom_file(item: TokenStream) -> TokenStream {
     };
     let local_path = literal.value();
 
-    let path = Path::new(file!());
+    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
+
     let parent = match path.parent() {
         Some(parent) => parent,
         None => {
@@ -96,7 +97,8 @@ pub fn size_of_rom_file(item: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn rom_path(item: TokenStream) -> TokenStream {
     let item = TokenStream2::from(item);
-    let path = Path::new(file!());
+    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
     let parent = match path.parent() {
         Some(parent) => parent,
         None => {
@@ -125,7 +127,8 @@ pub fn rom_path(item: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn rom_source_path(item: TokenStream) -> TokenStream {
     let item = TokenStream2::from(item);
-    let path = Path::new(file!());
+    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
     let parent = match path.parent() {
         Some(parent) => parent,
         None => {
@@ -165,7 +168,8 @@ pub fn from_root(item: TokenStream) -> TokenStream {
         }
     };
 
-    let path = Path::new(file!());
+    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
     let parent = match path.parent() {
         Some(parent) => parent,
         None => {
@@ -226,7 +230,8 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
         }
     };
 
-    let path = Path::new(file!());
+    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
     let parent = match path.parent() {
         Some(parent) => parent,
         None => {
@@ -250,7 +255,8 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
         }
     };
 
-    let path = Path::new(file!());
+    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
     let parent = match path.parent() {
         Some(parent) => parent,
         None => {
@@ -340,7 +346,7 @@ fn handle_tree_path(path: syn::UsePath, current_path: &String, no_ret: bool) -> 
         .unwrap()
         .1
         .push(handle_tree_recursive(
-            Box::into_inner(tree),
+            *tree,
             &format!("{}__{}", current_path, ident.to_string()),
             no_ret,
         ));
