@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <int hash="precede">5</int>
+  <int hash="precede">3</int>
   <int hash="precede_extension">0</int>
   <float hash="ground_speed_limit">4</float>
   <float hash="stop_over_speed_brake_mul">1</float>
