@@ -37,7 +37,7 @@ def collect_romfs(package_name: str, context_path: str, mod_name: str):
   return
 
 ## returns whether the build was successful
-def build(build_type: str, dev_args: str, is_publish) -> bool:
+def build(build_type: str, dev_args: str) -> bool:
   target = None
   if sys.platform == 'darwin':
     target = "aarch64-apple-darwin"
