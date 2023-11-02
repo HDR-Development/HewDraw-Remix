@@ -826,6 +826,12 @@ pub mod vars {
         }
     }
 
+    pub mod ptrainer {
+        pub mod instance {
+            pub const IS_SWITCH_BACKWARDS: i32 = 0x0100;
+        }
+    }
+
     pub mod plizardon {
         pub mod instance {
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
