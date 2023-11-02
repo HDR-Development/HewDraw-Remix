@@ -45,10 +45,10 @@ def build(build_type: str, dev_args: str, is_publish) -> bool:
     target = "x86_64-unknown-linux-gnu"
   elif sys.platform == 'win32':
     target = "x86_64-pc-windows-msvc"
-
-  build_romfs_command = "cargo run --release -p build-tools"
-  if not is_publish:
-    build_romfs_command = "RUSTFLAGS=\"--cfg skyline_std_v3\" SKYLINE_ADD_NRO_HEADER=1 cargo run --release -p build-tools -v -Z build-std=core,alloc,std,panic_abort --target " + target
+  
+  build_romfs_command = "RUSTFLAGS=\"--cfg skyline_std_v3\" SKYLINE_ADD_NRO_HEADER=1 cargo +nightly run --release -p build-tools -v -Z build-std=core,alloc,std,panic_abort --target " + target
+  if "NO_RUST_NIGHTLY" in os.environ:
+    build_romfs_command = "cargo run --release -p build-tool"
   print("BUILD ROMFS COMMAND:")
   print(build_romfs_command)
 

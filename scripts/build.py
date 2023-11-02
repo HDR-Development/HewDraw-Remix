@@ -170,7 +170,7 @@ if (is_dev_build and not is_publish):
   
   if allow_build_dev:
     print("release arg: " + release_arg)
-    retval = pkgutil.build(release_arg, dev_args, is_publish)
+    retval = pkgutil.build(release_arg, dev_args)
     
     print("subpath: " + development_subpath)
     print("type: " + build_type)
@@ -200,7 +200,7 @@ if (is_dev_build and not is_publish):
     # build the regular plugin with args
     handle_fallback()
     os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "standalone")
-    pkgutil.build(release_arg, plugin_args, is_publish)
+    pkgutil.build(release_arg, plugin_args)
 
   # collect switch plugin
   pkgutil.collect_plugin("hdr-switch", 
@@ -246,9 +246,9 @@ else:
 
   # simple build
   if is_only:
-    pkgutil.build(release_arg, "--no-default-features " + feature_list, is_publish)
+    pkgutil.build(release_arg, "--no-default-features " + feature_list)
   else:
-    pkgutil.build(release_arg, feature_list, is_publish)
+    pkgutil.build(release_arg, feature_list)
 
   # collect switch package
   pkgutil.collect_plugin("hdr-switch", 
