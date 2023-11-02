@@ -48,7 +48,7 @@ def build(build_type: str, dev_args: str) -> bool:
   
   build_romfs_command = "RUSTFLAGS=\"--cfg skyline_std_v3\" SKYLINE_ADD_NRO_HEADER=1 cargo +nightly run --release -p build-tools -v -Z build-std=core,alloc,std,panic_abort --target " + target
   if "NO_RUST_NIGHTLY" in os.environ:
-    build_romfs_command = "cargo run --release -p build-tool"
+    build_romfs_command = "cargo run --release -p build-tools"
   print("BUILD ROMFS COMMAND:")
   print(build_romfs_command)
 
