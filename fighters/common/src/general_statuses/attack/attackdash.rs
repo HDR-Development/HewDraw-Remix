@@ -359,7 +359,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
         let is_catch = sub_attack_dash_is_cancel_catch(fighter);
         let is_tilt_input = frame > 1 && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
         let is_attackhi4 = stick_y >= 0.7 && is_catch || is_tilt_input || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0;
-        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START) && is_attackhi4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START) && is_attackhi4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
     }
 
     unsafe fn sub_attack_dash_is_attacklw4_cancel(fighter: &mut L2CFighterCommon) -> bool {
@@ -370,7 +370,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
         let is_catch = sub_attack_dash_is_cancel_catch(fighter);
         let is_tilt_input = frame > 1 && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
         let is_attacklw4 = stick_y <= -0.7 && is_catch || is_tilt_input || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 != 0;
-        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) && is_attacklw4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) && is_attacklw4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
     }
     
     unsafe fn sub_attack_dash_is_cancel_catch(fighter: &mut L2CFighterCommon) -> bool {
