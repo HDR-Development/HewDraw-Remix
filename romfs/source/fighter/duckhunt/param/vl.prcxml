@@ -19,6 +19,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="fly_initial_speed_x">0.3</float>
+      <float hash="max_speed_x">0.7</float>
       <int hash="flap_times">6</int>
     </struct>
     <hash40 index="1">dummy</hash40>

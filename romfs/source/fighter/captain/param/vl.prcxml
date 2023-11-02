@@ -12,6 +12,7 @@
     <struct index="0">
       <float hash="speed_coef">0.95</float>
       <float hash="speed_x_mul">3</float>
+      <float hash="speed_max_x_mul">0.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

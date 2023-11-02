@@ -50,6 +50,8 @@
     <struct index="0">
       <float hash="start_accel_y_mul_air">0.6</float>
       <float hash="jump_accel_y">0.035</float>
+      <float hash="jump_accel_x_add">0.06</float>
+      <float hash="jump_speed_x_mul">0.3</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

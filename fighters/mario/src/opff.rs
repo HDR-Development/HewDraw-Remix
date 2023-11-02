@@ -144,40 +144,45 @@ unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjec
 unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
     let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
     let air_fri = Vector3f{x: 0.89, y: 1.0, z: 0.0}; // air friction
+    let start_x_mul = 0.4;
     if motion_kind == hash40("special_air_lw_light") {
         if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) {
-            if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
+            if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
+                if frame <= 2.0 {
+                    let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_speed * start_x_mul);
+                    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                }
                 if frame >= 6.0 && frame < 35.0 {  
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.0);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.06);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
                 }
                 if frame >= 35.0 && frame < 45.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 }
                 if frame >= 45.0 && frame < 50.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.075);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 }
                 if frame >= 50.0 {
-                    VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.095);
+                    VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                 }
             }  
         }
     }
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY]) 
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR]) 
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT {
-        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF) 
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
     || fighter.is_situation(*SITUATION_KIND_LADDER) {
-        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
     }
 }
 

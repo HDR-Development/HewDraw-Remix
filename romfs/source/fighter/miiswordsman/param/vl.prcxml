@@ -67,6 +67,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="hi1_air_start_mul_y">0.7</float>
+      <float hash="hi1_jump_mul_x">4</float>
     </struct>
     <struct index="1">
       <float hash="hi2_rush_speed">2.4</float>
@@ -75,9 +76,9 @@
     <struct index="2">
       <float hash="hi3_air_start_spd_y">2.3</float>
       <float hash="hi3_air_gravity_y_mul">0.55</float>
-      <float hash="hi3_air_spd_x_mul">0.4</float>
+      <float hash="hi3_air_spd_x_mul">0.3</float>
       <float hash="hi3_air_accel_x_mul">0.01</float>
-      <float hash="hi3_air_max_x_mul">0.5</float>
+      <float hash="hi3_air_max_x_mul">0.4</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

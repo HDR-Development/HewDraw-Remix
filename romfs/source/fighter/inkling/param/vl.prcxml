@@ -40,6 +40,7 @@
     <struct index="0">
       <float hash="height_mul_on_ground">0.95</float>
       <float hash="height_mul_on_air">1</float>
+      <float hash="max_change_angle">15</float>
       <int hash="landing_frame">20</int>
     </struct>
     <hash40 index="1">dummy</hash40>

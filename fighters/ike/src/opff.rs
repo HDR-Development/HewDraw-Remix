@@ -437,7 +437,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    aether_drift(boma, status_kind, situation_kind, stick_x, facing);
+    //aether_drift(boma, status_kind, situation_kind, stick_x, facing);
     quickdraw_jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
     quickdraw_instakill(fighter, boma);
     quickdraw_attack_arm_bend(boma);

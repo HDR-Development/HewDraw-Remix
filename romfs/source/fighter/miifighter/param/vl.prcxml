@@ -9,14 +9,21 @@
     </struct>
   </list>
   <list hash="param_special_hi">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <float hash="hi1_control_limit_mul_x">0.5</float>
+      <float hash="hi1_jump_mul_x">5</float>
+    </struct>
     <struct index="1">
       <float hash="hi2_air_start_spd_y">2.22</float>
-      <float hash="hi2_air_gravity_y_mul">0.4</float>
+      <float hash="hi2_jump_x_speed">0.5</float>
+      <float hash="hi2_air_start_spd_y">2.22</float>
+      <float hash="hi2_air_accel_x_mul">0.4</float>
+      <float hash="hi2_air_max_x_mul">0.5</float>
     </struct>
     <struct index="2">
       <float hash="hi3_pass_mul">0.85</float>
       <float hash="air_hi3_pass_mul">0.85</float>
+      <float hash="hi3_dir_mul">15</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

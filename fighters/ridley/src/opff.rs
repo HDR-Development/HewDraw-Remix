@@ -24,8 +24,8 @@ unsafe fn space_pirate_rush_flight(boma: &mut BattleObjectModuleAccessor, status
 
 // Ridley Wing Blitz Drift
 unsafe fn wing_blitz_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, stick_y: f32) {
-    let motion_value1 = 0.7;
-    let motion_value2 = 0.7;
+    let motion_value1 = 0.4;
+    let motion_value2 = 0.4;
     if situation_kind == *SITUATION_KIND_AIR {
         if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI,
             *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW].contains(&status_kind) {

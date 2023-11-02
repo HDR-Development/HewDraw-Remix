@@ -17,7 +17,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="turn_after_flip_y_mul">0.85</float>
-      <float hash="special_hi_x_spd_coef">50</float>
+      <float hash="special_hi_x_spd_coef">13</float>
       <float hash="jump_speed_mul">0.88</float>
     </struct>
     <hash40 index="1">dummy</hash40>

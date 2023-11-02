@@ -8,9 +8,11 @@
   </list>
     <list hash="param_special_hi">
     <struct index="0">
+      <float hash="limit_speed_x_2">0.7</float>
       <float hash="limit_speed_y_2">1.2</float>
-      <float hash="limit_frame">190</float>
+      <float hash="limit_speed_x_1">0.5</float>
       <float hash="limit_speed_y_1">1.2</float>
+      <float hash="limit_frame">190</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

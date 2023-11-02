@@ -17,8 +17,9 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 
 // Game & Watch Parachute Double Jump
 unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE]) {
-        boma.check_jump_cancel(false, false);
+    if boma.is_status(*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL) {
+        WorkModule::set_float(boma, 20.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
     }
 }
 

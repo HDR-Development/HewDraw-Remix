@@ -34,9 +34,9 @@
     <struct index="0">
       <float hash="rslash_air_gravity_y_mul">0.53</float>
       <float hash="rslash_air_accel_x_mul">0.01</float>
-      <float hash="rslash_air_max_x_mul">0.6</float>
+      <float hash="rslash_air_max_x_mul">0.4</float>
       <float hash="rslash_end_air_accel_x_mul">0.01</float>
-      <float hash="rslash_end_air_max_x">0.6</float>
+      <float hash="rslash_end_air_max_x">0.4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -17,6 +17,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="air_hi_pass_mul">0.95</float>
+      <float hash="dir_mul_value">15</float>
       <float hash="hi_pass_mul">0.95</float>
     </struct>
     <hash40 index="1">dummy</hash40>
