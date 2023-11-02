@@ -10,8 +10,8 @@ use crate::modules::*;
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
 use crate::util::get_fighter_common_from_accessor;
-use smash::hash40;
 use smash::app::lua_bind::*;
+use smash::hash40;
 
 use super::INPUT_MODULE_OFFSET;
 
@@ -162,7 +162,7 @@ impl InputModule {
             },
             hold_all: false,
             hold_all_frame_max: -1,
-            trigger_count: [usize::MAX; 32]
+            trigger_count: [usize::MAX; 32],
         }
     }
 
@@ -269,9 +269,11 @@ impl InputModule {
     pub fn exec(object: *mut BattleObject, cats: &mut [&mut [u8]; 5]) {
         let module = require_input_module!(object);
 
-        let press_frame = unsafe {
+        let mut press_frame = unsafe {
             ControlModule::get_command_life_count_max((*module.owner).module_accessor) as i32
         };
+
+        println!("{}", press_frame);
 
         for x in 0..5 {
             module.cats[x].update(
@@ -473,6 +475,19 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         ))
     };
 
+    let control_module =
+        unsafe { *((*input_module.owner).module_accessor as *const u64).add(0x48 / 8) };
+    let inner_object = unsafe { *(control_module as *const u64).add(0x140 / 8) };
+    let command_life_max = unsafe { &mut *(inner_object as *mut u32).add(2) };
+
+    if buttons.intersects(Buttons::LowerBuffer) {
+        *command_life_max = 3;
+    } else if buttons.intersects(Buttons::NoBuffer) {
+        *command_life_max = 1;
+    } else {
+        *command_life_max = 5;
+    }
+
     unsafe {
         // Allow Aidou with only A button held
         // Also extends directional inputs for Tilt Stick Aidou
@@ -526,7 +541,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let wavedash_input = (triggered_buttons.intersects(Buttons::Jump)
         || triggered_buttons.intersects(Buttons::FlickJump))
         && triggered_buttons.intersects(Buttons::Guard);
-        //|| triggered_buttons.intersects(Buttons::Parry));
+    //|| triggered_buttons.intersects(Buttons::Parry));
     if wavedash_input {
         if input_module.hdr_cat.valid_frames[wavedash_offset] == 0 {
             input_module.hdr_cat.valid_frames[wavedash_offset] = unsafe {
@@ -546,20 +561,26 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let walljump_left_offset = CatHdr::WallJumpLeft.bits().trailing_zeros() as usize;
     unsafe {
         if (*input_module.owner).is_situation(*SITUATION_KIND_AIR)
-        && triggered_buttons.intersects(Buttons::Jump) {
+            && triggered_buttons.intersects(Buttons::Jump)
+        {
             if ControlModule::get_stick_x((*input_module.owner).module_accessor) > 0.0 {
                 if input_module.hdr_cat.valid_frames[walljump_right_offset] == 0 {
                     input_module.hdr_cat.valid_frames[walljump_right_offset] = unsafe {
-                        ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "button_walljump_leniency_frame")
-                        as u8
+                        ParamModule::get_int(
+                            &mut (*input_module.owner),
+                            ParamType::Common,
+                            "button_walljump_leniency_frame",
+                        ) as u8
                     };
                 }
-            }
-            else if ControlModule::get_stick_x((*input_module.owner).module_accessor) < 0.0 {
+            } else if ControlModule::get_stick_x((*input_module.owner).module_accessor) < 0.0 {
                 if input_module.hdr_cat.valid_frames[walljump_left_offset] == 0 {
                     input_module.hdr_cat.valid_frames[walljump_left_offset] = unsafe {
-                        ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "button_walljump_leniency_frame")
-                        as u8
+                        ParamModule::get_int(
+                            &mut (*input_module.owner),
+                            ParamType::Common,
+                            "button_walljump_leniency_frame",
+                        ) as u8
                     };
                 }
             }
@@ -657,7 +678,8 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         unsafe {
             (*input_module.owner).clear_commands(Cat1::WallJumpLeft | Cat1::WallJumpRight);
             cats[0].lifetimes_mut()[0x1B] = input_module.hdr_cat.valid_frames[walljump_left_offset];
-            cats[0].lifetimes_mut()[0x1C] = input_module.hdr_cat.valid_frames[walljump_right_offset];
+            cats[0].lifetimes_mut()[0x1C] =
+                input_module.hdr_cat.valid_frames[walljump_right_offset];
         }
     }
 

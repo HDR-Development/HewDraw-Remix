@@ -53,6 +53,15 @@ unsafe fn map_controls_hook(
     controller_struct: &mut SomeControllerStruct,
     arg: bool,
 ) {
+    let sense = match controller_struct.controller.style {
+        ControllerStyle::GCController => {
+            std::mem::take(&mut (*mappings.add(player_idx as usize)).gc_sensitivity)
+        }
+        ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
+            std::mem::take(&mut (*mappings.add(player_idx as usize)).joy_sensitivity)
+        }
+        _ => std::mem::take(&mut (*mappings.add(player_idx as usize)).pro_sensitivity),
+    };
     let entry_count = (*mappings.add(player_idx as usize))._34[0];
     let ret = if controller_struct.controller.style == ControllerStyle::GCController {
         // Used for analog shields
@@ -101,9 +110,26 @@ unsafe fn map_controls_hook(
             ret
         }
     };
+    match controller_struct.controller.style {
+        ControllerStyle::GCController => {
+            (*mappings.add(player_idx as usize)).gc_sensitivity = sense;
+        }
+        ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
+            (*mappings.add(player_idx as usize)).joy_sensitivity = sense;
+        }
+        _ => {
+            (*mappings.add(player_idx as usize)).pro_sensitivity = sense;
+        }
+    };
     let controller = &mut controller_struct.controller;
 
     //println!("entry_count vs. current: {} vs. {}", entry_count, (*mappings.add(player_idx as usize))._34[0]);
+
+    if sense == 0 {
+        (*out).buttons |= Buttons::NoBuffer;
+    } else if sense == 2 {
+        (*out).buttons |= Buttons::LowerBuffer;
+    }
 
     if (*out).buttons.contains(Buttons::CStickOn)
         && (*mappings.add(player_idx as usize))._34[0] != entry_count
@@ -117,7 +143,11 @@ unsafe fn map_controls_hook(
     }
 
     let mappings = mappings.add(player_idx as usize);
-    let parry_map = if (*out).buttons.intersects(Buttons::Guard) { Buttons::Parry | Buttons::GuardHold } else { Buttons::Parry | Buttons::Guard };
+    let parry_map = if (*out).buttons.intersects(Buttons::Guard) {
+        Buttons::Parry | Buttons::GuardHold
+    } else {
+        Buttons::Parry | Buttons::Guard
+    };
 
     if controller.style == ControllerStyle::GCController {
         (*out).buttons |= apply_button_mappings!(
@@ -221,27 +251,11 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (l, gc_l, Parry, parry_map)(
-                r,
-                gc_r,
-                Parry,
-                parry_map
-            )(zl, gc_z, Parry, parry_map)(
-                zr,
-                gc_z,
-                Parry,
-                parry_map
-            )(a, gc_a, Parry, parry_map)(
-                b,
-                gc_b,
-                Parry,
-                parry_map
-            )(x, gc_x, Parry, parry_map)(
-                y,
-                gc_y,
-                Parry,
-                parry_map
-            )
+            (l, gc_l, Parry, parry_map)(r, gc_r, Parry, parry_map)(zl, gc_z, Parry, parry_map)(
+                zr, gc_z, Parry, parry_map
+            )(a, gc_a, Parry, parry_map)(b, gc_b, Parry, parry_map)(
+                x, gc_x, Parry, parry_map
+            )(y, gc_y, Parry, parry_map)
         );
         if (*mappings).gc_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
@@ -393,37 +407,14 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (l, joy_shoulder, Parry, parry_map)(
-                r,
-                joy_shoulder,
-                Parry,
-                parry_map
-            )(
+            (l, joy_shoulder, Parry, parry_map)(r, joy_shoulder, Parry, parry_map)(
                 zl,
                 joy_zshoulder,
                 Parry,
                 parry_map
-            )(
-                zr,
-                joy_zshoulder,
-                Parry,
-                parry_map
-            )(left_sl, joy_sl, Parry, parry_map)(
-                left_sr,
-                joy_sr,
-                Parry,
-                parry_map
-            )(
-                right_sl,
-                joy_sl,
-                Parry,
-                parry_map
-            )(
-                right_sr,
-                joy_sr,
-                Parry,
-                parry_map
-            )
+            )(zr, joy_zshoulder, Parry, parry_map)(left_sl, joy_sl, Parry, parry_map)(
+                left_sr, joy_sr, Parry, parry_map
+            )(right_sl, joy_sl, Parry, parry_map)(right_sr, joy_sr, Parry, parry_map)
         );
 
         if controller.style == ControllerStyle::LeftJoycon {
@@ -576,27 +567,9 @@ unsafe fn map_controls_hook(
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                (
-                    a,
-                    joy_down,
-                    Parry,
-                    parry_map
-                )(
-                    y,
-                    joy_up,
-                    Parry,
-                    parry_map
-                )(
-                    b,
-                    joy_left,
-                    Parry,
-                    parry_map
-                )(
-                    x,
-                    joy_right,
-                    Parry,
-                    parry_map
-                )
+                (a, joy_down, Parry, parry_map)(y, joy_up, Parry, parry_map)(
+                    b, joy_left, Parry, parry_map
+                )(x, joy_right, Parry, parry_map)
             );
         }
         if (*mappings).joy_absmash & 1 != 0 {
@@ -718,47 +691,11 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-            (
-                l,
-                pro_l,
-                Parry,
-                parry_map
-            )(
-                r,
-                pro_r,
-                Parry,
-                parry_map
-            )(
-                zl,
-                pro_zl,
-                Parry,
-                parry_map
-            )(
-                zr,
-                pro_zr,
-                Parry,
-                parry_map
-            )(
-                a,
-                pro_a,
-                Parry,
-                parry_map
-            )(
-                b,
-                pro_b,
-                Parry,
-                parry_map
-            )(
-                x,
-                pro_x,
-                Parry,
-                parry_map
-            )(
-                y,
-                pro_y,
-                Parry,
-                parry_map
-            )
+            (l, pro_l, Parry, parry_map)(r, pro_r, Parry, parry_map)(zl, pro_zl, Parry, parry_map)(
+                zr, pro_zr, Parry, parry_map
+            )(a, pro_a, Parry, parry_map)(b, pro_b, Parry, parry_map)(
+                x, pro_x, Parry, parry_map
+            )(y, pro_y, Parry, parry_map)
         );
 
         if (*mappings).pro_absmash & 1 != 0 {
@@ -867,7 +804,6 @@ unsafe fn map_controls_hook(
     if is_rivals_walljump {
         (*out).buttons |= Buttons::RivalsWallJump;
     }
-
 
     let (parry, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
@@ -1105,8 +1041,9 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // Only happens during jumpsquat currently
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     if *((control_module + 0x645) as *const bool)
-    && !VarModule::is_flag((*boma).object(), vars::common::instance::IS_ATTACK_CANCEL)
-    && !VarModule::is_flag((*boma).object(), vars::common::status::CSTICK_IRAR) {
+        && !VarModule::is_flag((*boma).object(), vars::common::instance::IS_ATTACK_CANCEL)
+        && !VarModule::is_flag((*boma).object(), vars::common::status::CSTICK_IRAR)
+    {
         return;
     }
     call_original!(control_module, arg);
@@ -1126,18 +1063,32 @@ unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::Inli
 
 #[skyline::hook(replace=ControlModule::reset_flick_x)]
 unsafe fn reset_flick_x(boma: &mut BattleObjectModuleAccessor) {
-    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+    VarModule::set_int(
+        boma.object(),
+        vars::common::instance::LEFT_STICK_FLICK_X,
+        u8::MAX as i32 - 1,
+    );
     call_original!(boma);
 }
 
 #[skyline::hook(replace=ControlModule::reset_flick_y)]
 unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
-    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+    VarModule::set_int(
+        boma.object(),
+        vars::common::instance::LEFT_STICK_FLICK_Y,
+        u8::MAX as i32 - 1,
+    );
     call_original!(boma);
 }
 
 #[skyline::hook(replace=ControlModule::set_rumble)]
-unsafe fn set_rumble_hook(boma: &mut BattleObjectModuleAccessor, kind: smash::phx::Hash40, arg3: i32, arg4: bool, arg5: u32) {
+unsafe fn set_rumble_hook(
+    boma: &mut BattleObjectModuleAccessor,
+    kind: smash::phx::Hash40,
+    arg3: i32,
+    arg4: bool,
+    arg5: u32,
+) {
     if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
         return;
     }

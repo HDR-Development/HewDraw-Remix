@@ -1,13 +1,14 @@
 use crate::consts::globals::*;
+use crate::InputModule;
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
 use smash::app::{
-    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyGravity, FighterKineticEnergyMotion, *,
+    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyGravity,
+    FighterKineticEnergyMotion, *,
 };
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
-use crate::InputModule;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -314,10 +315,12 @@ bitflags! {
         const SpecialRaw2 = 0x20000;
         // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
         // would get mapped to TiltAttack (issue #776)
-        const TiltAttack  = 0x80000;
-        const Parry = 0x100000;
-        const CStickOverride = 0x200000;
-        const RivalsWallJump = 0x400000;
+        const TiltAttack  = 0x40000;
+        const Parry = 0x80000;
+        const CStickOverride = 0x100000;
+        const RivalsWallJump = 0x200000;
+        const LowerBuffer = 0x400000;
+        const NoBuffer = 0x800000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -528,7 +531,12 @@ pub trait BomaExt {
     unsafe fn check_hitfall(&mut self);
 
     /// try to pickup an item nearby
-    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
+    unsafe fn try_pickup_item(
+        &mut self,
+        range: f32,
+        bone: Option<Hash40>,
+        offset: Option<&Vector2f>,
+    ) -> Option<&mut BattleObjectModuleAccessor>;
 
     unsafe fn get_player_idx_from_boma(&mut self) -> i32;
 
@@ -907,10 +915,9 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     /// gets the FighterKineticEnergyGravity object
     unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity {
-        std::mem::transmute::<u64, &mut app::FighterKineticEnergyGravity>(KineticModule::get_energy(
-            self,
-            *FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        ))
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyGravity>(
+            KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY),
+        )
     }
 
     /// gets the FighterKineticEnergyController object
@@ -922,7 +929,12 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])) {
+        if (require_airdodge
+            && !self.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+            ]))
+        {
             return false;
         }
 
@@ -937,34 +949,66 @@ impl BomaExt for BattleObjectModuleAccessor {
         if self.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
             return false;
         }
-    
+
         // The distance from your ECB center to your base position is your waveland snap threshold
         let pos = *PostureModule::pos(self);
-        let upper_bound_offset_y = if StatusModule::is_changing(self) && !self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
-            crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_CENTER_Y_OFFSET)
-        } else {
-            crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET)
-        };
-        let upper_bound_y = pos.y + upper_bound_offset_y;
-        let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
-                // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
-                upper_bound_offset_y
+        let upper_bound_offset_y =
+            if StatusModule::is_changing(self) && !self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
+                crate::VarModule::get_float(
+                    self.object(),
+                    crate::consts::vars::common::instance::ECB_CENTER_Y_OFFSET,
+                )
             } else {
-                // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
-                (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+                crate::VarModule::get_float(
+                    self.object(),
+                    crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET,
+                )
             };
+        let upper_bound_y = pos.y + upper_bound_offset_y;
+        let snap_leniency = if WorkModule::get_float(
+            self,
+            *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y,
+        ) <= 0.0
+        {
+            // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
+            upper_bound_offset_y
+        } else {
+            // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
+            (upper_bound_offset_y).max(crate::ParamModule::get_float(
+                self.object(),
+                crate::ParamType::Common,
+                "waveland_distance_threshold",
+            ))
+        };
         let lower_bound = Vector2f::new(pos.x, upper_bound_y - snap_leniency);
         let ground_pos_any = &mut Vector2f::zero();
         let ground_pos_stage = &mut Vector2f::zero();
-        let is_touch_any = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_any, true);
-        let is_touch_stage = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_stage, false);
-        let can_snap = !( 
-            is_touch_any == 0 as *const *const u64
-            || (is_touch_stage != 0 as *const *const u64
-                && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
+        let is_touch_any = GroundModule::line_segment_check(
+            self,
+            &Vector2f::new(pos.x, upper_bound_y),
+            &lower_bound,
+            &Vector2f::zero(),
+            ground_pos_any,
+            true,
         );
-        if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
-            crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
+        let is_touch_stage = GroundModule::line_segment_check(
+            self,
+            &Vector2f::new(pos.x, upper_bound_y),
+            &lower_bound,
+            &Vector2f::zero(),
+            ground_pos_stage,
+            false,
+        );
+        let can_snap = !(is_touch_any == 0 as *const *const u64
+            || (is_touch_stage != 0 as *const *const u64
+                && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y)
+                    > 0.0));
+        if can_snap {
+            // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
+            crate::VarModule::on_flag(
+                self.object(),
+                crate::consts::vars::common::status::DISABLE_ECB_SHIFT,
+            );
             PostureModule::set_pos(self, &Vector3f::new(pos.x, ground_pos_any.y + 0.1, pos.z));
             GroundModule::attach_ground(self, false);
             true
@@ -999,7 +1043,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
             if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() // buffered aerials
             || (!skip_other_checks && fighter.sub_transition_group_check_ground_attack().get_bool()) // up smash
-            || fighter.sub_transition_group_check_ground_jump().get_bool() // regular jumps
+            || fighter.sub_transition_group_check_ground_jump().get_bool()
+            // regular jumps
             {
                 if update_lr {
                     PostureModule::set_stick_lr(self, 0.0);
@@ -1193,7 +1238,12 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
-    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> {
+    unsafe fn try_pickup_item(
+        &mut self,
+        range: f32,
+        bone: Option<Hash40>,
+        offset: Option<&Vector2f>,
+    ) -> Option<&mut BattleObjectModuleAccessor> {
         use smash2::app::ItemManager;
 
         // non fighters cant pickup items
@@ -1207,14 +1257,20 @@ impl BomaExt for BattleObjectModuleAccessor {
         // if you already have an item, return that item instead
         if ItemModule::is_have_item(self, 0) {
             let have_id = ItemModule::get_have_item_id(self, 0);
-            let item = item_manager.find_active_item_from_id(have_id as u32) as *mut smash::app::Item;
-            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item =
+                item_manager.find_active_item_from_id(have_id as u32) as *mut smash::app::Item;
+            let item_module_accessor =
+                smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             return Some(item_boma);
         }
-        
+
         // get the global position of the bone, defaulting to "top"
-        let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        let fighter_pos = &mut Vector3f {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        };
         let bone_hash = bone.unwrap_or(Hash40::new("top"));
         ModelModule::joint_global_position(self, bone_hash, fighter_pos, false);
         // zero out the z axis
@@ -1223,10 +1279,10 @@ impl BomaExt for BattleObjectModuleAccessor {
             Some(offset) => {
                 fighter_pos.x += offset.x * PostureModule::lr(self);
                 fighter_pos.y += offset.y;
-            },
+            }
             None => {}
         }
-        
+
         let total = item_manager.get_num_of_active_item_all();
         for id in 0..total {
             // pointer to the item
@@ -1237,12 +1293,14 @@ impl BomaExt for BattleObjectModuleAccessor {
 
             // if this item is close to us, grab it
             let item = item_ptr as *mut smash::app::Item;
-            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_module_accessor =
+                smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             let item_pos = PostureModule::pos(item_boma);
 
             if ((*item_pos).x - (*fighter_pos).x).abs() < range
-                && ((*item_pos).y - (*fighter_pos).y).abs() < range {
+                && ((*item_pos).y - (*fighter_pos).y).abs() < range
+            {
                 ItemModule::have_item_instance(self, item, 0, false, false, false, false);
                 return Some(item_boma);
             }
@@ -1259,7 +1317,11 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
+        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) {
+            1
+        } else {
+            5
+        };
         return InputModule::get_trigger_count(self.object(), Buttons::Parry) < buffer;
     }
 }
@@ -1347,11 +1409,11 @@ pub enum InputKind {
     Guard = 0x3,
     Grab = 0x4,
     SmashAttack = 0x5,
+    JumpMini = 0x6, // this is ours :), also start at 0x12 to avoid masking errors
     AppealHi = 0xA,
     AppealS = 0xB,
     AppealLw = 0xC,
     Unset = 0xD,
-    JumpMini = 0x12,   // this is ours :), also start at 0x12 to avoid masking errors
     TiltAttack = 0x13, // also custom, this one is for tilts!
     Parry = 0x14,      // The H man was here
 }
