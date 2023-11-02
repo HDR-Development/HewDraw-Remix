@@ -37,7 +37,7 @@ def collect_romfs(package_name: str, context_path: str, mod_name: str):
   return
 
 ## returns whether the build was successful
-def build(build_type: str, dev_args: str) -> bool:
+def build(build_type: str, dev_args: str, is_publish) -> bool:
   target = None
   if sys.platform == 'darwin':
     target = "aarch64-apple-darwin"
@@ -45,8 +45,10 @@ def build(build_type: str, dev_args: str) -> bool:
     target = "x86_64-unknown-linux-gnu"
   elif sys.platform == 'win32':
     target = "x86_64-pc-windows-msvc"
-  
-  build_romfs_command = "RUSTFLAGS=\"--cfg skyline_std_v3\" SKYLINE_ADD_NRO_HEADER=1 cargo +nightly run --release -p build-tools -v -Z build-std=core,alloc,std,panic_abort --target " + target
+
+  build_romfs_command = "cargo run --release -p build-tools"
+  if not is_publish:
+    build_romfs_command = "RUSTFLAGS=\"--cfg skyline_std_v3\" SKYLINE_ADD_NRO_HEADER=1 cargo run --release -p build-tools -v -Z build-std=core,alloc,std,panic_abort --target " + target
   print("BUILD ROMFS COMMAND:")
   print(build_romfs_command)
 
