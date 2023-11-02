@@ -603,6 +603,10 @@ pub mod vars {
     }
 
     pub mod inkling {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
         pub mod status {
             // flags
 
@@ -642,6 +646,13 @@ pub mod vars {
         pub mod status {
             // flags
             pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
+        }
+    }
+
+    pub mod koopajr {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
         }
     }
 
