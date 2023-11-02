@@ -38,8 +38,8 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="jump_air_speed_y_mul">0.98</float>
-      <float hash="jump_accel_x_mul">0.85</float>
-      <float hash="jump_stable_speed_x_mul">0.85</float>
+      <float hash="jump_accel_x_mul">0.6</float>
+      <float hash="jump_stable_speed_x_mul">0.6</float>
       <int hash="jump_accel_recover_frame">5</int>
     </struct>
     <hash40 index="1">dummy</hash40>
