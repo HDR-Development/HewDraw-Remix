@@ -26,7 +26,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-    <float hash="adjust_angle">15</float>
+    <float hash="adjust_angle">20</float>
       <float hash="jump_y_spd_mul">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
