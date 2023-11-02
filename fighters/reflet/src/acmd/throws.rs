@@ -2,7 +2,7 @@
 use super::*;
 
 #[acmd_script( agent = "reflet", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn robin_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -27,7 +27,7 @@ unsafe fn robin_throw_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "reflet", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn robin_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -51,8 +51,8 @@ unsafe fn robin_throw_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        robin_throw_hi_game,
-        robin_throw_lw_game,
+        reflet_throw_hi_game,
+        reflet_throw_lw_game,
 );
 }
 

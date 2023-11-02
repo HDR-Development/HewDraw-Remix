@@ -106,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: version
-        path: plugin/hdr_version.txt
+        path: hdr_version.txt
 
     - uses: dev-drprasad/delete-tag-and-release@master
       with:

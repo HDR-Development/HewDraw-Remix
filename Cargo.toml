@@ -1,0 +1,342 @@
+[workspace]
+members = ["crates/*", "dynamic", "fighters/*", "hdr-macros", "utils"]
+
+resolver = "2"
+
+[workspace.package]
+version = "0.0.0-dev"
+authors = ["HDR Development Team"]
+edition = "2021"
+
+[workspace.dependencies]
+skyline = "0.2"
+skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
+skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
+smashline = { git = "https://github.com/blu-dev/smashline", branch = "development" }
+
+dynamic = { path = "dynamic" }
+hdr-macros = { path = "hdr-macros" }
+utils = { path = "utils" }
+
+bayonetta = { path = "fighters/bayonetta" }
+brave = { path = "fighters/brave" }
+buddy = { path = "fighters/buddy" }
+captain = { path = "fighters/captain" }
+chrom = { path = "fighters/chrom" }
+cloud = { path = "fighters/cloud" }
+common = { path = "fighters/common" }
+daisy = { path = "fighters/daisy" }
+dedede = { path = "fighters/dedede" }
+demon = { path = "fighters/demon" }
+diddy = { path = "fighters/diddy" }
+dolly = { path = "fighters/dolly" }
+donkey = { path = "fighters/donkey" }
+duckhunt = { path = "fighters/duckhunt" }
+edge = { path = "fighters/edge" }
+eflame = { path = "fighters/eflame" }
+elight = { path = "fighters/elight" }
+falco = { path = "fighters/falco" }
+fox = { path = "fighters/fox" }
+gamewatch = { path = "fighters/gamewatch" }
+ganon = { path = "fighters/ganon" }
+gaogaen = { path = "fighters/gaogaen" }
+gekkouga = { path = "fighters/gekkouga" }
+ike = { path = "fighters/ike" }
+inkling = { path = "fighters/inkling" }
+jack = { path = "fighters/jack" }
+kamui = { path = "fighters/kamui" }
+ken = { path = "fighters/ken" }
+kirby = { path = "fighters/kirby" }
+koopa = { path = "fighters/koopa" }
+koopag = { path = "fighters/koopag" }
+koopajr = { path = "fighters/koopajr" }
+krool = { path = "fighters/krool" }
+link = { path = "fighters/link" }
+littlemac = { path = "fighters/littlemac" }
+lucario = { path = "fighters/lucario" }
+lucas = { path = "fighters/lucas" }
+lucina = { path = "fighters/lucina" }
+luigi = { path = "fighters/luigi" }
+mario = { path = "fighters/mario" }
+mariod = { path = "fighters/mariod" }
+marth = { path = "fighters/marth" }
+master = { path = "fighters/master" }
+metaknight = { path = "fighters/metaknight" }
+mewtwo = { path = "fighters/mewtwo" }
+miifighter = { path = "fighters/miifighter" }
+miigunner = { path = "fighters/miigunner" }
+miiswordsman = { path = "fighters/miiswordsman" }
+murabito = { path = "fighters/murabito" }
+nana = { path = "fighters/nana" }
+ness = { path = "fighters/ness" }
+packun = { path = "fighters/packun" }
+pacman = { path = "fighters/pacman" }
+palutena = { path = "fighters/palutena" }
+peach = { path = "fighters/peach" }
+pfushigisou = { path = "fighters/pfushigisou" }
+pichu = { path = "fighters/pichu" }
+pickel = { path = "fighters/pickel" }
+pikachu = { path = "fighters/pikachu" }
+pikmin = { path = "fighters/pikmin" }
+pit = { path = "fighters/pit" }
+pitb = { path = "fighters/pitb" }
+plizardon = { path = "fighters/plizardon" }
+popo = { path = "fighters/popo" }
+purin = { path = "fighters/purin" }
+pzenigame = { path = "fighters/pzenigame" }
+reflet = { path = "fighters/reflet" }
+richter = { path = "fighters/richter" }
+ridley = { path = "fighters/ridley" }
+robot = { path = "fighters/robot" }
+rockman = { path = "fighters/rockman" }
+rosetta = { path = "fighters/rosetta" }
+roy = { path = "fighters/roy" }
+ryu = { path = "fighters/ryu" }
+samus = { path = "fighters/samus" }
+samusd = { path = "fighters/samusd" }
+sheik = { path = "fighters/sheik" }
+shizue = { path = "fighters/shizue" }
+shulk = { path = "fighters/shulk" }
+simon = { path = "fighters/simon" }
+snake = { path = "fighters/snake" }
+sonic = { path = "fighters/sonic" }
+szerosuit = { path = "fighters/szerosuit" }
+tantan = { path = "fighters/tantan" }
+toonlink = { path = "fighters/toonlink" }
+trail = { path = "fighters/trail" }
+wario = { path = "fighters/wario" }
+wiifit = { path = "fighters/wiifit" }
+wolf = { path = "fighters/wolf" }
+yoshi = { path = "fighters/yoshi" }
+younglink = { path = "fighters/younglink" }
+zelda = { path = "fighters/zelda" }
+
+[package]
+name = "hdr"
+version.workspace = true
+authors.workspace = true
+
+[package.metadata.skyline]
+titleid = "01006A800016E000"
+
+[dependencies]
+bayonetta = { workspace = true, optional = true }
+brave = { workspace = true, optional = true }
+buddy = { workspace = true, optional = true }
+captain = { workspace = true, optional = true }
+chrom = { workspace = true, optional = true }
+cloud = { workspace = true, optional = true }
+common = { workspace = true, optional = true }
+daisy = { workspace = true, optional = true }
+dedede = { workspace = true, optional = true }
+demon = { workspace = true, optional = true }
+diddy = { workspace = true, optional = true }
+dolly = { workspace = true, optional = true }
+donkey = { workspace = true, optional = true }
+duckhunt = { workspace = true, optional = true }
+edge = { workspace = true, optional = true }
+eflame = { workspace = true, optional = true }
+elight = { workspace = true, optional = true }
+falco = { workspace = true, optional = true }
+fox = { workspace = true, optional = true }
+gamewatch = { workspace = true, optional = true }
+ganon = { workspace = true, optional = true }
+gaogaen = { workspace = true, optional = true }
+gekkouga = { workspace = true, optional = true }
+ike = { workspace = true, optional = true }
+inkling = { workspace = true, optional = true }
+jack = { workspace = true, optional = true }
+kamui = { workspace = true, optional = true }
+ken = { workspace = true, optional = true }
+kirby = { workspace = true, optional = true }
+koopa = { workspace = true, optional = true }
+koopag = { workspace = true, optional = true }
+koopajr = { workspace = true, optional = true }
+krool = { workspace = true, optional = true }
+link = { workspace = true, optional = true }
+littlemac = { workspace = true, optional = true }
+lucario = { workspace = true, optional = true }
+lucas = { workspace = true, optional = true }
+lucina = { workspace = true, optional = true }
+luigi = { workspace = true, optional = true }
+mario = { workspace = true, optional = true }
+mariod = { workspace = true, optional = true }
+marth = { workspace = true, optional = true }
+master = { workspace = true, optional = true }
+metaknight = { workspace = true, optional = true }
+mewtwo = { workspace = true, optional = true }
+miifighter = { workspace = true, optional = true }
+miigunner = { workspace = true, optional = true }
+miiswordsman = { workspace = true, optional = true }
+murabito = { workspace = true, optional = true }
+nana = { workspace = true, optional = true }
+ness = { workspace = true, optional = true }
+packun = { workspace = true, optional = true }
+pacman = { workspace = true, optional = true }
+palutena = { workspace = true, optional = true }
+peach = { workspace = true, optional = true }
+pfushigisou = { workspace = true, optional = true }
+pichu = { workspace = true, optional = true }
+pickel = { workspace = true, optional = true }
+pikachu = { workspace = true, optional = true }
+pikmin = { workspace = true, optional = true }
+pit = { workspace = true, optional = true }
+pitb = { workspace = true, optional = true }
+plizardon = { workspace = true, optional = true }
+popo = { workspace = true, optional = true }
+purin = { workspace = true, optional = true }
+pzenigame = { workspace = true, optional = true }
+reflet = { workspace = true, optional = true }
+richter = { workspace = true, optional = true }
+ridley = { workspace = true, optional = true }
+robot = { workspace = true, optional = true }
+rockman = { workspace = true, optional = true }
+rosetta = { workspace = true, optional = true }
+roy = { workspace = true, optional = true }
+ryu = { workspace = true, optional = true }
+samus = { workspace = true, optional = true }
+samusd = { workspace = true, optional = true }
+sheik = { workspace = true, optional = true }
+shizue = { workspace = true, optional = true }
+shulk = { workspace = true, optional = true }
+simon = { workspace = true, optional = true }
+snake = { workspace = true, optional = true }
+sonic = { workspace = true, optional = true }
+szerosuit = { workspace = true, optional = true }
+tantan = { workspace = true, optional = true }
+toonlink = { workspace = true, optional = true }
+trail = { workspace = true, optional = true }
+wario = { workspace = true, optional = true }
+wiifit = { workspace = true, optional = true }
+wolf = { workspace = true, optional = true }
+yoshi = { workspace = true, optional = true }
+younglink = { workspace = true, optional = true }
+zelda = { workspace = true, optional = true }
+
+hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["warnings"] }
+once_cell = "1"
+ninput = { git = "https://github.com/blu-dev/ninput" }
+rand = { git = "https://github.com/skyline-rs/rand" }
+runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
+skyline.workspace = true
+skyline_smash.workspace = true
+smashline.workspace = true
+skyline-web = { workspace = true, optional = true }
+utils.workspace = true
+
+[build-dependencies]
+build-tools = { path = "crates/build-tools" }
+hdr-macros.workspace = true
+
+[features]
+default = [
+    "bayonetta",
+    "brave",
+    "buddy",
+    "captain",
+    "chrom",
+    "cloud",
+    "common",
+    "daisy",
+    "dedede",
+    "demon",
+    "diddy",
+    "dolly",
+    "donkey",
+    "duckhunt",
+    "edge",
+    "eflame",
+    "elight",
+    "falco",
+    "fox",
+    "gamewatch",
+    "ganon",
+    "gaogaen",
+    "gekkouga",
+    "ike",
+    "inkling",
+    "jack",
+    "kamui",
+    "ken",
+    "kirby",
+    "koopa",
+    "koopag",
+    "koopajr",
+    "krool",
+    "link",
+    "littlemac",
+    "lucario",
+    "lucas",
+    "lucina",
+    "luigi",
+    "mario",
+    "mariod",
+    "marth",
+    "master",
+    "metaknight",
+    "mewtwo",
+    "miifighter",
+    "miigunner",
+    "miiswordsman",
+    "murabito",
+    "nana",
+    "ness",
+    "packun",
+    "pacman",
+    "palutena",
+    "peach",
+    "pfushigisou",
+    "pichu",
+    "pickel",
+    "pikachu",
+    "pikmin",
+    "pit",
+    "pitb",
+    "plizardon",
+    "popo",
+    "purin",
+    "pzenigame",
+    "reflet",
+    "richter",
+    "ridley",
+    "robot",
+    "rockman",
+    "rosetta",
+    "roy",
+    "ryu",
+    "samus",
+    "samusd",
+    "sheik",
+    "shizue",
+    "shulk",
+    "simon",
+    "snake",
+    "sonic",
+    "szerosuit",
+    "tantan",
+    "toonlink",
+    "trail",
+    "wario",
+    "wiifit",
+    "wolf",
+    "yoshi",
+    "younglink",
+    "zelda",
+]
+dev = ["utils/no-offset-search"]
+main_nro = ["skyline-web", "common"]
+add_status = []
+runtime = []
+
+[patch.'https://github.com/jam1garner/smash-arc']
+smash-arc = "0.5"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+lto = true
+
+[lib]
+crate-type = ["cdylib"]
