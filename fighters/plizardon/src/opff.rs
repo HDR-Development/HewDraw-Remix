@@ -57,10 +57,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn special_lw_track(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && !boma.is_button_on(Buttons::SpecialAll) {
         let parent_id = LinkModule::get_parent_id(boma, *FIGHTER_POKEMON_LINK_NO_PTRAINER, true) as u32;
         let object = utils::util::get_battle_object_from_id(parent_id);
-        VarModule::set_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS, boma.is_button_on(Buttons::SpecialAll));
+        VarModule::off_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS);
     }
 }
 
