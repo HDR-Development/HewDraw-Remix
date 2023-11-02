@@ -114,7 +114,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: version
-        path: plugin/hdr_version.txt
+        path: hdr_version.txt
 
     - name: Upload distributions artifact
       uses: actions/upload-artifact@v3
