@@ -124,7 +124,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);
-    let robotFrames =  fighter.global_table[CURRENT_FRAME].get_f32();
+    let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
     let current_fuel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
     let lr = PostureModule::lr(fighter.module_accessor);
     let stickX = ControlModule::get_stick_x(fighter.module_accessor);
@@ -245,8 +245,17 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::resume_energy_all(fighter.module_accessor);
 
-        if robotFrames < 10.0 {
-            let vec = Vector3f{x: (0.05*rotX.abs()), y: 1.5-(0.025*rotX.abs()), z: 0.0};
+        if (current_fuel <= (robotFrames * 2.0)) {
+            let vec = Vector3f{x: (0.05*rotX.abs()), y: ((0.05*robotFrames)-(0.025*rotX.abs())), z: 0.0};
+            KineticModule::add_speed(fighter.module_accessor, &vec);
+            WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+            
+            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_s"));
+            
+            fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
+    
+        } else if robotFrames < 10.0 {
+            let vec = Vector3f{x: (0.05*rotX.abs()), y: 0.5-(0.025*rotX.abs()), z: 0.0};
             KineticModule::add_speed(fighter.module_accessor, &vec);
             if (current_fuel - 20.0) > 0.0 {
                 WorkModule::set_float(fighter.module_accessor, (current_fuel) - (20.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
