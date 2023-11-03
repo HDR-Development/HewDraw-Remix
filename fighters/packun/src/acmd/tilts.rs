@@ -43,7 +43,7 @@ unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     let shield_damage = if stance.label != 2 { 0 } else { 2 };
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         if stance.label == 2 {
             VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
         }

@@ -92,9 +92,7 @@ unsafe fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if stance.label == 2 {
-            VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
-        }
+        VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
     }
     FT_DESIRED_RATE(agent, 11.0, 4.0);
     frame(lua_state, 12.0);
@@ -139,7 +137,7 @@ unsafe fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
         VarModule::off_flag(boma.object(), vars::packun::status::BURST);
     }
     wait(lua_state, 30.0);
-    FT_MOTION_RATE(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 #[acmd_script( agent = "packun", script = "effect_specialsend" , category = ACMD_EFFECT , low_priority)]
@@ -635,11 +633,15 @@ pub fn install() {
     install_acmd_scripts!(
         packun_special_n_start_game,
         packun_special_s_shoot_game,
+        packun_special_s_shoot_s_game,
         packun_special_s_end_effect,
         packun_special_s_shoot_effect,
+        packun_special_s_shoot_s_effect,
         packun_special_air_s_end_effect,
         packun_special_air_s_shoot_effect,
+        packun_special_air_s_shoot_s_effect,
         packun_special_s_shoot_sound,
+        packun_special_s_shoot_s_sound,
         packun_special_hi_game,
         packun_special_air_hi_game,
         packun_special_lw_bite_attack_game,

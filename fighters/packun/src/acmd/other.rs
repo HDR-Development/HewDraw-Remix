@@ -637,8 +637,6 @@ pub fn install() {
         packun_poisonbreath_game_explode,
         packun_poisonbreath_effect_explode,
         packun_poisonbreath_sound_explode,
-        packun_poisonbreath_game_burst,
-        packun_poisonbreath_effect_burst,
     );
 }
 
