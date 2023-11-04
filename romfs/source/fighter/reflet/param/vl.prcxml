@@ -47,6 +47,10 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_next_jump_y_speed">2.8</float>
+      <float hash="special_hi_shoot_store_x_initial_velocity_mul">0.65</float>
+      <float hash="special_hi_shoot_store_y_initial_velocity_mul">0.45</float>
+      <float hash="special_hi_shoot_store_x_second_velocity_mul">0.725</float>
+      <float hash="special_hi_shoot_store_y_second_velocity_mul">0.3</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
