@@ -53,13 +53,13 @@
     <struct index="0">
       <float hash="offset_y_m">5.0</float>
       <float hash="start_max_speed_y_mul_air">0.2</float>
-      <float hash="jump_max_speed_x_s">0.9</float>
+      <float hash="jump_max_speed_x_s">1.1</float>
       <float hash="jump_distance_m">60</float>
-      <float hash="jump_max_speed_x_m">1.2</float>
+      <float hash="jump_max_speed_x_m">1.45</float>
       <float hash="wait_jump_accel_y_mul">0.5</float>
       <float hash="wait_jump_max_speed_y_mul">0.5</float>
       <float hash="jump_distance_l">85</float>
-      <float hash="jump_max_speed_x_l">0.7</float>
+      <float hash="jump_max_speed_x_l">1</float>
       <int hash="landing_frame_l">26</int>
     </struct>
     <hash40 index="1">dummy</hash40>
