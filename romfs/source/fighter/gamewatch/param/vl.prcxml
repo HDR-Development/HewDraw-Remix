@@ -56,6 +56,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="stick_mul">20</float>
       <float hash="pass_speed_mul">0.75</float>
     </struct>
     <hash40 index="1">dummy</hash40>
