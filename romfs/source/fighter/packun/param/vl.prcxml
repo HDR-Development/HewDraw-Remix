@@ -30,7 +30,7 @@
       <float hash="tilt_degree_max">30</float>
       <int hash="landing_frame">24</int>
       <float hash="speed_y_mul">0.5</float>
-      <int hash="stop_add_speed_y_frame">45</int>
+      <int hash="stop_add_speed_y_frame">50</int>
       <int hash="end_frame_from_stop_add_speed">100</int>
     </struct>
     <hash40 index="1">dummy</hash40>
