@@ -2,11 +2,43 @@ use super::*;
 use globals::*;
 // status script import
  
+
+// Prevents sideB from being used again if it has already been used once in the current airtime
+unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::koopajr::instance::DISABLE_SPECIAL_S) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
+
+// Re-enables the ability to use sideB when connecting to ground or cliff
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+        VarModule::off_flag(fighter.battle_object, vars::koopajr::instance::DISABLE_SPECIAL_S);
+    }
+    true.into()
+}
+
+#[smashline::fighter_init]
+fn koopajr_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // set the callbacks on fighter init
+        if fighter.kind() == *FIGHTER_KIND_KOOPAJR {
+            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        }
+    }
+}
+
 pub fn install() {
+    smashline::install_agent_init_callbacks!(koopajr_init);
     install_status_scripts!(
         //pre_special_hi_escape,
         special_hi_escape,
         end_special_hi_escape,
+        special_s,
         special_s_jump_init,
         special_hi_damage_end_main
     );
@@ -281,6 +313,17 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
 #[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_special_hi_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_EscapeAir()
+}
+
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+#[status_script(agent = "koopajr", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Once per airtime
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        VarModule::on_flag(fighter.battle_object, vars::inkling::instance::DISABLE_SPECIAL_S);
+    }
+    original!(fighter)
 }
 
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
