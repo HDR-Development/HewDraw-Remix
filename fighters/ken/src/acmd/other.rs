@@ -226,8 +226,12 @@ unsafe fn game_movewms(fighter: &mut L2CAgentBase) {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR)) {
             let lr = PostureModule::lr(owner_module_accessor);
+            GroundModule::set_rhombus_offset(boma, &Vector2f{x: -4.0 * lr, y: 3.0});
             KineticModule::reflect_speed(boma, &Vector3f{x: 0.26, y: lr * 0.97, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
+        }
+        else{
+            GroundModule::set_rhombus_offset(boma, &Vector2f{x: 0.0, y: 0.0});
         }
     }
     wait(lua_state, 7.0);
@@ -271,8 +275,12 @@ unsafe fn game_movespwms(fighter: &mut L2CAgentBase) {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR)) {
             let lr = PostureModule::lr(owner_module_accessor);
+            GroundModule::set_rhombus_offset(boma, &Vector2f{x: -4.0 * lr, y: 3.0});
             KineticModule::reflect_speed(boma, &Vector3f{x: 0.26, y: lr * 0.97, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
+        }
+        else{
+            GroundModule::set_rhombus_offset(boma, &Vector2f{x: 0.0, y: 0.0}); 
         }
     }
     wait(lua_state, 10.0);
