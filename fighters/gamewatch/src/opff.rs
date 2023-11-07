@@ -15,10 +15,10 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Game & Watch Parachute Double Jump
-unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE]) {
-        boma.check_jump_cancel(false, false);
+// Remove Parachute from upB
+unsafe fn parachute_removal(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL) {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
     }
 }
 
@@ -76,7 +76,7 @@ unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     ff_chef_land_cancel(boma);
-    parachute_dj(boma);
+    parachute_removal(boma);
     jc_judge_four(boma);
     dthrow_reverse(boma);
     fastfall_specials(fighter);
