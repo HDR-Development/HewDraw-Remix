@@ -5,6 +5,17 @@
 #![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
 
+// Not sure why these are needed here, probably cargo-skyline BS
+// - blujay
+extern crate once_cell;
+extern crate rand;
+extern crate skyline;
+#[cfg(feature = "skyline-web")]
+extern crate skyline_web;
+extern crate smash;
+
+mod fighters;
+
 #[cfg(feature = "main_nro")]
 mod random;
 
@@ -21,9 +32,6 @@ use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
 use std::{fs, path::Path};
-
-#[cfg(feature = "updater")]
-mod updater;
 
 #[smashline::installer]
 pub fn install() {
@@ -480,7 +488,9 @@ pub fn quick_validate_install() {
         if is_on_ryujinx() {
             println!("No libsmashline_hook.nro found! We will likely crash.");
         } else {
-            skyline_web::dialog_ok::DialogOk::ok("No libsmashline_hook.nro found! We will likely crash.");
+            skyline_web::dialog_ok::DialogOk::ok(
+                "No libsmashline_hook.nro found! We will likely crash.",
+            );
         }
     }
 

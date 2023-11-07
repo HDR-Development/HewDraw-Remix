@@ -12,7 +12,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             sub_check_passive_button_for_damage,
             status_pre_passive,
-            status_pre_passivefb
+            status_pre_passivefb,
+            status_PassiveFB_Main
         );
     }
 }
@@ -80,5 +81,16 @@ pub unsafe fn status_pre_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
+    0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_PassiveFB_Main)]
+pub unsafe fn status_PassiveFB_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+    }
+    else if CancelModule::is_enable_cancel(fighter.module_accessor) || MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+    }
     0.into()
 }
