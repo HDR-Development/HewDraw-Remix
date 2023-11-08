@@ -10,6 +10,33 @@ if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_TURN && boma.is_input_jum
   }
 }
 
+// upB freefalls after one use per airtime
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor)
+    && (fighter.is_situation(*SITUATION_KIND_GROUND)
+        || fighter.is_situation(*SITUATION_KIND_CLIFF)
+        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+    {
+        VarModule::off_flag(fighter.battle_object, vars::sonic::instance::UP_SPECIAL_FREEFALL);
+    }
+    if fighter.is_prev_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP) {
+        if StatusModule::is_changing(fighter.module_accessor) {
+            VarModule::on_flag(fighter.battle_object, vars::sonic::instance::UP_SPECIAL_FREEFALL);
+        }
+    }
+    if fighter.is_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP) {
+        if fighter.is_situation(*SITUATION_KIND_AIR)
+        && !StatusModule::is_changing(fighter.module_accessor)
+        && VarModule::is_flag(fighter.battle_object, vars::sonic::instance::UP_SPECIAL_FREEFALL) {
+            if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+                let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+                *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+            }
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -47,6 +74,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     sonic_spindash_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     //sonic_moveset(boma, situation_kind, status_kind, motion_kind, frame, cat[0], id);
     //sonic_lightspeed_dash(boma, status_kind, motion_kind, situation_kind, cat[0], id);
+    up_special_freefall(fighter);
     fastfall_specials(fighter);
     
 }
