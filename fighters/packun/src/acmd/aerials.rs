@@ -266,12 +266,12 @@ unsafe fn packun_attack_air_b_s_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 13, 3.5, 40, -60, 0, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, -60, 0, 1.0, true);
         }
     }
     else {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, 60, 0, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 13, 3.5, 40, 60, 0, 1.0, true);
         }
     }
 }
@@ -302,7 +302,7 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
-    let angle = if stance.label == 1 {105} else {70};
+    let angle = if stance.label == 1 {105} else {75};
     let bkb = if stance.label == 1 {15} else if stance.label == 0 {10} else {0};
     let sound = if stance.label != 2 { *COLLISION_SOUND_ATTR_PUNCH } else { *COLLISION_SOUND_ATTR_HEAVY };
     if stance.label != 2 {
@@ -336,7 +336,7 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("neck6"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("neck8"), *HIT_STATUS_NORMAL);
     }
-    frame(lua_state, 25.0);
+    frame(lua_state, 24.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }

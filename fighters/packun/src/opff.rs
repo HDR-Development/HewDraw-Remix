@@ -92,7 +92,7 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_PASSIVE_FB]) {
                 apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            apply_status_speed_mul(fighter, 0.94);
+            apply_status_speed_mul(fighter, 0.9);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
             apply_status_speed_mul(fighter, 0.84);
         }
@@ -188,26 +188,27 @@ unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
 }
 
 // Allows hold input to transition to rapid jab if in Putrid stance, and handles changed animations per stance
-unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+unsafe fn motion_handler(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_13")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
     }
-    if boma.is_motion(Hash40::new("attack_s3_s")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        MotionModule::change_motion(boma, Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
+    if boma.is_motion(Hash40::new("attack_s3_s")) { 
+        if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+            MotionModule::change_motion(boma, Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
+        }
+        else if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
+            MotionModule::change_motion(boma, Hash40::new("attack_s3_s_a"), 0.0, 1.0, false, 0.0, false, false);
+        }
     }
     if boma.is_motion(Hash40::new("attack_s4_s")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        let frame = if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD {24.0} else {1.0};
-        MotionModule::change_motion(boma, Hash40::new("attack_s4_s_2"), 0.0, frame, false, 0.0, false, false);
+        let frame = if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD {24.0} else {0.0};
+        MotionModule::change_motion(boma, Hash40::new("attack_s4_s_2"), frame, 1.0, false, 0.0, false, false);
     }
     if boma.is_motion(Hash40::new("attack_s4_hold")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
         MotionModule::change_motion(boma, Hash40::new("attack_s4_hold_2"), 0.0, 1.0, false, 0.0, false, false);
     }
     if boma.is_motion(Hash40::new("attack_air_b")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
         MotionModule::change_motion(boma, Hash40::new("attack_air_b_s"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    if fighter.is_status(*FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::packun::SPECIAL_S_SHOOT_S);
-        StatusModule::change_status_request_from_script(fighter.module_accessor, status, false);
     }
 }
 
@@ -258,7 +259,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     check_reset(fighter);
     check_apply_speeds(fighter);
     stance_init_effects(fighter);
-    motion_handler(fighter, boma);
+    motion_handler(boma);
     fastfall_specials(fighter);
 }
 

@@ -1383,8 +1383,4 @@ pub mod statuses {
         pub const SPECIAL_N_O: i32 = 4;
         pub const SPECIAL_N_G: i32 = 5;
     }
-
-    pub mod packun {
-        pub const SPECIAL_S_SHOOT_S: i32 = 0;
-    }
 }

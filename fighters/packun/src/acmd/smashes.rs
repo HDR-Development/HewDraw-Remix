@@ -84,12 +84,12 @@ unsafe fn packun_attack_s4_s2_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, 90, 0, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, 60, 90, 1.6, true);
         }
     }
     else{
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 13, 3.5, 40, -90, 0, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 13, 3.5, 40, -60, 90, 1.6, true);
         }
     }
     frame(lua_state, 25.0);
@@ -198,13 +198,13 @@ unsafe fn packun_attack_hi4_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 0, 0, Hash40::new("mouth"), 12.5 * stance.damage_bite, 90, 86, 0, 90, 9.0, 2.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
         }
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            ATTACK(fighter, 0, 0, Hash40::new("mouth"), 13.5 * stance.damage_bite, 90, 86, 0, 90, 9.0, 2.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+            ATTACK(fighter, 0, 0, Hash40::new("mouth"), 14.0 * stance.damage_bite, 90, 86, 0, 90, 9.0, 2.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.35, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
         }
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            ATTACK(fighter, 1, 0, Hash40::new("mouth"), 8.5, 90, 86, 0, 90, 9.0, 4.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
+            ATTACK(fighter, 1, 0, Hash40::new("mouth"), 8.5, 90, 86, 0, 90, 9.0, 4.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.45, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
         }
     }
     wait(lua_state, 2.0);
