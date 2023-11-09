@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "packun", status = FIGHTER_STATUS_KIND_SPECIAL_S_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status_script(agent = "packun", status = FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn packun_special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !(fighter.is_situation(*SITUATION_KIND_GROUND))  {
         macros::CORRECT(fighter, *GROUND_CORRECT_KIND_AIR);
