@@ -39,4 +39,5 @@ pub fn install() {
     smashline::install_agent_init_callbacks!(peach_init);
     attack_air::install();
     jump_aerial::install();
+    special_s::install();
 }
