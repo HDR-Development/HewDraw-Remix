@@ -404,6 +404,7 @@ pub mod vars {
             pub const SPINNING_DEMON: i32 = 0x0104;
             pub const LIGHTNING_SCREW_UPPERCUT: i32 = 0x0105;
             pub const TWIN_FANG_DOUBLE_KICK: i32 = 0x0106;
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0107;
         }
     }
 
