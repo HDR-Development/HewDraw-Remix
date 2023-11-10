@@ -164,7 +164,7 @@ special_s_shoot_s:
   flags:
     turn: false
     loop: false
-    move: false
+    move: true
     fix_trans: false
     fix_rot: false
     fix_scale: false
