@@ -206,8 +206,8 @@ special_hi_command_ex:
     freeze_during_hitstop: false
 special_hi:
   extra:
-    xlu_start: 3
-    xlu_end: 6
+    xlu_start: 4
+    xlu_end: 7
 special_hi_ex:
   game_script: game_specialhiex
   flags:
@@ -233,7 +233,7 @@ special_hi_ex:
   - sound_specialhiex
   - effect_specialhiex
   extra:
-    intangible_start_frame: 3
+    intangible_start_frame: 4
     intangible_end_frame: 34
     cancel_frame: 0
     freeze_during_hitstop: false
