@@ -478,6 +478,7 @@ pub mod vars {
             // flag
             // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
         }
     }
     pub mod daisy {
@@ -485,6 +486,7 @@ pub mod vars {
             // flag
             // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
         }
     }
 

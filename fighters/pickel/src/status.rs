@@ -89,21 +89,10 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE
         ]
     );
-    
-    let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
-                            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
     if (!fighter.is_situation(*SITUATION_KIND_AIR) && !still_SideSpecial) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING])
-    || fighter.is_status_one_of(damage_statuses) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
     }
 
