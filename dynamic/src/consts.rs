@@ -384,12 +384,14 @@ pub mod vars {
             pub const IS_DASH_GORDO: i32 = 0x0101;
             pub const IS_ANGLED_FLAG: i32 = 0x0102;
             pub const IS_REMOVED_FLAG: i32 = 0x0103;
+            pub const FUSE_ITEM: i32 = 0x0104;
 
             //ints
-            pub const RECATCH_COUNTER: i32 = 0x0104;
+            pub const RECATCH_COUNTER: i32 = 0x0105;
+            pub const FUSED_ITEM_KIND: i32 = 0x0106;
 
             //floats
-            pub const INHALE_STICK_Y: i32 = 0x0105;
+            pub const INHALE_STICK_Y: i32 = 0x0107;
         }
     }
     pub mod demon {
@@ -616,10 +618,42 @@ pub mod vars {
         }
     }
 
+    pub mod link {
+        pub mod instance {
+            // ints
+            pub const FUSED_ITEM_KIND: i32 = 0x0100;
+            pub const FUSED_ITEM_ID: i32 = 0x0101;
+            pub const TEAM_NO: i32 = 0x0102;
+
+            //flags
+            pub const IS_ARROW_FUSE: i32 = 0x0103;
+        }
+    }
+
+    pub mod link_arrow {
+        pub mod instance {
+            // ints
+            pub const FUSED_ITEM_KIND: i32 = 0x0100;
+            pub const FUSED_ITEM_TYPE: i32 = 0x0101;
+            pub const FUSED_ITEM_POST_STATUS: i32 = 0x0102;
+            pub const FUSED_ITEM_ID: i32 = 0x0103;
+
+            //flags
+            pub const IS_ARROW_FUSE: i32 = 0x0104;
+            pub const IS_REFLECT_FIX: i32 = 0x0105;
+        }
+    }
+
     pub mod kirby {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_HI: i32 = 0x01FF; //Weird value to avoid conflicts with copy ability values
+            pub const IS_ARROW_FUSE: i32 = 0x0100;
+
+            //ints
+            pub const FUSED_ITEM_KIND: i32 = 0x0101;
+            pub const FUSED_ITEM_ID: i32 = 0x0102;
+            pub const TEAM_NO: i32 = 0x0103;
         }
         pub mod status {
             // copy ability
@@ -923,6 +957,11 @@ pub mod vars {
         pub mod instance {
             // floats
             pub const STORED_BALLOON_POWER: i32 = 0x0100;
+
+            //ints
+            //ints
+            pub const FUSED_ITEM_KIND: i32 = 0x0101;
+            pub const TEAM_NO: i32 = 0x0102;
         }
         pub mod status {
             // flags
@@ -1213,6 +1252,8 @@ pub mod vars {
             // ints
             pub const TURNIP_NUM_HI: i32 = 0x0104;
             pub const TURNIP_NUM_LW: i32 = 0x0105;
+            pub const FUSED_ITEM_KIND: i32 = 0x0106;
+            pub const TEAM_NO: i32 = 0x0107;
         }
     }
 
