@@ -121,6 +121,8 @@ unsafe fn pickel_table_recreate(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
     if (1..3).contains(&flash_timer) { // gimmick flash when table is ready for respawn
         gimmick_flash(boma);
+        EFFECT_FOLLOW(fighter, Hash40::new("pickel_tool_break_workbench"), Hash40::new("top"), 0, 20, 0, 0, 90, 0, 1.25, true);
+        PLAY_SE(fighter, Hash40::new("se_pickel_special_n_craft_end"));
         VarModule::on_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE);
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
     }
