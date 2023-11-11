@@ -21,18 +21,6 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Dair only bounces once per airtime
-unsafe fn dair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    if boma.is_situation(*SITUATION_KIND_GROUND)
-    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD,
-                                  *FIGHTER_STATUS_KIND_REBIRTH,
-                                  *FIGHTER_STATUS_KIND_WIN,
-                                  *FIGHTER_STATUS_KIND_LOSE,
-                                  *FIGHTER_STATUS_KIND_ENTRY]){
-        WorkModule::on_flag(boma, vars::robot::instance::AIRTIME_DAIR);
-    }
-}
-
 // Bair only bounces once per airtime
 unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if boma.is_situation(*SITUATION_KIND_GROUND)
@@ -42,6 +30,18 @@ unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i
                                   *FIGHTER_STATUS_KIND_LOSE,
                                   *FIGHTER_STATUS_KIND_ENTRY]){
         WorkModule::on_flag(boma, vars::robot::instance::AIRTIME_BAIR);
+    }
+}
+
+// Sideb only bounces once per airtime
+unsafe fn sideb_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if boma.is_situation(*SITUATION_KIND_GROUND)
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD,
+                                  *FIGHTER_STATUS_KIND_REBIRTH,
+                                  *FIGHTER_STATUS_KIND_WIN,
+                                  *FIGHTER_STATUS_KIND_LOSE,
+                                  *FIGHTER_STATUS_KIND_ENTRY]){
+        WorkModule::on_flag(boma, vars::robot::instance::AIRTIME_SIDEB);
     }
 }
 
@@ -62,17 +62,6 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }
-        }
-    }
-}
-
-unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && situation_kind == *SITUATION_KIND_AIR {
-        if frame > 13.0 {
-            if boma.is_button_on(Buttons::Attack) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
             }
         }
     }
@@ -204,7 +193,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END
         ]) 
@@ -230,16 +218,35 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn upb_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) < 0.0 {
+        WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+    } else if WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) == 0.0 {
+        WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+    }
+
+    if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP {
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB_RISE, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 0.0);
+    }
+
+    if StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+    {
+        PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    uspecial_cancels(boma, situation_kind, frame);
-    dair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_reset(boma, status_kind, situation_kind);
+    sideb_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);
     fuel_indicator_effect(fighter, boma);
     fastfall_specials(fighter);
+    upb_opff(fighter, boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ROBOT )]

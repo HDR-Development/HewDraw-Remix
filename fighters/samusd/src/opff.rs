@@ -27,7 +27,7 @@ pub unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
         }
     }
 }
- 
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -72,10 +72,19 @@ pub unsafe fn remove_super_missiles(boma: &mut BattleObjectModuleAccessor) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A, false);
     }
 }
+
+//disables Dark Samus bomb jump (normal Samus bomb jump unaffected)
+pub unsafe fn disable_bombjump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::is_flag(boma, 0x200000E2) // FIGHTER_SAMUS_INSTANCE_WORK_ID_FLAG_IS_CHANGE_STATUS_BOMBJUMP
+    && fighter.kind() == *FIGHTER_KIND_SAMUSD {
+        WorkModule::off_flag(boma, 0x200000E2);
+    }
+}
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     remove_super_missiles(boma);
     fastfall_specials(fighter);
+    disable_bombjump(fighter, boma);
 }
 
 pub unsafe extern "Rust" fn common_samusd(fighter: &mut L2CFighterCommon) {
