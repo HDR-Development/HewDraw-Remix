@@ -92,7 +92,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
       env:
         HOME: /root
 

@@ -30,7 +30,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
       env:
         HOME: /root
 
