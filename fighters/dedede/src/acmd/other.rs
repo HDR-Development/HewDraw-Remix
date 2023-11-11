@@ -219,7 +219,6 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let gordo_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);    
     
     if is_excute(fighter){
-        HitModule::set_no_team(boma, true); //allows gordo to be hit by anyone
         if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
             PostureModule::reverse_rot_y_lr(boma);
             PostureModule::reverse_lr(boma);
@@ -353,7 +352,6 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
             }
         }
         }
-        HitModule::set_no_team(boma, true); //allows gordo to be hit by anyone
     }
     for _ in 0..301{
         if is_excute(fighter) {
