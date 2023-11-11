@@ -71,7 +71,7 @@ attack_near_w:
     cancel_frame: 27
 attack_s3_s_s:
   extra:
-    cancel_frame: 25
+    cancel_frame: 30
 attack_s3_s_w:
   flags:
     move: true
