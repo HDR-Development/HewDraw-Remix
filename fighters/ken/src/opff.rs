@@ -311,14 +311,7 @@ unsafe fn heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
 /// determines what cancels can be done out of specials
 unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
 
-    // don't do anything during hitlag
-    if boma.is_in_hitlag()
-    || CancelModule::is_enable_cancel(boma) {
-        return;
-    }
-
-    // don't do anything unless we're in a special and hit something (special case for NSpecial)
-    if !((boma.is_status_one_of(&[
+    let is_other_special_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
@@ -330,15 +323,18 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
         CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ken::ATTACK_COMMAND_4)
         ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    ) || (boma.is_status_one_of(&[
+    );
+
+    let is_nspecial_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
         ]) && frame > 13.0
-    )) {
+    );
+
+    if !is_nspecial_cancel && !is_other_special_cancel {
         return;
     }
-    // from this point on, the fighter is in a valid spot to try and cancel
     
     // super cancels
     let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
@@ -366,11 +362,14 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         return;
     }
 
+    if !is_nspecial_cancel {
+        return;
+    }
+
     // DSpecial cancels
     // costs more meter on shield
-    let special_lw_cost = if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {2} else {1};
     if boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), special_lw_cost) {
+    && MeterModule::drain(boma.object(), 1) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
         boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         return;
