@@ -121,13 +121,13 @@ unsafe fn pickel_table_recreate(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
     if (1..3).contains(&flash_timer) { // gimmick flash when table is ready for respawn
         gimmick_flash(boma);
+        EFFECT_FOLLOW(fighter, Hash40::new("pickel_tool_break_workbench"), Hash40::new("top"), 0, 20, 0, 0, 90, 0, 1.25, true);
+        PLAY_SE(fighter, Hash40::new("se_pickel_special_n_craft_end"));
         VarModule::on_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE);
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
     }
     if VarModule::is_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE)
     && status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT // if steve is in stationary mining status
-    && MotionModule::frame(boma) <= 5.0 //during first 5 frames of animation
-    && ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK_BACK].contains(&prev_status)  // and is not returning to still from a walking mine
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) { 
         StatusModule::change_status_force(boma, *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE, true); 
         VarModule::off_flag(boma.object(), vars::pickel::instance::CAN_RESPAWN_TABLE);
