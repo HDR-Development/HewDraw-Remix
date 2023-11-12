@@ -60,33 +60,20 @@ unsafe fn attack_13 (fighter: &mut L2CAgentBase) {
 unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let nodes = ["head", "bust", "waist", "arml", "shoulderl", "armr", "shoulderr"]; // nodes that become intangible during the attack
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_INVINCIBLE);
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_INVINCIBLE);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_INVINCIBLE);
-        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 55, 70, 0, 65, 3.5, 0.0, 4.0, 6.0, Some(0.0), Some(12.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 3.25, 0.0, 4.0, 8.0, 0.0, 12.0, 8.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+        for node in nodes { HIT_NODE(fighter, Hash40::new(node), *HIT_STATUS_INVINCIBLE); }
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 70, 55, 0, 80, 3.5, 0.0, 4.0, 6.0, Some(0.0), Some(12.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 	frame(lua_state, 10.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 70, 60, 0, 40, 4.0, 0.0, 9.0, 8.0, Some(0.0), Some(9.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 4.0, 0.0, 7.0, 6.0, 0.0, 12.0, 6.0, 1.2, 1.2, 999, false, 1.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 65, 30, 0, 80, 6.0, 0.0, 8.0, 5.0, Some(0.0), Some(8.0), Some(5.75), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         AttackModule::clear_all(boma);
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
+        for node in nodes { HIT_NODE(fighter, Hash40::new(node), *HIT_STATUS_NORMAL); }
     }
 }
 
@@ -103,11 +90,14 @@ unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 11, 0, -3, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, 2, 0, 180, 0, 1.1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.6, 0.6, 0.6);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8, 1.5, 0, 0, 45, 0.82, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 9.2, -1.0, 0, 0, 45, 0.85, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
+        LAST_EFFECT_SET_COLOR(fighter, 0.6, 0.6, 0.6);
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
