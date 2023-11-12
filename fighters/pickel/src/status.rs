@@ -62,8 +62,8 @@ pub unsafe extern "C" fn attack_air_lw_main_status_loop(fighter: &mut L2CFighter
 pub unsafe fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
 
     let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
-    let forgeArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
-    let canCart = hasIron && !forgeArticle;
+    let trolleyArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
+    let canCart = hasIron && !trolleyArticle;
 
     if canCart {
         VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
