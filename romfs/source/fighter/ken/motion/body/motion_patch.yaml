@@ -1,106 +1,25 @@
-fall:
-  blend_frames: 5
-fall_aerial:
-  blend_frames: 5
-fall_special:
-  blend_frames: 5
-guard_off:
-  blend_frames: 4
-  extra:
-    cancel_frame: 12
-throw_lw:
-  extra:
-    cancel_frame: 41
-attack_12:
-  game_script: game_attack11nears
+attack_11_near_s:
   flags:
     move: false
-  animations:
-  - name: c02attackhi3s.nuanmb
-  scripts:
-  - expression_attack11nears
-  - sound_attack11nears
-  - effect_attack11nears
-  extra:
-    cancel_frame: 38
-attack_hi4:
-  extra:
-    cancel_frame: 40
-attack_lw4:
-  extra:
-    cancel_frame: 35
-attack_11_w:
-  game_script: game_attack12
-  flags:
-    move: true
-  animations:
-  - name: c00attack12.nuanmb
-  scripts:
-  - expression_attack12
-  - sound_attack12
-  - effect_attack12
-  extra:
-    cancel_frame: 20
-attack_11_s:
-  game_script: game_attack11nears
-  flags:
-    move: false
-  animations:
-  - name: c02attackhi3s.nuanmb
-  scripts:
-  - expression_attack11nears
-  - sound_attack11nears
-  - effect_attack11nears
-  extra:
-    cancel_frame: 38
-attack_s4_s:
-  extra:
-    cancel_frame: 42
-attack_hi3_s:
-  game_script: game_attack11s
   animations:
   - name: c00attack11s.nuanmb
-  scripts:
-  - expression_attack11s
-  - sound_attack11s
-  - effect_attack11s
   extra:
-    cancel_frame: 33
-attack_lw3_s:
-  extra:
-    cancel_frame: 25
-special_air_n:
-  extra:
-    cancel_frame: 70
-special_hi_ex:
-  game_script: game_specialhiex
+    cancel_frame: 38
+attack_11_s:
   flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d02specialhiex.nuanmb
-  scripts:
-  - expression_specialhiex
-  - sound_specialhiex
-  - effect_specialhiex
+    move: false
   extra:
-    intangible_start_frame: 5
-    intangible_end_frame: 6
-    cancel_frame: 0
-    freeze_during_hitstop: false
+    cancel_frame: 38
+attack_11_w:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 15
+attack_12:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 38
 attack_air_hi:
   extra:
     cancel_frame: 28
@@ -133,76 +52,51 @@ attack_command4:
     intangible_end_frame: 0
     cancel_frame: 33
     freeze_during_hitstop: true
-special_lw_step_f:
+attack_hi3_s:
   extra:
-    cancel_frame: 14
-special_lw_step_b:
+    cancel_frame: 33
+attack_hi4:
   extra:
-    cancel_frame: 14
-special_air_hi_ex:
-  game_script: game_specialairhiex
+    cancel_frame: 36
+attack_lw3_s:
+  extra:
+    cancel_frame: 25
+attack_lw4:
+  extra:
+    cancel_frame: 35
+attack_near_w:
   flags:
-    turn: false
-    loop: false
     move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d02specialhiex.nuanmb
-  scripts:
-  - expression_specialairhiex
-  - sound_specialairhiex
-  - effect_specialairhiex
   extra:
-    intangible_start_frame: 5
-    intangible_end_frame: 6
-    cancel_frame: 0
-    freeze_during_hitstop: false
-special_hi_command_ex:
-  game_script: game_specialhicommandex
+    cancel_frame: 27
+attack_s3_s_s:
+  extra:
+    cancel_frame: 30
+attack_s3_s_w:
   flags:
-    turn: false
-    loop: false
     move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d02specialhiex.nuanmb
-  scripts:
-  - expression_specialhicommandex
-  - sound_specialhicommandex
-  - effect_specialhicommandex
   extra:
-    intangible_start_frame: 4
-    intangible_end_frame: 7
+    cancel_frame: 27
+attack_s4_s:
+  extra:
+    cancel_frame: 42
+catch_attack:
+  extra:
     cancel_frame: 0
-    freeze_during_hitstop: false
-special_air_lw_step_b:
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
   extra:
-    cancel_frame: 14
-special_air_lw_step_f:
+    cancel_frame: 12
+special_air_hi_command:
   extra:
-    cancel_frame: 14
+    xlu_start: 0
+    xlu_end: 0
 special_air_hi_command_ex:
   game_script: game_specialairhicommandex
   flags:
@@ -228,10 +122,127 @@ special_air_hi_command_ex:
   - sound_specialairhicommandex
   - effect_specialairhicommandex
   extra:
-    intangible_start_frame: 4
-    intangible_end_frame: 7
+    intangible_start_frame: 0
+    intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-catch_attack:
+special_air_hi:
   extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_hi_ex:
+  game_script: game_specialairhiex
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d02specialhiex.nuanmb
+  scripts:
+  - expression_specialairhiex
+  - sound_specialairhiex
+  - effect_specialairhiex
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
     cancel_frame: 0
+    freeze_during_hitstop: false
+special_air_lw_step_b:
+  extra:
+    cancel_frame: 14
+special_air_lw_step_f:
+  extra:
+    cancel_frame: 14
+special_air_n:
+  extra:
+    cancel_frame: 70
+special_air_s_end:
+  extra:
+    cancel_frame: 21
+special_hi_command:
+  extra:
+    xlu_start: 1
+    xlu_end: 9
+special_hi_command_ex:
+  game_script: game_specialhicommandex
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d02specialhiex.nuanmb
+  scripts:
+  - expression_specialhicommandex
+  - sound_specialhicommandex
+  - effect_specialhicommandex
+  extra:
+    intangible_start_frame: 1
+    intangible_end_frame: 34
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_hi:
+  extra:
+    xlu_start: 4
+    xlu_end: 7
+special_hi_ex:
+  game_script: game_specialhiex
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d02specialhiex.nuanmb
+  scripts:
+  - expression_specialhiex
+  - sound_specialhiex
+  - effect_specialhiex
+  extra:
+    intangible_start_frame: 4
+    intangible_end_frame: 34
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_lw_step_b:
+  extra:
+    cancel_frame: 14
+special_lw_step_f:
+  extra:
+    cancel_frame: 14
+throw_lw:
+  extra:
+    cancel_frame: 41
