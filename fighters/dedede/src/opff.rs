@@ -64,9 +64,9 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         let char_pos = *PostureModule::pos(boma); //position of dedede
         let gordo_pos = *PostureModule::pos(article_boma); //position of gordo
         let char_lr = PostureModule::lr(boma); // LR value before we check everything
-        let offset = Vector3f::new(6.0 * char_lr, 9.0, 0.0); //offset, if we need to move the area
+        let offset = Vector3f::new(5.0 * char_lr, 9.0, 0.0); //offset, if we need to move the area
 
-        if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 18.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 15.0){
+        if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 19.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 15.0){
             if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) 
             || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) 
             && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
@@ -109,7 +109,8 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         // Re enables gordo dash if d3 has either done a gordodash, has landed, or is in jump squat
         if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S 
         || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_LANDING 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT{
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+        || WorkModule::is_flag(boma, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD){
             VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, true);
         }
         //Prevents B reversing when we are in the dash
