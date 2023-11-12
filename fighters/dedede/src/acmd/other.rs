@@ -309,11 +309,7 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
         if StopModule::is_hit(boma){ 
             for i in 0..num_players{
                 let opponent_boma = sv_battle_object::module_accessor(Fighter::get_id_from_entry_id(i));
-                //Preventing gordo for staying out for a long time
-                if opponent_boma == owner_module_accessor
-                && (WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) - VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::RECATCH_COUNTER)) > 1{
-                    VarModule::inc_int(owner_module_accessor.object(), vars::dedede::instance::RECATCH_COUNTER);
-                }
+
                 if AttackModule::is_infliction(opponent_boma, *COLLISION_KIND_MASK_HIT){
                     let data = AttackModule::attack_data(opponent_boma, 0, false);
                     let mut angle = (*data).vector as f32;
