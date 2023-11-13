@@ -1,9 +1,10 @@
 use super::*;
 use globals::*;
+mod special_hi;
 //mod special_lw;
  
 pub fn install() {
-    //special_lw::install();
+    special_hi::install();
     install_status_scripts!(
         attack_lw4_main,
         attack_lw4_map_correction
