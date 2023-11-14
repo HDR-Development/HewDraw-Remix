@@ -27,6 +27,7 @@
       <float hash="search_radius">0</float>
       <float hash="search_offset_x">0</float>
       <float hash="search_offset_2x">0</float>
+      <float hash="search_offset_y">0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -37,9 +38,12 @@
       <int hash="life">180</int>
       <float hash="accel_y">0.15</float>
       <float hash="0x1f6c5eefa5">5</float>
-      <float hash="turn_speed_min">4</float>
       <int hash="remove_bound_num">2</int>
-      <int hash="remove_turn_num">2</int>
+      <int hash="remove_turn_num">3</int>
+      <float hash="turn_attack_power_max">110</float>
+      <float hash="turn_attack_power_min">35</float>
+      <float hash="turn_speed_max">6</float>
+      <float hash="turn_speed_min">3</float>
       <float hash="hop_speed_x">0.5</float>
       <float hash="hop_speed_y">1.55</float>
       <int hash="hop_life">40</int>
