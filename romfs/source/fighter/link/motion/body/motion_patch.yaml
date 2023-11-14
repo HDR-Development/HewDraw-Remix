@@ -43,7 +43,7 @@ attack_lw4:
     cancel_frame: 56
 special_lw:
   extra:
-    cancel_frame: 36
+    cancel_frame: 40
 attack_hi3:
   extra:
     cancel_frame: 31
@@ -70,10 +70,10 @@ special_n_start:
     move: false
 special_lw_blast:
   extra:
-    cancel_frame: 25
+    cancel_frame: 40
 special_air_lw_blast:
   extra:
-    cancel_frame: 25
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0
