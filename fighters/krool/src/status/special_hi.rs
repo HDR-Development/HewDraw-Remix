@@ -1,3 +1,5 @@
+use std::convert::TryInto;
+
 use super::*;
 
 #[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -58,6 +60,53 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
                 special_hi_change_motion(fighter, Hash40::new("special_hi_start"), true, true);
             }
+        }
+    }
+
+    return 0.into()
+}
+
+#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    fighter.set_situation(SITUATION_KIND_AIR.into());
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    special_hi_change_motion(fighter, Hash40::new("special_hi"), false, true);
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
+    special_hi_set_physics(fighter);
+    WorkModule::set_float(fighter.module_accessor, 0.5, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOTION_2ND_LERP_RATE);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        another_funcing_func(fighter, true);
+    }
+    GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_KROOL_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_main_loop as *const () as _))
+
+}
+
+unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into()
+    }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || !fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if !StopModule::is_stop(fighter.module_accessor) {
+        another_funcing_func(fighter, true);
+    }
+    let param_brake_after_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_after_frame"));
+    let brake_after_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_INT_BRAKE_AFTER_FRAME);
+    println!("{}", brake_after_frame);
+    if param_brake_after_frame <= brake_after_frame {
+        fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END.into(), false.into());
+        return 0.into()
+    }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        let start_air_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_start_air_frame"));
+        if fighter.global_table[CURRENT_FRAME].get_i32() > start_air_frame {
+            fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
         }
     }
 
@@ -196,8 +245,190 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
 
 }
 
+
+//FUN_71000210d0
+unsafe extern "C" fn another_funcing_func(fighter: &mut L2CFighterCommon, random_bool: bool) -> L2CValue {
+    if random_bool {
+        let gravity_minus = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y_speed_minus"));   //0x2041e0d192
+        let acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));   //0x141a28d9bf
+        let touch_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_touch_max_spd_x"));   //0x1eff745701
+        let max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_max_spd_x"));   //0x187c1ef75f
+        let brake_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_x"));   //0x16d5f152b5
+        let stick_mul_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_stick_mul_max_spd_x"));   //0x22c9b49999
+        let stick_mul_acl_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_stick_mul_acl_spd_y"));   //0x228933e5bb
+        let brake_movement_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_movement_y")); //0x1ffbac0abc
+        let brake_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_y"));   //0x16a2f66223
+        let fall_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_x")); //0x19ecf9d8dc
+        let fall_stick_mul_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_stick_mul_max_spd_y")); //0x2388140c3b
+        let fall_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_y")); //0x199bfee84a
+        let unknown_param = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), 0x1f32a7c5bf);
+        let mut stick_x = fighter.stick_x();
+        // 150, 160, 170, 180 = 1.0
+        if stick_x >= 0.0 { stick_x = 1.0; } else { stick_x = -1.0; }
+        if stick_mul_max_spd_x <= 1.0 {
+            stick_x = (stick_mul_max_spd_x - 1.0) * fighter.stick_x() + 1.0;
+        }
+        else {
+            stick_x = 1.0;
+        }
+        let mut some_calc_value = stick_x;  //l160
+        if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == (*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL | *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END) {
+            some_calc_value = 1.0;
+        }
+        if stick_mul_acl_spd_y >= 1.0 {
+            stick_x = 1.0 - (1.0 - stick_mul_acl_spd_y) * fighter.stick_x();
+        }
+        else {
+            stick_x = 1.0;
+        }
+        let some_other_calc_value = stick_x;    //l170
+        if fall_stick_mul_max_spd_y >= 1.0 {
+            stick_x = 1.0;
+        }
+        else {
+            stick_x = (fall_stick_mul_max_spd_y - 1.0) * fighter.stick_x() + 1.0;
+        }
+        let third_calc_value = stick_x; //l180
+        // goto1
+        if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
+            sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, fall_max_spd_x * some_calc_value, 0.0);   //l160 = 1.0
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fall_max_spd_y * third_calc_value);
+        }
+        else {
+            if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
+                sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, touch_max_spd_x * some_calc_value, 0.0);
+            }
+            else {
+                sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, max_spd_x * some_calc_value, 0.0);
+            }
+            let brake_after_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_INT_BRAKE_AFTER_FRAME);
+            if brake_after_frame > 0 {
+                sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -brake_y);
+                WorkModule::inc_int(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_INT_BRAKE_AFTER_FRAME);
+                // goto1
+            }
+            let movement_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOVEMENT_Y);
+            let brake_mul = brake_movement_y * 10.0;
+            if brake_mul <= movement_y {
+                sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, brake_mul);
+            }
+            else {
+                sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -brake_y);
+                //WorkModule::inc_int(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_INT_BRAKE_AFTER_FRAME);
+            }
+            fighter.clear_lua_stack();
+            fighter.push_lua_stack(&mut L2CValue::new_int((*FIGHTER_KINETIC_ENERGY_ID_GRAVITY).try_into().unwrap()));
+            let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+            if speed_y < 0.0 {
+                sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, gravity_minus);
+                // goto1
+            }
+        }
+        let mul_max_acl_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_mul_max_acl_x"));
+        let mul_stick_x = fighter.stick_x() * mul_max_acl_x;
+        sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+        sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+        if mul_stick_x != 0.0 {
+            // goto2
+            let stk_x = fighter.stick_x();
+            sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, stk_x, 0.0);
+            let movement_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOVEMENT_Y);
+            if movement_y < 0.0 {
+                sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, stk_x, 0.0);
+            }
+        }
+        else {
+            if mul_stick_x == 0.0 {
+                // goto2
+            }
+            sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0);
+        }
+        fighter.clear_lua_stack();
+        fighter.push_lua_stack(&mut L2CValue::new_int((*FIGHTER_KINETIC_ENERGY_ID_STOP).try_into().unwrap()));
+        let speed_x = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+        fighter.push_lua_stack(&mut L2CValue::new_int((*FIGHTER_KINETIC_ENERGY_ID_GRAVITY).try_into().unwrap()));
+        let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+        let square_x = speed_x * speed_x;
+        let square_y = speed_y * speed_y;
+        let high_on_potenuse = (square_x + square_y).sqrt();    //plvar9
+        if speed_y >= 0.0 {
+            let movement_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOVEMENT_Y);
+            //let h = movement_y.abs() + 0.0;
+            WorkModule::set_float(fighter.module_accessor, movement_y.abs(), *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOVEMENT_Y);
+        }
+        else {
+            let movement_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOVEMENT_Y);
+            WorkModule::set_float(fighter.module_accessor, -movement_y, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOVEMENT_Y);
+        }
+        if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
+            if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END {
+                special_hi_lerp_motion(fighter, "special_hi_air_end_f", "special_hi_air_end_b");
+            }
+        }
+        else {
+            special_hi_lerp_motion(fighter, "special_hi_f", "special_hi_b");
+        }
+    }
+
+    return 0.into()
+}
+
+//FUN_710001e090
+unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, motion1: &str, motion2: &str) {
+    let mut lerp_rate = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOTION_2ND_LERP_RATE);    //l80
+    if fighter.stick_x() >= -0.1 {
+        if fighter.stick_x() >= 0.1 {
+            if lerp_rate >= 0.5 {
+                let clamped_lerp = (lerp_rate - 0.05).clamp(0.5, 1.0);
+                lerp_rate = clamped_lerp;
+            }
+            else {
+                let clamped_lerp = (lerp_rate + 0.05).clamp(0.0, 0.5);
+                lerp_rate = clamped_lerp;
+            }
+        }
+    }
+    let stick_lr = fighter.stick_x() * PostureModule::lr(fighter.module_accessor);
+    let turn_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_stick_x"));
+    if stick_lr > turn_stick_x {
+        let clamped_lerp = (lerp_rate - 0.05).clamp(0.0, 1.0);
+        lerp_rate = clamped_lerp;
+    }
+    else {
+        let clamped_lerp = (lerp_rate + 0.05).clamp(0.0, 1.0);
+        lerp_rate = clamped_lerp;
+    }
+    WorkModule::set_float(fighter.module_accessor, lerp_rate, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOTION_2ND_LERP_RATE);
+    let mut motion_kind;    //l90
+    let mut hash_motion;
+    let mut adjusted_lerp;
+    if lerp_rate >= 0.5 {
+        motion_kind = Hash40::new(motion2);
+        hash_motion = hash40(motion2);
+        adjusted_lerp = (lerp_rate - 0.5) * 2.0;    //la0
+    }
+    else {
+        motion_kind = Hash40::new(motion1);
+        hash_motion = hash40(motion1);
+        adjusted_lerp = (lerp_rate * 2.0) - 1.0;
+    }
+    // l70 = motion_2nd
+    if MotionModule::motion_kind_2nd(fighter.module_accessor) != hash_motion {
+        let frame = MotionModule::frame(fighter.module_accessor);
+        let rate =  MotionModule::rate(fighter.module_accessor);
+        MotionModule::add_motion_2nd(fighter.module_accessor, motion_kind, frame, rate, true, adjusted_lerp);
+        MotionModule::set_weight(fighter.module_accessor, adjusted_lerp, true);
+    }
+    else {
+        MotionModule::set_weight(fighter.module_accessor, 1.0 - adjusted_lerp, true);
+    }
+
+}
+
 pub fn install() {
     smashline::install_status_scripts!(
         special_hi_start_main,
+        special_hi_main,
     );
 }
