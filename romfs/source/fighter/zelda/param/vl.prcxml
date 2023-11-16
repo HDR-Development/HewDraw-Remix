@@ -49,6 +49,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="accel_y">0.077</float>
       <float hash="wrap_speed_multi">2</float>
       <float hash="wrap_speed_add">1.2</float>
       <float hash="wrap_xy_speed">0.45</float>

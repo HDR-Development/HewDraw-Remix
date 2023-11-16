@@ -71,12 +71,6 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
         }
     }
 }
-// unsafe fn teleport_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
-//     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-//         // allows ledgegrab during teleport startup
-//         fighter.sub_transition_group_check_air_cliff();
-//     }
-// }
 
 unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -86,6 +80,8 @@ unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_
         if situation_kind == *SITUATION_KIND_GROUND {
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 55.0 {
                 //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+                EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
+                EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
                 WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
                 MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
             }
@@ -226,12 +222,8 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         let zelda = utils::util::get_battle_object_from_id(owner_id);
         let zelda_boma = &mut *(*zelda).module_accessor;
         if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_CANCEL) {
-            if StopModule::is_damage(weapon.module_accessor) {
-                if weapon.is_prev_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
-                    MotionModule::set_rate(weapon.module_accessor, 0.25); //8s death while building
-                } else if weapon.is_prev_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK) {
-                    MotionModule::set_rate(weapon.module_accessor, 0.5); //4s death while attacking
-                }
+            if StopModule::is_damage(weapon.module_accessor) && !AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+                MotionModule::set_rate(weapon.module_accessor, 0.25); //8s
             }
         } else if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
             let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
