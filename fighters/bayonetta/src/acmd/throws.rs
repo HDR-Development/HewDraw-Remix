@@ -22,7 +22,7 @@ unsafe fn bayonetta_throw_hi_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
     frame(lua_state, 15.0);
-    FT_MOTION_RATE_RANGE(fighter, 15.0, 35.0, 16.0);
+    FT_MOTION_RATE_RANGE(fighter, 15.0, 36.0, 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
