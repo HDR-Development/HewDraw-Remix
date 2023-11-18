@@ -897,12 +897,6 @@ unsafe fn pickel_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 unsafe fn pickel_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON)  < 3 {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_lw_fail"), 0.0, 1.0, false, 0.0, false, false);
-            return;
-        }
-    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
