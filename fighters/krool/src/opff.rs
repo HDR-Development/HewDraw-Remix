@@ -64,17 +64,6 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     }
 }
 
-pub unsafe fn restore_armor(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
-            && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            WorkModule::set_float(fighter.module_accessor, 4.0, 0x4d);
-            VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -109,29 +98,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn gut_shine(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
-            GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        }
-        if (6..29).contains(&fighter.status_frame()) // gut charge logic
-        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        && VarModule::is_flag(fighter.object(), vars::krool::status::GUT_CHECK_CHARGED) {
-            VarModule::off_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 30.0, true, true, false);
-        }
-        if fighter.status_frame() > 8  // Allows for jump cancel on frame 10 (35 in animation) if not charged
-        && !VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
-        && !fighter.is_in_hitlag() {
-            fighter.check_jump_cancel(false, false);
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     armored_charge(fighter, motion_kind);
-    restore_armor(fighter);
-    gut_shine(fighter);
     var_reset(fighter);
     fastfall_specials(fighter);
 }

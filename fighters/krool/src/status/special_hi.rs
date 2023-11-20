@@ -35,8 +35,13 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
         fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI.into(), false.into());
     }
     else {
-        if fighter.status_frame() > rise_min_frame && fighter.status_frame() <= 50 {
-            VarModule::inc_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL);
+        if fighter.status_frame() > rise_min_frame {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) && (fighter.status_frame() + rise_min_frame) % 15 == 0 {
+                EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_ZX);
+            }
+            if fighter.status_frame() <= 50 {
+                VarModule::inc_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL);
+            }
         }
         if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
             if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -56,6 +61,7 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
 #[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     fighter.set_situation(SITUATION_KIND_AIR.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     special_hi_change_motion(fighter, Hash40::new("special_hi"), false, true);
