@@ -3,37 +3,17 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn jetpack_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
-        // let fuel_burn_rate = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_burn_rate");
-        // let fuel = VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL);
-        // VarModule::set_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel - fuel_burn_rate);
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) /*|| fuel <= 0*/ {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, true);
-        }
+unsafe fn var_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) {
+        VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
+        VarModule::off_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
     }
-    // else if fighter.is_situation(*SITUATION_KIND_GROUND) {
-    //     let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
-    //     if VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL) < fuel_max {
-    //         let fuel_recharge_rate = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_recharge_rate");
-    //         VarModule::add_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_recharge_rate);
-    //     }
-    // }
 }
-
-// unsafe fn fuel_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-//     if fighter.is_status_one_of(&[
-//         *FIGHTER_STATUS_KIND_WIN,
-//         *FIGHTER_STATUS_KIND_LOSE,
-//         *FIGHTER_STATUS_KIND_ENTRY,
-//         *FIGHTER_STATUS_KIND_DEAD,
-//         *FIGHTER_STATUS_KIND_REBIRTH]) {
-//         let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
-//         VarModule::set_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_max);
-//         VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
-//         VarModule::off_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
-//     }
-// }
 
 pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     if fighter.is_motion_one_of(&[
@@ -152,8 +132,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     armored_charge(fighter, motion_kind);
     restore_armor(fighter);
     gut_shine(fighter);
-    jetpack_cancel(fighter, boma, status_kind, cat[0]);
-    //fuel_reset(fighter);
+    var_reset(fighter);
     fastfall_specials(fighter);
 }
 
