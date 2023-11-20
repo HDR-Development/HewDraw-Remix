@@ -57,10 +57,18 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_start_air_mul_spd_x">1</float>
+      <float hash="special_hi_start_mul_spd_x">1.0</float>
+      <float hash="special_hi_start_air_mul_spd_x">1.0</float>
+      <float hash="special_hi_fly_acl_y">0.08</float>
+      <float hash="special_hi_fly_max_spd_y">0.5</float>
       <float hash="special_hi_fly_mul_max_acl_x">0.045</float>
-      <float hash="special_hi_fall_acl_y">0.1</float>
-      <int hash="special_hi_landing_frame">24</int>
+      <float hash="special_hi_fly_max_spd_x">1.8</float>
+      <float hash="special_hi_fly_stick_mul_max_spd_x">1.0</float>
+      <int hash="special_hi_fly_brake_after_frame">25</int>
+      <float hash="special_hi_fall_max_spd_x">1.0</float>
+      <float hash="special_hi_fall_acl_y">0.06</float>
+      <float hash="special_hi_fall_max_spd_y">2.3</float>
+      <int hash="special_hi_landing_frame">28</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
