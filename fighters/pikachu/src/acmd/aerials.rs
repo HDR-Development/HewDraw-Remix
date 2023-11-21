@@ -1,7 +1,7 @@
 use super::*;
 
 #[acmd_script( agent = "pikachu", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
+unsafe fn pikachu_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -26,8 +26,8 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "effect_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe extern "C" fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "effect_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -36,7 +36,7 @@ unsafe extern "C" fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pikachu_elec_spark"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.8, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pikachu_elec_spark"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.65, true);
         EffectModule::enable_sync_init_pos_last(boma);
         BURN_COLOR(fighter, 0.4, 0.6, 4, 0.7);
     }
@@ -67,6 +67,32 @@ unsafe extern "C" fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pikachu_cheek"), false, true);
+    }
+}
+
+#[acmd_script( agent = "pikachu", script = "expression_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn pikachu_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -264,9 +290,10 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_attackairn,
-        game_attackairf,
+        pikachu_attack_air_n_game,
         pikachu_attack_air_n_effect,
+        pikachu_attack_air_n_expression,
+        game_attackairf,
         game_attackairb,
         expression_attackairb,
         effect_attackairb,
