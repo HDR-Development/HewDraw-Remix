@@ -242,7 +242,7 @@ unsafe fn samusd_attack_air_f_sound(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 11.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }

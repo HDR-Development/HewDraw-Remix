@@ -76,10 +76,6 @@ unsafe fn cloud_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
-    }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);

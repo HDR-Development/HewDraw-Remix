@@ -693,7 +693,6 @@ unsafe fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
-            //ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
     frame(lua_state, 85.0);
