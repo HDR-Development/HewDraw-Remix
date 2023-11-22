@@ -653,6 +653,7 @@ pub mod vars {
             pub const DISABLE_SPECIAL_LW: i32 = 0x0102;
             pub const IS_POWERED_UP: i32 = 0x0103;
             pub const IS_USPECIAL_ATTACK_CANCEL: i32 = 0x0104;
+            pub const DISABLE_NSPECIAL_PARRY_FORGIVENESS: i32 = 0x0105;
 
             // ints
             pub const METER_PAUSE_REGEN_FRAME: i32 = 0x0100;
