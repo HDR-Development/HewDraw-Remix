@@ -110,7 +110,7 @@ unsafe extern "C" fn packun_special_s_shoot_main_loop(fighter: &mut L2CFighterCo
                     lua_args!(
                         fighter, 
                         FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                        brake
+                        limit
                     );
                     app::sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_CHANGE_KINETIC_DONE);
