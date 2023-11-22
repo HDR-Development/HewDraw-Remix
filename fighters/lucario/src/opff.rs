@@ -355,6 +355,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::SpecialN) {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::DISABLE_NSPECIAL_PARRY_FORGIVENESS);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
         }
         if boma.is_cat_flag(Cat1::SpecialS) {

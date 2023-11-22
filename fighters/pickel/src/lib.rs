@@ -43,5 +43,5 @@ pub fn install(is_runtime: bool) {
     status::install();
     opff::install(is_runtime);
     use opff::*;
-    smashline::install_agent_frames!(pickel_trolley_frame, pickel_table_frame);
+    smashline::install_agent_frames!(pickel_trolley_frame, pickel_table_frame, pickel_forge_frame);
 }

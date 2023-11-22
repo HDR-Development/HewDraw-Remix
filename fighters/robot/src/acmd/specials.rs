@@ -300,6 +300,7 @@ unsafe fn robot_special_hi_keep_effect(fighter: &mut L2CAgentBase) {
     
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.55, 0.55, 2.25);
     }
 
 
@@ -308,12 +309,13 @@ unsafe fn robot_special_hi_keep_effect(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 0.8);
+            LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 8.55);
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 1.5);
             LAST_EFFECT_SET_ALPHA(fighter, 0.75);
-            LAST_EFFECT_SET_COLOR(fighter, 0.55, 0.1, 0.1);
+            LAST_EFFECT_SET_COLOR(fighter, 3.15, 0.55, 0.55);
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
         }
