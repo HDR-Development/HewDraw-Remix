@@ -49,7 +49,7 @@ special_air_lw:
 attack_hi3:
 attack_dash:
   extra:
-    cancel_frame: 41
+    cancel_frame: 42
 attack_s4_s:
   extra:
     cancel_frame: 48
