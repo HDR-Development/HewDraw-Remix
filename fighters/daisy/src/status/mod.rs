@@ -1,8 +1,6 @@
 use super::*;
 use smashline::*;
 
-mod attack_air;
-mod jump_aerial;
 mod special_lw;
 
 /// Prevents down b being reused
@@ -18,10 +16,10 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
 }
 
 #[smashline::fighter_init]
-fn peach_init(fighter: &mut L2CFighterCommon) {
+fn daisy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_PEACH {
+        if fighter.kind() == *FIGHTER_KIND_DAISY {
             fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
         }
     }
@@ -29,8 +27,6 @@ fn peach_init(fighter: &mut L2CFighterCommon) {
 
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(peach_init);
-    attack_air::install();
-    jump_aerial::install();
+    smashline::install_agent_init_callbacks!(daisy_init);
     special_lw::install();
 }
