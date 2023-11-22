@@ -17,6 +17,9 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     let prev_status_kind = StatusModule::prev_status_kind(fighter.module_accessor, 0);
     let prev_status_kind_2 = StatusModule::prev_status_kind(fighter.module_accessor, 1);
+    
+    VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB, 0.0);
+    VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB_RISE, 0.0);
 
     if damage_statuses.contains(&prev_status_kind) || damage_statuses.contains(&prev_status_kind_2) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
