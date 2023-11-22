@@ -263,15 +263,20 @@ unsafe fn packun_attack_air_b_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn packun_attack_air_b_s_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 16.0);
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 12, 11, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.4);
+    }
+    frame(lua_state, 15.0);
     if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 14, 3.5, 40, -60, 0, 1.0, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 6, 7.5, -8, 155, -50, 0, 1.0, true);
         }
     }
     else {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 14, 3.5, 40, 60, 0, 1.0, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), -6, 7.5, -8, 155, 50, 0, 1.0, true);
         }
     }
 }
