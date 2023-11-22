@@ -558,7 +558,7 @@ unsafe fn dedede_special_hi_turn_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 13.0 / (20.0 - 1.0));
     if is_excute(fighter) {
-        SET_SPEED_EX(fighter, 0, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
     if is_excute(fighter) {
