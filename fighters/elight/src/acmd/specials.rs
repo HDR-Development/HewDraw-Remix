@@ -915,7 +915,7 @@ unsafe fn effect_specialsstart (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, -1.5, 4.8, 0, 0, 0, 1, true);
 		EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
 		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
 		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
@@ -936,7 +936,7 @@ unsafe fn effect_specialairsstart (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, -1.5, 4.8, 0, 0, 0, 1, true);
 		EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
 		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
 		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
@@ -992,8 +992,8 @@ unsafe fn game_specials (fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("rot"), 15.0, 90, 105, 0, 45, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("rot"), 7.0, 120, 100, 65, 30, 10.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 15.0, 90, 105, 0, 45, 3.25, 0.0, -1.5, 4.8, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 7.0, 120, 100, 65, 30, 10.0, 0.0, -1.5, 4.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -1198,7 +1198,7 @@ unsafe fn effect_specials5(fighter: &mut L2CAgentBase) {
         //EFFECT(fighter, Hash40::new("elight_photon_appear"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.7);
         //EFFECT(fighter, Hash40::new("elight_photon_start"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("elight_appeal_spark"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("elight_appeal_spark"), Hash40::new("rot"), 0, -1.5, 4.8, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.7);
         EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         EFFECT(fighter, Hash40::new("elight_photon_speedline"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
