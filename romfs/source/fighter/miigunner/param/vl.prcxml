@@ -57,13 +57,14 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="hi1_first_jump_x_speed">0.4</float>
       <float hash="hi1_jump_y_speed_mul">0.1</float>
       <float hash="hi1_landing_frame">22</float>
     </struct>
     <struct index="1">
       <float hash="hi2_jump_accel_recover_frame">6</float>
-      <float hash="hi2_jump_accel_x_mul">0.8</float>
-      <float hash="hi2_jump_stable_speed_x_mul">1.0</float>
+      <float hash="hi2_jump_accel_x_mul">0.3</float>
+      <float hash="hi2_jump_stable_speed_x_mul">0.5</float>
     </struct>
     <struct index="2">
       <float hash="hi3_rush_speed">1.6</float>
