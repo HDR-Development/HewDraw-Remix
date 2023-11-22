@@ -908,7 +908,6 @@ unsafe fn pickel_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_ATTACK_FLAG_FORGE_GENERATE_ENABLE);
-        app::FighterSpecializer_Pickel::sub_material_num(boma, *FIGHTER_PICKEL_MATERIAL_KIND_IRON, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {

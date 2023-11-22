@@ -31,8 +31,8 @@ pub fn install() {
 
 #[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) >= 3;
-    let forgeArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE);
+    let hasIron = FighterSpecializer_Pickel::check_material_attack_air_lw_generate(fighter.module_accessor);
+    let forgeArticle = ArticleModule::is_generatable(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE);
     let canForge = hasIron && !forgeArticle;
 
     if (canForge)
