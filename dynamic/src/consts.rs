@@ -1192,13 +1192,13 @@ pub mod vars {
             pub const DEIN_ACTIVE: i32 = 0x0100;
             pub const PHANTOM_RELEASED: i32 = 0x0101;
             pub const HIT_CANCEL_PHANTOM: i32 = 0x0102;
-            pub const READY_PHANTOM: i32 = 0x0103;
 
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
             pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0101;
             pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0102;
             pub const PHANTOM_EFF_HANDLER: i32 = 0x0103;
+            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0104;
         }
     }
 

@@ -6,13 +6,9 @@ unsafe fn zelda_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 7.0/(10.0-1.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 7.0);
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("bust"), 12.0, 361, 75, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
@@ -25,12 +21,11 @@ unsafe fn zelda_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
     }
     wait(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 0.880);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        FT_MOTION_RATE(fighter, 0.880);
     }
-    
 }
 
 #[acmd_script( agent = "zelda", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
@@ -53,13 +48,9 @@ unsafe fn zelda_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 7.0/(10.0-1.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 7.0);
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("bust"), 12.0, 361, 75, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
@@ -72,12 +63,11 @@ unsafe fn zelda_attack_s3_s_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
     }
     wait(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 0.880);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        FT_MOTION_RATE(fighter, 0.880);
     }
-    
 }
 
 #[acmd_script( agent = "zelda", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
@@ -176,13 +166,9 @@ unsafe fn zelda_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 7.0/(10.0-1.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 7.0);
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("bust"), 12.0, 361, 75, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
@@ -195,12 +181,11 @@ unsafe fn zelda_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
     }
     wait(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 0.880);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        FT_MOTION_RATE(fighter, 0.880);
     }
-    
 }
 
 #[acmd_script( agent = "zelda", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
