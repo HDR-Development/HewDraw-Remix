@@ -1191,7 +1191,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DEIN_ACTIVE: i32 = 0x0100;
-            pub const PHANTOM_RELEASED: i32 = 0x0101;
+            pub const PHANTOM_HIT: i32 = 0x0101;
             pub const HIT_CANCEL_PHANTOM: i32 = 0x0102;
 
             // ints

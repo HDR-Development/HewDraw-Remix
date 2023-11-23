@@ -61,13 +61,11 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
         *FIGHTER_STATUS_KIND_ATTACK_LW4,
         *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_AIR]) {
-        if fighter.is_cat_flag(Cat1::SpecialLw) {
-            if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        if fighter.is_cat_flag(Cat1::SpecialLw) && !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
+            if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) { //displacement flag
                 VarModule::on_flag(fighter.battle_object, vars::zelda::instance::HIT_CANCEL_PHANTOM);
-            } //displacement flag
-            if !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
-            } //no cancel to activate
+            }//cancel if phantom is off cd
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
     }
 }
@@ -120,12 +118,10 @@ unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if fighter.status_frame() > 9 {
-            if ControlModule::get_stick_y(boma) < -0.66 && GroundModule::is_passable_ground(boma) {
-                GroundModule::pass_floor(boma);
-            }
-        }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 9 {
+        if ControlModule::get_stick_y(boma) < -0.66 && GroundModule::is_passable_ground(boma) {
+            GroundModule::pass_floor(boma);
+        }//platdrop
     }
     if VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER) == -1 {
         if ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
@@ -141,6 +137,8 @@ pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCom
         let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER) as u32;
         if !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -2);//remove
+            VarModule::off_flag(fighter.battle_object, vars::zelda::instance::HIT_CANCEL_PHANTOM);
+            VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_HIT);
         } else if !EffectModule::is_exist_effect(boma, handle as u32) {
             VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
         } //reapply
@@ -207,10 +205,6 @@ pub unsafe fn zelda_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-extern "Rust" {
-    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
-}
-
 #[smashline::weapon_frame_callback(main)]
 pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
@@ -221,11 +215,14 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
         let zelda = utils::util::get_battle_object_from_id(owner_id);
         let zelda_boma = &mut *(*zelda).module_accessor;
-        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_CANCEL) {
-            if StopModule::is_damage(weapon.module_accessor) && !AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-                MotionModule::set_rate(weapon.module_accessor, 0.25); //8s
-            }
-        } else if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
+        //hitcheck
+        if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_HIT); 
+        }
+        if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_HIT) {
+            VarModule::on_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
+        }//misc mechanics
+        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
             let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
             if weapon.is_situation(*SITUATION_KIND_AIR) {
                 let through_passable_ground_stick_y= WorkModule::get_param_float(zelda_boma, hash40("common"), hash40("through_passable_ground_stick_y")) * -1.0;
