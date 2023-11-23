@@ -167,11 +167,56 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn pikmin_sync(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    fighter.sub_attack_air_uniq_process_exec();
+
+    // guard clause - not SYNC flag
+    if !fighter.is_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC) {
+        // check DETACH flag only if not SYNC flag
+        if fighter.is_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_DETACH) {
+            FUN_7100008490(fighter);
+            fighter.off_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_DETACH);
+        }
+        return;
+    }
+
+    // SYNC flag == true
+    fighter.off_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
+    let mut ma_ptr = fighter.module_accessor as *mut app::FighterModuleAccessor;
+    FighterSpecializer_Pikmin::hold_pikmin(ma_ptr, 1);
+    FighterSpecializer_Pikmin::update_hold_pikmin_param(ma_ptr);
+
+    let hold_pikmin_num = fighter.get_int(*FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
+    if hold_pikmin_num <= 0 {
+        return;
+    }
+
+    let hold_pikmin_object_id_0 = fighter.get_int(*FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_OBJECT_ID_0) as u32;
+    let link_result = lua_bind::LinkModule::link(fighter.module_accessor, *FIGHTER_PIKMIN_LINK_NO_PIKMIN, hold_pikmin_object_id_0);
+    if link_result <= 0 {
+        return;
+    }
+
+    // TODO: FighterPikminLinkEventWeaponPikminConstraint::new_l2c_table();
+    // TODO: i dont fucking know anymore man
+
+}
+
+pub unsafe fn FUN_7100008490(fighter: &mut L2CFighterCommon) {
+    // TODO:
+    return;
+}
+
+pub unsafe fn FUN_7100008280() {
+    return;
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     winged_pikmin_cancel(fighter, boma, status_kind, cat[0]);
     solimar_scaling(boma, status_kind, frame);
     pikmin_antenna_indicator(fighter);
     fastfall_specials(fighter);
+    pikmin_sync(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PIKMIN )]
