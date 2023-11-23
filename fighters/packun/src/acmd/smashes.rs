@@ -84,7 +84,7 @@ unsafe fn packun_attack_s4_s2_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if is_excute(agent) {
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, 60, -90, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, -60, -90, 1.6, true);
         }
         else {
             EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 13, 3.5, 40, -60, -90, 1.6, true);
