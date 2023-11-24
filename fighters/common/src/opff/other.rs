@@ -144,6 +144,11 @@ pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
     && fighter.global_table[CURRENT_FRAME].get_i32() <= 1
     && fighter.is_parry_input()
     {
+        // prevents lucario from parrying during ASC
+        if fighter.kind() == *FIGHTER_KIND_LUCARIO
+        && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::DISABLE_NSPECIAL_PARRY_FORGIVENESS) {
+            return;
+        }
         EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_NONE as u32, true, false);
         SoundModule::stop_all_sound(fighter.module_accessor);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());

@@ -246,3 +246,6 @@ special_lw_step_f:
 throw_lw:
   extra:
     cancel_frame: 41
+furafura_end:
+  extra:
+    cancel_frame: 10
