@@ -1,7 +1,9 @@
 
 use std::ops::Index;
 
+use globals::*;
 use super::*;
+use opff::TroopManager;
 
 use super::PikminInfo;
 
@@ -12,16 +14,15 @@ unsafe fn pikmin_attack_air_n_common(fighter: &mut L2CAgentBase) {
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let pikmin = PikminInfo::from(variation);
     frame(lua_state, 7.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         let damage = 10.0;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * pikmin.damage, 50 + pikmin.delta_angle, 76, 0, 60, 3.0, 0.0, 5.5, 0.0, None, None, None, pikmin.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_L, pikmin.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head1"), damage * pikmin.damage, 50 + pikmin.delta_angle, 76, 0, 60, 4.0, -8.0, -3.0, 0.0, None, None, None, pikmin.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_L, pikmin.sound, *ATTACK_REGION_PIKMIN);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
@@ -261,9 +262,21 @@ unsafe fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
 unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
+        if (pikmin_count > 0) {
+            let pikmin_id = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_OBJECT_ID_0) as u32;
+            if dbg!(sv_battle_object::is_active(pikmin_id)) {
+                let pikmin_module_accessor = sv_battle_object::module_accessor(pikmin_id);
+                // let pikmin_frame = MotionModule::frame(pikmin_module_accessor);
+                MotionModule::change_motion(pikmin_module_accessor, Hash40::new("attack_air_n"), 0.0, 1.0, false, 0.0, false, false);
+            }
+        }
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -274,7 +287,7 @@ unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
         }
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -303,4 +316,3 @@ pub fn install() {
         olimar_attack_air_b_game,
     );
 }
-

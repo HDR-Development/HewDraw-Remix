@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+
 unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::SpecialN) {
@@ -57,14 +57,14 @@ pub unsafe fn solimar_scaling(boma: &mut BattleObjectModuleAccessor, status_kind
 }
 
 #[repr(C)]
-struct TroopManager {
-  _x0: u64,
-  max_pikmin_count: usize, // always 3
-  current_pikmin_count: usize,
-  pikmin_objects: *mut *mut BattleObject,
-  pikmin: [*mut BattleObject; 3],
-  // remainder that we don't care about
-  // funny blujay made this happen
+pub struct TroopManager {
+    pub _x0: u64,
+    pub max_pikmin_count: usize, // always 3
+    pub current_pikmin_count: usize,
+    pub pikmin_objects: *mut *mut BattleObject,
+    pub pikmin: [*mut BattleObject; 3],
+    // remainder that we don't care about
+    // funny blujay made this happen
 }
 
 unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
@@ -167,56 +167,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn pikmin_sync(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    fighter.sub_attack_air_uniq_process_exec();
-
-    // guard clause - not SYNC flag
-    if !fighter.is_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC) {
-        // check DETACH flag only if not SYNC flag
-        if fighter.is_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_DETACH) {
-            FUN_7100008490(fighter);
-            fighter.off_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_DETACH);
-        }
-        return;
-    }
-
-    // SYNC flag == true
-    fighter.off_flag(*FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
-    let mut ma_ptr = fighter.module_accessor as *mut app::FighterModuleAccessor;
-    FighterSpecializer_Pikmin::hold_pikmin(ma_ptr, 1);
-    FighterSpecializer_Pikmin::update_hold_pikmin_param(ma_ptr);
-
-    let hold_pikmin_num = fighter.get_int(*FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
-    if hold_pikmin_num <= 0 {
-        return;
-    }
-
-    let hold_pikmin_object_id_0 = fighter.get_int(*FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_OBJECT_ID_0) as u32;
-    let link_result = lua_bind::LinkModule::link(fighter.module_accessor, *FIGHTER_PIKMIN_LINK_NO_PIKMIN, hold_pikmin_object_id_0);
-    if link_result <= 0 {
-        return;
-    }
-
-    // TODO: FighterPikminLinkEventWeaponPikminConstraint::new_l2c_table();
-    // TODO: i dont fucking know anymore man
-
-}
-
-pub unsafe fn FUN_7100008490(fighter: &mut L2CFighterCommon) {
-    // TODO:
-    return;
-}
-
-pub unsafe fn FUN_7100008280() {
-    return;
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     winged_pikmin_cancel(fighter, boma, status_kind, cat[0]);
     solimar_scaling(boma, status_kind, frame);
     pikmin_antenna_indicator(fighter);
     fastfall_specials(fighter);
-    pikmin_sync(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PIKMIN )]
