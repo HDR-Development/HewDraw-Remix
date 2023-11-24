@@ -283,20 +283,9 @@ unsafe fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
 unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 1.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
-    }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
-        if (pikmin_count > 0) {
-            let pikmin_id = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_OBJECT_ID_0) as u32;
-            if sv_battle_object::is_active(pikmin_id) {
-                let pikmin_module_accessor = sv_battle_object::module_accessor(pikmin_id);
-                MotionModule::change_motion(pikmin_module_accessor, Hash40::new("attack_air_n"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
+        WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
     FT_MOTION_RATE_RANGE(fighter, 2.0, 7.0, 3.0);
     frame(lua_state, 7.0);
