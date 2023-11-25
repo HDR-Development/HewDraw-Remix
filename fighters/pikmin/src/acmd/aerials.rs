@@ -49,6 +49,26 @@ unsafe fn pikmin_attack_air_n_common(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pikmin_pikmin", scripts = ["effect_attackairn", "effect_attackairn_y", "effect_attackairn_b", "effect_attackairn_w", "effect_attackairn_v" ] , category = ACMD_EFFECT , low_priority)]
+unsafe fn pikmin__effect_attackairn__common(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
+    let pikmin = PikminInfo::from(variation);
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("pikmin_smash_trail"), Hash40::new("waist"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.5, true);
+        LAST_EFFECT_SET_COLOR(fighter, pikmin.effect_color.x, pikmin.effect_color.y, pikmin.effect_color.z);
+        EFFECT_FOLLOW(fighter, Hash40::new("pikmin_smash_trail"), Hash40::new("hip"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.5, true);
+        LAST_EFFECT_SET_COLOR(fighter, pikmin.effect_color.x, pikmin.effect_color.y, pikmin.effect_color.z);
+        EFFECT_FOLLOW(fighter, Hash40::new("pikmin_smash_trail"), Hash40::new("hip"), -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.5, true);
+        LAST_EFFECT_SET_COLOR(fighter, pikmin.effect_color.x, pikmin.effect_color.y, pikmin.effect_color.z);
+
+        EFFECT_FOLLOW(fighter, Hash40::new("pikmin_attack_flash"), Hash40::new("waist"), 0, 0, 0.0, 0, 0, 0, 1.0, true);
+        LAST_EFFECT_SET_COLOR(fighter, pikmin.effect_color.x, pikmin.effect_color.y, pikmin.effect_color.z);
+    }
+}
+
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairf", "game_attackairf_y", "game_attackairf_b", "game_attackairf_w", "game_attackairf_v" ] , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_air_f_common(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -333,9 +353,52 @@ unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "pikmin", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) { }
+
+#[acmd_script( agent = "pikmin", script = "sound_attackairn" , category =  ACMD_SOUND, low_priority)]
+unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_pikmin_attackair_n01"));
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_pikmin_attackair_n02"));
+    }
+    wait(lua_state, 7.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_pikmin_attackair_n03"));
+    }
+}
+
+#[acmd_script( agent = "pikmin", script = "expression_attackairn" , category =  ACMD_EXPRESSION, low_priority)]
+unsafe fn expression_attackairn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pikmin_attack_air_n_common,
+        pikmin__effect_attackairn__common,
         pikmin_attack_air_f_common,
         pikmin_attack_air_b_common,
         pikmin_attack_air_hi_common,
@@ -343,7 +406,10 @@ pub fn install() {
         olimar_attack_air_f_game,
         olimar_attack_air_hi_game,
         olimar_attack_air_lw_game,
-        olimar_attack_air_n_game,
         olimar_attack_air_b_game,
+        olimar_attack_air_n_game,
+        effect_attackairn,
+        sound_attackairn,
+        expression_attackairn
     );
 }

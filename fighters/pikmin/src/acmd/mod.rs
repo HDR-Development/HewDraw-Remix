@@ -18,7 +18,8 @@ pub struct PikminInfo {
     hitlag: f32,
     attr: &'static str,
     sound: i32,
-    delta_angle: u64
+    delta_angle: u64,
+    effect_color: Vector3f
 }
 
 impl From<i32> for PikminInfo {
@@ -32,7 +33,8 @@ impl From<i32> for PikminInfo {
                 delta_angle: 0,
                 hitlag: 1.1,
                 attr: "collision_attr_fire",
-                sound: *COLLISION_SOUND_ATTR_FIRE
+                sound: *COLLISION_SOUND_ATTR_FIRE,
+                effect_color: Vector3f{x: 1.0, y: 0.05, z: 0.0}
             },
             1 => PikminInfo { // yellow
                 damage: 0.75,
@@ -42,7 +44,8 @@ impl From<i32> for PikminInfo {
                 delta_angle: 8,
                 hitlag: 1.0,
                 attr: "collision_attr_elec",
-                sound: *COLLISION_SOUND_ATTR_ELEC
+                sound: *COLLISION_SOUND_ATTR_ELEC,
+                effect_color: Vector3f{x: 1.0, y: 1.0, z: 0.14}
             },
             2 => PikminInfo { // Blue
                 damage: 0.8,
@@ -52,7 +55,8 @@ impl From<i32> for PikminInfo {
                 delta_angle: 5,
                 hitlag: 1.0,
                 attr: "collision_attr_water",
-                sound: *COLLISION_SOUND_ATTR_WATER
+                sound: *COLLISION_SOUND_ATTR_WATER,
+                effect_color: Vector3f{x: 0.1, y: 0.4, z: 1.0}
             },
             3 => PikminInfo { // White
                 damage: 0.6,
@@ -62,7 +66,8 @@ impl From<i32> for PikminInfo {
                 delta_angle: 8,
                 hitlag: 1.0,
                 attr: "collision_attr_purple",
-                sound: *COLLISION_SOUND_ATTR_FIRE
+                sound: *COLLISION_SOUND_ATTR_FIRE,
+                effect_color: Vector3f{x: 1.0, y: 1.0, z: 1.0}
             },
             _ => PikminInfo { // Violet (Rock), also default
                 damage: 0.8,
@@ -72,7 +77,8 @@ impl From<i32> for PikminInfo {
                 delta_angle: 0,
                 hitlag: 1.2,
                 attr: "collision_attr_normal",
-                sound: *COLLISION_SOUND_ATTR_KICK
+                sound: *COLLISION_SOUND_ATTR_KICK,
+                effect_color: Vector3f{x: 0.36, y: 0.0, z: 1.0}
             },
         }
     }
