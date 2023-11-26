@@ -40,6 +40,9 @@ special_air_hi:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+special_hi_open:
+  extra:
+    cancel_frame: 49
 catch_attack:
   extra:
     cancel_frame: 0
