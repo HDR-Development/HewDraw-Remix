@@ -110,7 +110,18 @@ unsafe fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         original!(fighter)
     }
     else {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0 {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
+            app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+            KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+        }
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RIDLEY_STATUS_SPECIAL_LW_FLAG_TO_FINISH);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_BOUNCE);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_LANDING);
@@ -175,7 +186,7 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 
     // save current tail position relative to fighter
     VarModule::set_vec2(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_BOUNCE_PREV_POS, Vector2f{x: v3f_tail_pos.x - pos_x_global, y: v3f_tail_pos.y - pos_y_global});
-    
+
     if check_hit {
         let ground_hit_pos = &mut Vector2f{x: 0.0, y: 0.0};
         if GroundModule::ray_check_hit_pos(

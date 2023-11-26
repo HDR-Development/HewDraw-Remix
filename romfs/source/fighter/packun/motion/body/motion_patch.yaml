@@ -23,19 +23,19 @@ attack_lw3:
 attack_hi4:
 appeal_s_l:
   extra:
-    cancel_frame: 20
+    cancel_frame: 17
 appeal_s_r:
   extra:
-    cancel_frame: 20
+    cancel_frame: 17
 attack_lw4:
   extra:
     cancel_frame: 52
 appeal_lw_r:
   extra:
-    cancel_frame: 20
+    cancel_frame: 17
 appeal_hi_l:
   extra:
-    cancel_frame: 20
+    cancel_frame: 17
 attack_s4_s:
   extra:
     cancel_frame: 63
@@ -44,10 +44,10 @@ attack_s3_s:
     move: false
 appeal_hi_r:
   extra:
-    cancel_frame: 20
+    cancel_frame: 17
 appeal_lw_l:
   extra:
-    cancel_frame: 20
+    cancel_frame: 17
 attack_air_b:
   extra:
     cancel_frame: 41
@@ -69,3 +69,6 @@ item_light_throw_f:
 catch_attack:
   extra:
     cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10

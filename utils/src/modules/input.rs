@@ -1,6 +1,7 @@
 use smash::app::{
     lua_bind::ControlModule, lua_bind::WorkModule, BattleObject, BattleObjectModuleAccessor,
 };
+use smash::lib::lua_const::SITUATION_KIND_AIR;
 use utils_dyn::ext::*;
 
 use crate::consts::globals::*;
@@ -10,6 +11,7 @@ use crate::offsets;
 use crate::util::get_battle_object_from_id;
 use crate::util::get_fighter_common_from_accessor;
 use smash::hash40;
+use smash::app::lua_bind::*;
 
 use super::INPUT_MODULE_OFFSET;
 
@@ -136,6 +138,7 @@ pub struct InputModule {
     hdr_cat: HdrCat,
     hold_all: bool,
     hold_all_frame_max: i32,
+    trigger_count: [usize; 32],
 }
 
 impl InputModule {
@@ -159,6 +162,7 @@ impl InputModule {
             },
             hold_all: false,
             hold_all_frame_max: -1,
+            trigger_count: [usize::MAX; 32]
         }
     }
 
@@ -376,6 +380,12 @@ impl InputModule {
             *(inner as *const f32).add(0x48 / 4)
         }
     }
+
+    #[export_name = "InputModule__get_trigger_count"]
+    pub fn get_trigger_count(object: *mut BattleObject, button: Buttons) -> usize {
+        let module = require_input_module!(object);
+        return module.trigger_count[button.bits().trailing_zeros() as usize];
+    }
 }
 
 #[repr(C)]
@@ -442,14 +452,23 @@ fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
 
 fn exec_internal(input_module: &mut InputModule, control_module: u64, call_original: impl Fn()) {
     let triggered_buttons: Buttons = unsafe {
-        Buttons::from_bits_unchecked(
+        Buttons::from_bits_retain(
             ControlModule::get_button((*input_module.owner).module_accessor)
                 & !ControlModule::get_button_prev((*input_module.owner).module_accessor),
         )
     };
 
+    for trigger in input_module.trigger_count.iter_mut() {
+        if *trigger < usize::MAX {
+            *trigger += 1;
+        }
+    }
+    for button in triggered_buttons.iter() {
+        input_module.trigger_count[button.bits().trailing_zeros() as usize] = 0;
+    }
+
     let buttons: Buttons = unsafe {
-        Buttons::from_bits_unchecked(ControlModule::get_button(
+        Buttons::from_bits_retain(ControlModule::get_button(
             (*input_module.owner).module_accessor,
         ))
     };
@@ -507,6 +526,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let wavedash_input = (triggered_buttons.intersects(Buttons::Jump)
         || triggered_buttons.intersects(Buttons::FlickJump))
         && triggered_buttons.intersects(Buttons::Guard);
+        //|| triggered_buttons.intersects(Buttons::Parry));
     if wavedash_input {
         if input_module.hdr_cat.valid_frames[wavedash_offset] == 0 {
             input_module.hdr_cat.valid_frames[wavedash_offset] = unsafe {
@@ -520,6 +540,54 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     {
         input_module.hdr_cat.valid_frames[wavedash_offset] -= 1;
     }
+
+    // Rivals Wall Jump cat flag
+    let walljump_right_offset = CatHdr::WallJumpRight.bits().trailing_zeros() as usize;
+    let walljump_left_offset = CatHdr::WallJumpLeft.bits().trailing_zeros() as usize;
+    unsafe {
+        if (*input_module.owner).is_situation(*SITUATION_KIND_AIR)
+        && triggered_buttons.intersects(Buttons::Jump) {
+            if ControlModule::get_stick_x((*input_module.owner).module_accessor) > 0.0 {
+                if input_module.hdr_cat.valid_frames[walljump_right_offset] == 0 {
+                    input_module.hdr_cat.valid_frames[walljump_right_offset] = unsafe {
+                        ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "button_walljump_leniency_frame")
+                        as u8
+                    };
+                }
+            }
+            else if ControlModule::get_stick_x((*input_module.owner).module_accessor) < 0.0 {
+                if input_module.hdr_cat.valid_frames[walljump_left_offset] == 0 {
+                    input_module.hdr_cat.valid_frames[walljump_left_offset] = unsafe {
+                        ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "button_walljump_leniency_frame")
+                        as u8
+                    };
+                }
+            }
+        }
+    }
+    if input_module.hdr_cat.valid_frames[walljump_left_offset] != 0 {
+        input_module.hdr_cat.valid_frames[walljump_left_offset] -= 1;
+    }
+    if input_module.hdr_cat.valid_frames[walljump_right_offset] != 0 {
+        input_module.hdr_cat.valid_frames[walljump_right_offset] -= 1;
+    }
+
+    // Parry cat flag
+    // let parry_offset = CatHdr::Parry.bits().trailing_zeros() as usize;
+    // let parry_input = triggered_buttons.intersects(Buttons::Parry);
+    // if parry_input {
+    //     if input_module.hdr_cat.valid_frames[parry_offset] == 0 {
+    //         input_module.hdr_cat.valid_frames[parry_offset] = unsafe {
+    //             ControlModule::get_command_life_count_max((*input_module.owner).module_accessor)
+    //                 as u8
+    //         };
+    //     }
+    // }
+    // if input_module.hdr_cat.valid_frames[parry_offset] != 0
+    //     && !(input_module.hdr_cat.valid_frames[parry_offset] == 1 && parry_input)
+    // {
+    //     input_module.hdr_cat.valid_frames[parry_offset] -= 1;
+    // }
 
     // ShieldDrop cat flag
     let shielddrop_offset = CatHdr::ShieldDrop.bits().trailing_zeros() as usize;
@@ -584,6 +652,14 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let cats = unsafe {
         std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
     };
+
+    if buttons.intersects(Buttons::RivalsWallJump) {
+        unsafe {
+            (*input_module.owner).clear_commands(Cat1::WallJumpLeft | Cat1::WallJumpRight);
+            cats[0].lifetimes_mut()[0x1B] = input_module.hdr_cat.valid_frames[walljump_left_offset];
+            cats[0].lifetimes_mut()[0x1C] = input_module.hdr_cat.valid_frames[walljump_right_offset];
+        }
+    }
 
     let mut lifetimes = [
         cats[0].lifetimes_mut(),

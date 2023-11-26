@@ -396,7 +396,7 @@ unsafe fn miigunner_supermissile_straight_game(fighter: &mut L2CAgentBase) {
        VarModule::set_int(gunner, vars::miigunner::instance::MISSILE_OBJECT_ID, fighter.battle_object_id as i32);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 90, 0, 50, 3.0, 0.0, 0.0, 1.2, Some(0.0), Some(0.0), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 361, 90, 0, 50, 3.0, 0.0, 0.0, 1.2, Some(0.0), Some(0.0), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -420,7 +420,7 @@ unsafe fn miigunner_supermissile_burst_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let gunner = utils::util::get_battle_object_from_id(owner_id);
         if VarModule::is_flag(gunner, vars::miigunner::status::MISSILE_DETONATE) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 50, 75, 0, 70, 14.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 50, 75, 0, 70, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 4.0);
@@ -442,7 +442,7 @@ unsafe fn miigunner_supermissile_burst_effect(fighter: &mut L2CAgentBase) {
        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_MIIGUNNER {
            let gunner = utils::util::get_battle_object_from_id(owner_id);
            if VarModule::is_flag(gunner, vars::miigunner::status::MISSILE_DETONATE) {
-               EFFECT(fighter, Hash40::new("miigunner_atk_shot5"), Hash40::new("top"), -14, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, false);
+               EFFECT(fighter, Hash40::new("miigunner_atk_shot5"), Hash40::new("top"), -10, 0, 0, 0, 0, 0, 1.45, 0, 0, 0, 0, 0, 0, false);
                LAST_EFFECT_SET_COLOR(fighter, 0.5, 10.0, 25.0);
            }
            else {
