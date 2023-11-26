@@ -215,145 +215,145 @@ unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "samus", script = "game_attacklw32", category = ACMD_GAME)]
-unsafe fn game_attacklw32(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 8.0, 80, 60, 0, 80, 3.8, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        AttackModule::set_attack_height_all(agent.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+unsafe fn game_attacklw32(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent , 6.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 8.0, 80, 60, 0, 80, 3.8, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
 
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, 2.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 1.25);
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, 2.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.25);
         }
         else{
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 60, 60, 0, 80, 4.5, 0.0, 0.0, 13.4, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BOMB);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 60, 60, 0, 80, 4.5, 0.0, 0.0, 13.4, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BOMB);
         }
     }
-    wait(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear(agent.module_accessor, 1, false);
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::ATTACK(agent, 2, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, -7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 1.25);
+    wait(fighter.lua_state_agent , 4.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear(fighter.module_accessor, 1, false);
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, -7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.25);
         }
         else{
-            AttackModule::clear(agent.module_accessor, 0, false);
+            AttackModule::clear(fighter.module_accessor, 0, false);
         }
     }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, 2.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    wait(fighter.lua_state_agent , 1.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, 2.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
 
-            macros::ATTACK(agent, 2, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, -7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            macros::ATTACK(fighter, 2, 0, Hash40::new("throw"), 13.75, 80, 60, 0, 80, 4.5, 0.0, -7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
 
-            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 1.2);
+            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.2);
 
-            //macros::ATTACK(agent, 3, 0, Hash40::new("throw"), 8.0, 90, 60, 0, 40, 4.5, 0.0, -16.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BOMB);
+            //macros::ATTACK(fighter, 3, 0, Hash40::new("throw"), 8.0, 90, 60, 0, 40, 4.5, 0.0, -16.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BOMB);
         }
     }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("throw"), 13.75-2.0, 80+5, 60, 0, 80+10, 4.5, 0.0, 2.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    wait(fighter.lua_state_agent , 1.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 13.75-2.0, 80+5, 60, 0, 80+10, 4.5, 0.0, 2.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
 
-            macros::ATTACK(agent, 2, 0, Hash40::new("throw"), 13.75-2.0, 80+5, 60, 0, 80+10, 4.5, 0.0, -7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            macros::ATTACK(fighter, 2, 0, Hash40::new("throw"), 13.75-2.0, 80+5, 60, 0, 80+10, 4.5, 0.0, -7.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
 
-            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 1.2);
+            macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.2);
 
-            //macros::ATTACK(agent, 3, 0, Hash40::new("throw"), 8.0, 90, 60, 0, 40, 4.5, 0.0, -16.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BOMB);
+            //macros::ATTACK(fighter, 3, 0, Hash40::new("throw"), 8.0, 90, 60, 0, 40, 4.5, 0.0, -16.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BOMB);
         }
     }
-    frame(agent.lua_state_agent, 12.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            FT_MOTION_RATE_RANGE(agent,12.0,20.0,21.0);
+    frame(fighter.lua_state_agent , 12.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            FT_MOTION_RATE_RANGE(fighter,12.0,20.0,21.0);
         }
     }
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+    frame(fighter.lua_state_agent , 13.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(agent.lua_state_agent, 20.0);
-    FT_MOTION_RATE(agent,1.0);
+    frame(fighter.lua_state_agent , 20.0);
+    FT_MOTION_RATE(fighter,1.0);
 }
 
 #[acmd_script( agent = "samus", script = "effect_attacklw32", category = ACMD_EFFECT)]
-unsafe fn effect_attacklw32(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+unsafe fn effect_attacklw32(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("throw"), 0, 0.0, 0, 225, 0, 0, 4.5*0.127, true);
-            macros::EFFECT(agent, Hash40::new("sys_ice_landing"), Hash40::new("top"), 0, 0, 14.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+    frame(fighter.lua_state_agent , 6.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("throw"), 0, 0.0, 0, 225, 0, 0, 4.5*0.127, true);
+            macros::EFFECT(fighter, Hash40::new("sys_ice_landing"), Hash40::new("top"), 0, 0, 14.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         }
         else {
-            macros::EFFECT(agent, Hash40::new("sys_steam"), Hash40::new("top"), 0, 1.25, 13.4, 0, 0, 0, 2.0, 0, 0, 0, 0, 0, 0, true);
-            LAST_EFFECT_SET_COLOR(agent,0.375,0.75,1.0);
-            macros::EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 0, 13.4, 0, 0, 0, 4.5*0.127, 0, 0, 0, 0, 0, 0, true);
+            macros::EFFECT(fighter, Hash40::new("sys_steam"), Hash40::new("top"), 0, 1.25, 13.4, 0, 0, 0, 2.0, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(fighter,0.375,0.75,1.0);
+            macros::EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 0, 13.4, 0, 0, 0, 4.5*0.127, 0, 0, 0, 0, 0, 0, true);
         }
     }
-    wait(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("throw"), 0.0, -6.0, 0.0, 225, 0, 0, 4.5*0.127, true);
+    wait(fighter.lua_state_agent , 3.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("throw"), 0.0, -6.0, 0.0, 225, 0, 0, 4.5*0.127, true);
         }
     }
-    wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("throw"), 0.0, -12.0, 0.0, 225, 0, 0, 4.5*0.127, true);
+    wait(fighter.lua_state_agent , 2.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("throw"), 0.0, -12.0, 0.0, 225, 0, 0, 4.5*0.127, true);
         }
     }
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            EFFECT_DETACH_KIND(agent,Hash40::new("sys_ice"),-1);
+    frame(fighter.lua_state_agent , 20.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            EFFECT_DETACH_KIND(fighter,Hash40::new("sys_ice"),-1);
         }
     }
-    frame(agent.lua_state_agent, 21.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
-            MotionAnimcmdModule::call_script_single(agent.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_attacklw32end"), -1);
-            MotionAnimcmdModule::call_script_single(agent.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_ice_break"), -1);
-            VarModule::off_flag(agent.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR);
+    frame(fighter.lua_state_agent , 21.0);
+    if macros::is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR) {
+            MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_attacklw32end"), -1);
+            MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_ice_break"), -1);
+            VarModule::off_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ICE_PILLAR);
         }
     }
 }
 #[acmd_script( agent = "samus", script = "effect_attacklw32end", category = ACMD_EFFECT)]
-unsafe fn effect_attacklw32_end(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        EFFECT_OFF_KIND(agent,Hash40::new("sys_ice"),false,false);
+unsafe fn effect_attacklw32_end(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter,Hash40::new("sys_ice"),false,false);
 
-        macros::EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("throw"), 0.0, -3.0, 0.0, 0, 0, 0, 4.5*0.127, 0, 0, 0, 0, 0, 0, true);
-        macros::EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("throw"), 0.0, -12.0, 0.0, 0, 0, 0, 4.5*0.127, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("throw"), 0.0, -3.0, 0.0, 0, 0, 0, 4.5*0.127, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("throw"), 0.0, -12.0, 0.0, 0, 0, 0, 4.5*0.127, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
 
 #[acmd_script( agent = "samus", script = "sound_attacklw32", category = ACMD_SOUND)]
-unsafe fn sound_attacklw32(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_common_freeze"));
+unsafe fn sound_attacklw32(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent , 6.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_freeze"));
     }
 }
 
 #[acmd_script( agent = "samus", script = "expression_attacklw32", category = ACMD_EXPRESSION)]
-unsafe fn expression_attacklw32(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+unsafe fn expression_attacklw32(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    frame(fighter.lua_state_agent , 6.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(agent.lua_state_agent, 7.0);
-    if macros::is_excute(agent) {
-        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+    frame(fighter.lua_state_agent , 7.0);
+    if macros::is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
     }
 }
 

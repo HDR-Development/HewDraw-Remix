@@ -102,15 +102,15 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent );
 
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent );
                 
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent );
 
                 KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
             }
@@ -118,39 +118,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn specials_force_weapon(boma: *mut BattleObjectModuleAccessor, battle_object: *mut BattleObject, status_kind: i32,situation_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if VarModule::is_flag(battle_object, vars::samus::instance::ICE_MODE){
-        if (&[
-            *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2A,
-            *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G,
-        ]).contains(&status_kind) 
-        && frame < 6.0 {
-            StatusModule::change_status_request_from_script(boma,
-                if situation_kind == *SITUATION_KIND_AIR{*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A} else {*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G},
-            false);
-        }
-    }
-    else {
-        if (&[
-            *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A,
-            *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G,
-        ]).contains(&status_kind) 
-        && frame < 6.0 {
-            StatusModule::change_status_request_from_script(boma,
-                if situation_kind == *SITUATION_KIND_AIR{*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2A} else {*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G},
-            false);
-        }
-    }
-}
-
-pub unsafe fn bomb_cooldown(battle_object: *mut BattleObject) {
-    VarModule::countdown_int(battle_object, vars::samus::instance::BOMB_COOLDOWN, 0);
-}
 pub unsafe fn suit_update(boma: &mut BattleObjectModuleAccessor,battle_object: *mut BattleObject, frame: f32) {
     let fx_fix_rate = 15.0;
     let modulo = frame % fx_fix_rate;
@@ -164,10 +131,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     shinespark_charge(boma, id, status_kind, frame);
     shinespark_reset(boma, id, status_kind);
     fastfall_specials(fighter);
-    let battle_object = fighter.battle_object;
-    specials_force_weapon(boma,battle_object,status_kind,situation_kind,frame);
-    bomb_cooldown(battle_object);
-    suit_update(boma,battle_object,frame)
+    suit_update(boma,fighter.battle_object,frame)
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SAMUS )]

@@ -70,7 +70,7 @@ STATUS, which is automatically reset when the status changes. Represented by 0x1
 
 In addition, there are two sub-categories.
 Common, which is shared by every fighter. Represented by 0xX0XX.
-Agent, which is specific to a certain fighter/agent. Represented by 0xX1XX.
+fighter, which is specific to a certain fighter/fighter. Represented by 0xX1XX.
 
 This means for each combination, you have access to 256 common variables and 256 agent variables.
 That's a LOT of space, and I don't anticipate it all gets used up with proper variable application.
@@ -1027,14 +1027,8 @@ pub mod vars {
             pub const SHINESPARK_USED: i32 = 0x0100;
             pub const SHINESPARK_READY: i32 = 0x0101;
 
-            pub const ICE_MODE: i32 = 0x0102;
-            pub const SPECIAL_LW_CRAWL: i32 = 0x0103;
-            pub const SPECIAL_LW_CAN_EXIT: i32 = 0x0104;
-            pub const SPECIAL_LW_EXIT: i32 = 0x0105;
-            
+            pub const ICE_MODE: i32 = 0x0102;            
             // ints
-            pub const SPECIAL_LW_ROTATIONS: i32 = 0x0100;
-            pub const BOMB_COOLDOWN: i32 = 0x0100;
         }
         pub mod status {
             // flags

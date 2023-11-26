@@ -103,64 +103,6 @@ squat_n:
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-squat_f:
-  game_script: game_squatf
-  flags:
-    turn: false
-    loop: true
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: false
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 6
-  animations:
-  - name: a05squatf.nuanmb
-  scripts:
-  - expression_squatf
-  - sound_squatf
-  - effect_squatf
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 0
-    freeze_during_hitstop: false
-squat_b:
-  game_script: game_squatb
-  flags:
-    turn: false
-    loop: true
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: false
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 6
-  animations:
-  - name: a05squatb.nuanmb
-  scripts:
-  - expression_squatb
-  - sound_squatb
-  - effect_squatb
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 0
-    freeze_during_hitstop: false
 attack_hi42:
   game_script: game_attackhi42
   flags:
@@ -248,35 +190,6 @@ special_n_i:
     intangible_end_frame: 0
     cancel_frame: 42
     freeze_during_hitstop: false
-special_lw_r:
-  game_script: game_speciallwr
-  flags:
-    turn: true
-    loop: false
-    move: false
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d03speciallwr.nuanmb
-  scripts:
-  - expression_speciallwr
-  - sound_speciallwr
-  - effect_speciallwr
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 25
-    freeze_during_hitstop: false
 attack_s4_s2:
   game_script: game_attacks42
   flags:
@@ -305,35 +218,6 @@ attack_s4_s2:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 49
-    freeze_during_hitstop: false
-special_lw_l:
-  game_script: game_speciallwl
-  flags:
-    turn: true
-    loop: false
-    move: false
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d03speciallwl.nuanmb
-  scripts:
-  - expression_speciallwl
-  - sound_speciallwl
-  - effect_speciallwl
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 25
     freeze_during_hitstop: false
 attack_air_f2:
   game_script: game_attackairf2
@@ -451,35 +335,6 @@ attack_s4_hold2:
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-special_air_lw_l:
-  game_script: game_specialairlwl
-  flags:
-    turn: true
-    loop: false
-    move: false
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d03specialairlwl.nuanmb
-  scripts:
-  - expression_specialairlwl
-  - sound_specialairlwl
-  - effect_specialairlwl
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 25
-    freeze_during_hitstop: false
 attack_hi4_hold2:
   game_script: game_attackhi4charge
   flags:
@@ -508,35 +363,6 @@ attack_hi4_hold2:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 0
-    freeze_during_hitstop: false
-special_air_lw_r:
-  game_script: game_specialairlwr
-  flags:
-    turn: true
-    loop: false
-    move: false
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d03specialairlwr.nuanmb
-  scripts:
-  - expression_specialairlwr
-  - sound_specialairlwr
-  - effect_specialairlwr
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 25
     freeze_during_hitstop: false
 special_air_n_i_max:
   game_script: game_specialairnicemax

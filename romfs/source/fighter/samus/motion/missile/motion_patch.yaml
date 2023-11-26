@@ -1,0 +1,48 @@
+ice:
+  game_script: game_ice
+  flags:
+    turn: false
+    loop: true
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: missile.nuanmb
+  scripts:
+  - sound_ice
+  - effect_ice
+  extra: ~
+i_burst:
+  game_script: game_iburst
+  flags:
+    turn: false
+    loop: true
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: missile.nuanmb
+  scripts:
+  - sound_iburst
+  - effect_iburst
+  extra: ~
