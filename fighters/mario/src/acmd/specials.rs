@@ -671,7 +671,7 @@ unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
     FT_MOTION_RATE_RANGE(fighter, 0.0, 10.0, 5.0);
-    if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
+    if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
         frame(lua_state, 10.0);
         FT_MOTION_RATE_RANGE(fighter, 10.0, 40.0, 17.0);
         if is_excute(fighter) { 
@@ -723,7 +723,7 @@ unsafe fn effect_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will disappear if you used galaxy spin in the air
+        if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will disappear if you used galaxy spin in the air
             EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 0, 0, 1.0, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
             LAST_EFFECT_SET_ALPHA(fighter, 0.55);
@@ -778,7 +778,7 @@ unsafe fn sound_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 10.0);
 	if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will change if you used galaxy spin in the air
+        if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will change if you used galaxy spin in the air
 			PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
 			PLAY_SE(fighter, Hash40::new("se_mario_special_l01"));
 			PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
