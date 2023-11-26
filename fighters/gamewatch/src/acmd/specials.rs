@@ -290,24 +290,25 @@ unsafe fn gamewatch_special_hi_open_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "gamewatch", script = "sound_specialhiopen" , category = ACMD_SOUND , low_priority)]
-unsafe fn gamewatch_special_hi_open_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+unsafe fn gamewatch_special_hi_open_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_gamewatch_wave10_hi"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_wave10_hi"));
     }
     frame(lua_state, 5.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_gamewatch_wave10_hi"));
-    }
-    frame(lua_state, 17.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_gamewatch_wave03_mi"));
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_gamewatch_wave10_hi"));
     }
     frame(lua_state, 19.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_gamewatch_wave03_mi"));
+    if is_excute(fighter) {
+        let handle = SoundModule::play_se(boma, Hash40::new("se_gamewatch_wave03_mi"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 1.25, 0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_gamewatch_wave03_mi"));
     }
 }
 

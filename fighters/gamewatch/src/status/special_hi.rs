@@ -33,6 +33,10 @@ unsafe fn gamewatch_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
         return 1.into()
     }
+    if fighter.status_frame() > 31 && fighter.is_cat_flag(Cat1::SpecialAny) {
+        VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
+        fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
+    }
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_FLAG_LANDING_ENABLE) {
             let status = if WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("landing_frame")) > 0.0
