@@ -10,8 +10,6 @@ mod throws;
 #[repr(C)]
 pub struct PikminInfo {
     dmg: f32,
-    kbg: i32,
-    bkb: i32,
     shield_dmg: f32,
     hitlag: f32,
     attr: Hash40,
@@ -25,8 +23,6 @@ impl From<i32> for PikminInfo {
         match other {
             0 => PikminInfo { // Red
                 dmg: 1.0,
-                kbg: 0,
-                bkb: 0,
                 shield_dmg: 0.5,
                 angle: 0,
                 hitlag: 1.0,
@@ -36,8 +32,6 @@ impl From<i32> for PikminInfo {
             },
             1 => PikminInfo { // yellow
                 dmg: 0.94,
-                kbg: 0,
-                bkb: 0,
                 shield_dmg: 0.0,
                 angle: 8,
                 hitlag: 1.0,
@@ -47,8 +41,6 @@ impl From<i32> for PikminInfo {
             },
             2 => PikminInfo { // Blue
                 dmg: 1.0,
-                kbg: 0,
-                bkb: 0,
                 shield_dmg: 0.0,
                 angle: 5,
                 hitlag: 1.0,
@@ -58,8 +50,6 @@ impl From<i32> for PikminInfo {
             },
             3 => PikminInfo { // White
                 dmg: 0.75,
-                kbg: 0,
-                bkb: 0,
                 shield_dmg: 0.75,
                 angle: 8,
                 hitlag: 1.0,
@@ -68,9 +58,7 @@ impl From<i32> for PikminInfo {
                 color: Vector3f{x: 1.0, y: 1.0, z: 1.0}
             },
             _ => PikminInfo { // Violet (Rock), also default
-                dmg: 1.25,
-                kbg: 8,
-                bkb: 0,
+                dmg: 1.2,
                 shield_dmg: 0.1,
                 angle: 0,
                 hitlag: 1.0,
