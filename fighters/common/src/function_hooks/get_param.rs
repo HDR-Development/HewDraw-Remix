@@ -149,7 +149,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         // Coupled with "landing_heavy" change in change_motion hook
         // Because we start heavy landing anims on f2 rather than f1, we need to push back the heavy landing FAF by 1 frame so it is accurate to the defined per-character param
         if x1 == hash40("landing_frame") {
-            return original!()(x0, hash40("landing_frame"), 0) + 1.0;
+            return original!()(x0, hash40("landing_frame"), 0) + 3.0;
         }
 
         // Ken aerial hadouken modified offsets for aerial version
@@ -296,6 +296,12 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
 
+        else if fighter_kind == *WEAPON_KIND_DEDEDE_GORDO {
+            if x1 == hash40("param_gordo") && x2 == hash40("shot_start_angle"){
+                return 20.0 * ControlModule::get_stick_y(owner_module_accessor);
+            }
+        }
+
         // Frieza death ball on M2 aerial Shadow Ball
         /*
         if fighter_kind == *WEAPON_KIND_MEWTWO_SHADOWBALL {
@@ -308,7 +314,18 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
         */
-
+        else if fighter_kind == *WEAPON_KIND_PICKEL_FISHINGROD{
+            if x1 == hash40("param_fishingrod"){
+                if x2 == hash40("shoot_angle"){
+                    if ControlModule::get_stick_y(owner_module_accessor) < 0.0{
+                        return 48.0 + (ControlModule::get_stick_y(owner_module_accessor) * 30.0);
+                    }
+                    else{
+                        return 48.0;
+                    }
+                }
+            }
+        }
         else if fighter_kind == *WEAPON_KIND_MIISWORDSMAN_TORNADOSHOT {
             if x1 == hash40("param_tornadoshot"){
                 if x2 == hash40("life") {

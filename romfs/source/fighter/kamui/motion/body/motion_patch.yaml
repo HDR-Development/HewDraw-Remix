@@ -72,7 +72,7 @@ special_s_wall_jump:
 special_air_hi:
   extra:
     intangible_start_frame: 10
-    intangible_end_frame: 17
+    intangible_end_frame: 18
 special_lw_hit:
   extra:
     intangible_start_frame: 0
@@ -101,3 +101,6 @@ item_light_throw_f:
 catch_attack:
   extra:
     cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10

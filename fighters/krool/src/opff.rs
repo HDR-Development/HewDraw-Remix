@@ -40,16 +40,8 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
         Hash40::new("attack_s3_hi"),
         Hash40::new("attack_s3_lw"),
         Hash40::new("attack_hi3"),
-        Hash40::new("attack_lw3"),
-        Hash40::new("special_lw"),
-        Hash40::new("special_air_lw") ]) {
-        let is_hold =
-            if [hash40("special_lw"), hash40("special_air_lw")].contains(&motion_kind) {
-                ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            }
-            else {
-                ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            };
+        Hash40::new("attack_lw3") ]) {
+        let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK);
         let charge = VarModule::get_int(fighter.battle_object, vars::krool::status::CURRENT_CHARGE);
         let mut charge_start_frame = 0.0;
         let mut charge_end_frame = 0.0;
@@ -73,35 +65,18 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
                 charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_lw3_charge_end");
                 eff_offset = Vector3f::new(3.0, 0.0, 0.0);
             },
-            _ if [hash40("special_lw"), hash40("special_air_lw")].contains(&motion_kind) => {
-                charge_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.special_lw_charge_start");
-                charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.special_lw_charge_end");
-                eff_offset = Vector3f::new(3.0, 0.0, 3.0);
-            },
             _ => {}
         }
 
         if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames as i32) && is_hold {
-            if [hash40("special_lw"), hash40("special_air_lw")].contains(&motion_kind) {
-                if fighter.motion_frame() >= 1.18 {
-                    VarModule::on_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
-                }
-                MotionModule::set_rate(fighter.module_accessor, 0.01);
-                VarModule::set_int(fighter.battle_object, vars::krool::status::CURRENT_CHARGE, charge + 1);
+            if fighter.motion_frame() == charge_start_frame {
+                let facing = eff_offset.z * PostureModule::lr(fighter.module_accessor);
+                smash_script::macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hip"), eff_offset.x, eff_offset.y, facing, 0, 0, 0, 0.55, true);
+                smash_script::macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_krool_rnd_attack"));
             }
-            else {
-                if fighter.motion_frame() == charge_start_frame {
-                    // if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
-                    //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
-                    // }
-                    let facing = eff_offset.z * PostureModule::lr(fighter.module_accessor);
-                    smash_script::macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hip"), eff_offset.x, eff_offset.y, facing, 0, 0, 0, 0.55, true);
-                    smash_script::macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_krool_rnd_attack"));
-                }
-                let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
-                MotionModule::set_rate(fighter.module_accessor, motion_rate);
-                VarModule::set_int(fighter.battle_object, vars::krool::status::CURRENT_CHARGE, charge + 1);
-            }
+            let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
+            MotionModule::set_rate(fighter.module_accessor, motion_rate);
+            VarModule::set_int(fighter.battle_object, vars::krool::status::CURRENT_CHARGE, charge + 1);
         } else {
             MotionModule::set_rate(fighter.module_accessor, 1.0);
         }
@@ -123,22 +98,13 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_LOOP,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_END,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SUCTION,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SPIT,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SWALLOW,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_GET,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_CATCH,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_THROW,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_FAILURE,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_LW_TURN,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_LW_HIT
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -167,11 +133,17 @@ unsafe fn gut_shine(fighter: &mut L2CFighterCommon) {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
             GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
-    }
-    if (fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 8)  // Allows for jump cancel on frame 10 if not charged
+        if (6..29).contains(&fighter.status_frame()) // gut charge logic
+        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        && VarModule::is_flag(fighter.object(), vars::krool::status::GUT_CHECK_CHARGED) {
+            VarModule::off_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 30.0, true, true, false);
+        }
+        if fighter.status_frame() > 8  // Allows for jump cancel on frame 10 (35 in animation) if not charged
         && !VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
         && !fighter.is_in_hitlag() {
-        fighter.check_jump_cancel(false, false);
+            fighter.check_jump_cancel(false, false);
+        }
     }
 }
 

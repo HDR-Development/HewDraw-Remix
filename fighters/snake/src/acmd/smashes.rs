@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 //first hit
 #[acmd_script( agent = "snake", script = "game_attacks4", category = ACMD_GAME, low_priority )]
@@ -20,15 +18,15 @@ unsafe fn snake_side_smash_game(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 361, 25, 0, 20, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 170, 20, 0, 25, 3.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-        AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 361, 25, 0, 20, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 170, 20, 0, 25, 3.5, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
+        AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 6.0, 361, 15, 0, 30, 2.0, 0.0, 5.0, 5.0, Some(0.0), Some(9.0), Some(9.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 6.0, 361, 15, 0, 30, 3.0, 0.0, 5.0, 5.0, Some(0.0), Some(9.0), Some(9.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        AttackModule::set_add_reaction_frame(boma, 2, 4.0, false);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -45,6 +43,7 @@ unsafe fn snake_side_smash_game(fighter : &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_RPG7, ArticleOperationTarget(0));
     }
 }
+
 #[acmd_script( agent = "snake", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn snake_side_smash_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,6 +60,7 @@ unsafe fn snake_side_smash_expr(fighter : &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
+
 #[acmd_script( agent = "snake", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
 unsafe fn snake_side_smash_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,6 +75,7 @@ unsafe fn snake_side_smash_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_squat_gear"));
     }
 }
+
 #[acmd_script( agent = "snake", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_side_smash_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -101,6 +102,7 @@ unsafe fn snake_side_smash_eff(fighter : &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_killsword_light2"), false, true);
     }
 }
+
 //charge
 #[acmd_script( agent = "snake", script = "effect_attacks4charge", category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_side_smash_charge_eff(fighter : &mut L2CAgentBase) {
@@ -124,17 +126,23 @@ unsafe fn snake_side_smash_2_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    frame(lua_state, 9.0);
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 9.0, 6.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 7.0, 361, 25, 0, 20, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze_ghost"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 7.0, 361, 25, 0, 20, 3.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze_ghost"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        //fake/empty hitboxes to create particle effects
-        ATTACK(fighter, 2, 1, Hash40::new("haver"), 0.0, 0, 0, 0, 0, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 1, Hash40::new("haver"), 0.0, 0, 0, 0, 0, 3.0, 0.0, 4.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        AttackModule::set_add_reaction_frame_revised(boma, 0, 3.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 1, 3.0, false);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.0, 4.5);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 7.0, 361, 25, 0, 30, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze_ghost"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 7.0, 361, 25, 0, 30, 3.5, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze_ghost"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        //fake/empty hitboxes to create particle effects
+        ATTACK(fighter, 2, 1, Hash40::new("haver"), 0.0, 0, 0, 0, 0, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 1, Hash40::new("haver"), 0.0, 0, 0, 0, 0, 3.5, 0.0, 4.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 1, 4.0, false);
+    }
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         VarModule::on_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE); 
@@ -150,6 +158,7 @@ unsafe fn snake_side_smash_2_game(fighter : &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_RPG7, ArticleOperationTarget(0));
     }
 }
+
 #[acmd_script( agent = "snake", script = "expression_attacks4s2", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn snake_side_smash_2_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,6 +175,7 @@ unsafe fn snake_side_smash_2_expr(fighter : &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
+
 #[acmd_script( agent = "snake", script = "sound_attacks4s2", category = ACMD_SOUND, low_priority )]
 unsafe fn snake_side_smash_2_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -180,6 +190,7 @@ unsafe fn snake_side_smash_2_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_squat_gear"));
     }
 }
+
 #[acmd_script( agent = "snake", script = "effect_attacks4s2", category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_side_smash_2_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -208,12 +219,18 @@ unsafe fn snake_side_smash_2_eff(fighter : &mut L2CAgentBase) {
 unsafe fn snake_side_smash_3_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
-    frame(lua_state, 9.0);
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 9.0, 6.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 7.5, 361, 75, 0, 85, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 7.5, 361, 75, 0, 85, 3.5, 0.0, 4.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.0, 4.5);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.0, 361, 80, 0, 85, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.0, 361, 80, 0, 85, 3.5, 0.0, 4.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -222,6 +239,7 @@ unsafe fn snake_side_smash_3_game(fighter : &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_RPG7, ArticleOperationTarget(0));
     }
 }
+
 #[acmd_script( agent = "snake", script = "expression_attacks4s3", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn snake_side_smash_3_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -238,6 +256,7 @@ unsafe fn snake_side_smash_3_expr(fighter : &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
+
 #[acmd_script( agent = "snake", script = "sound_attacks4s3", category = ACMD_SOUND, low_priority )]
 unsafe fn snake_side_smash_3_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -252,6 +271,7 @@ unsafe fn snake_side_smash_3_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_squat_gear"));
     }
 }
+
 #[acmd_script( agent = "snake", script = "effect_attacks4s3", category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_side_smash_3_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -274,10 +294,8 @@ unsafe fn snake_side_smash_3_eff(fighter : &mut L2CAgentBase) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_killsword_light2"), false, true);
     }
 }
-////
 
 ////changed down-smash to spinning double kick
-//attack
 #[acmd_script( agent = "snake", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn snake_down_smash_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -311,6 +329,7 @@ unsafe fn snake_down_smash_game(fighter : &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
 #[acmd_script( agent = "snake", script = "sound_attacklw4", category = ACMD_SOUND, low_priority )]
 unsafe fn snake_down_smash_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -332,6 +351,7 @@ unsafe fn snake_down_smash_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_smash_l02"));
     }
 }
+
 #[acmd_script( agent = "snake", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_down_smash_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -360,6 +380,7 @@ unsafe fn snake_down_smash_eff(fighter : &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 5, -17, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, true);
     }
 }
+
 //charge
 #[acmd_script( agent = "snake", script = "expession_attacklw4charge", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn snake_down_smash_charge_exp(fighter : &mut L2CAgentBase) {
@@ -375,6 +396,7 @@ unsafe fn snake_down_smash_charge_exp(fighter : &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold2"), 0, true, 0);
     }
 }
+
 #[acmd_script( agent = "snake", script = "effect_attacklw4charge", category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_down_smash_charge_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -390,7 +412,6 @@ unsafe fn snake_down_smash_charge_eff(fighter : &mut L2CAgentBase) {
         }
     }
 }
-////
 
 pub fn install() {
     install_acmd_scripts!(
@@ -414,4 +435,3 @@ pub fn install() {
         snake_down_smash_charge_eff,
     );
 }
-

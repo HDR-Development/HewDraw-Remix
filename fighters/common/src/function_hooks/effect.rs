@@ -231,6 +231,11 @@ unsafe fn FOOT_EFFECT_FLIP_hook(lua_state: u64) {
 
 #[skyline::hook(replace=smash::app::sv_animcmd::LANDING_EFFECT)]
 unsafe fn LANDING_EFFECT_hook(lua_state: u64) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        return;
+    }
+
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
     let mut hitbox_params: [L2CValue ; 16] = [L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()];
@@ -262,6 +267,11 @@ unsafe fn LANDING_EFFECT_hook(lua_state: u64) {
 
 #[skyline::hook(replace=smash::app::sv_animcmd::LANDING_EFFECT_FLIP)]
 unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        return;
+    }
+
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
     let mut hitbox_params: [L2CValue ; 18] = [L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()];

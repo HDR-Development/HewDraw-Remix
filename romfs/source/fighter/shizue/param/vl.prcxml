@@ -18,7 +18,7 @@
   </list>
   <list hash="param_bullet">
     <struct index="0">
-      <int hash="life">10</int>
+      <int hash="life">6</int>
     </struct>
   </list>
   <struct hash="param_fishingline">
@@ -41,7 +41,7 @@
   </list>
   <list hash="param_clayrocket">
     <struct index="0">
-      <int hash="erase_time">1800</int>
+      <int hash="erase_time">99999</int>
       <float hash="life_1">8</float>
       <float hash="life_2">15</float>
     </struct>

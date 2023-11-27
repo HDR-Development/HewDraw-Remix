@@ -28,7 +28,7 @@ attack_hi3:
     cancel_frame: 29
 attack_dash:
   extra:
-    cancel_frame: 33
+    cancel_frame: 37
 attack_s4_s:
   extra:
     cancel_frame: 54
@@ -59,3 +59,9 @@ item_light_throw_hi4:
 catch_attack:
   extra:
     cancel_frame: 0
+air_catch_landing:
+  extra:
+    cancel_frame: 16
+furafura_end:
+  extra:
+    cancel_frame: 10

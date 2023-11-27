@@ -108,8 +108,8 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
 
         // Add one because it is 0 based
         let current_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME) + 1;
-        let start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.start_frame");
-        let end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.end_frame");
+        let start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus.start_frame");
+        let end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus.end_frame");
         if start_frame <= current_frame && current_frame < end_frame {
             VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
@@ -164,6 +164,10 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
             }
         }
     }
+    // if (2..9).contains(&fighter.status_frame()) {
+    //     let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    //     println!("MOTION: {}", speed_x);
+    // }
     // This block checks if you want to enable air drift. This code will only run once, and only while in the air,
     // but it enables another flag that will be checked when your situation changes and renable the right kinetic type there.
     if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT)
@@ -271,6 +275,17 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if sub_attack_dash_is_attackhi4_cancel(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
+        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+        let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+        //println!("Unadjusted speed: {}", speed_x);
+        let dacus_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacus_mul");
+        if !(min_speed..max_speed).contains(&speed_x.abs()) {
+            speed_x = speed_x.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+        }
+        speed_x = speed_x * dacus_mul;
+        //println!("Adjusted speed: {}", speed_x);
+        VarModule::set_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED, speed_x);
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
             L2CValue::Bool(true)
@@ -279,6 +294,17 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     }
     if sub_attack_dash_is_attacklw4_cancel(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
+        let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+        let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+        //println!("Unadjusted speed: {}", speed_x);
+        let dacds_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacds_mul");
+        if !(min_speed..max_speed).contains(&speed_x.abs()) {
+            speed_x = speed_x.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+        }
+        speed_x = speed_x * dacds_mul;
+        //println!("Adjusted speed: {}", speed_x);
+        VarModule::set_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED, speed_x);
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_LW4_START),
             L2CValue::Bool(true)
@@ -333,7 +359,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
         let is_catch = sub_attack_dash_is_cancel_catch(fighter);
         let is_tilt_input = frame > 1 && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
         let is_attackhi4 = stick_y >= 0.7 && is_catch || is_tilt_input || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0;
-        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START) && is_attackhi4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START) && is_attackhi4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
     }
 
     unsafe fn sub_attack_dash_is_attacklw4_cancel(fighter: &mut L2CFighterCommon) -> bool {
@@ -344,7 +370,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
         let is_catch = sub_attack_dash_is_cancel_catch(fighter);
         let is_tilt_input = frame > 1 && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
         let is_attacklw4 = stick_y <= -0.7 && is_catch || is_tilt_input || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 != 0;
-        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) && is_attacklw4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+        !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) && is_attacklw4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
     }
     
     unsafe fn sub_attack_dash_is_cancel_catch(fighter: &mut L2CFighterCommon) -> bool {

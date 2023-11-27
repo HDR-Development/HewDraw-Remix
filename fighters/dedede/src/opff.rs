@@ -17,6 +17,124 @@ unsafe fn super_dedede_jump_quickfall(boma: &mut BattleObjectModuleAccessor, fra
     }
 }
 
+unsafe fn rotate_bone(boma: &mut BattleObjectModuleAccessor, max_angle: f32, min_angle: f32, strength: f32) {
+    let mut angle = min_angle.abs();
+    if strength > 0.0 {
+        angle = max_angle
+    }
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: ((angle * -1.0 * strength) - 2.5)};
+    let fighter = utils::util::get_fighter_common_from_accessor(boma);
+    fighter.set_joint_rotate("bust", rotation);
+}
+
+unsafe fn bust_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, return_frame: f32, max_angle: f32, min_angle: f32) {
+    let stick_y = ControlModule::get_stick_y(boma);
+    let frame = MotionModule::frame(boma);
+    let end_frame = MotionModule::end_frame(boma);
+    let chest_y: f32 = VarModule::get_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y);
+    if frame >= 0.0 && frame < lean_frame {
+        // linear interpolate to stick position,
+        // while getting stick position still
+        VarModule::set_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y, stick_y);
+        rotate_bone(boma, max_angle, min_angle, stick_y * ((frame as f32) / 30.0));
+    } else if frame >= lean_frame && frame < return_frame {
+        // rotate at selected angle for each frame
+        rotate_bone(boma, max_angle, min_angle, chest_y);
+    } else {
+        // linear interpolate back to normal
+        rotate_bone(boma, max_angle, min_angle, chest_y * (1.0 - ((frame - return_frame) / (end_frame - return_frame))));
+    }
+}
+
+unsafe fn angled_inhale_shot(fighter: &mut L2CFighterCommon) {
+    if ArticleModule::is_exist(fighter.boma(), *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
+        if fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT){
+            bust_lean(fighter.boma(), 6.0, 12.0, 20.0, -20.0);
+        }
+    }
+}
+
+//Gordo recatch and waddledash
+unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fighter: &mut L2CFighterCommon){
+    if ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
+        let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO);
+        let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(object_id);
+
+        let char_pos = *PostureModule::pos(boma); //position of dedede
+        let gordo_pos = *PostureModule::pos(article_boma); //position of gordo
+        let char_lr = PostureModule::lr(boma); // LR value before we check everything
+        let offset = Vector3f::new(5.0 * char_lr, 9.0, 0.0); //offset, if we need to move the area
+
+        if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 19.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 15.0){
+            if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) 
+            || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) 
+            && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
+                if fighter.status_frame() > 1 
+                && fighter.status_frame() < 4 { //We don't want to go into recatch if we are in the middle of airdodge/landing
+                    if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD{
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, true);
+                        VarModule::inc_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER);
+
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, true);
+                        ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)); 
+
+                        StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
+                        
+                        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+                            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.5, y: 0.0, z:1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+                            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_get"), 0.0, 1.0, false, 0.0, false, false);
+
+                        }
+                        else{
+                            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
+                            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_get"), 0.0, 1.0, false, 0.0, false, false);
+                        }
+
+                        //Prevents turnarounds
+                        if ControlModule::get_stick_x(fighter.module_accessor) * char_lr < 0.0{
+                            PostureModule::reverse_lr(boma);
+                            PostureModule::reverse_rot_y_lr(boma);
+                            let new_char_lr = PostureModule::lr(boma);
+                            if (char_lr != new_char_lr) && (ControlModule::get_stick_x(fighter.module_accessor) * new_char_lr < 0.0){
+                                PostureModule::reverse_lr(boma);
+                                PostureModule::reverse_rot_y_lr(boma);
+                            }
+                        }      
+                    }        
+                }    
+            }
+        }
+        // Re enables gordo dash if d3 has either done a gordodash, has landed, or is in jump squat
+        if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S 
+        || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_LANDING 
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+        || WorkModule::is_flag(boma, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD){
+            VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, true);
+        }
+        //Prevents B reversing when we are in the dash
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S 
+        && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO){
+            if fighter.status_frame() < 5{
+                ControlModule::reset_main_stick(boma);
+            }
+        }
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, false);
+    }
+    //checking if gordo does not exist, but is not removed by this function
+    else if !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO) && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG){
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, false);
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0); 
+    }
+}
+
+unsafe fn super_jump_fail_edge_cancel(fighter: &mut L2CFighterCommon){
+    if fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        StatusModule::change_status_force(fighter.boma(), *FIGHTER_STATUS_KIND_FALL, false);
+    }
+}
+
 unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
     // Rotation keyframes
     let start_frame = 0.0;
@@ -139,6 +257,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //bair_foot_rotation_scaling(boma);
     super_dedede_jump_quickfall(boma, frame);
+    gordo_recatch(boma, frame, fighter);
+    angled_inhale_shot(fighter);
+    super_jump_fail_edge_cancel(fighter);
     fastfall_specials(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_DEDEDE )]

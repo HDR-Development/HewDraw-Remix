@@ -127,13 +127,21 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
+    let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
+        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
 }
 
@@ -141,27 +149,34 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+        }
     }
 }
 
-#[acmd_script( agent = "packun", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "packun", scripts = ["game_appealsl", "game_appealsr"] , category = ACMD_GAME , low_priority)]
 unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 2);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
+    let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
 
@@ -171,20 +186,33 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+        }
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+        }
     }
     frame(lua_state, 46.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+        }
     }
 }
 
@@ -192,13 +220,16 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 1);
-    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    frame(lua_state, 10.0);
+    let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
 
@@ -208,12 +239,21 @@ unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
-        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+        }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
+            PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+        }
     }
 }
 
@@ -233,7 +273,8 @@ unsafe fn packun_spikeball_game_start(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -254,7 +295,8 @@ unsafe fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -272,7 +314,8 @@ unsafe fn packun_spikeball_game_loop(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -305,7 +348,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
                 AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
             }
             else {
-                ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                let kbg = if stance == 0 { 0 } else { 15 };
+                ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             }
         }
     }
@@ -316,7 +360,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
                 AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
             }
             else {
-                ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                let kbg = if stance == 0 { 0 } else { 15 };
+                ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             }
         }
     }
@@ -327,7 +372,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 18.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -363,7 +409,8 @@ unsafe fn packun_spikeball_game_fall(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
 }
@@ -395,7 +442,8 @@ unsafe fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
             AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            let kbg = if stance == 0 { 0 } else { 15 };
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 14.0 * scale, 55, 80 - kbg, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
     }
     /*frame(lua_state, 55.0);

@@ -47,6 +47,8 @@ attack_air_b:
   extra:
     cancel_frame: 34
 special_s_get:
+  flags:
+    move: false
   extra:
     cancel_frame: 53
 fall_aerial_f:
@@ -66,6 +68,8 @@ special_s_miss:
   extra:
     cancel_frame: 57
 special_s_start:
+  flags:
+    move: false
   extra:
     cancel_frame: 57
 attack_lw4_hold:
@@ -74,6 +78,8 @@ special_hi_jump:
     intangible_start_frame: 0
     intangible_end_frame: 0
 special_air_s_get:
+  flags:
+    move: false
   extra:
     cancel_frame: 53
 special_hi_failure:
@@ -83,8 +89,13 @@ special_air_s_miss:
   extra:
     cancel_frame: 57
 special_air_s_start:
+  flags:
+    move: false
   extra:
     cancel_frame: 57
 catch_attack:
   extra:
     cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10
