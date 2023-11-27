@@ -481,6 +481,7 @@ pub mod vars {
             // flag
             // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
         }
     }
     pub mod daisy {
@@ -488,6 +489,7 @@ pub mod vars {
             // flag
             // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
         }
     }
 
@@ -607,6 +609,10 @@ pub mod vars {
     }
 
     pub mod inkling {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
         pub mod status {
             // flags
 
@@ -646,6 +652,13 @@ pub mod vars {
         pub mod status {
             // flags
             pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
+        }
+    }
+
+    pub mod koopajr {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
         }
     }
 
@@ -757,9 +770,10 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const NOKNOK_SHELL: i32 = 0x0100;
-            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x0101;
+            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x0101;
             pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0102;
             pub const DISABLE_DSPECIAL_STALL:                i32 = 0x0103;
+            pub const SPECIAL_S_DISABLE_STALL:               i32 = 0x0104;
         }
 
         pub mod status {
@@ -857,6 +871,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const UP_SPECIAL_CANCEL: i32 = 0x0100;
+            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0101;
         }
         pub mod status {
             // flags
@@ -1200,7 +1215,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DEIN_ACTIVE: i32 = 0x0100;
-            pub const PHANTOM_RELEASED: i32 = 0x0101;
+            pub const PHANTOM_HIT: i32 = 0x0101;
             pub const HIT_CANCEL_PHANTOM: i32 = 0x0102;
 
             // ints
@@ -1268,6 +1283,7 @@ pub mod vars {
             pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
             pub const STANCE_INIT: i32 = 0x0101;
             pub const PTOOIE_SHOULD_EXPLODE: i32 = 0x0102;
+            pub const STANCE_REVERSE: i32 = 0x0103;
 
             // floats
             pub const PTOOIE_SCALE: i32 = 0x0100;
