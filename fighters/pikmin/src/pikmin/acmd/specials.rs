@@ -12,7 +12,7 @@ unsafe fn pikmin_whistle_damage(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) && StatusModule::prev_status_kind(boma, 0) == *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING {
         AttackModule::clear_all(boma);
         let damage = 6.0;
-        ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 90, 105, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag * 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(p.attr), *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 90, 105, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag * 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         
     }
     frame(lua_state, 2.0);
