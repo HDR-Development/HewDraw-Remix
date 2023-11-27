@@ -20,7 +20,10 @@ unsafe fn is_flag_hook(boma: &mut BattleObjectModuleAccessor, flag: i32) -> bool
             || (boma.kind() == *FIGHTER_KIND_PACKUN && boma.is_status(*FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_CHARGE))
             || (boma.kind() == *FIGHTER_KIND_SAMUS && boma.is_status(*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H))
             || (boma.kind() == *FIGHTER_KIND_SAMUSD && boma.is_status(*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H))
-            || (boma.kind() == *FIGHTER_KIND_WIIFIT && boma.is_status(*FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_N_HOLD)) {
+            || (boma.kind() == *FIGHTER_KIND_WIIFIT && boma.is_status(*FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_N_HOLD))
+            || (boma.kind() == *FIGHTER_KIND_BRAVE && boma.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_HOLD))
+            || (boma.kind() == *FIGHTER_KIND_PACMAN && boma.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_HOLD))
+            || (boma.kind() == *FIGHTER_KIND_REFLET && boma.is_status(*FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_HOLD)) {
                 return false;
             }
         }
