@@ -50,7 +50,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         let dmg = 1.0;
-        ATTACK(fighter, 0, 0, Hash40::new("head1"), dmg * p.dmg, 90 + p.angle, 200, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_S, p.sound, *ATTACK_REGION_PIKMIN);
+        ATTACK(fighter, 0, 0, Hash40::new("head1"), dmg * p.dmg, 90 + p.angle, 200, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_S, p.sound, *ATTACK_REGION_PIKMIN);
         AttackModule::set_catch_only_all(boma, true, false);
     }
     frame(lua_state, 21.0);
@@ -72,7 +72,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         let dmg = 1.0;
-        ATTACK(fighter, 0, 0, Hash40::new("top"), dmg * p.dmg, 90 + p.angle, 200, 0, 50, 7.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PIKMIN);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), dmg * p.dmg, 90 + p.angle, 200, 0, 50, 7.0, 0.0, 4.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PIKMIN);
         AttackModule::set_catch_only_all(boma, true, false);
         ATTACK_ABS(fighter, *WEAPON_PIKMIN_PIKMIN_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.6 * p.dmg, 60 + p.angle, 60, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, p.attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
