@@ -202,6 +202,34 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(fighter.module_accessor)
+    && (fighter.is_situation(*SITUATION_KIND_GROUND)
+        || fighter.is_situation(*SITUATION_KIND_CLIFF)
+        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+    {
+        VarModule::off_flag(fighter.battle_object, vars::demon::instance::UP_SPECIAL_FREEFALL);
+    }
+
+    if fighter.is_prev_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
+        if StatusModule::is_changing(fighter.module_accessor) {
+            VarModule::on_flag(fighter.battle_object, vars::demon::instance::UP_SPECIAL_FREEFALL);
+        }
+    }
+
+    if fighter.is_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
+        if fighter.is_situation(*SITUATION_KIND_AIR)
+        && !StatusModule::is_changing(fighter.module_accessor)
+        && VarModule::is_flag(fighter.battle_object, vars::demon::instance::UP_SPECIAL_FREEFALL) {
+            if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+                let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+                *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     slaughter_high_kick_devastator(boma, cat[0], status_kind, situation_kind, motion_kind);
     jaw_breaker(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
@@ -211,6 +239,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     enable_both_recovery_specials(boma);
     rotate_forward_bair(boma);
     fastfall_specials(fighter);
+    up_special_freefall(fighter, boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DEMON )]
