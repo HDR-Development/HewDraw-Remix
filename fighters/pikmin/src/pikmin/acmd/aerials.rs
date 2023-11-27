@@ -14,7 +14,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     FT_MOTION_RATE_RANGE(fighter, 6.0, 22.0, 20.0);
     if is_excute(fighter) {
-        let damage = 11.0;
+        let damage = 8.8;
         ATTACK(fighter, 0, 0, Hash40::new("head2"), damage * p.dmg, 75 + p.angle, 100, 0, 40, 2.5, 2.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head2"), damage * p.dmg, 75 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 2, 0, Hash40::new("head1"), damage * p.dmg, 75 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
@@ -23,7 +23,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        let damage = 9.5;
+        let damage = 7.6;
         ATTACK(fighter, 0, 0, Hash40::new("head2"), damage * p.dmg, 62 + p.angle, 100, 0, 40, 2.5, 2.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head2"), damage * p.dmg, 62 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 2, 0, Hash40::new("head1"), damage * p.dmg, 62 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
@@ -31,7 +31,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        let damage = 8.0;
+        let damage = 6.4;
         ATTACK(fighter, 0, 0, Hash40::new("head2"), damage * p.dmg, 50 + p.angle, 100, 0, 40, 2.5, 2.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head2"), damage * p.dmg, 50 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 2, 0, Hash40::new("head1"), damage * p.dmg, 50 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
@@ -73,14 +73,14 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     let p = PikminInfo::from(variation);
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        let damage = 10.0;
+        let damage = 8.0;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 50 + p.angle, 76, 0, 60, 3.0, 0.0, 5.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head1"), damage * p.dmg, 50 + p.angle, 76, 0, 60, 4.0, -8.0, -3.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        let damage = 14.0;
+        let damage = 11.2;
         ATTACK(fighter, 1, 0, Hash40::new("head1"), damage * p.dmg, 50 + p.angle, 76, 0, 60, 4.0, 0.0, 1.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
     }
@@ -100,7 +100,7 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     let p = PikminInfo::from(variation);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        let damage = 15.0;
+        let damage = 12.0;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 40 + p.angle, 112 - p.kbg, 0, 40, 4.0, 0.0, 5.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head1"), damage * p.dmg, 40 + p.angle, 112 - p.kbg, 0, 30, 4.0, 0.0, -1.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
@@ -122,7 +122,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let p = PikminInfo::from(variation);
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        let damage = 9.0;
+        let damage = 7.2;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 95, 74, 0, 65, 6.0, 0.0, 3.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_M, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(fighter, 1, 0, Hash40::new("head1"), damage * p.dmg, 95, 74, 0, 65, 3.0, 0.0, 6.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_M, p.sound, *ATTACK_REGION_PIKMIN);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
@@ -144,7 +144,7 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let p = PikminInfo::from(variation);
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        let damage = 12.6;
+        let damage = 10.08;
         let knockback = [50, 59, 59, 68, 62];
         /* Ground-only */
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 270, 79, 0, 30, 3.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
@@ -154,7 +154,7 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
-        let damage = 8.0;
+        let damage = 6.4;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * p.dmg, 50, 60, 0, 40, 2.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_S, p.sound, *ATTACK_REGION_PIKMIN);
         AttackModule::clear(boma, 1, false);
     }

@@ -25,17 +25,17 @@ impl From<i32> for PikminInfo {
         match other {
             0 => PikminInfo { // Red
                 dmg: 1.0,
-                kbg: 8,
+                kbg: 0,
                 bkb: 0,
-                shield_dmg: 0.1,
+                shield_dmg: 0.5,
                 angle: 0,
-                hitlag: 1.1,
+                hitlag: 1.0,
                 attr: Hash40::new("collision_attr_fire"),
                 sound: *COLLISION_SOUND_ATTR_FIRE,
                 color: Vector3f{x: 1.0, y: 0.05, z: 0.0}
             },
             1 => PikminInfo { // yellow
-                dmg: 0.75,
+                dmg: 0.94,
                 kbg: 0,
                 bkb: 0,
                 shield_dmg: 0.0,
@@ -46,7 +46,7 @@ impl From<i32> for PikminInfo {
                 color: Vector3f{x: 1.0, y: 1.0, z: 0.14}
             },
             2 => PikminInfo { // Blue
-                dmg: 0.8,
+                dmg: 1.0,
                 kbg: 0,
                 bkb: 0,
                 shield_dmg: 0.0,
@@ -57,7 +57,7 @@ impl From<i32> for PikminInfo {
                 color: Vector3f{x: 0.1, y: 0.4, z: 1.0}
             },
             3 => PikminInfo { // White
-                dmg: 0.6,
+                dmg: 0.75,
                 kbg: 0,
                 bkb: 0,
                 shield_dmg: 0.75,
@@ -68,12 +68,12 @@ impl From<i32> for PikminInfo {
                 color: Vector3f{x: 1.0, y: 1.0, z: 1.0}
             },
             _ => PikminInfo { // Violet (Rock), also default
-                dmg: 0.8,
-                kbg: 0,
+                dmg: 1.25,
+                kbg: 8,
                 bkb: 0,
-                shield_dmg: 0.5,
+                shield_dmg: 0.1,
                 angle: 0,
-                hitlag: 1.2,
+                hitlag: 1.0,
                 attr: Hash40::new("collision_attr_normal"),
                 sound: *COLLISION_SOUND_ATTR_KICK,
                 color: Vector3f{x: 0.36, y: 0.0, z: 1.0}
