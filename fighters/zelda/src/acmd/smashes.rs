@@ -6,17 +6,9 @@ unsafe fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.667);
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 9.0, 5.333);
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -24,9 +16,8 @@ unsafe fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     for _ in 0..4 {
         if is_excute(fighter) {
-            FT_MOTION_RATE(fighter, 1.000);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 25, 100, 40, 0, 4.2, 0.0, 9.1, 9.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 165, 100, 50, 0, 4.5, 0.0, 9.1, 17.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 350, 100, 40, 0, 4.2, 0.0, 9.1, 9.0, None, None, None, 0.75, 0.75, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 185, 100, 50, 0, 4.5, 0.0, 9.1, 17.0, None, None, None, 0.75, 0.75, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -42,7 +33,6 @@ unsafe fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 #[acmd_script( agent = "zelda", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]

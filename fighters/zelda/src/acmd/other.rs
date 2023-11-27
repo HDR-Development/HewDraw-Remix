@@ -183,7 +183,7 @@ unsafe fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 52, 97, 0, 50, 4.8, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 62, 80, 0, 60, 4.8, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
 		AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 200, 1, 0, 0, 12, 60);
 	}
 	frame(lua_state, 6.0);
@@ -235,8 +235,8 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 				if [50, 80, 112, 146].contains(&h) {
 					//println!("aha! h is {}", h);
 					let tame_size = fighter.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
-					let flash_size = if h == 50 { 1.0 + 0.002 * tame_size } else if h == 80 { 1.0 + 0.009 * tame_size } else if h == 112 { 1.0 + 0.011 * tame_size } else { 1.0 + 0.014 * tame_size };
-					let fire_size = if h == 146 { 0.8 + 0.0025 * tame_size } else { 0.8 + 0.016 * tame_size };
+					let flash_size = if h == 50 { 1.0 + 0.003 * tame_size } else if h == 80 { 1.0 + 0.0135 * tame_size } else if h == 112 { 1.0 + 0.0165 * tame_size } else { 1.0 + 0.021 * tame_size };
+					let fire_size = if h == 146 { 0.8 + 0.0037 * tame_size } else { 0.8 + 0.024 * tame_size };
 					let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), flash_size, false, 0, 0, 0, 0, 0, false, false);
 					let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), fire_size, false, 0, 0, 0, 0, 0, false, false);
 					// Apply color blend
@@ -267,7 +267,7 @@ unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 		if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
 			let pos_x = PostureModule::pos_x(boma);
 			let pos_y = PostureModule::pos_y(boma);
-			let pos = smash::phx::Vector3f { x: pos_x + 35.0 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
+			let pos = smash::phx::Vector3f { x: pos_x + 35.2 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
 			PostureModule::set_pos(boma, &pos);
 			VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
 		}
@@ -457,7 +457,7 @@ unsafe fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase) {
 		ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 65, 0, 70, 5.5, 0.0, 10.0, 11.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
 		ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 361, 65, 0, 70, 4.5, 0.0, 9.5, 19.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
 	}
-		wait(lua_state, 7.0);
+	wait(lua_state, 7.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 	}
@@ -831,6 +831,30 @@ unsafe fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
+#[acmd_script( agent = "zelda_phantom", script = "effect_cancel", category = ACMD_EFFECT, low_priority )]
+unsafe fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("zelda_phantom_hit"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, false);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("zelda_phantom_end2"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 85.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("zelda_phantom_end"), Hash40::new("trans"), 0, 2, 0, 0, 0, 0, 1.18, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.75);
+        EFFECT(fighter, Hash40::new("zelda_phantom_build"), Hash40::new("trans"), 0, 1.5, 0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 89.0);
+    if is_excute(fighter) {
+        fighter.on_flag(*WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_FLAG_END);
+    }
+}
+
 #[acmd_script( agent = "zelda", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -883,6 +907,7 @@ pub fn install() {
 		zelda_phantom_attack_l_effect,
 		zelda_phantom_attack_max_game,
 		zelda_phantom_attack_max_effect,
+		zelda_phantom_cancel_effect,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
