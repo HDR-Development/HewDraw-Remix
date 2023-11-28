@@ -163,6 +163,66 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "packun", script = "game_appealhi2", category = ACMD_GAME , low_priority)]
+unsafe fn appeal_hi_2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("foot"), true);
+    }
+    frame(lua_state, 107.0);
+    if is_excute(fighter) {
+        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("foot"), false);
+    }
+}
+
+#[acmd_script( agent = "packun", script = "effect_appealhi2", category = ACMD_EFFECT , low_priority)]
+unsafe fn appeal_hi_2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+}
+
+#[acmd_script( agent = "packun", script = "sound_appealhi2", category = ACMD_SOUND , low_priority)]
+unsafe fn appeal_hi_2_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_packun_step_right_m"), Hash40::new("se_packun_step_left_m"));
+    }
+    frame(lua_state, 54.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_packun_step_left_m"), Hash40::new("se_packun_step_right_m"));
+    }
+    frame(lua_state, 78.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_packun_step_right_m"), Hash40::new("se_packun_step_left_m"));
+    }
+}
+
+#[acmd_script( agent = "packun", script = "expression_appealhi2", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn appeal_hi_2_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 54.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 78.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "packun", scripts = ["game_appealsl", "game_appealsr"] , category = ACMD_GAME , low_priority)]
 unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -625,6 +685,10 @@ pub fn install() {
         turn_dash_game,
         appeal_hi_game,
         appeal_hi_sound,
+        appeal_hi_2_game,
+        appeal_hi_2_effect,
+        appeal_hi_2_sound,
+        appeal_hi_2_expression,
         appeal_s_game,
         appeal_s_sound,
         appeal_lw_game,

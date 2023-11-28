@@ -246,7 +246,7 @@ unsafe fn packun_special_s_shoot_s_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite_line2"), Hash40::new("packun_bite_line2"), Hash40::new("top"), -12, 9, 20, 10, 50, 10, 0.8, true, *EF_FLIP_YZ);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite"), Hash40::new("packun_bite"), Hash40::new("top"), -9, 11, 18, 0, -120, 20, 1, true, *EF_FLIP_YZ);
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.01, 0.6);
 		    LAST_EFFECT_SET_RATE(agent, 0.7);
         }
@@ -352,7 +352,7 @@ unsafe fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite_line2"), Hash40::new("packun_bite_line2"), Hash40::new("top"), -12, 9, 20, 10, 50, 10, 0.8, true, *EF_FLIP_YZ);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite"), Hash40::new("packun_bite"), Hash40::new("top"), -9, 11, 18, 0, -120, 20, 1, true, *EF_FLIP_YZ);
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.01, 0.6);
 		    LAST_EFFECT_SET_RATE(agent, 0.7);
         }

@@ -31,7 +31,7 @@ impl From<i32> for StanceInfo {
                 damage_bite: 0.85,
                 damage_head: 0.65,
                 damage_other: 0.75,
-                da_speed: (0.8 * 0.94)
+                da_speed: (0.8 * 0.86)
             },
             2 => StanceInfo { // Prickly
                 label: 2,

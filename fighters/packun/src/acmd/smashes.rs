@@ -7,9 +7,6 @@ unsafe fn packun_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
-    if stance.label == 2 {
-        FT_DESIRED_RATE(fighter, 6.0, 10.0);
-    }
     frame(lua_state, 6.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
@@ -84,10 +81,12 @@ unsafe fn packun_attack_s4_s2_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if is_excute(agent) {
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_l"), Hash40::new("top"), 0, 13, 3.5, 40, -60, -90, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 14.5, -4.5, -40, -50, -90, 1.3, true);
+            LAST_EFFECT_SET_COLOR(agent, 1.3, 0.33, 0.11);
         }
         else {
-            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 13, 3.5, 40, -60, -90, 1.6, true);
+            EFFECT_FOLLOW(agent, Hash40::new("packun_smash_s_arc_r"), Hash40::new("top"), 0, 14.5, 4.5, 40, -50, -90, 1.3, true);
+            LAST_EFFECT_SET_COLOR(agent, 1.3, 0.33, 0.11);
         }
     }
     frame(lua_state, 25.0);
@@ -162,12 +161,6 @@ unsafe fn packun_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if stance.label == 2 {
-            VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
-        }
-    }
     if stance.label == 2 {
         FT_DESIRED_RATE(fighter, 8.0, 11.0);
     }
@@ -175,6 +168,12 @@ unsafe fn packun_attack_hi4_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        if stance.label == 2 {
+            VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
+        }
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -194,16 +193,12 @@ unsafe fn packun_attack_hi4_game(fighter: &mut L2CAgentBase) {
         }
         else {
             ATTACK(fighter, 0, 0, Hash40::new("mouth"), 12.5 * stance.damage_bite, 90, 86, 0, 90, 9.0, 2.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+            if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 14.0 * stance.damage_bite, 90, 86, 0, 90, 9.0, 2.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.35, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                ATTACK(fighter, 1, 0, Hash40::new("mouth"), 8.5, 90, 86, 0, 90, 9.0, 4.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.45, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
+            }
         }
-        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            ATTACK(fighter, 0, 0, Hash40::new("mouth"), 14.0 * stance.damage_bite, 90, 86, 0, 90, 9.0, 2.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.35, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-        }
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            ATTACK(fighter, 1, 0, Hash40::new("mouth"), 8.5, 90, 86, 0, 90, 9.0, 4.0, 0.0, 0.0, Some(3.5), Some(0.0), Some(0.0), 0.45, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
-        }
+        
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -241,7 +236,7 @@ unsafe fn packun_attack_hi4_effect(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("packun_bite_line2"), Hash40::new("top"), 0, 27, 0, 90, 0, 90, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("packun_smash_hi_bite"), Hash40::new("mouth"), 1.5, 0, 0, 0, 0, -90, 1, true);
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
-            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.01, 0.6);
 		    LAST_EFFECT_SET_RATE(agent, 0.7);
         }
