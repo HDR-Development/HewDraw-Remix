@@ -140,6 +140,10 @@ unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_specialhiinterrupt"), -1);
         MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
     }
+
+    if fighter.global_table[globals::STATUS_KIND].get_i32() != CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::elight::SPECIAL_HI_FINISH2) {
+        VarModule::on_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL);
+    }
     
     //Disable up special
     VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
