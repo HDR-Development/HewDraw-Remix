@@ -4,6 +4,7 @@ use utils::{
     consts::*
 };
 use smash::app::BattleObjectModuleAccessor;
+use smash::lua2cpp::L2CFighterCommon;
 use smash::phx::{Vector2f, Vector3f, Hash40};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
@@ -100,8 +101,30 @@ unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kin
     */
 }
 
-pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
+// Allow all aerials and special moves to grab ledge after their FAF
+// rather than after their animation completes
+unsafe fn global_faf_ledgegrab(fighter: &mut L2CFighterCommon) {
+    // If an aerial or special move has a defined FAF (!= 0)
+    // then we allow it to grab ledge
+    if (StatusModule::status_kind(fighter.module_accessor) > 0x1DB  // only applies to special moves
+        || fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR))
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && {let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+        FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true) > 0.0}
+    {
+        // Both needed to be able to grab ledge
+        if fighter.status_frame() == 1 {
+            GroundModule::set_cliff_check(fighter.module_accessor, smash::app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
+        }
+        if CancelModule::is_enable_cancel(fighter.module_accessor) {
+            fighter.sub_transition_group_check_air_cliff();
+        }
+    }
+}
+
+pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     ledge_act(boma, status_kind, fighter_kind);
     occupy_ledge(boma, status_kind, situation_kind, fighter_kind);
     tether_trump_landing(boma, status_kind, situation_kind);
+    global_faf_ledgegrab(fighter);
 }
