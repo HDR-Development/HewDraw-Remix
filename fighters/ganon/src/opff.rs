@@ -76,7 +76,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    // aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
+    aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
     // dtaunt_counter(boma, motion_kind, frame);
     // repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
     fastfall_specials(fighter);
