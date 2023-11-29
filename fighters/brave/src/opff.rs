@@ -94,20 +94,8 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
 
 // Hero woosh cancel
 unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor)
-    && (fighter.is_situation(*SITUATION_KIND_GROUND)
-        || fighter.is_situation(*SITUATION_KIND_CLIFF)
-        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
-    {
-        VarModule::off_flag(fighter.battle_object, vars::brave::instance::UP_SPECIAL_FREEFALL);
-    }
-
-    if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1"), Hash40::new("special_hi_empty"), Hash40::new("special_air_hi_empty")]){
-        if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::brave::instance::UP_SPECIAL_FREEFALL);
-        }
-        else if MotionModule::frame(fighter.module_accessor) >= 41.0
-        && !VarModule::is_flag(fighter.battle_object, vars::brave::instance::UP_SPECIAL_FREEFALL) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1"), Hash40::new("special_hi_empty"), Hash40::new("special_air_hi_empty")]) {
+        if MotionModule::frame(fighter.module_accessor) >= 41.0 {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
