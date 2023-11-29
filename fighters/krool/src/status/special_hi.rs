@@ -28,7 +28,7 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
             return 1.into();
         }
     }
-    let rise_min_frame = 12; // add new param
+    let rise_min_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_min_frame");
     if MotionModule::is_end(fighter.module_accessor) ||
     ((rise_min_frame..MotionModule::end_frame(fighter.module_accessor) as i32).contains(&fighter.status_frame())
         && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)) {
@@ -160,7 +160,7 @@ unsafe extern "C" fn special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) -
             fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
         }
         else {
-            let fall_special_spd_y = 1.7; // add new param
+            let fall_special_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_spd_y");
             fighter.clear_lua_stack();
             lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             let mut speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
@@ -223,11 +223,11 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START) {
         let start_mul_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_start_mul_spd_x"));
         let start_air_mul_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_start_air_mul_spd_x"));
-        let start_brake_x = 0.04;       // add new param
-        let start_limit_spd_x = 1.3;    // add new param
+        let start_brake_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_brake_x");
+        let start_limit_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_limit_spd_x");
         let start_air_mul_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_start_air_mul_spd_y"));
         let start_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_start_max_spd_y"));
-        let start_stable_spd_y = 0.1;   // add new param
+        let start_stable_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_stable_spd_y");
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
         speed_y *= start_air_mul_spd_y;
         speed_y = speed_y.clamp(-start_max_spd_y, start_max_spd_y);
@@ -253,11 +253,12 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         let fly_acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));
         let fly_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_max_spd_y"));
         let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
-        let fly_charge_min_spd_x = 0.4;     // add new param
-        let fly_charge_x_mul = 0.007;       // add new param
-        let fly_limit_spd_x = 1.0 * PostureModule::lr(fighter.module_accessor);          // add new param
-        let fly_charge_min_spd_y = 2.5;     // add new param
-        let fly_charge_y_mul = 0.01;        // add new param
+        let fly_charge_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_min_spd_x");
+        let fly_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_x_mul");
+        let mut fly_limit_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_limit_spd_x");
+        fly_limit_spd_x *= PostureModule::lr(fighter.module_accessor);
+        let fly_charge_min_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.charge_min_spd_y");
+        let fly_charge_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_y_mul");
 
         // accounts for 50 max charge frames
         let calc_charge_x = (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul)) * PostureModule::lr(fighter.module_accessor);
@@ -286,9 +287,10 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         let fall_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_y"));
         let fall_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_x"));
         let fall_stick_mul_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_stick_mul_max_spd_y")); //unused
-        let fall_brake_x = 0.01;        // add new param
-        let fall_stable_spd_x = 1.0 * PostureModule::lr(fighter.module_accessor);   // add new param
-        let fall_limit_speed_x = 2.0;   // add new param
+        let fall_brake_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_brake_x");
+        let mut fall_stable_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_stable_spd_x");
+        fall_stable_spd_x *= PostureModule::lr(fighter.module_accessor);
+        let fall_limit_speed_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_limit_spd_x");
         if speed_y >= max_sum_spd_y { speed_y = max_sum_spd_y; }
         speed_x = speed_x.clamp(-fall_max_spd_x, fall_max_spd_x);
 
@@ -439,12 +441,12 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
         || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END)
         || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL) {
             // restrict min speed based on charge
-            let fly_lean_min_acl_x = 0.01;          // add new param
+            let fly_lean_min_acl_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_acl_x");
             if mul_stick_x * PostureModule::lr(fighter.module_accessor) < fly_lean_min_acl_x {
                 calc_mul_x = fly_lean_min_acl_x * PostureModule::lr(fighter.module_accessor);
                 let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
-                let fly_lean_min_spd_x = 0.3;       // add new param
-                let fly_lean_charge_x_mul = 0.007;  // add new param
+                let fly_lean_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_spd_x");
+                let fly_lean_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_charge_x_mul");
                 let calc_charge_fly_lean = fly_lean_min_spd_x + (charge_frames * fly_lean_charge_x_mul);
                 sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_fly_lean, 0.0);
             }
@@ -455,11 +457,11 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI) {
         let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if (-0.1..0.1).contains(&(fighter.stick_x() * PostureModule::lr(fighter.module_accessor))) {
-            let fly_no_lean_spd_y = 0.055;   // add new param
+            let fly_no_lean_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_no_lean_spd_y");
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_no_lean_spd_y);
         }
         else if fighter.stick_x() * PostureModule::lr(fighter.module_accessor) > 0.1 {
-            let fly_lean_f_spd_y = 0.08;    // add new param
+            let fly_lean_f_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_f_spd_y");
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_lean_f_spd_y);
         }
     }
