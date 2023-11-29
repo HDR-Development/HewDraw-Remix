@@ -59,10 +59,10 @@
     <struct index="0">
       <float hash="special_hi_start_mul_spd_x">1.0</float>
       <float hash="special_hi_start_air_mul_spd_x">1.0</float>
-      <float hash="special_hi_fly_acl_y">0.08</float>
+      <float hash="special_hi_fly_acl_y">0.22</float>
       <float hash="special_hi_fly_max_spd_y">0.5</float>
       <float hash="special_hi_fly_mul_max_acl_x">0.045</float>
-      <float hash="special_hi_fly_max_spd_x">1.8</float>
+      <float hash="special_hi_fly_max_spd_x">1.0</float>
       <float hash="special_hi_fly_stick_mul_max_spd_x">1.0</float>
       <int hash="special_hi_fly_brake_after_frame">25</int>
       <float hash="special_hi_fall_max_spd_x">1.0</float>

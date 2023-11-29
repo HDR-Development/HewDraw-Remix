@@ -62,9 +62,14 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
 unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
+        special_hi_change_motion(fighter, Hash40::new("special_hi"), false, false);
+    }
+    else {
+        special_hi_change_motion(fighter, Hash40::new("special_air_hi"), false, false);
+    }
     fighter.set_situation(SITUATION_KIND_AIR.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-    special_hi_change_motion(fighter, Hash40::new("special_hi"), false, true);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
     special_hi_set_physics(fighter);
     WorkModule::set_float(fighter.module_accessor, 0.5, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOTION_2ND_LERP_RATE);
@@ -105,7 +110,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 #[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_TOP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    special_hi_change_motion(fighter, Hash40::new("special_hi_air_end"), false, true);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_air_end"), 0.0, 1.0, false, 0.0, false, false);
     special_hi_lerp_motion(fighter, "special_hi_air_end_f", "special_hi_air_end_b");
     special_hi_set_physics(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_movement_helper as *const () as _));
@@ -248,16 +253,16 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         let fly_acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));
         let fly_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_max_spd_y"));
         let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
-        let fly_charge_min_spd_x = 0.25;    // add new param
-        let fly_charge_x_mul = 0.0035;      // add new param
+        let fly_charge_min_spd_x = 0.4;     // add new param
+        let fly_charge_x_mul = 0.007;       // add new param
         let fly_limit_spd_x = 1.0 * PostureModule::lr(fighter.module_accessor);          // add new param
-        let fly_charge_min_spd_y = 2.0;     // add new param
+        let fly_charge_min_spd_y = 2.5;     // add new param
         let fly_charge_y_mul = 0.01;        // add new param
 
         // accounts for 50 max charge frames
         let calc_charge_x = (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul)) * PostureModule::lr(fighter.module_accessor);
         let calc_charge_y = fly_charge_min_spd_y + (charge_frames * fly_charge_y_mul);
-        // max x: 0.425, max y: 2.5
+        // max x: 0.7, max y: 3.0
 
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
         sv_kinetic_energy!(reset_energy, fighter, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -438,7 +443,7 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
             if mul_stick_x * PostureModule::lr(fighter.module_accessor) < fly_lean_min_acl_x {
                 calc_mul_x = fly_lean_min_acl_x * PostureModule::lr(fighter.module_accessor);
                 let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
-                let fly_lean_min_spd_x = 0.45;      // add new param
+                let fly_lean_min_spd_x = 0.3;       // add new param
                 let fly_lean_charge_x_mul = 0.007;  // add new param
                 let calc_charge_fly_lean = fly_lean_min_spd_x + (charge_frames * fly_lean_charge_x_mul);
                 sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_fly_lean, 0.0);
@@ -448,13 +453,14 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
     }
     
     if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI) {
-        let fly_acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));
-        let fly_lean_spd_y = 0.0025;              // add new param
+        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if (-0.1..0.1).contains(&(fighter.stick_x() * PostureModule::lr(fighter.module_accessor))) {
-            sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -fly_acl_y - (fly_lean_spd_y * 0.005));   // not working properly
+            let fly_no_lean_spd_y = 0.055;   // add new param
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_no_lean_spd_y);
         }
         else if fighter.stick_x() * PostureModule::lr(fighter.module_accessor) > 0.1 {
-            sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -fly_acl_y - fly_lean_spd_y);
+            let fly_lean_f_spd_y = 0.08;    // add new param
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_lean_f_spd_y);
         }
     }
 
