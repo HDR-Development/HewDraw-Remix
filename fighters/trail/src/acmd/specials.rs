@@ -323,7 +323,6 @@ unsafe fn game_specials2(fighter: &mut L2CAgentBase) {
     }
     // Ensure only specials2 comes out
     WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
-    
 }
 
 #[acmd_script( agent = "trail", script = "game_specialairs2" , category = ACMD_GAME , low_priority)]
@@ -367,10 +366,6 @@ unsafe fn game_specialairs2(fighter: &mut L2CAgentBase) {
     }
     // Ensure only specials2 comes out
     WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
-    // frame(lua_state, 20.0);
-    // if is_excute(fighter) {
-    //     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, false);
-    // }
 }
 
 #[acmd_script( agent = "trail", scripts = [ "sound_specials2", "sound_specialairs2" ] , category = ACMD_SOUND , low_priority)]
