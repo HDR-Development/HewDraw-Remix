@@ -5,10 +5,16 @@ use globals::*;
 
  
 unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
+    if StatusModule::is_changing(fighter.module_accessor)
+    && (fighter.is_situation(*SITUATION_KIND_GROUND)
+        || fighter.is_situation(*SITUATION_KIND_CLIFF)
+        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+    {
+        VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL);
     }
+
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
+    && !StatusModule::is_changing(boma)
     && boma.status_frame() == 1 {
         VarModule::off_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
         if situation_kind == *SITUATION_KIND_GROUND {
@@ -16,22 +22,35 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         }
     }
     // Allows M2 to turnaround based on stick position when reappearing
-    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2 && MotionModule::is_end(boma) {
+    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2
+    && !StatusModule::is_changing(boma)
+    && MotionModule::is_end(boma) {
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             PostureModule::set_stick_lr(boma, 0.0);
             PostureModule::update_rot_y_lr(boma);
         }
     }
-    // Actionability when double jump isn't burned
-    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 9.0 {
-        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-            CancelModule::enable_cancel(boma);
-            // Consume double jump, except when Teleport is initiated on ground
-            if !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
-                fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-            }
+
+    if fighter.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3) {
+        if StatusModule::is_changing(fighter.module_accessor) {
+            VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL);
         }
+    }
+
+    // Actionability when double jump isn't burned
+    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
+    && !StatusModule::is_changing(boma)
+    && situation_kind == *SITUATION_KIND_AIR
+    && frame > 9.0
+    && boma.get_num_used_jumps() < boma.get_jump_count_max() 
+    && !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL) {
+        VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+        CancelModule::enable_cancel(boma);
+        // Consume double jump, except when Teleport is initiated on ground
+        if !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
+            fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+        }
+        
     }
      //takes away float after 5 frames of jump
     if boma.get_num_used_jumps() == 2 && (fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION)) {
