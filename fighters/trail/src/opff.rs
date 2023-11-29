@@ -156,6 +156,17 @@ unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) 
     }
 }
 
+unsafe fn side_special_actionability(boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END){
+        if MotionModule::frame(boma) > MotionModule::end_frame(boma) - 1.0 {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
+        }
+    }
+}
+
 unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, id: usize) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
@@ -299,6 +310,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     flower_frame(boma, status_kind);
     training_cycle(fighter, boma, frame);
     fastfall_specials(fighter);
+    side_special_actionability(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]
