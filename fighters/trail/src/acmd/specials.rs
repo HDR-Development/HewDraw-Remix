@@ -323,6 +323,7 @@ unsafe fn game_specials2(fighter: &mut L2CAgentBase) {
     }
     // Ensure only specials2 comes out
     WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
+    
 }
 
 #[acmd_script( agent = "trail", script = "game_specialairs2" , category = ACMD_GAME , low_priority)]
