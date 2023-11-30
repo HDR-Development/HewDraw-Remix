@@ -278,6 +278,30 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn monch(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_s_shoot_s"), Hash40::new("special_air_s_shoot_s")])
+    && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag()
+        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.is_cat_flag(Cat2::AppealHi) {
+                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_hi_l") } else { Hash40::new("appeal_hi_r") };
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
+                MotionModule::change_motion(fighter.module_accessor, hash, 0.0, -1.0, false, 0.0, false, false);
+            }
+            else if fighter.is_cat_flag(Cat2::AppealSL | Cat2::AppealSR) {
+                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_s_l") } else { Hash40::new("appeal_s_r") };
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_l"), 0.0, -1.0, false, 0.0, false, false);
+            }
+            else if fighter.is_cat_flag(Cat2::AppealLw) {
+                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_lw_l") } else { Hash40::new("appeal_lw_r") };
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_l"), 0.0, -1.0, false, 0.0, false, false);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
 	//spike_head_mesh_test(boma);
@@ -290,6 +314,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     motion_handler(fighter, boma, frame);
     fastfall_specials(fighter);
     reverse_switch(boma);
+    monch(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACKUN )]

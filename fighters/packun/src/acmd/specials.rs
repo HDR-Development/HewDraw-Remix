@@ -72,9 +72,10 @@ unsafe fn packun_special_s_shoot_game(agent: &mut L2CAgentBase) {
             FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 5.0);
             AttackModule::clear_all(boma);
         }
-        wait(lua_state, 10.0);
+        frame(lua_state, 31.0);
         if is_excute(agent) {
             WorkModule::on_flag(boma, *FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_CHANGE_KINETIC);
+            CancelModule::enable_cancel(boma);
         }
         frame(lua_state, 20.0);
         FT_MOTION_RATE(agent, 0.55);
@@ -102,35 +103,49 @@ unsafe fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
         VarModule::off_flag(boma.object(), vars::packun::status::BITE_START);
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST){
             if charged {
-                ATTACK(agent, 0, 0, Hash40::new("mouth"), 22.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATTACK(agent, 1, 0, Hash40::new("mouth"), 22.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATTACK(agent, 2, 0, Hash40::new("mouth"), 16.0, 90, 100, 80, 0, 9.0, 4.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
+                ATTACK(agent, 2, 0, Hash40::new("mouth"), 17.0, 90, 100, 80, 0, 9.0, 4.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
                 AttackModule::set_add_reaction_frame(boma, 0, 8.0, false);
             }
             else {
-                ATTACK(agent, 0, 0, Hash40::new("mouth"), 15.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATTACK(agent, 1, 0, Hash40::new("mouth"), 15.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATTACK(agent, 2, 0, Hash40::new("mouth"), 10.0, 90, 100, 80, 0, 9.0, 4.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
+                ATTACK(agent, 2, 0, Hash40::new("mouth"), 12.0, 90, 100, 80, 0, 9.0, 4.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
                 ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
             }
         }
         else {
             if charged {
-                ATTACK(agent, 0, 0, Hash40::new("mouth"), 20.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATTACK(agent, 1, 0, Hash40::new("mouth"), 20.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                AttackModule::set_add_reaction_frame(boma, 0, 17.0, false);
+                if agent.is_situation(*SITUATION_KIND_GROUND) {
+                    ATTACK(agent, 0, 0, Hash40::new("mouth"), 15.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    ATTACK(agent, 1, 0, Hash40::new("mouth"), 15.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    AttackModule::set_add_reaction_frame(boma, 0, 14.0, false);
+                    AttackModule::set_add_reaction_frame(boma, 1, 3.0, false);
+                }
+                else {
+                    ATTACK(agent, 0, 0, Hash40::new("mouth"), 15.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    ATTACK(agent, 1, 0, Hash40::new("mouth"), 15.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                }
             }
             else {
-                ATTACK(agent, 0, 0, Hash40::new("mouth"), 13.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATTACK(agent, 1, 0, Hash40::new("mouth"), 13.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
-                AttackModule::set_add_reaction_frame(boma, 0, 9.0, false);
+                if agent.is_situation(*SITUATION_KIND_GROUND) {
+                    ATTACK(agent, 0, 0, Hash40::new("mouth"), 10.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    ATTACK(agent, 1, 0, Hash40::new("mouth"), 10.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
+                    AttackModule::set_add_reaction_frame(boma, 0, 8.0, false);
+                    AttackModule::set_add_reaction_frame(boma, 1, 1.0, false);
+                }
+                else {
+                    ATTACK(agent, 0, 0, Hash40::new("mouth"), 10.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    ATTACK(agent, 1, 0, Hash40::new("mouth"), 10.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                    ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
+                }
             }
         }
     }
     wait(lua_state, 3.0);
     if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-        FT_DESIRED_RATE(agent, 30.0, 20.0);
+        FT_DESIRED_RATE(agent, 30.0, 16.0);
+    }
+    else {
+        FT_DESIRED_RATE(agent, 30.0, 26.0);
     }
     if is_excute(agent) {
         AttackModule::clear_all(boma);
@@ -208,25 +223,6 @@ unsafe fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("packun_poison_breath"), -1);
-    }
-    frame(lua_state, 29.0);
-    if stance == 1 {
-        if WorkModule::is_flag(boma, *FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_FAILURE) {
-            if is_excute(agent) {
-                agent.clear_lua_stack();
-                lua_args!(agent, Hash40::new("packun_poison_mouth2"), Hash40::new("mouth"), 6, -1.5, 0, 0, 90, -130, 1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
-                agent.pop_lua_stack(1);
-            }
-        }
-        else {
-            if is_excute(agent) {
-                agent.clear_lua_stack();
-                lua_args!(agent, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 4, -2, 0, 0, 90, -125, 1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
-                agent.pop_lua_stack(1);
-            }
-        }
     }
 }
 
@@ -317,25 +313,6 @@ unsafe fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("packun_poison_breath"), -1);
-    }
-    frame(lua_state, 29.0);
-    if stance == 1 {
-        if WorkModule::is_flag(boma, *FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_FAILURE) {
-            if is_excute(agent) {
-                agent.clear_lua_stack();
-                lua_args!(agent, Hash40::new("packun_poison_mouth2"), Hash40::new("mouth"), 6, -1.5, 0, 0, 90, -130, 1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
-                agent.pop_lua_stack(1);
-            }
-        }
-        else {
-            if is_excute(agent) {
-                agent.clear_lua_stack();
-                lua_args!(agent, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 4, -2, 0, 0, 90, -125, 1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
-                agent.pop_lua_stack(1);
-            }
-        }
     }
 }
 
