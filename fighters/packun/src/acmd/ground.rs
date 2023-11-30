@@ -137,6 +137,36 @@ unsafe fn packun_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "packun", script = "effect_attack100end" , category = ACMD_EFFECT , low_priority)]
+unsafe fn packun_attack_100_end_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
+        if stance.label == 1 {
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), -1.2, 9, 12.5, 0, 0, 0, 0.95, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), -1.2, 9, 12.5, 0, 0, 0, 0.85, true);
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("packun_atk_100_finish"), Hash40::new("packun_atk_100_finish"), Hash40::new("top"), -8, 8, 15, 10, -90, 0, 1.4, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_bite_line"), Hash40::new("mouth"), 3, 0, 0, 0, 0, 10, 1.1, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("neck"), 0, 0, 0, 0, 90, 0, 1.5, 0, 0, 0, 0, 0, 0, true, 0.3);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("packun_bite_line2"), Hash40::new("mouth"), 5, 0, 0, -20, 0, 0, 0.9, 0, 1, 0, 0, 0, 0, true);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("packun_atk_100_finish"), -1);
+    }
+}
 
 #[acmd_script( agent = "packun", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
@@ -197,6 +227,7 @@ pub fn install() {
         packun_attack_13_game,
         packun_attack_13_effect,
         packun_attack_100_end_game,
+        packun_attack_100_end_effect,
         packun_attack_dash_game,
     );
 }
