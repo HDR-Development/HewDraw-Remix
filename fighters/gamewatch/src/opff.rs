@@ -17,7 +17,11 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn parachute(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE) {
-        if fighter.is_cat_flag(Cat1::SpecialAny) && CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.is_cat_flag(Cat1::SpecialAny) {
+            if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) && !CancelModule::is_enable_cancel(fighter.module_accessor))
+            || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]) {
+                return;
+            }
             fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
         }
     }

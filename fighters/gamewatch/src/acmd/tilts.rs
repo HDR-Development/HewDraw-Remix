@@ -86,11 +86,19 @@ unsafe fn gamewatch_attack_lw3_game(fighter: &mut L2CAgentBase) {
         ArticleModule::change_motion(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, Hash40::new("attack_lw3"), false, 1.0);
     }
     frame(lua_state, 6.0);
+    FT_MOTION_RATE_RANGE(fighter, 6.0, 11.0, 4.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 90, 116, 0, 36, 3.5, 0.0, 4.2, 6.7, Some(0.0), Some(2.1), Some(19.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     frame(lua_state, 11.0);
+    FT_MOTION_RATE_RANGE(fighter, 11.0, 16.0, 4.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 90, 116, 0, 36, 3.0, 0.0, 2.1, 8.7, Some(0.0), Some(4.3), Some(19.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+    }
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
