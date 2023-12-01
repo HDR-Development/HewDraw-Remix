@@ -160,7 +160,7 @@ unsafe fn buddy_special_air_s_dash_expression(fighter: &mut L2CAgentBase) {
     wait(lua_state, 6.0);
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_73_bodyattack3"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0);
         }
     wait(lua_state, 2.0);
 }
