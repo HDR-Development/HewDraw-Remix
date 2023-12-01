@@ -108,6 +108,17 @@ unsafe fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "krool", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 13, -1, 180, 0, 239, 1.8, true, *EF_FLIP_YZ, 0.7);
+        LAST_EFFECT_SET_RATE(fighter, 1.6);
+    }
+}
+
 #[acmd_script( agent = "krool", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn krool_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -209,6 +220,7 @@ pub fn install() {
         krool_attack_air_n_game,
         krool_attack_air_f_game,
         krool_attack_air_b_game,
+        krool_attack_air_b_effect,
         krool_attack_air_hi_game,
         krool_attack_air_lw_game,
         krool_attack_air_lw_effect,
