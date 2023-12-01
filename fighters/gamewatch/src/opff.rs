@@ -19,7 +19,18 @@ unsafe fn parachute(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE) {
         if fighter.is_cat_flag(Cat1::SpecialAny) {
             if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) && !CancelModule::is_enable_cancel(fighter.module_accessor))
-            || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]) {
+            || fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+                *FIGHTER_STATUS_KIND_DAMAGE,
+                *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
                 return;
             }
             fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
