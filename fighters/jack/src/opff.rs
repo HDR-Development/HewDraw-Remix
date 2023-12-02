@@ -71,6 +71,14 @@ unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("knife"), &long_sword_scale);
 }
 
+
+unsafe fn arsene_dtilt_motion_change(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if motion_kind == hash40("attack_lw3")
+    && fighter.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_lw3_ex"), 0.0, 1.0, false, 0.0, false, false);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -117,6 +125,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 	knife_length(boma);
     //arsene_summon_desmummon(boma);
     fastfall_specials(fighter);
+    arsene_dtilt_motion_change(fighter, boma, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_JACK )]
