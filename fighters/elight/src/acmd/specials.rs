@@ -1069,6 +1069,43 @@ unsafe fn effect_specialairs(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "elight", scripts = ["expression_specials", "expression_specialairs"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specials(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+	frame(lua_state, 6.0);
+	if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+	}
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+		RUMBLE_HIT(fighter, Hash40::new("rbkind_79_slashlarge"), 0);
+    }
+	frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		RUMBLE_HIT(fighter, Hash40::new("rbkind_79_slashsmall"), 0);
+	}
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attacks"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "elight", scripts = ["sound_specials", "sound_specialairs"], category = ACMD_SOUND, low_priority )]
 unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1273,6 +1310,7 @@ pub fn install() {
         game_specials,
         effect_specials,
         effect_specialairs,
+		expression_specials,
         sound_specials,
         effect_specialsend,
         effect_specialairsend,

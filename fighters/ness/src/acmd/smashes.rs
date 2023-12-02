@@ -58,7 +58,7 @@ unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
             RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
         }
     }
-    frame(lua_state, 33.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
@@ -117,6 +117,53 @@ unsafe fn game_attacklw4 (fighter: &mut L2CAgentBase) {
 		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 	}
+}
+
+
+#[acmd_script( agent = "ness", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attacklw4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 6);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 11.0);
+    app::sv_animcmd::execute(lua_state, 11.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        }
+    }
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    /*frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }*/
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 48.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
 }
 
 #[acmd_script( agent = "ness_yoyohead", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
@@ -190,10 +237,11 @@ pub fn install() {
     install_acmd_scripts!(
         game_attacks4,
         game_attackhi4,
+        expression_attackhi4,
         game_attacklw4,
+		expression_attacklw4,
         game_yoyo_attackhi4,
-        game_yoyo_attacklw4,
-        expression_attackhi4
+        game_yoyo_attacklw4
     );
 }
 

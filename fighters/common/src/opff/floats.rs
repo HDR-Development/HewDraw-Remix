@@ -263,13 +263,16 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind)) && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {
         if fighter_kind == *FIGHTER_KIND_SAMUSD {
             EffectModule::kill_kind(boma, Hash40::new("samusd_win3_aura"), false, true);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         if fighter_kind == *FIGHTER_KIND_MEWTWO {
             EffectModule::kill_kind(boma, Hash40::new("mewtwo_final_aura"), false, true);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         if fighter_kind == *FIGHTER_KIND_REFLET {
             EffectModule::kill_kind(boma, Hash40::new("reflet_catch"), false, true);
             EffectModule::kill_kind(boma, Hash40::new("sys_aura_light"), false, true);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         VarModule::off_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
         VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER, 0);

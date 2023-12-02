@@ -16,7 +16,7 @@ unsafe fn pacman_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "pacman", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
@@ -33,7 +33,7 @@ unsafe fn pacman_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "pacman", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -51,7 +51,7 @@ unsafe fn pacman_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "pacman", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -90,7 +90,29 @@ unsafe fn pacman_attack_hi3_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("rot"), *HIT_STATUS_OFF);
     }
-    
+
+}
+
+#[acmd_script( agent = "pacman", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pacman_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
 }
 
 #[acmd_script( agent = "pacman", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -113,7 +135,62 @@ unsafe fn pacman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
+}
+
+#[acmd_script( agent = "pacman", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pacman_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_normal") as i64);
+        macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(fighter, Hash40::new("pizzapacman"), *HIT_STATUS_NORMAL);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+        ItemModule::set_attach_item_visibility(boma, true, *ATTACH_ITEM_GROUP_ALL as u8);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_none") as i64);
+        macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("pizzapacman"), *HIT_STATUS_OFF);
+    }
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
+    }
 }
 
 pub fn install() {
@@ -122,7 +199,9 @@ pub fn install() {
         pacman_attack_s3_s_game,
         pacman_attack_s3_lw_game,
         pacman_attack_hi3_game,
+        pacman_attack_hi3_expression,
         pacman_attack_lw3_game,
+        pacman_attack_lw3_expression,
     );
 }
 

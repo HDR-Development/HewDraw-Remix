@@ -201,6 +201,40 @@ unsafe fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "toonlink", script = "expression_attackairhi" , category = ACMD_EXPRESSION , low_priority)]
+unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_back") as i64);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_spinattack"), 0);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+    }
+}
+
 #[acmd_script( agent = "toonlink", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -269,6 +303,7 @@ pub fn install() {
         toonlink_attack_air_b_expression,
         toonlink_attack_air_hi_game,
         toonlink_attack_air_hi_effect,
+        toonlink_attack_air_hi_expression,
         toonlink_attack_air_lw_game,
         toonlink_landing_air_catch_game,
     );

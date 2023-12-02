@@ -29,7 +29,7 @@ unsafe fn plizardon_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "plizardon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
@@ -60,7 +60,7 @@ unsafe fn plizardon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "plizardon", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -92,7 +92,7 @@ unsafe fn plizardon_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "plizardon", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -110,7 +110,37 @@ unsafe fn plizardon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
+}
+
+#[acmd_script( agent = "plizardon", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn plizardon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 2);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
 }
 
 #[acmd_script( agent = "plizardon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -130,7 +160,7 @@ unsafe fn plizardon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "plizardon", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
@@ -158,6 +188,7 @@ pub fn install() {
         plizardon_attack_s3_s_game,
         plizardon_attack_s3_lw_game,
         plizardon_attack_hi3_game,
+        plizardon_attack_hi3_expression,
         plizardon_attack_lw3_game,
         plizardon_attack_lw3_effect,
     );

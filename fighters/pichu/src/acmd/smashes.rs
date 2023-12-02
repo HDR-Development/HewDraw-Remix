@@ -54,7 +54,7 @@ unsafe fn pichu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "pichu", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
@@ -133,7 +133,7 @@ unsafe fn pichu_attack_hi4_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    
+
 }
 
 #[acmd_script( agent = "pichu", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
@@ -232,6 +232,37 @@ unsafe fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "pichu", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pichu_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 5.0);
+    app::sv_animcmd::execute(lua_state, 5.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 6, true);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 6);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 8);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pichu_attack_s4_s_game,
@@ -240,6 +271,7 @@ pub fn install() {
         pichu_attack_hi4_effect,
         pichu_attack_hi4_expression,
         pichu_attack_lw4_game,
+        pichu_attack_lw4_expression,
     );
 }
 

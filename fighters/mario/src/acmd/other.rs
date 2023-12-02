@@ -135,7 +135,7 @@ unsafe fn mario_utauntr(fighter: &mut L2CAgentBase) {
             }
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "mario", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
@@ -152,7 +152,7 @@ unsafe fn mario_utauntl(fighter: &mut L2CAgentBase) {
             }
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "mario", script = "game_dash" , category = ACMD_GAME , low_priority)]
@@ -163,7 +163,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
+
 }
 
 #[acmd_script( agent = "mario", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
@@ -195,7 +195,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
 		FT_MOTION_RATE(fighter, 1.0);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
+
 }
 
 #[acmd_script( agent = "mario", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
@@ -218,7 +218,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
@@ -322,7 +322,7 @@ unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hat"), 1.0, 361, 30, 0, 20, 2.5, 0.0, 0.0, -2.0, None, None, None, 1.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_mario_local_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN, *ATTACK_REGION_PUNCH);
-    } 
+    }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -339,10 +339,37 @@ unsafe fn game_appealsr(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hat"), 1.0, 361, 30, 0, 20, 2.5, 0.0, 0.0, -2.0, None, None, None, 1.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_mario_local_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN, *ATTACK_REGION_PUNCH);
-    } 
+    }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "mario", scripts = ["expression_appealsl", "expression_appealsr"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+       macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -371,7 +398,7 @@ pub fn install() {
         sound_regular,
         game_appealsl,
         game_appealsr,
-
+        expression_appeals
     );
 }
 

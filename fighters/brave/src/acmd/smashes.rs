@@ -128,6 +128,33 @@ unsafe fn brave_attack_s4_sound(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "brave", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn brave_attack_s4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 6.0);
+    app::sv_animcmd::execute(lua_state, 6.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
+    }
+    frame(lua_state, 14.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "brave", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -397,6 +424,7 @@ pub fn install() {
         brave_attack_s4_s_game,
         brave_attack_s4_effect,
         brave_attack_s4_sound,
+        brave_attack_s4_expression,
         brave_attack_hi4_game,
         brave_attack_hi4_effect,
         brave_attack_hi4_sound,

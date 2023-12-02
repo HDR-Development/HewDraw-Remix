@@ -170,6 +170,24 @@ unsafe fn bayonetta_special_air_s_u_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "bayonetta", script = "expression_specialairsu" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn bayonetta_special_air_s_u_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "bayonetta", script = "game_shootinglegl_atkon_specialairsu", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_shootinglegl_atk_on_special_air_s_u_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -215,6 +233,20 @@ unsafe fn bayonetta_special_air_s_d_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         JostleModule::set_status(boma, true);
         fighter.off_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "bayonetta", script = "expression_specialairsd" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn bayonetta_special_air_s_d_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -517,8 +549,10 @@ pub fn install() {
         bayonetta_special_s_game,
         bayonetta_special_s_hold_end_game,
         bayonetta_special_air_s_u_game,
+        bayonetta_special_air_s_u_expression,
         bayonetta_shootinglegl_atk_on_special_air_s_u_game,
         bayonetta_special_air_s_d_game,
+        bayonetta_special_air_s_d_expression,
         bayonetta_special_air_s_d_landing_game,
         bayonetta_special_hi_game,
         bayonetta_special_air_hi_game,
