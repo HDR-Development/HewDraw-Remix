@@ -1115,6 +1115,19 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Shrink sword
+unsafe fn cutter_size(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if ArticleModule::is_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        let article_motion = MotionModule::motion_kind(article_boma);
+        if article_motion == hash40("special_hi2") {
+            PostureModule::set_scale(article_boma, 0.8, false);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
@@ -1122,6 +1135,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
     fastfall_specials(fighter);
+    cutter_size(boma, status_kind);
     reset_flags(fighter, boma, status_kind, situation_kind);
 
     // Magic Series

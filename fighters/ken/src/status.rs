@@ -1,6 +1,10 @@
 use super::*;
 use globals::*;
 // status script import
+mod finals;
+mod special_cmd4;
+mod special_lw;
+mod special_s;
 
 utils::import_noreturn!(common::shoto_status::{
     fgc_end_dashback,
@@ -19,28 +23,18 @@ extern "Rust" {
 }
 
 pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_ken"),
-        statuses::ken::ATTACK_COMMAND_4,
-        StatusInfo::new()
-            .with_pre(ken_attack_command_4_pre)
-            .with_main(ken_attack_command_4_main)
-            .with_end(ken_attack_command_4_end)
-    );
+    finals::install();
+    special_cmd4::install();
+    special_lw::install();
+    special_s::install();
     install_status_scripts!(
         pre_turndash,
         main_dashback,
         end_dashback,
         main_attack,
         wait_pre,
-        //wait_main,
         landing_main,
-        init_special_lw,
-        pre_final,
-        pre_final2,
         guard,
-        init_special_s,
-        init_special_s_command
     );
     smashline::install_agent_init_callbacks!(ken_init);
 }
@@ -258,23 +252,25 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
         Cat1::AttackLw4
     );
 
-    // the shinryuken
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 10 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        return true.into();
-    }
-
     // the tatsu super
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
     && MeterModule::level(fighter.object()) >= 6 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+        return true.into();
+    }
+
+    // the shinryuken
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
+    && MeterModule::level(fighter.object()) >= 10 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
         return true.into();
     }
 
@@ -317,7 +313,7 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
 
     // kamabaraigeri
     if is_normal
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND != 0
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
         let attack_command_4_status_kind = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ryu::AIR_DASH);
@@ -335,149 +331,6 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     }
 
     false.into()
-}
-
-pub unsafe extern "C" fn ken_attack_command_4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        app::SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_MOTION,
-        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-        0
-    );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_ATTACK_COMMAND2 | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
-        0,
-        *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_3 as u32,
-        0
-    );
-    0.into()
-}
-
-pub unsafe extern "C" fn ken_attack_command_4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_command4"), 0.0, 1.0, false, 0.0, false, false);
-    WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK_COMMAND2, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
-    // fighter.clear_lua_stack();
-    // fighter.push_lua_stack(&mut L2CValue::I32(*FIGHTER_KINETIC_ENERGY_ID_MOTION));
-    // let mut lr = PostureModule::lr(fighter.module_accessor);
-    // fighter.push_lua_stack(&mut L2CValue::F32(lr));
-    // app::sv_kinetic_energy::set_chara_dir(fighter.lua_state_agent);
-    fighter.sub_shift_status_main(L2CValue::Ptr(ken_attack_command_4_main_loop as *const () as _))
-}
-
-pub unsafe extern "C" fn ken_attack_command_4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-            return 1.into();
-        }
-    }
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-        return 0.into();
-    }
-    if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-        return 0.into();
-    }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH) {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            let mut abnormal_attack_cliff_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("abnormal_attack_cliff_max"));
-            if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("attack_command3")) {
-                abnormal_attack_cliff_max -= 1.0;
-            }
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_command3"), abnormal_attack_cliff_max, 1.0, false, 0.0, true, false);
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x259e752514), *FIGHTER_LOG_ATTACK_KIND_ATTACK_COMMAND3);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_CHANGE_LOG);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
-        }
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
-    }
-    0.into()
-}
-pub unsafe extern "C" fn ken_attack_command_4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
-// FIGHTER_STATUS_KIND_FINAL //
-
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_FINAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_status_pre_FinalCommon();
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        app::SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        false,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-        0
-    );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_FINAL | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
-        (*FIGHTER_STATUS_ATTR_DISABLE_ITEM_INTERRUPT | *FIGHTER_STATUS_ATTR_DISABLE_TURN_DAMAGE | *FIGHTER_STATUS_ATTR_FINAL) as u32,
-        *FIGHTER_POWER_UP_ATTACK_BIT_FINAL as u32,
-        0
-    );
-    MeterModule::drain(fighter.object(), 6);
-    return 0.into();
-}
-
-// FIGHTER_RYU_STATUS_KIND_FINAL2 //
-
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_FINAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
-    MeterModule::drain(fighter.object(), 10);
-    ret
-}
-
-// FIGHTER_STATUS_KIND_SPECIAL_LW //
-
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // once-per-airtime (refreshes on hit)
-    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
-    original!(fighter)
-}
-
-// FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND //
-
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
-    }
-    original!(fighter)
-}
-
-// FIGHTER_STATUS_KIND_SPECIAL_S //
-
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
-    }
-    original!(fighter)
 }
 
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -794,54 +647,6 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
-}
-
-// vanilla script
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_wait_common();
-    fighter.sub_wait_motion_mtrans();
-    fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
-}
-
-pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.status_Wait_Main().get_bool() {
-        return 0.into();
-    }
-    let lr = WorkModule::get_float(
-        fighter.module_accessor,
-        *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1,
-    );
-    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
-        let stick_x_corrected = fighter.global_table[STICK_X].get_f32()
-            * (PostureModule::lr(fighter.module_accessor) * -1.0);
-        let stick_y = fighter.global_table[STICK_Y].get_f32();
-        let walk_stick_x = WorkModule::get_param_float(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("walk_stick_x"),
-        );
-        let squat_stick_y = WorkModule::get_param_float(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("squat_stick_y"),
-        );
-
-        if WorkModule::is_enable_transition_term(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK,
-        ) {
-            if walk_stick_x <= stick_x_corrected {
-                if squat_stick_y < stick_y {
-                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_WALK_BACK.into(), true.into());
-                    return 0.into();
-                }
-            }
-        }
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_TURN_AUTO.into(), false.into());
-        return 0.into();
-    }
-    0.into()
 }
 
 // FIGHTER_STATUS_KIND_LANDING //

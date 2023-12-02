@@ -232,6 +232,38 @@ unsafe fn sound_specialn2(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "trail", scripts = ["expression_specialn2", "expression_specialairn2"] , category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialn2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_81_special_n2"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 43.0);
+    if ItemModule::is_have_item(boma, 0) {
+        if is_excute(fighter) {
+            //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0.05);
+        }
+    }
+    frame(lua_state, 49.0);
+    if is_excute(fighter) {
+        //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0.08);
+    }
+    frame(lua_state, 57.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0);
+    }
+}
+
 // Now unused
 #[acmd_script( agent = "trail", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specials1(fighter: &mut L2CAgentBase) {
@@ -746,44 +778,37 @@ unsafe fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.6, 361, 24, 0, 42, 3.8, 0.0, 7.5, 14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1.2, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        let lr = PostureModule::lr(boma);
+        let offset = Vector2f {x: (14.0 * lr), y: 7.5}; // distance for article to be offset
+        PostureModule::add_pos_2d(boma, &offset);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.6, 361, 24, 0, 42, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1.2, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
         AttackModule::enable_safe_pos(boma);
         AttackModule::set_add_reaction_frame_revised(boma, 0, 0.0, false);
         ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 1.05);
     }
     wait(lua_state, 10.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.2, 361, 22, 0, 36, 3.8, 0.0, 7.5, 14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.2, 361, 22, 0, 36, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
         AttackModule::set_add_reaction_frame_revised(boma, 0, 0.0, false);
         ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 1.05);
     }
     wait(lua_state, 10.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.8, 361, 20, 0, 32, 3.8, 0.0, 7.5, 14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.8, 361, 20, 0, 32, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
         AttackModule::set_add_reaction_frame_revised(boma, 0, 0.0, false);
         ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 1.05);
-    }
-}
-
-#[acmd_script( agent = "trail_fire", scripts = ["effect_fly", "effect_fly2"], category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_trail_fire_fly(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("trail_fire_bullet"), Hash40::new("top"), 0, 7.5, 14.0, 0, 0, 0, 1, true);
-        EffectModule::enable_sync_init_pos_last(boma);
     }
 }
 
 pub fn install() {
     install_acmd_scripts!(
         game_trail_fire_fly,
-        effect_trail_fire_fly,
         game_specialairn3,
         game_specialn3,
         game_specialn2,
         effect_specialn2,
         sound_specialn2,
+        expression_specialn2,
         game_specials1,
         game_specialairs1,
         game_specials2,

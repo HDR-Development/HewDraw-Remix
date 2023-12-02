@@ -81,6 +81,39 @@ unsafe fn buddy_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "buddy", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn buddy_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "buddy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -122,6 +155,20 @@ unsafe fn buddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 37.0);
     if is_excute(fighter) {
         WorkModule::off_flag( boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "buddy", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn buddy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 14.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -191,6 +238,20 @@ unsafe fn buddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "buddy", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn buddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -301,6 +362,23 @@ unsafe fn buddy_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "buddy", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn buddy_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "buddy", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_landing_air_lw_game(agent: &mut L2CAgentBase) {
 }
@@ -311,11 +389,15 @@ pub fn install() {
         buddy_attack_air_n_game,
         buddy_attack_air_n_sound,
         buddy_attack_air_n_effect,
+        buddy_attack_air_n_expression,
         buddy_attack_air_f_game,
+        buddy_attack_air_f_expression,
         buddy_attack_air_b_game,
         buddy_attack_air_hi_game,
+        buddy_attack_air_hi_expression,
         buddy_attack_air_lw_game,
         buddy_attack_air_lw_effect,
+        buddy_attack_air_lw_expression,
 
         buddy_landing_air_lw_game,
     );

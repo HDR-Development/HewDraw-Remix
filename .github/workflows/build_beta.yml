@@ -92,7 +92,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
       env:
         HOME: /root
 
@@ -106,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: version
-        path: plugin/hdr_version.txt
+        path: hdr_version.txt
 
     - uses: dev-drprasad/delete-tag-and-release@master
       with:
@@ -216,38 +216,38 @@ jobs:
         name: version
         
     # build the lvd files
-    - id: lvd_files
-      uses: robinraju/release-downloader@v1.7
-      with:
-        repository: "techyCoder81/SSBU-LVD-data-dump"
-        tag: release
-        fileName: "lvd_dumper.zip"
+    # - id: lvd_files
+    #  uses: robinraju/release-downloader@v1.7
+    #  with:
+    #    repository: "techyCoder81/SSBU-LVD-data-dump"
+    #    tag: release
+    #    fileName: "lvd_dumper.zip"
 
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.408'
+    # - name: Setup dotnet
+    #  uses: actions/setup-dotnet@v1
+    #  with:
+    #    dotnet-version: '5.0.408'
 
-    - name: extract lvd data
-      id: lvd_extract
-      shell: bash
-      run: |
-        . scripts/extract_lvd_data.sh
+    #- name: extract lvd data
+    #  id: lvd_extract
+    #  shell: bash
+    #  run: |
+    #    . scripts/extract_lvd_data.sh
 
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
 
-    - name: Push lvd file to Suddy's HDRStageTool
-      uses: dmnemec/copy_file_to_another_repo_action@main
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
-      with:
-        source_file: 'artifacts/lvd.zip'
-        destination_folder: 'beta'
-        destination_repo: 'SuddyN/HDRStageTool'
-        user_email: 'suddy121800@hotmail.com'
-        user_name: 'SuddyN'
-        destination_branch: 'gh-pages'
+    #- name: Push lvd file to Suddy's HDRStageTool
+    #  uses: dmnemec/copy_file_to_another_repo_action@main
+    #  env:
+    #    API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
+    #  with:
+    #    source_file: 'artifacts/lvd.zip'
+    #    destination_folder: 'beta'
+    #    destination_repo: 'SuddyN/HDRStageTool'
+    #    user_email: 'suddy121800@hotmail.com'
+    #    user_name: 'SuddyN'
+    #    destination_branch: 'gh-pages'
 
     - name: Upload full package to betas
       uses: svenstaro/upload-release-action@v2

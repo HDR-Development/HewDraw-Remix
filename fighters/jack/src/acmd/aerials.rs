@@ -82,6 +82,23 @@ unsafe fn jack_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "jack", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn jack_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("knife"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm_l"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 10);
+    }
+}
+
 #[acmd_script( agent = "jack", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -176,7 +193,7 @@ unsafe fn jack_landing_air_f_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
     }
 
-} 
+}
 
 #[acmd_script( agent = "jack", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
@@ -235,6 +252,23 @@ unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 
+}
+
+#[acmd_script( agent = "jack", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn jack_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("knife"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
 }
 
 #[acmd_script( agent = "jack", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
@@ -307,7 +341,7 @@ unsafe fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     let landing_frame_arsene = landing_frame_joker + 3.0;
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
         FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
-    } 
+    }
 
 }
 
@@ -390,6 +424,29 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "jack", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn jack_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("knife"), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 10.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 6);
+    }
+    frame(lua_state, 15.0);
+    if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        if is_excute(fighter) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        }
+    }
+}
+
 #[acmd_script( agent = "jack", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -406,14 +463,17 @@ pub fn install() {
     install_acmd_scripts!(
         jack_attack_air_n_game,
         jack_attack_air_n_effect,
+        jack_attack_air_n_expression,
         jack_landing_air_n_game,
         jack_attack_air_f_game,
         jack_landing_air_f_game,
         jack_attack_air_b_game,
+        jack_attack_air_b_expression,
         jack_landing_air_b_game,
         jack_attack_air_hi_game,
         jack_landing_air_hi_game,
         jack_attack_air_lw_game,
+        jack_attack_air_lw_expression,
         jack_landing_air_lw_game,
     );
 }

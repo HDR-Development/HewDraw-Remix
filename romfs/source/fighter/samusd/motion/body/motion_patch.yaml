@@ -93,3 +93,6 @@ catch_attack:
 air_catch_landing:
   extra:
     cancel_frame: 17
+furafura_end:
+  extra:
+    cancel_frame: 10

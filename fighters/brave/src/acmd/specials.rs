@@ -255,6 +255,27 @@ unsafe fn brave_special_lw_start_game(fighter: &mut L2CAgentBase) {
     //FT_MOTION_RATE(fighter, 17.0/(20.0 - 1.0));
 }
 
+#[acmd_script( agent = "brave", scripts = ["game_speciallw8", "game_specialairlw8"], category = ACMD_GAME, low_priority )]
+unsafe fn brave_special_lw_8_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_BRAVE_GENERATE_ARTICLE_CRASH, false, -1);
+        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_FULLBURST_INTERRUPT);
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 8.0, 0.0, 16.0, 0.0, -3.0, 8.0, 0.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 116.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_FULLBURST_INTERRUPT);
+        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 136.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_ENABLE_GRAVITY);
+    }
+}
+
 #[acmd_script( agent = "brave", script = "game_specialairlw10", category = ACMD_GAME, low_priority )]
 unsafe fn brave_special_air_lw10_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -463,6 +484,7 @@ pub fn install() {
         brave_special_hi2_game,
         brave_special_hi3_game,
         brave_special_lw_start_game,
+        brave_special_lw_8_game,
         brave_special_air_lw10_game,
         brave_special_lw_14_game,
         brave_special_lw_17_game,
