@@ -15,6 +15,7 @@ unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        fighter.change_status_req(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_DEATH.into(), false.into());
     }
 }
 

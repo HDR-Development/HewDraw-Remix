@@ -4,16 +4,8 @@ use globals::*;
 
 pub fn install() {
     install_status_scripts!(
-        special_s_cling_init, special_s_cling_main
+        special_s_cling_main
     );
-}
-
-// WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING
-
-#[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn special_s_cling_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::pikmin::instance::SPECIAL_LW_PUMMEL_COUNTER, 5);
-    original!(fighter)
 }
 
 #[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
