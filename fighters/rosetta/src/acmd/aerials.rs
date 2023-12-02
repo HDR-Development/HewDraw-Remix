@@ -1,6 +1,23 @@
 
 use super::*;
 
+#[acmd_script( agent = "rosetta", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "rosetta", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,7 +66,7 @@ unsafe fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
+
 }
 
 #[acmd_script( agent = "rosetta", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -80,7 +97,7 @@ unsafe fn rosetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "rosetta_tico", script = "game_attackairb", category = ACMD_GAME, low_priority )]
@@ -146,7 +163,7 @@ unsafe fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "rosetta", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -194,7 +211,7 @@ unsafe fn rosetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "rosetta_tico", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
@@ -213,6 +230,7 @@ unsafe fn rosetta_tico_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        rosetta_attack_air_n_expression,
         rosetta_attack_air_f_game,
         rosetta_attack_air_b_game,
         rosetta_tico_attack_air_b_game,

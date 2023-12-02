@@ -24,6 +24,7 @@ pub mod camera;
 pub mod shotos;
 pub mod aura;
 pub mod sound;
+mod fighterspecializer;
 
 #[repr(C)]
 pub struct TempModule {
@@ -756,6 +757,7 @@ pub fn install() {
     shotos::install();
     aura::install();
     sound::install();
+    fighterspecializer::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
