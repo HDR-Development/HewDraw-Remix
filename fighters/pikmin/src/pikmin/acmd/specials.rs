@@ -1,6 +1,5 @@
 
 use super::*;
-use super::PikminInfo;
 
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_spsremved", "game_spsremved_b","game_spsremved_v","game_spsremved_w","game_spsremved_y",   "game_splwairrespond", "game_splwairrespond_b","game_splwairrespond_v","game_splwairrespond_w","game_splwairrespond_y"] , category = ACMD_GAME , low_priority)]
 unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
@@ -13,7 +12,7 @@ unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
         let dmg = 4.8;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), dmg * p.dmg, 90, 105, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag * 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }

@@ -46,7 +46,10 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
     let frame = MotionModule::frame(fighter.module_accessor);
     let clatter_time = ControlModule::get_clatter_time(fighter.module_accessor, 0);
     fighter.set_int(clatter_time as i32, *WEAPON_PIKMIN_PIKMIN_STATUS_SPECIAL_S_WORK_INT_CLATTER_TIME);
-    if clatter_time <= 0.0 && frame >= 17.0 {
+    let variation = fighter.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
+    let p = PikminInfo::from(variation);
+    if fighter.status_frame() >= p.cling_frame
+    && frame >= 17.0 {
         fighter.change_status(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE.into(), false.into());
         return 1.into();
     }
