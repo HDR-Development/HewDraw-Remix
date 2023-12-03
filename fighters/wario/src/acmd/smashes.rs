@@ -32,7 +32,7 @@ unsafe fn wario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "wario", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
@@ -73,7 +73,7 @@ unsafe fn wario_attack_hi4_game(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "wario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
@@ -152,6 +152,10 @@ unsafe fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2);
@@ -160,10 +164,6 @@ unsafe fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_attacks"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

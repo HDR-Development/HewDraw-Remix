@@ -77,14 +77,14 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "samus", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
 unsafe fn attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x13eb2847e0));
@@ -101,7 +101,7 @@ unsafe fn attack_dash_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x15eb15be2a));
     }
-    
+
 }
 
 #[acmd_script( agent = "samus", script = "game_attack11" , category = ACMD_GAME , low_priority)]
@@ -125,7 +125,7 @@ unsafe fn attack_11(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-    
+
 }
 
 #[acmd_script( agent = "samus", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
@@ -145,13 +145,30 @@ unsafe fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "samus", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
         attack_dash,
         attack_dash_sound,
         attack_11,
-        samus_attack_11_effect
+        samus_attack_11_effect,
+        samus_attack_12_expression
     );
 }
 
