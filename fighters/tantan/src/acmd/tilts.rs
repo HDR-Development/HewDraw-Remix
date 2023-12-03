@@ -165,13 +165,17 @@ unsafe fn tantan_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut powerFactor = 1.0;
-
+    
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
     }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_76_dragonarm"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_76_dragonarm"), 18, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {

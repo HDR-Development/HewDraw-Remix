@@ -117,11 +117,11 @@ unsafe fn rockman_attack12_exp(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
@@ -183,11 +183,11 @@ unsafe fn rockman_attack13_exp(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {

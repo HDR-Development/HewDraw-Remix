@@ -255,7 +255,11 @@ unsafe fn snake_down_taunt_explode_exp(fighter : &mut L2CAgentBase) {
     slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     frame(lua_state, 75.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 80.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 #[acmd_script( agent = "snake", script = "sound_appealendexplode", category = ACMD_SOUND, low_priority )]
