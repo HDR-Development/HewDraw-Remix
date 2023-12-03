@@ -1,7 +1,8 @@
 use smash::hash40;
+use std::collections::HashSet;
 
-pub const fn se_list() -> [u64; 3424] {
-    [
+pub fn se_list() -> HashSet<u64> {
+    HashSet::from([
         0x1493831D33,
         hash40("se_common_heavy_hit_l"),
         hash40("se_common_heavy_hit_m"),
@@ -3427,4 +3428,5 @@ pub const fn se_list() -> [u64; 3424] {
         hash40("vc_zelda_win02"),
         hash40("vc_zelda_win03"),
     ]
+    )
 }
