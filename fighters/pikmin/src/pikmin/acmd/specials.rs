@@ -10,7 +10,7 @@ unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         let dmg = 4.8;
-        ATTACK(fighter, 0, 0, Hash40::new("head1"), dmg * p.dmg, 90, 105, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag * 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        ATTACK(fighter, 0, 0, Hash40::new("waist"), dmg * p.dmg, 90, 105, 0, 65, 6.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag * 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -18,26 +18,6 @@ unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
         fighter.change_status_req(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_DEATH.into(), false.into());
     }
 }
-
-
-// #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_spsgrabattack", "game_spsgrabattack_b","game_spsgrabattack_v","game_spsgrabattack_w","game_spsgrabattack_y",   "game_splwairrespond", "game_splwairrespond_b","game_splwairrespond_v","game_splwairrespond_w","game_splwairrespond_y"] , category = ACMD_GAME , low_priority)]
-// unsafe fn game_spsgrabattack(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
-//     let p = PikminInfo::from(variation);
-//     // sv_animcmd::wait_loop_sync_mot(lua_state);
-//     frame(lua_state, 17.0);
-//     if is_excute(fighter) {
-//         let dmg = 2.0;
-//         ATTACK(fighter, 0, 0, Hash40::new("top"), dmg * p.dmg, 361, 0, 0, 0, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -1.0 + (dmg * p.shield_dmg), 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HARISEN, *ATTACK_REGION_PIKMIN);
-//         VarModule::dec_int(fighter.battle_object, vars::pikmin::instance::SPECIAL_LW_PUMMEL_COUNTER);
-//     }
-//     frame(lua_state, 19.0);
-//     if is_excute(fighter) {
-//         AttackModule::clear_all(boma);
-//     }
-// }
 
 
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_spntakenoutstart", "game_spntakenoutstart_y", "game_spntakenoutstart_b", "game_spntakenoutstart_w", "game_spntakenoutstart_v"] , category = ACMD_GAME , low_priority)]
@@ -172,7 +152,6 @@ unsafe fn game_spsthrown_y(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         game_spsremved,
-        // game_spsgrabattack,
         pikmin_special_n_pikmin,
         game_spsthrown,
         game_spsthrown_b,
