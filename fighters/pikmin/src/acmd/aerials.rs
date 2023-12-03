@@ -6,9 +6,13 @@ use std::ops::Index;
 unsafe fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 3.0, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
+    frame(lua_state, 3.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
