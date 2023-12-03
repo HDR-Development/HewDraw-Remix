@@ -40,9 +40,13 @@ unsafe fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
 unsafe fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 3.0, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
+    frame(lua_state, 3.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
