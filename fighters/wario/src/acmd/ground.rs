@@ -33,7 +33,7 @@ unsafe fn wario_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
     }
-    
+
 }
 
 #[acmd_script( agent = "wario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
@@ -49,7 +49,25 @@ unsafe fn wario_attack_12_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
+}
+
+#[acmd_script( agent = "wario", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wario_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 #[acmd_script( agent = "wario", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
@@ -80,7 +98,7 @@ unsafe fn wario_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 #[acmd_script( agent = "wario", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn wario_attack_dash_effect(fighter: &mut L2CAgentBase) {
@@ -107,6 +125,7 @@ pub fn install() {
     install_acmd_scripts!(
         wario_attack_11_game,
         wario_attack_12_game,
+        wario_attack_12_expression,
         wario_attack_dash_game,
         wario_attack_dash_effect,
     );

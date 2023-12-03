@@ -185,6 +185,32 @@ unsafe fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "jack", script = "expression_attackhi3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("knife"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "jack", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -239,6 +265,7 @@ pub fn install() {
         jack_attack_s3_lw_game,
         jack_attack_hi3_game,
         jack_attack_hi3_effect,
+        jack_attack_hi3_expression,
         jack_attack_lw3_game,
     );
 }

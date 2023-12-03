@@ -246,17 +246,17 @@ unsafe fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 
-    frame(lua_state, 9.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
     }
 
     frame(lua_state, 13.0);
@@ -291,7 +291,9 @@ pub fn install() {
         samusd_attack_s3_lw_game,
         samusd_attack_s3_lw_effect,
         samusd_attack_hi3_game,
+        samusd_attack_hi3_sound,
         samusd_attack_hi3_effect,
+        samusd_attack_hi3_expression,
         samusd_attack_lw3_game,
     );
 }

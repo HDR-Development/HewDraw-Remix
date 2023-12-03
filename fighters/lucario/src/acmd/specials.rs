@@ -288,6 +288,20 @@ unsafe fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "lucario", script = "expression_specialhimove", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucario_special_hi_move_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+    }
+}
+
 #[acmd_script( agent = "lucario", script = "game_specialhiend" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -496,6 +510,28 @@ unsafe fn sound_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_speciallw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 57.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+}
+
 #[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -569,6 +605,7 @@ pub fn install() {
         lucario_special_air_hi_l_game,
         lucario_special_air_hi_r_game,
         lucario_special_hi_move_game,
+        lucario_special_hi_move_expression,
         lucario_special_hi_end_game,
         lucario_special_air_hi_end_game,
         game_specialnbomb,
@@ -582,6 +619,7 @@ pub fn install() {
         game_speciallw,
         effect_speciallw,
         sound_speciallw,
+        expression_speciallw,
         game_specialairlw,
         effect_specialairlw,
     );

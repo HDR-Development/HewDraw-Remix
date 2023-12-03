@@ -93,7 +93,7 @@ unsafe fn sonic_attack_hi4_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "sonic", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn sonic_attackhi4_exp(fighter: &mut L2CAgentBase) {
+unsafe fn sonic_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -208,6 +208,39 @@ unsafe fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "sonic", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sonic_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+    }
+    frame(lua_state, 6.0);
+    app::sv_animcmd::execute(lua_state, 6.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 8);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
 #[acmd_script( agent = "sonic", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
 unsafe fn sonic_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -241,10 +274,11 @@ pub fn install() {
         sonic_attack_s4_s_game,
         sonic_attack_s4_lw_game,
         sonic_attack_hi4_game,
-        sonic_attackhi4_exp,
+        sonic_attack_hi4_expression,
         sonic_attack_hi4_effect,
         sonic_attack_hi4_sound,
         sonic_attack_lw4_game,
+        sonic_attack_lw4_expression,
         sonic_attack_lw4_effect,
     );
 }

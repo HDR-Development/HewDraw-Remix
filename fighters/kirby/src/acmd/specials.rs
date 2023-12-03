@@ -342,6 +342,21 @@ unsafe fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "expression_specialhih", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 #[acmd_script( agent = "kirby", script = "game_specialairhih", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -426,6 +441,21 @@ unsafe fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_kirby_special_h04"));
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "expression_specialairhih", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -542,9 +572,11 @@ pub fn install() {
         kirby_special_hi_h_game,
         kirby_special_hi_h_effect,
         kirby_special_hi_h_sound,
+        kirby_special_hi_h_expression,
         kirby_special_air_hi_h_game,
         kirby_special_air_hi_h_effect,
         kirby_special_air_hi_h_sound,
+        kirby_special_air_hi_h_expression,
         kirby_special_air_lw_game,
         kirby_special_air_lw_effect
     );

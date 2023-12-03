@@ -14,7 +14,7 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
             VarModule::on_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
             FT_MOTION_RATE(fighter, 3.0/(14.0-12.0));
-        } 
+        }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -45,7 +45,7 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 23.0/(49.0 - 21.0));
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "mario", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
@@ -71,7 +71,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
         else{
             EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, -45, 0, 1, true);
         }
-        
+
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -126,7 +126,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
-            FLASH(fighter, 0.95, 0.522, 0.051, 0.75);  
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.75);
         }
     }
     frame(lua_state, 33.0);
@@ -174,6 +174,24 @@ unsafe fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_special_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_55_smash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        } else {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+}
+
 #[acmd_script( agent = "mario", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -184,7 +202,7 @@ unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){ 
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
             VarModule::on_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
             FT_MOTION_RATE(fighter, 3.0/(14.0-12.0));
         }
@@ -397,7 +415,10 @@ unsafe fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
+        if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::SPECIAL_S_DISABLE_STALL) {
+            WorkModule::on_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
+            VarModule::on_flag(fighter.battle_object, vars::mario::instance::SPECIAL_S_DISABLE_STALL);
+        }
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 110, 100, 80, 0, 7.5, 0.0, 6.7, 9.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_turn"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIO_MANT, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 110, 100, 80, 0, 5.0, 0.0, 6.7, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_turn"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIO_MANT, *ATTACK_REGION_OBJECT);
     }
@@ -660,6 +681,22 @@ unsafe fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "mario", scripts = ["expression_speciallwlight", "expression_specialairlwlight"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter){
+        if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        } else {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        }
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+}
+
 #[acmd_script( agent = "mario", script = "game_specialairlwlight" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -792,6 +829,7 @@ pub fn install() {
         mario_special_n_game,
         mario_special_n_effect,
         mario_special_n_sound,
+        mario_special_n_expression,
         mario_special_air_n_game,
         mario_special_air_n_effect,
         mario_special_air_n_sound,
@@ -800,6 +838,7 @@ pub fn install() {
         mario_special_lw_light,
         effect_special_lw_light,
         sound_special_lw_light,
+        expression_special_lw_light,
         mario_special_air_lw_light,
         effect_special_air_lw_light,
         sound_special_air_lw_light,

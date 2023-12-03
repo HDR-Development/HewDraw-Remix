@@ -36,6 +36,32 @@ unsafe fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pikmin", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn olimar_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        if (pikmin_count != 0) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 #[acmd_script( agent = "pikmin", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -64,6 +90,33 @@ unsafe fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_DETACH);
+    }
+}
+
+#[acmd_script( agent = "pikmin", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn olimar_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+    //With Pikmin
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if (pikmin_count != 0) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
 
@@ -135,7 +188,42 @@ unsafe fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_DETACH);
     }
-    
+
+}
+
+#[acmd_script( agent = "pikmin", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn olimar_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+    //With Pikmin
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if (pikmin_count != 0) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+
+    //Without Pikmin
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        if (pikmin_count == 0) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
 }
 
 #[acmd_script( agent = "pikmin", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
@@ -237,12 +325,15 @@ unsafe fn expression_attackairn(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         olimar_attack_air_f_game,
+        olimar_attack_air_f_expression,
         olimar_attack_air_hi_game,
+        olimar_attack_air_hi_expression,
         olimar_attack_air_lw_game,
         olimar_attack_air_b_game,
+        olimar_attack_air_b_expression,
         olimar_attack_air_n_game,
         effect_attackairn,
         sound_attackairn,
-        expression_attackairn
+        expression_attackairn,
     );
 }

@@ -25,7 +25,7 @@ unsafe fn lucas_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.5, 3.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
@@ -77,7 +77,7 @@ unsafe fn lucas_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.5, 3.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
@@ -129,7 +129,7 @@ unsafe fn lucas_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.5, 3.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
@@ -155,7 +155,27 @@ unsafe fn lucas_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_hold"), false, false);
-    }   
+    }
+}
+
+
+
+#[acmd_script( agent = "lucas", scripts = ["expression_attacks3lw", "expression_attacks3", "expression_attacks3hi"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucas_attack_s3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -182,7 +202,7 @@ unsafe fn lucas_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
@@ -209,7 +229,7 @@ unsafe fn lucas_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -229,7 +249,7 @@ unsafe fn lucas_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
@@ -255,7 +275,7 @@ unsafe fn lucas_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_atk"), false, false);
     }
-    
+
 }
 
 pub fn install() {
@@ -266,6 +286,7 @@ pub fn install() {
         lucas_attack_s3_s_effect,
         lucas_attack_s3_lw_game,
         lucas_attack_s3_lw_effect,
+        lucas_attack_s3_expression,
         lucas_attack_hi3_game,
         lucas_attack_hi3_effect,
         lucas_attack_lw3_game,

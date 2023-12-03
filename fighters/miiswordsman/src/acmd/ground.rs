@@ -22,8 +22,8 @@ unsafe fn attack_11_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
-    }    
-    
+    }
+
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attack12" , category = ACMD_GAME , low_priority)]
@@ -52,8 +52,8 @@ unsafe fn attack_12_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
-    }  
-    
+    }
+
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attack13" , category = ACMD_GAME , low_priority)]
@@ -71,8 +71,8 @@ unsafe fn attack_13_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
-    
+
+
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
@@ -96,9 +96,28 @@ unsafe fn attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.75);
     }
-    
-    
-    
+}
+
+#[acmd_script( agent = "miiswordsman", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn attack_dash_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_NONE), AttackDirectionAxis(*ATTACK_DIRECTION_NONE));
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 8);
+    }
 }
 
 pub fn install() {
@@ -106,7 +125,8 @@ pub fn install() {
 		attack_11_game,
         attack_12_game,
         attack_13_game,
-        attack_dash_game
+        attack_dash_game,
+        attack_dash_expression
     );
 }
 
