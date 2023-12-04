@@ -526,11 +526,11 @@ unsafe fn ridley_special_lw_pogo_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 33.0);
+    frame(lua_state, 31.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, 0);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 33.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 0);
     }

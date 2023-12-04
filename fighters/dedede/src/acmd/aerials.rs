@@ -117,6 +117,21 @@ unsafe fn dedede_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "dedede", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dedede_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 14.4);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+
 #[acmd_script( agent = "dedede", script = "expression_landingairf" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -188,6 +203,20 @@ unsafe fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_dedede_attackair_n01"));
         PLAY_SE(fighter, Hash40::new("se_dedede_hammer_swing_s"));
         PLAY_SEQUENCE(fighter, Hash40::new("seq_dedede_rnd_attack01"));
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dedede_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -321,11 +350,13 @@ pub fn install() {
         dedede_attack_air_n_game,
         dedede_landing_air_n_expression,
         dedede_attack_air_f_game,
+        dedede_attack_air_f_expression,
         dedede_landing_air_f_expression,
         dedede_attack_air_f_effect,
         dedede_attack_air_b_game,
         dedede_attack_air_b_effect,
         dedede_attack_air_b_sound,
+        dedede_attack_air_b_expression,
         dedede_landing_air_b_expression,
         dedede_attack_air_hi_game,
         dedede_landing_air_hi_expression,

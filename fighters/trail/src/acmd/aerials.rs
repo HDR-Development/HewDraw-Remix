@@ -36,16 +36,16 @@ unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 25, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 25, 3.5, 0.0, 4.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 2, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 25, 3.5, 0.0, 8.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        
+
             wait(lua_state, 6.0);
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 25, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
                 ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 25, 3.5, 0.0, 4.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
                 ATTACK(fighter, 2, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 25, 3.5, 0.0, 8.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             }
-        
+
         }
-        
+
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
@@ -66,7 +66,7 @@ unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "trail", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
@@ -168,7 +168,7 @@ unsafe fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
+
 }
 
 #[acmd_script( agent = "trail", script = "game_attackairf2" , category = ACMD_GAME , low_priority)]
@@ -238,7 +238,7 @@ unsafe fn sora_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "trail", script = "game_attackairf3" , category = ACMD_GAME , low_priority)]
@@ -520,10 +520,24 @@ unsafe fn sora_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "trail", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_81_attackl"), 0);
+    }
+}
+
 #[acmd_script( agent = "trail", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn sora_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma(); 
+    let boma = fighter.boma();
 }
 
 #[acmd_script( agent = "trail", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
@@ -557,7 +571,7 @@ unsafe fn sora_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if ItemModule::is_have_item(boma, 0){
             //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0);
-        }    
+        }
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
@@ -585,6 +599,7 @@ pub fn install() {
         sora_attack_air_lw_game,
         sora_attack_air_lw_effect,
         sora_attack_air_lw_sound,
+        sora_attack_air_lw_expression,
         sora_landing_air_lw_game,
         sora_landing_air_lw_effect,
         sora_landing_air_lw_sound,

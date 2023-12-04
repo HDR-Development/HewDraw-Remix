@@ -99,7 +99,6 @@ unsafe fn koopa_attack_s4_effect(fighter: &mut L2CAgentBase) {
 unsafe fn koopa_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let lua_state = fighter.lua_state_agent;
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_koopa_nailswing02"));
@@ -108,6 +107,52 @@ unsafe fn koopa_attack_s4_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_koopa_smash_h01"));
+    }
+}
+
+#[acmd_script( agent = "koopa", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_s4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    app::sv_animcmd::execute(lua_state, 4.0);
+    if !WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK){
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 2);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 8);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3, true);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        let excellent = VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+        if excellent {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_finish"), 0);
+        } else {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
+        }
+    }
+    frame(lua_state, 48.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
 
@@ -195,6 +240,7 @@ pub fn install() {
         koopa_attack_s4_game,
         koopa_attack_s4_effect,
         koopa_attack_s4_sound,
+        koopa_attack_s4_expression,
         koopa_attack_s4_hold_effect,
         koopa_attack_hi4_game,
         koopa_attack_lw4_game,

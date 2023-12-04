@@ -20,7 +20,7 @@ unsafe fn samusd_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
@@ -47,7 +47,7 @@ unsafe fn samusd_attack_s4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
@@ -70,7 +70,7 @@ unsafe fn samusd_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
@@ -144,7 +144,7 @@ unsafe fn samusd_attack_lw4_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 70, 93, 0, 42, 4.5, 0.0, 4.5, -3.5, Some(0.0), Some(4.5), Some(9.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
 		ATTACK(fighter, 1, 0, Hash40::new("top"), 17.0, 70, 96, 0, 42, 6.5, 0.0, 6.5, -11.0, Some(0.0), Some(10.0), Some(-11.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 17.0, 70, 96, 0, 42, 6.5, 0.0, 6.5, 17.0, Some(0.0), Some(10.0), Some(17.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
-        
+
     }
 	frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -175,7 +175,7 @@ unsafe fn samusd_attack_lw4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
@@ -207,7 +207,7 @@ unsafe fn samusd_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new_raw(0x092a3b5b68), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 0.65, true);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 0.75, true);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "sound_attacklw4" , category = ACMD_SOUND , low_priority)]
@@ -222,7 +222,7 @@ unsafe fn samusd_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_samusd_special_n04"));
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "expression_attacklw4" , category = ACMD_EXPRESSION , low_priority)]
@@ -247,11 +247,11 @@ unsafe fn samusd_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_beamm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, 0x50000000);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_beamm"), 0);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {

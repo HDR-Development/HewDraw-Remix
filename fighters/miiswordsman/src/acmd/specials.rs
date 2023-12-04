@@ -135,6 +135,32 @@ unsafe fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "miiswordsman", scripts = ["expression_specialn2", "expression_specialairn2"] , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 0, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        } else {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 20);
+    }
+}
 
 // ================================================================================================
 // ======================================== BLURRING BLADE ========================================
@@ -1820,6 +1846,7 @@ pub fn install() {
         miiswordsman_special_n2_game,
         miiswordsman_special_n2_effect,
         miiswordsman_special_n2_sound,
+        miiswordsman_special_n2_expression,
         miiswordsman_special_n3_end_game,
         miiswordsman_special_air_n3_end_game,
 

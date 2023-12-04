@@ -107,7 +107,29 @@ unsafe fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 3.0);
     }
-    
+
+}
+
+#[acmd_script( agent = "miifighter", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
 }
 
 pub fn install() {
@@ -117,5 +139,6 @@ pub fn install() {
         miifighter_attack_s3_lw_game,
         miifighter_attack_hi3_game,
         miifighter_attack_lw3_game,
+        miifighter_attack_lw3_expression
     );
 }

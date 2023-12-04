@@ -35,7 +35,7 @@ pub unsafe fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_STOP,
         ENERGY_STOP_RESET_TYPE_AIR,
-        start_speed_x,
+        start_speed_x * lr,
         0.0,
         0.0,
         0.0,

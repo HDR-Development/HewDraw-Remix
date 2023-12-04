@@ -111,7 +111,7 @@ unsafe fn buddy_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "buddy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
 
     let kbg_b = 95; //90
     let bkb_b = 80; //75
@@ -180,7 +180,7 @@ unsafe fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("k_all"), 3, 0, 0, 0, 0, 0, 0.9, true);
     }
 
-    
+
 }
 #[acmd_script( agent = "buddy", script = "sound_attackhi3" , category = ACMD_SOUND , low_priority)]
 unsafe fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
@@ -193,6 +193,28 @@ unsafe fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_buddy_attack100_03"));
+    }
+}
+
+#[acmd_script( agent = "buddy", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn buddy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
 
@@ -250,6 +272,7 @@ pub fn install() {
         buddy_attack_s3_lw_game,
         buddy_attack_hi3_game,
         buddy_attack_hi3_sound,
+        buddy_attack_hi3_expression,
         buddy_attack_hi3_effect,
         buddy_attack_lw3_game,
     );
