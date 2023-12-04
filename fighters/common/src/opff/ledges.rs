@@ -110,14 +110,11 @@ unsafe fn global_faf_ledgegrab(fighter: &mut L2CFighterCommon) {
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && {let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
         FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true) > 0.0}
+    && CancelModule::is_enable_cancel(fighter.module_accessor)
     {
         // Both needed to be able to grab ledge
-        if fighter.status_frame() == 1 {
-            GroundModule::set_cliff_check(fighter.module_accessor, smash::app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
-        }
-        if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            fighter.sub_transition_group_check_air_cliff();
-        }
+        GroundModule::set_cliff_check(fighter.module_accessor, smash::app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
+        fighter.sub_transition_group_check_air_cliff();
     }
 }
 
