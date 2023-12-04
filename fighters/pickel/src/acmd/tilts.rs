@@ -210,7 +210,7 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pickel_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+unsafe fn expression_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -228,27 +228,27 @@ unsafe fn pickel_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         WorkModule::set_float(boma, 5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         // Diamond
         if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attackm"), 0);
         }
         // Gold
         else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_GOLD {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 9);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 9);
         }
         // Iron
         else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_IRON {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attackm"), 6);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attackm"), 6);
         }
         // Stone
         else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_STONE {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 0);
         }
         // Wood
         else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_WOOD {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 8);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 8);
         }
         // Punch
         else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 8);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 8);
         }
     }
 }
@@ -409,6 +409,7 @@ pub fn install() {
         game_attacks3,
         game_attackhi3,
         effect_attackhi3,
+        expression_attackhi3,
         game_attacklw3,
         effect_attacklw3,
         fire_game_attacklw3,
