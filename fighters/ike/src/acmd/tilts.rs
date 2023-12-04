@@ -31,7 +31,7 @@ unsafe fn ike_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "ike", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
@@ -67,7 +67,7 @@ unsafe fn ike_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "ike", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -103,7 +103,24 @@ unsafe fn ike_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
+}
+
+#[acmd_script( agent = "ike", scripts = ["expression_attacks3hi", "expression_attacks3", "expression_attacks3lw"] , category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_attack_s3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
 }
 
 #[acmd_script( agent = "ike", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -146,7 +163,7 @@ unsafe fn ike_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "ike", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -186,7 +203,28 @@ unsafe fn ike_attack_lw3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
+}
+
+#[acmd_script( agent = "ike", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
+    }
 }
 
 pub fn install() {
@@ -194,8 +232,10 @@ pub fn install() {
         ike_attack_s3_hi_game,
         ike_attack_s3_s_game,
         ike_attack_s3_lw_game,
+        ike_attack_s3_expression,
         ike_attack_hi3_game,
         ike_attack_lw3_game,
+        ike_attack_lw3_expression
     );
 }
 

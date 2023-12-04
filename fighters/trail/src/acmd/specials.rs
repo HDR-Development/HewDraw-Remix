@@ -232,6 +232,38 @@ unsafe fn sound_specialn2(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "trail", scripts = ["expression_specialn2", "expression_specialairn2"] , category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialn2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_81_special_n2"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 43.0);
+    if ItemModule::is_have_item(boma, 0) {
+        if is_excute(fighter) {
+            //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0.05);
+        }
+    }
+    frame(lua_state, 49.0);
+    if is_excute(fighter) {
+        //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0.08);
+    }
+    frame(lua_state, 57.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        //FT_MOTION_INTP_WAIT_ITEM(fighter, true, 0);
+    }
+}
+
 // Now unused
 #[acmd_script( agent = "trail", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specials1(fighter: &mut L2CAgentBase) {
@@ -776,6 +808,7 @@ pub fn install() {
         game_specialn2,
         effect_specialn2,
         sound_specialn2,
+        expression_specialn2,
         game_specials1,
         game_specialairs1,
         game_specials2,

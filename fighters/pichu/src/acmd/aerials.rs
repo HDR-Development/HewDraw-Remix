@@ -70,7 +70,7 @@ unsafe fn pichu_attack_air_f_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pichu", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pichu_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+unsafe fn pichu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -245,7 +245,7 @@ pub fn install() {
     install_acmd_scripts!(
         pichu_attack_air_n_game,
         pichu_attack_air_f_game,
-        pichu_attack_air_b_expression,
+        pichu_attack_air_f_expression,
         pichu_attack_air_b_game,
         pichu_attack_air_hi_game,
         pichu_attack_air_lw_game,

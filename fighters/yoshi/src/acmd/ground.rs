@@ -61,6 +61,27 @@ unsafe fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "yoshi", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
 
 #[acmd_script( agent = "yoshi", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
@@ -84,13 +105,14 @@ unsafe fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 0.800);
     }
-    
+
 }
 
 pub fn install() {
     install_acmd_scripts!(
         yoshi_attack_11_game,
         yoshi_attack_12_game,
+        yoshi_attack_12_expression,
         yoshi_attack_dash_game,
         yoshi_attack_12_effect,
     );
