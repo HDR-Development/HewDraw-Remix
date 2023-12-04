@@ -243,7 +243,7 @@ unsafe fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let bReverseFrame = if fighter.is_prev_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND) {2.0} else {4.0};
-    
+
     frame(lua_state, bReverseFrame);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_REVERSE_LR);
@@ -308,7 +308,7 @@ pub fn install() {
         tantan_special_n_air_effect,
         tantan_special_n_air_sound,
         tantan_special_n_air_expression,
-        
+
         tantan_special_n_air_end_game,
         tantan_special_n_air_end_effect,
         tantan_special_n_air_end_sound,

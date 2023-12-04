@@ -209,6 +209,50 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pickel", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pickel_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_77_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        //let mut rotation_vec = Vector3f{ x:0.0, y: 0.0, z: -8.0 };
+        //let rotation_vec_ptr: *mut Vector3f = &mut rotation_vec;
+		//ModelModule::joint_rotate(boma, Hash40::new("haver"), rotation_vec_ptr);
+        WorkModule::set_float(boma, 5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+        // Diamond
+        if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attackm"), 0);
+        }
+        // Gold
+        else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_GOLD {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 9);
+        }
+        // Iron
+        else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_IRON {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attackm"), 6);
+        }
+        // Stone
+        else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_STONE {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 0);
+        }
+        // Wood
+        else if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND) ==  *FIGHTER_PICKEL_MATERIAL_KIND_WOOD {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_77_attacks"), 8);
+        }
+        // Punch
+        else {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 8);
+        }
+    }
+}
+
 #[acmd_script( agent = "pickel", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -260,7 +304,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pickel", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();    
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){

@@ -129,7 +129,15 @@ unsafe fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 25.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -191,7 +199,56 @@ unsafe fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG4);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8.0, 8.0);
     }
-    
+
+}
+
+#[acmd_script( agent = "koopa", script = "expression_specialhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_special_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("top"), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        //crate::sv_animcmd::FT_DISABLE_CURRY_FACE(fighter, true);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 6, true);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 7);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+        ItemModule::set_attach_item_visibility(boma, true, *ATTACH_ITEM_GROUP_ALL as u8);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 76.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
 }
 
 #[acmd_script( agent = "koopa", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
@@ -258,7 +315,7 @@ unsafe fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 76, 89, 0, 45, 8.3, 0.0, 5.2, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopa", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
@@ -274,7 +331,7 @@ unsafe fn koopa_special_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 76, 89, 0, 45, 8.3, 0.0, 5.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-    
+
 }
 
 pub fn install() {
@@ -286,7 +343,9 @@ pub fn install() {
         koopa_special_n_max_effect,
         koopa_special_n_max_expression,
         koopa_special_hi_game,
+        koopa_special_hi_expression,
         koopa_special_air_hi_game,
+
         koopa_special_lw_game,
         koopa_special_air_lw_game,
     );
