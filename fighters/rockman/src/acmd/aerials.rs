@@ -116,6 +116,24 @@ unsafe fn rockman_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "rockman", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn rockman_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "rockman", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn rockman_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,7 +174,7 @@ unsafe fn rockman_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "rockman", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -223,7 +241,7 @@ pub fn install() {
 
         rockman_attack_air_f_game,
         rockman_attack_air_f_effect,
-
+        rockman_attack_air_f_expression,
         rockman_attack_air_b_game,
 
         rockman_attack_air_hi_game,

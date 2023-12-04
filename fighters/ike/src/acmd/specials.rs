@@ -369,6 +369,35 @@ unsafe fn ike_special_air_s_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ike", scripts = ["expression_specialsattack", "expression_specialairsattack"] , category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, 0, 3, 130, 300, 1, 0, 12, 24, 24);
+        crate::sv_animcmd::AREA_WIND_2ND(lua_state);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slash_critical"), 0);
+        }
+    }
+    frame(lua_state, 1.3);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        }
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
+    }
+}
+
 #[acmd_script( agent = "ike", script = "effect_specialsend" , category = ACMD_EFFECT , low_priority)]
 unsafe fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -586,6 +615,7 @@ pub fn install() {
         ike_special_s_attack_effect,
         ike_special_air_s_attack_game,
         ike_special_air_s_attack_effect,
+        ike_special_s_attack_expression,
         ike_special_s_end_effect,
         ike_special_air_s_end_game,
         ike_special_hi1_game,

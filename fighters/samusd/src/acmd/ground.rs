@@ -21,7 +21,7 @@ unsafe fn samusd_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "game_attack12" , category = ACMD_GAME , low_priority)]
@@ -42,7 +42,7 @@ unsafe fn samusd_attack_12_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
@@ -56,6 +56,23 @@ unsafe fn samusd_attack_12_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 12, 3, -17, -22, -81, 1.25, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samusd_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -77,7 +94,7 @@ unsafe fn samusd_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attackdash" , category = ACMD_EFFECT, low_priority)]
@@ -97,6 +114,7 @@ pub fn install() {
         samusd_attack_11_game,
         samusd_attack_12_game,
         samusd_attack_12_effect,
+        samusd_attack_12_expression,
         samusd_attack_dash_game,
         samusd_attack_dash_effect,
     );

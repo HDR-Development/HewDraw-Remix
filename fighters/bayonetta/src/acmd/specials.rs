@@ -172,6 +172,24 @@ unsafe fn bayonetta_special_air_s_u_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "bayonetta", script = "expression_specialairsu" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn bayonetta_special_air_s_u_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "bayonetta", script = "game_shootinglegl_atkon_specialairsu", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_shootinglegl_atk_on_special_air_s_u_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -222,6 +240,20 @@ unsafe fn bayonetta_special_air_s_d_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_AFTERBURNER_LINE, Hash40::new("top"), 0, 0, 7, 45, -6, 0, 1.1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.85);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("bayonetta_afterburner_line2"), Hash40::new("top"), 0, 0, 7, 45, -5, 0, 1.1, true);
+    }
+}
+
+#[acmd_script( agent = "bayonetta", script = "expression_specialairsd" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn bayonetta_special_air_s_d_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -401,9 +433,11 @@ pub fn install() {
         bayonetta_special_s_hold_end_game,
         bayonetta_special_air_s_u_game,
         bayonetta_special_air_s_u_effect,
+		bayonetta_special_air_s_u_expression,
         bayonetta_shootinglegl_atk_on_special_air_s_u_game,
         bayonetta_special_air_s_d_game,
         bayonetta_special_air_s_d_effect,
+		bayonetta_special_air_s_d_expression,
         bayonetta_special_air_s_d_landing_game,
         bayonetta_special_hi_game,
         bayonetta_special_hi_effect,
