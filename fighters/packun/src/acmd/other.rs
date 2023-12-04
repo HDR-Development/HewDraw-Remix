@@ -167,9 +167,19 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
 unsafe fn appeal_hi_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+    }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("foot"), true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
     frame(lua_state, 107.0);
     if is_excute(fighter) {

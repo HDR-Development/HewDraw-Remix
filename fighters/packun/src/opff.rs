@@ -215,15 +215,15 @@ unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &
     if boma.is_motion(Hash40::new("attack_air_b")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
         MotionModule::change_motion(boma, Hash40::new("attack_air_b_s"), 0.0, 1.0, false, 0.0, false, false);
     }
-    if fighter.is_motion_one_of(&[Hash40::new("appeal_hi_l"),Hash40::new("appeal_hi_r")])
-    && frame == 2.0 
-    && !boma.is_button_on(Buttons::AppealHi) {
+    if fighter.is_motion_one_of(&[Hash40::new("appeal_s_l"),Hash40::new("appeal_s_r")])
+    && frame == 1.0 
+    && boma.is_button_on(Buttons::AppealSL) {
         MotionModule::change_motion(boma, Hash40::new("appeal_hi_2"), 0.0, 1.0, false, 0.0, false, false);
     }
 
     if boma.is_motion(Hash40::new("appeal_hi_2"))
     && frame == 93.0 
-    && boma.is_button_on(Buttons::AppealHi) {
+    && boma.is_button_on(Buttons::AppealSL) {
         MotionModule::change_motion(boma, Hash40::new("appeal_hi_2"), 45.0, 1.0, false, 0.0, false, false);
     }
 }
@@ -233,7 +233,8 @@ unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
         if !boma.is_motion_one_of(&
             [Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r"),
             Hash40::new("appeal_s_l"), Hash40::new("appeal_s_r"),
-            Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r"),]) ||
+            Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r"),
+            Hash40::new("appeal_hi_2")]) ||
             !boma.is_button_on(Buttons::AppealAll) {
                 VarModule::off_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
             }
