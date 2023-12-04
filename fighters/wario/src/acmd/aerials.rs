@@ -40,7 +40,7 @@ unsafe fn wario_attack_air_n_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "wario", script = "expression_landingairn" , category = ACMD_EXPRESSION , low_priority)]
@@ -90,7 +90,7 @@ unsafe fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "wario", script = "expression_landingairf" , category = ACMD_EXPRESSION , low_priority)]
@@ -151,7 +151,7 @@ unsafe fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "wario", script = "effect_attackairb", category = ACMD_EFFECT )]
@@ -195,13 +195,13 @@ unsafe fn wario_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
-    frame(lua_state, 16.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 17.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -233,7 +233,24 @@ unsafe fn wario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "wario", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attacks"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "wario", script = "expression_landingairhi" , category = ACMD_EXPRESSION , low_priority)]
@@ -348,11 +365,11 @@ unsafe fn wario_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    wait(lua_state, 1.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
@@ -405,6 +422,7 @@ unsafe fn wario_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
     }
@@ -481,13 +499,14 @@ pub fn install() {
     install_acmd_scripts!(
         wario_attack_air_n_game,
         wario_landing_air_n_expression,
-        
+
         wario_attack_air_f_game,
         wario_landing_air_f_expression,
-        
+
         wario_attack_air_hi_game,
+        wario_attack_air_hi_expression,
         wario_landing_air_hi_expression,
-        
+
         wario_attack_air_b_game,
         wario_attack_air_b_effect,
         wario_attack_air_b_sound,
@@ -497,7 +516,7 @@ pub fn install() {
         wario_attack_air_lw_effect,
         wario_attack_air_lw_sound,
         wario_attack_air_lw_expression,
-        
+
         wario_landing_air_lw_game,
         wario_landing_air_lw_effect,
         wario_landing_air_lw_sound,

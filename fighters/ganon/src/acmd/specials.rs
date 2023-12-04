@@ -43,6 +43,20 @@ unsafe fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ganon", script = "expression_floatstart", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_start_exp(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "ganon", script = "sound_floatstart", category = ACMD_SOUND , low_priority)]
 unsafe fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -85,6 +99,15 @@ unsafe fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ganon", script = "expression_floatairstart", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_air_start_exp(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "ganon", script = "sound_floatairstart", category = ACMD_SOUND , low_priority)]
 unsafe fn ganon_float_air_start_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -124,6 +147,15 @@ unsafe fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_final_hand_triforce"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_entry_aura"), false, false);
+    }
+}
+
+#[acmd_script( agent = "ganon", script = "expression_float", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_exp(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -228,7 +260,7 @@ unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
     }
-    
+
 }
 
 #[acmd_script( agent = "ganon", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
