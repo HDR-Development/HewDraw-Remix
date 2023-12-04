@@ -273,7 +273,7 @@ unsafe fn bayonetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
-=}
+}
 
 #[acmd_script( agent = "bayonetta", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
 unsafe fn bayonetta_attack_lw3_effect(fighter: &mut L2CAgentBase) {
@@ -316,7 +316,7 @@ pub fn install() {
         bayonetta_attack_hi3_game,
         bayonetta_attack_hi3_effect,
         bayonetta_attack_lw3_game,
-        bayonetta_attack_lw3_effect
+        bayonetta_attack_lw3_effect,
         bayonetta_attack_lw3_expression
     );
 }
