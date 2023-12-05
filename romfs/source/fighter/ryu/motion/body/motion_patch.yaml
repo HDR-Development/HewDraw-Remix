@@ -17,15 +17,25 @@ attack_12:
 attack_13:
   extra:
     cancel_frame: 27
+attack_hi3_s:
+  extra:
+    cancel_frame: 33
+attack_lw3_s:
+  extra:
+    cancel_frame: 25
 attack_lw4:
   extra:
     cancel_frame: 35
 attack_near_w:
   flags:
-    move: false
+    move: true
+  extra:
+    cancel_frame: 27
 attack_s3_s_w:
   flags:
-    move: false
+    move: true
+  extra:
+    cancel_frame: 27
 catch_attack:
   extra:
     cancel_frame: 0
