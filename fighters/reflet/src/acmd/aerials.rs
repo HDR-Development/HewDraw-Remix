@@ -66,7 +66,7 @@ unsafe fn reflet_attack_air_n_game(fighter: &mut L2CAgentBase) {
         }
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "reflet", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
@@ -163,7 +163,31 @@ unsafe fn reflet_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "reflet", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn reflet_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if WorkModule::is_flag(boma,  *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+        if is_excute(fighter) {
+            AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.0);
+    app::sv_animcmd::execute(lua_state, 11.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma,  *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        } else {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        }
+    }
 }
 
 #[acmd_script( agent = "reflet", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
@@ -242,7 +266,7 @@ unsafe fn reflet_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "reflet", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
@@ -422,7 +446,7 @@ unsafe fn reflet_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }   
+    }
 }
 
 #[acmd_script( agent = "reflet", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
@@ -480,6 +504,7 @@ pub fn install() {
         reflet_attack_air_n_effect,
         reflet_attack_air_f_game,
         reflet_attack_air_f_effect,
+        reflet_attack_air_f_expression,
         reflet_attack_air_b_game,
         reflet_attack_air_b_effect,
         reflet_attack_air_hi_game,
