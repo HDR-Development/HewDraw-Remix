@@ -228,9 +228,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     app::FighterSpecializer_Reflet::change_grimoire(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
                     WorkModule::set_int(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
 
-                    // drain 3 bars of Elwind on float activation
+                    // drain 1 bars of Elwind on float activation
                     let elwind_meter = WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
-                    let float_activation_spend = 2;
+                    let float_activation_spend = 1;
                     WorkModule::set_int(boma, elwind_meter - float_activation_spend, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
 
                     // effects
@@ -239,7 +239,7 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     EffectModule::req_follow(boma, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &Vector3f::zero(), &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.078);  // elwind green
                 }
-                else if timer % 15 == 0 {  // every 15 frames
+                else if timer % 10 == 0 {  // every 10 frames
                     // drain 1 bar of Elwind
                     WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
                 } 
