@@ -1,8 +1,8 @@
 use smash::hash40;
 use std::collections::HashSet;
+use once_cell::sync::Lazy;
 
-pub fn se_list() -> HashSet<u64> {
-    HashSet::from([
+pub static SE_LIST: Lazy<HashSet<u64>> = Lazy::new(|| { HashSet::from([
         0x1493831D33,
         hash40("se_common_heavy_hit_l"),
         hash40("se_common_heavy_hit_m"),
@@ -3427,6 +3427,5 @@ pub fn se_list() -> HashSet<u64> {
         hash40("vc_zelda_win01"),
         hash40("vc_zelda_win02"),
         hash40("vc_zelda_win03"),
-    ]
-    )
-}
+    ])
+});
