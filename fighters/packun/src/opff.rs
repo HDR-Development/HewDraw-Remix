@@ -200,7 +200,7 @@ unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &
             MotionModule::change_motion(boma, Hash40::new("attack_s3_s_a"), 0.0, 1.0, false, 0.0, false, false);
         }
     }
-    if boma.is_motion(Hash40::new("attack_s4_s")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+    /* if boma.is_motion(Hash40::new("attack_s4_s")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
         if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD {
             MotionModule::change_motion(boma, Hash40::new("attack_s4_s_2"), 24.0, 1.0, false, 0.0, false, false);
         } 
@@ -211,7 +211,7 @@ unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &
     }
     if boma.is_motion(Hash40::new("attack_s4_hold")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
         MotionModule::change_motion(boma, Hash40::new("attack_s4_hold_2"), 0.0, 1.0, false, 0.0, false, false);
-    }
+    } */
     if boma.is_motion(Hash40::new("attack_air_b")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
         MotionModule::change_motion(boma, Hash40::new("attack_air_b_s"), 0.0, 1.0, false, 0.0, false, false);
     }
