@@ -1420,6 +1420,10 @@ pub mod statuses {
         pub const SPECIAL_HI_H: i32 = 69; //Weird value to avoid conflicts with copy ability values
     }
 
+    pub mod krool {
+        pub const SPECIAL_LW_GUT: i32 = 0;
+    }
+
     pub mod palutena {
         pub const SPECIAL_N_R: i32 = 0;
         pub const SPECIAL_N_B: i32 = 1;
