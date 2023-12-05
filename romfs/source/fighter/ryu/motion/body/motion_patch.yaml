@@ -15,10 +15,10 @@ attack_11_w:
     cancel_frame: 16
 attack_12:
   extra:
-    cancel_frame: 28
+    cancel_frame: 13
 attack_13:
   extra:
-    cancel_frame: 36
+    cancel_frame: 28
 attack_hi3_s:
   extra:
     cancel_frame: 33
