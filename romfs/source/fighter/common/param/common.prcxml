@@ -111,6 +111,22 @@
   <float hash="cliff_dive_cont_value">-0.8786</float>
   <float hash="stand_stick_y">0.2</float>
   <float hash="stand_fb_stick_x">0.2</float>
+  <list hash="cliff_catch_motion_rate">
+    <float index="0">1</float>
+    <float index="1">1</float>
+    <float index="2">1</float>
+    <float index="3">1</float>
+    <float index="4">1</float>
+    <float index="5">1</float>
+    <float index="6">1</float>
+    <float index="7">1</float>
+  </list>
+  <list hash="0x1dff572177">
+    <float index="0">1</float>
+    <float index="1">1</float>
+    <float index="2">1</float>
+    <float index="3">1</float>
+  </list>
   <float hash="pass_stick_y">-0.6929</float>
   <int hash="passive_trigger_frame">20</int>
   <int hash="no_rapid_frame_value">40</int>
@@ -152,7 +168,9 @@
   <float hash="escape_f_penalty_motion_rate">0</float>
   <float hash="escape_b_penalty_motion_rate">0</float>
   <float hash="smash_hold_reaction_mul">1.2</float>
-
+  <float hash="ganon_special_s_fall_hold_frame">55</float>
+  <float hash="ganon_special_s_fall_clatter_add_frame_up_limit">40</float>
+  <float hash="ganon_special_s_fall_clatter_add_frame_down_limit">30</float>
   <!-- dk cargo carry: -->
   <!-- flat amount of clatter added when you enter cargo carry -->
   <float hash="shouldered_frame_add">30</float>

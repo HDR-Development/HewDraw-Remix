@@ -164,6 +164,27 @@ unsafe fn simon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "simon", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn simon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "simon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn simon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -227,6 +248,7 @@ pub fn install() {
         simon_attack_squat_s3_sound,
         simon_attack_squat_s3_expression,
         simon_attack_hi3_game,
+        simon_attack_hi3_expression,
         simon_attack_lw3_game,
         simon_attack_lw32_game,
     );

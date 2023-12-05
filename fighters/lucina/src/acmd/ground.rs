@@ -60,6 +60,24 @@ unsafe fn lucina_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "lucina", script = "expression_attack12" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn lucina_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+}
+
 #[acmd_script( agent = "lucina", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn lucina_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -89,6 +107,7 @@ pub fn install() {
         lucina_attack_11_game,
         lucina_attack_11_expression,
         lucina_attack_12_game,
+        lucina_attack_12_expression,
         lucina_attack_dash_game,
     );
 }

@@ -123,6 +123,57 @@ unsafe fn miiswordsman_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "miiswordsman", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 10.0);
+    app::sv_animcmd::execute(lua_state, 10.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 10);
+    }
+}
+
+
 #[acmd_script( agent = "miiswordsman", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,6 +207,7 @@ pub fn install() {
     install_acmd_scripts!(
         miiswordsman_attack_s4_s_game,
         miiswordsman_attack_hi4_game,
+        miiswordsman_attack_hi4_expression,
         miiswordsman_attack_lw4_game,
     );
 }

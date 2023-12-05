@@ -212,6 +212,9 @@ unsafe fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
     let angle = WorkModule::get_float(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLOAT_ATTACK_SHIFT_ANGLE_L);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("tantan_jump_air"), Hash40::new("pl1_have"), 0, 0, 0, 0, 180.0+angle, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 1.3, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        }
     }
     if !WorkModule::is_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_IS_SPECIAL_HI_AIR_PHYSICS) {
         if is_excute(fighter) {
@@ -240,7 +243,7 @@ unsafe fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let bReverseFrame = if fighter.is_prev_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND) {2.0} else {4.0};
-    
+
     frame(lua_state, bReverseFrame);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_REVERSE_LR);
@@ -305,7 +308,7 @@ pub fn install() {
         tantan_special_n_air_effect,
         tantan_special_n_air_sound,
         tantan_special_n_air_expression,
-        
+
         tantan_special_n_air_end_game,
         tantan_special_n_air_end_effect,
         tantan_special_n_air_end_sound,
