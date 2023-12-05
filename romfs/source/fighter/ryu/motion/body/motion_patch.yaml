@@ -1,22 +1,24 @@
 attack_11_near_s:
+  flags:
+    move: false
   animations:
-  - name: e01throwhi.nuanmb
+  - name: c00attack11s.nuanmb
   extra:
-    cancel_frame: 50
+    cancel_frame: 38
 attack_11_s:
   flags:
     move: false
   extra:
-    cancel_frame: 31
+    cancel_frame: 38
 attack_11_w:
   extra:
-    cancel_frame: 15
+    cancel_frame: 16
 attack_12:
   extra:
-    cancel_frame: 22
+    cancel_frame: 28
 attack_13:
   extra:
-    cancel_frame: 27
+    cancel_frame: 36
 attack_hi3_s:
   extra:
     cancel_frame: 33

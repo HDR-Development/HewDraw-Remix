@@ -37,7 +37,7 @@ unsafe fn game_attacks3w(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "RYU", scripts = ["effect_attacks3w", "effect_attacknearw"], category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "ryu", scripts = ["effect_attacks3w", "effect_attacknearw"], category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_attacks3w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -51,18 +51,18 @@ unsafe fn effect_attacks3w(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "RYU", scripts = ["sound_attacks3w", "sound_attacknearw"], category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "ryu", scripts = ["sound_attacks3w", "sound_attacknearw"], category = ACMD_SOUND, low_priority )]
 unsafe fn sound_attacks3w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_RYU_swing_kick_m"));
-        PLAY_SE(agent, Hash40::new("vc_RYU_attack06"));
+        PLAY_SE(agent, Hash40::new("se_ryu_swing_kick_m"));
+        PLAY_SE(agent, Hash40::new("vc_ryu_attack06"));
     }
 }
 
-#[acmd_script( agent = "RYU", scripts = ["expression_attacks3w", "expression_attacknearw"], category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "ryu", scripts = ["expression_attacks3w", "expression_attacknearw"], category = ACMD_EXPRESSION, low_priority )]
 unsafe fn expression_attacks3w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -208,7 +208,7 @@ unsafe fn game_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "RYU", script = "effect_attackhi3s", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "ryu", script = "effect_attackhi3s", category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -224,23 +224,23 @@ unsafe fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("RYU_attack_arc2"), Hash40::new("RYU_attack_arc2"), Hash40::new("top"), 0, 13.5, 10.0, 0, -14, -90, 0.8, true, *EF_FLIP_YZ, 0.2);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("ryu_attack_arc2"), Hash40::new("ryu_attack_arc2"), Hash40::new("top"), 0, 13.5, 10.0, 0, -14, -90, 0.8, true, *EF_FLIP_YZ, 0.2);
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
 }
 
-#[acmd_script( agent = "RYU", script = "sound_attackhi3s", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "ryu", script = "sound_attackhi3s", category = ACMD_SOUND, low_priority )]
 unsafe fn sound_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_RYU_swing_kick_l"));
-        PLAY_SE(fighter, Hash40::new("vc_RYU_attack06"));
+        PLAY_SE(fighter, Hash40::new("se_ryu_swing_kick_l"));
+        PLAY_SE(fighter, Hash40::new("vc_ryu_attack06"));
     }
 }
 
-#[acmd_script( agent = "RYU", script = "expression_attackhi3s", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "ryu", script = "expression_attackhi3s", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
