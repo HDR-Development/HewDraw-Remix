@@ -200,40 +200,23 @@ unsafe fn special_fadc_super_cancels(fighter: &mut L2CFighterCommon, boma: &mut 
     }
 }
 
-// Target combos:
-// 1: Prox jab into far heavy jab
-// 2: Prox ftilt into light ftilt
+// Target combos
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("attack_11_near_s"))
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && boma.is_cat_flag(Cat1::AttackS3) 
-    && !StopModule::is_stop(boma){
-        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_1);
-        MotionModule::change_motion(boma, Hash40::new("attack_11_s"), -1.0, 1.0, false, 0.0, false, false);
+    if boma.is_in_hitlag() 
+    || CancelModule::is_enable_cancel(boma)
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        return;
     }
 
-    if boma.is_motion(Hash40::new("attack_near_w"))
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
-        if boma.is_cat_flag(Cat1::AttackS3) 
-        && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2) {
-            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);     
-            return;
-        }
-
-        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2)
-        && !StopModule::is_stop(boma) {
-            MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), -1.0, 1.0, false, 0.0, false, false);
-        }
+    if boma.is_motion_one_of(&[Hash40::new("attack_11_s"), Hash40::new("attack_11_near_s")])
+    && boma.is_cat_flag(Cat1::AttackN) 
+    && !boma.is_cat_flag(Cat1::AttackHi3)
+    && !boma.is_cat_flag(Cat1::AttackS3)
+    && !boma.is_cat_flag(Cat1::AttackLw3)
+    && !StopModule::is_stop(boma) {
+        WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        MotionModule::change_motion(boma, Hash40::new("attack_12_s"), 0.0, 1.0, false, 0.0, false, false);
     }
-
-    if !(boma.is_motion_one_of(&[Hash40::new("attack_11_near_s"), Hash40::new("attack_11_s")])) {
-        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_1);
-    }
-    
-    if !(boma.is_motion_one_of(&[Hash40::new("attack_near_w"), Hash40::new("attack_s3_s_s"), Hash40::new("attack_s3_w")])) {
-        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);
-    }
-    
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
