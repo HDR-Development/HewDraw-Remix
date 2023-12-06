@@ -307,10 +307,6 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn smash_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
 
-    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) {
-        return;
-    }
-
     // Jump cancel usmash
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4)
     && boma.is_input_jump()
