@@ -44,7 +44,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     guardoff_shield(fighter, boma, frame);
     appeal_lw_loop(fighter, boma, frame);
     training_mode_resources(fighter, boma, status_kind, stick_x, stick_y);
-    //buildwalk_crouch_disable(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
 }
 
@@ -251,14 +250,14 @@ unsafe fn build_ecb_shift(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     }
 }
 
-// Increment glide timer during elytra
+// allow steve to cancel into special fall by pressing shield
 unsafe fn elytra_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if (status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING) {
+    if status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING {
         VarModule::add_float(boma.object(), vars::pickel::status::GLIDE_TIMER, 1.0);
         let glide_timer = VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
         && (25.0..45.0).contains(&glide_timer) {
-            //VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            // VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             if boma.is_situation(*SITUATION_KIND_AIR) {
                 KineticModule::mul_speed(boma, &Vector3f {x: 0.4, y: 0.4, z:0.4}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
@@ -297,13 +296,6 @@ unsafe fn training_mode_resources(fighter: &mut L2CFighterCommon, boma: &mut Bat
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL 
         && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            let dirt_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
-            let wood_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
-            let stone_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
-            let iron_num =WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON);
-            let gold_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD);
-            let redstone_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
-            let diamond_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_DIAMOND);
             let dirt = *FIGHTER_PICKEL_MATERIAL_KIND_GRADE_1;
             let wood = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
             let stone = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
@@ -311,13 +303,20 @@ unsafe fn training_mode_resources(fighter: &mut L2CFighterCommon, boma: &mut Bat
             let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
             let redstone = *FIGHTER_PICKEL_MATERIAL_KIND_RED_STONE;
             let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+            let dirt_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
+            let wood_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
+            let stone_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
+            let iron_num =WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON);
+            let gold_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD);
+            let redstone_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
+            let diamond_num = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_DIAMOND);
             if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) { // fill materials to defined amount
                 FighterSpecializer_Pickel::add_material_num(boma, dirt, 40 - dirt_num);
                 FighterSpecializer_Pickel::add_material_num(boma, wood, 20 - wood_num);
                 FighterSpecializer_Pickel::add_material_num(boma, stone, 20 - stone_num);
                 FighterSpecializer_Pickel::add_material_num(boma, iron, 20 - iron_num);
                 FighterSpecializer_Pickel::add_material_num(boma, gold, 12 - gold_num);
-                FighterSpecializer_Pickel::add_material_num(boma, redstone, 18 - redstone_num);
+                FighterSpecializer_Pickel::add_material_num(boma, redstone, 15 - redstone_num);
                 FighterSpecializer_Pickel::add_material_num(boma, diamond, 5 - diamond_num);
             } else { // remove all materials if special is held
                 FighterSpecializer_Pickel::sub_material_num(boma, dirt, dirt_num);
@@ -373,13 +372,6 @@ unsafe fn training_mode_resources(fighter: &mut L2CFighterCommon, boma: &mut Bat
     }
 }
 
-// this makes it easier to place blocks diagonally down during build-walk
-unsafe fn buildwalk_crouch_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&status_kind) {
-        WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
-    }
-}
-
 // Logging for deciphering ACMD scripts
 unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
@@ -416,7 +408,6 @@ pub fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        // Ensure the boma's owner is Steve
         if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
             let pickel = utils::util::get_battle_object_from_id(owner_id);
             let pickel_boma = &mut *(*pickel).module_accessor;
@@ -442,15 +433,16 @@ pub fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
 // anvil
 #[smashline::weapon_frame(agent = WEAPON_KIND_PICKEL_FORGE, main)]
 pub fn pickel_forge_frame(weapon: &mut smash::lua2cpp::L2CFighterBase){
-    unsafe{
+    unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
         if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
             let pickel = utils::util::get_battle_object_from_id(owner_id);
             let pickel_boma = &mut *(*pickel).module_accessor;
             if pickel_boma.is_motion_one_of(&[Hash40::new("attack_air_lw"),
-            Hash40::new("attack_air_lw_2"),
-            Hash40::new("attack_air_lw_fall"),]) && !boma.is_situation(*SITUATION_KIND_GROUND) 
+                                              Hash40::new("attack_air_lw_2"),
+                                              Hash40::new("attack_air_lw_fall"),])
+            && !boma.is_situation(*SITUATION_KIND_GROUND) 
             //&& !pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START)
             && WorkModule::is_flag(boma, *WEAPON_PICKEL_FORGE_INSTANCE_WORK_ID_FLAG_UPDATE_ATTACK){
                 MotionAnimcmdModule::call_script_single(boma, *FIGHTER_ANIMCMD_GAME, Hash40::new_raw(0x1397d77a71), -1);

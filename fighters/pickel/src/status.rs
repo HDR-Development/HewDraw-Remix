@@ -19,7 +19,7 @@ pub fn install() {
 
 // prevent steve from spawning the crafting table through vanilla circumstances
 #[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue{
+unsafe fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_prev_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT)
     || !VarModule::is_flag(fighter.object(), vars::pickel::instance::CAN_RESPAWN_TABLE) {
         VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
@@ -59,7 +59,7 @@ unsafe fn stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
 
 // keep shield article visible while shielding
 #[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_GUARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue{
+pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !ArticleModule::is_exist(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF){
         ArticleModule::generate_article(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, false, -1);
         ArticleModule::set_rate(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, 0.0);
@@ -70,11 +70,7 @@ pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue{
 
 // handles the removal of steves resources when respawning
 #[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue{
-    // // reset table to starting index
-    // if VarModule::get_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX) != 0 {   
-    //     VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
-    // }
+pub unsafe fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue {
     let dirt = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
     let wood = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
     let stone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);

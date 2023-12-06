@@ -8,7 +8,7 @@ unsafe fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_pickel_special_n02_iron"));
         PLAY_SE(fighter, Hash40::new("se_pickel_special_n_item"));
-        PLAY_SE(fighter, Hash40::new("se_pickel_special_n05"));
+        PLAY_SE(fighter, Hash40::new("se_result_coin_silver"));
     }
 }
 
