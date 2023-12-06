@@ -71,16 +71,17 @@ pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue{
 // handles the removal of steves resources when respawning
 #[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue{
-    if VarModule::get_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX) != 0 {
-        // reset table to starting index
-        VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
-    }
+    // // reset table to starting index
+    // if VarModule::get_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX) != 0 {   
+    //     VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
+    // }
     let dirt = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
     let wood = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
     let stone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
     let iron =WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON);
     let gold = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD);
     let diamond = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_DIAMOND);
+    let redstone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
     let reduce_half: [[i32;2];4] = [ // these materials will be reduced by 50% on respawn
         [*FIGHTER_PICKEL_MATERIAL_KIND_GRADE_1, dirt],
         [*FIGHTER_PICKEL_MATERIAL_KIND_WOOD, wood],
@@ -98,6 +99,11 @@ pub unsafe fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue{
     if diamond > 0 { // remove all diamonds
         FighterSpecializer_Pickel::sub_material_num(fighter.boma(), *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND, diamond);
     }
+    let init_rstn = WorkModule::get_param_int(fighter.boma(), hash40("param_private"), hash40("start_material_red_stone_num"));
+    if redstone > init_rstn { // reduce redstone to starting value
+        FighterSpecializer_Pickel::sub_material_num(fighter.boma(), *FIGHTER_PICKEL_MATERIAL_KIND_RED_STONE, (redstone - init_rstn));
+    }
+    
     return original!(fighter);
 }
 

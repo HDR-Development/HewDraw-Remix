@@ -10,11 +10,11 @@
   </list>
   <struct hash="param_private">
     <int hash="material_normal_max">100</int>
-    <int hash="material_red_stone_max">20</int>
+    <int hash="material_red_stone_max">18</int>
     <int hash="start_material_grade_1_num">8</int>
     <int hash="start_material_wood_num">4</int>
-    <int hash="start_material_iron_num">1</int>
-    <int hash="start_material_red_stone_num">5</int>
+    <int hash="start_material_iron_num">0</int>
+    <int hash="start_material_red_stone_num">6</int>
     <int hash="table_entry_frame">99999</int>
     <float hash="move_rate_speed_max_walk">1</float>
     <int hash="0x188e0b0db2">1</int>
@@ -40,7 +40,10 @@
       <int hash="0x1f4a111697">1</int>
       <float hash="0x1da2122271">0.65</float>
       <int hash="mining_iron_get_num">1</int>
+      <int hash="mining_gold_get_num">6</int>
       <int hash="mining_red_stone_get_num">3</int>
+      <int hash="craft_frame_diamond">40</int>
+      <int hash="disable_craft_frame">40</int>
       <float hash="walk_speed_mul">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -73,6 +76,7 @@
       <int hash="cost_grade2">10</int>
       <int hash="cost_grade3">10</int>
       <int hash="cost_grade4">20</int>
+      <float hash="fuze_cost">4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

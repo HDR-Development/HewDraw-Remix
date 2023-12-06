@@ -317,7 +317,7 @@ unsafe fn training_mode_resources(fighter: &mut L2CFighterCommon, boma: &mut Bat
                 FighterSpecializer_Pickel::add_material_num(boma, stone, 20 - stone_num);
                 FighterSpecializer_Pickel::add_material_num(boma, iron, 20 - iron_num);
                 FighterSpecializer_Pickel::add_material_num(boma, gold, 12 - gold_num);
-                FighterSpecializer_Pickel::add_material_num(boma, redstone, 15 - redstone_num);
+                FighterSpecializer_Pickel::add_material_num(boma, redstone, 18 - redstone_num);
                 FighterSpecializer_Pickel::add_material_num(boma, diamond, 5 - diamond_num);
             } else { // remove all materials if special is held
                 FighterSpecializer_Pickel::sub_material_num(boma, dirt, dirt_num);

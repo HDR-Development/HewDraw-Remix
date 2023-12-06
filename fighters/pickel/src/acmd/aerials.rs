@@ -537,7 +537,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
         if material_kind != gold {
             MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.8);
         } else {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.9);
         }
     }
     frame(lua_state, 4.0);
@@ -568,9 +568,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         if material_kind != gold {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.5);
-        } else {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.75);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.8);
         }
     }
     frame(lua_state, 16.0);

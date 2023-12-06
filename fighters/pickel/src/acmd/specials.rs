@@ -1,6 +1,17 @@
 
 use super::*;
 
+#[acmd_script( agent = "pickel", script = "sound_specialn1getgold", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_pickel_special_n02_iron"));
+        PLAY_SE(fighter, Hash40::new("se_pickel_special_n_item"));
+        PLAY_SE(fighter, Hash40::new("se_pickel_special_n05"));
+    }
+}
+
 #[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
 unsafe fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
@@ -27,6 +38,7 @@ unsafe fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        sound_specialn1getgold,
         trolley_game_specialsdriveemptypartial
     );
 }
