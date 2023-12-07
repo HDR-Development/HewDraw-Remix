@@ -477,13 +477,9 @@ mario_special_n:
   extra:
     cancel_frame: 41
 mariod_special_n:
-  animations:
-  - name: mariodd00specialntoss.nuanmb
   extra:
     cancel_frame: 47
 mariod_special_air_n:
-  animations:
-  - name: mariodd00specialairntoss.nuanmb
   extra:
     cancel_frame: 47
 mariod_special_n_chill:
@@ -505,7 +501,7 @@ mariod_special_n_chill:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: mariodd00specialn.nuanmb
+  - name: mariodd00specialntoss.nuanmb
   scripts:
   - expression_mariodspecialnchill
   - sound_mariodspecialnchill
@@ -534,7 +530,7 @@ mariod_special_air_n_chill:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: mariodd00specialairn.nuanmb
+  - name: mariodd00specialairntoss.nuanmb
   scripts:
   - expression_mariodspecialairnchill
   - sound_mariodspecialairnchill
