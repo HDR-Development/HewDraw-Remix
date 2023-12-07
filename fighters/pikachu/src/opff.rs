@@ -29,17 +29,29 @@ unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor) {
     && boma.is_situation(*SITUATION_KIND_GROUND)
     && ![*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&boma.status()) {
         VarModule::off_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
+        VarModule::off_flag(boma.object(), vars::common::instance::PERFECT_WAVEDASH);
     }
 }
 
+// This is held together with the finest Elmer's, I apologize
 unsafe fn quick_attack_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL)
     && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC) {
         GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-        PostureModule::add_pos(boma, &Vector3f::new(0.0, 3.0, 0.0));
+        PostureModule::add_pos(boma, &Vector3f::new(0.0, 2.5, 0.0));
+        VarModule::on_flag(fighter.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL);
+    }
+    if VarModule::is_flag(boma.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL) {
+        if fighter.is_cat_flag(Cat1::AirEscape) {
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), false.into());
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
+            PostureModule::add_pos(boma, &Vector3f::new(0.0, -2.5, 0.0));
+        }
+        if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, *FIGHTER_STATUS_KIND_LANDING_LIGHT]) {
+            VarModule::off_flag(fighter.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
+        }
     }
 }
 
