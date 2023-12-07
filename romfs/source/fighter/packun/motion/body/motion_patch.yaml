@@ -100,7 +100,7 @@ attack_s4_s_2:
     cancel_frame: 70
     no_stop_intp: false
 attack_s4_hold_2:
-  game_script: game_attacks4charge
+  game_script: game_attacks4charge2
   flags:
     turn: false
     loop: false
@@ -121,9 +121,9 @@ attack_s4_hold_2:
     - name: c03attacks4charge2.nuanmb
       unk: 0
   scripts:
-    - expression_attacks4charge
-    - sound_attacks4charge
-    - effect_attacks4charge
+    - expression_attacks4charge2
+    - sound_attacks4charge2
+    - effect_attacks4charge2
   extra:
     xlu_start: 0
     xlu_end: 0

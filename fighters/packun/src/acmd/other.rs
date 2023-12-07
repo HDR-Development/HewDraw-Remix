@@ -239,6 +239,11 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    if is_excute(fighter) {
+        if boma.is_button_on(Buttons::AppealSL) {
+            MotionModule::change_motion(boma, Hash40::new("appeal_hi_2"), 0.0, 1.0, false, 0.0, false, false);
+        }
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);

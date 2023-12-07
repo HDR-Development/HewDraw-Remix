@@ -105,7 +105,7 @@ unsafe fn packun_attack_s4_s2_effect(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 18, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 18, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.4);
     }
     frame(lua_state, 25.0);
@@ -159,6 +159,48 @@ unsafe fn packun_attack_s4_s2_expression(agent: &mut L2CAgentBase) {
     frame(lua_state, 79.0);
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 14);
+    }
+}
+
+#[acmd_script( agent = "packun", script = "effect_attacks4charge2", category = ACMD_EFFECT, low_priority )]
+unsafe fn packun_attack_s4_2_charge_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
+    }
+    for _ in 0..999 {
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("head"), -5, 3, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, true);
+        }
+        wait(lua_state, 5.0);
+    }
+
+}
+
+#[acmd_script( agent = "packun", script = "sound_attacks4charge2", category = ACMD_SOUND, low_priority )]
+unsafe fn packun_attack_s4_2_charge_sound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_smash_start"));
+    }
+}
+
+#[acmd_script( agent = "packun", script = "expression_attacks4charge2", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn packun_attack_s4_s2_charge_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        physics!(agent, *MA_MSC_CMD_PHYSICS_START_CHARGE, -1, -1, -1, -1, 0.1, -1, Hash40::new("invalid"));
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold1"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 61.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold2"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -408,6 +450,9 @@ pub fn install() {
         packun_attack_s4_s2_effect,
         packun_attack_s4_s2_expression,
         packun_attack_s4_s2_sound,
+        packun_attack_s4_2_charge_effect,
+        packun_attack_s4_2_charge_sound,
+        packun_attack_s4_s2_charge_expression,
         packun_attack_hi4_game,
         packun_attack_hi4_effect,
         packun_attack_hi4_sound,
