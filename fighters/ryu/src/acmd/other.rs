@@ -281,6 +281,21 @@ unsafe fn sound_guarddamage(fighter: &mut L2CAgentBase) {
     }
 }
 
+// TODO: TEMP REMOVE
+#[acmd_script( agent = "ryu", scripts = ["game_appeallwl", "game_appeallwr"], category = ACMD_GAME, low_priority )]
+unsafe fn game_appeallw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VarModule::set_flag(
+            fighter.battle_object, 
+            vars::shotos::instance::IS_MAGIC_SERIES_CANCEL, 
+            !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+        );
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -295,7 +310,8 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
-        sound_guarddamage
+        sound_guarddamage,
+        game_appeallw
     );
 }
 

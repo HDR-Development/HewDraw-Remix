@@ -50,7 +50,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     special_fadc_super_cancels(fighter, boma);
     target_combos(boma);
     rotate_forward_bair(boma);
-    joudan_sokutogeri(boma, frame);
 
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
     hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
@@ -91,15 +90,6 @@ pub fn ryu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn ryu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
-}
-
-unsafe fn joudan_sokutogeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    if boma.is_motion(Hash40::new("attack_s4_s")){
-        if frame >= (MotionModule::end_frame(boma) - 1.0) {
-            // Fix getting stuck in the anim due to not setting the charge flag
-            boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
-        }
     }
 }
 
@@ -219,142 +209,115 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
-    let mut new_status = 0;
-    let mut is_input_cancel = false;
-    // Jab 1 cancels
-    if boma.is_motion(Hash40::new("attack_11_w")) {
+unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+    if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+    || CancelModule::is_enable_cancel(boma) 
+    || boma.is_in_hitlag() 
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        return;
+    }
+    
+    // Tilt cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK, 
+        // *FIGHTER_STATUS_KIND_ATTACK_DASH,
+    ].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::AttackS3) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S3;
-        } else if boma.is_cat_flag(Cat1::AttackHi3) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
-        } else if boma.is_cat_flag(Cat1::AttackLw3) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW3;
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
         }
-        // Tilt cat flags override smash cat flags, need to check smashes separately after tilts so the smash input can be properly detecetd
-        if boma.is_cat_flag(Cat1::AttackS4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
-        } else if boma.is_cat_flag(Cat1::AttackHi4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
-        } else if boma.is_cat_flag(Cat1::AttackLw4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
-        } 
-    }
-    // Jab 2 cancels
-    else if boma.is_motion(Hash40::new("attack_12")) {
-        if boma.is_cat_flag(Cat1::AttackS4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
-        } else if boma.is_cat_flag(Cat1::AttackHi4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
-        } else if boma.is_cat_flag(Cat1::AttackLw4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
+        if boma.is_cat_flag(Cat1::AttackHi3) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
         }
-    }
-    else {
-        return;
+        if boma.is_cat_flag(Cat1::AttackLw3) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+        }
     }
 
-    if is_input_cancel && !StopModule::is_stop(boma){
-        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-        boma.change_status_req(new_status, false);
+    // Smash cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK, 
+        // *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+    ].contains(&status_kind) {
+        if boma.is_cat_flag(Cat1::AttackS4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+        }
+        if boma.is_cat_flag(Cat1::AttackHi4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+        }
+        if boma.is_cat_flag(Cat1::AttackLw4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+        }
+    }
+
+    // Special cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK, 
+        // *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status_kind) {
+        check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
+    }
+
+    // Special cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status_kind) {
+        aerial_cancels(boma);
     }
 }
 
-unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
-
-    let mut new_status = 0;
-    let mut is_input_cancel = false;
-    if boma.is_motion(Hash40::new("attack_hi3_w"))
-    || boma.is_motion(Hash40::new("attack_lw3_w"))
-    || boma.is_motion(Hash40::new("attack_lw3_s")) 
-    || boma.is_motion(Hash40::new("attack_s3_s_w"))
-    || boma.is_motion(Hash40::new("attack_near_w")) {
-        if boma.is_cat_flag(Cat1::AttackS4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
-        } else if boma.is_cat_flag(Cat1::AttackHi4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
-        } else if boma.is_cat_flag(Cat1::AttackLw4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
-        }
-    }
-    else if boma.is_motion(Hash40::new("attack_s3_s")) {
-        if boma.is_cat_flag(Cat1::AttackS4) {
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
-        }
-    }
-    else {
+unsafe fn check_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    // Dont use cancels if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+    if CancelModule::is_enable_cancel(boma) 
+    || boma.is_in_hitlag() {
         return;
     }
-
-    if is_input_cancel && !StopModule::is_stop(boma){
-        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-        boma.change_status_req(new_status, false);
+    
+    let terms = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1,
+    ];
+    let mut enableds = [false; 10];
+    for x in 0..terms.len() {
+        enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
     }
-}
-
-unsafe fn smash_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-
-    // Jump cancel usmash
-    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4)
-    && boma.is_input_jump()
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+    for val in terms.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *val);
     }
-
-    if !CancelModule::is_enable_cancel(boma)
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-        let terms = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1,
-        ];
-        let mut enableds = [false; 10];
-        for x in 0..terms.len() {
-            enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
-        }
-        for val in terms.iter() {
-            WorkModule::enable_transition_term(fighter.module_accessor, *val);
-        }
-        if situation_kind != *SITUATION_KIND_GROUND {
-            fighter.sub_transition_group_check_air_special()
-        } else {
-            fighter.sub_transition_group_check_ground_special()
-        };
-        for x in 0..terms.len() {
-            if !enableds[x] {
-                WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
-            }
+    if situation_kind != *SITUATION_KIND_GROUND {
+        fighter.sub_transition_group_check_air_special()
+    } else {
+        fighter.sub_transition_group_check_ground_special()
+    };
+    for x in 0..terms.len() {
+        if !enableds[x] {
+            WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
         }
     }
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if !boma.is_in_hitlag()
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    {
-        if boma.check_jump_cancel(false, false) {
-            return;
-        }
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && boma.check_airdodge_cancel() {
+        return;
     }
 
     let dir = boma.get_aerial();
@@ -362,89 +325,15 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         return;
     }
     match MotionModule::motion_kind(boma) {
-        super::hash40!("attack_air_n") if matches!(dir, Some(AerialKind::Nair)) => return,
-        super::hash40!("attack_air_f") if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Fair)) => return,
+        super::hash40!("attack_air_n")  if matches!(dir, Some(AerialKind::Nair)) => return,
+        super::hash40!("attack_air_hi") if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Uair)) => return,
+        super::hash40!("attack_air_f")  if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Uair) | Some(AerialKind::Fair)) => return,
         super::hash40!("attack_air_b") => return,
-        super::hash40!("attack_air_hi") if !matches!(dir, Some(AerialKind::Bair) | Some(AerialKind::Dair)) => return,
-        super::hash40!("attack_air_lw") if !matches!(dir, Some(AerialKind::Bair)) => return,
+        super::hash40!("attack_air_lw") => return,
         _ => {
-            if VarModule::get_int(boma.object(), vars::shotos::instance::AIR_CHAIN_COMBO_NUM) < 3 /*&& !StopModule::is_stop(boma)*/ {
-                VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-                VarModule::inc_int(boma.object(), vars::shotos::instance::AIR_CHAIN_COMBO_NUM);
-                boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-            }
-            
+            boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
     }
-}
-
-unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
-    if !(boma.is_motion_one_of(&[
-        Hash40::new("attack_12"),
-        Hash40::new("attack_s3_s_w"),
-        Hash40::new("attack_s3_s_s"),
-        Hash40::new("attack_near_w"),
-        Hash40::new("attack_hi3_w"),
-        Hash40::new("attack_hi3_s"),
-        Hash40::new("attack_lw3_w"),
-        Hash40::new("attack_lw3_s"),
-        Hash40::new("attack_s4"),
-        Hash40::new("attack_s4_hold"),
-        Hash40::new("attack_hi4"),
-        Hash40::new("attack_hi4_hold"),
-        Hash40::new("attack_lw4"),
-        Hash40::new("attack_lw4_hold")
-    ]) || boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK_TURN
-    ])) {
-            VarModule::off_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-    }
-    // Reset air chain combo number
-    if !boma.is_situation(*SITUATION_KIND_AIR){
-        VarModule::set_int(boma.object(), vars::shotos::instance::AIR_CHAIN_COMBO_NUM, 0);
-    }
-}
-
-unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    // reset flags
-    magic_flag_reset(boma);
-    // guard clause
-    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
-        return;
-    }
-    // jab cancels
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK]) {
-        jab_cancels(boma);
-        return;
-    }
-    // tilt cancels
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_LW3]) {
-        tilt_cancels(boma);
-        return;
-    }
-    // smash cancels
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4]) {
-        smash_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
-        return;
-    }
-    // aerial cancels
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        aerial_cancels(boma);
-        return;
-    }
-
 }
 
 // Shotos Tatsumaki Land Cancel, hover, and EX momentum handling
