@@ -41,7 +41,7 @@ unsafe fn packun_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "packun", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -80,7 +80,22 @@ unsafe fn packun_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "packun", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn packun_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+
 }
 
 #[acmd_script( agent = "packun", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -133,7 +148,7 @@ unsafe fn packun_attack_air_b_game(fighter: &mut L2CAgentBase) {
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "packun", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
@@ -141,7 +156,7 @@ unsafe fn packun_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
-    if stance != 1 { 
+    if stance != 1 {
         frame(lua_state, 6.0);
         for _ in 0..3 {
             if is_excute(fighter) {
@@ -159,7 +174,7 @@ unsafe fn packun_attack_air_b_effect(fighter: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(fighter, 1.25);
         }
     }
-    else if stance == 1 { 
+    else if stance == 1 {
         frame(lua_state, 6.0);
         for h in 0..3 {
             if is_excute(fighter) {
@@ -344,7 +359,7 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "packun", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -395,13 +410,14 @@ unsafe fn packun_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
     install_acmd_scripts!(
         packun_attack_air_n_game,
         packun_attack_air_f_game,
+        packun_attack_air_f_expression,
         packun_attack_air_b_game,
         packun_attack_air_b_effect,
         packun_attack_air_b_sound,

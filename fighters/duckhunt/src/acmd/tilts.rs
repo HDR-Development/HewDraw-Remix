@@ -16,7 +16,7 @@ unsafe fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
@@ -33,7 +33,7 @@ unsafe fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -50,7 +50,7 @@ unsafe fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -77,7 +77,37 @@ unsafe fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
+}
+
+#[acmd_script( agent = "duckhunt", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_openwing") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+    }
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -98,7 +128,7 @@ unsafe fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 pub fn install() {
@@ -107,6 +137,7 @@ pub fn install() {
         duckhunt_attack_s3_game,
         duckhunt_attack_s3_lw_game,
         duckhunt_attack_hi3_game,
+        duckhunt_attack_hi3_expression,
         duckhunt_attack_lw3_game,
     );
 }
