@@ -143,7 +143,10 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         // If Special is pressed, enable a flag and transition into the next status.
         if fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0
         || fighter.global_table[globals::STICK_Y].get_f32() <= -0.7 {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+            VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
+            let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
+            // Clear the buffer here so you don't accidentally buffer a side special on cancel.
+            fighter.change_status(float_status.into(), true.into());
             return 0.into();
         }
     }
