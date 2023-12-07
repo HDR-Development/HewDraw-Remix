@@ -218,6 +218,24 @@ unsafe fn sound_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackss"), 5);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "mario", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -244,6 +262,7 @@ pub fn install() {
         mario_attack_air_lw_game,
         effect_attackairlw,
         sound_attackairlw,
+        expression_attackairlw,
         mario_landing_air_lw_game,
     );
 }

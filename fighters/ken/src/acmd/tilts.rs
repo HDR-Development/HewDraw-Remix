@@ -340,11 +340,11 @@ unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 4);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }

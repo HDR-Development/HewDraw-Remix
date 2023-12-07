@@ -32,11 +32,11 @@ unsafe fn snake_side_smash_game(fighter : &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         VarModule::on_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
-    } 
-    
+    }
+
     frame(lua_state, 38.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE); 
+        VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
     }
     frame(lua_state, 54.0);
     if is_excute(fighter) {
@@ -57,7 +57,7 @@ unsafe fn snake_side_smash_expr(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 
@@ -145,12 +145,12 @@ unsafe fn snake_side_smash_2_game(fighter : &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        VarModule::on_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE); 
+        VarModule::on_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
         // WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE); 
+        VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
         // WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 50.0);
@@ -172,7 +172,7 @@ unsafe fn snake_side_smash_2_expr(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 
@@ -249,11 +249,11 @@ unsafe fn snake_side_smash_3_expr(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, 0);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
 }
 

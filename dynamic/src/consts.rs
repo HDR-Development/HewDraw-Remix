@@ -560,6 +560,14 @@ pub mod vars {
         }
     }
 
+    pub mod gamewatch {
+        pub mod instance {
+            // flags
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
+            pub const UP_SPECIAL_PARACHUTE: i32 = 0x0101;
+        }
+    }
+
     pub mod ganon {
         pub mod instance {
             // flags
@@ -1375,6 +1383,10 @@ pub mod statuses {
         pub const SPECIAL_LW_END: i32 = 1;
     }
 
+    pub mod gamewatch {
+        pub const SPECIAL_HI_OPEN: i32 = 0;
+    }
+
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0;
     }
@@ -1408,6 +1420,10 @@ pub mod statuses {
 
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 69; //Weird value to avoid conflicts with copy ability values
+    }
+
+    pub mod krool {
+        pub const SPECIAL_LW_GUT: i32 = 0;
     }
 
     pub mod palutena {
