@@ -231,6 +231,30 @@ unsafe fn robot_special_s_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "robot", scripts = ["expression_specials", "expression_specialairs", "expression_specialshi", "expression_specialairshi", "expression_specialslw", "expression_specialairslw"] , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_spinattacks"), 5, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 5, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "robot", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -300,6 +324,7 @@ unsafe fn robot_special_hi_keep_effect(fighter: &mut L2CAgentBase) {
     
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.55, 0.55, 2.25);
     }
 
 
@@ -308,12 +333,13 @@ unsafe fn robot_special_hi_keep_effect(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 0.8);
+            LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 8.55);
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 1.5);
             LAST_EFFECT_SET_ALPHA(fighter, 0.75);
-            LAST_EFFECT_SET_COLOR(fighter, 0.55, 0.1, 0.1);
+            LAST_EFFECT_SET_COLOR(fighter, 3.15, 0.55, 0.55);
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
         }
@@ -929,6 +955,17 @@ unsafe fn robot_special_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "robot", scripts = ["expression_specialhi", "expression_specialairhi"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn robot_special_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold1"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "robot", script = "sound_specialairsstart", category = ACMD_SOUND, low_priority )]
 unsafe fn robot_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
 }
@@ -979,7 +1016,6 @@ unsafe fn robot_special_hi_keep_expression(fighter: &mut L2CAgentBase) {
     let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
 
     frame(lua_state, 1.0);
-    ControlModule::set_rumble(boma, Hash40::new("rbkind_jet"), 13, true, *BATTLE_OBJECT_ID_INVALID as u32);
     if is_excute(fighter) {
         if (robotFrames/4.0) >= 12.0 {
             QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
@@ -988,6 +1024,9 @@ unsafe fn robot_special_hi_keep_expression(fighter: &mut L2CAgentBase) {
         } else if (robotFrames/4.0) >= 4.0 {
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         }
+        
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -1001,6 +1040,7 @@ pub fn install() {
         robot_special_s_air_hi_game,
         robot_special_s_lw_game,
         robot_special_s_air_lw_game,
+        robot_special_s_expression,
         robot_special_hi_game,
         robot_special_air_hi_game,
         robot_special_hi_keep_game,
@@ -1013,6 +1053,7 @@ pub fn install() {
         robot_special_air_s_hi_effect,
         robot_special_hi_effect,
         robot_special_air_hi_effect,
+        robot_special_hi_expression,
         robot_special_hi_keep_effect,
 
         robot_special_hi_sound,

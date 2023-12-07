@@ -13,3 +13,4 @@ hdr-macros = { path = "../hdr-macros" }
 bitflags = "2"
 modular-bitfield = "0.11.2"
 smash2 = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
+once_cell = "1.15.0"

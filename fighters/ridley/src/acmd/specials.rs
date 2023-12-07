@@ -67,6 +67,10 @@ unsafe fn ridley_special_n_explode_game(fighter: &mut L2CAgentBase) {
 unsafe fn ridley_special_n_explode_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ridley_bleath_hold"), Hash40::new("mouth1"), 5, 1, 0, 0, 0, 0, 0.5, true);
+    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, 15.5, -3.5, 0, 0, 0, 1, true);
@@ -77,6 +81,7 @@ unsafe fn ridley_special_n_explode_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ridley_bleath_hold"), false, false);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW(fighter, Hash40::new("ridley_smash_bomb"), Hash40::new("top"), 0, 8.5, 15, 0, 0, 0, 1.2, true);
     }
@@ -521,11 +526,11 @@ unsafe fn ridley_special_lw_pogo_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 33.0);
+    frame(lua_state, 31.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, 0);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 33.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 0);
     }

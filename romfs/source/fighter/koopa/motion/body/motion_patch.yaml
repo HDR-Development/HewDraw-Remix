@@ -124,3 +124,6 @@ appeal_hi_l:
 appeal_hi_r:
   extra:
     cancel_frame: 70
+furafura_end:
+  extra:
+    cancel_frame: 10

@@ -28,6 +28,24 @@ unsafe fn brave_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "brave", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn brave_attack_11_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+}
+
 
 #[acmd_script(agent = "brave", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn brave_attack_12_game(fighter: &mut L2CAgentBase) {
@@ -121,12 +139,46 @@ unsafe fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "brave", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn brave_attack_dash_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 2);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 2);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_landl_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         brave_attack_11_game,
+        brave_attack_11_expression,
         brave_attack_12_game,
         brave_attack_13_game,
         brave_attack_dash_game,
+        brave_attack_dash_expression
     );
 }
 

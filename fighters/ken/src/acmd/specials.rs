@@ -174,9 +174,10 @@ unsafe fn expression_attackcommand4(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }

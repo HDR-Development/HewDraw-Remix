@@ -9,8 +9,8 @@
     </struct>
   </list>
   <struct hash="jump_aerial">
-    <float hash="damage_reaction_sub">110</float>
-    <float hash="damage_reaction_min">55</float>
+    <float hash="damage_reaction_sub">120</float>
+    <float hash="damage_reaction_min">60</float>
   </struct>
   <list hash="param_special_s">
     <struct index="0">

@@ -110,10 +110,17 @@ unsafe fn koopa_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

@@ -194,6 +194,18 @@ unsafe fn putrid_gentleman(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {
+        if !boma.is_motion_one_of(&
+            [Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r"),
+            Hash40::new("appeal_s_l"), Hash40::new("appeal_s_r"),
+            Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r"),]) ||
+            !boma.is_button_on(Buttons::AppealAll) {
+                VarModule::off_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+            }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -243,6 +255,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     stance_init_effects(fighter);
     putrid_gentleman(boma);
     fastfall_specials(fighter);
+    reverse_switch(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACKUN )]
