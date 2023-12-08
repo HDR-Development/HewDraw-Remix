@@ -89,8 +89,6 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         CHECK_FINISH_CAMERA(fighter, 6, 20);
-        //FighterCutInManager::set_throw_finish_zoom_rate(boma, 1.3);
-        //FighterCutInManager::set_throw_finish_offset(boma, 5, 4, 0);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
