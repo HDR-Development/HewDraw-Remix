@@ -170,17 +170,12 @@ unsafe fn appeal_hi_2_game(fighter: &mut L2CAgentBase) {
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("foot"), true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
-        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
-        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
     frame(lua_state, 107.0);
     if is_excute(fighter) {
@@ -244,14 +239,9 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
             MotionModule::change_motion(boma, Hash40::new("appeal_hi_2"), 0.0, 1.0, false, 0.0, false, false);
         }
     }
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
-        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 2);
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
@@ -299,12 +289,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::on_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        let advance = if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {2} else {1};
-        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, (cur_stance + advance) % 3);
+        VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 1);
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
