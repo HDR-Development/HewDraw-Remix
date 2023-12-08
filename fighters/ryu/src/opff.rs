@@ -47,12 +47,12 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    special_fadc_super_cancels(fighter, boma);
+    extra_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
+    metered_cancels(fighter, boma, frame);
     target_combos(boma);
     rotate_forward_bair(boma);
-
+    turn_run_back_status(fighter, boma, status_kind);
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
-    hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
     fastfall_specials(fighter);
 }
 
@@ -91,6 +91,14 @@ pub unsafe fn ryu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+/// enables shield during transition from dashback to run
+unsafe fn turn_run_back_status(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if status_kind != *FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK {
+        return;
+    }
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
 }
 
 // boma: its a boma
@@ -137,32 +145,32 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn special_fadc_super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if !boma.is_status_one_of(&[
+/// determines what cancels can be done out of specials
+unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+
+    let is_other_special_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
-    ]) {
-        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
+        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
+        CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ken::ATTACK_COMMAND_4)
+        ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    );
+
+    let is_nspecial_cancel = (boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+        ]) && frame > 13.0
+    );
+
+    if !is_nspecial_cancel && !is_other_special_cancel {
         return;
-    }
-
-    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
-    }
-
-    if !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC) {
-        return;
-    }
-
-    if boma.is_cat_flag(Cat1::SpecialLw)
-    && !StopModule::is_stop(boma)
-    && MeterModule::drain(boma.object(), 1) {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
 
     // check final smashes
@@ -186,6 +194,19 @@ unsafe fn special_fadc_super_cancels(fighter: &mut L2CFighterCommon, boma: &mut 
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         AttackModule::clear_all(fighter.module_accessor);
+        return;
+    }
+
+    if !is_nspecial_cancel {
+        return;
+    }
+
+    // DSpecial cancels
+    // costs more meter on shield
+    if boma.is_cat_flag(Cat1::SpecialLw)
+    && MeterModule::drain(boma.object(), 1) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         return;
     }
 }
@@ -276,6 +297,15 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 }
 
+unsafe fn extra_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_HI4
+    ])
+    && WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL) {
+        check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
+    }
+}
+
 unsafe fn check_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     // Dont use cancels if we're already in cancel frames, if we're in hitlag, or if we didn't connect
     if CancelModule::is_enable_cancel(boma) 
@@ -338,19 +368,19 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
 
 // Shotos Tatsumaki Land Cancel, hover, and EX momentum handling
 unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    let jump_rising = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-    let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};
-	let ex_momentum = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    let prev_situation_kind = StatusModule::prev_situation_kind(boma);
-
     if !boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
     ]) {
         return;
     }
+
+    let jump_rising = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};
+	let ex_momentum = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+    let prev_situation_kind = StatusModule::prev_situation_kind(boma);
 
     if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
@@ -360,51 +390,13 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
         KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 
+    // Tatsu gravity
+    // if holding special in the air, we float
+    // params have been modified to make us fall otherwise
     if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
     && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_button_on(Buttons::Special | Buttons::Attack)
+    && boma.is_button_on(Buttons::SpecialAll)
     && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0 {
         KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    }
-}
-
-// Shotos Hadoken FADC and Super (FS) cancels
-unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat: [i32; 4], frame: f32) {
-    if !boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
-    ]) || frame <= 5.0 {
-        return;
-    }
-
-    // check final smashes
-    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
-    let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
-    // the shinku hadouken
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 6 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        AttackModule::clear_all(fighter.module_accessor);
-        return;
-    }
-    // the shin shoryuken
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 6 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-        AttackModule::clear_all(fighter.module_accessor);
-        return;
-    }
-
-    if frame > 15.0
-    && boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 1) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
 }
