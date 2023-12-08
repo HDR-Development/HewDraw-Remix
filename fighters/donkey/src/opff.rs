@@ -127,6 +127,17 @@ pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// prevent donkey kong from carrying/throwing steve's blocks
+pub unsafe fn remove_pickelobject(fighter: &mut L2CFighterCommon) {
+    if ItemModule::get_have_item_kind(fighter.boma(), 0) == *ITEM_KIND_PICKELOBJECT {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("top"), 0, 10, 15, 0, 0, 0, 1, false);
+        LAST_EFFECT_SET_COLOR(fighter, 0.6, 0.6, 0.6);
+        ItemModule::remove_item(fighter.boma(), 0);
+        MotionModule::set_rate(fighter.boma(), 0.1);
+        PLAY_SE(fighter, Hash40::new("se_common_famicom_hit"));
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -167,6 +178,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     barrel_pull(fighter, boma, status_kind, situation_kind);
     headbutt_aerial_stall(fighter, boma, id, status_kind, situation_kind, frame);
+    remove_pickelobject(fighter);
     fastfall_specials(fighter);
 }
 

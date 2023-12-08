@@ -123,6 +123,29 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "gamewatch", scripts = ["game_downforwardd", "game_downforwardu", "game_downbackd", "game_downbacku"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_down(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let end_frame = MotionModule::end_frame(boma);
+    frame(lua_state, end_frame);
+    if is_excute(fighter) {
+        sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
+    }
+
+}
+
+#[acmd_script( agent = "gamewatch", scripts = ["game_passivestandf", "game_passivestandb"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_passive(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    }
+
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -133,6 +156,8 @@ pub fn install() {
         turn_dash_game,
         sound_appealhil,
         sound_appealhir,
+        game_down,
+        game_passive,
     );
 }
 

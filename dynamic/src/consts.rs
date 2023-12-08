@@ -559,6 +559,14 @@ pub mod vars {
         }
     }
 
+    pub mod gamewatch {
+        pub mod instance {
+            // flags
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
+            pub const UP_SPECIAL_PARACHUTE: i32 = 0x0101;
+        }
+    }
+
     pub mod ganon {
         pub mod instance {
             // flags
@@ -822,15 +830,25 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x0100;
-            pub const TUMBLE_START: i32 = 0x0101;
-            pub const IS_IN_TUMBLE: i32 = 0x0102;
             pub const DISABLE_SPECIAL_S: i32 = 0x0103;
             pub const CAN_RESPAWN_TABLE: i32 = 0x0104;
+            pub const SHOULD_CYCLE_MATERIAL: i32 = 0x0105;
+            pub const SHOULD_RESET_ROT: i32 = 0x0106;
+
+            // ints 
+            pub const MATERIAL_INDEX: i32 = 0x0100;
+            pub const MATERIAL_EFFECT_HANDLER: i32 = 0x0101;
+            pub const HITSTUN_TIMER: i32 = 0x0102;
 
             //floats
             pub const FORGE_START_Y_POS: i32 = 0x0106;
+            pub const DAMAGE_TRACKER: i32 = 0x0107;
+            pub const TABLE_HP_TRACKER: i32 = 0x0108;
         }
         pub mod status {
+            // ints
+            pub const MINING_TIMER: i32 = 0x1100;
+            
             // floats
             pub const GLIDE_TIMER: i32 = 0x1100;
         }
@@ -1372,6 +1390,10 @@ pub mod statuses {
         pub const SPECIAL_LW_END: i32 = 1;
     }
 
+    pub mod gamewatch {
+        pub const SPECIAL_HI_OPEN: i32 = 0;
+    }
+
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0;
     }
@@ -1405,6 +1427,10 @@ pub mod statuses {
 
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 69; //Weird value to avoid conflicts with copy ability values
+    }
+
+    pub mod krool {
+        pub const SPECIAL_LW_GUT: i32 = 0;
     }
 
     pub mod palutena {
