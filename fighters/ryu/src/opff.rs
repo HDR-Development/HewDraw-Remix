@@ -298,10 +298,11 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 }
 
 unsafe fn extra_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_HI4
-    ])
-    && WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL) {
+    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_S4
+    ]) {
         check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
     }
 }
