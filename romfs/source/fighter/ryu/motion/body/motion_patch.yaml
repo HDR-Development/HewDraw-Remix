@@ -86,6 +86,23 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+special_air_lw_step_b:
+  extra:
+    cancel_frame: 13
+special_air_lw_step_f:
+  extra:
+    cancel_frame: 13
+special_air_s_end:
+  extra:
+    cancel_frame: 21
+special_hi_command:
+  extra:
+    xlu_start: 1
+    xlu_end: 9
+special_hi:
+  extra:
+    xlu_start: 4
+    xlu_end: 7
 special_lw_step_b:
   extra:
     cancel_frame: 13
