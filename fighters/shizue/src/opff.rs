@@ -77,7 +77,17 @@ pub fn lloid_callback(weapon : &mut L2CFighterBase) {
             if shizue_boma.is_cat_flag(Cat1::SpecialLw)
             && !VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC)
             && !shizue_boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_SET)
-            && !CancelModule::is_enable_cancel(shizue_boma) {
+            && !CancelModule::is_enable_cancel(shizue_boma)
+            && !shizue_boma.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_DAMAGE,
+                *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
                 VarModule::on_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
                 VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 10);
                 macros::EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
