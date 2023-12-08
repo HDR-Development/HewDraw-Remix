@@ -68,7 +68,7 @@ attack_lw3_ex:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 29
+    cancel_frame: 32
     no_stop_intp: false
 attack_hi3:
   extra:
@@ -84,7 +84,7 @@ special_hi2:
     intangible_end_frame: 0
 attack_air_f:
   extra:
-    cancel_frame: 39
+    cancel_frame: 41
 attack_air_n:
   extra:
     cancel_frame: 51
