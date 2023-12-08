@@ -8,5 +8,4 @@
             <float hash="p2_y">4</float>
         </struct>
     </struct>
-    <int hash="bomb_cooldown_max">45</int>
 </struct>
