@@ -68,10 +68,29 @@ pub fn lloid_callback(weapon : &mut L2CFighterBase) {
         let shizue = utils::util::get_battle_object_from_id(owner_id as u32);
         let shizue_boma = &mut *(*shizue).module_accessor;
         let status = StatusModule::status_kind(weapon.module_accessor);
+        if [*WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST,
+            *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_DISAPPEAR].contains(&status) {
+            VarModule::off_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
+            VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 0);
+        }
         if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY {
-            VarModule::on_flag(shizue, vars::shizue::status::IS_LLOID_READY);
-        } else {
-            VarModule::off_flag(shizue, vars::shizue::status::IS_LLOID_READY);
+            if shizue_boma.is_cat_flag(Cat1::SpecialLw)
+            && !VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC)
+            && !shizue_boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_SET)
+            && !CancelModule::is_enable_cancel(shizue_boma) {
+                VarModule::on_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
+                VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 10);
+                macros::EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+            }
+        }
+        if VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC) {
+            if VarModule::get_int(shizue, vars::shizue::instance::LLOID_TIMER) > 0 {
+                VarModule::dec_int(shizue, vars::shizue::instance::LLOID_TIMER);
+            }
+            else {
+                VarModule::off_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
+                StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY, true);
+            }
         }
         if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
         && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -96,16 +115,16 @@ unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
 }
 
 //Cancel anything on hit into Lloid Call
-unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
-    let boma = fighter.boma();
-    if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-    && !fighter.is_in_hitlag()  
-    && VarModule::is_flag(fighter.battle_object, vars::shizue::status::IS_LLOID_READY) {
-        if fighter.is_cat_flag(Cat1::SpecialLw) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, false);
-        }
-    }
-}
+// unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
+//     let boma = fighter.boma();
+//     if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+//     && !fighter.is_in_hitlag()  
+//     && VarModule::is_flag(fighter.battle_object, vars::shizue::status::IS_LLOID_READY) {
+//         if fighter.is_cat_flag(Cat1::SpecialLw) {
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, false);
+//         }
+//     }
+// }
 
 //Reel in
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
