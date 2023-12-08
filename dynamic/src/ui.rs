@@ -23,6 +23,9 @@ extern "C" {
     #[link_name = "UiManager__set_ff_meter_info"]
     fn ui_manager_set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
 
+    #[link_name = "UiManager__change_ff_meter_cap"]
+    fn ui_manager_change_ff_meter_cap(entry_id: u32, cap: f32);
+
     #[link_name = "UiManager__set_power_board_enable"]
     fn ui_manager_set_power_board_enable(entry_id: u32, enable: bool);
 
@@ -91,6 +94,12 @@ pub mod UiManager {
     pub fn set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         unsafe {
             super::ui_manager_set_ff_meter_info(entry_id, current, max, per_level)
+        }
+    }
+
+    pub fn change_ff_meter_cap(entry_id: u32, cap: f32) {
+        unsafe {
+            super::ui_manager_change_ff_meter_cap(entry_id, cap)
         }
     }
 
