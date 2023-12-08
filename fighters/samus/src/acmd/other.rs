@@ -51,7 +51,6 @@ unsafe fn effect_appeals(fighter: &mut L2CAgentBase) {
     let is_ice = VarModule::is_flag(fighter.battle_object, vars::samus::instance::ICE_MODE);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samus_appeal_s"), Hash40::new("armr"), 7, 0, 0, 0, 0, 90, 1, true);
-        LAST_EFFECT_SET_RATE(fighter,2.25);
         if is_ice{
             LAST_EFFECT_SET_COLOR(fighter,0.0, 0.875,1.25);
         }
@@ -99,7 +98,6 @@ unsafe fn expression_appeals(agent: &mut L2CAgentBase) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_GUN, true, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_GUN, Hash40::new("appeal_sl"), false, -1.0);
-        ArticleModule::set_rate(agent.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_GUN, 2.25);
     }
     frame(agent.lua_state_agent, 2.0);
     is_ice = VarModule::is_flag(agent.battle_object, vars::samus::instance::ICE_MODE);
@@ -209,7 +207,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "effect_ice_lance", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_ice_lance", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_ice_lance(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("handr"), 5.0, 0.0, 0.0, 0, 0, -90, 0.2, true);
@@ -217,7 +215,7 @@ unsafe fn effect_ice_lance(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "effect_ice_lance_break", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_ice_lance_break", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_ice_lance_break(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         EFFECT_OFF_KIND(fighter,Hash40::new("sys_ice"),false,false);
@@ -226,7 +224,7 @@ unsafe fn effect_ice_lance_break(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "effect_ice_punch", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_ice_punch", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_ice_punch(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("handr"), -1.5, 0.0, 0.0, 0, 0, 90, 0.15, true);
@@ -235,7 +233,7 @@ unsafe fn effect_ice_punch(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_SCALE_W(fighter,0.175,0.275,0.175);
     }
 }
-#[acmd_script( agent = "samus", script = "effect_ice_punch_break", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_ice_punch_break", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_ice_punch_break(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         EFFECT_OFF_KIND(fighter,Hash40::new("sys_ice"),false,false);
@@ -243,64 +241,66 @@ unsafe fn effect_ice_punch_break(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "sound_ice_break", category = ACMD_SOUND)]
+#[acmd_script( agent = "samus", script = "sound_ice_break", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_ice_break(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_item_ice_crash"));
     }
 }
 
-#[acmd_script( agent = "samus_missile", script = "game_ice", category = ACMD_GAME)]
-unsafe fn game_ice(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        let isThrow = PostureModule::rot_x(fighter.module_accessor, 0) < 0.0;
-        if isThrow {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 65, 0, 50, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
-        }
-        else{
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 65, 65, 0, 50, 2.4, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
-        }
-        AttackModule::enable_safe_pos(fighter.module_accessor);
+#[acmd_script( agent = "samus_missile", script = "game_ice", category = ACMD_GAME, low_priority)]
+unsafe fn game_ice(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 80, 65, 0, 50, 2.4, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(agent.module_accessor);
     }
 }
-#[acmd_script( agent = "samus_missile", script = "effect_ice", category = ACMD_EFFECT)]
-unsafe fn effect_ice(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus_missile", script = "effect_ice", category = ACMD_EFFECT, low_priority)]
+unsafe fn effect_ice(agent: &mut L2CAgentBase) {
     let mut rot = 0.0;
-    if macros::is_excute(fighter) {
-        //rot = PostureModule::rot_x(fighter.module_accessor, 0);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("samus_missile_homing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, true);
-        LAST_EFFECT_SET_COLOR(fighter,0.375, 1.0,1.0);
+    if macros::is_excute(agent) {
+        //rot = PostureModule::rot_x(agent.module_accessor, 0);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("samus_missile_homing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, true);
+        LAST_EFFECT_SET_COLOR(agent,0.375, 1.0,1.0);
     }
     for i in 1..i32::MAX{
-        if macros::is_excute(fighter) {
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 0, 0, -rot, 0, 0, 1.1, true);
-            LAST_EFFECT_SET_COLOR(fighter,0.375, 1.0,1.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 0, 0, -rot, 0, 0, 1.1, true);
+            LAST_EFFECT_SET_COLOR(agent,0.375, 1.0,1.0);
         }
-        wait(fighter.lua_state_agent , 15.0);
+        wait(agent.lua_state_agent , 15.0);
     }
 }
 
-#[acmd_script( agent = "samus_missile", script = "game_iburst", category = ACMD_GAME)]
-unsafe fn game_iburst(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    wait(fighter.lua_state_agent , 1.0);
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
+#[acmd_script( agent = "samus_missile", script = "sound_ice", category = ACMD_SOUND, low_priority)]
+unsafe fn sound_ice(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 0.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_samus_special_s02"));
     }
 }
-#[acmd_script( agent = "samus_missile", script = "effect_iburst", category = ACMD_EFFECT)]
-unsafe fn effect_iburst(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_hit_ice"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+
+#[acmd_script( agent = "samus_missile", script = "game_iburst", category = ACMD_GAME, low_priority)]
+unsafe fn game_iburst(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    wait(agent.lua_state_agent , 1.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }
 }
-#[acmd_script( agent = "samus_missile", script = "sound_iburst", category = ACMD_SOUND)]
-unsafe fn sound_iburst(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_item_ice_crash"));
+#[acmd_script( agent = "samus_missile", script = "effect_iburst", category = ACMD_EFFECT, low_priority)]
+unsafe fn effect_iburst(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_hit_ice"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+#[acmd_script( agent = "samus_missile", script = "sound_iburst", category = ACMD_SOUND, low_priority)]
+unsafe fn sound_iburst(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_item_ice_crash"));
     }
 }
 
@@ -329,6 +329,7 @@ pub fn install() {
         
         game_ice,
         effect_ice,
+        sound_ice,
 
         game_iburst,
         effect_iburst,

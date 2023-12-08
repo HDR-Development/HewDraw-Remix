@@ -303,7 +303,7 @@ unsafe fn samus_landing_air_catch_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "samus", script = "game_attackairf2", category = ACMD_GAME)]
+#[acmd_script( agent = "samus", script = "game_attackairf2", category = ACMD_GAME, low_priority)]
 unsafe fn game_attackairf2(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -312,10 +312,13 @@ unsafe fn game_attackairf2(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 15.0, 46, 95, 0, 30, 3.0, 3.75, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 15.0, 46, 95, 0, 30, 3.0, 7.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.125);
-        macros::ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 1, 1, 1.125);
     }
-    wait(fighter.lua_state_agent , 5.0);
+    wait(fighter.lua_state_agent , 3.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 13.5, 46, 95, 0, 30, 3.0, 3.75, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 13.5, 46, 95, 0, 30, 3.0, 7.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+    }
+    wait(fighter.lua_state_agent , 1.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -325,15 +328,11 @@ unsafe fn game_attackairf2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "game_attackairf2_break", category = ACMD_GAME)]
+#[acmd_script( agent = "samus", script = "game_attackairf2_break", category = ACMD_GAME, low_priority)]
 unsafe fn game_attackairf2_break(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        AttackModule::set_power(fighter.module_accessor, 0, 15.0-2.0, false);
-        AttackModule::set_power(fighter.module_accessor, 1, 15.0-2.0, false);
-    }
 }
 
-#[acmd_script( agent = "samus", script = "effect_attackairf2", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_attackairf2", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_attackairf2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent , 2.0);
     if macros::is_excute(fighter) {
@@ -350,7 +349,7 @@ unsafe fn effect_attackairf2(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter,Hash40::new("sys_ice"),false,false);
     }
 }
-#[acmd_script( agent = "samus", script = "sound_attackairf2", category = ACMD_SOUND)]
+#[acmd_script( agent = "samus", script = "sound_attackairf2", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_attackairf2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent , 12.0);
     if macros::is_excute(fighter) {
@@ -361,7 +360,7 @@ unsafe fn sound_attackairf2(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_samus_swing_l"));
     }
 }
-#[acmd_script( agent = "samus", script = "expression_attackairf2", category = ACMD_EXPRESSION)]
+#[acmd_script( agent = "samus", script = "expression_attackairf2", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_attackairf2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent , 14.0);
     if macros::is_excute(fighter) {
@@ -386,7 +385,6 @@ pub fn install() {
         
         game_attackairf2,
         game_attackairf2_break,
-
         effect_attackairf2,
         sound_attackairf2,
         expression_attackairf2,

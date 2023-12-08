@@ -61,6 +61,7 @@
       <float hash="h_spd">1.625</float>
       <float hash="h_anglemax">45</float>
       <float hash="h_angle">0.1</float>
+      <float hash="h_angleplay">1.0</float>
       <int hash="h_homingf">45</int>
       <float hash="h_spdmul">1.625</float>
       <float hash="h_spdmin">1.625</float>

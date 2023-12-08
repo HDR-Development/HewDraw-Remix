@@ -214,7 +214,7 @@ unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "samus", script = "game_attacklw32", category = ACMD_GAME)]
+#[acmd_script( agent = "samus", script = "game_attacklw32", category = ACMD_GAME, low_priority)]
 unsafe fn game_attacklw32(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent , 6.0);
     if macros::is_excute(fighter) {
@@ -278,7 +278,7 @@ unsafe fn game_attacklw32(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter,1.0);
 }
 
-#[acmd_script( agent = "samus", script = "effect_attacklw32", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_attacklw32", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_attacklw32(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -322,7 +322,7 @@ unsafe fn effect_attacklw32(fighter: &mut L2CAgentBase) {
         }
     }
 }
-#[acmd_script( agent = "samus", script = "effect_attacklw32end", category = ACMD_EFFECT)]
+#[acmd_script( agent = "samus", script = "effect_attacklw32end", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_attacklw32_end(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         EFFECT_OFF_KIND(fighter,Hash40::new("sys_ice"),false,false);
@@ -333,7 +333,7 @@ unsafe fn effect_attacklw32_end(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "samus", script = "sound_attacklw32", category = ACMD_SOUND)]
+#[acmd_script( agent = "samus", script = "sound_attacklw32", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_attacklw32(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent , 6.0);
     if macros::is_excute(fighter) {
@@ -341,7 +341,7 @@ unsafe fn sound_attacklw32(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "expression_attacklw32", category = ACMD_EXPRESSION)]
+#[acmd_script( agent = "samus", script = "expression_attacklw32", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_attacklw32(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);

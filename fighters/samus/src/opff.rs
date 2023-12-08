@@ -131,7 +131,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     shinespark_charge(boma, id, status_kind, frame);
     shinespark_reset(boma, id, status_kind);
     fastfall_specials(fighter);
-    suit_update(boma,fighter.battle_object,frame)
+    suit_update(boma,fighter.battle_object,frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SAMUS )]

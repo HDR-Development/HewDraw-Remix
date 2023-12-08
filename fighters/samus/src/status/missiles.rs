@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 #[status_script(agent = "samus_missile", status = WEAPON_SAMUS_MISSILE_STATUS_KIND_HOMING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn missile_homing_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
@@ -7,16 +8,17 @@ unsafe fn missile_homing_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner = utils::util::get_battle_object_from_id(owner_id);
     let owner_boma = (*owner).boma();
     let owner_kind = utility::get_kind(owner_boma);
-    
     let is_ice = owner_kind == *FIGHTER_KIND_SAMUS && VarModule::is_flag(owner, vars::samus::instance::ICE_MODE);
 
-    let toreturn = original!(weapon);
-    if is_ice  {
-        WorkModule::set_customize_no(weapon.module_accessor, 1, 1);
-        MotionModule::change_motion(weapon.module_accessor, Hash40::new("ice"), 0.0, 1.0, false, 0.0, false, false);
+    let toReturn = original!(weapon);
+    if !is_ice  {
+        return toReturn;
     }
-    return toreturn;
+
+    MotionModule::change_motion(weapon.module_accessor, Hash40::new("ice"), 0.0, 1.0, false, 0.0, false, false);
+    return toReturn;
 }
+
 #[status_script(agent = "samus_missile", status = WEAPON_SAMUS_MISSILE_STATUS_KIND_H_BURST, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn missile_burst_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let is_ice = MotionModule::motion_kind(weapon.module_accessor) == Hash40::new("ice").hash;

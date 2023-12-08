@@ -177,8 +177,8 @@ unsafe fn game_specialnice(fighter: &mut L2CAgentBase) {
         let length = Lerp::lerp(&0.0,&9.0,&c);
         damage = Lerp::lerp(&7.0,&21.0,&c);
         let angle = if c < 0.5 {361 as u64} else {45 as u64};
-        kbg = Lerp::lerp(&35.0,&70.0,&c);
-        bkb = Lerp::lerp(&35.0,&55.0,&c);
+        kbg = Lerp::lerp(&35.0,&80.0,&c);
+        bkb = Lerp::lerp(&35.0,&50.0,&c);
         size = Lerp::lerp(&1.5,&5.0,&c);
         if c < 1.0 {
             let level = if c < 0.5 {*ATTACK_SOUND_LEVEL_S} else {*ATTACK_SOUND_LEVEL_M};
@@ -187,8 +187,10 @@ unsafe fn game_specialnice(fighter: &mut L2CAgentBase) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), damage as f32, angle, kbg as i32, 0, bkb as i32, size, 0.0, 10.0, offset as f32, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), level, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
         }
         else{
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), damage as f32, angle, (kbg as i32)-10, 0, (bkb as i32)-20, size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
-            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), damage as f32, angle, (kbg as i32)-10, 0, (bkb as i32)-20, size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
+            kbg = 90.0;
+            bkb = 60.0;
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), damage as f32, angle, (kbg as i32), 0, (bkb as i32), size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), damage as f32, angle, (kbg as i32), 0, (bkb as i32), size as f32, -1.0, 10.0, 14.0, Some(0.0), Some(10.0), Some(14.0+length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_ENERGY);
         }
     }
     wait(fighter.lua_state_agent , 3.0);
