@@ -301,7 +301,7 @@ unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
+        if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) && fighter.is_situation(*SITUATION_KIND_AIR) {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         }
     }
