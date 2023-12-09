@@ -2,11 +2,6 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 
-pub mod acmd;
-
-pub mod status;
-pub mod opff;
-
 use smash::{
     lib::{
         L2CValue,
@@ -36,10 +31,23 @@ use utils::{
     ext::*,
     consts::*,
 };
+
 use smashline::*;
+pub mod acmd;
+pub mod status;
+pub mod opff;
+pub mod vtable_hook;
+pub use status::krool_belly_damage_hook_impl;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
     opff::install(is_runtime);
+    use opff::*;
+    // smashline::install_agent_frames!(
+    //     krool_backpack_frame
+    // );
+    
+    // prevents shield break on belly
+    skyline::patching::Patch::in_text(0xc04ee0).data(0x1400001Eu32);
 }

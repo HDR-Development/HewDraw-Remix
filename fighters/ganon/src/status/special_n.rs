@@ -39,6 +39,7 @@ unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("float_start"), L2CValue::Hash40s("float_air_start"), false.into());
     if fighter.global_table[globals::SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -74,6 +75,27 @@ unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Decided which direction Ganon should float.
+    if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_DECIDE_ANGLE) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
+        let stick_x = fighter.global_table[globals::STICK_X].get_f32();
+        let angle = (45.0 * -stick_x).to_radians();
+        sv_kinetic_energy!(
+            set_angle,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            angle
+        );
+        if angle != 0.0 {
+            sv_kinetic_energy!(
+                set_speed_mul,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                1.2
+            );
+        }
+        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_DECIDE_ANGLE);
+    }
     // Increases Ganon's fall speed when this flag is enabled.
     if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -111,10 +133,11 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     // Only perform these actions if vars::ganon::status::FLOAT_ENABLE_ACTIONS is true.
     if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS) {
         // if the proper transition terms are enabled, these functions will check for
-        // if Ganon performs an aerial or a double jump.
+        // if Ganon performs an aerial, a double jump, or airdodge.
         if fighter.sub_transition_group_check_air_cliff().get_bool()
         || fighter.sub_transition_group_check_air_attack().get_bool()
-        || fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+        || fighter.sub_transition_group_check_air_jump_aerial().get_bool()
+        || fighter.sub_transition_group_check_air_escape().get_bool() {
             return 1.into();
         }
         // If Special is pressed, enable a flag and transition into the next status.

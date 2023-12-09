@@ -76,6 +76,7 @@ unsafe fn ike_attack_13_game(fighter: &mut L2CAgentBase) {
 unsafe fn ike_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.1);
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 12.0, 361, 75, 0, 50, 2.5, 0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
@@ -99,12 +100,38 @@ unsafe fn ike_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "ike", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_attack_dash_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        AREA_WIND_2ND_arg10(fighter, 0, 1, 80, 300, 0.8, 0, 12, 24, 24, 50);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ike_attack_11_game,
         ike_attack_12_game,
         ike_attack_13_game,
         ike_attack_dash_game,
+        ike_attack_dash_expression,
     );
 }
 

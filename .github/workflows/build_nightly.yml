@@ -7,7 +7,7 @@ on:
 jobs:
   # bump the version and build the changelog
   version_and_changelog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
@@ -35,6 +35,7 @@ jobs:
 
       # wait for any previous versions to be tagged and committed
       - uses: lewagon/wait-on-check-action@v1.2.0
+        continue-on-error: true
         with:
           ref: ${{ steps.last_merge.outputs.short_hash }}
           check-name: 'version_and_changelog'
@@ -64,6 +65,8 @@ jobs:
           issuesWoLabels: false
           maxIssues: 300
           stripGeneratorNotice: true
+          compareLink: false
+          simpleList: true
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
@@ -75,10 +78,10 @@ jobs:
   plugin_build:
     env:
       PLUGIN_NAME: hdr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: hewdrawremix/hewdraw-builder:latest
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -88,10 +91,16 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
+    #- name: Rust Cache
+    #  uses: Swatinem/rust-cache@v2.5.1
+    #  with:
+    #    workspaces: "plugin"
+    #    cache-targets: true
+    #    cache-all-crates: true
+
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
       env:
         HOME: /root
 
@@ -105,7 +114,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: version
-        path: plugin/hdr_version.txt
+        path: hdr_version.txt
 
     - name: Upload distributions artifact
       uses: actions/upload-artifact@v3
@@ -115,7 +124,7 @@ jobs:
 
   ##############  handle uploading the files to the release  ##############
   upload_to_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [plugin_build, version_and_changelog]
     steps:
     - uses: actions/download-artifact@v3
@@ -138,7 +147,7 @@ jobs:
   # wait for any previous nightlies to complete, since we dont want to step on any 
   # full package uploads prior to this one.
   wait_for_previous_builds:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: upload_to_release
     steps:
       - name: checkout version
@@ -152,7 +161,7 @@ jobs:
 
   ##############  handle the creasion of the full package installation  ##############
   full_package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [version_and_changelog, wait_for_previous_builds]
     steps:
     - name: checkout version
@@ -219,8 +228,39 @@ jobs:
       with:
         name: version
         
+    # build the lvd files
+    # - id: lvd_files
+    #   uses: robinraju/release-downloader@v1.7
+    #   with:
+    #     repository: "techyCoder81/SSBU-LVD-data-dump"
+    #     tag: release
+    #     fileName: "lvd_dumper.zip"
+
+    # - name: Setup dotnet
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: '5.0.408'
+
+    # - name: extract lvd data
+    #   id: lvd_extract
+    #   shell: bash
+    #   run: |
+    #     . scripts/extract_lvd_data.sh
+
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
+
+    # - name: Push lvd file to Suddy's HDRStageTool
+    #   uses: dmnemec/copy_file_to_another_repo_action@main
+    #   env:
+    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
+    #   with:
+    #     source_file: 'artifacts/lvd.zip'
+    #     destination_folder: 'nightly'
+    #     destination_repo: 'SuddyN/HDRStageTool'
+    #     user_email: 'suddy121800@hotmail.com'
+    #     user_name: 'SuddyN'
+    #     destination_branch: 'gh-pages'
 
     - name: Upload full package to nightlies
       uses: svenstaro/upload-release-action@v2
@@ -238,7 +278,7 @@ jobs:
 
   ################  handle the creation of to-nightly.zip  ################
   to_nightly:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
@@ -246,7 +286,7 @@ jobs:
 
     # get the nightly
     - id: latest_nightly
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Nightlies"
         tag: ${{ needs.version_and_changelog.outputs.version }}
@@ -303,7 +343,7 @@ jobs:
 
   ################  handle the creation of to-beta.zip  ################
   to_beta:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
@@ -311,7 +351,7 @@ jobs:
 
     # get the beta
     - id: latest_beta
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Releases"
         latest: true

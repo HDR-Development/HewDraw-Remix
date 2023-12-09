@@ -26,6 +26,9 @@ unsafe extern "C" fn special_hi_finish2_pre(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );
+    
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
+    super::Set_Pyra_Up_Special_Cancel(fighter, true);
 
     0.into()
 }
@@ -57,15 +60,20 @@ unsafe extern "C" fn special_hi_finish2_main(fighter: &mut L2CFighterCommon) -> 
 unsafe extern "C" fn special_hi_finish2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [h] when the motion is over disable special hi jump and special s
     if MotionModule::is_end(fighter.module_accessor) {
-        VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP);
-        VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
+        if VarModule::is_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), true.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
     }
 
     0.into()
 }
 
 unsafe extern "C" fn special_hi_finish2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL);
     0.into()
 }
 

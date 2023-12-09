@@ -1,9 +1,11 @@
 use super::*;
+
+mod special_hi;
+
+
 /// Prevents down b being reused
 unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 || VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_RAYCAST) == 1 ||
-	(VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST) > 130 || VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST) < -130)||
-	(VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST) > 70 || VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST) < -70){
+    if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 {
         false.into()
     } else {
         true.into()
@@ -23,4 +25,5 @@ fn rosetta_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(rosetta_init);
+    special_hi::install();
 }

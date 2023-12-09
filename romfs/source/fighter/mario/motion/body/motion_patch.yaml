@@ -1,0 +1,109 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+throw_lw:
+  extra:
+    cancel_frame: 38
+throw_hi:
+  extra:
+    cancel_frame: 37
+attack_12:
+  extra:
+    cancel_frame: 18
+special_n:
+  extra:
+    cancel_frame: 41
+attack_13:
+  extra:
+    cancel_frame: 25
+attack_11:
+  extra:
+    cancel_frame: 16
+attack_lw3:
+  extra:
+    cancel_frame: 25
+attack_hi4:
+  extra:
+    cancel_frame: 44
+attack_lw4:
+  extra:
+    cancel_frame: 45
+appeal_hi_l:
+  extra:
+    cancel_frame: 65
+attack_s3_s:
+  flags:
+    move: false
+appeal_hi_r:
+  extra:
+    cancel_frame: 65
+attack_s3_lw:
+  flags:
+    move: false
+attack_air_b:
+  extra:
+    cancel_frame: 30
+attack_air_f:
+  extra:
+    cancel_frame: 48
+attack_s3_hi:
+  flags:
+    move: false
+attack_air_lw:
+    blend_frames: 3
+    animations:
+      - name: c05attackairlw.nuanmb
+    extra:
+      cancel_frame: 35
+landing_air_lw:
+    blend_frames: 2
+    animations:
+      - name: c05landingairlw.nuanmb
+    extra:
+      cancel_frame: 10
+attack_air_hi:
+  extra:
+    cancel_frame: 30
+special_lw_light:
+    game_script: game_speciallwlight
+    flags:
+      turn: false
+      loop: false
+      move: false
+    blend_frames: 5
+    animations:
+      - name: d03speciallwlight.nuanmb
+    scripts:
+      - expression_speciallwlight
+      - sound_speciallwlight
+      - effect_speciallwlight
+    extra:
+      cancel_frame: 55
+special_air_lw_light:
+    game_script: game_specialairlwlight
+    flags:
+      turn: false
+      loop: false
+      move: false
+    blend_frames: 5
+    animations:
+      - name: d03specialairlwlight.nuanmb
+    scripts:
+      - expression_specialairlwlight
+      - sound_specialairlwlight
+      - effect_specialairlwlight
+    extra:
+      cancel_frame: 61
+catch_attack:
+  extra:
+    cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10

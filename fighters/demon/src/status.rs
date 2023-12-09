@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 
 utils::import_noreturn!(common::shoto_status::{
-    fgc_pre_dashback,
     fgc_end_dashback,
     ryu_idkwhatthisis2
 });
@@ -78,12 +77,6 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIGHTER_DEMON_STATUS_KIND_DASH_BACK //
-
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    common::shoto_status::fgc_pre_dashback(fighter);
-    original!(fighter)
-}
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -351,11 +344,19 @@ pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
 }
 
+// FIGHTER_STATUS_KIND_ATTACK_AIR //
+// For fixing momentum transfer
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    original!(fighter)
+}
+
 pub fn install() {
     //skyline::install_hooks!(demon_ongrab);
     install_status_scripts!(
         pre_turndash,
-        pre_dashback,
         main_dashback,
         end_dashback,
         status_dash,
@@ -363,7 +364,8 @@ pub fn install() {
         demon_attackcombo_main,
         wait_pre,
         //wait_main,
-        landing_main
+        landing_main,
+        attackair_pre
         
     );
 }

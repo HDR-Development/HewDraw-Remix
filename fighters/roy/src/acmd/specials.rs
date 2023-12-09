@@ -25,7 +25,7 @@ unsafe fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialnend" , category = ACMD_EFFECT , low_priority)]
@@ -67,7 +67,7 @@ unsafe fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "sound_specialnend" , category = ACMD_SOUND , low_priority)]
@@ -94,9 +94,6 @@ unsafe fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
     }
@@ -137,7 +134,7 @@ unsafe fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialnend3" , category = ACMD_GAME , low_priority)]
@@ -163,7 +160,7 @@ unsafe fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
@@ -189,7 +186,7 @@ unsafe fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairnend" , category = ACMD_EFFECT , low_priority)]
@@ -231,7 +228,7 @@ unsafe fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "sound_specialairnend" , category = ACMD_SOUND , low_priority)]
@@ -258,9 +255,6 @@ unsafe fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
     }
@@ -301,7 +295,7 @@ unsafe fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairnend3" , category = ACMD_GAME , low_priority)]
@@ -327,7 +321,7 @@ unsafe fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specials1" , category = ACMD_GAME , low_priority)]
@@ -375,7 +369,7 @@ unsafe fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
@@ -408,7 +402,7 @@ unsafe fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
@@ -489,7 +483,7 @@ unsafe fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
@@ -515,7 +509,7 @@ unsafe fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
@@ -541,7 +535,7 @@ unsafe fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specials2lw" , category = ACMD_GAME , low_priority)]
@@ -594,7 +588,7 @@ unsafe fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
@@ -627,7 +621,7 @@ unsafe fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairs2lw" , category = ACMD_GAME , low_priority)]
@@ -680,7 +674,7 @@ unsafe fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
@@ -713,7 +707,7 @@ unsafe fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
@@ -742,7 +736,7 @@ unsafe fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
@@ -771,7 +765,7 @@ unsafe fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specials3s" , category = ACMD_GAME , low_priority)]
@@ -832,7 +826,7 @@ unsafe fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
@@ -862,7 +856,7 @@ unsafe fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairs3s" , category = ACMD_GAME , low_priority)]
@@ -924,7 +918,7 @@ unsafe fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
@@ -954,7 +948,7 @@ unsafe fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
@@ -983,7 +977,7 @@ unsafe fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
@@ -1012,7 +1006,7 @@ unsafe fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
@@ -1041,7 +1035,7 @@ unsafe fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
@@ -1070,7 +1064,7 @@ unsafe fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
@@ -1099,7 +1093,7 @@ unsafe fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
@@ -1128,7 +1122,7 @@ unsafe fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
@@ -1182,7 +1176,7 @@ unsafe fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f5aad5977), false, true);
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
@@ -1236,7 +1230,7 @@ unsafe fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f5aad5977), false, true);
         COL_NORMAL(fighter);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
@@ -1256,6 +1250,7 @@ unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
     }
     frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 0.65);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 84, 100, 120, 0, 5.1, 0.0, 11.0, 10.0, Some(0.0), Some(7.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
@@ -1274,7 +1269,7 @@ unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 1, Hash40::new("top"), 8.0, 60, 144, 0, 40, 6.5, 0.0, 17.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 1, Hash40::new("top"), 4.0, 60, 130, 0, 40, 6.5, 0.0, 17.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         AttackModule::clear(boma, 1, false);
     }
     wait(lua_state, 2.0);
@@ -1283,15 +1278,21 @@ unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
-    
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+    }
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
@@ -1301,6 +1302,7 @@ unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
     }
     frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 0.65);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.5, 84, 100, 120, 0, 4.6, 0.0, 11.0, 10.0, Some(0.0), Some(7.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
@@ -1318,7 +1320,7 @@ unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 1, Hash40::new("top"), 8.0, 60, 144, 0, 40, 6.3, 0.0, 17.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 1, Hash40::new("top"), 4.0, 60, 130, 0, 40, 6.3, 0.0, 17.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         AttackModule::clear(boma, 1, false);
     }
     wait(lua_state, 2.0);
@@ -1327,17 +1329,16 @@ unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 30.0);
+    FT_MOTION_RATE(fighter, 15.0/(40.0-30.0));
+    frame(lua_state, 33.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 15.0/(40.0-30.0));
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
-    
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "roy", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
@@ -1359,7 +1360,7 @@ unsafe fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "roy", script = "game_specialairlwhit" , category = ACMD_GAME , low_priority)]
@@ -1377,7 +1378,7 @@ unsafe fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 pub fn install() {

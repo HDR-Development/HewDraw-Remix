@@ -3,14 +3,22 @@
   <list hash="cliff_hang_data">
     <struct index="0">
       <float hash="p1_x">17</float>
-      <float hash="p1_y">21.5</float>
+      <float hash="p1_y">22</float>
       <float hash="p2_x">-11.6</float>
     </struct>
   </list>
-  <list hash="param_lightshuriken">
+  <list hash="param_special_n">
     <struct index="0">
-      <int hash="is_penetration">1</int>
+      <float hash="n1_offset_ground_x">9.0</float>
+      <float hash="n1_offset_ground_y">2.0</float>
+      <float hash="n1_offset_air_x">9.0</float>
+      <float hash="n1_offset_air_y">2.0</float>
     </struct>
+    <hash40 index="1">dummy</hash40>
+    <struct index="2">
+      <float hash="n3_attack_power_mul_max">2.0</float>
+    </struct>
+    <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_s">
     <struct index="0">
@@ -18,7 +26,7 @@
     </struct>
     <struct index="1">
       <int hash="s2_dash_frame">18</int>
-      <float hash="s2_air_dash_spd_min">3</float>
+      <float hash="s2_air_dash_spd_min">2.6</float>
       <float hash="s2_air_dash_spd_mul">0.047</float>
       <float hash="s2_hit_offset_x">100000</float>
       <float hash="s2_hit_offset_y">100000</float>
@@ -29,6 +37,25 @@
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_tornadoshot">
+    <struct index="0">
+      <float hash="life">50</float>
+      <float hash="speed_x">0.3</float>
+      <float hash="limit_speed_x">2.0</float>
+      <float hash="speed_y">0.05</float>
+      <float hash="accel_y">-0.025</float>
+      <float hash="limit_speed_y">-1.8</float>
+    </struct>
+  </list>
+  <list hash="param_lightshuriken">
+    <struct index="0">
+      <int hash="life">50</int>
+      <float hash="speed">2</float>
+      <float hash="accel">0</float>
+      <float hash="rot_speed">0</float>
+      <int hash="is_penetration">1</int>
+    </struct>
+  </list>
   <list hash="param_chakram">
     <struct index="0">
       <int hash="life">66</int>
@@ -38,14 +65,18 @@
     </struct>
   </list>
   <list hash="param_special_hi">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <float hash="hi1_air_start_mul_y">0.7</float>
+    </struct>
     <struct index="1">
-      <float hash="hi2_rush_speed">2.6</float>
+      <float hash="hi2_rush_speed">2.4</float>
+      <int hash="hi2_landing_frame">24</int>
     </struct>
     <struct index="2">
       <float hash="hi3_air_start_spd_y">2.3</float>
-      <float hash="hi3_air_gravity_y_mul">0.525</float>
-      <float hash="hi3_air_accel_x_mul">0.35</float>
+      <float hash="hi3_air_gravity_y_mul">0.55</float>
+      <float hash="hi3_air_spd_x_mul">0.4</float>
+      <float hash="hi3_air_accel_x_mul">0.01</float>
       <float hash="hi3_air_max_x_mul">0.5</float>
     </struct>
     <hash40 index="3">dummy</hash40>
@@ -58,7 +89,9 @@
       <float hash="lw1_attack_mul">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
+    <struct index="2">
+      <float hash="lw3_end_air_to_ground_brake">0.154</float>
+    </struct>
     <hash40 index="3">dummy</hash40>
   </list>
 </struct>

@@ -56,7 +56,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
         }
         else{
             FT_MOTION_RATE(fighter, 0.800);
-        } 
+        }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -157,7 +157,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
 #[acmd_script( agent = "master", script = "effect_attacks4hi" , category = ACMD_EFFECT , low_priority)]
@@ -193,7 +193,7 @@ unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 19, 34.5, -18, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            
+
         }
     }
     frame(lua_state, 25.0);
@@ -265,7 +265,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         else{
             FT_MOTION_RATE(fighter, 0.800);
-        } 
+        }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -366,7 +366,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
 #[acmd_script( agent = "master", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
@@ -402,7 +402,7 @@ unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 10, 35, 0, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            
+
         }
     }
     frame(lua_state, 25.0);
@@ -474,7 +474,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
         }
         else{
             FT_MOTION_RATE(fighter, 0.800);
-        } 
+        }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -575,7 +575,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
 #[acmd_script( agent = "master", script = "effect_attacks4lw" , category = ACMD_EFFECT , low_priority)]
@@ -611,7 +611,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 1, 34, 16, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            
+
         }
     }
     frame(lua_state, 25.0);
@@ -658,6 +658,98 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "master", scripts = ["expression_attacks4hi", "expression_attacks4", "expression_attacks4lw"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_MASTER_INSTANCE_WORK_ID_FLAG_SWORD_OFF_EFFECT_AURA);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.0);
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    app::sv_animcmd::execute(lua_state, 14.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new_raw(0x1782d1b9f2), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 1);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 2);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 3);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 4);
+    }
+    frame(lua_state, 44.0);
+    frame(lua_state, 46.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        }
+    }
+    frame(lua_state, 85.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_MASTER_INSTANCE_WORK_ID_FLAG_SWORD_REQ_EFFECT_AURA);
+    }
+}
+
+#[acmd_script( agent = "master", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn master_attack_lw4_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, false, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, Hash40::new("attack_lw4"), false, -1.0);
+    }
+    frame(lua_state, 3.0);
+    app::sv_animcmd::execute(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            let frame = WorkModule::get_float(boma, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
+            ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, Hash40::new("attack_lw4"), true, 3.0);
+        }
+    }
+    frame(lua_state, 5.0);
+        FT_MOTION_RATE(fighter, 1.3);
+    frame(lua_state, 15.0);
+        FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 23.0, 63, 66, 0, 74, 3.7, 0.0, 3.5, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 23.0, 63, 66, 0, 74, 4.8, 0.0, 13.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 23.0, 63, 66, 0, 74, 3.7, 0.0, 3.5, -11.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 23.0, 63, 66, 0, 74, 4.8, 0.0, 13.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 78.0);
+
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE,app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         master_attack_s4_charge_effect,
@@ -667,6 +759,8 @@ pub fn install() {
         master_attack_s4_s_effect,
         master_attack_s4_lw_game,
         master_attack_s4_lw_effect,
+        master_attack_s4_expression,
+        master_attack_lw4_game,
     );
 }
 

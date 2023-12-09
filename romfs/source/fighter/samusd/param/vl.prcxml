@@ -4,7 +4,12 @@
     <struct index="0">
       <float hash="p1_y">23.5</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="p1_x">49</float>
+      <float hash="p1_y">44</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-24</float>
+    </struct>
     <hash40 index="2">dummy</hash40>
   </list>
   <list hash="param_gbeam">
@@ -76,7 +81,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="sjump_ar_vy0">2.65</float>
+      <float hash="sjump_ar_vy0">2.85</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -94,7 +99,8 @@
   </list>
   <list hash="param_bomb">
     <struct index="0">
-      <int hash="life">240</int>
+      <int hash="life">180</int>
+      <float hash="0x1c309814d2">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

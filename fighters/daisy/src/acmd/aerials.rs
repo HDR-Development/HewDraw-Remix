@@ -187,6 +187,21 @@ unsafe fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "daisy", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn daisy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
 #[acmd_script( agent = "daisy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -229,6 +244,36 @@ unsafe fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "daisy", script = "expression_attackairlw" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn daisy_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 16);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         daisy_attack_air_n_game,
@@ -238,7 +283,9 @@ pub fn install() {
         daisy_attack_air_hi_game,
         daisy_attack_air_hi_sound,
         daisy_attack_air_hi_effect,
+        daisy_attack_air_hi_expression,
         daisy_attack_air_lw_game,
+        daisy_attack_air_lw_expression,
     );
 }
 

@@ -92,6 +92,21 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "luigi", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 6.6, 9.5, 180, 0, 0, 1.15, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), -10, 7, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, false);
+        LAST_EFFECT_SET_RATE(agent, 1.4);
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -115,6 +130,31 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+#[acmd_script( agent = "luigi", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -1, 7, 1, 0, 70, 90, 0.9, true, *EF_FLIP_YZ);
+    }
+}
+
+#[acmd_script( agent = "luigi", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 
 #[acmd_script( agent = "luigi", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
@@ -159,7 +199,10 @@ pub fn install() {
         game_attackairn,
         game_attackairf,
         game_attackairb,
+        effect_attackairb,
         game_attackairhi,
+        effect_attackairhi,
+        expression_attackairhi,
         game_attackairlw,
     );
 }

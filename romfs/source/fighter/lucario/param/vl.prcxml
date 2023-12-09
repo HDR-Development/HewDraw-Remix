@@ -2,36 +2,65 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">22.5</float>
+      <float hash="p1_y">25</float>
+      <float hash="p2_y">12</float>
     </struct>
     <struct index="1">
       <float hash="p1_y">20</float>
     </struct>
   </list>
-  <list hash="param_aurapower">
+  <list hash="param_auraball">
     <struct index="0">
-      <float hash="min_aurapower">1</float>
-      <float hash="max_aurapower">1.1</float>
-      <float hash="max_damage">125</float>
+      <float hash="charge_max_scale">4.5</float>
+      <float hash="charge_max_scale_shoot">4.5</float>
     </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
-  <list hash="param_aurapower_hp_mode">
+  <list hash="param_special_s">
     <struct index="0">
-      <float hash="min_aurapower">1</float>
-      <float hash="max_aurapower">1.1</float>
-      <float hash="bottom">1</float>
-      <float hash="cap">1.1</float>
+      <float hash="critical_aura_power">1.45</float>
+      <int hash="critical_frame">4</int>
+      <int hash="critical_slow_rate">4</int>
+      <float hash="critical_zoom_rate">1.0</float>
+      <int hash="critical_zoom_in_frame">999</int>
+      <int hash="critical_bg_only_frame">999</int>
     </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="rush_speed">4</float>
       <float hash="0x189cd804c5">0.8</float>
       <float hash="angle_speed">2</float>
+      <float hash="end_accel_y">0.3</float>
       <int hash="landing_frame">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <int hash="blank_frame">6</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_aurapower">
+    <struct index="0">
+      <float hash="se_middle_aurapower">1.0</float>
+      <float hash="se_high_aurapower">1.25</float>
+    </struct>
+  </list>
+  <list hash="param_aurascale">
+    <struct index="0">
+      <float hash="min_aura_power">0.85</float>
+      <float hash="max_aura_power">1.3</float>
+    </struct>
   </list>
 </struct>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <struct hash="param_waist">
+    <float hash="deplete_damage_min">4.0</float>
+    <float hash="max_charge_frames">20.0</float>
+    <float hash="attack_s3_charge_start">8.0</float>
+    <float hash="attack_s3_charge_end">10.0</float>
+    <float hash="attack_hi3_charge_start">2.0</float>
+    <float hash="attack_hi3_charge_end">3.0</float>
+    <float hash="attack_lw3_charge_start">9.0</float>
+    <float hash="attack_lw3_charge_end">11.0</float>
+    <float hash="special_lw_charge_start">1.0</float>
+    <float hash="special_lw_charge_end">2.0</float>
+  </struct>
+   <struct hash="param_special_hi">
+    <int hash="rise_min_frame">12</int>
+    <float hash="start_brake_x">0.04</float>
+    <float hash="start_limit_spd_x">1.3</float>
+    <float hash="start_stable_spd_y">0.1</float>
+    <float hash="fly_charge_min_spd_x">0.4</float>
+    <float hash="fly_charge_x_mul">0.007</float>
+    <float hash="fly_limit_spd_x">1.0</float>
+    <float hash="fly_charge_min_spd_y">2.5</float>
+    <float hash="fly_charge_y_mul">0.01</float>
+    <float hash="fly_lean_min_spd_x">0.3</float>
+    <float hash="fly_lean_min_acl_x">0.01</float>
+    <float hash="fly_lean_charge_x_mul">0.007</float>
+    <float hash="fly_lean_spd_y">0.0025</float>
+    <float hash="fly_no_lean_spd_y">0.055</float>
+    <float hash="fly_lean_f_spd_y">0.08</float>
+    <float hash="fall_brake_x">0.01</float>
+    <float hash="fall_stable_spd_x">1.0</float>
+    <float hash="fall_limit_spd_x">2.0</float>
+    <float hash="fall_special_spd_y">1.7</float>
+  </struct>
+</struct>
