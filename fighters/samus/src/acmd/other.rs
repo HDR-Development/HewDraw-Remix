@@ -42,6 +42,10 @@ unsafe fn game_appeals(fighter: &mut L2CAgentBase) {
         let new_ice = !VarModule::is_flag(fighter.battle_object, vars::samus::instance::ICE_MODE);
         VarModule::set_flag(fighter.battle_object, vars::samus::instance::ICE_MODE, new_ice);
         suit_effect(fighter.module_accessor,fighter.battle_object);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_SPECIAL_N_COUNT);
+        EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
+        let eff_max = WorkModule::get_int(fighter.module_accessor, *FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_EFH_CHARGE_MAX);
+        effect!(fighter, MA_MSC_EFFECT_REMOVE, eff_max, 1);
     }
 }
 
