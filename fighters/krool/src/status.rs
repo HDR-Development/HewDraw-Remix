@@ -45,11 +45,11 @@ pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CVa
     let fall_stop_frame = 20.0;
     let landing_frame = 21.0;
 
-    if prev_frame < start_air_frame && frame >= start_air_frame {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_THROW_FLAG_START_AIR);
-    }
     if frame <= fall_start_frame {
         return 0.into()
+    }
+    if prev_frame < start_air_frame && frame >= start_air_frame {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_THROW_FLAG_START_AIR);
     }
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         if prev_frame < fall_stop_frame && frame >= fall_stop_frame {
