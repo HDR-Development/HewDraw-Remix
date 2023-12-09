@@ -1501,6 +1501,7 @@ end
 local strike_stage = function(panel_id, is_strike)
     if panel_id ~= UI_INVALID_INDEX and stage_panels[panel_id + 1].is_striked_ ~= is_strike then
         stage_panels[panel_id + 1].is_striked_ = is_strike
+        UiSoundManager.play_se_label("se_system_plate_catch")
         local parts = root_view:get_parts(get_stage_panel_name(panel_id))
         local strike_pane = parts:get_pane("set_rep_strike")
         strike_pane:set_visible(is_strike)
