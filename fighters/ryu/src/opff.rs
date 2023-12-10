@@ -53,6 +53,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
     ryu_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
+    ryu_ex_hado(fighter, boma, frame);
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
     fastfall_specials(fighter);
 }
@@ -157,9 +158,9 @@ unsafe fn ryu_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
     // only check EX if this is a heavy shoryu with A+B on f4
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
-    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll | Buttons::Parry)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
-    && frame == 4.0 {
+    && frame <= 4.0 {
         // change into different motions depending on current motion
         // MeterModule and VarModule calls are repeated so that I know
         // for 100% fact they can only be called if we change motion
@@ -185,6 +186,27 @@ unsafe fn ryu_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 
         }
     }
+}
+
+unsafe fn ryu_ex_hado(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND,
+    ]) {
+        return;
+    }
+
+    // EX Hado
+    if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+    && boma.is_button_on(Buttons::SpecialAll)
+    && frame > 1.0 && frame <= 4.0
+    && MeterModule::drain(boma.object(), 1) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+    }
+
 }
 
 /// determines what cancels can be done out of specials

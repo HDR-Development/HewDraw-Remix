@@ -21,7 +21,11 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 14.0);
-    FT_MOTION_RATE(fighter, 36.0 / (58.0 - 14.0));
+    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 18.0);
+    } else {
+        FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 36.0);
+    }
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -166,13 +170,21 @@ unsafe fn effect_specialn(fighter: &mut L2CAgentBase) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             }
         }
-        frame(lua_state, 14.0);
-        if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
-                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        for _ in 0..6 {
+            wait(lua_state, 3.0);
+            if is_excute(fighter) {
+                if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                    FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+                }
+            }
+            wait(lua_state, 3.0);
+            if is_excute(fighter) {
+                if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                    FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+                }
             }
         }
-        frame(lua_state, 16.0);
+        wait(lua_state, 3.0);
         if is_excute(fighter) {
             if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
                 COL_NORMAL(fighter);
