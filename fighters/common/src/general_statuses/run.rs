@@ -174,7 +174,7 @@ unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
     ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
     
-    fighter.sub_shift_status_main(L2CValue::Ptr(status_turnrunbrake_main as *const () as _))
+    fighter.main_shift(status_turnrunbrake_main)
 }
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon24status_TurnRunBrake_MainEv")]
@@ -185,7 +185,7 @@ unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into()
     }
 
-	call_original!(fighter)
+    call_original!(fighter)
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_TURN_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
