@@ -77,6 +77,20 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
 }
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+    // resets IS_USE_EX_SPECIAL
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
+    ]) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+    }
+    
     // Re-enables the ability to use sideB when connecting to ground or cliff
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {

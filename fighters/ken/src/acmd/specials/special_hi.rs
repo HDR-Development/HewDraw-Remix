@@ -6,6 +6,10 @@ use super::*;
 unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -66,6 +70,10 @@ unsafe fn game_specialairhiend(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);

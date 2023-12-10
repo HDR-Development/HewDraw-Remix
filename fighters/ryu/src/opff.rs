@@ -52,6 +52,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     target_combos(boma);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
+    ryu_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
     fastfall_specials(fighter);
 }
@@ -145,6 +146,47 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn ryu_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+    ])
+    || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        return;
+    }
+    // only check EX if this is a heavy shoryu with A+B on f4
+    if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll | Buttons::Parry)
+    && boma.is_button_on(Buttons::SpecialAll)
+    && frame == 4.0 {
+        // change into different motions depending on current motion
+        // MeterModule and VarModule calls are repeated so that I know
+        // for 100% fact they can only be called if we change motion
+        if boma.is_motion(Hash40::new("special_hi"))
+        && MeterModule::drain(boma.object(), 1) {
+            MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
+        } else if boma.is_motion(Hash40::new("special_hi_command"))
+        && MeterModule::drain(boma.object(), 1) {
+            MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
+        } else if boma.is_motion(Hash40::new("special_air_hi"))
+        && MeterModule::drain(boma.object(), 1) {
+            MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
+        } else if boma.is_motion(Hash40::new("special_air_hi_command"))
+        && MeterModule::drain(boma.object(), 1) {
+            MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
+        }
+    }
+}
+
 /// determines what cancels can be done out of specials
 unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
 
@@ -158,7 +200,6 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
-        CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ken::ATTACK_COMMAND_4)
         ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     );
 
@@ -194,10 +235,6 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         AttackModule::clear_all(fighter.module_accessor);
-        return;
-    }
-
-    if !is_nspecial_cancel {
         return;
     }
 
