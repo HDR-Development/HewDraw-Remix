@@ -62,6 +62,7 @@ unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
         if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
             if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
                 EFFECT_FOLLOW(fighter, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
             }
