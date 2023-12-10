@@ -857,7 +857,9 @@ pub mod vars {
 
     pub mod pikachu {
         pub mod instance {
+            // flags
             pub const DISABLE_QA_JC: i32 = 0x0100;
+            pub const QUICK_ATTACK_CANCEL: i32 = 0x0101;
         }
     }
 
