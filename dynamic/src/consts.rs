@@ -857,7 +857,9 @@ pub mod vars {
 
     pub mod pikachu {
         pub mod instance {
+            // flags
             pub const DISABLE_QA_JC: i32 = 0x0100;
+            pub const QUICK_ATTACK_CANCEL: i32 = 0x0101;
         }
     }
 
@@ -965,14 +967,19 @@ pub mod vars {
 
     pub mod shizue {
         pub mod instance {
+            // flags
+            pub const LLOID_ASYNC: i32 = 0x0100;
+
             // floats
             pub const STORED_BALLOON_POWER: i32 = 0x0100;
+
+            // ints
+            pub const LLOID_TIMER: i32 = 0x0100;
         }
         pub mod status {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
             pub const IS_DETACH_BOOST: i32 = 0x1101;
-            pub const IS_LLOID_READY: i32 = 0x1102;
         }
     }
 
@@ -1314,6 +1321,8 @@ pub mod vars {
             // flags
             pub const FLAME_ACTIVE: i32 = 0x1100;
             pub const CLOUD_COVER: i32 = 0x1101;
+            pub const BITE_START: i32 = 0x1102;
+            pub const BURST: i32 = 0x1103;
         }
     }
 
