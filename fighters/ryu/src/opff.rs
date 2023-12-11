@@ -54,7 +54,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     turn_run_back_status(fighter, boma, status_kind);
     ryu_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
     ryu_ex_hado(fighter, boma, frame);
-    tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
+    ryu_ex_tatsu(fighter, boma, frame);
     fastfall_specials(fighter);
 }
 
@@ -207,6 +207,45 @@ unsafe fn ryu_ex_hado(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 
+}
+
+unsafe fn ryu_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
+    ]) {
+        return;
+    }
+
+    // EX Tatsu
+    // if A+B on f4 and not already EX tatsu, set EX_SPECIAL flag
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
+    ])
+    && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+    && boma.is_button_on(Buttons::SpecialAll)
+    && frame <= 7.0
+    && MeterModule::drain(boma.object(), 1) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+    }
+
+    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    } 
+    // Tatsu gravity
+    // if holding special in the air, we float
+    // params have been modified to make us fall otherwise
+    else if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_button_on(Buttons::SpecialAll)
+    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
+    {
+        KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
 }
 
 /// determines what cancels can be done out of specials
@@ -423,40 +462,5 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         _ => {
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
-    }
-}
-
-// Shotos Tatsumaki Land Cancel, hover, and EX momentum handling
-unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    if !boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_S, 
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
-    ]) {
-        return;
-    }
-
-    let jump_rising = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-    let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};
-	let ex_momentum = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    let prev_situation_kind = StatusModule::prev_situation_kind(boma);
-
-    if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-    }
-
-    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
-        KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    }
-
-    // Tatsu gravity
-    // if holding special in the air, we float
-    // params have been modified to make us fall otherwise
-    if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_button_on(Buttons::SpecialAll)
-    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0 {
-        KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
