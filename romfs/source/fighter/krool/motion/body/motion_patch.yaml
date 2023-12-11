@@ -86,7 +86,7 @@ special_air_hi:
     unk_2000: false
   blend_frames: 0
   animations:
-    - name: d02specialhi.nuanmb
+    - name: d02specialairhi.nuanmb
       unk: 0
   scripts:
     - expression_specialhi

@@ -64,6 +64,15 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     }
 }
 
+pub unsafe fn hi_fall_drift(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, stick_x: f32) {
+   if fighter.is_status_one_of(&[*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END]) {
+        let lr = PostureModule::lr(boma);
+        let speed_vec = Vector3f{x: (stick_x * lr * 0.2), y: 0.0, z: 0.0};
+        KineticModule::add_speed(boma, &speed_vec);
+    } 
+}
+
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -101,6 +110,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     armored_charge(fighter, motion_kind);
     var_reset(fighter);
+    hi_fall_drift(fighter, boma, stick_x);
     fastfall_specials(fighter);
 }
 
