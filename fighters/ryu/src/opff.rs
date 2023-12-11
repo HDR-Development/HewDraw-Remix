@@ -336,21 +336,13 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         return;
     }
-    
-    // Tilt cancels
+
     if [
-        *FIGHTER_STATUS_KIND_ATTACK, 
-        // *FIGHTER_STATUS_KIND_ATTACK_DASH,
-    ].contains(&status_kind) {
-        if boma.is_cat_flag(Cat1::AttackS3) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
-        }
-        if boma.is_cat_flag(Cat1::AttackHi3) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
-        }
-        if boma.is_cat_flag(Cat1::AttackLw3) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
-        }
+        *FIGHTER_STATUS_KIND_ATTACK_HI4, 
+    ].contains(&status_kind) 
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && boma.check_jump_cancel(false, true) {
+        return;
     }
 
     // Smash cancels

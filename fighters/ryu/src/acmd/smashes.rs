@@ -132,7 +132,7 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 83, 82, 0, 32, 5.3, 0.0, 9.0, 8.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.4, 83, 95, 0, 30, 5.3, 0.0, 9.0, 8.5, None, None, None, 1.22, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
