@@ -200,24 +200,83 @@ unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool", script = "effect_specialhistart", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_special_hi_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    for _ in 0..50 {
+        wait(lua_state, 12.0);
+        if is_excute(fighter) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        }
+        wait(lua_state, 12.0);
+        if is_excute(fighter) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 2.0, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "krool", scripts = ["sound_specialhistart", "sound_specialairhistart"], category = ACMD_SOUND, low_priority )]
+unsafe fn krool_special_hi_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_krool_special_h02"));
+    }
+}
+
 #[acmd_script( agent = "krool", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn krool_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 26.0, 10.0);
-    frame(lua_state, 26.0);
-    FT_MOTION_RATE_RANGE(fighter, 26.0, 36.0, 15.0);
-    frame(lua_state, 36.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    
+    if is_excute(fighter) {
+        if ArticleModule::is_exist(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK) {
+            if fighter.is_motion(Hash40::new("special_air_hi")) {
+                ArticleModule::change_motion(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, Hash40::new("fly_air"), false, 0.0);
+            } else {
+                ArticleModule::change_motion(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, Hash40::new("fly"), false, 0.0);
+            }
+        }
+    }
 }
 
-#[acmd_script( agent = "krool", script = "effect_special_hi", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "krool", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn krool_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
+}
+
+#[acmd_script( agent = "krool", script = "sound_specialhi", category = ACMD_SOUND, low_priority )]
+unsafe fn krool_special_hi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_krool_special_h02"));
+        PLAY_STATUS(fighter, Hash40::new("se_krool_special_h01"));
+        PLAY_SE(fighter, Hash40::new("se_common_swing_08"));
+    }
+}
+
+#[acmd_script( agent = "krool", script = "expression_specialhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn krool_special_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_jet"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        let charge = (VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL));
+        if charge >= 35 {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        } else {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
 }
 
 #[acmd_script( agent = "krool_backpack", script = "effect_start", category = ACMD_EFFECT, low_priority )]
@@ -403,8 +462,12 @@ pub fn install() {
         krool_special_n_loop_game,
         krool_special_n_loop_effect,
         krool_special_special_s_game,
+        krool_special_hi_start_effect,
+        krool_special_hi_start_sound,
         krool_special_hi_game,
         krool_special_hi_effect,
+        krool_special_hi_sound,
+        krool_special_hi_expression,
         krool_backpack_start_effect,
         krool_backpack_fly_game,
         krool_backpack_effect_fly,
