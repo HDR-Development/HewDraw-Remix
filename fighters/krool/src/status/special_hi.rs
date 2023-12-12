@@ -159,15 +159,15 @@ unsafe extern "C" fn special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) -
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
         }
-        else {
-            let fall_special_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_spd_y");
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            let mut speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-            // if speed_y <= -fall_special_spd_y {
-            //     fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-            // }
-        }
+        // else {
+        //     let fall_special_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_spd_y");
+        //     fighter.clear_lua_stack();
+        //     lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        //     let mut speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+        //     if speed_y <= -fall_special_spd_y {
+        //         fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+        //     }
+        // }
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || !fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
@@ -419,7 +419,6 @@ unsafe extern "C" fn special_hi_movement_helper(fighter: &mut L2CFighterCommon, 
         // if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
         //     special_hi_lerp_motion(fighter, "special_hi_f", "special_hi_b");
         // }
-        // else 
         if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END {
             special_hi_lerp_motion(fighter, "special_hi_air_end_f", "special_hi_air_end_b");
         }
@@ -465,6 +464,12 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
             let fly_lean_f_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_f_spd_y");
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_lean_f_spd_y);
         }
+    }
+    else if (fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END) && fighter.status_frame() >= 15)
+        || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL) {
+        let fall_lean_stick_mul_x = 0.1 * fighter.stick_x(); //ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_lean_stick_mul_x");
+        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x + fall_lean_stick_mul_x, 0.0);
     }
 
 }
