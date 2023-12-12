@@ -70,6 +70,8 @@ pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             return;
         }
         MeterModule::update(fighter.battle_object, false);
+        MeterModule::set_meter_cap(fighter.object(), 4);
+        MeterModule::set_meter_per_level(fighter.object(), 45.0);
         utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_ex_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
@@ -165,22 +167,22 @@ unsafe fn ryu_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         // MeterModule and VarModule calls are repeated so that I know
         // for 100% fact they can only be called if we change motion
         if boma.is_motion(Hash40::new("special_hi"))
-        && MeterModule::drain(boma.object(), 1) {
+        && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_hi_command"))
-        && MeterModule::drain(boma.object(), 1) {
+        && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_air_hi"))
-        && MeterModule::drain(boma.object(), 1) {
+        && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_air_hi_command"))
-        && MeterModule::drain(boma.object(), 1) {
+        && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
@@ -203,7 +205,10 @@ unsafe fn ryu_ex_hado(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
     && frame > 1.0 && frame <= 4.0
-    && MeterModule::drain(boma.object(), 1) {
+    && MeterModule::drain(
+        boma.object(), 
+        (if boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {2} else {1})
+    ) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 
@@ -229,7 +234,7 @@ unsafe fn ryu_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
     && frame <= 7.0
-    && MeterModule::drain(boma.object(), 1) {
+    && MeterModule::drain(boma.object(), 2) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 
@@ -281,7 +286,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // the shinku hadouken
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 6 {
+    && MeterModule::level(fighter.object()) >= 4 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
@@ -291,7 +296,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // the shin shoryuken
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 6 {
+    && MeterModule::level(fighter.object()) >= 4 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());

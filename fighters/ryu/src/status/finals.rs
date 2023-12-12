@@ -38,7 +38,7 @@ pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_FINAL as u32,
         0
     );
-    MeterModule::drain(fighter.object(), 6);
+    MeterModule::drain(fighter.object(), 4);
     return 0.into();
 }
 
@@ -47,6 +47,6 @@ pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_FINAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!(fighter);
-    MeterModule::drain(fighter.object(), 6);
+    MeterModule::drain(fighter.object(), 4);
     ret
 }
