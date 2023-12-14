@@ -326,7 +326,7 @@ unsafe fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
             slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         }
     }
-    if stance.label == 0 {
+    if stance == 0 {
         frame(lua_state, 5.0);
         if is_excute(fighter) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -340,15 +340,15 @@ unsafe fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
     }
     else {
         frame(lua_state, 2.0);
-        if is_excute(agent) {
+        if is_excute(fighter) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_attacks"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         frame(lua_state, 5.0);
-        if is_excute(agent) {
+        if is_excute(fighter) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_attacks"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         frame(lua_state, 8.0);
-        if is_excute(agent) {
+        if is_excute(fighter) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_attacks"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
