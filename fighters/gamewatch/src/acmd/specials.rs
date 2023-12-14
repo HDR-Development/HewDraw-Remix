@@ -312,6 +312,20 @@ unsafe fn gamewatch_special_hi_open_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "gamewatch", script = "expression_specialhiopen" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn gamewatch_special_hi_open_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
 #[acmd_script( agent = "gamewatch_parachute", script = "game_specialhiopen", category = ACMD_GAME, low_priority )]
 unsafe fn gamewatch_parachute_special_hi_open_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -377,6 +391,7 @@ pub fn install() {
         gamewatch_special_hi_game,
         gamewatch_special_hi_open_game,
         gamewatch_special_hi_open_sound,
+        gamewatch_special_hi_open_expression,
         gamewatch_parachute_special_hi_open_game,
         gamewatch_rescue_special_hi_game,
         gamewatch_rescue_special_air_hi_game,
