@@ -110,6 +110,20 @@ unsafe fn packun_attack_s3_s_a_sound(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "packun", script = "expression_attacks3a", category = ACMD_EXPRESSION )]
+unsafe fn packun_attack_s3_s_a_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+    }
+}
+
 #[acmd_script( agent = "packun", script = "game_attacks32" , category = ACMD_GAME , low_priority)]
 unsafe fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -222,6 +236,25 @@ unsafe fn packun_attack_s3_s2_sound(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
             PLAY_SE(agent, Hash40::new("se_common_bomb_s"));
         }
+    }
+}
+
+#[acmd_script( agent = "packun", script = "expression_attacks32", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn packun_attack_s3_s2_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
+    let atk_frame = if stance.label == 2 { 6.0 } else { 5.0 };
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, atk_frame);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -354,9 +387,11 @@ pub fn install() {
         packun_attack_s3_s_a_game,
         packun_attack_s3_s_a_effect,
         packun_attack_s3_s_a_sound,
+        packun_attack_s3_s_a_expression,
         packun_attack_s3_s2_game,
         packun_attack_s3_s2_effect,
         packun_attack_s3_s2_sound,
+        packun_attack_s3_s2_expression,
         packun_attack_hi3_game,
         packun_attack_hi3_expression,
         packun_attack_lw3_game,

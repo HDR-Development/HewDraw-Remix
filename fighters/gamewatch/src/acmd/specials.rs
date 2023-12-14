@@ -260,6 +260,39 @@ unsafe fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gamewatch", scripts = ["expression_specialhi", "expression_specialairhi"] , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn gamewatch_special_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_attach_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_bounce"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("head") as i64, hash40("head_close") as i64);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "gamewatch", script = "game_specialhiopen" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_special_hi_open_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -389,6 +422,7 @@ pub fn install() {
         gamewatch_special_s8_game,
         gamewatch_special_s9_game,
         gamewatch_special_hi_game,
+        gamewatch_special_hi_expression,
         gamewatch_special_hi_open_game,
         gamewatch_special_hi_open_sound,
         gamewatch_special_hi_open_expression,
