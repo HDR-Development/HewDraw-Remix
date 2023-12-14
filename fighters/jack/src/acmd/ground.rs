@@ -135,7 +135,7 @@ unsafe fn jack_attack_dash_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            EFFECT_FOLLOW(fighter, Hash40::new("jack_doyle_attack_line"), Hash40::new("top"), 0, 4, 1, 0, 0, 0, 0.8, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("jack_doyle_attack_line"), Hash40::new("top"), 0, 4, -2, 0, 0, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 0.8);
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
                 EFFECT_FOLLOW(fighter, Hash40::new("jack_attack_line2"), Hash40::new("top"), 7, 2, -2, 0, 0, 0, 0.8, true);
@@ -175,6 +175,27 @@ unsafe fn jack_attack_dash_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "jack", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn jack_attack_dash_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -183,6 +204,7 @@ pub fn install() {
         jack_attack_13_game,
         jack_attack_dash_game,
         jack_attack_dash_effect,
+        jack_attack_dash_expression,
     );
 }
 

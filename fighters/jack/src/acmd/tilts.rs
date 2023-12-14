@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 #[acmd_script( agent = "jack", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
@@ -119,7 +117,6 @@ unsafe fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 #[acmd_script( agent = "jack", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -215,6 +212,7 @@ unsafe fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
 unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 35, 35, 0,60, 2.0, 0.0, 7.0, 5.0, Some(0.0), Some(2.0), Some(18.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
@@ -235,23 +233,27 @@ unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
 unsafe fn jack_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 4, 0, 0, 0, 0, 0, false);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 
 }
 
-#[acmd_script( agent = "jack_doyle", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "expression_attacklw3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn jack_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "jack", script = "game_attacklw3_ex" , category = ACMD_GAME , low_priority)]
@@ -259,7 +261,9 @@ unsafe fn jack_attack_lw3_ex_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 8.0/(7.0-1.0));
+    if fighter.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 8.0/(7.0-1.0));
+    }
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 8.0);
@@ -315,10 +319,7 @@ unsafe fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("jack_gunspecial_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -327,9 +328,55 @@ unsafe fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("jack_gunspecial_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
 
 }
+
+#[acmd_script( agent = "jack", script = "expression_attacklw3_ex", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn jack_attack_lw3_ex_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "jack_doyle", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("jack_doyle_magic_flash"), Hash40::new("handl"), 2, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_doyle_magic_flash2"), Hash40::new("top"), 2, 10, 11, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_doyle_magic_flash2"), Hash40::new("handl"), 2, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_doyle_magic_flash2"), Hash40::new("handl"), 2, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         jack_attack_s3_hi_game,
@@ -340,9 +387,10 @@ pub fn install() {
         jack_attack_hi3_expression,
         jack_attack_lw3_game,
         jack_attack_lw3_effect,
-        jack_doyle_attack_lw3_effect,
+        jack_attack_lw3_expression,
         jack_attack_lw3_ex_game,
-        jack_attack_lw3_ex_effect
+        jack_attack_lw3_ex_effect,
+        jack_attack_lw3_ex_expression,
+        jack_doyle_attack_lw3_effect,
     );
 }
-

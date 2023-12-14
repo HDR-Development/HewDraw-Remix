@@ -81,8 +81,8 @@ unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn arsene_dtilt_motion_change(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_lw3")
-    && fighter.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_lw3_ex"), 0.0, 1.0, false, 0.0, false, false);
+    && !fighter.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_lw3_ex"), 1.0, 1.0, false, 0.0, false, false);
     }
 }
 
