@@ -107,7 +107,7 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
             VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new("float"),
+                Hash40::new("ganon_float"),
                 59.0,
                 1.0,
                 false,
