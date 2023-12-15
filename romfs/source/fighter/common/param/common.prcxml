@@ -142,7 +142,7 @@
   <float hash="damage_speed_no_cliff_stop">999</float>
   <float hash="damage_fly_speed_y_mul_base_accel">0</float>
   <float hash="damage_fly_speed_y_mul">0</float>
-  <float hash="damage_fly_correction_max">18</float>
+  <float hash="damage_fly_correction_max">15</float>
   <float hash="damage_fly_length_mul_max">1</float>
   <float hash="damage_fly_length_mul_min">1</float>
   <int hash="damage_fly_attack_frame">999</int>
