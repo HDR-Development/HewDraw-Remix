@@ -73,7 +73,7 @@ unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> 
             );
         }
     }
-    if WorkModule::count_down_int(
+    if !WorkModule::count_down_int(
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME,
         0,
