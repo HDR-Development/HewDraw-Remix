@@ -5,13 +5,16 @@ use globals::*;
 
  
 unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
-            if frame < 26.0 {
+            if frame < 27.0 {
                 VarModule::off_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
             }
-            if frame >= 26.0 {
+            if frame >= 27.0 {
                 VarModule::on_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
             }
         }
@@ -52,9 +55,54 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status(*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT)  {
-        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 10.0{
+        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 11.0 {
             SlowModule::set_whole(boma, 7, 100);
+        }
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_TURN,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT_DASH,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_HI_WALL_JUMP,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_TURN,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_CANCEL
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
         }
     }
 }
@@ -64,6 +112,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(boma, status_kind, situation_kind);
     aymr_slowdown(boma);
     specialhi_reset(fighter);
+    fastfall_specials(fighter);
 
     // Magic Series
     //areadbhar_dash_cancel(boma, status_kind, situation_kind, cat[0]);

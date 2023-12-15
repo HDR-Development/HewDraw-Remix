@@ -3,8 +3,9 @@
   <int hash="precede">5</int>
   <int hash="precede_extension">0</int>
   <float hash="ground_speed_limit">4</float>
+  <float hash="stop_over_speed_brake_mul">1</float>
   <float hash="turn_stick_x">-0.2</float>
-  <float hash="dash_stick_x">0.8</float>
+  <float hash="dash_stick_x">0.7957</float>
   <float hash="dash_s4_frame">4</float>
   <float hash="dash_s4_frame_easy">6</float>
   <float hash="dash_s4_frame_hard">2</float>  
@@ -13,16 +14,19 @@
   <int hash="turn_dash_frame">-1</int>
   <int hash="re_dash_frame">17</int>
   <float hash="dash_end_speed_mul">1</float>
-  <float hash="run_stick_x">0.62</float>
-  <float hash="turn_run_stick_x">-0.38</float>
+  <float hash="run_stick_x">0.59</float>
+  <float hash="turn_run_stick_x">-0.3178</float>
   <float hash="run_motion_rate_max">4</float>
   <float hash="turn_run_stop_brake_mul">1</float>
   <float hash="run_brake_stop_shake_speed">999</float>
-  <float hash="squat_stick_y">-0.625</float>
+  <float hash="squat_stick_y">-0.5959</float>
   <float hash="squat_damage_reaction_mul">0.7</float>
+  <float hash="squat_f_stick_x_min">0.2248</float>
+  <float hash="squat_f_stick_x_max">0.6244</float>
   <int hash="jump_flick_y">4</int>
   <int hash="jump_initial_frame">5</int>
-  <float hash="jump_run_stick_y">0.635</float>
+  <float hash="jump_run_stick_y">0.607</float>
+  <float hash="dive_cont_value">-0.6415</float>
   <int hash="tread_jump_after_xlu_frame">0</int>
   <int hash="tread_jump_disable_frame_after_attack">8</int>
   <float hash="shield_max">60</float>
@@ -39,16 +43,16 @@
   <float hash="shield_rebound_ground_brake">1.15</float>
   <int hash="guard_off_cancel_frame">14</int>
   <int hash="guard_off_disable_shield_recovery">14</int>
-  <int hash="shield_just_frame">2</int>
+  <int hash="shield_just_frame">4</int>
   <float hash="0x2cacbf2a63">12</float>
   <float hash="just_shield_speed_rate">0.01</float>
   <int hash="shield_setoff_escape">999</int>
   <float hash="0x20d241cd64">0.85</float>
   <int hash="guard_damage_just_shield_disable_frame">1</int>
   <int hash="escape_flick_y">3</int>
-  <float hash="escape_stick_y">-0.75</float>
+  <float hash="escape_stick_y">-0.7386</float>
   <int hash="escape_fb_flick_x">3</int>
-  <float hash="escape_fb_stick_x">0.75</float>
+  <float hash="escape_fb_stick_x">0.7386</float>
   <float hash="escape_air_slide_landing_speed_max">4</float>
   <int hash="hit_stop_delay_flick">2</int>
   <float hash="hit_stop_delay_flick_mul">5</float>
@@ -76,14 +80,19 @@
   <float hash="attack_lw3_stick_y">-0.2</float>
   <float hash="attack_s4_stick_dir_hi">0.2</float>
   <float hash="attack_s4_stick_dir_lw">-0.2</float>
+  <float hash="attack_hi4_stick_y">0.716</float>
+  <float hash="attack_lw4_stick_y">-0.716</float>
   <float hash="mini_jump_attack_mul">1</float>
   <float hash="status_start_turn_stick_x">0.2</float>
+  <float hash="special_stick_x">0.5673</float>
+  <float hash="special_stick_y">0.51</float>
   <int hash="special_air_n_turn_frame">10</int>
   <byte hash="special_command_life_max">10</byte>
   <byte hash="super_special_command_life_max">20</byte>
   <float hash="catch_dash_brake_mul">1</float>
   <int hash="shield_setoff_catch_frame">0</int>
   <int hash="invalid_capture_frame">1</int>
+  <float hash="cliff_catch_cancel_stick_y">-0.6358</float>
   <int hash="cliff_catch_move_frame">0</int>
   <float hash="cliff_next_stick">0.2</float>
   <int hash="cliff_no_catch_frame">25</int>
@@ -93,25 +102,44 @@
   <int hash="cliff_wait_xlu_min_frame">29</int>
   <float hash="cliff_robbed_speed_x">-0.5</float>
   <float hash="cliff_robbed_speed_y">17.5</float>
-  <int hash="cliff_robbed_no_control_frame">40</int>
-  <int hash="air_lasso_catch_num">999</int>
+  <int hash="cliff_robbed_no_control_frame">50</int>
+  <int hash="air_lasso_catch_num">3</int>
   <int hash="cliff_max_count">999</int>
   <int hash="0x189f0b0c96">999</int>
   <int hash="air_lasso_cliff_wait_frame">7</int>
   <int hash="air_lasso_landing_frame">25</int>
+  <float hash="cliff_dive_cont_value">-0.8786</float>
   <float hash="stand_stick_y">0.2</float>
   <float hash="stand_fb_stick_x">0.2</float>
-  <float hash="pass_stick_y">-0.71</float>
+  <list hash="cliff_catch_motion_rate">
+    <float index="0">1</float>
+    <float index="1">1</float>
+    <float index="2">1</float>
+    <float index="3">1</float>
+    <float index="4">1</float>
+    <float index="5">1</float>
+    <float index="6">1</float>
+    <float index="7">1</float>
+  </list>
+  <list hash="0x1dff572177">
+    <float index="0">1</float>
+    <float index="1">1</float>
+    <float index="2">1</float>
+    <float index="3">1</float>
+  </list>
+  <float hash="pass_stick_y">-0.6929</float>
   <int hash="passive_trigger_frame">20</int>
   <int hash="no_rapid_frame_value">40</int>
   <float hash="invalid_passive_speed">999</float>
+  <float hash="wall_jump_stick_x">0.7957</float>
   <float hash="wall_jump_speed_dec">0.75</float>
   <float hash="wall_jump_x_speed_dec">0.7</float>
   <int hash="wall_jump_disable_frame">1</int>
-  <int hash="wall_jump_interval_frame">1</int>
+  <int hash="wall_jump_interval_frame">130</int>
   <int hash="attach_wall_disable_frame">999</int>
   <float hash="damage_ground_mul">1</float>
   <float hash="damage_air_brake">0.051</float>
+  <float hash="damage_speed_no_cliff_stop">999</float>
   <float hash="damage_fly_speed_y_mul_base_accel">0</float>
   <float hash="damage_fly_speed_y_mul">0</float>
   <float hash="damage_fly_correction_max">18</float>
@@ -119,7 +147,7 @@
   <float hash="damage_fly_length_mul_min">1</float>
   <int hash="damage_fly_attack_frame">999</int>
   <int hash="damage_fly_escape_frame">999</int>
-  <float hash="damage_fly_reflect_d_speed">1</float>
+  <float hash="damage_fly_reflect_d_speed">2.5</float>
   <float hash="damage_fly_reflect_d_speed_mul">0.7</float>
   <float hash="damage_fly_reflect_reaction_frame_mul">0.8</float>
   <int hash="damage_fly_reflect_disable_escape_frame">999</int>
@@ -128,6 +156,10 @@
   <float hash="mewtwo_thrown_reaction_frame_mul">1</float>
   <int hash="mewtwo_thrown_reaction_frame_max">15</int>
   <float hash="bury_damage_reaction_mul">0.7</float>
+  <float hash="squat_b_stick_x_min">-0.2248</float>
+  <float hash="squat_b_stick_x_max">-0.6244</float>
+  <float hash="fall_stick_x">0.18</float>
+  <float hash="cliff_climb_stick">0.872665</float>
   <int hash="run_brake_dash_frame">5</int>
   <int hash="escape_penalty_frame">1</int>
   <int hash="escape_penalty_max_count">1</int>
@@ -136,14 +168,14 @@
   <float hash="escape_f_penalty_motion_rate">0</float>
   <float hash="escape_b_penalty_motion_rate">0</float>
   <float hash="smash_hold_reaction_mul">1.2</float>
-
+  <float hash="ganon_special_s_fall_hold_frame">85</float>
   <!-- dk cargo carry: -->
   <!-- flat amount of clatter added when you enter cargo carry -->
   <float hash="shouldered_frame_add">30</float>
-  <!-- additional clatter added when entering cargo = shouldered_frame_mul * percent -->
+  <!-- additional clatter added when entering cargo (formula unknown?) -->
   <float hash="shouldered_frame_mul">1.25</float>
-  <!-- clatter removal due to mashing -->
+  <!-- possibly the length of time you are inactionable when breaking out of cargo -->
   <float hash="shouldered_cratter_frame">10</float>
-  <!-- clatter removal due to mashing in the air -->
+  <!-- possibly the length of time you are inactionable when breaking out of cargo in the air -->
   <float hash="shouldered_cratter_frame_air">13</float>
 </struct>

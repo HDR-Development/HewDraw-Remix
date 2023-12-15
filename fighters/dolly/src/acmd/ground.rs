@@ -91,6 +91,23 @@ unsafe fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "dolly", script = "expression_attack12" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
 #[acmd_script( agent = "dolly", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -162,7 +179,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
         // EX detection
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                if MeterModule::drain(fighter.battle_object, 2) {
+                if MeterModule::drain(fighter.battle_object, 1) {
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
                     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
                     FT_MOTION_RATE(fighter, 10.0/(10.0-6.0));
@@ -381,13 +398,44 @@ unsafe fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "dolly", script = "expression_attackdash" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm_l"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
+        } else {
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         dolly_attack_11_game,
         dolly_attack_12_game,
+        dolly_attack_12_expression,
         dolly_attack_13_game,
         dolly_attack_dash_game,
         dolly_attack_dash_effect,
+        dolly_attack_dash_expression,
     );
 }
 

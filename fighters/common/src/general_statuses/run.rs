@@ -31,6 +31,13 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("run"), value, 1.0, false, 0.0, false, false);
 
+    let mut hip_translate = Vector3f::zero();
+    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+    VarModule::set_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X, hip_translate.z);
+    let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+    hip_translate.z += dash_hip_offset_x - hip_translate.z;
+    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
@@ -91,30 +98,42 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 		app::sv_kinetic_energy::unable(fighter.lua_state_agent);
 	}
-    
-	if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
-        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0)
-    || (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW)
-        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0)
-    || (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S)
-        && (fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0
-        || fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0))
-    && {
-        fighter.clear_lua_stack();
-        fighter.push_lua_stack(&mut L2CValue::new_int(0x1daca540be));
-        app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1).get_bool()
-    } {
-        interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
+
+    let ret = call_original!(fighter);
+
+    if ret.get_i32() != 0 {
+        if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
+            && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0)
+        || (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW)
+            && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0)
+        || (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S)
+            && (fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0
+            || fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0))
+        && {
+            fighter.clear_lua_stack();
+            fighter.push_lua_stack(&mut L2CValue::new_int(0x1daca540be));
+            app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1).get_bool()
+        } {
+            interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
+        }
     }
 
-    call_original!(fighter)
+    ret
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
     symbol = "_ZN7lua2cpp16L2CFighterCommon15status_RunBrakeEv")]
 unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_RunBrake();
+
+    let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+    let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+    let mut hip_translate = Vector3f::zero();
+    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+    hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    
     fighter.sub_shift_status_main(L2CValue::Ptr(status_runbrake_main as *const () as _))
 }
 
@@ -135,20 +154,70 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     } {
         interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
     }
+    if fighter.is_parry_input() {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into()
+    }
 
 	call_original!(fighter)
+}
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon19status_TurnRunBrakeEv")]
+unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_TurnRunBrake_Sub();
+    let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+    let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+    let mut hip_translate = Vector3f::zero();
+    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+    hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    
+    fighter.main_shift(status_turnrunbrake_main)
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon24status_TurnRunBrake_MainEv")]
+unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_parry_input() {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into()
+    }
+
+    call_original!(fighter)
+}
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_TURN_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon14status_TurnRunEv")]
+unsafe fn status_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_TurnRun_Sub(L2CValue::Hash40s("turn_run"), L2CValue::Bool(true));
+
+    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_RUN_BRAKE) {
+        let dash_hip_offset_x = VarModule::get_float(fighter.object(), vars::common::instance::DASH_HIP_OFFSET_X);
+        let run_hip_offset_x = VarModule::get_float(fighter.object(), vars::common::instance::RUN_HIP_OFFSET_X);
+        let mut hip_translate = Vector3f::zero();
+        MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+        hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    }
+    
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TurnRun_Main as *const () as _))
 }
 
 pub fn install() {
     install_hooks!(
         status_run_sub,
         status_run_main,
-        status_runbrake_main
+        status_runbrake_main,
+        status_turnrunbrake_main,
     );
 
     install_status_scripts!(
         status_pre_run,
         status_run,
         status_runbrake,
+        status_turnrunbrake,
+        status_turnrun,
     );
 }

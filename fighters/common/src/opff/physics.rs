@@ -13,79 +13,6 @@ use smash::hash40;
 use smash::phx::Hash40;
 use smash_script::{self, *, macros::*};
 
-//=================================================================
-//== EXTRA TRACTION
-//=================================================================
-
-/// Sets the extra traction flag depending on current speed and current status in order to prevent
-/// the game feeling too slippery
-/// TODO: get rid of this horrible shit and move it to energy funcs
-unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-    let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
-    let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
-    let added_traction: smash::phx::Vector3f = smash::phx::Vector3f {x: -1.0 * PostureModule::lr(boma) * ground_brake * speed_x.signum(), y: 0.0, z: 0.0};
-    let double_traction_statuses = [
-        *FIGHTER_STATUS_KIND_WAIT,
-        *FIGHTER_STATUS_KIND_JUMP_SQUAT,
-        *FIGHTER_STATUS_KIND_SQUAT,
-        *FIGHTER_STATUS_KIND_SQUAT_RV,
-        *FIGHTER_STATUS_KIND_SQUAT_WAIT,
-        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
-        *FIGHTER_STATUS_KIND_LANDING,
-        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
-        *FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4,
-        *FIGHTER_STATUS_KIND_CATCH,
-        *FIGHTER_STATUS_KIND_CATCH_WAIT,
-        *FIGHTER_STATUS_KIND_CATCH_ATTACK,
-        *FIGHTER_STATUS_KIND_CATCH_PULL,
-        *FIGHTER_STATUS_KIND_ITEM_THROW,
-        *FIGHTER_STATUS_KIND_DOWN,
-        *FIGHTER_STATUS_KIND_DOWN_WAIT,
-        *FIGHTER_STATUS_KIND_PASSIVE,
-        *FIGHTER_STATUS_KIND_PASSIVE_FB
-    ];
-
-    if boma.is_status_one_of(&double_traction_statuses) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
-
-        // reset flag at beginning of any status
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
-        }
-        // if we detect that the current animation is trans-motion-based (shifts your character's position), disable traction for the entire attack 
-        if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
-            VarModule::on_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
-        }
-        if speed_x.abs() > max_walk
-        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        && ( !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK)
-            || boma.is_status(*FIGHTER_STATUS_KIND_PASSIVE_FB) )
-        {
-            if boma.is_prev_status_one_of(&double_traction_statuses) {
-                KineticModule::add_speed(boma, &added_traction);
-            }
-            else if fighter.global_table[CURRENT_FRAME].get_i32() > 0 {
-                KineticModule::add_speed(boma, &added_traction);
-            }
-        }
-    }
-}
 
 //=================================================================
 //== GRAB JUMP REFRESH
@@ -98,7 +25,22 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_CAPTURE_CUT,
-        *FIGHTER_STATUS_KIND_CAPTURE_JUMP
+        *FIGHTER_STATUS_KIND_CAPTURE_JUMP,
+        *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+        *FIGHTER_STATUS_KIND_SWALLOWED,
+        *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN,
+        *FIGHTER_STATUS_KIND_KOOPA_DIVED,
+        *FIGHTER_STATUS_KIND_CLUNG_GANON,
+        *FIGHTER_STATUS_KIND_MEWTWO_THROWN,
+        *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
+        *FIGHTER_STATUS_KIND_CLUNG_DIDDY,
+        *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
+        *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+        *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
+        *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED,
+        *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+        *FIGHTER_STATUS_KIND_DEMON_DIVED
     ]) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
     {
         WorkModule::dec_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
@@ -120,7 +62,6 @@ unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    extra_traction(fighter, boma);
     grab_jump_refresh(boma);
     plat_cancels(fighter);
 

@@ -395,7 +395,7 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 20.0);
         if is_excute(fighter) {
             VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 8.0, 0.0, 2.0, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 8.0, 0.0, 2.0, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
         }
         wait(lua_state, 5.0);
         if is_excute(fighter) {
@@ -420,7 +420,7 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         }
         wait(lua_state, 5.0);
         if is_excute(fighter) {
@@ -531,7 +531,7 @@ unsafe fn lucas_attack_lw4_expression(fighter: &mut L2CAgentBase) {
 
 // LW4PT2
 
-#[acmd_script( agent = "lucas", script = "game_attacklw4pt2" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "lucas", script = "game_attacklw42" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -566,7 +566,7 @@ unsafe fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "sound_attacklw4pt2", category = ACMD_SOUND, low_priority)]
+#[acmd_script( agent = "lucas", script = "sound_attacklw42", category = ACMD_SOUND, low_priority)]
 unsafe fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 4.0);
@@ -575,7 +575,7 @@ unsafe fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attacklw4pt2" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "lucas", script = "effect_attacklw42" , category = ACMD_EFFECT , low_priority)]
 unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -591,13 +591,17 @@ unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(fighter, 0.5);
         }
     }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, false);
+    }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
     }
 }
 
-#[acmd_script( agent = "lucas", script = "expression_attacklw4pt2" , category = ACMD_EXPRESSION , low_priority)]
+#[acmd_script( agent = "lucas", script = "expression_attacklw42" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn lucas_attack_lw4_pt2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();

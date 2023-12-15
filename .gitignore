@@ -11,7 +11,7 @@ scripts/change_summary.txt
 scripts/log.txt
 scripts/tmp
 rust-toolchain
-plugin/hdr_version.txt
+**/hdr_version.txt
 **/*.zip
 **/*package/
 **/zips/
@@ -23,16 +23,3 @@ scripts/artifacts/deletions.json
 **/upgrade/
 **/upgrade_artifacts/
 .DS_Store
-romfs/source/fighter/buddy/motion/
-
-*.code-workspace
-
-*.sqlite
-
-.vs/HewDraw-Remix/v17/.suo
-
-*.lnk
-
-scripts/banjo.bat
-
-*.bat

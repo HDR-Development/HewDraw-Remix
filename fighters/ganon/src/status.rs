@@ -3,6 +3,7 @@ use super::*;
 mod special_n;
 mod special_n_float;
 mod special_lw;
+mod special_s;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -16,7 +17,7 @@ unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommo
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
     }
     true.into()
@@ -38,6 +39,7 @@ pub fn install() {
     smashline::install_agent_init_callbacks!(ganon_init);
     special_n::install();
     special_lw::install();
+    special_s::install();
 }
 
 pub fn add_statuses() {

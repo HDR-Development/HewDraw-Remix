@@ -61,7 +61,7 @@ ken          = { path = "./ken",          optional = true }
 brave        = { path = "./brave",        optional = true }
 richter      = { path = "./richter",      optional = true }
 miiswordsman = { path = "./miiswordsman", optional = true }
-robin        = { path = "./robin",        optional = true }
+reflet        = { path = "./reflet",      optional = true }
 master       = { path = "./master",       optional = true }
 robot        = { path = "./robot",        optional = true }
 szerosuit    = { path = "./szerosuit",    optional = true }
@@ -156,7 +156,7 @@ include-ken          = ["ken"]
 include-brave        = ["brave"]
 include-richter      = ["richter"]
 include-miiswordsman = ["miiswordsman"]
-include-robin        = ["robin"]
+include-reflet        = ["reflet"]
 include-master       = ["master"]
 include-robot        = ["robot"]
 include-szerosuit    = ["szerosuit"]
@@ -193,3 +193,8 @@ include-popo         = ["popo"]
 include-dedede       = ["dedede"]
 include-snake        = ["snake"]
 include-demon        = ["demon"]
+
+[build-dependencies]
+hdr-macros = { path = "../hdr-macros" }
+prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std", "xml-feat"] }
+walkdir = "2.3.2"

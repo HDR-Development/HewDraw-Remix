@@ -68,12 +68,38 @@ unsafe fn samus_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "samus_cshot", script = "sound_shoot", category = ACMD_SOUND, low_priority)]
+unsafe fn samus_cshot_shoot_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 0.0);
+    if is_excute(fighter) {
+        if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.25 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n02"));
+        }
+        else if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.625 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n03"));
+        }
+        else if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.875 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n04"));
+        }
+        else {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n05"));
+        }
+    }
+    
+}
+
 #[acmd_script( agent = "samus", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -85,7 +111,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
@@ -102,6 +128,7 @@ pub fn install() {
         samus_supermissile_ready_game,
         samus_supermissile_straight_game,
         samus_cshot_shoot_game,
+        samus_cshot_shoot_sound,
         escape_air_game,
         escape_air_slide_game,
     );

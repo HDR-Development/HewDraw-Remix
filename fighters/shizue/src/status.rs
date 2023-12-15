@@ -1,6 +1,7 @@
 use super::*;
 
 mod special_hi;
+mod clayrocket;
 
 
 #[smashline::fighter_init]
@@ -17,4 +18,5 @@ fn shizue_init(fighter: &mut L2CFighterCommon) {
 pub fn install() {
     smashline::install_agent_init_callbacks!(shizue_init);
     special_hi::install();
+    clayrocket::install();
 }

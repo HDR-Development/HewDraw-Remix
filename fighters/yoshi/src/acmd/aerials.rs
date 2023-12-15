@@ -25,7 +25,7 @@ unsafe fn yoshi_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -56,7 +56,7 @@ unsafe fn yoshi_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
+
 }
 
 
@@ -81,9 +81,7 @@ unsafe fn yoshi_attack_air_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0);
-    }
+    MotionModule::set_rate(boma, 0.5);
     frame(lua_state, 10.5);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("tail1"), 4.5, 366, 45, 0, 25, 4.5, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
@@ -111,25 +109,21 @@ unsafe fn yoshi_attack_air_b_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("tail2"), 5.5, 60, 100, 0, 48, 5.0, 6.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 19.5);
+    MotionModule::set_rate(boma, (50.0 - 29.0) / 13.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 13.0/(50.0-29.0));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 44.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "yoshi", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn yoshi_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0);
-    }
     frame(lua_state, 10.5);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 3, -4, 175.671, -17.429, 82.039, 1, true, 0.3);
@@ -147,12 +141,42 @@ unsafe fn yoshi_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "yoshi", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn yoshi_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+    }
+    frame(lua_state, 11.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+    }
+    frame(lua_state, 15.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 17.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 
 #[acmd_script( agent = "yoshi", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn yoshi_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 5.0/(4.2-0.0));
+    MotionModule::set_rate(boma, (4.2 - 0.0) / 5.0);
     frame(lua_state, 4.2);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -169,9 +193,7 @@ unsafe fn yoshi_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
-    }
+    MotionModule::set_rate(boma, 1.11);
     frame(lua_state, 33.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -183,11 +205,24 @@ unsafe fn yoshi_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn yoshi_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 5.0/(4.2-0.0));
     frame(lua_state, 4.2);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 12, -2, 111, -66.6, -211, 0.9, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+}
+
+#[acmd_script( agent = "yoshi", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn yoshi_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.2);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 4.2);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -242,7 +277,7 @@ unsafe fn yoshi_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
@@ -250,11 +285,13 @@ pub fn install() {
         yoshi_attack_air_n_game,
         yoshi_attack_air_f_game,
         yoshi_attack_air_b_game,
+        yoshi_attack_air_b_expression,
         yoshi_attack_air_hi_game,
         yoshi_attack_air_lw_game,
         yoshi_attack_air_f_effect,
         yoshi_attack_air_b_effect,
         yoshi_attack_air_hi_effect,
+        yoshi_attack_air_hi_expression,
     );
 }
 

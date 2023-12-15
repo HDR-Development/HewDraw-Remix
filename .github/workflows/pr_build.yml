@@ -11,7 +11,7 @@ jobs:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-20.04
     container: 
-      image: jugeeya/cargo-skyline:3.2.0-no-dkp
+      image: hewdrawremix/hewdraw-builder:latest
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -21,9 +21,16 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
+    #- name: Rust Cache
+    #  uses: Swatinem/rust-cache@v2.5.1
+    #  with:
+    #    workspaces: "plugin"
+    #    cache-targets: true
+    #    cache-all-crates: true
+
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
       env:
         HOME: /root
 

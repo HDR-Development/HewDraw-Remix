@@ -13,7 +13,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_check_passive_button_for_damage,
             status_pre_passive,
             status_pre_passivefb,
-            sub_uniq_process_Passive_init
+            status_PassiveFB_Main
         );
     }
 }
@@ -29,7 +29,7 @@ pub unsafe fn status_pre_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_UNIQ, // Originally *FIGHTER_KINETIC_TYPE_PASSIVE_GROUND
+        *FIGHTER_KINETIC_TYPE_GROUND_STOP, // Originally *FIGHTER_KINETIC_TYPE_PASSIVE_GROUND
         *GROUND_CORRECT_KIND_GROUND as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
@@ -58,7 +58,7 @@ pub unsafe fn status_pre_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_UNIQ, // Originally *FIGHTER_KINETIC_TYPE_PASSIVE_GROUND_MOTION
+        *FIGHTER_KINETIC_TYPE_MOTION, // Originally *FIGHTER_KINETIC_TYPE_PASSIVE_GROUND_MOTION
         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         false,
@@ -84,36 +84,13 @@ pub unsafe fn status_pre_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_uniq_process_Passive_init)]
-pub unsafe fn sub_uniq_process_Passive_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_PASSIVE, *FIGHTER_STATUS_KIND_PASSIVE_FB]) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let damage_speed_x = smash::app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let damage_speed_y = smash::app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        smash::app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
-        
-        KineticModule::unable_energy_all(fighter.module_accessor);
-    
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
-        app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-    
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_GROUND, damage_speed_x, damage_speed_y, 0.0, 0.0, 0.0);
-        app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-    
-        let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ground_brake, 0.0);
-        app::sv_kinetic_energy::set_brake(fighter.lua_state_agent);
-    
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_PassiveFB_Main)]
+pub unsafe fn status_PassiveFB_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
     }
-    call_original!(fighter)
+    else if CancelModule::is_enable_cancel(fighter.module_accessor) || MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+    }
+    0.into()
 }

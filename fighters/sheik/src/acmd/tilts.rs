@@ -28,7 +28,7 @@ unsafe fn sheik_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 11.5, 5.5, 0, 10, 50, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 11.5, 2.5, 0, 10, 50, 1.0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.2);
 
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -81,11 +81,12 @@ unsafe fn sheik_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 6.5, -2, -90, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 5.5, -2, -90, 0, 0, 1, true);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 11.0, 9.0, 0, -45, -90, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 11.0, 7.0, 0, -45, -90, 1, true);
+        LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 1.0, 0.8);
         LAST_EFFECT_SET_RATE(fighter, 1.75);
     }
     frame(lua_state, 21.0);
@@ -93,6 +94,10 @@ unsafe fn sheik_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 17, 0, -1, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(fighter, 0.8);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc_d"), false, false);
     }
 }
 

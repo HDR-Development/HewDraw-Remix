@@ -3,73 +3,115 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-            }
-        }
-        if MotionModule::frame(boma) <= 1.0 {
+        if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
     }
 }
 
-// Game & Watch Parachute Double Jump
-unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if [*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL,
-        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE].contains(&status_kind) {
-        boma.check_jump_cancel(false);
+unsafe fn parachute(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE) {
+        if fighter.is_cat_flag(Cat1::SpecialAny) {
+            if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) && !CancelModule::is_enable_cancel(fighter.module_accessor))
+            || fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+                *FIGHTER_STATUS_KIND_DAMAGE,
+                *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
+                return;
+            }
+            fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
+        }
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
+        let parachute_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::gamewatch::SPECIAL_HI_OPEN);
+        if fighter.is_prev_status(parachute_status) && fighter.status_frame() > 10 {    // 11F landing lag
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
     }
 }
 
-// Game & Watch Fair cake box position readjustment
-unsafe fn fair_repositioning(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") {
-        if frame < 9.0 || (frame >= 9.0 && frame < 10.0 && boma.is_in_hitlag()) {
-            ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{ x: -3.5, y: 6.5, z: 0.0 }, false, false);
-            ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: -15.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-            ModelModule::set_joint_rotate(boma, Hash40::new("shoulderl"), &Vector3f{ x: 0.0, y: 0.0, z: -40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-            ModelModule::set_joint_rotate(boma, Hash40::new("shoulderr"), &Vector3f{ x: 0.0, y: 0.0, z: 40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-        }
-        else {
-            // -2.0/9.0/0.0; in relation to the havel bone, x is down right, y is down left
-            ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{x:-2.5, y: 9.0, z: 0.0 }, false, false);
-            ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: 5.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+unsafe fn once_per_airtime(fighter: &mut L2CFighterCommon) {
+    if fighter.is_situation(*SITUATION_KIND_GROUND)
+    || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING])
+    {
+        VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
+    }
+}
+
+// Jump cancel Judge 4
+unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion_one_of(&[Hash40::new("special_s_4"), Hash40::new("special_air_s_4")]) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+            boma.check_jump_cancel(false, false);
         }
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_WAIT,
+        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_CATCH,
+        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_SHOOT,
+        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_REFLECT,
+        *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_WAIT_START
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
 
-    ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    parachute_dj(boma, status_kind, situation_kind, cat[0]);
-    fair_repositioning(boma, status_kind, motion_kind, frame);
-    //jc_oil_panic_reflect(boma, status_kind, situation_kind); 
-    jc_judge_four(boma, motion_kind, situation_kind);
-    dthrow_reverse(boma, motion_kind);
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
 
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 18.0 {
-            MotionModule::set_rate(boma, 2.0);
-        }
-        if frame > 18.0 {
-            MotionModule::set_rate(boma, 1.0);
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
         }
     }
+}
+
+// down throw mirror
+unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("throw_lw")) {
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &Vector3f{x: 0.0, y: 180.0, z: 0.0}, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    ff_chef_land_cancel(boma);
+    parachute(fighter);
+    once_per_airtime(fighter);
+    jc_judge_four(boma);
+    dthrow_reverse(boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_GAMEWATCH )]
@@ -82,43 +124,11 @@ pub fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 
-// Jump cancel Judge 4
-unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, situation_kind: i32) {
-    if motion_kind == hash40("special_s_4") || motion_kind == hash40("special_air_s_4") {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false);
-        }
-    }
-}
-
-// down throw mirror
-unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor, motion_kind: u64) {
-    if boma.is_motion(Hash40::new("throw_lw")) {
-        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &Vector3f{x: 0.0, y: 180.0, z: 0.0}, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    }
-}
-
-// Jump cancel bucket reflect
-// unsafe fn jc_oil_panic_reflect(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-//     if status_kind == *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_REFLECT {
-//         if boma.is_input_jump() && !boma.is_in_hitlag() {
-//             if situation_kind == *SITUATION_KIND_GROUND {
-//                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
-//             }
-//             else if situation_kind == *SITUATION_KIND_AIR {
-//                 if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-//                 }
-//             }
-//         }
-//     }
-// }
-
-#[smashline::weapon_frame_callback]
+#[smashline::weapon_frame_callback(main)]
 pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {

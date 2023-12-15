@@ -110,6 +110,18 @@ unsafe fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         original!(fighter)
     }
     else {
+        if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0 {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
+            app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+            KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+        }
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RIDLEY_STATUS_SPECIAL_LW_FLAG_TO_FINISH);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_BOUNCE);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_LANDING);
@@ -174,7 +186,7 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 
     // save current tail position relative to fighter
     VarModule::set_vec2(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_BOUNCE_PREV_POS, Vector2f{x: v3f_tail_pos.x - pos_x_global, y: v3f_tail_pos.y - pos_y_global});
-    
+
     if check_hit {
         let ground_hit_pos = &mut Vector2f{x: 0.0, y: 0.0};
         if GroundModule::ray_check_hit_pos(
@@ -184,7 +196,7 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
             &Vector2f{x: (v3f_tail_pos.x - (pos_x_prev + pos_x_global)) + (8.0 * lr), y: v3f_tail_pos.y - (pos_y_prev + pos_y_global) - 8.0},
             ground_hit_pos,
             true
-        ) == 1 {
+        ) {
             // deduces angle of slope for effects by using 2 Vector2f's and trigonometry
             let mut slope_angle = 0.0;
             let slope_check_pos = &mut Vector2f{x: 0.0, y: 0.0};
@@ -194,7 +206,7 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
                 &Vector2f{x: 0.0, y: -10.0 },
                 slope_check_pos,
                 true
-            ) == 1 {
+            ) {
                 let pos_diff_y = ground_hit_pos.y - slope_check_pos.y;
                 if pos_diff_y > 0.0 {
                     slope_angle = (pos_diff_y / 5.0).atan().to_degrees();
@@ -224,12 +236,14 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
             SET_SPEED_EX(fighter, velocity_x*0.5, velocity_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 
             VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_BOUNCE);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         }
         else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             // hitting a hurtbox gives set momentum
             let velocity_x = PostureModule::lr(fighter.module_accessor) * KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             SET_SPEED_EX(fighter, velocity_x*0.5, 1.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_BOUNCE);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         }
     }
 }

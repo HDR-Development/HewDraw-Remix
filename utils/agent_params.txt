@@ -1,5 +1,0 @@
-luigi: fighter/luigi/param/hdr.prc
-pikmin: fighter/pikmin/param/hdr.prc
-lucas: fighter/lucas/param/hdr.prc
-lucario: fighter/lucario/param/hdr.prc
-pichu: fighter/pichu/param/hdr.prc

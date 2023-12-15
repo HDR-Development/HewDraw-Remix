@@ -42,6 +42,8 @@
       <float hash="jump_speed_f">2.7</float>
       <float hash="jump_speed_n">2.5</float>
       <float hash="jump_speed_b">2.3</float>
+      <float hash="end_accel_y_mul">1.3</float>
+      <float hash="fall_special_limit_speed">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -49,7 +51,7 @@
   </list>
   <list hash="param_tico">
     <struct index="0">
-      <float hash="hp">50</float>
+      <float hash="hp">35</float>
       <float hash="follow_damage_air_brake">0.075</float>
       <float hash="free_damage_for_reaction">70</float>
       <float hash="free_damage_air_brake">0.15</float>

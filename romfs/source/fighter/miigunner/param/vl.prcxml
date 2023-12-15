@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">22</float>
     </struct>
   </list>
   <list hash="param_attackairf_bullet">
@@ -21,6 +21,11 @@
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="1" hash="param_flamepillar">
+    <struct index="0">
+      <int hash="life">25</int>
+    </struct>
   </list>
   <list hash="param_stealthbomb">
     <struct index="0">
@@ -56,11 +61,12 @@
       <float hash="hi1_landing_frame">22</float>
     </struct>
     <struct index="1">
+      <float hash="hi2_jump_accel_recover_frame">6</float>
       <float hash="hi2_jump_accel_x_mul">0.8</float>
       <float hash="hi2_jump_stable_speed_x_mul">1.0</float>
     </struct>
     <struct index="2">
-      <float hash="hi3_rush_speed">2</float>
+      <float hash="hi3_rush_speed">1.6</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>
@@ -68,10 +74,13 @@
     <hash40 index="0">dummy</hash40>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
+      <int hash="lw3_time">20</int>
       <float hash="lw3_start_xmul">0.85</float>
-      <float hash="lw3_start_ymul">0.1</float>
-      <float hash="lw3_accel_y">0.07</float>
-      <float hash="lw3_phy_magnet_size">14.0</float>
+      <float hash="lw3_start_ymul">0.8</float>
+      <float hash="lw3_accel_y">0.05</float>
+      <hash40 hash="lw3_phy_magnet_parts">bust</hash40>
+      <float hash="lw3_phy_magnet_offset_y">0.0</float>
+      <float hash="lw3_phy_magnet_size">11.5</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

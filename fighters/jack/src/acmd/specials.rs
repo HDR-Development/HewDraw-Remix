@@ -1,184 +1,63 @@
 
 use super::*;
-
-#[acmd_script( agent = "jack", script = "effect_specialn1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_n1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_specialairndown", category = ACMD_GAME, low_priority )]
+unsafe fn jack_special_airn_down_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    frame(lua_state, 1.0);
+    for _ in 0..20 {
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 50, 80, 0, 25, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(-20.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.2, 45, 0, 0, 29, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(-45.0), Some(-2.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 55, 0, 0, 29, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(-45.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 3, 0, Hash40::new("top"), 1.2, 45, 0, 0, 29, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(-45.0), Some(2.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+            FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 0, 5, 4);
+            FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 1, 5, 4);
+            FT_SHOOTING_ATTACK_GROUND_CHECK_NEW_arg5(fighter, 2, 5, 4, Hash40::new("jack_gun_hit2"), Hash40::new("se_jack_special_n02"));
+            FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 3, 5, 4);
+        }
+        if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+            if is_excute(fighter) {
+                ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 50, 80, 0, 25, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-20.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 1, 0, Hash40::new("top"), 1.2, 45, 0, 0, 29, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-45.0), Some(-2.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 55, 0, 0, 29, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-45.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 3, 0, Hash40::new("top"), 1.2, 45, 0, 0, 29, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-45.0), Some(2.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 0, 5, 4);
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 1, 5, 4);
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW_arg5(fighter, 2, 5, 4, Hash40::new("jack_gun_hit2"), Hash40::new("se_jack_special_n02"));
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 3, 5, 4);
+            }
+        }
+        if is_excute(fighter) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
+        wait(lua_state, 6.0);
+        if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+            if is_excute(fighter) {
+                ATTACK(fighter, 0, 0, Hash40::new("top"), 1.6, 50, 0, 0, 0, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-22.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 1, 0, Hash40::new("top"), 0.8, 45, 0, 0, 0, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-50.0), Some(-2.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 2, 0, Hash40::new("top"), 0.8, 55, 0, 0, 0, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-50.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 3, 0, Hash40::new("top"), 0.8, 45, 0, 0, 0, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(-50.0), Some(2.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 0, 5, 4);
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 1, 5, 4);
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW_arg5(fighter, 2, 5, 4, Hash40::new("jack_gun_hit2"), Hash40::new("se_jack_special_n02"));
+                FT_SHOOTING_ATTACK_GROUND_CHECK_NEW(fighter, 3, 5, 4);
+            }
+        }
+        if is_excute(fighter) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
+        wait(lua_state, 6.0);
     }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-    }
-}
 
-#[acmd_script( agent = "jack", script = "effect_specialairn1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_air_n1_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-    }
-}
-
-#[acmd_script( agent = "jack", script = "effect_specialn2" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_n2_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-    }
-}
-
-#[acmd_script( agent = "jack", script = "effect_specialairn2" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_air_n2_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-    }
-}
-
-#[acmd_script( agent = "jack", script = "effect_specialn3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_n3_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-    }
-}
-
-#[acmd_script( agent = "jack", script = "effect_specialairn3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_air_n3_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 20.0);
-    }
-}
-
-#[acmd_script( agent = "jack", script = "effect_specialnlanding" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_n_landing_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("jack_gun_muzzle"), false, true);
-        EFFECT_OFF_KIND(fighter, Hash40::new("jack_gunspecial_muzzle"), false, true);
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_genesis_beam"), true, true);
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-    }
 }
 
 #[acmd_script( agent = "jack", script = "game_specialhi" , category = ACMD_EFFECT , low_priority)]
@@ -310,7 +189,6 @@ unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        DamageModule::add_damage(boma, 1.0, 0);
         KineticModule::mul_speed(boma, &Vector3f::new(0.8, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
         ArticleModule::change_motion(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_f"), false, 0.0);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -324,13 +202,7 @@ unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        //jack_special_n1_effect,
-        //jack_special_air_n1_effect,
-        //jack_special_n2_effect,
-        //jack_special_air_n2_effect,
-        //jack_special_n3_effect,
-        //jack_special_air_n3_effect,
-        //jack_special_n_landing_effect,
+        jack_special_airn_down_game,
         jack_special_air_hi_game,
         jack_special_air_hi_f_game,
         jack_special_hi_game,

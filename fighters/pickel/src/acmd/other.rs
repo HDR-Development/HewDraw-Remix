@@ -1,128 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "pickel", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-    }
-}
-
-#[acmd_script( agent = "pickel", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-    }
-}
-
-#[acmd_script( agent = "pickel", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-    }
-}
-
-#[acmd_script( agent = "pickel", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));
-    }
-}
-
-#[acmd_script( agent = "pickel", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_pickel_rnd_futtobi01"), Hash40::new("seq_pickel_rnd_futtobi02"));}
-    }
-}
-
 #[acmd_script( agent = "pickel", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -137,7 +17,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe fn sound_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -148,7 +28,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe fn game_turndash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -169,82 +49,16 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pickel_fire", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn pickel_fire_attack_lw3_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    if is_excute(fighter) {
-        AttackModule::disable_tip(boma);
-        VarModule::off_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
-        if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            VarModule::on_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
-        }
-        else{
-            VarModule::off_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
-        }
-        if VarModule::is_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE) {
-            //FT_MOTION_RATE(fighter, 1.25);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 366, 100, 40, 0, 3.2, 0.0, 2.8, 2.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 8, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 0.8, 366, 100, 40, 0, 3.2, 0.0, 2.8, -2.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 8, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 0.75);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 70, 60, 0, 75, 3.2, 0.0, 2.8, 2.0, None, None, None, 1.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 70, 60, 0, 75, 3.2, 0.0, 2.8, -2.0, None, None, None, 1.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-        }
-        AttackModule::enable_safe_pos(boma);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE){
-            FT_MOTION_RATE(fighter, 1.0);
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 6.4, 54, 116, 0, 42, 3.5, 0.0, 2.8, 2.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-            ATTACK(fighter, 1, 1, Hash40::new("top"), 6.4, 54, 116, 0, 42, 3.5, 0.0, 2.8, -2.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-        }
-    }
-    frame(lua_state, 28.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 45.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
-    }
-}
-
-#[acmd_script( agent = "pickel_fire", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pickel_fire_attack_lw3_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE){
-            EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.25, 1.0);
-        }
-        else {
-            EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            EFFECT_FOLLOW(fighter, Hash40::new("pickel_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-        }
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        EFFECT_DETACH_KIND(fighter, Hash40::new("pickel_fire_soot"), -1);
-    }
-    frame(lua_state, 38.0);
-    if is_excute(fighter) {
-        EFFECT_DETACH_KIND(fighter, Hash40::new("pickel_fire"), -1);
-    }
-}
-
 #[acmd_script( agent = "pickel", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe fn game_escapeair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -252,11 +66,11 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
@@ -266,20 +80,280 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pickel", script = "game_catch", category = ACMD_GAME, low_priority )]
+unsafe fn game_catch(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("catch"), false, -1.0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {        
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -4.0, -1.0, Some(0.0), Some(-4.8), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 7.0, 3.2, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 3.6, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_G);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(-0.5), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(0.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 45.0);
+    FT_MOTION_RATE(fighter, 2.0);
+}
+
+#[acmd_script( agent = "pickel", script = "game_catchdash", category = ACMD_GAME, low_priority )]
+unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("catch_dash"), false, -1.0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.8), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 7.0, 3.2, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 3.6, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_G);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, -1.0, Some(0.0), Some(-4.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(-0.5), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(0.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 51.0);
+    FT_MOTION_RATE(fighter, 2.0);
+}
+
+#[acmd_script( agent = "pickel", script = "game_catchturn", category = ACMD_GAME, low_priority )]
+unsafe fn game_catchturn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("catch_turn"), false, -1.0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, 1.0, Some(0.0), Some(-4.8), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 7.0, -3.2, Some(0.0), Some(7.0), Some(-10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 3.6, 0.0, 7.0, -5.0, Some(0.0), Some(7.0), Some(-9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_G);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -5.0, 1.0, Some(0.0), Some(-4.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, 1.0, Some(0.0), Some(-0.5), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 2.5, 0.0, -3.0, -1.0, Some(0.0), Some(0.0), Some(-1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 52.0);
+    FT_MOTION_RATE(fighter, 2.0);
+}
+
+#[acmd_script( agent = "pickel", scripts = ["game_appealsl", "game_appealsr"], category = ACMD_GAME, low_priority )]
+unsafe fn game_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+    }
+    frame(lua_state, 90.0);
+    if is_excute(fighter){
+        if DamageModule::damage(boma, 0) > 2.0 {
+            DamageModule::add_damage(boma, -2.0, 0);
+        }
+    }
+}
+
+#[acmd_script( agent = "pickel", script = "game_guardon", category = ACMD_GAME, low_priority)]
+unsafe fn game_guardon(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, false, -1);
+    }
+}
+
+#[acmd_script( agent = "pickel", script = "game_guarddamage", category = ACMD_GAME, low_priority)]
+unsafe fn game_guarddamage(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if !ArticleModule::is_exist(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF) {
+            ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, false, -1);
+        }
+    }
+}
+
+#[acmd_script( agent = "pickel", script = "sound_landingheavy", category = ACMD_SOUND, low_priority)]
+unsafe extern "C" fn sound_landingheavy(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if WorkModule::is_flag(boma, *FIGHTER_PICKEL_STATUS_LANDING_FLAG_HIGH_PLACE) {
+        frame(lua_state, 3.0);
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_pickel_landing_high_place"));
+            DamageModule::add_damage(boma, 0.1, 0);
+        }
+    } else {
+        frame(lua_state, 0.0);
+        if is_excute(fighter) {
+            PLAY_LANDING_SE(fighter, Hash40::new("se_pickel_landing02"));
+        }
+    }
+}
+
+#[acmd_script( agent = "pickel", script = "game_passive", category = ACMD_GAME, low_priority)]
+unsafe fn game_passive(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_MELT, false, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_MELT, Hash40::new("passive"), false, 0.0);
+        let melt = ArticleModule::get_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_MELT);
+        let melt_id = smash::app::lua_bind::Article::get_battle_object_id(melt) as u32;
+        let melt_boma = sv_battle_object::module_accessor(melt_id);
+        let lr = PostureModule::lr(boma);
+        PostureModule::add_pos_2d(melt_boma, &Vector2f {x: (-10.0 * lr), y: 0.0});
+    }
+}
+
+#[acmd_script( agent = "pickel_melt", script = "game_passive", category = ACMD_GAME, low_priority)]
+unsafe fn melt_game_passive(weapon: &mut L2CAgentBase) {
+    let lua_state = weapon.lua_state_agent;
+    let boma = weapon.boma();
+    if is_excute(weapon) {
+        AttackModule::clear_all(boma);
+    }
+} 
+
+#[acmd_script( agent = "pickel_melt", script = "effect_passive", category = ACMD_EFFECT, low_priority)]
+unsafe fn melt_effect_passive(weapon: &mut L2CAgentBase) {
+    let lua_state = weapon.lua_state_agent;
+    let boma = weapon.boma();
+    if is_excute(weapon) {
+        EFFECT_FOLLOW(weapon, Hash40::new("sys_water_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, false);
+    }
+} 
+
+#[acmd_script( agent = "pickel_melt", script = "sound_passive", category = ACMD_SOUND, low_priority)]
+unsafe fn melt_sound_passive(weapon: &mut L2CAgentBase) {
+    let lua_state = weapon.lua_state_agent;
+    let boma = weapon.boma();
+    if is_excute(weapon) {
+        PLAY_SE(weapon, Hash40::new("se_common_swim_middle_01"));
+    }
+} 
+
 pub fn install() {
     install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        pickel_fire_attack_lw3_game,
-        pickel_fire_attack_lw3_effect,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
+        game_dash,
+        sound_dash,
+        game_turndash,
+        game_escapeair,
+        game_escapeairslide,
+        game_catch,
+        game_catchdash,
+        game_catchturn,
+        game_appeals,
+        game_guardon,
+        game_guarddamage,
+        sound_landingheavy,
+        game_passive,
+        melt_game_passive,
+        melt_effect_passive,
+        melt_sound_passive
     );
 }
 

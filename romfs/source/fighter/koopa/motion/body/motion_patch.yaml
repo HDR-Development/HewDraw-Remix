@@ -1,0 +1,129 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+escape:
+  flags:
+    move: false
+attack_11:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 20
+attack_12:
+  flags:
+    move: false
+attack_hi3:
+  extra:
+    cancel_frame: 54
+attack_lw3:
+  extra:
+    cancel_frame: 33
+attack_dash:
+  extra:
+    cancel_frame: 44
+attack_s4_s:
+  extra:
+    cancel_frame: 85
+attack_hi4:
+  extra:
+    cancel_frame: 60
+attack_lw4:
+  extra:
+    cancel_frame: 58
+attack_air_n:
+  extra:
+    cancel_frame: 38
+attack_air_f:
+  extra:
+    cancel_frame: 38
+attack_air_hi:
+  extra:
+    cancel_frame: 44
+attack_air_lw:
+  extra:
+    cancel_frame: 78
+special_n_max:
+  game_script: game_specialnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d00specialnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialnmax
+    - sound_specialnmax
+    - effect_specialnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 65
+    no_stop_intp: false
+special_air_n_max:
+  game_script: game_specialairnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d00specialairnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairnmax
+    - sound_specialairnmax
+    - effect_specialairnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 65
+    no_stop_intp: false
+catch_attack:
+  extra:
+    cancel_frame: 0
+throw_f:
+  extra:
+    cancel_frame: 49
+throw_b:
+  extra:
+    cancel_frame: 32
+throw_hi:
+  extra:
+    cancel_frame: 74
+throw_lw:
+  extra:
+    cancel_frame: 65
+appeal_hi_l:
+  extra:
+    cancel_frame: 70
+appeal_hi_r:
+  extra:
+    cancel_frame: 70
+furafura_end:
+  extra:
+    cancel_frame: 10
