@@ -554,10 +554,10 @@ unsafe fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
         if agent.is_situation(*SITUATION_KIND_GROUND) {
-            macros::QUAKE(agent, *CAMERA_QUAKE_KIND_L);
+            QUAKE(agent, *CAMERA_QUAKE_KIND_L);
         }
         else {
-            macos::QUAKE(agent, *CAMERA_QUAKE_KIND_M);
+            QUAKE(agent, *CAMERA_QUAKE_KIND_M);
         }
         macros::AREA_WIND_2ND_arg10(agent, 0, 0.75, 110, 300, 0.8, 0, 15, 24, 30, 40);
     }
