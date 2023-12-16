@@ -47,6 +47,10 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         //Re-enable Pyra UpB
         Set_Pyra_Up_Special_Cancel(fighter,false);
     }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+        VarModule::off_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL);
+    }
     return true.into();
 }
 

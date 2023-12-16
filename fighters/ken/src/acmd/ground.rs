@@ -1,9 +1,8 @@
 
 use super::*;
 
-/// jab 1 is remapped to this in motion list
-#[acmd_script( agent = "ken", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "game_attack11w" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -11,12 +10,12 @@ unsafe fn ken_attack_12_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
     frame(lua_state, 3.0);
-    FT_MOTION_RATE(fighter, 3.0 / (4.0 - 3.0));
+    FT_MOTION_RATE_RANGE(fighter, 3.0, 4.0, 3.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO); // it's here this early to make light jab --> heavy jab feel like the other target combos
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 25, 0, 25, 3.2, 0.0, 10.5, 3.6, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 25, 0, 20, 3.2, 0.0, 10.5, 8.0, Some(0.0), Some(10.5), Some(3.6), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 25, 0, 25, 3.0, 0.0, 10.5, 3.5, Some(0.0), Some(6.5), Some(3.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 25, 0, 20, 3.0, 0.0, 10.5, 7.0, Some(0.0), Some(6.5), Some(7.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 4.0);
     FT_MOTION_RATE(fighter, 1.0);
@@ -32,9 +31,47 @@ unsafe fn ken_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-/// acts as jab 2, strong prox jab, and strong distance jab - remapped to this in motion list
-#[acmd_script( agent = "ken", script = "game_attack11nears" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "effect_attack11w", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11w(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 8, 10.5, 0, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 360, false, 0.3);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "sound_attack11w", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack11w(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ken_swing_punch_m"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_ken_rnd_attack_m"));
+    }
+}
+
+#[acmd_script( agent = "ken", script = "expression_attack11w", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attack11w(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
+#[acmd_script( agent = "ken", scripts = ["game_attack11s", "game_attack11nears", "game_attack12"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -81,8 +118,8 @@ unsafe fn ken_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_attack11nears", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attack11nears(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", scripts = ["effect_attack11s", "effect_attack11nears", "effect_attack12"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -94,6 +131,33 @@ unsafe fn effect_attack11nears(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", scripts = ["sound_attack11s", "sound_attack11nears", "sound_attack12"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack11s(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ken_swing_punch_l"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_ken_rnd_attack_l"));
+    }
+}
+
+#[acmd_script( agent = "ken", scripts = ["expression_attack11s", "expression_attack11nears", "expression_attack12"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attack11s(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
 
 #[acmd_script( agent = "ken", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
@@ -123,9 +187,14 @@ unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ken_attack_12_game,
-        ken_attack_11_near_s_game,
-        effect_attack11nears,
+        game_attack11w,
+        effect_attack11w,
+        sound_attack11w,
+        expression_attack11w,
+        game_attack11s,
+        effect_attack11s,
+        sound_attack11s,
+        expression_attack11s,
         ken_attack_dash_game,
     );
 }

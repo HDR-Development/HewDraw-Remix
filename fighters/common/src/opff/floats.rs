@@ -228,9 +228,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     app::FighterSpecializer_Reflet::change_grimoire(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
                     WorkModule::set_int(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
 
-                    // drain 3 bars of Elwind on float activation
+                    // drain 1 bars of Elwind on float activation
                     let elwind_meter = WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
-                    let float_activation_spend = 2;
+                    let float_activation_spend = 1;
                     WorkModule::set_int(boma, elwind_meter - float_activation_spend, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
 
                     // effects
@@ -239,7 +239,7 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     EffectModule::req_follow(boma, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &Vector3f::zero(), &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.078);  // elwind green
                 }
-                else if timer % 15 == 0 {  // every 15 frames
+                else if timer % 10 == 0 {  // every 10 frames
                     // drain 1 bar of Elwind
                     WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
                 } 
@@ -263,13 +263,16 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind)) && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {
         if fighter_kind == *FIGHTER_KIND_SAMUSD {
             EffectModule::kill_kind(boma, Hash40::new("samusd_win3_aura"), false, true);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         if fighter_kind == *FIGHTER_KIND_MEWTWO {
             EffectModule::kill_kind(boma, Hash40::new("mewtwo_final_aura"), false, true);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         if fighter_kind == *FIGHTER_KIND_REFLET {
             EffectModule::kill_kind(boma, Hash40::new("reflet_catch"), false, true);
             EffectModule::kill_kind(boma, Hash40::new("sys_aura_light"), false, true);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         VarModule::off_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
         VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER, 0);

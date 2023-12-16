@@ -22,31 +22,8 @@ unsafe fn brave_special_n1_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "brave", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "brave", scripts = ["game_specialn2", "game_specialair2"] , category = ACMD_GAME , low_priority)]
 unsafe fn brave_special_n2_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8.0, 6.0);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        if WorkModule::is_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_SUCCESS_SP) {
-            ArticleModule::generate_article(boma, *FIGHTER_BRAVE_GENERATE_ARTICLE_FIREBALL, false, 0);
-        }
-    }
-    frame(lua_state, 26.0);
-    FT_MOTION_RATE(fighter, 16.0/(52.0 - 26.0));
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_ENABLE_CONTROL_ENERGY);
-        
-    }
-    frame(lua_state, 52.0);
-    FT_MOTION_RATE(fighter, 1.0);
-}
-
-#[acmd_script( agent = "brave", script = "game_specialairn2" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_special_air_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -54,7 +31,9 @@ unsafe fn brave_special_air_n2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_HOP);
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_HOP);
+        }
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -63,20 +42,21 @@ unsafe fn brave_special_air_n2_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 26.0);
-    FT_MOTION_RATE(fighter, 16.0/(52.0 - 26.0));
+    FT_MOTION_RATE_RANGE(fighter, 26.0, 52.0, 16.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_ENABLE_CONTROL_ENERGY);
     }
     frame(lua_state, 52.0);
     FT_MOTION_RATE(fighter, 1.0);
+
 }
 
-#[acmd_script( agent = "brave", script = "game_specialn3" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "brave", scripts = ["game_specialn3", "game_specialairn3"] , category = ACMD_GAME , low_priority)]
 unsafe fn brave_special_n3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 19.0/(16.0 - 1.0));
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 16.0, 19.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 9.0, 6.0);
     }
@@ -87,39 +67,14 @@ unsafe fn brave_special_n3_game(fighter: &mut L2CAgentBase) {
         }    
     }
     frame(lua_state, 38.0);
-    FT_MOTION_RATE(fighter, 20.0/(68.0 - 38.0));
+    FT_MOTION_RATE_RANGE(fighter, 38.0, 68.0, 20.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_ENABLE_CONTROL_ENERGY);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 4.0);
     }
     frame(lua_state, 68.0);
     FT_MOTION_RATE(fighter, 1.0);
-}
 
-#[acmd_script( agent = "brave", script = "game_specialairn3" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_special_air_n3_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 19.0/(16.0 - 1.0));
-    if is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 9.0, 6.0);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        if WorkModule::is_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_SUCCESS_SP) {
-            ArticleModule::generate_article(boma, *FIGHTER_BRAVE_GENERATE_ARTICLE_FIREBALL, false, 0);
-            KineticModule::add_speed(boma, &Vector3f::new(-0.1, 0.5, 0.0));
-        }    
-    }
-    frame(lua_state, 38.0);
-    FT_MOTION_RATE(fighter, 20.0/(68.0 - 38.0));
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_ENABLE_CONTROL_ENERGY);
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 4.0);
-    }
-    frame(lua_state, 68.0);
-    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "brave", scripts = ["game_specials1", "game_specialairs1"] , category = ACMD_GAME , low_priority)]
@@ -127,8 +82,12 @@ unsafe fn brave_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 9.0/(9.0 - 1.0));
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 9.0, 9.0);
     if is_excute(fighter) {
+        if boma.is_stick_backward() {
+            PostureModule::reverse_lr(boma);
+            PostureModule::update_rot_y_lr(boma);
+        }
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 11.0, 6.0);
     }
     frame(lua_state, 9.0);
@@ -166,7 +125,7 @@ unsafe fn brave_special_s1_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-    else{
+    else {
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_PLAY_MISS_SE);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 45, 100, 0, 30, 7.0, 0.0, 9.0, 9.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -184,7 +143,13 @@ unsafe fn brave_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 13.0/(10.0 - 1.0));
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 13.0);
+    if is_excute(fighter) {
+        if boma.is_stick_backward() {
+            PostureModule::reverse_lr(boma);
+            PostureModule::update_rot_y_lr(boma);
+        }
+    }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
@@ -290,13 +255,35 @@ unsafe fn brave_special_lw_start_game(fighter: &mut L2CAgentBase) {
     //FT_MOTION_RATE(fighter, 17.0/(20.0 - 1.0));
 }
 
+#[acmd_script( agent = "brave", scripts = ["game_speciallw8", "game_specialairlw8"], category = ACMD_GAME, low_priority )]
+unsafe fn brave_special_lw_8_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_BRAVE_GENERATE_ARTICLE_CRASH, false, -1);
+        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_FULLBURST_INTERRUPT);
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 8.0, 0.0, 16.0, 0.0, -3.0, 8.0, 0.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 116.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_FULLBURST_INTERRUPT);
+        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 136.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_ENABLE_GRAVITY);
+    }
+}
+
 #[acmd_script( agent = "brave", script = "game_specialairlw10", category = ACMD_GAME, low_priority )]
 unsafe fn brave_special_air_lw10_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 70, 65, 0, 80, 7.5, 0.0, 2.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 270, 30, 0, 80, 7.5, 0.0, 2.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 270, 40, 0, 38, 7.5, 0.0, 2.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 15.0);
 }
@@ -490,15 +477,14 @@ pub fn install() {
     install_acmd_scripts!(
         brave_special_n1_game,
         brave_special_n2_game,
-        brave_special_air_n2_game,
         brave_special_n3_game,
-        brave_special_air_n3_game,
         brave_special_s1_game,
         brave_special_s2_game,
         brave_special_hi1_game,
         brave_special_hi2_game,
         brave_special_hi3_game,
         brave_special_lw_start_game,
+        brave_special_lw_8_game,
         brave_special_air_lw10_game,
         brave_special_lw_14_game,
         brave_special_lw_17_game,

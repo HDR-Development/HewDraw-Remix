@@ -3,32 +3,13 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn jetpack_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
-        let fuel_burn_rate = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_burn_rate");
-        let fuel = VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL);
-        VarModule::set_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel - fuel_burn_rate);
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) || fuel <= 0 {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, true);
-        }
-    } else if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
-        if VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL) < fuel_max {
-            let fuel_recharge_rate = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_recharge_rate");
-            VarModule::add_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_recharge_rate);
-        }
-    }
-}
-
-unsafe fn fuel_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn var_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
-        let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
-        VarModule::set_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_max);
         VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
         VarModule::off_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
     }
@@ -83,28 +64,11 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     }
 }
 
-pub unsafe fn restore_armor(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
-            && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            WorkModule::set_float(fighter.module_accessor, 4.0, 0x4d);
-            VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_LOOP,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_END,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SUCTION,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SPIT,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SWALLOW,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_GET,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_CATCH,
         *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_THROW,
@@ -134,31 +98,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn gut_shine(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
-            GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        }
-        if (6..29).contains(&fighter.status_frame()) // gut charge logic
-        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        && VarModule::is_flag(fighter.object(), vars::krool::status::GUT_CHECK_CHARGED) {
-            VarModule::off_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 30.0, true, true, false);
-        }
-        if fighter.status_frame() > 8  // Allows for jump cancel on frame 10 (35 in animation) if not charged
-        && !VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
-        && !fighter.is_in_hitlag() {
-            fighter.check_jump_cancel(false, false);
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     armored_charge(fighter, motion_kind);
-    restore_armor(fighter);
-    gut_shine(fighter);
-    jetpack_cancel(fighter, boma, status_kind, cat[0]);
-    fuel_reset(fighter);
+    var_reset(fighter);
     fastfall_specials(fighter);
 }
 

@@ -27,7 +27,7 @@ unsafe fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "murabito", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -67,10 +67,10 @@ unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-//Not an ideal solution as hitbox will appear a frame before effects begin. Will have to revisit this in the future for a better solution 
+//Not an ideal solution as hitbox will appear a frame before effects begin. Will have to revisit this in the future for a better solution
 #[acmd_script( agent = "murabito", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -85,7 +85,7 @@ unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
-    
+
 }
 
 #[acmd_script( agent = "murabito", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
@@ -100,7 +100,42 @@ unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x152d914323));
     }
-    
+
+}
+
+#[acmd_script( agent = "murabito", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "murabito", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -142,7 +177,7 @@ unsafe fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "murabito", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -197,7 +232,7 @@ unsafe fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
@@ -206,6 +241,7 @@ pub fn install() {
         murabito_attack_air_b_game,
         murabito_attack_air_b_effect,
         murabito_attack_air_b_sound,
+        murabito_attack_air_b_expression,
         murabito_attack_air_hi_game,
         murabito_attack_air_lw_game,
     );

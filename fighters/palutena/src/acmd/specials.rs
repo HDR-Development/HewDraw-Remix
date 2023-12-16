@@ -52,6 +52,24 @@ unsafe fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "palutena", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "palutena", scripts = ["game_specialnr", "game_specialairnr"], category = ACMD_GAME, low_priority )]
 unsafe fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -132,6 +150,43 @@ unsafe fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
             PLAY_SE(agent, Hash40::new("se_palutena_smash_s01"));
         }
         PLAY_SE(agent, sound_lvl);
+    }
+}
+
+#[acmd_script( agent = "palutena", scripts = ["expression_specialnr", "expression_specialairnr"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 4);
+        macros::AREA_WIND_2ND_arg10(agent, 0, 1, 80, 300, 0.8, 0, 12, 24, 24, 40);
+    }
+    frame(lua_state, 11.0);
+    app::sv_animcmd::execute(lua_state, 11.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        macros::AREA_WIND_2ND_arg10(agent, 0, 2, 30, 300, 0.8, 25, 12, 50, 24, 80);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(agent) {
+        AreaModule::erase_wind(boma, 0);
+    }
+    frame(lua_state, 65.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
 
@@ -248,6 +303,40 @@ unsafe fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "palutena", scripts = ["expression_specialnb","expression_specialairnb"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_b_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 13.0);
+    app::sv_animcmd::execute(lua_state, 13.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+        macros::AREA_WIND_2ND_arg10(agent, 0, 2, 90, 300, 1, 9, 35, 18, 70, 80);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        if powered {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beamm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        } else {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        
+    }
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        AreaModule::erase_wind(boma, 0);
+    }
+}
+
 #[acmd_script( agent = "palutena", scripts = ["game_specialny", "game_specialairny"] , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -319,6 +408,28 @@ unsafe fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
     wait(lua_state, 29.0);
     if is_excute(agent) {
         sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+    }
+}
+
+#[acmd_script( agent = "palutena", scripts = ["expression_specialny", "expression_specialairny"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_y_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_beams"), 0);
+    }
+    wait(lua_state, 12.0);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_beamm"), 0);
     }
 }
 
@@ -419,50 +530,53 @@ unsafe fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", scripts =[ "expression_specialnp", "expression_specialairnp"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn palutena_special_n_p_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+#[acmd_script( agent = "palutena", scripts = ["expression_specialnp", "expression_specialairnp"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 4);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 4);
     }
     frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+    app::sv_animcmd::execute(lua_state, 14.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
     }
     frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
     }
     frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
-        AREA_WIND_2ND_arg10(fighter, 0, 0.75, 110, 300, 0.8, 0, 15, 24, 30, 40);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            macros::QUAKE(agent, *CAMERA_QUAKE_KIND_L);
+        }
+        else {
+            macos::QUAKE(agent, *CAMERA_QUAKE_KIND_M);
+        }
+        macros::AREA_WIND_2ND_arg10(agent, 0, 0.75, 110, 300, 0.8, 0, 15, 24, 30, 40);
     }
     frame(lua_state, 21.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         AreaModule::erase_wind(boma, 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 26.0);
-    if is_excute(fighter) {
-        AREA_WIND_2ND_arg10(fighter, 0, 0.75, 70, 300, 0.8, 0, 12, 24, 24, 40);
+    if is_excute(agent) {
+        macros::AREA_WIND_2ND_arg10(agent, 0, 0.75, 70, 300, 0.8, 0, 12, 24, 24, 40);
     }
     frame(lua_state, 47.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         AreaModule::erase_wind(boma, 0);
     }
     frame(lua_state, 55.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
 
@@ -483,6 +597,7 @@ unsafe fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
     }
 
 }
+
 #[acmd_script( agent = "palutena", scripts =[ "effect_specialno", "effect_specialairno"], category = ACMD_EFFECT, low_priority )]
 unsafe fn palutena_special_n_o_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -519,6 +634,16 @@ unsafe fn palutena_special_n_o_sound(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l02"));
+    }
+}
+
+#[acmd_script( agent = "palutena", scripts = ["expression_specialno", "expression_specialairno"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_o_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -609,6 +734,24 @@ unsafe fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
     wait(lua_state, 25.0);
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_item_club_wind"));
+    }
+}
+
+#[acmd_script( agent = "palutena", scripts = ["expression_specialng", "expression_specialairng"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_g_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_27_spinslash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashss"), 10);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 10);
     }
 }
 
@@ -763,14 +906,18 @@ pub fn install() {
         palutena_special_n_game,
         palutena_special_n_effect,
         palutena_special_n_sound,
+        palutena_special_n_expression,
         palutena_special_n_r_game,
         palutena_special_n_r_effect,
         palutena_special_n_r_sound,
+        palutena_special_n_r_expression,
         palutena_special_n_b_game,
         palutena_special_n_b_effect,
+        palutena_special_n_b_expression,
         palutena_special_n_b_sound,
         palutena_special_n_y_game,
         palutena_special_n_y_effect,
+        palutena_special_n_y_expression,
         palutena_special_n_y_sound,
         palutena_special_n_p_game,
         palutena_special_n_p_effect,
@@ -779,9 +926,11 @@ pub fn install() {
         palutena_special_n_o_game,
         palutena_special_n_o_effect,
         palutena_special_n_o_sound,
+        palutena_special_n_o_expression,
         palutena_special_n_g_game,
         palutena_special_n_g_effect,
         palutena_special_n_g_sound,
+        palutena_special_n_g_expression,
     );
 }
 

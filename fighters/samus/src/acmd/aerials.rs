@@ -75,6 +75,20 @@ unsafe fn attack_air_n_sound(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "samus", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "samus", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -302,7 +316,7 @@ unsafe fn samus_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 18.0/20.0);
     }
-    
+
 }
 
 pub fn install() {
@@ -310,6 +324,7 @@ pub fn install() {
         attack_air_n,
         attack_air_n_effect,
         attack_air_n_sound,
+        attack_air_n_expression,
         attack_air_f,
         samus_attack_air_f_effect,
         attack_air_b,

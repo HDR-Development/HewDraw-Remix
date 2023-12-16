@@ -248,3 +248,6 @@ special_lw_pogo_landing:
 catch_attack:
   extra:
     cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10

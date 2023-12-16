@@ -388,7 +388,17 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
     && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
     {
-        interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+        // Param-based plat drop lockout window for Ryu, Ken, Terry, and Kazuya
+        if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_RYU || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_KEN || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DOLLY || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DEMON {
+            let dash_pass_disable_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "dash_pass_disable_frame");
+            if fighter.global_table[CURRENT_FRAME].get_i32() >= dash_pass_disable_frame {
+                interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+            }
+        }
+        // Normal behavior for all other fighters
+        else{
+            interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+        }
     }
 
     if fighter.sub_transition_group_check_ground_attack().get_bool() {

@@ -18,9 +18,12 @@
   </list>
   <list hash="param_bullet">
     <struct index="0">
-      <int hash="life">6</int>
+      <int hash="life">7</int>
     </struct>
   </list>
+  <struct hash="param_fishingrod">
+    <float hash="hook_search_size">4</float>
+  </struct>
   <struct hash="param_fishingline">
     <int hash="rewind_frame">18</int>
   </struct>

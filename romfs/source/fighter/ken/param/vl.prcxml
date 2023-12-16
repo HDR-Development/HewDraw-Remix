@@ -8,9 +8,11 @@
   <list hash="param_special_n">
     <struct index="0">
       <float hash="shoot_x">10.0</float>
-      <float hash="speed_x_mul">1.0</float>
+      <float hash="speed_x_mul">0.7</float>
       <float hash="air_speed_x_mul">1.0</float>
       <float hash="air_speed_y_mul">0.5</float>
+      <float hash="hop_speed_y">0.0</float>
+      <float hash="attack_acl_y">0.05</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -36,6 +38,11 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <struct hash="map_collision_hadoken">
+    <float hash="up">2.0</float>
+    <float hash="down">-2.0</float>
+    <float hash="half_width">2.0</float>
+  </struct>
   <list hash="param_special_s">
     <struct index="0">
       <float hash="speed_x_mul">0.5</float>
@@ -68,14 +75,15 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="command_power_mul">1.25</float>
+      <float hash="command_power_mul">1.375</float>
       <float hash="speed_y_mul_w">0.3</float>
       <float hash="speed_y_mul_m">0.525</float>
       <float hash="speed_y_mul_s">0.77</float>
       <float hash="fall_brake_y_mul">2</float>
       <int hash="fall_frame">5</int>
-      <int hash="landing_frame_w">7</int>
+      <int hash="landing_frame_w">11</int>
       <int hash="landing_frame_m">11</int>
+      <int hash="landing_frame_s">22</int>
       <int hash="pad_release_w">3</int>
       <float hash="command_landing_frame_mul">1</float>
     </struct>

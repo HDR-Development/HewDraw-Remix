@@ -59,6 +59,35 @@ attack_s4_lw:
 attack_s3_hi:
   extra:
     cancel_frame: 33
+special_n_hit:
+  game_script: game_specialnhit
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialnhit.nuanmb
+  scripts:
+  - expression_specialnhit
+  - sound_specialnhit
+  - effect_specialnhit
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 15
+    freeze_during_hitstop: false    
 special_s_boost:
   game_script: game_specialsboost
   flags:
@@ -207,3 +236,6 @@ wait_4:
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
+furafura_end:
+  extra:
+    cancel_frame: 10

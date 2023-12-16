@@ -178,7 +178,16 @@ pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
     
-
+// JC Agility
+unsafe fn jc_agility(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL)
+    && boma.status_frame() > 3
+    && boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_prev_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END)
+    && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC) {
+        boma.check_jump_cancel(true, false);
+    }
+}
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     charge_state_increase(fighter, boma);
@@ -189,6 +198,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     discharge_momentum(fighter);
     zippy_zap_jump_cancel(boma, status_kind, situation_kind, cat[0]);
     charge_training_taunt(fighter, boma, status_kind);
+    jc_agility(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICHU )]
