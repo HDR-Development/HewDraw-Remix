@@ -259,7 +259,7 @@ special_n_p:
     - name: d00specialnp.nuanmb
       unk: 0
   scripts:
-    - expression_attacklw4
+    - expression_specialnp
     - sound_specialnp
     - effect_specialnp
   extra:

@@ -419,6 +419,53 @@ unsafe fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "palutena", scripts =[ "expression_specialnp", "expression_specialairnp"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_n_p_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 4);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        AREA_WIND_2ND_arg10(fighter, 0, 0.75, 110, 300, 0.8, 0, 15, 24, 30, 40);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        AREA_WIND_2ND_arg10(fighter, 0, 0.75, 70, 300, 0.8, 0, 12, 24, 24, 40);
+    }
+    frame(lua_state, 47.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
+}
+
 #[acmd_script( agent = "palutena", scripts =[ "game_specialno", "game_specialairno"], category = ACMD_GAME, low_priority )]
 unsafe fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -728,6 +775,7 @@ pub fn install() {
         palutena_special_n_p_game,
         palutena_special_n_p_effect,
         palutena_special_n_p_sound,
+        palutena_special_n_p_expression,
         palutena_special_n_o_game,
         palutena_special_n_o_effect,
         palutena_special_n_o_sound,
