@@ -60,8 +60,8 @@ unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         // [v] this makes the angle to the right going clockwise (negative angle) and the angle to the left counter clockwise (positive angle)
         //      it also gets the back and front limits
         let angle = angle_from_vertical * stick.x.signum() * -1.0;
-        let back = 10.0; // fighter.get_param_float("param_special_hi", "jump_angle_limit_back");
-        let front = 30.0; // fighter.get_param_float("param_special_hi", "jump_angle_limit_front");
+        let back = 5.0; // fighter.get_param_float("param_special_hi", "jump_angle_limit_back");
+        let front = 20.0; // fighter.get_param_float("param_special_hi", "jump_angle_limit_front");
 
         // [v] reverse the params depending on LR
         let angle = if PostureModule::lr(fighter.module_accessor) < 0.0 {
