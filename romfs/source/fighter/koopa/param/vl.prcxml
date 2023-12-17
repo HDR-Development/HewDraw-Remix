@@ -35,6 +35,31 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="special_s_vx0">0.0</float>
+      <float hash="special_s_vx0_add_max">0.0</float>
+      <float hash="special_s_vx_max">0.0</float>
+
+      <float hash="special_s_mv_xf_min">0.0</float>
+      <float hash="special_s_mv_xf_max">0.0</float>
+      <float hash="special_s_mv_xf_sub">0.0</float>
+      <float hash="special_s_tgt_xf_min">0.0</float>
+      <float hash="special_s_tgt_xf_max">0.0</float>
+      <float hash="special_s_tgt_xf_sub">0.0</float>
+
+      <float hash="special_s_axf_max">0.0</float>
+      
+      <float hash="special_s_hop_vx0">0.0</float>
+      <float hash="special_s_hop_vy0">0.0</float>
+	  
+      <float hash="special_s_mv_xf_max_mul">0.0</float>
+      <float hash="special_s_vx_max_mul">0.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_ar_ax">0.07</float>
