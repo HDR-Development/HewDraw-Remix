@@ -12,7 +12,7 @@ pub fn install() {
     );
 
     special_n::install();
-    //special_s::install();
+    special_s::install();
 }
  
 // AGENT INIT AND CALLBACKS
