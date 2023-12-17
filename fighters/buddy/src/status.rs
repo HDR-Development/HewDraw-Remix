@@ -11,6 +11,15 @@ pub unsafe fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+    if (fighter.is_situation(*SITUATION_KIND_GROUND) )
+    {
+    let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
+    if feathers_g <= 0 {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
+        PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
+        return 1.into();
+    }
+}
 
     if (fighter.is_situation(*SITUATION_KIND_AIR) )
     {
