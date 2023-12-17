@@ -38,7 +38,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "luigi", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
@@ -101,6 +101,28 @@ unsafe fn sound_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "luigi", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_55_smash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -138,7 +160,7 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "luigi", script = "effect_specialairn" , category = ACMD_EFFECT , low_priority)]
@@ -389,7 +411,7 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_RISE);
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
@@ -433,7 +455,7 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BUOYANCY);
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
@@ -524,6 +546,8 @@ pub fn install() {
 
         sound_specialn,
         sound_specialairn,
+
+        expression_specialn,
     );
 }
 

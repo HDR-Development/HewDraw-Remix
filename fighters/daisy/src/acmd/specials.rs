@@ -62,7 +62,7 @@ unsafe fn daisy_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 1.4);
     }
-    
+
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
@@ -100,6 +100,25 @@ unsafe fn daisy_special_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "daisy", script = "expression_specialhistart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn daisy_special_hi_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 2);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -141,13 +160,84 @@ unsafe fn daisy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "daisy", script = "expression_specialairhistart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn daisy_special_air_hi_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "daisy", script = "game_specialhiopen" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_special_hi_open_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_open"), false, 1.0);
     }
-    
+
+}
+
+#[acmd_script( agent = "daisy", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+unsafe fn daisy_special_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        let item_kind = fighter.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND); 
+        if item_kind == *ITEM_KIND_NONE {
+            ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_DAIKON, false, -1);
+        } else if item_kind == *ITEM_KIND_BOMBHEI {
+            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_BOMBHEI), 0, 0, false, false);
+        } else if item_kind == *ITEM_KIND_DOSEISAN {
+            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_DOSEISAN), 0, 0, false, false);
+        } else if item_kind == *ITEM_KIND_BEAMSWORD {
+            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_BEAMSWORD), 0, 0, false, false);
+        }
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "daisy", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+unsafe fn daisy_special_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("daisy_hikkonuki"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1.0, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("daisy_hikkonuki"), -1);
+        LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "daisy", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
+unsafe fn daisy_special_lw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_daisy_special_l02"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_daisy_special_l01"));
+        if fighter.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND) != *ITEM_KIND_NONE 
+        && ItemModule::is_have_item(fighter.module_accessor, 0) {
+            PLAY_SE(fighter, Hash40::new("vc_daisy_appeal_s01"));
+        } 
+    }
 }
 
 pub fn install() {
@@ -157,8 +247,13 @@ pub fn install() {
         daisy_special_s_jump_game,
         daisy_special_s_hit_end_game,
         daisy_special_hi_start_game,
+        daisy_special_hi_start_expression,
         daisy_special_air_hi_start_game,
+        daisy_special_air_hi_start_expression,
         daisy_special_hi_open_game,
+        daisy_special_lw_game,
+        daisy_special_lw_effect,
+        daisy_special_lw_sound
     );
 }
 

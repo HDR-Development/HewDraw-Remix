@@ -314,7 +314,18 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
         */
-
+        else if fighter_kind == *WEAPON_KIND_PICKEL_FISHINGROD{
+            if x1 == hash40("param_fishingrod"){
+                if x2 == hash40("shoot_angle"){
+                    if ControlModule::get_stick_y(owner_module_accessor) < 0.0{
+                        return 48.0 + (ControlModule::get_stick_y(owner_module_accessor) * 30.0);
+                    }
+                    else{
+                        return 48.0;
+                    }
+                }
+            }
+        }
         else if fighter_kind == *WEAPON_KIND_MIISWORDSMAN_TORNADOSHOT {
             if x1 == hash40("param_tornadoshot"){
                 if x2 == hash40("life") {

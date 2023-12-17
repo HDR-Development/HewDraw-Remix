@@ -10,7 +10,7 @@ unsafe fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     }
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 45, 58, 0, 82, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 40, 58, 0, 82, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 24.0);
@@ -369,14 +369,37 @@ unsafe fn gaogaen_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_throwlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+unsafe fn gaogaen_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     if WorkModule::is_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_REVENGE) {
         VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     }
+    if is_excute(fighter) {
+        let bkb = if WorkModule::is_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_REVENGE) { 50 } else { 70 };
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 68, 47, 0, bkb, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        FT_CATCH_STOP(fighter, 12, 1);
+        CHECK_FINISH_CAMERA(fighter, 8, 0);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+    }
+}
+
+#[acmd_script( agent = "gaogaen", script = "effect_throwlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -426,6 +449,7 @@ pub fn install() {
         gaogaen_throw_hi_game,
         gaogaen_throw_hi_effect,
         gaogaen_throw_hi_sound,
+        gaogaen_throw_lw_game,
         gaogaen_throw_lw_effect,
     );
 }

@@ -62,6 +62,7 @@ unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
         if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
             EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
             if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
                 EFFECT_FOLLOW(fighter, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
             }
@@ -92,7 +93,7 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_PASSIVE_FB]) {
                 apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            apply_status_speed_mul(fighter, 0.84);
+            apply_status_speed_mul(fighter, 0.86);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
             apply_status_speed_mul(fighter, 0.84);
         }
@@ -108,7 +109,7 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
     // dash & momentum transfer speeds
     if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-        VarModule::set_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 0.88);
+        VarModule::set_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.0);
 
         // if you are initial dash, slow them down slightly
         if fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
@@ -131,7 +132,7 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
                 y: 0.0, 
                 z: 0.0
             };
-            KineticModule::add_speed_outside(fighter.boma(), *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+            //KineticModule::add_speed_outside(fighter.boma(), *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
     }
 }
@@ -187,10 +188,36 @@ unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Allows hold input to transition to rapid jab if in Putrid stance
-unsafe fn putrid_gentleman(boma: &mut BattleObjectModuleAccessor) {
+// Allows hold input to transition to rapid jab if in Putrid stance, and handles changed animations per stance
+unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_motion(Hash40::new("attack_13")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+    }
+    if boma.is_motion(Hash40::new("attack_s3_s")) { 
+        if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+            MotionModule::change_motion(boma, Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
+        }
+        else if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
+            MotionModule::change_motion(boma, Hash40::new("attack_s3_s_a"), 0.0, 1.0, false, 0.0, false, false);
+        }
+    }
+    if boma.is_motion(Hash40::new("attack_air_b")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        MotionModule::change_motion(boma, Hash40::new("attack_air_b_s"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    if boma.is_motion(Hash40::new("appeal_hi_2"))
+    && frame == 93.0 
+    && boma.is_button_on(Buttons::AppealSL) {
+        MotionModule::change_motion(boma, Hash40::new("appeal_hi_2"), 45.0, 1.0, false, 0.0, false, false);
+    }
+}
+
+unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {
+        if !boma.is_motion_one_of(&
+            [Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r")]) ||
+            !boma.is_button_on(Buttons::AppealHi) {
+                VarModule::off_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+            }
     }
 }
 
@@ -232,6 +259,30 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn monch(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_s_shoot_s"), Hash40::new("special_air_s_shoot_s")])
+    && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag()
+        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.is_cat_flag(Cat2::AppealHi) {
+                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_hi_l") } else { Hash40::new("appeal_hi_r") };
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
+                MotionModule::change_motion(fighter.module_accessor, hash, 0.0, -1.0, false, 0.0, false, false);
+            }
+            else if fighter.is_cat_flag(Cat2::AppealSL | Cat2::AppealSR) {
+                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_s_l") } else { Hash40::new("appeal_s_r") };
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_l"), 0.0, -1.0, false, 0.0, false, false);
+            }
+            else if fighter.is_cat_flag(Cat2::AppealLw) {
+                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_lw_l") } else { Hash40::new("appeal_lw_r") };
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_l"), 0.0, -1.0, false, 0.0, false, false);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
 	//spike_head_mesh_test(boma);
@@ -241,8 +292,10 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     check_reset(fighter);
     check_apply_speeds(fighter);
     stance_init_effects(fighter);
-    putrid_gentleman(boma);
+    motion_handler(fighter, boma, frame);
     fastfall_specials(fighter);
+    reverse_switch(boma);
+    monch(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACKUN )]
@@ -283,6 +336,12 @@ pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
                 motion_kind != hash40("explode") {
                     //println!("Woo!");
                     MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+                }
+                if VarModule::is_flag(owner_object, vars::packun::status::BITE_START) &&
+                motion_kind != hash40("explode") {
+                    //println!("Woo!");
+                    VarModule::on_flag(owner_object, vars::packun::status::BURST);
+                    WorkModule::set_int(boma, 1, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
                 }
             }
 		}

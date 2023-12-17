@@ -223,6 +223,27 @@ unsafe fn buddy_bullet_bakyun_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "buddy_bullet", script = "game_missile", category = ACMD_GAME, low_priority )]
+unsafe fn buddy_bullet_missile_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        GroundModule::set_offset_y(boma, -1.0);
+
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.4, 361, 20, 0, 52, 3.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.6, 361, 20, 0, 46, 3.2, 0.0, 0.0, 0.0, None, None, None, 0.75, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.8, 361, 20, 0, 40, 2.8, 0.0, 0.0, 0.0, None, None, None, 0.25, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+    }
+}
+
 #[acmd_script( agent = "buddy_pad", script = "game_fall" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_pad_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
@@ -300,6 +321,7 @@ pub fn install() {
         dash_sound,
         turn_dash_game,
         buddy_bullet_bakyun_game,
+        buddy_bullet_missile_game,
         buddy_pad_fall_game,
         damageflyhi_sound,
         damageflylw_sound,

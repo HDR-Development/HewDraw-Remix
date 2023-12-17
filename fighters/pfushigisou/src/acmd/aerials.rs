@@ -37,7 +37,7 @@ unsafe fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "pfushigisou", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
@@ -54,7 +54,7 @@ unsafe fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     */
-    
+
 }
 
 #[acmd_script( agent = "pfushigisou", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -68,9 +68,9 @@ unsafe fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("viner2"), 10.0, 361, 55, 0, 50, 3.6, 0.0, -1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new("viner3"), 11.0, 70, 55, 0, 60, 4.0, 2.0, -0.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 2, 0, Hash40::new("viner4"), 12.0, 70, 55, 0, 60, 3.0, 3.8, -0.5, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 3, 0, Hash40::new("viner5"), 13.0, 80, 55, 0, 60, 4.0, 5.0, -0.5, -1.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("viner3"), 11.0, 70, 55, 0, 60, 4.0, 1.0, -0.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 2, 0, Hash40::new("viner4"), 12.0, 70, 55, 0, 60, 3.0, 2.8, -0.5, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 3, 0, Hash40::new("viner5"), 13.0, 80, 55, 0, 60, 3.5, 4.0, -0.5, -1.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
     wait(lua_state, 7.0);
     if is_excute(fighter) {
@@ -80,7 +80,22 @@ unsafe fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "pfushigisou", script = "expression_attackairf" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn pfushigisou_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
 }
 
 #[acmd_script( agent = "pfushigisou", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -114,7 +129,7 @@ unsafe fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "pfushigisou", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -154,7 +169,7 @@ unsafe fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "pfushigisou", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -183,7 +198,7 @@ unsafe fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
@@ -191,6 +206,7 @@ pub fn install() {
         pfushigisou_attack_air_n_game,
         pfushigisou_landing_air_n_game,
         pfushigisou_attack_air_f_game,
+        pfushigisou_attack_air_f_expression,
         pfushigisou_attack_air_b_game,
         pfushigisou_attack_air_hi_game,
         pfushigisou_attack_air_lw_game,

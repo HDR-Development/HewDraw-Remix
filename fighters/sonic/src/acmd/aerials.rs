@@ -114,6 +114,20 @@ unsafe fn sonic_attack_air_f_sound(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "sonic", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority)]
+unsafe fn sonic_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 
 #[acmd_script( agent = "sonic", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_attack_air_b_game(fighter: &mut L2CAgentBase) {
@@ -291,6 +305,7 @@ pub fn install() {
         sonic_attack_air_f_game,
         sonic_attack_air_f_effect,
         sonic_attack_air_f_sound,
+        sonic_attack_air_f_expression,
         sonic_attack_air_b_game,
         sonic_attack_air_b_effect,
         sonic_attack_air_hi_game,

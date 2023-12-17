@@ -13,6 +13,7 @@
     <int hash="thunder_sword_revival_time">480</int>
     <int hash="grimoire_thunder_revival_time">540</int>
     <int hash="grimoire_giga_fire_revival_time">540</int>
+    <int hash="grimoire_el_window_revival_time">480</int>
     <int hash="grimoire_rizaia_revival_time">780</int>
     <int hash="thunder_sword_smash_attack_revival_time">0</int>
   </struct>
@@ -44,6 +45,15 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_elwind">
+    <struct index="0">
+      <int hash="first_life">16</int>
+      <int hash="second_life">20</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_next_jump_y_speed">2.8</float>
@@ -56,6 +66,11 @@
     <struct index="0">
       <float hash="special_lw_damage_recovery_basic">90</float>
       <float hash="special_lw_damage_recovery">0.03</float>
+      <float hash="start_y_speed_mul">0.5</float>
+      <float hash="start_x_speed_mul">0.8</float>
+      <float hash="special_lw_damage_recovery_base">0.0</float>
+      <float hash="special_lw_damage_recovery">0.0</float>
+      <float hash="special_lw_damage_recovery_upper_limit">0.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

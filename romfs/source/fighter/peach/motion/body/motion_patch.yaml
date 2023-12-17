@@ -70,3 +70,6 @@ special_air_n:
   extra:
     xlu_start: 0
     xlu_end: 0
+furafura_end:
+  extra:
+    cancel_frame: 10

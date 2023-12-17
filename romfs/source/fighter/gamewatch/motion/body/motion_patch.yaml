@@ -15,11 +15,7 @@ throw_hi:
     cancel_frame: 38
 attack_lw3:
   extra:
-    cancel_frame: 30
-special_hi:
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
+    cancel_frame: 32
 attack_hi4:
   extra:
     cancel_frame: 45
@@ -36,10 +32,20 @@ attack_hi3:
 attack_hi3_l:
   extra:
     cancel_frame: 32
+special_hi:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
 special_air_hi:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+special_hi_open:
+  extra:
+    cancel_frame: 49
 catch_attack:
   extra:
     cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10
