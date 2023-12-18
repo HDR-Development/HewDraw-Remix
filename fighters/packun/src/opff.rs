@@ -270,9 +270,8 @@ unsafe fn monch(fighter: &mut L2CFighterCommon) {
                 MotionModule::change_motion(fighter.module_accessor, hash, 0.0, -1.0, false, 0.0, false, false);
             }
             else if fighter.is_cat_flag(Cat2::AppealSL | Cat2::AppealSR) {
-                let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_s_l") } else { Hash40::new("appeal_s_r") };
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_l"), 0.0, -1.0, false, 0.0, false, false);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_hi_2"), 0.0, -1.0, false, 0.0, false, false);
             }
             else if fighter.is_cat_flag(Cat2::AppealLw) {
                 let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_lw_l") } else { Hash40::new("appeal_lw_r") };

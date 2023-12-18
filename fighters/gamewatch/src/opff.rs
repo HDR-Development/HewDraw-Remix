@@ -50,6 +50,7 @@ unsafe fn once_per_airtime(fighter: &mut L2CFighterCommon) {
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING])
     {
         VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
+        VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
     }
 }
 
