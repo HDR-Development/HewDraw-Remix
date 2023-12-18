@@ -58,6 +58,11 @@ attack_air_n:
 attack_s4_lw:
   extra:
     cancel_frame: 72
+attack_lw4:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 55
 special_n_end:
   extra:
     cancel_frame: 4
