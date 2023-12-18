@@ -42,6 +42,7 @@ pub struct FfMeter {
 
     // Number tracking
     pub current_number: usize,
+    pub current_max: usize,
 
     enabled: bool,
 }
@@ -82,6 +83,7 @@ impl FfMeter {
             visual_percentage: -1.0,
 
             current_number: 0,
+            current_max: 2,
 
             enabled: false,
         }
@@ -104,6 +106,7 @@ impl FfMeter {
         }
 
         self.current_number = 0;
+        self.current_max = 2;
         self.actual_percentage = 0.0;
         self.visual_percentage = 0.0;
     }
@@ -127,11 +130,12 @@ impl FfMeter {
 
     pub fn set_meter_info(&mut self, current: f32, max: f32, per_level: f32) {
         let bar_total = per_level * 2.0;
+        self.current_max = (max / bar_total) as usize;
 
         let number = current / bar_total;
         let number = number.clamp(0.0, 5.0) as usize;
 
-        let percent = if number == 5 {
+        let percent = if number == self.current_max {
             1.0
         } else {
             (current % bar_total) / bar_total
@@ -145,6 +149,10 @@ impl FfMeter {
         }
 
         self.current_number = number;
+    }
+
+    pub fn change_cap(&mut self, cap: f32) {
+        self.current_max = cap as usize;
     }
 
     pub fn set_tex_coords(&mut self) {
