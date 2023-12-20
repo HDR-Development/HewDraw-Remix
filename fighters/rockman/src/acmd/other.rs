@@ -121,7 +121,7 @@ unsafe fn rockman_hardknuckle_regular_game(fighter: &mut L2CAgentBase) {
             fighter,
             WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
             0.0,
-            0.2
+            0.3
         );
     }
     frame(lua_state, 3.0);
@@ -142,7 +142,7 @@ unsafe fn rockman_hardknuckle_regular_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("rockman_hardknuckle"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("rockman_hardknuckle"), true, true);
     }
