@@ -43,6 +43,7 @@ pub struct ExMeter {
 
     // Number tracking
     pub current_number: usize,
+    pub current_max: usize,
 
     // Pulsing
     pub current_pulse_frame: f32,
@@ -87,6 +88,7 @@ impl ExMeter {
             visual_percentage: -1.0,
 
             current_number: 0,
+            current_max: 3,
 
             current_pulse_frame: 0.0,
             enabled: false,
@@ -108,12 +110,13 @@ impl ExMeter {
         }
 
         self.current_number = 0;
+        self.current_max = 2;
         self.actual_percentage = 0.0;
         self.visual_percentage = 0.0;
     }
 
     pub fn update_number(&mut self) {
-        if self.current_number == 5 {
+        if self.current_number == self.current_max {
             set_pane_visible(self.number, false);
             set_pane_visible(self.ex_icon, true);
         } else {
@@ -137,11 +140,12 @@ impl ExMeter {
 
     pub fn set_meter_info(&mut self, current: f32, max: f32, per_level: f32) {
         let bar_total = per_level * 2.0;
+        self.current_max = (max / bar_total) as usize;
 
         let number = current / bar_total;
         let number = number.clamp(0.0, 5.0) as usize;
 
-        let percent = if number == 5 {
+        let percent = if number == self.current_max {
             1.0
         } else {
             (current % bar_total) / bar_total
@@ -154,7 +158,7 @@ impl ExMeter {
             self.actual_percentage = percent;
         }
 
-        if number != 5 {
+        if number != self.current_max {
             self.current_pulse_frame = 0.0;
         }
 

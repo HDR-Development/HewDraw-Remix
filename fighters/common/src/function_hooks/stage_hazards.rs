@@ -44,7 +44,6 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0xec, // skyloft,
     0x107, // wrecking crew
     0x10d, // wuhu island
-    0x119, // duck hunt
 ];
 
 #[skyline::hook(offset = 0x178a090, inline)]

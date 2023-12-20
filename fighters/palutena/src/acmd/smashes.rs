@@ -60,17 +60,17 @@ unsafe fn palutena_attack_s4_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 6, -3, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 6, -6, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
 }
 
@@ -187,17 +187,17 @@ unsafe fn palutena_attack_lw4_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 3, 13.5, 0, 0, -90, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 3, 8, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 3, -8, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
         LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
     }
 }
