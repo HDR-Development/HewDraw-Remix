@@ -109,17 +109,43 @@ unsafe fn rockman_hardknuckle_regular_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 270, 61, 0, 8, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 270, 74, 0, 38, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_brake,
+            fighter,
+            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+            0.0,
+            0.2
+        );
     }
     frame(lua_state, 3.0);
 	if is_excute(fighter) {
         WorkModule::on_flag(boma, *WEAPON_ROCKMAN_HARDKNUCKLE_INSTANCE_WORK_ID_FLAG_ATTACK_VECTOR_REVERSE_UD_CHECK);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
 	if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 50, 60, 0, 20, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::clear(boma, 1, false);
+        AttackModule::clear_all(boma);
     }
-    
+}
+
+#[acmd_script( agent = "rockman_hardknuckle", script = "effect_regular" , category = ACMD_EFFECT , low_priority)]
+unsafe fn rockman_hardknuckle_regular_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("rockman_hardknuckle"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("rockman_hardknuckle"), true, true);
+    }
 }
 
 /*
@@ -181,6 +207,7 @@ pub fn install() {
         dash_sound,
         turn_dash_game,
         rockman_rockbuster_regular_game,
+        rockman_hardknuckle_regular_effect,
         rockman_airshooter_regular_game,
         rockman_hardknuckle_regular_game,
     );
