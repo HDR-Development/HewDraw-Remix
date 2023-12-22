@@ -202,6 +202,10 @@ pub fn install() {
     install_acmd_scripts!(
         richter_attack_s3_s_game,
         richter_whip_attack_s3_s_game,
+        richter_attack_squat_s3_game,
+        richter_attack_squat_s3_effect,
+        richter_attack_squat_s3_sound,
+        richter_attack_squat_s3_expression,
         richter_attack_hi3_game,
         richter_attack_lw3_game,
         richter_attack_lw32_game,
