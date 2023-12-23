@@ -47,8 +47,7 @@ use globals::*;
 // Mega Man Metal Blad Toss Airdodge Cancel
 unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
-        if boma.status_frame() > 16
-        && !WorkModule::is_flag(boma, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_FALL) {
+        if boma.status_frame() > 16 {
             boma.check_airdodge_cancel();
         }
     }
