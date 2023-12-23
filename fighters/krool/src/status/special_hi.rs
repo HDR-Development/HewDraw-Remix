@@ -58,6 +58,12 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
+#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+unsafe fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_krool_special_h02"), 0);
+    return 0.into()
+}
+
 #[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -528,6 +534,7 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
 pub fn install() {
     smashline::install_status_scripts!(
         special_hi_start_main,
+        special_hi_start_exit,
         special_hi_main,
         special_hi_end_main,
         special_hi_fall_main,
