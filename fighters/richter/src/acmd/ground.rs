@@ -9,12 +9,16 @@ unsafe fn richter_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 80, 50, 0, 50, 5.0, 0.0, 8.5, 0.0, None, None, None, 1.75, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         }
-    frame(lua_state, 16.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    }
 }
+
 #[acmd_script( agent = "richter", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
 unsafe fn richter_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -45,6 +49,10 @@ unsafe fn richter_attack_12_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
 }
 
