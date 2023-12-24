@@ -8,30 +8,7 @@ unsafe fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.746);
         ArticleModule::generate_article_enable(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL, false, 0);
-    }
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        if !ArticleModule::is_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL) {
-            ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL, false, 0);
-        }
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        if !ArticleModule::is_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL) {
-            ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL, false, 0);
-        }
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        if !ArticleModule::is_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL) {
-            ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL, false, 0);
-        }
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -39,9 +16,23 @@ unsafe fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        ArticleModule::shoot(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        ArticleModule::shoot(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BOWLING_BALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
-    
+}
+
+#[acmd_script( agent = "murabito_bowlingball", script = "game_fall", category = ACMD_GAME, low_priority)]
+unsafe fn murabito_bowlingball__game_fall(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 45, 95, 0, 70, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.75);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 45, 95, 0, 70, 3.7, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    }
 }
 
 #[acmd_script( agent = "murabito", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
@@ -317,6 +308,7 @@ unsafe fn murabito_attack_lw4_sound(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         murabito_attack_s4_s_game,
+        murabito_bowlingball__game_fall,
         murabito_attack_hi4_game,
         murabito_firework_shoot_game,
         murabito_attack_lw4_game,
