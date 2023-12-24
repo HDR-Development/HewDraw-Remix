@@ -34,6 +34,16 @@ unsafe fn richter_attack_11_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(fighter, 0.133, 0.455, 1.0);
     }
 }
+#[acmd_script( agent = "richter", script = "sound_attack11" , category = ACMD_SOUND , low_priority)]
+unsafe fn richter_attack_11_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_l"));
+    }
+}
+
 
 #[acmd_script( agent = "richter", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_12_game(fighter: &mut L2CAgentBase) {
@@ -66,7 +76,16 @@ unsafe fn richter_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 4, 2, 9, -5, 0, 0.45, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 4, 2, 9, -5, 0, 0.45, true);
+    }
+}
+#[acmd_script( agent = "richter", script = "sound_attack12" , category = ACMD_SOUND , low_priority)]
+unsafe fn richter_attack_12_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_s"));
     }
 }
 #[acmd_script( agent = "richter", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
@@ -93,7 +112,7 @@ unsafe fn richter_attack_dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -133,6 +152,25 @@ unsafe fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "richter", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
+unsafe fn richter_attack_dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_dash_start"));
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_l"));
+    }
+
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_landing01"));
+    }
+}
+
 #[acmd_script( agent = "richter", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn richter_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -154,10 +192,13 @@ pub fn install() {
     install_acmd_scripts!(
         richter_attack_11_game,
         richter_attack_11_effect,
+        richter_attack_11_sound,
         richter_attack_12_game,
         richter_attack_12_effect,
+        richter_attack_12_sound,
         richter_attack_dash_game,
         richter_attack_dash_effect,
+        richter_attack_dash_sound,
         richter_attack_dash_expression
     );
 }
