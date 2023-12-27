@@ -38,7 +38,8 @@ pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_FINAL as u32,
         0
     );
-    MeterModule::drain(fighter.object(), 4);
+    let meter_amount = MeterModule::meter(fighter.battle_object);
+    MeterModule::drain_direct(fighter.battle_object, meter_amount);
     return 0.into();
 }
 

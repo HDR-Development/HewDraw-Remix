@@ -46,6 +46,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    meter_module(fighter, boma, status_kind, situation_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     extra_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
     metered_cancels(fighter, boma, frame);
@@ -146,6 +147,45 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
             forward_bair_rotation(boma, 0.0, 0.1, 0.2, 11.0);
         }
+    }
+}
+
+unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
+        return;
+    }
+
+    // set damage gain mul
+    MeterModule::set_damage_gain_mul(fighter.battle_object, -1.0);
+
+    // drain some meter each frame
+    if !StopModule::is_stop(fighter.module_accessor) {
+        let magic_series_frames = 3600.0;
+        let meter_cap = MeterModule::meter_cap(fighter.battle_object) as f32;
+        let meter_per_level = MeterModule::meter_per_level(fighter.battle_object);
+        let meter_drain_amount = (meter_cap * meter_per_level) / magic_series_frames;
+        MeterModule::drain_direct(fighter.battle_object, meter_drain_amount);
+    }
+
+    // reset meter upon depletion
+    let meter_amount = MeterModule::meter(fighter.battle_object);
+    if meter_amount <= 0.0 {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+        MeterModule::add(fighter.battle_object, meter_amount);
+        MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
+    }
+
+    // exit magic series upon death, retaining meter
+    if [
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY
+    ].contains(&status_kind) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+        MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
     }
 }
 
@@ -283,20 +323,10 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // check final smashes
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
-    // the shinku hadouken
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 4 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        AttackModule::clear_all(fighter.module_accessor);
-        return;
-    }
     // the shin shoryuken
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && MeterModule::level(fighter.object()) >= 4 {
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+    && is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());

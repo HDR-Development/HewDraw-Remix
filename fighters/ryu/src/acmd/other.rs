@@ -223,11 +223,9 @@ unsafe fn game_appeallw(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::set_flag(
-            fighter.battle_object, 
-            vars::shotos::instance::IS_MAGIC_SERIES_CANCEL, 
-            !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
-        );
+        if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+        }
     }
 }
 

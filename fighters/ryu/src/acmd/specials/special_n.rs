@@ -20,7 +20,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
             if fighter.kind() != *FIGHTER_KIND_KIRBY 
             && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-                MeterModule::add(fighter.battle_object, 2.0);
+                MeterModule::add(fighter.battle_object, 2.0 * MeterModule::damage_gain_mul(fighter.battle_object));
             }
         }
     }
