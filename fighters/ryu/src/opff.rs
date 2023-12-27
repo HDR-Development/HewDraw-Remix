@@ -150,9 +150,14 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn end_magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+    MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
+    EffectModule::kill_kind(boma, Hash40::new("sys_thunder"), false, false);
+}
+
 unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-        MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
         return;
     }
 
@@ -171,9 +176,8 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     // reset meter upon depletion
     let meter_amount = MeterModule::meter(fighter.battle_object);
     if meter_amount <= 0.0 {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         MeterModule::add(fighter.battle_object, meter_amount);
-        MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
+        end_magic_series(fighter, boma, status_kind, situation_kind);
     }
 
     // exit magic series upon death, retaining meter
@@ -184,8 +188,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY
     ].contains(&status_kind) {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-        MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
+        end_magic_series(fighter, boma, status_kind, situation_kind);
     }
 }
 

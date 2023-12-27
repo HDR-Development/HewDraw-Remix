@@ -225,6 +225,8 @@ unsafe fn game_appeallw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handl"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
         }
     }
 }
