@@ -200,13 +200,131 @@ unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool_backpack", scripts = ["game_fly", "game_flywind"], category = ACMD_GAME, low_priority )]
-unsafe fn uspecial_propeller(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "effect_specialhistart", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_special_hi_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    for _ in 0..50 {
+        wait(lua_state, 12.0);
+        if is_excute(fighter) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        }
+        wait(lua_state, 12.0);
+        if is_excute(fighter) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 2.0, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "krool", scripts = ["sound_specialhistart", "sound_specialairhistart"], category = ACMD_SOUND, low_priority )]
+unsafe fn krool_special_hi_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_krool_special_h02"));
+    }
+}
+
+#[acmd_script( agent = "krool", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+unsafe fn krool_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("wingl1"), 3.0, 80, 30, 0, 90, 5.0, 2.0, 0.0, 0.0, Some(-2.0), Some(0.0), Some(0.0), 1.0, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        if ArticleModule::is_exist(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK) {
+            if fighter.is_motion(Hash40::new("special_air_hi")) {
+                ArticleModule::change_motion(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, Hash40::new("fly_air"), false, 0.0);
+            } else {
+                ArticleModule::change_motion(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, Hash40::new("fly"), false, 0.0);
+            }
+        }
     }
+}
+
+#[acmd_script( agent = "krool", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_special_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+}
+
+#[acmd_script( agent = "krool", script = "sound_specialhi", category = ACMD_SOUND, low_priority )]
+unsafe fn krool_special_hi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_krool_special_h02"));
+        PLAY_STATUS(fighter, Hash40::new("se_krool_special_h01"));
+        PLAY_SE(fighter, Hash40::new("se_common_swing_08"));
+    }
+}
+
+#[acmd_script( agent = "krool", script = "expression_specialhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn krool_special_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_jet"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        let charge = (VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL));
+        if charge >= 35 {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        } else {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
+}
+
+#[acmd_script( agent = "krool_backpack", script = "effect_start", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_backpack_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack_start"), Hash40::new("backpack"), 0, 5, 0, 0, 0, 0, 0.75, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_propeller"), Hash40::new("propeller"), 1, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+    }
+    frame(lua_state, 45.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+    }
+
+}
+
+#[acmd_script( agent = "krool_backpack", scripts = ["game_fly", "game_flywind"], category = ACMD_GAME, low_priority )]
+unsafe fn krool_backpack_fly_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("wingl1"), 3.0, 80, 30, 0, 90, 4.5, 2.0, 0.0, 0.0, Some(-2.0), Some(0.0), Some(0.0), 1.0, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+    }
+}
+
+#[acmd_script( agent = "krool_backpack", script = "effect_fly", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_backpack_effect_fly(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_propeller"), Hash40::new("propeller"), 1, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+    }
+
 }
 
 #[acmd_script( agent = "krool", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
@@ -217,9 +335,17 @@ unsafe fn krool_special_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
     }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0
+        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        }
+    }
     frame(lua_state, 30.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
         if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
             let damage = VarModule::get_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE) / 5.0;
             ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 90, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
@@ -329,7 +455,6 @@ unsafe fn krool_special_lw_expression(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        uspecial_propeller,
         krool_special_n_fire_game,
         krool_special_n_fire_effect,
         krool_special_n_fire_sound,
@@ -337,6 +462,15 @@ pub fn install() {
         krool_special_n_loop_game,
         krool_special_n_loop_effect,
         krool_special_special_s_game,
+        krool_special_hi_start_effect,
+        krool_special_hi_start_sound,
+        krool_special_hi_game,
+        krool_special_hi_effect,
+        krool_special_hi_sound,
+        krool_special_hi_expression,
+        krool_backpack_start_effect,
+        krool_backpack_fly_game,
+        krool_backpack_effect_fly,
         krool_special_lw_game,
         krool_special_lw_effect,
         krool_special_lw_sound,

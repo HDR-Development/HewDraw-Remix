@@ -77,7 +77,7 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f{x: 0.0, y: -7.0, z: 0.0});
         WorkModule::on_flag(boma, *FIGHTER_EFLAME_STATUS_SPECIAL_HI_FLAG_END_CONTROL);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 280, 130, 39, 0, 6.0, 0.0, 3.0, 9.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 280, 100, 25, 0, 6.0, 0.0, 3.0, 9.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         // AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
     }
     frame(lua_state, 33.0);
