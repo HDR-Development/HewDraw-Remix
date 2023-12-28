@@ -29,16 +29,22 @@ unsafe fn attack_air_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn bayonetta_attack_air_f_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO) 
     && (ControlModule::get_attack_air_kind(fighter.module_accessor) == *FIGHTER_COMMAND_ATTACK_AIR_KIND_F || fighter.is_cat_flag(Cat1::Catch))
-    && fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SHOOTING_STEP) == 0 {
+    && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
         fair_motion(fighter);
     }
-    if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::FAIR_STATE) > 0
-    && AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+    && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
         let control_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) as *mut smash::app::KineticEnergy;
-        smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.7, 1.0, 1.0)); 
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 1.4);
         sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.048);
+        if fighter.is_motion(Hash40::new("attack_air_f")) {
+            let y_speed = fighter.get_param_float("param_private", "attack_air_f_hit_speed_y");
+            smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.65, 1.0, 1.0)); 
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, y_speed);
+        } else if fighter.is_motion(Hash40::new("attack_air_f2")) {
+            let y_speed = fighter.get_param_float("param_private", "attack_air_f2_hit_speed_y");
+            smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.65, 1.0, 1.0)); 
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, y_speed);
+        }
     }
     if !fighter.status_AttackAir_Main_common().get_bool() {
         fighter.sub_air_check_superleaf_fall_slowly();

@@ -35,8 +35,6 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
             && fighter.global_table[CURRENT_FRAME].get_i32() <= 35 {
                 fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_HOLD_END.into(), false.into());
             }
-        } else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         }
         if MotionModule::is_end(fighter.module_accessor) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()); }
         if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_WALL_CHECK) {
@@ -53,8 +51,10 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
             GroundModule::set_passable_check(fighter.module_accessor, false);
             GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.55);
-            sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.33);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.5);
+            if fighter.motion_frame() < 35.0 {
+                MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 35.0, true, true, false);
+            }
         }
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_run_smoke"), false, false);
         if fighter.motion_frame() >= 45.0 {

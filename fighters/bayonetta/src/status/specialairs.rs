@@ -77,7 +77,7 @@ unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighte
         if MotionModule::is_end(fighter.module_accessor) || CancelModule::is_enable_cancel(fighter.module_accessor) { fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
         movement(fighter);
     }
-    if frame <= 7 {
+    if frame <= 7 && !StopModule::is_stop(fighter.module_accessor) {
         if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D); }
         if frame == 7 && fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
             fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D.into(), false.into());
