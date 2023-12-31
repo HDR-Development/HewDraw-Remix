@@ -78,14 +78,18 @@ unsafe fn mewtwo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("haver"), 1.2, 0, 1.8, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
-    frame(fighter.lua_state_agent, 6.0);
+    frame(fighter.lua_state_agent, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_attack_g"), Hash40::new("mewtwo_pk_attack_g"), Hash40::new("top"), 0, 5.7,4.0, 0, -10, 30, 1.13, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_attack_g"), Hash40::new("mewtwo_pk_attack_g"), Hash40::new("top"), 0, 7.7, 1.8, 15, 0, 30, 1.13, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.4);
     }
     frame(fighter.lua_state_agent, 7.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("mewtwo_pk_hand"), false, false);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if is_excute(fighter) {
+        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("mewtwo_pk_attack_g"), true, true);
     }
 }
 
