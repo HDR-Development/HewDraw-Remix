@@ -160,7 +160,7 @@ unsafe fn toonlink_jump_aerial_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x0f97480fb2), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         EFFECT(fighter, Hash40::new("sys_chicken_feather"), Hash40::new("top"), 0.0, 5.0, -2.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
@@ -179,7 +179,7 @@ unsafe fn toonlink_jump_aerial_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x0f97480fb2), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         EFFECT(fighter, Hash40::new("sys_chicken_feather"), Hash40::new("top"), 0.0, 5.0, -2.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.7, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.0);

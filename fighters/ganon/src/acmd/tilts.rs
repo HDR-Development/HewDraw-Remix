@@ -142,8 +142,8 @@ unsafe fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x11d7624dd3));
-        PLAY_SE(fighter, Hash40::new_raw(0x1279490e1c));
+        PLAY_SE(fighter, Hash40::new("vc_ganon_attack06"));
+        PLAY_SE(fighter, Hash40::new("se_ganon_smash_h01"));
     }
 
 }
