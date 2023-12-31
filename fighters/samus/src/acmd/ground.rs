@@ -87,19 +87,19 @@ unsafe fn attack_dash_sound(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x13eb2847e0));
+        PLAY_SE(fighter, Hash40::new("se_samus_attackdash"));
         if VarModule::is_flag(fighter.battle_object, vars::samus::instance::SHINESPARK_USED)  {
-            PLAY_SE(fighter, Hash40::new_raw(0x0e29ee1d3f));
-            PLAY_SE_REMAIN(fighter, Hash40::new_raw(0x14614c32aa));
+            PLAY_SE(fighter, Hash40::new("se_samus_catch"));
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samus_special_n05"));
         }
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x14fbe97afc));
+        PLAY_SE(fighter, Hash40::new("se_samus_step_left_m"));
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x15eb15be2a));
+        PLAY_SE(fighter, Hash40::new("se_samus_step_right_m"));
     }
 
 }

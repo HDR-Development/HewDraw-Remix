@@ -446,20 +446,20 @@ unsafe fn lucas_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x16fc0550c2));
+        PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l05"));
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x14b1c72abf));
-        PLAY_SE(fighter, Hash40::new_raw(0x16fb6894db));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_lucas_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l01"));
     }
     wait(lua_state, 7.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x161566f5f7));
+        PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l03"));
     }
     wait(lua_state, 8.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x168b026054));
+        PLAY_SE(fighter, Hash40::new("se_lucas_attackair_l04"));
     }
 
 }

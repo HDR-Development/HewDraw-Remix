@@ -13,16 +13,12 @@ pub fn install() {
 #[status_script(agent = "purin", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
     if PostureModule::lr(fighter.module_accessor) != 1.0 {
-        let special_lw_l = 0xcfa7a84b1;
-        let special_air_lw_l = 0x104230b3bb;
-        WorkModule::set_int64(fighter.module_accessor, special_lw_l, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
-        WorkModule::set_int64(fighter.module_accessor, special_air_lw_l, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_l") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_l") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
     }
     else {
-        let special_lw_r = 0xc0075b9d2;
-        let special_air_lw_r = 0x10b83f8ed8;
-        WorkModule::set_int64(fighter.module_accessor, special_lw_r, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
-        WorkModule::set_int64(fighter.module_accessor, special_air_lw_r, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_r") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_r") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
     }
     special_lw_situation_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main as *const () as _))

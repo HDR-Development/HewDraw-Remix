@@ -85,13 +85,13 @@ unsafe fn sonic_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10e97de698), Hash40::new("top"), 0, 9.5, 1.0, 180, -150 , 90, 0.92, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 9.5, 1.0, 180, -150 , 90, 0.92, true);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.3, true, 0.9);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.3, true, 0.9);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
 
@@ -104,12 +104,12 @@ unsafe fn sonic_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1031b0368f));
+        PLAY_SE(fighter, Hash40::new("se_sonic_swing_l"));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x141b86df88));
-        PLAY_SE(fighter, Hash40::new_raw(0x1651c5e760));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_sonic_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_sonic_attackair_f03"));
     }
 
 }
@@ -227,25 +227,25 @@ unsafe fn sonic_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("top"), 0, 7.5, 2.5, -10, 0, 0, 0.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 7.5, 2.5, -10, 0, 0, 0.5, true);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.7, 0.2);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("top"), -1, 7.5, -2.5, 190, 0, 0, 0.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 7.5, -2.5, 190, 0, 0, 0.5, true);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.7, 0.2);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new_raw(0x0c824d7183), Hash40::new_raw(0x0c824d7183), Hash40::new("top"), 0.85, 11.5, 0, 59, 74, 154, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new("sonic_atk_hi"), Hash40::new("sonic_atk_hi"), Hash40::new("top"), 0.85, 11.5, 0, 59, 74, 154, 1.1, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.7, 0.2);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
-        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new_raw(0x0c824d7183), Hash40::new_raw(0x0c824d7183), Hash40::new("top"), -0.95, 11.5, 0, 245, -77, 22, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new("sonic_atk_hi"), Hash40::new("sonic_atk_hi"), Hash40::new("top"), -0.95, 11.5, 0, 245, -77, 22, 1.1, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.7, 0.2);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("top"), 0.0, 19.5, 0.0, 0, 0, 0, 1.55, 0, 0, 0, 0, 0, 361, true);
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 19.5, 0.0, 0, 0, 0, 1.55, 0, 0, 0, 0, 0, 361, true);
     }
 
 }

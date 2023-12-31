@@ -42,7 +42,7 @@ unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValu
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0 {
-                    let attack_stand_frame = WorkModule::get_param_int(fighter.module_accessor, 0x115d6fd7dau64, 0x1bc5449a43u64);
+                    let attack_stand_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_attack_step"), 0x1bc5449a43u64);
                     if fighter.global_table[CURRENT_FRAME].get_i32() <= attack_stand_frame {
                         fighter.change_status(
                             L2CValue::I32(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_1), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge

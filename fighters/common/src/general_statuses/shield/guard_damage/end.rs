@@ -8,7 +8,7 @@ unsafe fn status_end_GuardDamage(fighter: &mut L2CFighterCommon) -> L2CValue {
     effect!(
         fighter,
         MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-        Hash40::new_raw(0x113434cb66),
+        Hash40::new("sys_shield_damage"),
         true,
         true
     );
@@ -29,7 +29,7 @@ unsafe fn status_end_GuardDamage(fighter: &mut L2CFighterCommon) -> L2CValue {
     effect!(
         fighter,
         MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-        Hash40::new_raw(0x10da0b43c8),
+        Hash40::new("sys_shield_smoke"),
         true,
         true
     );

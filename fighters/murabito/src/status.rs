@@ -90,7 +90,7 @@ pub unsafe fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         // uncomment to let sideB ride remove double jump on hit
         //let jump_count_max = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
         //WorkModule::set_int(fighter.module_accessor, jump_count_max, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        fighter.status_Jump_sub(L2CValue::new_hash(0x62abde441), L2CValue::F32(0.0));
+        fighter.status_Jump_sub(L2CValue::new_hash(hash40("jump_b")), L2CValue::F32(0.0));
         fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Jump_Main as *const () as _))
     }
 }

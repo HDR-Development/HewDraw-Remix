@@ -72,16 +72,16 @@ unsafe fn lucina_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1127954a97));
+        PLAY_SE(fighter, Hash40::new("se_lucina_swing_s"));
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1127954a97));
+        PLAY_SE(fighter, Hash40::new("se_lucina_swing_s"));
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x1554a9d10d));
-        PLAY_SE(fighter, Hash40::new_raw(0x158eb52a6f));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_lucina_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_lucina_attackl_s01"));
     }
 
 }

@@ -165,7 +165,7 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("top"), 0.0, 3.0, -15.0, 0, 0, 0, 1.4, true, 1.0);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 3.0, -15.0, 0, 0, 0, 1.4, true, 1.0);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
 
@@ -177,9 +177,9 @@ unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x1682a99e02));
-        PLAY_SE(fighter, Hash40::new_raw(0x126fc602bb));
-        PLAY_SE(fighter, Hash40::new_raw(0x14f850e93f));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_pikachu_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+        PLAY_SE(fighter, Hash40::new("se_pikachu_tailswing"));
     }
 
 }
