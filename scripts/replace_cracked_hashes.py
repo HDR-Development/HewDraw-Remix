@@ -23,8 +23,6 @@ for root, dirs, files in os.walk(os.pardir):
             text = f.read()
             
             for hashString in re.findall(regex, text):
-                hashString = hashString.replace("Hash40::new_raw(", "")
-                hashString = hashString.replace(")", "")
                 if len(hashString) == 11:
                     hashString = hashString.replace("0x", "0x0")
                 
