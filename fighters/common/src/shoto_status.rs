@@ -356,11 +356,11 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
     if !StatusModule::is_changing(fighter.module_accessor) {
         if ComboModule::count(fighter.module_accessor) == 1 {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
-                WorkModule::set_int64(fighter.module_accessor, 0x10556e6036, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_near_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK_NEAR, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
             }
             else {
-                WorkModule::set_int64(fighter.module_accessor, 0xb4f4e6f8f, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK11, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
             }
         }
