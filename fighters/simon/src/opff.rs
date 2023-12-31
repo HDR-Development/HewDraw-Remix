@@ -49,6 +49,26 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
+// allow fair and bair to transition into their angled variants when the stick is angled up/down
+unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
+    if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
+    && (11.0..12.0).contains(&frame) {
+        if stick_y > 0.5 { // stick is held up
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_hi"), -1.0, 1.0, 0.0, false, false);
+        } else if stick_y < -0.5 { // stick is held down
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_lw"), -1.0, 1.0, 0.0, false, false);
+        }
+    } 
+    else if fighter.is_motion_one_of(&[Hash40::new("attack_air_b"), Hash40::new("attack_air_b_hi"), Hash40::new("attack_air_b_lw")])
+    && (11.0..12.0).contains(&frame) {
+        if stick_y > 0.5 { // stick is held up
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_hi"), -1.0, 1.0, 0.0, false, false);
+        } else if stick_y < -0.5 { // stick is held down
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_lw"), -1.0, 1.0, 0.0, false, false);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -82,6 +102,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     holy_water_ac(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     axe_drift(boma, status_kind, situation_kind, cat[1], stick_y);
     cross_land_cancel(fighter, boma, cat[2], stick_y);
+    whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
 }
 
