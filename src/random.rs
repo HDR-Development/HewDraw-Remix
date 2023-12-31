@@ -105,10 +105,9 @@ static mut IS_PRE_ENTRY: bool = false;
 
 const HASH_MASK: u64 = 0xFF_FFFFFFFF;
 const KEY_MASK: u64 = 0xFFFFFF_0000000000;
-const RANDOM_HASH: u64 = 0xfd5f7fa78;
 
 fn is_random(entry: u64) -> bool {
-    (entry & HASH_MASK) == RANDOM_HASH
+    (entry & HASH_MASK) == smash::hash40("ui_chara_random")
 }
 
 fn key(entry: u64) -> u64 {
@@ -131,11 +130,11 @@ unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
     if !ignore_random && (is_random(main_chara) || is_random(sub_chara)) {
         println!("The random pane was selected");
 
-        let chara_hash = REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(RANDOM_HASH);
+        let chara_hash = REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(smash::hash40("ui_chara_random"));
 
         LAST_FIGHTER_FOUND = chara_hash | key(main_chara);
         LAST_FIGHTER2_FOUND = if chara_hash == smash::hash40("ui_chara_ptrainer") {
-            PT_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(RANDOM_HASH) | key(sub_chara)
+            PT_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(smash::hash40("ui_chara_random")) | key(sub_chara)
         } else {
             chara_hash | key(sub_chara)
         };
@@ -193,10 +192,10 @@ unsafe fn copy_fighter_info2(dest: u64, src: u64) {
 // unsafe fn pre_entry_assign(ctx: &skyline::hooks::InlineCtx) {
     // let obj = *((*ctx.registers[1].x.as_ref() + 0x8) as *const u64);
     // let obj2 = (obj as *mut u64).add(0x1f0 / 0x8);
-    // if (*obj2.add(2) & 0xFF_FFFFFFFF) == 0xfd5f7fa78 {
-    //     let chara = *REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78);
+    // if (*obj2.add(2) & 0xFF_FFFFFFFF) == hash40("ui_chara_random") {
+    //     let chara = *REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&hash40("ui_chara_random"));
     //     let chara_2 = if chara == smash::hash40("ui_chara_ptrainer") {
-    //         *PT_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78)
+    //         *PT_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&hash40("ui_chara_random"))
     //     } else {
     //         chara
     //     };
