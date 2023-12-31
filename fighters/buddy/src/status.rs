@@ -62,24 +62,25 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
 
 #[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn buddy_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
     //Bypass if transitioning into Air Fail
-    if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    {
-        return 1.into();
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        if VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN) > 0.0 {
+            return 1.into();
+        }
     }
     else {
         fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
-        let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
-        if feathers_g < 0 && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if feathers_g <= 0 {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
+            fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
         }
-        fighter.sub_change_motion_by_situation(Hash40::new("special_s").into(), Hash40::new("special_air_s").into(), false.into());
-        fighter.sub_set_ground_correct_by_situation(false.into());
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR_EQUIP);
-        fighter.sub_shift_status_main(L2CValue::Ptr(buddy_special_s_main_loop as *const () as _))
     }
+    fighter.sub_change_motion_by_situation(Hash40::new("special_s").into(), Hash40::new("special_air_s").into(), false.into());
+    fighter.sub_set_ground_correct_by_situation(false.into());
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR_EQUIP);
+    fighter.sub_shift_status_main(L2CValue::Ptr(buddy_special_s_main_loop as *const () as _))
     
 }
 
