@@ -36,7 +36,9 @@ unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
     VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
     
-    
+    if fighter.is_flag(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_GROUND_START) {
+        VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
+    }
 
     // [v] get the current position of the stick to be used for angle calculations
     let stick = Vector2f::new(
