@@ -531,7 +531,7 @@ pub mod vars {
             pub const DISABLE_SPECIAL_HI:             i32 = 0x0100;
             pub const DISABLE_SPECIAL_S:              i32 = 0x0101;
             pub const ENABLE_SPECIAL_S_ACTIONABILITY: i32 = 0x0102;
-            pub const UP_SPECIAL_FREEFALL:            i32 = 0x0103;
+            pub const UP_SPECIAL_FREEFALL:            i32 = 0x0104;
         }
         pub mod status {
             // ints
