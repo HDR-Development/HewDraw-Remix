@@ -1067,6 +1067,30 @@ pub unsafe fn lucas_offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommo
     } 
 }
 
+
+// Piranha Plant Ptooie Stance
+pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if fighter.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW, *FIGHTER_STATUS_KIND_CATCH]) {
+        let opponent_boma = fighter.get_grabbed_opponent_boma();
+        let grabbed_fighter = smash::app::utility::get_kind(opponent_boma);
+        if grabbed_fighter == *FIGHTER_KIND_PACKUN {
+            let new_stance = VarModule::get_int(opponent_boma.object(), vars::packun::instance::CURRENT_STANCE);
+            VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
+        }
+    }
+}
+
+unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.3);
+    }
+    else {
+        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.0);
+    }
+}
+
+// End of Copy Abilities
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     let copystatus = StatusModule::status_kind(fighter.module_accessor);
     if !fighter.is_in_hitlag()
@@ -1225,6 +1249,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Lucas Offense Up
     lucas_offense_charge(fighter, boma, situation_kind);
     lucas_offense_effct_handler(fighter);
+
+    // Piranha Plant Ptooie Stance
+    packun_ptooie_stance(fighter, boma, status_kind);
+    packun_ptooie_scale(boma);
 
     // PM-like Neutral B Cancels
     donkey_nspecial_cancels(fighter, boma, status_kind, situation_kind);
