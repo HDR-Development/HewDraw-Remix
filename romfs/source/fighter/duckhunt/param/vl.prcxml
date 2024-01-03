@@ -30,22 +30,22 @@
       <float hash="hp">7</float>
       <float hash="shoot_frames">5</float>
       <float hash="wait_frames_after_shoot">130</float>
-      <float hash="0x1299abf278">5</float>
-      <float hash="0x13d5bf3825">5</float>
-      <float hash="0x1620e4f178">5</float>
-      <float hash="0x17483ac873">5</float>
-      <float hash="0x1228e10caa">5</float>
-      <float hash="0x135b0c4a01">2.5</float>
-      <float hash="0x14fca45605">2.5</float>
-      <float hash="0x1769b23874">2.5</float>
-      <float hash="0x1841c5d291">2.5</float>
-      <float hash="0x13ea46b4d3">2.5</float>
+      <float hash="ready_minutes_hige">5</float>
+      <float hash="ready_minutes_noppo">5</float>
+      <float hash="ready_minutes_kurofuku">5</float>
+      <float hash="ready_minutes_sonburero">5</float>
+      <float hash="ready_minutes_boss">5</float>
+      <float hash="yarare_minutes_hige">2.5</float>
+      <float hash="yarare_minutes_noppo">2.5</float>
+      <float hash="yarare_minutes_kurofuku">2.5</float>
+      <float hash="yarare_minutes_sonburero">2.5</float>
+      <float hash="yarare_minutes_boss">2.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_private">
-    <float hash="0x1e66f59d2e">0.5</float>
+    <float hash="smash_s_random_offset_y_meters">0.5</float>
   </struct>
 </struct>
