@@ -258,6 +258,103 @@ unsafe fn koopa_special_s_throwb_expression(agent: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "koopa", scripts = ["effect_specialsjump"], category = ACMD_EFFECT)]
+unsafe fn koopa_special_s_jump_effect(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, -1.0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("koopa_drop_air"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.8, true);
+    }
+}
+
+#[acmd_script( agent = "koopa", scripts = ["sound_specialsjump"], category = ACMD_SOUND)]
+unsafe fn koopa_special_s_jump_sound(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_koopa_special_s03"));
+    }
+    frame(agent.lua_state_agent, 35.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_koopa_special_s04"));
+    }
+}
+
+#[acmd_script( agent = "koopa", scripts = ["effect_specialsfall"], category = ACMD_EFFECT)]
+unsafe fn koopa_special_s_fall_effect(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("koopa_drop_air"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.8, true);
+    }
+}
+
+#[acmd_script( agent = "koopa", scripts = ["game_specialslanding"], category = ACMD_GAME)]
+unsafe fn koopa_special_s_landing_game(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 18.0, 60, 60, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
+    }
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::CHECK_FINISH_CAMERA(agent, 3, 9);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 0.0, y: -9.0, z: 0.0});
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_HIT);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    FT_MOTION_RATE_RANGE(agent,10.0,14.0,8.0);
+    frame(agent.lua_state_agent, 14.0);
+    FT_MOTION_RATE_RANGE(agent,14.0,26.0,16.0);
+    frame(agent.lua_state_agent, 26.0);
+    FT_MOTION_RATE(agent,1.0)
+}
+
+#[acmd_script( agent = "koopa", scripts = ["effect_specialslanding"], category = ACMD_EFFECT)]
+unsafe fn koopa_special_s_landing_effect(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, false);
+        macros::LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "koopa", scripts = ["sound_specialslanding"], category = ACMD_SOUND)]
+unsafe fn koopa_special_s_landing_sound(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::STOP_SE(agent, Hash40::new("se_koopa_special_s04"));
+        macros::PLAY_STATUS(agent, Hash40::new("se_koopa_special_s05"));
+    }
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_STEP_FLIPPABLE(agent, Hash40::new("se_koopa_step_left_m"), Hash40::new("se_koopa_step_right_m"));
+    }
+    frame(agent.lua_state_agent, 26.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_STEP_FLIPPABLE(agent, Hash40::new("se_koopa_step_right_m"), Hash40::new("se_koopa_step_left_m"));
+    }
+}
+
+#[acmd_script( agent = "koopa", scripts = ["expression_specialslanding"], category = ACMD_EXPRESSION)]
+unsafe fn koopa_special_s_landing_expression(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_L);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_explosionm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 23.0);
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
+    }
+}
+
 #[acmd_script( agent = "koopa", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -469,6 +566,16 @@ pub fn install() {
         koopa_special_s_throwb_effect,
         koopa_special_s_throwb_sound,
         koopa_special_s_throwb_expression,
+
+        koopa_special_s_jump_effect,
+        koopa_special_s_jump_sound,
+
+        koopa_special_s_fall_effect,
+
+        koopa_special_s_landing_game,
+        koopa_special_s_landing_effect,
+        koopa_special_s_landing_sound,
+        koopa_special_s_landing_expression,
 
         koopa_special_hi_game,
         koopa_special_hi_expression,

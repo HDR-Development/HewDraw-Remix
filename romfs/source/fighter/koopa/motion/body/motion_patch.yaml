@@ -103,6 +103,9 @@ special_air_n_max:
     xlu_end: 0
     cancel_frame: 65
     no_stop_intp: false
+special_s_landing:
+  extra:
+    cancel_frame: 25
 special_s_throwb:
   game_script: game_specialsthrowb
   flags:
@@ -122,7 +125,7 @@ special_s_throwb:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: e01throwb.nuanmb
+  - name: d01specialsthrowb.nuanmb
   scripts:
   - expression_specialsthrowb
   - sound_specialsthrowb
@@ -151,7 +154,7 @@ special_s_throwf:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d01specialslanding.nuanmb
+  - name: d01specialsthrowf.nuanmb
   scripts:
   - expression_specialsthrowf
   - sound_specialsthrowf
@@ -180,7 +183,7 @@ special_air_s_throwb:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d01specialsfall.nuanmb
+  - name: d01specialairsthrowb.nuanmb
   scripts:
   - expression_specialairsthrowb
   - sound_specialairsthrowb
@@ -209,7 +212,7 @@ special_air_s_throwf:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d01specialsjump.nuanmb
+  - name: d01specialairsthrowf.nuanmb
   scripts:
   - expression_specialairsthrowf
   - sound_specialairsthrowf
