@@ -18,7 +18,7 @@ uncrackedHashes = set()
 for root, dirs, files in os.walk(os.pardir):
     for file in files:
         if file.endswith(".rs"):
-            with open(os.path.join(root, file), "r+") as f:
+            with open(os.path.join(root, file), "r") as f:
                 changed = False
                 text = f.read()
                 
@@ -44,9 +44,11 @@ for root, dirs, files in os.walk(os.pardir):
                         uncrackedHashes.add(hashString)
 
                 if changed:
-                    f.write(text)
+                    with open(os.path.join(root, file), "w") as f:
+                        f.write(text)
+                        
         elif file.endswith((".prcxml", ".xml", ".yaml")):
-            with open(os.path.join(root, file), "r+") as f:
+            with open(os.path.join(root, file), "r") as f:
                 changed = False
                 text = f.read()
                 
@@ -66,7 +68,8 @@ for root, dirs, files in os.walk(os.pardir):
                         uncrackedHashes.add(hashString)
 
                 if changed:
-                    f.write(text)
+                    with open(os.path.join(root, file), "w") as f:
+                        f.write(text)
             
                 
 print(f"Cracked hashes: {crackedHashes}")
