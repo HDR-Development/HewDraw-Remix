@@ -638,12 +638,20 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_HI: i32 = 0x01FF; //Weird value to avoid conflicts with copy ability values
+        
+            // copy ability
+            // flags
+            pub const SHOULD_CYCLE_MATERIAL: i32 = 0x01F4;
+
+            // ints 
+            pub const MATERIAL_INDEX: i32 = 0x01F5;
         }
         pub mod status {
             // copy ability
             // flags
             pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
             pub use super::super::mariod::status::CHILL_PILL;
+            pub const MINING_TIMER: i32 = 0x11F4;
         }
     }
 
