@@ -521,7 +521,7 @@ pub mod vars {
     pub mod eflame {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0104;
         }
     }
 
