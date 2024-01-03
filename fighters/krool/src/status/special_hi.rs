@@ -341,7 +341,7 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
 //FUN_71000210d0
 unsafe extern "C" fn special_hi_movement_helper(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
-        let gravity_minus = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y_speed_minus"));   //0x2041e0d192
+        let gravity_minus = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y_speed_minus"));   //hash40("special_hi_fly_acl_y_speed_minus")
         let acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));   //hash40("special_hi_fly_acl_y")
         let touch_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_touch_max_spd_x"));   //hash40("special_hi_fly_touch_max_spd_x")
         let max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_max_spd_x"));   //hash40("special_hi_fly_max_spd_x")
