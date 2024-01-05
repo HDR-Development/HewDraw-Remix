@@ -20,12 +20,6 @@ attack_12:
 special_n:
   extra:
     cancel_frame: 41
-special_s:
-  extra:
-    cancel_frame: 36
-special_air_s:
-  extra:
-    cancel_frame: 36
 attack_13:
   extra:
     cancel_frame: 25
