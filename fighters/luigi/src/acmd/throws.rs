@@ -1,5 +1,33 @@
-
 use super::*;
+
+#[acmd_script( agent = "luigi", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if IS_EXIST_ARTICLE(fighter, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU) {
+        if is_excute(fighter) {
+            ArticleModule::change_motion(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, Hash40::new("throw_b"), false, -1.0);
+        }
+    }
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 45, 73, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REVERSE_LR_FINISH_CAMERA_THROW_ORBIT);
+        CHECK_FINISH_CAMERA(fighter, 21, 3);
+        FT_CATCH_STOP(fighter, 5, 1);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        REVERSE_LR(fighter);
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+    }
+}
 
 #[acmd_script( agent = "luigi", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
@@ -30,11 +58,9 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 
 }
 
-
-
 pub fn install() {
     install_acmd_scripts!(
+        game_throwb,
         game_throwlw,
     );
 }
-

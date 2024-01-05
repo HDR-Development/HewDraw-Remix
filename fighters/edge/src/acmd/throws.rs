@@ -1,9 +1,7 @@
-
 use super::*;
 
-
 #[acmd_script( agent = "edge", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -28,28 +26,72 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "edge", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 65, 100, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 67, 60, 0, 77, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
+    frame(lua_state, 18.0);
+    FT_MOTION_RATE_RANGE(fighter, 18.0, 40.0, 12.0);
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         CHECK_FINISH_CAMERA(fighter, 11.0, 0.0);
     }
     frame(lua_state, 40.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_throwb,
-        game_throwlw,
-    );
+#[acmd_script( agent = "edge", script = "effect_throwlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_catch_handaura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if PostureModule::lr(boma) < 0.0 {
+            EFFECT(fighter, Hash40::new("edge_throwlw_gravity"), Hash40::new("top"), 12, 0.1, -2, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 1.2);
+        }
+        else{
+            EFFECT(fighter, Hash40::new("edge_throwlw_gravity"), Hash40::new("top"), 12, 0.1, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 1.2);
+        }
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 12, 0.1, -2, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 12, 0.1, -2, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 12, 0.1, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 12, 0.1, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 12, 0.1, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 44.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_catch_handaura"), false, true);
+    }
 }
 
+pub fn install() {
+    install_acmd_scripts!(
+        edge_throw_b_game,
+        edge_throw_lw_game,
+        edge_throw_lw_effect,
+    );
+}
