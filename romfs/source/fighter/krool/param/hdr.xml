@@ -18,13 +18,13 @@
     <float hash="start_limit_spd_x">1.3</float>
     <float hash="start_stable_spd_y">0.1</float>
     <float hash="fly_charge_min_spd_x">0.4</float>
-    <float hash="fly_charge_x_mul">0.007</float>
+    <float hash="fly_charge_x_mul">0.014</float>
     <float hash="fly_limit_spd_x">1.0</float>
     <float hash="fly_charge_min_spd_y">2.5</float>
-    <float hash="fly_charge_y_mul">0.01</float>
+    <float hash="fly_charge_y_mul">0.0132</float>
     <float hash="fly_lean_min_spd_x">0.3</float>
     <float hash="fly_lean_min_acl_x">0.01</float>
-    <float hash="fly_lean_charge_x_mul">0.007</float>
+    <float hash="fly_lean_charge_x_mul">0.014</float>
     <float hash="fly_lean_spd_y">0.0025</float>
     <float hash="fly_no_lean_spd_y">0.055</float>
     <float hash="fly_lean_f_spd_y">0.08</float>

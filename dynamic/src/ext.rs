@@ -1187,7 +1187,7 @@ impl BomaExt for BattleObjectModuleAccessor {
                 crate::consts::vars::common::instance::HITFALL_BUFFER,
             );
 
-            if self.is_cat_flag(Cat2::FallJump) && 0 < buffer && buffer <= 5 {
+            if self.is_cat_flag(Cat2::FallJump) && self.stick_y() < 0.0 && 0 < buffer && buffer <= 5 {
                 WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
