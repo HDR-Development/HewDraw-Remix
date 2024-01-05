@@ -181,6 +181,25 @@ unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "richter", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+    EFFECT(fighter, Hash40::new("richter_bottle_release"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
+    LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.0, 0.0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("richter_upper"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 #[acmd_script( agent = "richter", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -228,6 +247,20 @@ unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     
+}
+#[acmd_script( agent = "richter", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn richter_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+    EFFECT(fighter, Hash40::new("richter_bottle_release"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
+    LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.0, 0.0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("richter_upper"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
 }
 
 #[acmd_script( agent = "richter", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
@@ -280,7 +313,9 @@ pub fn install() {
         richter_special_air_s1_effect,
         richter_special_air_s1_sound,
         richter_special_hi_game,
+        richter_special_hi_effect,
         richter_special_air_hi_game,
+        richter_special_air_hi_effect,
         richter_special_lw_game,
         richter_special_air_lw_game,
     );
