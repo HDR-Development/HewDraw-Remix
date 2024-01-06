@@ -187,8 +187,7 @@ unsafe fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-    EFFECT(fighter, Hash40::new("richter_bottle_release"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
-    LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.0, 0.0);
+    EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -254,8 +253,7 @@ unsafe fn richter_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-    EFFECT(fighter, Hash40::new("richter_bottle_release"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
-    LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.0, 0.0);
+    EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {

@@ -28,6 +28,27 @@ unsafe fn richter_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "richter", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn richter_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.3, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.141, 0.851, 1.0);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.35, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, true);
+    }
+}
+
 #[acmd_script( agent = "richter_whip", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -72,16 +93,31 @@ unsafe fn richter_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "effect_attacksquats3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+unsafe fn richter_attack_squat_s3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.3, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.141, 0.851, 1.0);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.35, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, true);
+    }
     frame(lua_state, 10.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 14.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 4, 30, 4, 0.98, true);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 4, 30, 4, 0.98, true);
     }
 }
 
@@ -145,6 +181,21 @@ unsafe fn richter_attack_hi3_game(fighter: &mut L2CAgentBase) {
 unsafe fn richter_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.3, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.141, 0.851, 1.0);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.35, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.5);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, true);
+    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
@@ -236,6 +287,7 @@ unsafe fn richter_attack_lw32_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         richter_attack_s3_s_game,
+        richter_attack_s3_s_effect,
         richter_whip_attack_s3_s_game,
         richter_attack_squat_s3_game,
         richter_attack_squat_s3_effect,
