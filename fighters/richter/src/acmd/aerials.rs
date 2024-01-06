@@ -339,7 +339,7 @@ unsafe fn richter_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), -2, 12, -5.7, -216, 9, 0, 0.5, true, 0.8);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), -4, 12, -5.7, -216, 9, 0, 0.5, true, 0.8);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 12.0);
@@ -412,7 +412,7 @@ unsafe fn richter_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), -2, 12, -5.7, -216, 9, 0, 0.5, true, 0.8);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 5, 12, -5.7, -216, 9, 0, 0.5, true, 0.8);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 12.0);

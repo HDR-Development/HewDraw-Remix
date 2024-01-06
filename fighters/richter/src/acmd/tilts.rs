@@ -43,9 +43,9 @@ unsafe fn richter_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.35, true);
         LAST_EFFECT_SET_RATE(fighter, 2.5);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, true);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("sys_damage_aura"), -1);
     }
 }
 
