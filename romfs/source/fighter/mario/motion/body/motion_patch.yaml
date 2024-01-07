@@ -8,7 +8,7 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-throw_hi:
+throw_f:
   extra:
     cancel_frame: 24
 throw_lw:
