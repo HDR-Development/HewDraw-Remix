@@ -785,10 +785,12 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const NOKNOK_SHELL: i32 = 0x0100;
-            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x0101;
+            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x0101;
             pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0102;
-            pub const DISABLE_DSPECIAL_STALL:                i32 = 0x0103;
-            pub const SPECIAL_S_DISABLE_STALL:               i32 = 0x0104;
+            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0103;
+            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0104;
+            pub const DISABLE_JUMPMAN_POWERS: i32 = 0x0105;
+            pub const DISABLE_D_SPECIAL: i32 = 0x0106;
         }
 
         pub mod status {

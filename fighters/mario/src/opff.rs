@@ -71,35 +71,43 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
-// Super Jump Punch Wall Jump
-// unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-//     if StatusModule::is_changing(boma) {
-//         return;
-//     }
-//     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-//         if situation_kind == *SITUATION_KIND_AIR {
-//             if frame >= 22.0 && frame <= 35.0 {
-//                 if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
-//                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
-//                         if boma.is_cat_flag(Cat1::TurnDash) {
-//                             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
-//                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-//                             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-//                         }
-//                     }
-//                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
-//                         if boma.is_cat_flag(Cat1::TurnDash) {
-//                             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
-//                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-//                             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
+ //Super Jump Punch Wall Jump
+ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if frame == 25.0 {
+                if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) && !VarModule::is_flag(boma.object(), vars::mario::instance::DISABLE_JUMPMAN_POWERS){
+                    if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
+                            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+                            //VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+                            VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_D_SPECIAL);
+                        }
+                    }
+                    if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
+                            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+                            //VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+                            VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_D_SPECIAL);
+                        }
+                    }
+                 }
+             }
+         }
+     }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) 
+    || fighter.is_situation(*SITUATION_KIND_CLIFF) 
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
+    || fighter.is_situation(*SITUATION_KIND_LADDER) {
+        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_D_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_JUMPMAN_POWERS);
+    }
+}
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     //PM-like down-b canceling
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
@@ -133,7 +141,7 @@ unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     }
 }
 
-// Once down special is called, imediately uses special low shoot and circumvent the charge mechanic of the og down-b
+// Once down special is called, immediately uses special low shoot and circumvent the charge mechanic of the og down-b
 unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, true);
@@ -166,6 +174,7 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 if frame >= 50.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.095);
                     VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                    VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_JUMPMAN_POWERS);
                 }
             }  
         }
@@ -177,12 +186,14 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR]) 
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT {
         VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_JUMPMAN_POWERS);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF) 
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
     || fighter.is_situation(*SITUATION_KIND_LADDER) {
         VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_JUMPMAN_POWERS);
     }
 }
 
@@ -281,7 +292,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
-    //up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
+    up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     //double_fireball(fighter, boma);
     galaxy_spin_poc(fighter, boma, status_kind);
