@@ -16,7 +16,7 @@ throw_b:
     cancel_frame: 47
 throw_lw:
   extra:
-    cancel_frame: 61
+    cancel_frame: 60
 attack_12:
   extra:
     cancel_frame: 17

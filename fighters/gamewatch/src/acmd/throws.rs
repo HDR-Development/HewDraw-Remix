@@ -161,13 +161,8 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::set_float(boma, 70.0, *FIGHTER_GAMEWATCH_STATUS_THROW_WORK_FLOAT_STOCK_ICON_ROTATE);
     }
-    frame(lua_state, 29.0);
-    if (is_excute(fighter)) {
-        FT_MOTION_RATE(fighter, 2.000);
-    }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         CHECK_FINISH_CAMERA(fighter, -9, 0);
     }
     frame(lua_state, 35.0);
@@ -179,9 +174,9 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
     }
     frame(lua_state, 41.0);
-    if (is_excute(fighter)) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
+    frame(lua_state, 47.0);
+    FT_MOTION_RATE(fighter, 1.0);
 
 }
 
