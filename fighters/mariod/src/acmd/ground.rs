@@ -143,7 +143,7 @@ unsafe fn mariod_attack_dash_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mariod_attack_11_game,
-        mariod_attack_11_effect,
+        //mariod_attack_11_effect,
         mariod_attack_12_game,
         mariod_attack_13_game,
         mariod_attack_13_expression,

@@ -166,6 +166,6 @@ pub fn install() {
         mariod_attack_s3_lw_effect,
         mariod_attack_hi3_game,
         mariod_attack_lw3_game,
-        mariod_attack_lw3_effect,
+        //mariod_attack_lw3_effect,
     );
 }

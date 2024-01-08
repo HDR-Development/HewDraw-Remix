@@ -130,6 +130,14 @@ special_s:
 special_air_s:
   extra:
     cancel_frame: 46
+special_hi:
+    extra:
+      xlu_start: 3
+      xlu_end: 5
+special_air_hi:
+    extra:
+      xlu_start: 3
+      xlu_end: 4
 throw_f:
   extra:
     cancel_frame: 24
