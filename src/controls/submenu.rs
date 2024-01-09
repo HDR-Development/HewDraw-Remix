@@ -186,13 +186,14 @@ impl GamecubeMenu {
     const DPAD_UP: usize = 7;
     const DPAD_LR: usize = 8;
     const DPAD_DOWN: usize = 9;
-    const TAP_JUMP: usize = 10;
-    const PARRY_INPUT: usize = 11;
-    const RIVALS_WJ: usize = 12;
-    const STICK_SENS: usize = 13;
-    const RUMBLE: usize = 14;
-    const AB_SMASH: usize = 15;
-    const COUNT: usize = 16;
+    const RIGHT_STICK: usize = 10;
+    const TAP_JUMP: usize = 11;
+    const PARRY_INPUT: usize = 12;
+    const RIVALS_WJ: usize = 13;
+    const STICK_SENS: usize = 14;
+    const RUMBLE: usize = 15;
+    const AB_SMASH: usize = 16;
+    const COUNT: usize = 17;
 }
 
 impl TagSubMenu for GamecubeMenu {
@@ -277,6 +278,12 @@ impl TagSubMenu for GamecubeMenu {
                 return_to: Box::new(move || Some(Box::new(return_to))),
                 initial: controls.gc_ddown,
                 set_input_kind: |ctrls, input| ctrls.gc_ddown = input,
+            })),
+            Self::RIGHT_STICK => Some(Box::new(ButtonSelector {
+                controls_id: self.controls_id,
+                return_to: Box::new(move || Some(Box::new(return_to))),
+                initial: controls.pro_cstick,
+                set_input_kind: |ctrls, input| ctrls.pro_cstick = input,
             })),
             Self::TAP_JUMP => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
@@ -425,14 +432,15 @@ impl ProControllerMenu {
     const B: usize = 1;
     const X: usize = 2;
     const Y: usize = 3;
-    const L: usize = 5;
-    const R: usize = 6;
-    const ZL: usize = 7;
-    const ZR: usize = 8;
-    const DPAD_UP: usize = 9;
-    const DPAD_LR: usize = 10;
-    const DPAD_DOWN: usize = 11;
-    const TAP_JUMP: usize = 12;
+    const L: usize = 4;
+    const R: usize = 5;
+    const ZL: usize = 6;
+    const ZR: usize = 7;
+    const DPAD_UP: usize = 8;
+    const DPAD_LR: usize = 9;
+    const DPAD_DOWN: usize = 10;
+    const TAP_JUMP: usize = 11;
+    const RIGHT_STICK: usize = 12;
     const PARRY_INPUT: usize = 13;
     const RIVALS_WJ: usize = 14;
     const STICK_SENS: usize = 15;
@@ -529,6 +537,12 @@ impl TagSubMenu for ProControllerMenu {
                 return_to: Box::new(move || Some(Box::new(return_to))),
                 initial: controls.pro_ddown,
                 set_input_kind: |ctrls, input| ctrls.pro_ddown = input,
+            })),
+            Self::RIGHT_STICK => Some(Box::new(ButtonSelector {
+                controls_id: self.controls_id,
+                return_to: Box::new(move || Some(Box::new(return_to))),
+                initial: controls.pro_cstick,
+                set_input_kind: |ctrls, input| ctrls.pro_cstick = input,
             })),
             Self::TAP_JUMP => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
