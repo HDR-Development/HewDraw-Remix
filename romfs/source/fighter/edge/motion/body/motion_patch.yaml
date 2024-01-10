@@ -13,7 +13,7 @@ throw_b:
     cancel_frame: 33
 throw_lw:
   extra:
-    cancel_frame: 53
+    cancel_frame: 50
 throw_hi:
   extra:
     cancel_frame: 41
