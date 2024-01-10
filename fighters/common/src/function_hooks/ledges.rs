@@ -45,17 +45,16 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 
 
     // Ledgehog code
-    let pos = GroundModule::hang_cliff_pos_3f(boma);
+    let cliff_id = GroundModule::get_cliff_id_uint32(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
     for object_id in util::get_all_active_battle_object_ids() {
         let object = ::utils::util::get_battle_object_from_id(object_id);
         if !object.is_null() {
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-            || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) {
                 continue;
             }
 
-            if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+            if VarModule::get_int(object, vars::common::instance::LEDGE_ID) == cliff_id as i32 {
                 if !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
                     return 0;
                 }
@@ -95,8 +94,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 //=================================================================
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+    VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
     original!()(boma)
 }
 
