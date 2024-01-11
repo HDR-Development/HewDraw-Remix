@@ -297,7 +297,29 @@ unsafe fn before_collision(object: *mut BattleObject) {
                     let motion_module__update_motion_slow: extern "C" fn(*const TempModule, u64) -> u64 = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0x680) as *const u64));
                     motion_module__update_motion_slow(module_accessor.motion_module, motion_kind);
 
-                    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(motion_kind), true);
+                    let mut cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(motion_kind), true);
+                    if [hash40("passive"),
+                        hash40("passive_stand_f"),
+                        hash40("passive_stand_b"),
+                        hash40("down_stand_u"),
+                        hash40("down_stand_d"),
+                        hash40("down_attack_u"),
+                        hash40("down_attack_d"),
+                        hash40("down_forward_u"),
+                        hash40("down_back_u"),
+                        hash40("down_forward_d"),
+                        hash40("down_back_d"),
+                        hash40("down_spot_d"),
+                        hash40("cliff_climb_quick"),
+                        hash40("cliff_attack_quick"),
+                        hash40("cliff_escape_quick"),
+                        hash40("slip_stand"),
+                        hash40("slip_attack"),
+                        hash40("slip_escape_f"),
+                        hash40("slip_escape_b")
+                    ].contains(&motion_kind) {
+                        cancel_frame += 2.0;
+                    }
 
                     if MotionModule::frame(boma) + 0.0001 < cancel_frame
                     || MotionModule::prev_frame(boma) + 0.0001 >= cancel_frame
