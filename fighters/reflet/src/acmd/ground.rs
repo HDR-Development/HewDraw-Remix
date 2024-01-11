@@ -26,7 +26,7 @@ unsafe fn reflet_attack_11_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 12.0/(22.0-7.0));
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
@@ -75,18 +75,19 @@ unsafe fn reflet_attack_12_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 9.0);
     if WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) > 1 {
         if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
         }
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 14.0);
     if WorkModule::get_float(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLOAT_SPECIAL_S_CURRENT_POINT) > 0.1 {
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         }
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }

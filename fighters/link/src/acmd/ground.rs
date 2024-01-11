@@ -36,8 +36,11 @@ unsafe fn attack_12 (fighter: &mut L2CAgentBase) {
 	wait(lua_state, 2.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(fighter.module_accessor);
-		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
 	}
+    frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    }
 }
 
 #[acmd_script( agent = "link", script = "game_attack13" , category = ACMD_GAME , low_priority)]

@@ -20,9 +20,11 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 #[acmd_script( agent = "luigi", script = "game_attack12" , category = ACMD_GAME , low_priority)]
@@ -43,9 +45,11 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 #[acmd_script( agent = "luigi", script = "game_attack13" , category = ACMD_GAME , low_priority)]

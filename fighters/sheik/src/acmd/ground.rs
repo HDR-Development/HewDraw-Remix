@@ -16,9 +16,11 @@ unsafe fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 #[acmd_script( agent = "sheik", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
@@ -52,10 +54,10 @@ unsafe fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     
