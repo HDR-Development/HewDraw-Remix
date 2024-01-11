@@ -94,7 +94,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 //=================================================================
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
-    VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+    VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, -1);
     original!()(boma)
 }
 

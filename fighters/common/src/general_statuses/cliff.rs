@@ -37,7 +37,7 @@ unsafe fn status_CliffCatchMove(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffCatchMove)]
 unsafe fn status_end_CliffCatchMove(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_CATCH {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
         HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
     }
     call_original!(fighter)
@@ -46,7 +46,7 @@ unsafe fn status_end_CliffCatchMove(fighter: &mut L2CFighterCommon) -> L2CValue 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffCatch)]
 unsafe fn status_end_CliffCatch(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_WAIT {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     }
     call_original!(fighter)
 }
@@ -57,33 +57,33 @@ unsafe fn status_end_CliffWait(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
         *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
-            VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+            VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     }
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffAttack)]
 unsafe fn status_end_CliffAttack(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffClimb)]
 unsafe fn status_end_CliffClimb(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffEscape)]
 unsafe fn status_end_CliffEscape(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump1)]
 unsafe fn status_end_CliffJump1(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_JUMP2 {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     }
     call_original!(fighter)
 }
@@ -91,14 +91,14 @@ unsafe fn status_end_CliffJump1(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump2)]
 unsafe fn status_end_CliffJump2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_JUMP3 {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     }
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump3)]
 unsafe fn status_end_CliffJump3(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, 0xFFFFFFFF);
+    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     call_original!(fighter)
 }
 
