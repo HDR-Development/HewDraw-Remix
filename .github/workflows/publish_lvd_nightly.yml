@@ -41,14 +41,14 @@ jobs:
         ls -R
 
     - name: Push lvd file to Suddy's HDRStageTools
-      uses: dmnemec/copy_file_to_another_repo_action@main
+      uses: nkoppel/push-files-to-another-repository@1.1.2
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
       with:
-        source_file: './lvd.zip'
-        destination_folder: 'nightly'
-        destination_repo: 'SuddyN/HDRStageTools'
-        user_email: 'suddy121800@hotmail.com'
-        user_name: 'SuddyN'
-        destination_branch: 'gh-pages'
-
+        source-files: './lvd.zip'
+        destination-username: 'SuddyN'
+        destination-repository: 'HDRStageTools'
+        destination-branch: 'gh-pages'
+        destination-directory: 'nightly'
+        commit-username: 'SuddyN'
+        commit-email: 'suddy121800@hotmail.com'
