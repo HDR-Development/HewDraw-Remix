@@ -45,6 +45,8 @@ jobs:
 
     - name: Push lvd file to Suddy's HDRStageTools
       run: |
+        git config --global user.email "suddy121800@hotmail.com"
+        git config --global user.name "SuddyN"
         git clone -b gh-pages https://.:${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}@github.com/SuddyN/HDRStageTools HDRStageTools
         copy lvd.zip HDRStageTools/lvd/hdr-nightly/lvd.zip
         cd HDRStageTools
