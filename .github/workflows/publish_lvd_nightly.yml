@@ -20,14 +20,14 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
-    - id: romfs.zip
+    - id: romfs_zip
       uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/romfs-release"
         tag: release
         fileName: "romfs.zip"
 
-    - id: yamlvd.exe
+    - id: yamlvd_exe
       uses: robinraju/release-downloader@v1.7
       with:
         repository: "ultimate-research/lvd-rs"
