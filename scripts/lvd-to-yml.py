@@ -6,28 +6,28 @@ import shutil
 
 
 def run_example_exe(executable_path, input_directory, output_directory):
-    # Ensure the directory path ends with a separator
-    input_directory = input_directory.rstrip(os.path.sep) + os.path.sep
-    output_directory = output_directory.rstrip(os.path.sep) + os.path.sep
-
     # List all files in the directory
     files = glob.glob(input_directory + "**/normal*/param/*.lvd", recursive=True)
 
     # Run example.exe for each .lvd file
     for file in files:
+        print("file", file)
         # construct the input path
         file_path = os.path.join(input_directory, file)
-
+        print("file_path", file_path)
+        
         # construct the output path
         output_file_path = os.path.join(
             output_directory + "yml/",
             os.path.splitext(file_path.replace(input_directory, ""))[0] + ".yml",
         )
+        print("output_file_path", output_file_path)
 
         # make the output directory if it doesn't exist
         output_file_directory = output_file_path.replace(
             os.path.basename(output_file_path), ""
         )
+        print(output_file_directory, "output_file_directory")
         if not os.path.exists(output_file_directory):
             # Create a new directory because it does not exist
             os.makedirs(output_file_directory)

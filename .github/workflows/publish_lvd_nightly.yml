@@ -37,7 +37,7 @@ jobs:
       run: |
         7z x romfs.zip
         mkdir yml
-        python3 scripts/lvd-to-yml.py ./yamlvd.exe ./ultimate/mods/hdr-stages/stage ./
+        python3 scripts/lvd-to-yml.py .\yamlvd.exe .\ultimate\mods\hdr-stages\stage\ .\
 
     - name: view_results
       run: |
