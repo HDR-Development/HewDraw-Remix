@@ -35,20 +35,20 @@ jobs:
 
     - name: lvd_to_yml
       run: |
-        unzip romfs.zip
+        unzip romfs.zip -d romfs
         mkdir yml
         python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs/ultimate/mods/hdr-stages/stage ./
         ls -R
 
-    # - name: Push lvd file to Suddy's HDRStageTools
-    #   uses: dmnemec/copy_file_to_another_repo_action@main
-    #   env:
-    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
-    #   with:
-    #     source_file: 'artifacts/lvd.zip'
-    #     destination_folder: 'nightly'
-    #     destination_repo: 'SuddyN/HDRStageTool'
-    #     user_email: 'suddy121800@hotmail.com'
-    #     user_name: 'SuddyN'
-    #     destination_branch: 'gh-pages'
+    - name: Push lvd file to Suddy's HDRStageTools
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
+      with:
+        source_file: './lvd.zip'
+        destination_folder: 'nightly'
+        destination_repo: 'SuddyN/HDRStageTools'
+        user_email: 'suddy121800@hotmail.com'
+        user_name: 'SuddyN'
+        destination_branch: 'gh-pages'
 
