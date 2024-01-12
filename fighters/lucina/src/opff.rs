@@ -93,10 +93,23 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// symbol-based call for the fe characters' common opff
-extern "Rust" {
-    fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+// Up Special Reverse
+unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    //Lucina frame 6
+    let mut target_frame = 6.0;
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        if frame == target_frame {
+            if stick_x * facing < 0.0 {
+                PostureModule::reverse_lr(boma);
+                PostureModule::update_rot_y_lr(boma);
+            }
+        }
+    }
 }
+
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
@@ -137,6 +150,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
+    up_special_reverse(boma, status_kind, stick_x, facing, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCINA )]
@@ -144,7 +158,6 @@ pub fn lucina_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		lucina_frame(fighter);
-        fe_common(fighter);
     }
 }
 
