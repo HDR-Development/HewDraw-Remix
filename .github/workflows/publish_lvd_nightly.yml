@@ -37,7 +37,7 @@ jobs:
       run: |
         unzip romfs.zip
         mkdir yml
-        python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs ./
+        python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs/ultimate/mods/hdr-stages/stage ./
         ls -R
 
     # - name: Push lvd file to Suddy's HDRStageTools
