@@ -43,6 +43,16 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
                 data.stop_frame = 3.5;  // hitlag mul
             }
         }
+        if (*boma).is_status(*FIGHTER_STATUS_KIND_ATTACK) {
+            data.stop_frame = 1.0;
+        }
+        if (*boma).is_motion(Hash40::new("attack_100")) {
+            data.stop_frame = 0.5;
+            data.stop_delay = 0.3;  // SDI mul
+        }
+        if (*boma).is_motion(Hash40::new("attack_100_end")) {
+            data.stop_frame = 1.5;
+        }
     }
     
     call_original!(module, id, group, data)
