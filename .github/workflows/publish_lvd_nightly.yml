@@ -38,17 +38,16 @@ jobs:
         7z x romfs.zip
         mkdir yml
         python3 scripts/lvd-to-yml.py ./yamlvd.exe ./ultimate/mods/hdr-stages/stage ./
+
+    - name: view_results
+      run: |
         ls -R
 
     - name: Push lvd file to Suddy's HDRStageTools
-      uses: nkoppel/push-files-to-another-repository@v1.1.2
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
-      with:
-        source-files: './lvd.zip'
-        destination-username: 'SuddyN'
-        destination-repository: 'HDRStageTools'
-        destination-branch: 'gh-pages'
-        destination-directory: 'nightly'
-        commit-username: 'SuddyN'
-        commit-email: 'suddy121800@hotmail.com'
+      run: |
+        git clone -b gh-pages https://.:${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}@github.com/SuddyN/HDRStageTools HDRStageTools
+        copy lvd.zip HDRStageTools/lvd/hdr-nightly/lvd.zip
+        cd HDRStageTools
+        git add .
+        git diff-index --quiet HEAD || git commit -m "Automatic publish from HDR-Development/HewDraw-Remix"
+        git push origin gh-pages
