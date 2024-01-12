@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - "lvd-actions"
+  pull_request:
   workflow_run:
     workflows: ["build_nightly"]
     types:
