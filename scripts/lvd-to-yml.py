@@ -20,7 +20,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
 
         # construct the output path
         output_file_path = os.path.join(
-            output_directory + "yml\\",
+            output_directory + "yml/",
             os.path.splitext(file_path.replace(input_directory, ""))[0] + ".yml",
         )
 
@@ -35,6 +35,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
 
         # construct the final command
         command = [executable_path, file_path, output_file_path]
+        print(command)
 
         # run the command
         try:
@@ -44,7 +45,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
             print(f"Error running for {file}: {e}")
 
     print(f"Zipping lvd files into lvd.zip at {output_directory}")
-    shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml")
+    shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml/")
     print("Done!")
 
 
