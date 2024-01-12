@@ -44,7 +44,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
             print(f"Error running for {file}: {e}")
 
     print(f"Zipping lvd files into lvd.zip at {output_directory}")
-    shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml\\")
+    shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml")
     print("Done!")
 
 
