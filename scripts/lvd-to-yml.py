@@ -12,14 +12,11 @@ def run_example_exe(executable_path, input_directory, output_directory):
     # Run example.exe for each .lvd file
     for file in files:
         print("file", file)
-        # construct the input path
-        file_path = os.path.join(input_directory, file)
-        print("file_path", file_path)
         
         # construct the output path
         output_file_path = os.path.join(
-            output_directory + "yml/",
-            os.path.splitext(file_path.replace(input_directory, ""))[0] + ".yml",
+            output_directory + "yml\\",
+            os.path.splitext(file.replace(input_directory, ""))[0] + ".yml",
         )
         print("output_file_path", output_file_path)
 
@@ -34,7 +31,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
             print(f"Made a new directory: {output_file_directory}")
 
         # construct the final command
-        command = [executable_path, file_path, output_file_path]
+        command = [executable_path, file, output_file_path]
         print(command)
 
         # run the command
@@ -45,7 +42,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
             print(f"Error running for {file}: {e}")
 
     print(f"Zipping lvd files into lvd.zip at {output_directory}")
-    shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml/")
+    shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml\\")
     print("Done!")
 
 
