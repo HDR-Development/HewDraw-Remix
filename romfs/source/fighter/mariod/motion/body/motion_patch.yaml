@@ -49,7 +49,7 @@ attack_air_f:
     cancel_frame: 46
 attack_air_b:
   extra:
-    cancel_frame: 30
+    cancel_frame: 28
 attack_air_hi:
   extra:
     cancel_frame: 30
@@ -60,7 +60,7 @@ special_n:
   animations:
   - name: d00specialntoss.nuanmb
   extra:
-    cancel_frame: 41
+    cancel_frame: 40
 special_air_n:
   animations:
   - name: d00specialairntoss.nuanmb
@@ -132,12 +132,12 @@ special_air_s:
     cancel_frame: 46
 special_hi:
     extra:
-      xlu_start: 3
-      xlu_end: 5
+      intangible_start_frame: 3
+      intangible_end_frame: 5
 special_air_hi:
     extra:
-      xlu_start: 3
-      xlu_end: 4
+      intangible_start_frame: 3
+      intangible_end_frame: 4
 throw_f:
   extra:
     cancel_frame: 24
