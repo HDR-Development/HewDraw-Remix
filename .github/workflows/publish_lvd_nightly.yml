@@ -1,9 +1,6 @@
 name: publish_lvd_nightly.yml
 
 on:
-  push:
-    branches:
-    - "lvd-actions"
   workflow_run:
     workflows: ["build_nightly"]
     types:
