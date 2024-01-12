@@ -160,6 +160,14 @@ impl UiManager {
         }
     }
 
+    #[export_name = "UiManager__change_ff_meter_cap"]
+    pub extern "C" fn change_ff_meter_cap(entry_id: u32, cap: f32) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].change_cap(cap);
+        }
+    }
+
     #[export_name = "UiManager__set_power_board_enable"]
     pub extern "C" fn set_power_board_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();

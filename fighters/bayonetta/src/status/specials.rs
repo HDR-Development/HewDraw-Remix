@@ -29,8 +29,9 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
         return 1.into();
     }
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND { //gr checks
-        if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
-            if fighter.is_button_on(Buttons::Attack | Buttons::Special)
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
+            if fighter.is_cat_flag(Cat1::SpecialAny | Cat1::AttackN)
             && fighter.global_table[CURRENT_FRAME].get_i32() >= 20
             && fighter.global_table[CURRENT_FRAME].get_i32() <= 35 {
                 fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_HOLD_END.into(), false.into());
@@ -51,11 +52,9 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
             GroundModule::set_passable_check(fighter.module_accessor, false);
             GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.5);
-            if fighter.motion_frame() < 35.0 {
-                MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 35.0, true, true, false);
-            }
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.45);
         }
+        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.25);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_run_smoke"), false, false);
         if fighter.motion_frame() >= 45.0 {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

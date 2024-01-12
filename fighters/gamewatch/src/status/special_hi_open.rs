@@ -45,6 +45,7 @@ unsafe extern "C" fn special_hi_open_main_loop(fighter: &mut L2CFighterCommon) -
         fighter.change_status(status.into(), true.into());
         return 1.into()
     }
+    fighter.sub_air_check_dive();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {

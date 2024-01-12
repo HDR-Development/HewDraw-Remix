@@ -7,6 +7,8 @@
 
 // Not sure why these are needed here, probably cargo-skyline BS
 // - blujay
+extern crate dynamic;
+extern crate locks;
 extern crate once_cell;
 extern crate rand;
 extern crate skyline;

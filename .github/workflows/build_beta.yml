@@ -115,6 +115,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Sleep to ensure tag gets deleted
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '60s'
 
     # upload asset
     - name: Upload binaries to release

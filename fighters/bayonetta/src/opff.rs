@@ -43,12 +43,6 @@ unsafe fn nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
             sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
             sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.009);
             sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
-        } else {
-            if GroundModule::is_passable_ground(boma) 
-            && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"))
-            && fighter.global_table[FLICK_Y].get_i32() < WorkModule::get_param_int(boma, hash40("common"), hash40("pass_flick_y")) {
-                fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
-            }
         }
     }
 }
@@ -96,7 +90,7 @@ unsafe fn abk_angling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
         let facing = PostureModule::lr(boma);
         let anglestick = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
-        joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -14.5*anglestick, y:90.0*facing, z:0.0}, 10.0, 15.0, 43.0, 53.0);
+        joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -14.5*anglestick, y:90.0*facing, z:0.0}, 10.0, 15.0, 45.0, 55.0);
         if boma.status_frame() <= 8 { VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, boma.left_stick_y());}
         //trajectory
         else if boma.status_frame() <= 26 && !fighter.is_in_hitlag() {

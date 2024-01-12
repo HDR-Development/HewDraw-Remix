@@ -74,7 +74,7 @@ unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighte
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
     } else {
-        if MotionModule::is_end(fighter.module_accessor) || CancelModule::is_enable_cancel(fighter.module_accessor) { fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
+        if MotionModule::is_end(fighter.module_accessor) { fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
         movement(fighter);
     }
     if frame <= 7 && !StopModule::is_stop(fighter.module_accessor) {
