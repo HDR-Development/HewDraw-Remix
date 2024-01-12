@@ -1,0 +1,52 @@
+name: publish_lvd_beta.yml
+
+on:
+  workflow_run:
+    workflows: ["make beta"]
+    types:
+      - completed
+
+jobs:
+  # bump the version and build the changelog
+
+  ##############  handle the creasion of the full package installation  ##############
+  lvd_publish:
+    runs-on: windows-latest
+    steps:
+    - name: checkout version
+      uses: actions/checkout@v2
+
+    - id: romfs_zip
+      uses: robinraju/release-downloader@v1.8
+      with:
+        repository: "HDR-Development/romfs-release"
+        latest: true
+        zipBall: true
+
+    - id: yamlvd_exe
+      uses: robinraju/release-downloader@v1.8
+      with:
+        repository: "ultimate-research/lvd-rs"
+        tag: v0.3.0
+        fileName: "yamlvd.exe"
+
+    - name: lvd_to_yml
+      run: |
+        7z x romfs.zip
+        mkdir yml
+        python3 scripts/lvd-to-yml.py .\yamlvd.exe .\ultimate\mods\hdr-stages\stage\ .\
+
+    - name: view_results
+      run: |
+        ls -R
+
+    - name: Push lvd file to Suddy's HDRStageTools
+      run: |
+        git config --global user.email "suddy121800@hotmail.com"
+        git config --global user.name "SuddyN"
+        git clone -b gh-pages https://.:${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}@github.com/SuddyN/HDRStageTools HDRStageTools
+        copy lvd.zip HDRStageTools/lvd/hdr-beta/lvd.zip
+        cd HDRStageTools
+        git add .
+        git diff-index --quiet HEAD || git commit -m "Automatic publish from HDR-Development/HewDraw-Remix"
+        git push origin gh-pages
