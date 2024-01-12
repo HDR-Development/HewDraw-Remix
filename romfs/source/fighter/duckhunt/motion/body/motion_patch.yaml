@@ -7,6 +7,9 @@ guard_off:
 escape:
   flags:
     move: false
+throw_hi:
+  extra:
+    cancel_frame: 44
 throw_lw:
   extra:
     cancel_frame: 43
