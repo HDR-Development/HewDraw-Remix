@@ -36,8 +36,8 @@ jobs:
     - name: lvd_to_yml
       run: |
         unzip romfs.zip
-        mkdir lvd
-        python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs ./lvd
+        mkdir yml
+        python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs ./
         ls -R
 
     # - name: Push lvd file to Suddy's HDRStageTools
