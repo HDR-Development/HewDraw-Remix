@@ -1408,6 +1408,10 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const MONADO_BEAT: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
+
+            // ints
+            pub const SPECIAL_S_STEP: i32 = 0x0100;
         }
     }
 }
