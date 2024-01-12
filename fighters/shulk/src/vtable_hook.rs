@@ -28,7 +28,6 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) 
             *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
             *FIGHTER_STATUS_KIND_ATTACK, // new
             *FIGHTER_STATUS_KIND_ATTACK_100, // new
-            *FIGHTER_STATUS_KIND_ATTACK_DASH, // new
             *FIGHTER_STATUS_KIND_ATTACK_S3, // new
             *FIGHTER_STATUS_KIND_ATTACK_HI3, // new
             *FIGHTER_STATUS_KIND_ATTACK_LW3, // new

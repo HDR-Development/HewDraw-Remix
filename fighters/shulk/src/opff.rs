@@ -53,10 +53,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 unsafe fn monado_beat(fighter: &mut L2CFighterCommon, status_kind: i32) {
     if fighter.is_motion_one_of(&[
-        Hash40::new("attack_11"),
-        Hash40::new("attack_12"),
         Hash40::new("attack_13"),
-        Hash40::new("attack_dash"),
         Hash40::new("attack_s3_s"),
         Hash40::new("attack_hi3"),
         Hash40::new("attack_lw3"),
@@ -71,10 +68,7 @@ unsafe fn monado_beat(fighter: &mut L2CFighterCommon, status_kind: i32) {
         }
     }
     else if !fighter.is_motion_one_of(&[
-        Hash40::new("attack_11"),
-        Hash40::new("attack_12"),
         Hash40::new("attack_13"),
-        Hash40::new("attack_dash"),
         Hash40::new("attack_s3_s"),
         Hash40::new("attack_hi3"),
         Hash40::new("attack_lw3"),
@@ -90,11 +84,19 @@ unsafe fn monado_beat(fighter: &mut L2CFighterCommon, status_kind: i32) {
     }
 }
 
+unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if (boma.is_motion(Hash40::new("attack_dash")) || boma.is_motion(Hash40::new("attack_air_dash")))
+    && frame >= 31.0 {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_S_FALL, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
     monado_beat(fighter, status_kind);
+    motion_handler(fighter, boma, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SHULK )]
