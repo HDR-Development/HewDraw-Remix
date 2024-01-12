@@ -378,6 +378,21 @@ unsafe fn miifighter_special_hi12_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "miifighter", scripts = ["expression_specialhi12", "expression_specialairhi12"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn miifighter_special_hi12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "miifighter", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1048,8 +1063,8 @@ unsafe fn miifighter_special_lw3_throw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         FT_CATCH_STOP(fighter, 5, 1);
-        CHECK_FINISH_CAMERA(fighter, 14, 0);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
+        //CHECK_FINISH_CAMERA(fighter, 14, 0);
+        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
     }
     frame(lua_state, 14.0);
     FT_MOTION_RATE(fighter, 0.5);
@@ -1058,7 +1073,9 @@ unsafe fn miifighter_special_lw3_throw_game(fighter: &mut L2CAgentBase) {
         let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         let opponent_boma = fighter.get_grabbed_opponent_boma();
-        VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
+        if opponent_boma.is_fighter() {
+            VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
+        }
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
@@ -1087,8 +1104,8 @@ unsafe fn miifighter_special_air_lw3_throw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         FT_CATCH_STOP(fighter, 5, 1);
-        CHECK_FINISH_CAMERA(fighter, 14, 0);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
+        //CHECK_FINISH_CAMERA(fighter, 14, 0);
+        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -1151,6 +1168,7 @@ pub fn install() {
         miifighter_special_hi12_game,
         miifighter_special_hi12_effect,
         miifighter_special_hi12_sound,
+        miifighter_special_hi12_expression,
         miifighter_special_hi2_game,
         miifighter_special_air_hi2_game,
         miifighter_special_hi3_game,

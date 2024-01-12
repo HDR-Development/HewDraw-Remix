@@ -299,6 +299,12 @@ unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.5 * discharge_power_mul);
         }
     }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) && fighter.is_situation(*SITUATION_KIND_AIR) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        }
+    }
 }
 #[acmd_script( agent = "pichu", script = "effect_speciallwhit" , category = ACMD_EFFECT , low_priority)]
 unsafe fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {

@@ -36,7 +36,8 @@ unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
 }
 
 unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START {
+    if status_kind == *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START
+    && frame >= 8.0 {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             if fighter.is_cat_flag(Cat2::StickEscape) {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE);

@@ -316,6 +316,45 @@ unsafe fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "packun", scripts = ["expression_specialsshoot", "expression_specialairsshoot"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    if is_excute(fighter) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        }
+    }
+    if stance == 0 {
+        frame(lua_state, 5.0);
+        if is_excute(fighter) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+            if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 60 {
+                RUMBLE_HIT(fighter, Hash40::new("rbkind_explosionm"), 0);
+            }
+            else {
+                RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+            }
+        }
+    }
+    else {
+        frame(lua_state, 2.0);
+        if is_excute(fighter) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_attacks"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        frame(lua_state, 5.0);
+        if is_excute(fighter) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_attacks"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        frame(lua_state, 8.0);
+        if is_excute(fighter) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_attacks"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+    
+}
+
 #[acmd_script( agent = "packun", script = "effect_specialairsshoots" , category = ACMD_EFFECT , low_priority)]
 unsafe fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
@@ -346,7 +385,7 @@ unsafe fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
         //sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
         if stance == 0 {
             PLAY_SE(agent, Hash40::new("se_packun_special_n03"));
-            if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 75 {
+            if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 60 {
                 PLAY_SE(agent, Hash40::new("se_common_fire_m"));
             }
         }
@@ -381,6 +420,30 @@ unsafe fn packun_special_s_shoot_s_sound(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_packun_attackhard_s04"));
         if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
             PLAY_SE(agent, Hash40::new("se_common_bomb_s"));
+        }
+    }
+}
+
+#[acmd_script( agent = "packun", scripts = ["expression_specialsshoots", "expression_specialairsshoots"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn packun_special_s_shoot_s_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        }
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        if WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 60 {
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        }
+        else {
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
 }
@@ -616,9 +679,11 @@ pub fn install() {
         packun_special_s_shoot_s_effect,
         packun_special_air_s_end_effect,
         packun_special_air_s_shoot_effect,
+        packun_special_s_shoot_expression,
         packun_special_air_s_shoot_s_effect,
         packun_special_s_shoot_sound,
         packun_special_s_shoot_s_sound,
+        packun_special_s_shoot_s_expression,
         packun_special_hi_game,
         packun_special_air_hi_game,
         packun_special_lw_bite_attack_game,

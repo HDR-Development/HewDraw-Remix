@@ -763,7 +763,7 @@
       <float hash="damage_fly_top_speed_y_stable">2.2</float>
       <float hash="dive_speed_y">2.728</float>
       <float hash="weight">87</float>
-      <float hash="landing_attack_air_frame_f">8</float>
+      <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_lw">16</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_n">8</float>

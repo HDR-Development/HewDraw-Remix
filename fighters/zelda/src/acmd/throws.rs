@@ -1,4 +1,3 @@
-
 use super::*;
 
 #[acmd_script( agent = "zelda", script = "game_throwf", category = ACMD_GAME, low_priority )]
@@ -12,8 +11,6 @@ unsafe fn zelda_throw_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         CHECK_FINISH_CAMERA(fighter, 17, 4);
-        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.25);
-        //lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 9.0, y: 1.0, z: 0.0});
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
@@ -51,7 +48,7 @@ unsafe fn zelda_throw_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 26.0, 29.0);
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 45, 90, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 45, 95, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 26.0);
@@ -59,8 +56,6 @@ unsafe fn zelda_throw_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REVERSE_LR_FINISH_CAMERA_THROW_ORBIT);
         CHECK_FINISH_CAMERA(fighter, 11, 7);
-        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
-        //lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: -5.0, y: 0.0, z: 0.0});
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
@@ -77,14 +72,12 @@ unsafe fn zelda_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 87, 97, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 87, 90, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         CHECK_FINISH_CAMERA(fighter, 1, 25);
-        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-        //lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 0.0, y: 10.0, z: 0.0});
     }
     frame(lua_state, 30.0);
     FT_MOTION_RATE(fighter, 0.8);
@@ -101,7 +94,6 @@ pub fn install() {
         zelda_throw_f_game,
         zelda_throw_f_effect,
         zelda_throw_b_game,
-        zelda_throw_hi_game
+        zelda_throw_hi_game,
     );
 }
-

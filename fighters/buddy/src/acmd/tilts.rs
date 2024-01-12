@@ -132,6 +132,7 @@ unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "buddy", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
 unsafe fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("buddy_attack100"), false, true);
     }
@@ -144,6 +145,30 @@ unsafe fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         //Kazooie
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -0.25, 14, 1.5, 180, 4, 76, 0.8, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter,1.4);
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.8, 0.3, 0);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.7, 0.35, 0.1);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.8, 0.2, 0.5);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.2, 0.35);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.35, 0.35, 0.35);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.4, 0.3, 0.1);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+            LAST_EFFECT_SET_COLOR(fighter, 1, 0.2, 0.2);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+            LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.05, 0.1);
+        }
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {

@@ -126,6 +126,9 @@ special_air_lw:
 throw_f:
   extra:
     cancel_frame: 42
+throw_hi:
+  extra:
+    cancel_frame: 75
 item_light_throw_f:
   flags:
     move: false

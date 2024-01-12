@@ -241,6 +241,49 @@ unsafe fn buddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "buddy", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("buddy_air_hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
+            LAST_EFFECT_SET_COLOR(agent, 0.8, 0.3, 0);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
+            LAST_EFFECT_SET_COLOR(agent, 0.7, 0.35, 0.1);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
+            LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.5);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
+            LAST_EFFECT_SET_COLOR(agent, 0.5, 0.2, 0.35);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
+            LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.35);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
+            LAST_EFFECT_SET_COLOR(agent, 0.4, 0.3, 0.1);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
+            LAST_EFFECT_SET_COLOR(agent, 1, 0.2, 0.2);
+        }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+            LAST_EFFECT_SET_COLOR(agent, 0.1, 0.05, 0.1);
+        }
+        //EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("buddy_air_hi_flash"), Hash40::new("top"), 0, 23, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 18, 0, 0, 0, 0, 0.9, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
+    }
+}
+
 #[acmd_script( agent = "buddy", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn buddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -394,6 +437,7 @@ pub fn install() {
         buddy_attack_air_f_expression,
         buddy_attack_air_b_game,
         buddy_attack_air_hi_game,
+        effect_attackairhi,
         buddy_attack_air_hi_expression,
         buddy_attack_air_lw_game,
         buddy_attack_air_lw_effect,

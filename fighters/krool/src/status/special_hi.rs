@@ -58,6 +58,12 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
+#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+unsafe fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_krool_special_h02"), 0);
+    return 0.into()
+}
+
 #[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -260,10 +266,10 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         let fly_charge_min_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_min_spd_y");
         let fly_charge_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_y_mul");
 
-        // accounts for 50 max charge frames
+        // accounts for 50 max charge frames (this ended up being 38 in practice, oops)
         let calc_charge_x = (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul)) * PostureModule::lr(fighter.module_accessor);
         let calc_charge_y = fly_charge_min_spd_y + (charge_frames * fly_charge_y_mul);
-        // max x: 0.7, max y: 3.0
+        // max x: 0.97, max y: 3.0
 
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
         sv_kinetic_energy!(reset_energy, fighter, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -528,6 +534,7 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
 pub fn install() {
     smashline::install_status_scripts!(
         special_hi_start_main,
+        special_hi_start_exit,
         special_hi_main,
         special_hi_end_main,
         special_hi_fall_main,
