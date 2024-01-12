@@ -41,7 +41,7 @@ jobs:
         ls -R
 
     - name: Push lvd file to Suddy's HDRStageTools
-      uses: nkoppel/push-files-to-another-repository@1.1.2
+      uses: nkoppel/push-files-to-another-repository@v1.1.2
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
       with:
