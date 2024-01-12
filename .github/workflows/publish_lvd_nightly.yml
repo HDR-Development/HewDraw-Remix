@@ -35,6 +35,7 @@ jobs:
 
     - name: lvd_to_yml
       run: |
+        chmod +x ./yamlvd.exe
         unzip romfs.zip -d romfs
         mkdir yml
         python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs/ultimate/mods/hdr-stages/stage ./
