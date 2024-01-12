@@ -65,7 +65,7 @@ special_air_n:
   animations:
   - name: d00specialairntoss.nuanmb
   extra:
-    cancel_frame: 41
+    cancel_frame: 40
 special_n_chill:
   game_script: game_specialnchill
   flags:
