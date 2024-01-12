@@ -97,6 +97,25 @@ unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "mario", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("head"), 6, 0, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mario_smash_arc"), Hash40::new("mario_smash_arc"), Hash40::new("top"), 1.0, 7.0, 0.0, -30, -100, -80, 0.95, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "mario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -134,6 +153,7 @@ pub fn install() {
         mario_attack_s4_s_game,
         mario_attack_s4_lw_game,
         mario_attack_hi4_game,
+        mario_attack_hi4_effect,
         mario_attack_lw4_game,
     );
 }

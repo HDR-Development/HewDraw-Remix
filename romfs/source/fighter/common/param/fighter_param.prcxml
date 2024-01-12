@@ -13,7 +13,7 @@
       <float hash="jump_speed_x_max">1.6</float>
       <float hash="jump_initial_y">11.946</float>
       <float hash="jump_y">34</float>
-      <float hash="mini_jump_y">13</float>
+      <float hash="mini_jump_y">12.5</float>
       <float hash="jump_aerial_y">33.5</float>
       <float hash="air_accel_x_mul">0.065</float>
       <float hash="air_accel_x_add">0.01</float>

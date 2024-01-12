@@ -82,8 +82,6 @@ unsafe fn mario_throw_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         CHECK_FINISH_CAMERA(fighter, 13, 2);
-        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.0);
-        //lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 5.0, y: 0.0, z: 0.0});
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {

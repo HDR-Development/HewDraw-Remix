@@ -1,9 +1,7 @@
-
 use super::*;
 
-
 #[acmd_script( agent = "mario", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_11(fighter: &mut L2CAgentBase) {
+unsafe fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -26,7 +24,7 @@ unsafe fn mario_11(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_12(fighter: &mut L2CAgentBase) {
+unsafe fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -52,7 +50,7 @@ unsafe fn mario_12(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_13(fighter: &mut L2CAgentBase) {
+unsafe fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -74,7 +72,7 @@ unsafe fn mario_13(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "expression_attack13" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn expression_mario13(fighter: &mut L2CAgentBase) {
+unsafe fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -134,10 +132,10 @@ unsafe fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_11,
-        mario_12,
-        mario_13,
-        expression_mario13,
+        mario_attack_11_game,
+        mario_attack_12_game,
+        mario_attack_13_game,
+        mario_attack_13_expression,
         mario_attack_dash_game,
     );
 }

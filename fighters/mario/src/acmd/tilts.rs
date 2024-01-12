@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 #[acmd_script( agent = "mario", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
