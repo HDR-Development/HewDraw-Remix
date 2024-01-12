@@ -25,6 +25,20 @@ unsafe fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "murabito", scripts = ["game_speciallw2", "game_specialairlw2"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_speciallw2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
+    }
+}
+
 #[acmd_script( agent = "murabito", script = "game_speciallw3hit" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -55,6 +69,7 @@ unsafe fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         murabito_special_lw1_game,
+        game_speciallw2,
         murabito_special_lw3_hit_game,
         murabito_special_air_lw3_hit_game,
     );
