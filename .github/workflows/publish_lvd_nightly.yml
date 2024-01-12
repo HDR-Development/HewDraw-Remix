@@ -1,0 +1,51 @@
+name: publish_lvd_nightly.yml
+
+on:
+  workflow_run:
+    workflows: ["build_nightly"]
+    types:
+      - completed
+
+jobs:
+  # bump the version and build the changelog
+
+  ##############  handle the creasion of the full package installation  ##############
+  full_package:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: checkout version
+      uses: actions/checkout@v2
+
+    - id: romfs.zip
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "HDR-Development/romfs-release"
+        tag: release
+        fileName: "romfs.zip"
+
+    - id: yamlvd.exe
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "ultimate-research/lvd-rs"
+        tag: release
+        fileName: "yamlvd.exe"
+
+    - name: lvd_to_yml
+      run: |
+        unzip romfs.zip
+        mkdir lvd
+        python3 scripts/lvd-to-yml.py ./yamlvd.exe ./romfs ./lvd
+        ls -R
+
+    # - name: Push lvd file to Suddy's HDRStageTools
+    #   uses: dmnemec/copy_file_to_another_repo_action@main
+    #   env:
+    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
+    #   with:
+    #     source_file: 'artifacts/lvd.zip'
+    #     destination_folder: 'nightly'
+    #     destination_repo: 'SuddyN/HDRStageTool'
+    #     user_email: 'suddy121800@hotmail.com'
+    #     user_name: 'SuddyN'
+    #     destination_branch: 'gh-pages'
+
