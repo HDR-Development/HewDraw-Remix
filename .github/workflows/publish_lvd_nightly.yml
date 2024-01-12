@@ -20,17 +20,17 @@ jobs:
       uses: actions/checkout@v2
 
     - id: romfs_zip
-      uses: robinraju/release-downloader@v1.7
+      uses: robinraju/release-downloader@v1.8
       with:
         repository: "HDR-Development/romfs-release"
-        tag: release
-        fileName: "romfs.zip"
+        latest: true
+        zipBall: true
 
     - id: yamlvd_exe
-      uses: robinraju/release-downloader@v1.7
+      uses: robinraju/release-downloader@v1.8
       with:
         repository: "ultimate-research/lvd-rs"
-        tag: release
+        tag: v0.3.0
         fileName: "yamlvd.exe"
 
     - name: lvd_to_yml
