@@ -295,10 +295,10 @@ unsafe fn bayonetta_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.5, 368, 10, 0, 0, 4.3, 0.0, 18.2, 0.5, Some(0.0), Some(20.4), Some(0.5), 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.5, 368, 10, 0, 0, 2.6, 0.0, 16.0, 0.5, Some(0.0), Some(23.7), Some(0.5), 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("head"), &Vector2f{x: 0.0, y: 15.5}, 9, false);
-        AttackModule::set_vec_target_pos(boma, 1, Hash40::new("head"), &Vector2f{x: 0.0, y: 14.5}, 9, false);
+        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("head"), &Vector2f{x: 0.0, y: 15.5}, 10, false);
+        AttackModule::set_vec_target_pos(boma, 1, Hash40::new("head"), &Vector2f{x: 0.0, y: 14.5}, 10, false);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 19.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
@@ -318,7 +318,7 @@ unsafe fn bayonetta_special_hi_game(fighter: &mut L2CAgentBase) {
             VarModule::inc_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
         }
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 28.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
             CancelModule::enable_cancel(fighter.module_accessor);
@@ -392,7 +392,7 @@ unsafe fn bayonetta_special_lw (fighter: &mut L2CAgentBase) {
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 1.3);
 	}
     frame(lua_state, 8.0);
-    FT_MOTION_RATE_RANGE(fighter, 8.0, 15.0, 5.0); //5
+    FT_MOTION_RATE_RANGE(fighter, 8.0, 15.0, 4.0); //5
 	if is_excute(fighter) {
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
@@ -401,20 +401,20 @@ unsafe fn bayonetta_special_lw (fighter: &mut L2CAgentBase) {
         macros::SEARCH(fighter, 0, 0, Hash40::new("top"), 11.5, -2.0, 10.0, 0.0, None, None, None, *COLLISION_KIND_MASK_ATTACK, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
     }
 	frame(lua_state, 15.0);
-    FT_MOTION_RATE(fighter, 1.0); //10
+    FT_MOTION_RATE(fighter, 1.0); //9
 	if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
     }
 	frame(lua_state, 21.0);
-    FT_MOTION_RATE_RANGE(fighter, 21.0, 31.0, 7.0); //16
+    FT_MOTION_RATE_RANGE(fighter, 21.0, 31.0, 7.0); //15
 	if is_excute(fighter) {
 		fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_LW_FLAG_WITCH_TIME);
         search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
-    frame(lua_state, 31.0);//23
+    frame(lua_state, 31.0);//22
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        FT_MOTION_RATE_RANGE(fighter, 31.0, 66.0, 27.0); 
-    } else { FT_MOTION_RATE_RANGE(fighter, 31.0, 66.0, 22.0); }
+        FT_MOTION_RATE_RANGE(fighter, 31.0, 66.0, 28.0); 
+    } else { FT_MOTION_RATE_RANGE(fighter, 31.0, 66.0, 23.0); }
 	if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
     }

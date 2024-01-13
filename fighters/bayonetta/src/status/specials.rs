@@ -13,8 +13,9 @@ pub fn install() {
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_S);
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0x976c3b29b), 0.0, 1.0, false, 0.0, false, false);
+    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_main_loop as *const () as _))
 }
 
@@ -49,13 +50,14 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
         }
     } else { //slide-off
         if StatusModule::is_situation_changed(fighter.module_accessor) {
-            GroundModule::set_passable_check(fighter.module_accessor, false);
             GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.45);
+            sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.66);
         }
-        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.25);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_run_smoke"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("bayonetta_heelslide_trace"), false, false);
         if fighter.motion_frame() >= 45.0 {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }

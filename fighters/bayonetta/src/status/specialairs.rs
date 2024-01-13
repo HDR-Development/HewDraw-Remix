@@ -51,7 +51,7 @@ unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighte
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_u"), 0.0, 1.0, false, 0.0, false, false);
     fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
     fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
@@ -61,7 +61,7 @@ unsafe fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CVal
 unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = fighter.global_table[CURRENT_FRAME].get_i32();
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP) {
-        if fighter.get_param_int("param_special_s", "ab_u_disable_landing_frame") < frame {
+        if fighter.get_param_int("param_special_s", "ab_u_disable_landing_frame") <= frame {
             fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 0.into());
             fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
         }
@@ -73,13 +73,14 @@ unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighte
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK) {wall_check(fighter); }
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-    } else {
+    } else {//air
         if MotionModule::is_end(fighter.module_accessor) { fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
-        movement(fighter);
+        bullet_movement(fighter);
+        cache_input(fighter);
+        angling(fighter);
     }
-    if frame <= 7 && !StopModule::is_stop(fighter.module_accessor) {
-        if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D); }
-        if frame == 7 && fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
+    if fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
+        if frame == 7 && !fighter.is_in_hitlag(){ //dabk
             fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D.into(), false.into());
         }
     }
@@ -100,7 +101,38 @@ unsafe extern "C" fn wall_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-unsafe extern "C" fn movement(fighter: &mut L2CFighterCommon) -> L2CValue { //was like 400 lines
+unsafe extern "C" fn cache_input(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[CURRENT_FRAME].get_i32() <= 8 {
+        if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D); }
+        VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, fighter.left_stick_y());
+    } else {
+        fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
+    }
+    0.into()
+}
+
+unsafe extern "C" fn angling(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let frame = MotionModule::frame(fighter.module_accessor);
+    let facing = PostureModule::lr(fighter.module_accessor);
+    let sticky = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
+    joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -14.5*sticky, y:90.0*facing, z:0.0}, 10.0, 15.0, 45.0, 55.0);
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 8 {
+        let base = fighter.get_param_float("param_special_s", "ab_u_rotate");
+        let speed = fighter.get_param_float("param_special_s", "ab_u_motion_speed_mul");
+        let maxrot = 12.5;
+        let angle = if facing < 0.0 {
+            -base - sticky *maxrot //l
+        } else {
+            base + sticky *maxrot //r
+        };
+        let angle = angle.to_radians();
+        sv_kinetic_energy!(set_angle, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, angle);
+        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed - sticky*0.08); //min .71, max .87
+    }
+    0.into()
+}
+
+unsafe extern "C" fn bullet_movement(fighter: &mut L2CFighterCommon) -> L2CValue { //was like 400 lines
     if fighter.get_int(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_INT_STEP) == *FIGHTER_BAYONETTA_SHOOTING_STEP_WAIT {
         if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SHOOTING_STEP) != *FIGHTER_BAYONETTA_SHOOTING_STEP_WAIT {
             if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SHOOTING_STEP) == *FIGHTER_BAYONETTA_SHOOTING_STEP_SHOOTING {
@@ -150,4 +182,68 @@ unsafe extern "C" fn movement(fighter: &mut L2CFighterCommon) -> L2CValue { //wa
         }
     }
     0.into()
+}
+
+unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash40, rotation_amount: Vector3f, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
+    let lua_state = fighter.lua_state_agent;
+    let max_rotation = rotation_amount;
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+    if frame >= start_frame && frame < return_frame {
+        // this has to be called every frame, or you snap back to the normal joint angle
+        // interpolate to the respective waist bend angle
+        let calc_x_rotate = max_rotation.x * (frame / (bend_frame - start_frame));
+        let calc_y_rotate = max_rotation.y * (frame / (bend_frame - start_frame));
+        let calc_z_rotate = max_rotation.z * (frame / (bend_frame - start_frame));
+        let mut x_rotation = 0.0;
+        let mut y_rotation = 0.0;
+        let mut z_rotation = 0.0;
+        if max_rotation.x < 0.0 {
+            x_rotation = calc_x_rotate.clamp(max_rotation.x, 0.0);
+        }
+        else {
+            x_rotation = calc_x_rotate.clamp(0.0, max_rotation.x);
+        }
+        if max_rotation.y < 0.0 {
+            y_rotation = calc_y_rotate.clamp(max_rotation.y, 0.0);
+        }
+        else {
+            y_rotation = calc_y_rotate.clamp(0.0, max_rotation.y);
+        }
+        if max_rotation.z < 0.0 { 
+            z_rotation = calc_z_rotate.clamp(max_rotation.z, 0.0);
+        }
+        else{
+            z_rotation = calc_z_rotate.clamp(0.0, max_rotation.z);
+        }
+        rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
+        ModelModule::set_joint_rotate(fighter.module_accessor, joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    } else if frame >= return_frame && frame < straight_frame {
+        // linear interpolate back to normal
+        let calc_x_rotate = max_rotation.x *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let calc_y_rotate = max_rotation.y *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let calc_z_rotate = max_rotation.z *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let mut x_rotation = 0.0;
+        let mut y_rotation = 0.0;
+        let mut z_rotation = 0.0;
+        if max_rotation.x < 0.0 {
+            x_rotation = calc_x_rotate.clamp(max_rotation.x, 0.0);
+        }
+        else {
+            x_rotation = calc_x_rotate.clamp(0.0, max_rotation.x);
+        }
+        if max_rotation.y < 0.0 {
+            y_rotation = calc_y_rotate.clamp(max_rotation.y, 0.0);
+        }
+        else {
+            y_rotation = calc_y_rotate.clamp(0.0, max_rotation.y);
+        }
+        if max_rotation.z < 0.0 { 
+            z_rotation = calc_z_rotate.clamp(max_rotation.z, 0.0);
+        }
+        else{
+            z_rotation = calc_z_rotate.clamp(0.0, max_rotation.z);
+        }
+        rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
+        ModelModule::set_joint_rotate(fighter.module_accessor, joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    }
 }

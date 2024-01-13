@@ -7,27 +7,27 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) || fighter.is_motion(Hash40::new("attack_air_f3")))
     && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
     && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) 
-    && !CancelModule::is_enable_cancel(boma) {
+    && !fighter.is_in_hitlag() {
         let mut new_status = 0;
         let mut is_input_cancel = false;
-        if fighter.is_cat_flag(Cat1::SpecialN) {fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
-        } else if fighter.is_cat_flag(Cat1::SpecialS) {
-            if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) < 2 && !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-            }
+        if fighter.is_cat_flag(Cat1::SpecialN) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
         } else if fighter.is_cat_flag(Cat1::SpecialHi) {
-            if !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL) {
+            if !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI) {
                 is_input_cancel = true;
                 new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
             }
-        } 
-        if !fighter.is_in_hitlag() {
-            fighter.check_airdodge_cancel();
-            if is_input_cancel {//special cancel
-                fighter.change_status_req(new_status, false);
-            } 
+        } else if fighter.is_cat_flag(Cat1::SpecialS) {
+            if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) < 2 {
+                is_input_cancel = true;
+                new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
+            }
         }
+        fighter.check_airdodge_cancel();
+        if is_input_cancel && VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2 {
+            StatusModule::change_status_force(boma, new_status, true);
+        } //special cancel
     }
 }
 
@@ -86,29 +86,15 @@ unsafe fn resources(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     }
 }
 
-unsafe fn abk_angling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
-        let facing = PostureModule::lr(boma);
-        let anglestick = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
-        joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -14.5*anglestick, y:90.0*facing, z:0.0}, 10.0, 15.0, 45.0, 55.0);
-        if boma.status_frame() <= 8 { VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, boma.left_stick_y());}
-        //trajectory
-        else if boma.status_frame() <= 26 && !fighter.is_in_hitlag() {
-            KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new( -0.41 * anglestick * facing, anglestick*0.67, 0.0));
-        }
-    }
-}
-
-unsafe fn forward_tilt(fighter: &mut L2CFighterCommon) {
-    let boma = fighter.boma();
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S3) {
-        if fighter.is_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-            && !fighter.is_cat_flag(Cat1::Catch)
-            && fighter.is_button_on(Buttons::Attack) {
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
-            } //filter inputs, auto progress (could be done in status)
-        }
+unsafe fn forward_tilt(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("attack_s3_s")) && MotionModule::frame(boma) >= 28.0 {
+        if boma.is_cat_flag(Cat1::AttackHi3 | Cat1::SpecialN | Cat1::SpecialHi) {//vert kick
+            MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
+        } else if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackN) { //side kick
+            MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
+        } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && boma.is_button_on(Buttons::Attack) {
+            MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
+        }//hold
     }
 }
 
@@ -123,71 +109,6 @@ unsafe fn bat_within_air_motion(fighter: &mut L2CFighterCommon) {
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, boma.left_stick_y() * 0.4);
             sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
         }
-    }
-}
-
-unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash40, rotation_amount: Vector3f, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
-    let lua_state = fighter.lua_state_agent;
-    let end_frame = MotionModule::end_frame(fighter.boma());
-    let max_rotation = rotation_amount;
-    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    if frame >= start_frame && frame < return_frame {
-        // this has to be called every frame, or you snap back to the normal joint angle
-        // interpolate to the respective waist bend angle
-        let calc_x_rotate = max_rotation.x * (frame / (bend_frame - start_frame));
-        let calc_y_rotate = max_rotation.y * (frame / (bend_frame - start_frame));
-        let calc_z_rotate = max_rotation.z * (frame / (bend_frame - start_frame));
-        let mut x_rotation = 0.0;
-        let mut y_rotation = 0.0;
-        let mut z_rotation = 0.0;
-        if max_rotation.x < 0.0 {
-            x_rotation = calc_x_rotate.clamp(max_rotation.x, 0.0);
-        }
-        else {
-            x_rotation = calc_x_rotate.clamp(0.0, max_rotation.x);
-        }
-        if max_rotation.y < 0.0 {
-            y_rotation = calc_y_rotate.clamp(max_rotation.y, 0.0);
-        }
-        else {
-            y_rotation = calc_y_rotate.clamp(0.0, max_rotation.y);
-        }
-        if max_rotation.z < 0.0 { 
-            z_rotation = calc_z_rotate.clamp(max_rotation.z, 0.0);
-        }
-        else{
-            z_rotation = calc_z_rotate.clamp(0.0, max_rotation.z);
-        }
-        rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(fighter.boma(), joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
-    } else if frame >= return_frame && frame < straight_frame {
-        // linear interpolate back to normal
-        let calc_x_rotate = max_rotation.x *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let calc_y_rotate = max_rotation.y *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let calc_z_rotate = max_rotation.z *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let mut x_rotation = 0.0;
-        let mut y_rotation = 0.0;
-        let mut z_rotation = 0.0;
-        if max_rotation.x < 0.0 {
-            x_rotation = calc_x_rotate.clamp(max_rotation.x, 0.0);
-        }
-        else {
-            x_rotation = calc_x_rotate.clamp(0.0, max_rotation.x);
-        }
-        if max_rotation.y < 0.0 {
-            y_rotation = calc_y_rotate.clamp(max_rotation.y, 0.0);
-        }
-        else {
-            y_rotation = calc_y_rotate.clamp(0.0, max_rotation.y);
-        }
-        if max_rotation.z < 0.0 { 
-            z_rotation = calc_z_rotate.clamp(max_rotation.z, 0.0);
-        }
-        else{
-            z_rotation = calc_z_rotate.clamp(0.0, max_rotation.z);
-        }
-        rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(fighter.boma(), joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 }
 
@@ -225,12 +146,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    //aerial_cancels(fighter, boma);
+    aerial_cancels(fighter, boma);
     nspecial_mechanics(fighter, boma);
     reset_flags(fighter, boma);
     resources(fighter, boma);
-    abk_angling(fighter, boma, frame);
-    forward_tilt(fighter);
+    forward_tilt(boma);
     bat_within_air_motion(fighter);
     fastfall_specials(fighter);
 }

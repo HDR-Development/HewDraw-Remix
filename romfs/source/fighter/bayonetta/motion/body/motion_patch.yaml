@@ -16,7 +16,7 @@ throw_lw:
     cancel_frame: 41
 throw_hi:
   extra:
-    cancel_frame: 36
+    cancel_frame: 35
 attack_12:
   extra:
     cancel_frame: 25
@@ -74,7 +74,7 @@ attack_air_f:
 attack_s3_s3:
   blend_frames: 1
   extra:
-    cancel_frame: 47
+    cancel_frame: 53
 attack_s4_lw:
 attack_s3_s2:
   blend_frames: 1
@@ -82,7 +82,7 @@ attack_s3_s2:
     cancel_frame: 47
 attack_air_n:
   extra:
-    cancel_frame: 50
+    cancel_frame: 51
 attack_air_f2:
   blend_frames: 2
   extra:

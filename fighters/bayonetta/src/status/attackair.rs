@@ -30,7 +30,7 @@ unsafe extern "C" fn bayonetta_attack_air_f_loop(fighter: &mut L2CFighterCommon)
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO) 
     && (ControlModule::get_attack_air_kind(fighter.module_accessor) == *FIGHTER_COMMAND_ATTACK_AIR_KIND_F || fighter.is_cat_flag(Cat1::Catch))
     && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
-        fair_motion(fighter);
+        fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F.into(), false.into());
     }
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
     && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
@@ -58,13 +58,6 @@ unsafe extern "C" fn bayonetta_attack_air_f_loop(fighter: &mut L2CFighterCommon)
 
 unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fair = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::FAIR_STATE);
-    lua_args!(fighter, MA_MSC_CMD_CANCEL_UNABLE_CANCEL);
-    smash::app::sv_module_access::cancel(fighter.lua_state_agent);
-    AttackModule::clear_inflict_kind_status(fighter.module_accessor);
-    fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO);
-    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
-    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
-    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     if fair == 1 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_f2"), 0.0, 1.0, false, 0.0, false, false);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F2);

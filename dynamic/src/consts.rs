@@ -303,10 +303,8 @@ pub mod vars {
             pub const FAIR_STATE: i32 = 0x0101;
         }
         pub mod status {
-            // flags
-            pub const IS_ACTIVATE: i32 = 0x1100;
             // floats
-            pub const ABK_ANGLE: i32 = 0x1101;
+            pub const ABK_ANGLE: i32 = 0x1100;
         }
     }
 
