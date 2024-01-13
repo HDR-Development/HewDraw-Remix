@@ -3023,7 +3023,7 @@
     <!-- LUCINA -->
     <struct index="85">
       <float hash="walk_speed_max">1.6</float>
-      <float hash="ground_brake">0.0725</float>
+      <float hash="ground_brake">0.06775</float>
       <float hash="dash_speed">1.65</float>
       <float hash="run_accel_mul">0.06</float>
       <float hash="run_accel_add">0.012</float>
@@ -3049,7 +3049,7 @@
       <float hash="landing_attack_air_frame_n">13</float>
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">11</float>
-      <float hash="landing_attack_air_frame_hi">10</float>
+      <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_lw">11</float>
       <float hash="scale">0.95</float>
       <float hash="tread_jump_speed_y_mul">0.775</float>
