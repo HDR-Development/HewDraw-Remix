@@ -86,12 +86,32 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[weapon_frame( agent = WEAPON_KIND_KOOPAJR_MECHAKOOPA, main)]
+pub fn mechakoopa_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if !smash::app::sv_information::is_ready_go() {
+            if weapon.is_status(*WEAPON_KOOPAJR_MECHAKOOPA_STATUS_KIND_DEAD) {
+                let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let koopajr = utils::util::get_battle_object_from_id(owner_id);
+                VarModule::set_int(koopajr, vars::common::instance::GIMMICK_TIMER, 120);
+            }
+        }
+    }
+}
+
+pub unsafe fn mechakoopa_decrement(fighter: &mut L2CFighterCommon) {
+    if (VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER) > 0) {
+        VarModule::dec_int(fighter, vars::common::instance::GIMMICK_TIMER);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame);
     // clown_cannon_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     kart_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     upB_kart_respawn(fighter, boma, status_kind);
     fastfall_specials(fighter);
+    mechakoopa_decrement(fighter);
 }
 
 

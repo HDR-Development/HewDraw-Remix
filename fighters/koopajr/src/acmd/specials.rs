@@ -65,24 +65,15 @@ unsafe fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "koopajr", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
-    }
-}
-
-#[acmd_script( agent = "koopajr", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_air_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
+        if (VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER) <= 0) {
+            ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
+        }
     }
 }
 
@@ -212,7 +203,6 @@ pub fn install() {
         koopajr_special_n_shoot_game,
         koopajr_special_n_shoot_effect,
         koopajr_special_lw_game,
-        koopajr_special_air_lw_game,
         koopajr_special_s_game,
         koopajr_special_s_spin_game,
         koopajr_special_air_s_game,
