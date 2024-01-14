@@ -1,5 +1,7 @@
 use super::*;
 
+mod attack_lw3;
+
 mod special_n;
 mod special_n_float;
 mod special_lw;
@@ -37,6 +39,7 @@ fn ganon_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(ganon_init);
+    attack_lw3::install();
     special_n::install();
     special_lw::install();
     special_s::install();
