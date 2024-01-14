@@ -49,10 +49,10 @@ attack_air_f:
     cancel_frame: 46
 attack_air_b:
   extra:
-    cancel_frame: 28
+    cancel_frame: 30
 attack_air_hi:
   extra:
-    cancel_frame: 30
+    cancel_frame: 26
 throw_f:
   extra:
     cancel_frame: 24
