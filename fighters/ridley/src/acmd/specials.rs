@@ -195,7 +195,8 @@ unsafe fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         if fighter.is_situation(*SITUATION_KIND_AIR) {
-            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+            // Uncomment to make once-per-airtime
+            // VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
         }
     }
     frame(lua_state, 2.0);

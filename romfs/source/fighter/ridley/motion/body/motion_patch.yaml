@@ -32,7 +32,7 @@ attack_s3_s:
   flags:
     move: false
 fall_special:
-  blend_frames: 5
+  blend_frames: 10
 attack_s3_lw:
   flags:
     move: false
