@@ -1,4 +1,3 @@
-
 use super::*;
 use smash2;
 
@@ -48,7 +47,7 @@ unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -103,8 +102,24 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.375);
 }
 
+#[acmd_script( agent = "demon_blaster", script = "game_flythrow", category = ACMD_GAME, low_priority )]
+unsafe fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 80, 65, 0, 85, 8.0, 0.0, 0.0, 1.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 80, 65, 0, 85, 8.0, 0.0, 0.0, 5.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.1);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.1);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear(boma, 1, false);
+    }
+}
+
 #[acmd_script( agent = "demon", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -155,9 +170,9 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         game_catch,
+        demon_throw_b_game,
+        demon_blaster_fly_throw_game,
         demon_throw_hi_expression,
-        game_throwb,
-        game_throwlw,
-);
+        demon_throw_lw_game,
+    );
 }
-

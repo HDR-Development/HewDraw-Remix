@@ -794,3 +794,9 @@ buster_air_charge_shot:
     xlu_end: 0
     cancel_frame: 55
     no_stop_intp: false
+throw_hi:
+  extra:
+    cancel_frame: 35
+furafura_end:
+  extra:
+    cancel_frame: 10

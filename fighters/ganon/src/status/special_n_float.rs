@@ -53,6 +53,7 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         sv_kinetic_energy!(
             set_accel,
             fighter,
@@ -93,10 +94,11 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
     // Only perform these actions if vars::ganon::status::FLOAT_ENABLE_ACTIONS is true.
     if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS) {
         // if the proper transition terms are enabled, these functions will check for
-        // if Ganon performs an aerial or a double jump.
+        // if Ganon performs an aerial, airdodge, or a double jump.
         if fighter.sub_transition_group_check_air_cliff().get_bool()
         || fighter.sub_transition_group_check_air_attack().get_bool()
-        || fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+        || fighter.sub_transition_group_check_air_jump_aerial().get_bool()
+        || fighter.sub_transition_group_check_air_escape().get_bool() {
             return 1.into();
         }
         // If Special is pressed, enable a flag and transition into the next status.
@@ -113,6 +115,7 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
                 false,
                 false
             );
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             return 0.into();
         }
     }

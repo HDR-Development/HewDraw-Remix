@@ -120,85 +120,27 @@ unsafe fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 3, 9, 8, 180, -160, 75, 1.4, true, *EF_FLIP_YZ);
-        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
-            if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP){
-                LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.01, 0);
-            }
-            else{
-                LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
-            }
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
-            if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP){
-                LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
-            }
-            else{
-                LAST_EFFECT_SET_COLOR(fighter, 0.22, 0.059, 0.039);
-            }
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.176, 0.137, 0.059);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.235, 0.196, 0.255);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.157, 0.196);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.059, 0);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.098, 0.157);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.118, 0.039, 0.051);
-        }
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 9, 8, 180, -130, 90, 1.0, true, *EF_FLIP_ZX);
+        let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        let color_vec = match color {
+            0 => if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP) { Vector3f::new(0.1, 0.01, 0.0) } else { Vector3f::new(0.196, 0.196, 0.216) },
+            1 => if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP) { Vector3f::new(0.196, 0.196, 0.216) } else { Vector3f::new(0.22, 0.059, 0.039) },
+            2 => Vector3f::new(0.176, 0.137, 0.059),
+            3 => Vector3f::new(0.235, 0.196, 0.255),
+            4 => Vector3f::new(0.098, 0.157, 0.196),
+            5 => Vector3f::new(0.098, 0.059, 0.0),
+            6 => Vector3f::new(0.098, 0.098, 0.157),
+            7 => Vector3f::new(0.118, 0.039, 0.051),
+            _ => Vector3f::new(0.196, 0.196, 0.216)
+        };
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
-
-
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -6, 9, 8, 180, -180, 120, 1.4, true, *EF_FLIP_YZ);
-        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
-            if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP){
-                LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.01, 0);
-            }
-            else{
-                LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
-            }
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
-            if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP){
-                LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
-            }
-            else{
-                LAST_EFFECT_SET_COLOR(fighter, 0.22, 0.059, 0.039);
-            }
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.176, 0.137, 0.059);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.235, 0.196, 0.255);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.157, 0.196);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.059, 0);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.098, 0.157);
-        }
-        else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
-            LAST_EFFECT_SET_COLOR(fighter, 0.118, 0.039, 0.051);
-        }
-        LAST_EFFECT_SET_RATE(fighter, 2.0);
+        LAST_EFFECT_SET_SCALE_W(fighter, 0.8, 1.4, 1.4);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("handr2"), 1.0, 0, 2.0, 0, 0, 0, 1.5, true);
-        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 6.4);
     if is_excute(fighter) {
@@ -519,38 +461,33 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 5.0/(7.0-1.0));
-
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 1.0);
-        for _ in 0..6 {
-            if is_excute(fighter) {
-                ATTACK(fighter, 0, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 6.0, -3.0, Some(0.0), Some(6.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-                ATTACK(fighter, 1, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 2.0, -3.0, Some(0.0), Some(2.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-                ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 2.0, 0.0, -2.0, -3.0, Some(0.0), Some(-2.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            }
-            wait(lua_state, 1.0);
-            if is_excute(fighter) {
-                AttackModule::clear_all(boma);
-            }
-            wait(lua_state, 2.0);
-        }
-        
+    for _ in 0..6 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 40, 85, 0, 45, 8.0, 0.0, 1.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 6.0, -3.0, Some(0.0), Some(6.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 2.0, -3.0, Some(0.0), Some(2.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 2.0, 0.0, -2.0, -3.0, Some(0.0), Some(-2.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
-
-        wait(lua_state, 2.0);
+        wait(lua_state, 1.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
         }
-
-        frame(lua_state, 28.0);
-        if is_excute(fighter) {
-            WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        }
+        wait(lua_state, 2.0);
+    }
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 40, 85, 0, 45, 8.0, 0.0, 1.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
 }
 
 #[acmd_script( agent = "robot", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
@@ -558,57 +495,34 @@ unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut effectX = 48.0;
-
     frame(lua_state, 6.0);
-        for _ in 0..6 {
-            if is_excute(fighter) {
-                EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1.5, 7, 0, effectX, 0, 0, 1.3, true, *EF_FLIP_NONE);
-                LAST_EFFECT_SET_RATE(fighter, 3.0);
-                effectX += 8.0;
-            }
-
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
-                if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP){
-                    LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.01, 0);
-                }
-                else{
-                    LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
-                }
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
-                if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP){
-                    LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
-                }
-                else{
-                    LAST_EFFECT_SET_COLOR(fighter, 0.22, 0.059, 0.039);
-                }
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
-                LAST_EFFECT_SET_COLOR(fighter, 0.176, 0.137, 0.059);
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
-                LAST_EFFECT_SET_COLOR(fighter, 0.235, 0.196, 0.255);
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
-                LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.157, 0.196);
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
-                LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.059, 0);
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
-                LAST_EFFECT_SET_COLOR(fighter, 0.098, 0.098, 0.157);
-            }
-            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
-                LAST_EFFECT_SET_COLOR(fighter, 0.118, 0.039, 0.051);
-            }
-
+    let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+    let color_vec = match color {
+        0 => if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP) { Vector3f::new(0.1, 0.01, 0.0) } else { Vector3f::new(0.196, 0.196, 0.216) },
+        1 => if WorkModule::is_flag(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLAG_REGION_JP) { Vector3f::new(0.196, 0.196, 0.216) } else { Vector3f::new(0.22, 0.059, 0.039) },
+        2 => Vector3f::new(0.176, 0.137, 0.059),
+        3 => Vector3f::new(0.235, 0.196, 0.255),
+        4 => Vector3f::new(0.098, 0.157, 0.196),
+        5 => Vector3f::new(0.098, 0.059, 0.0),
+        6 => Vector3f::new(0.098, 0.098, 0.157),
+        7 => Vector3f::new(0.118, 0.039, 0.051),
+        _ => Vector3f::new(0.196, 0.196, 0.216)
+    };
+    for _ in 0..6 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1.5, 7, 0, effectX, 0, 0, 1.3, true, *EF_FLIP_NONE);
+            LAST_EFFECT_SET_RATE(fighter, 3.0);
+            effectX += 8.0;
+            LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
             LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 7, 0, effectX, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
             LAST_EFFECT_SET_RATE(fighter, 3.0);
-            wait(lua_state, 3.0);
         }
-
+        wait(lua_state, 3.0);
+    }
+    if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 3.0, -2.0, 0, 0, 0, 0, 1.5, true);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
 }
 
 #[acmd_script( agent = "robot", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
@@ -647,10 +561,25 @@ unsafe fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
-    frame(lua_state, 20.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

@@ -46,15 +46,15 @@ unsafe fn pichu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         if !charged {
             MeterModule::watch_damage(fighter.battle_object, true);
         }
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 * damage_mul, 40, 120, 0, 65, 5.3 * damage_mul, 0.0, 4.7, 11.4, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0 * damage_mul, 40, 120, 0, 65, 4.3 * damage_mul, 0.0, 4.7, 8.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 * damage_mul, 40, 125, 0, 65, 5.3 * damage_mul, 0.0, 4.7, 11.4, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0 * damage_mul, 40, 125, 0, 65, 4.3 * damage_mul, 0.0, 4.7, 8.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "pichu", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
@@ -75,12 +75,24 @@ unsafe fn pichu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.8 * damage_mul, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW(fighter, Hash40::new("pichu_cheek2"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1.0 * damage_mul, true);
+        if charged {
+            LAST_EFFECT_SET_COLOR(fighter, 0.8,1.0,0.2)
+        }
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_cheek_elec"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1.0 * damage_mul, true);
+        if charged {
+            LAST_EFFECT_SET_COLOR(fighter, 0.8,1.0,0.2)
+        }
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_elec_shock"), Hash40::new("top"), 0, 5.5, 13, 0, 0, 0, 0.85 * damage_mul, true);
+        if charged {
+            LAST_EFFECT_SET_COLOR(fighter, 0.8,1.0,0.2)
+        }
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_elec_shock_finish"), Hash40::new("top"), 0, 5.5, 13, 0, 0, 0, 0.85 * damage_mul, true);
+        if charged {
+            LAST_EFFECT_SET_COLOR(fighter, 0.8,1.0,0.2)
+        }
         EFFECT_OFF_KIND(fighter, Hash40::new("pichu_elec_shock"), false, true);
     }
     frame(lua_state, 34.0);
@@ -105,12 +117,12 @@ unsafe fn pichu_attack_hi4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if !charged {
-            ATTACK(fighter, 0, 0, Hash40::new("neck"), 15.0, 95, 90, 0, 45, 6.0, 4.7, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
-            ATTACK(fighter, 1, 0, Hash40::new("hip"), 15.0, 95, 90, 0, 20, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+            ATTACK(fighter, 0, 0, Hash40::new("neck"), 15.0, 95, 98, 0, 45, 6.0, 4.7, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 15.0, 95, 98, 0, 45, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("neck"), 17.0, 95, 90, 0, 45, 6.0, 4.7, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
-            ATTACK(fighter, 1, 0, Hash40::new("hip"), 17.0, 95, 90, 0, 20, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
+            ATTACK(fighter, 0, 0, Hash40::new("neck"), 17.0, 95, 98, 0, 45, 6.0, 4.7, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 17.0, 95, 98, 0, 45, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
             FT_ADD_DAMAGE(fighter, 2.5);
         }
         HIT_NODE(fighter, Hash40::new("mimir1"), *HIT_STATUS_XLU);
@@ -121,7 +133,7 @@ unsafe fn pichu_attack_hi4_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    
+
 }
 
 #[acmd_script( agent = "pichu", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
@@ -220,6 +232,37 @@ unsafe fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "pichu", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pichu_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 5.0);
+    app::sv_animcmd::execute(lua_state, 5.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 6, true);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 6);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 8);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pichu_attack_s4_s_game,
@@ -228,6 +271,7 @@ pub fn install() {
         pichu_attack_hi4_effect,
         pichu_attack_hi4_expression,
         pichu_attack_lw4_game,
+        pichu_attack_lw4_expression,
     );
 }
 

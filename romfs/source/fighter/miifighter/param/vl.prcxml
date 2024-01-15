@@ -9,7 +9,12 @@
     </struct>
   </list>
   <list hash="param_special_hi">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <float hash="hi1_air_start_mul_y">1.2</float>
+      <float hash="hi1_jump_speed_mul">1.2</float>
+      <float hash="hi1_fall_special_x_speed_max_mul">0.5</float>
+      <int hash="hi1_fall_special_landing_frame">26</int>
+    </struct>
     <struct index="1">
       <float hash="hi2_air_start_spd_y">2.22</float>
       <float hash="hi2_air_gravity_y_mul">0.4</float>

@@ -143,13 +143,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             }
         }
 
-        // disable palutena projectiles during aegis reflector
-        if fighter_kind == *FIGHTER_KIND_PALUTENA 
-            && ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
-                return false;
-        }
-
         if fighter_kind == *FIGHTER_KIND_TRAIL {
             if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
                 if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))

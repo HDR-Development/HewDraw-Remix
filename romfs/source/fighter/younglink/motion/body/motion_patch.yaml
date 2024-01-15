@@ -10,10 +10,13 @@ guard_off:
     cancel_frame: 12
 throw_lw:
   extra:
-    cancel_frame: 48
+    cancel_frame: 45
 throw_hi:
   extra:
     cancel_frame: 48
+throw_f:
+  extra:
+    cancel_frame: 32
 attack_13:
   extra:
     cancel_frame: 32
@@ -74,3 +77,6 @@ catch_attack:
 air_catch_landing:
   extra:
     cancel_frame: 13
+furafura_end:
+  extra:
+    cancel_frame: 10
