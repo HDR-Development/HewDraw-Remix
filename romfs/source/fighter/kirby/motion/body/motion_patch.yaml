@@ -478,10 +478,10 @@ mario_special_n:
     cancel_frame: 41
 mariod_special_n:
   extra:
-    cancel_frame: 47
+    cancel_frame: 40
 mariod_special_air_n:
   extra:
-    cancel_frame: 47
+    cancel_frame: 40
 mariod_special_n_chill:
   game_script: game_mariodspecialnchill
   flags:
