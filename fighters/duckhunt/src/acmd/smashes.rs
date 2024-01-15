@@ -119,7 +119,7 @@ unsafe fn duckhunt_attack_hi4_game(fighter: &mut L2CAgentBase) {
             /*Angle*/ 85,
             /*KBG*/ 120,
             /*FKB*/ 0,
-            /*BKB*/ 55,
+            /*BKB*/ 50,
             /*Size*/ 7.8,
             /*X*/ 0.0,
             /*Y*/ 21.0,
