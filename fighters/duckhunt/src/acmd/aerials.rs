@@ -199,7 +199,7 @@ unsafe fn duckhunt_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 45.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
