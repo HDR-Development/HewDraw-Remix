@@ -21,7 +21,7 @@ unsafe fn duckhunt_attack_hi4_game(fighter: &mut L2CAgentBase) {
             *FIGHTER_DUCKHUNT_STATUS_ATTACK_INT_SMASH_RETICLE_DISPLAY_FRAME,
         );
         // FT_MOTION_RATE_RANGE(fighter, 7.0, 23.0, 10.0);
-        FT_MOTION_RATE_RANGE(fighter, 27.0, 57.0, 20.0);
+        FT_MOTION_RATE_RANGE(fighter, 27.0, 57.0, 24.0);
         ATTACK(
             fighter,
             /*ID*/ 0,
