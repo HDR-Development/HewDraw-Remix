@@ -597,6 +597,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- ZELDA -->
     <struct index="17">
@@ -1194,6 +1195,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- IVYSAUR -->
     <struct index="34">
@@ -1298,6 +1300,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- LUCAS -->
     <struct index="37">
@@ -1481,6 +1484,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- R.O.B. -->
     <struct index="42">
@@ -1811,6 +1815,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- PALUTENA -->
     <struct index="51">
@@ -2170,6 +2175,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- INKLING -->
     <struct index="61">
