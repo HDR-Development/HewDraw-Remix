@@ -87,6 +87,15 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn jolt_haymaker_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.motion_frame() >= 14.0 {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -125,6 +134,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     tech_roll_help(boma, motion_kind, facing, frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);
     up_special_proper_landing(fighter);
+    jolt_haymaker_freefall(fighter);
     fastfall_specials(fighter);
 }
 

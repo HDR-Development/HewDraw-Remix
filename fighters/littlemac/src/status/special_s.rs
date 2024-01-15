@@ -7,7 +7,8 @@ use globals::*;
 #[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
-    VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+    // Uncomment to make sideB once-per-airtime
+    // VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     original!(fighter)
 }
 
@@ -37,6 +38,7 @@ unsafe extern "C" fn special_s_jump_end_main_loop(fighter: &mut L2CFighterCommon
         return 1.into();
     }
     // <HDR>
+    // Edge cancel
     if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
@@ -157,6 +159,7 @@ unsafe extern "C" fn special_s_blow_end_main_loop(fighter: &mut L2CFighterCommon
         return 1.into();
     }
     // <HDR>
+    // Edge cancel
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
         return 1.into();
