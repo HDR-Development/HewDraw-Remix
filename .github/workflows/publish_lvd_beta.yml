@@ -2,7 +2,7 @@ name: publish_lvd_beta.yml
 
 on:
   workflow_run:
-    workflows: ["make beta"]
+    workflows: [make beta]
     types:
       - completed
 

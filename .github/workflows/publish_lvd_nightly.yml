@@ -2,7 +2,7 @@ name: publish_lvd_nightly.yml
 
 on:
   workflow_run:
-    workflows: ["build_nightly"]
+    workflows: [build_nightly]
     types:
       - completed
 
