@@ -476,6 +476,9 @@ luigi_special_air_n:
 mario_special_n:
   extra:
     cancel_frame: 41
+mario_special_air_n:
+  extra:
+    cancel_frame: 41
 mariod_special_n:
   extra:
     cancel_frame: 47
