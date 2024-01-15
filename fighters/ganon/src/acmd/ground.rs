@@ -6,7 +6,7 @@ unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 4.0 / 6.0);
+    FT_MOTION_RATE(fighter, 3.0 / 6.0);
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 2.0);
     frame(lua_state, 7.5);
