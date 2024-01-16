@@ -52,7 +52,7 @@ attack_air_b:
     cancel_frame: 30
 attack_air_hi:
   extra:
-    cancel_frame: 26
+    cancel_frame: 28
 attack_air_lw:
   extra:
     cancel_frame: 43
