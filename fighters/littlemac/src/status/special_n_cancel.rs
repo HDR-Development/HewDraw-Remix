@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 #[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);

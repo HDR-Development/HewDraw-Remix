@@ -4,18 +4,50 @@ use super::*;
 use globals::*;
 
  
-unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if WorkModule::is_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S) {
-        if [*FIGHTER_STATUS_KIND_DAMAGE,
-            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-            *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind) {
+unsafe fn handle_ko_meter(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if !sv_information::is_ready_go()
+    || boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_ENTRY]) {
+        VarModule::set_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE, 0.0);
+    }
+    let damage_statuses = [
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR];
+    if damage_statuses.contains(&status_kind) {
+        if StatusModule::is_changing(boma) && !VarModule::is_flag(boma.object(), vars::littlemac::instance::HIT_INIT) {
+            //println!();
+            VarModule::on_flag(boma.object(), vars::littlemac::instance::HIT_INIT);
+            //println!("HIT!");
+            let damage = DamageModule::damage(boma, 0);
+            let dec = damage - VarModule::get_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE);
+            let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+            //println!("old meter: {}", meter);
+            //println!("dec: {}", dec);
+            if meter == 100.0 {
+                WorkModule::set_int(boma, 0, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_INT_KO_GAGE_MAX_KEEP_FRAME);
+                WorkModule::off_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_REQUEST_KO_GAUGE_MAX_EFFECT);
+            }
+            WorkModule::set_float(boma, (meter - dec).clamp(0.0, 100.0), *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+            VarModule::set_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE, damage);
+            //println!("new damage: {}", VarModule::get_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE));
+            //println!("new meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));
+        }
+        // also handle side special once-per-airtime
+        if WorkModule::is_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S) {
             WorkModule::off_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S);
+        }
+    }
+    else {
+        if boma.is_prev_status_one_of(&damage_statuses)
+        && !boma.is_status_one_of(&damage_statuses)
+        && StatusModule::is_changing(boma) {
+            VarModule::off_flag(boma.object(), vars::littlemac::instance::HIT_INIT);
+            //println!("HITNT!");
         }
     }
 }
@@ -120,12 +152,22 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn training_mode_max_meter(boma: &mut BattleObjectModuleAccessor) {
+    if app::smashball::is_training_mode()
+    && boma.is_status(*FIGHTER_STATUS_KIND_APPEAL)
+    && boma.is_button_trigger(Buttons::Guard) {
+        let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+        WorkModule::set_float(boma, (meter + 20.0).clamp(0.0, 100.0), *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    normal_side_special(boma, status_kind);
+    handle_ko_meter(boma, status_kind);
     tech_roll_help(boma, motion_kind, facing, frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
+    training_mode_max_meter(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LITTLEMAC )]
