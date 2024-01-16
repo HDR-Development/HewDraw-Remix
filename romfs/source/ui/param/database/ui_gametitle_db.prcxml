@@ -557,24 +557,24 @@
     <hash40 index="553">dummy</hash40>
     <hash40 index="554">dummy</hash40>
     <struct index="555">
-      <hash40 hash="ui_gametitle_id">0x2054c71fb0</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_star_fox_adventures</hash40>
       <string hash="name_id">star_fox_adventures</string>
       <hash40 hash="ui_series_id">ui_series_starfox</hash40>
-      <bool hash="0x1c38302364">false</bool>
+      <bool hash="shown_as_series_in_directory">false</bool>
       <int hash="release">0</int>
     </struct>
     <struct index="556">
-      <hash40 hash="ui_gametitle_id">0x16a7326a0c</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_projectnx</hash40>
       <string hash="name_id">projectnx</string>
       <hash40 hash="ui_series_id">ui_series_smashbros</hash40>
-      <bool hash="0x1c38302364">false</bool>
+      <bool hash="shown_as_series_in_directory">false</bool>
       <int hash="release">0</int>
     </struct>
     <struct index="557">
-      <hash40 hash="ui_gametitle_id">0x1a8f84a0c2</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_hewdraw_remix</hash40>
       <string hash="name_id">hewdraw_remix</string>
       <hash40 hash="ui_series_id">ui_series_smashbros</hash40>
-      <bool hash="0x1c38302364">false</bool>
+      <bool hash="shown_as_series_in_directory">false</bool>
       <int hash="release">0</int>
     </struct>
   </list>
