@@ -11,11 +11,12 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
         }
     }
-    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
-        if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
-            WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-    }
+    // Uncomment for Cross Chop descent to refresh double jump
+    // if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
+    //     if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
+    //         WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    //     }
+    // }
 }
 
 // Incineroar Fthrow Movement
@@ -201,17 +202,6 @@ unsafe fn cross_chop_flip_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn alolan_whip_freefall(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
-        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -271,7 +261,6 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         lariat_ledge_slipoff(fighter);
         rotate_revenge_uthrow(boma);
         fighter.check_hitfall();
-        alolan_whip_freefall(fighter);
         fastfall_specials(fighter);
     }
 }
