@@ -6,17 +6,15 @@ unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 3.0 / 6.0);
-    frame(lua_state, 7.0);
-    FT_MOTION_RATE(fighter, 2.0);
-    frame(lua_state, 7.5);
+    FT_MOTION_RATE(fighter, 3.0 / 4.0);
+    frame(lua_state, 5.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 70, 60, 0, 45, 5.0, 0.0, 12.0, 7.0, Some(0.0), Some(15.0), Some(7.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 70, 60, 0, 45, 3.5, 0.0, 12.0, 11.0, Some(0.0), Some(15.0), Some(11.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 2.75);
     }
-    frame(lua_state, 8.0);
-    FT_MOTION_RATE(fighter, 1.0);
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -27,10 +25,9 @@ unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.5);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 18, 4, 0, 25, 40, 1.0, true);
-        LAST_EFFECT_SET_RATE(fighter, 2);
     }
 }
 
@@ -38,7 +35,7 @@ unsafe fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_attack_11_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_ganon_swing_s"));
     }
@@ -55,7 +52,7 @@ unsafe fn ganon_attack_11_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
