@@ -241,12 +241,10 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     && degrees <= meteor_vector_max as f32 {
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_SPIKE);
     }
-    // println!("degrees: {}", degrees);
-    // let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+    let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
     // println!("speed vector: {}", speed_vector);
-    // if speed_vector >= 3.5 {
-    //fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
-    // }
+    // fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
+    fighterstatusdamage_init_damage_speed_up_by_speed(fighter, speed_vector.into(), degrees.into(), false.into());
     let damage_cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_cliff_no_catch_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
     let cursor_fly_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cursor_fly_speed"));
@@ -274,6 +272,64 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
         let invalid_paralyze_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_paralyze_frame"));
         WorkModule::set_float(fighter.module_accessor, invalid_paralyze_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_PARALYZE_FRAME);
     }
+}
+
+unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
+    fighter: &mut L2CFighterCommon,
+    factor: L2CValue, // Labeled this way because if shot out of a tornado, the game will pass in your hitstun frames instead of speed.
+    angle: L2CValue,
+    some_bool: L2CValue
+) {
+    let factor_min = 3.5;
+    let factor_max = 6.0;
+    let speed_up_mag = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_max_mag")) as f32;
+    if !check_damage_speed_up_by_speed(fighter.module_accessor, factor.get_f32())
+    && !some_bool.get_bool() {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        return;
+    }
+    // println!("speeding up!");
+    let speed_diff = factor.get_f32() - factor_min;
+    let speed_max = factor_max - factor_min;
+    let ratio = (speed_diff / speed_max).clamp(0.0, 1.0);
+    let mut mag = fighter.lerp((1.0).into(), speed_up_mag.into(), ratio.into()).get_f32();
+    // The logic below is actually vanilla, but this is trying to lineraly interpolate 1.0... to 1.0, so it doesn't *do* anything.
+    let angle_base = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_angle_base"));
+    let angle_min_max = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_min_max_angle"));
+    let angle_min = angle_base - angle_min_max;
+    let angle_max = angle_base + angle_min_max;
+    if angle_min < angle.get_f32() && angle.get_f32() <= angle_base {
+        // println!("Angle Min {} < Angle {} <= Angle Base {}", angle_min, angle.get_f32(), angle_base);
+        mag *= init_damage_speed_up_inner(fighter, angle.get_f32(), angle_min, angle_base);
+    }
+    else if angle_base < angle.get_f32() && angle.get_f32() <= angle_min {
+        // println!("Angle Min {} < Angle {} <= Angle Base {}", angle_base, angle.get_f32(), angle_max);
+        mag *= init_damage_speed_up_inner(fighter, angle.get_f32(), angle_base, angle_max);
+    }
+    // println!("Speed Up Magnitude: {}", mag);
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+    WorkModule::set_float(fighter.module_accessor, mag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+}
+
+unsafe extern "C" fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModuleAccessor, speed: f32) -> bool {
+    let log = DamageModule::damage_log(module_accessor);
+    if log != 0 {
+        let log = log as *mut u8;
+        !(speed <= 3.5 || *log.add(0x8f) != 0 || *log.add(0x92) != 0
+        || *log.add(0x93) != 0 || *log.add(0x98) != 0)
+    }
+    else {
+        false
+    }
+}
+
+unsafe extern "C" fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32, lower: f32, upper: f32) -> f32 {
+    let diff = angle - lower;
+    let range = upper - lower;
+    let ratio = (diff / range).clamp(0.0, 1.0);
+    let angle_rate = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_angle_rate"));
+    fighter.lerp((1.0).into(), (angle_rate * 0.01).into(), ratio.into()).get_f32()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessDamageFly_getMotionKind)]
