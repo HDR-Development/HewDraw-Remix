@@ -8,7 +8,6 @@
   <float hash="damage_angle_ground_max">44</float>
   <float hash="damage_fly_quake_l">90</float>
   <int hash="damage_fly_speed_up_max_mag">4</int>
-  <float hash="damage_fly_speed_up_angle_rate">85</float>
   <float hash="hitstop_frame_add">4</float>
   <float hash="hitstop_frame_mul">0.45</float>
   <float hash="hitstop_elec_mul">1.25</float>
