@@ -411,6 +411,7 @@ pub mod vars {
     pub mod diddy {
         pub mod instance {
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            pub const NO_CAP: i32 = 0x0101;
         }
         pub mod status {
             // ints
