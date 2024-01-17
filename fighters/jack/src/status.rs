@@ -27,7 +27,7 @@ pub unsafe fn try_interrupt_with_summon(fighter: &mut L2CFighterCommon) -> bool 
 pub unsafe fn summon_arsene(fighter: &mut L2CFighterCommon) -> bool {
     let rebel_gauge = fighter.get_float(0x4D);
     fighter.on_flag(0x200000e3);
-    VarModule::set_float(fighter.battle_object, vars::jack::REBEL_GAUGE_ON_SUMMON, rebel_gauge);
+    VarModule::set_float(fighter.battle_object, vars::jack::status::REBEL_GAUGE_ON_SUMMON, rebel_gauge);
     let status_kind = app::FighterSpecializer_Jack::check_doyle_summon_dispatch(fighter.module_accessor, true, true) as i32;
     if status_kind == *FIGHTER_JACK_STATUS_KIND_SUMMON {
         true
