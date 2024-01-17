@@ -28,9 +28,12 @@ unsafe fn pill_slip(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND {
-            if frame <= 6.0 {
-                if boma.is_cat_flag(Cat1::Dash) {
-                    KineticModule::add_speed(boma, &Vector3f{ x: 0.28, y: 0.0, z: 0.0 });
+            let velocity = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            if velocity > 0.0 || velocity < 0.0 {
+                if frame <= 6.0 {
+                    if boma.is_cat_flag(Cat1::Dash) {
+                        KineticModule::add_speed(boma, &Vector3f{ x: 0.28, y: 0.0, z: 0.0 });
+                    }
                 }
             }
         }
