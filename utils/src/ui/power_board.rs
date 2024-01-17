@@ -332,7 +332,7 @@ impl PowerBoard {
     }
 
     pub fn update_percentages(&mut self) {
-        self.visual_percentage = f32::min(self.visual_percentage + 0.01, self.actual_percentage);
+        self.visual_percentage = self.actual_percentage;
     }
 }
 

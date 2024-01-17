@@ -49,7 +49,7 @@ unsafe fn ike_attack_air_n_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "ike", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
@@ -63,6 +63,20 @@ unsafe fn ike_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         AFTER_IMAGE_OFF(fighter, 3);
+    }
+}
+
+#[acmd_script( agent = "ike", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -116,7 +130,7 @@ unsafe fn ike_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "ike", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
@@ -130,6 +144,27 @@ unsafe fn ike_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         AFTER_IMAGE_OFF(fighter, 4);
+    }
+}
+
+#[acmd_script( agent = "ike", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.5);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
 
@@ -201,7 +236,21 @@ unsafe fn ike_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "ike", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ike_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
 }
 
 #[acmd_script( agent = "ike", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -249,7 +298,7 @@ unsafe fn ike_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 #[acmd_script( agent = "ike", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn ike_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
@@ -302,10 +351,13 @@ pub fn install() {
     install_acmd_scripts!(
         ike_attack_air_n_game,
         ike_attack_air_n_effect,
+        ike_attack_air_n_expression,
         ike_attack_air_f_game,
         ike_attack_air_f_effect,
+        ike_attack_air_f_expression,
         ike_attack_air_b_game,
         ike_attack_air_hi_game,
+        ike_attack_air_hi_expression,
         ike_attack_air_lw_game,
         ike_attack_air_lw_effect,
         ike_landing_air_lw_effect,

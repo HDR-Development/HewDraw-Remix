@@ -56,6 +56,22 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
+// upB freefalls after one use per airtime
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor)
+    && (fighter.is_situation(*SITUATION_KIND_GROUND)
+        || fighter.is_situation(*SITUATION_KIND_CLIFF)
+        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+    {
+        VarModule::off_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+    }
+    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if StatusModule::is_changing(fighter.module_accessor) {
+            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -95,6 +111,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     elwind1_burn(fighter);
     levin_leniency(fighter, boma);
     sword_length(boma);
+    up_special_freefall(fighter);
     fastfall_specials(fighter);
 }
 

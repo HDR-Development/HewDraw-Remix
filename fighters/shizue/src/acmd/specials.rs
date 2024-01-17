@@ -35,7 +35,7 @@ unsafe fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.8);
         }
     }
-    
+
 }
 
 #[acmd_script( agent = "shizue", scripts = ["effect_specialnfailure", "effect_specialairnfailure"] , category = ACMD_EFFECT , low_priority)]
@@ -64,7 +64,22 @@ unsafe fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.8);
         }
     }
-    
+
+}
+
+
+#[acmd_script( agent = "shizue", scripts = ["expression_specialnfailure", "expression_specialairnfailure"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn shizue_special_n_failure_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+    }
 }
 
 #[acmd_script( agent = "shizue", script = "game_specialairhidetach", category = ACMD_GAME, low_priority)]
@@ -95,7 +110,7 @@ unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_LW_FLAG_SET);
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
 #[acmd_script( agent = "shizue", script = "game_specialsstart", category = ACMD_GAME, low_priority)]
@@ -103,9 +118,7 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 13.0/(21.0 - 1.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 21.0, 11.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_FISHINGROD, false, 0);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);
@@ -122,8 +135,9 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_push_speed_x_overlap_rate(boma, 20.0);
     }
     frame(lua_state, 21.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 350, 100, 30, 0, 5.0, 0.0, 6.0, 4.0, Some(0.0), Some(6.0), Some(11.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FEB, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -132,6 +146,7 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_SHOOT);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
@@ -222,7 +237,7 @@ unsafe fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(-1.0, 2.75, 0.0));   
+        KineticModule::add_speed(boma, &Vector3f::new(-1.0, 2.75, 0.0));
         FT_MOTION_RATE(fighter, 0.65);
     }
     frame(lua_state, 14.0);
@@ -257,7 +272,7 @@ unsafe fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(1.0, 2.75, 0.0));   
+        KineticModule::add_speed(boma, &Vector3f::new(1.0, 2.75, 0.0));
         FT_MOTION_RATE(fighter, 0.5);
     }
 }
@@ -288,7 +303,7 @@ unsafe fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0));   
+        KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0));
     }
 }
 
@@ -308,7 +323,7 @@ unsafe fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //Adjust angle/knockback of throw slightly based on direction held after down throw is determined
         let lr = PostureModule::lr(fighter.boma());
-        let x_pos= fighter.stick_x(); 
+        let x_pos= fighter.stick_x();
         let lim = 0.4;
         if  lr == 1.0 {
             if  x_pos > lim {
@@ -316,12 +331,12 @@ unsafe fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) {
             } else if x_pos < -lim {
                 ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 20, 0, 100, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
             }
-        } else if  lr == -1.0 {   
+        } else if  lr == -1.0 {
             if x_pos < -lim {
                 ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 30, 0, 140, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
             } else if x_pos > lim {
                 ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 20, 0, 100, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-            } 
+            }
         }
         AttackModule::clear_all(boma);
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
@@ -353,16 +368,16 @@ unsafe fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBase) {
             } else if x_pos < -lim {
                 ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 35, 0, 80, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
             }
-        } else if  lr == -1.0 {   
+        } else if  lr == -1.0 {
             if x_pos < -lim {
                 ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 45, 0, 120, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
             } else if x_pos > lim {
                 ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 35, 0, 80, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-            } 
+            }
         }
         AttackModule::clear_all(boma);
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0)); 
+        KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0));
         FT_MOTION_RATE(fighter, 1.75);
     }
 }
@@ -370,7 +385,7 @@ unsafe fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "shizue_clayrocket", script = "game_ready", category = ACMD_GAME, low_priority)]
 unsafe fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma(); 
+    let boma = fighter.boma();
     wait(lua_state, 20.0);
     if is_excute(fighter) {
         //Should never automatically activate
@@ -382,7 +397,7 @@ unsafe fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "shizue_clayrocket", script = "game_fly", category = ACMD_GAME, low_priority)]
 unsafe fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma(); 
+    let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.1);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -414,9 +429,10 @@ pub fn install() {
         shizue_special_n_failure_game,
         shizue_special_n_failure_effect,
         shizue_special_air_n_failure_game,
+        shizue_special_n_failure_expression,
         shizue_special_air_hi_detach_game,
         shizue_special_lw_set_game,
-        
+
         //Fishing Rod
         shizue_special_s_start_game,
         shizue_special_air_s_start_game,

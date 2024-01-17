@@ -24,7 +24,21 @@ unsafe fn tantan_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "tantan", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn tantan_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
 }
 
 #[acmd_script( agent = "tantan", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -63,7 +77,7 @@ unsafe fn tantan_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 #[acmd_script( agent = "tantan", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe fn tantan_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
@@ -100,14 +114,14 @@ unsafe fn tantan_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
 unsafe fn tantan_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
 }
 
 #[acmd_script( agent = "tantan", script = "expression_landingairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn tantan_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -154,7 +168,7 @@ unsafe fn tantan_attack_air_n_effect(fighter: &mut L2CAgentBase) {
         macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8.5, -5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         //macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 5.7, -8, -10, 0, 0, 1.1, false);
         //macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
-        
+
         let lr = PostureModule::lr(fighter.module_accessor);
         if macros::is_excute(fighter) {
             if(lr>=0.0){
@@ -188,11 +202,11 @@ unsafe fn tantan_attack_air_n_sound(fighter: &mut L2CAgentBase) {
 }
 #[acmd_script( agent = "tantan", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn tantan_attack_air_n_expression(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(fighter.lua_state_agent, 5.0);
+    frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
@@ -290,21 +304,14 @@ unsafe fn tantan_attack_air_f_sound(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
     }
 }
+
 #[acmd_script( agent = "tantan", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn tantan_attack_air_f_expression(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
-    }
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(fighter.lua_state_agent, 13.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
@@ -421,6 +428,8 @@ unsafe fn tantan_landing_air_b_expression(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         tantan_attack_air_hi_game,
+        tantan_attack_air_hi_expression,
+
         tantan_attack_air_lw_game,
         tantan_attack_air_lw_effect,
         tantan_attack_air_lw_sound,
@@ -432,19 +441,19 @@ pub fn install() {
         tantan_attack_air_n_sound,
         tantan_attack_air_n_expression,
 
-        tantan_attack_air_n_effect,
-        tantan_attack_air_n_sound,
-        tantan_attack_air_n_expression,
+        tantan_landing_air_n_effect,
+        tantan_landing_air_n_sound,
+        tantan_landing_air_n_expression,
 
         tantan_attack_air_f_game,
         tantan_attack_air_f_effect,
         tantan_attack_air_f_sound,
         tantan_attack_air_f_expression,
-        
+
         tantan_landing_air_f_effect,
         tantan_landing_air_f_sound,
         tantan_landing_air_f_expression,
-        
+
         tantan_attack_air_b_game,
         tantan_attack_air_b_effect,
         tantan_attack_air_b_sound,

@@ -46,7 +46,7 @@ unsafe fn diddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "diddy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -81,7 +81,7 @@ unsafe fn diddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "diddy", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -109,7 +109,7 @@ unsafe fn diddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "diddy", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -134,7 +134,21 @@ unsafe fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
+}
+
+#[acmd_script( agent = "diddy", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn diddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.1);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 #[acmd_script( agent = "diddy", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
@@ -178,7 +192,7 @@ unsafe fn diddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
@@ -187,6 +201,7 @@ pub fn install() {
         diddy_attack_air_f_game,
         diddy_attack_air_b_game,
         diddy_attack_air_hi_game,
+        diddy_attack_air_hi_expression,
         diddy_attack_air_lw_game,
         effect_attackairhi,
     );

@@ -1,8 +1,11 @@
 use super::*;
 use globals::*;
 
-mod special_s;
 mod special_n;
+
+mod special_s;
+mod special_s_jump;
+
 mod special_hi;
 
 
@@ -11,8 +14,11 @@ pub fn install() {
         end_jump_squat
     );
     smashline::install_agent_init_callbacks!(diddy_init);
-    special_s::install();
     special_n::install();
+
+    special_s::install();
+    special_s_jump::install();
+
     special_hi::install();
 }
 
