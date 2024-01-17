@@ -1,3 +1,13 @@
+summon:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 15
+dispatch:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 15
 fall:
   blend_frames: 5
 fall_aerial:

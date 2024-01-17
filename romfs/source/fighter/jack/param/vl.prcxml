@@ -20,8 +20,11 @@
   </list>
   <struct hash="param_private">
     <float hash="rebel_gauge_damage_add">0.6</float>
+    <float hash="rebel_gauge_damage_add_handi">0</float>
     <float hash="rebel_gauge_add_dead">1</float>
     <int hash="doyle_frame">2700</int>
+    <float hash="rebel_gauge_keep_ratio">0</float>
+    <float hash="rebel_gauge_add_handi_mul">0</float>
   </struct>
   <list hash="rebel_gauge_damage_rate">
     <float index="0">33.75</float>
