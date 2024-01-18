@@ -356,6 +356,42 @@ unsafe fn downattackd_effect(fighter: &mut L2CAgentBase) {
 }
 }
 
+#[acmd_script( agent = "richter", script = "sound_appeallwr" , category = ACMD_SOUND , low_priority)]
+unsafe fn appeallwr_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_richter_appeal_l01"));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_appeal_l01"));
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_appeal_l02"));
+    }
+}
+
+#[acmd_script( agent = "richter", script = "sound_appeallwl" , category = ACMD_SOUND , low_priority)]
+unsafe fn appeallwl_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_richter_appeal_l01"));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_appeal_l01"));
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_appeal_l02"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -372,7 +408,9 @@ pub fn install() {
         cliffattack_effect,
         slipattack_effect,
         downattacku_effect,
-        downattackd_effect
+        downattackd_effect,
+        appeallwr_sound,
+        appeallwl_sound
     );
 }
 
