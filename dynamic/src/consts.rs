@@ -1209,15 +1209,15 @@ pub mod vars {
     pub mod littlemac {
         pub mod instance {
             // flags
-            pub const HIT_INIT: i32 = 0x0100;
+            pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
+            pub const HIT_INIT: i32 = 0x0102;
 
             // floats
             pub const CURRENT_DAMAGE: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
-            pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
             pub const LIMIT_METER_GAIN: i32 = 0x102;
 
             // ints

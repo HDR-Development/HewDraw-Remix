@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn handle_ko_meter(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if !sv_information::is_ready_go()
     || boma.is_status_one_of(&[
@@ -67,10 +66,9 @@ unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
     }
 }
 
-unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START
-    && frame >= 8.0 {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.status_frame() >= 10 {
             if fighter.is_cat_flag(Cat2::StickEscape) {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
@@ -93,7 +91,7 @@ unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
             }
         }
-        else {
+        else if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.status_frame() >= 8 {
             if fighter.is_cat_flag(Cat1::AirEscape)  {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
@@ -116,6 +114,14 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     && MotionModule::frame(fighter.module_accessor) >= 28.0 {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
         KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+}
+
+unsafe fn dreamland_express(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("attack_12"))
+    && (18.0..20.0).contains(&fighter.motion_frame())
+    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        VarModule::on_flag(fighter.battle_object, vars::littlemac::instance::IS_DREAMLAND_EXPRESS);
     }
 }
 
@@ -158,14 +164,16 @@ unsafe fn training_mode_max_meter(boma: &mut BattleObjectModuleAccessor) {
     && boma.is_button_trigger(Buttons::Guard) {
         let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         WorkModule::set_float(boma, (meter + 20.0).clamp(0.0, 100.0), *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+        EffectModule::req_on_joint(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::new(6.0, 15.0, 0.0), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
     }
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     handle_ko_meter(boma, status_kind);
     tech_roll_help(boma, motion_kind, facing, frame);
-    nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);
+    nspecial_cancels(fighter);
     up_special_proper_landing(fighter);
+    dreamland_express(fighter);
     fastfall_specials(fighter);
     training_mode_max_meter(boma);
 }

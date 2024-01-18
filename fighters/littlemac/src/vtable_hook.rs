@@ -20,6 +20,7 @@ pub struct CollisionLog {
 pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut BattleObject, collisionLog: CollisionLog, damage: f32) -> u64 {
     let boma = (&mut *(battle_object)).boma();
     let opponent_boma = &mut *(sv_battle_object::module_accessor(collisionLog.opponent_battle_object_id));
+    let mut meter_gain = 5.0;
 
     // this effectively stubs the logic handling critical zoom unless at full meter
     if boma.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2) {
@@ -30,8 +31,6 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
             return 1
         }
     }
-
-    let mut meter_gain = 5.0;
 
     // modify meter gain based on opponent action
     if opponent_boma.is_status_one_of(&[
@@ -71,6 +70,11 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         else {
             meter_gain *= if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_100) { 0.1 }
             else if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) { 0.2 } else { 0.5 };
+        }
+        if boma.is_motion(Hash40::new("attack_13"))
+        && VarModule::is_flag(boma.object(), vars::littlemac::instance::IS_DREAMLAND_EXPRESS) {
+            EffectModule::req_on_joint(boma, Hash40::new("sys_hit_magic"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            meter_gain += 10.0;
         }
     }
     if boma.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP) {

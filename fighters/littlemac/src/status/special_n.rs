@@ -1,26 +1,21 @@
 use super::*;
 use globals::*;
 
-// #[status_script(agent = "littlemac", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// unsafe extern "C" fn special_lw_main_old(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_KO, true, false);
-//     0.into()
-// }
-
 #[status_script(agent = "littlemac", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // if fighter.is_situation(*SITUATION_KIND_GROUND) {
-    //     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
-    // }
-    // else {
-    //     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
-    // }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+    else {
+        sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
     fighter.change_status(FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2.into(), false.into());
     return 1.into()
 }
 
 #[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
@@ -59,21 +54,22 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sum_spd_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_GROUND, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_spd_x * 0.7, 0.0);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_spd_x * 0.3, 0.0);
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS);
     }
     else {
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_spd_x * 0.7, 0.0);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_spd_x * 0.3, 0.0);
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS);
     }
+    let meter = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, if meter < 30.0 { 0.5 } else if meter >= 30.0 && meter < 100.0 { 0.75 } else { 1.0 });
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FREE, 0.0, 0.0, 0.0, 0.0, 0.0);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    let meter = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
     let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) {
         if meter < 30.0 { Hash40::new("special_n_min") } else if meter >= 30.0 && meter < 100.0 { Hash40::new("special_n_med") } else { Hash40::new("special_n_max") }
     }
@@ -94,18 +90,19 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        || !fighter.sub_air_check_fall_common().get_bool() {
+        || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        let status = if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            FIGHTER_STATUS_KIND_WAIT
         }
         else {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-        }
-        return 1.into()
+            FIGHTER_STATUS_KIND_FALL
+        };
+        fighter.change_status(status.into(), false.into());
+        return 0.into();
     }
     if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
         if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -173,12 +170,4 @@ pub fn install() {
         special_n2_main,
         special_n2_end,
     );
-    // CustomStatusManager::add_new_agent_status_script(
-    //     Hash40::new("fighter_kind_littlemac"),
-    //     statuses::littlemac::SPECIAL_LW_KO,
-    //     StatusInfo::new()
-    //         .with_pre(special_lw_pre)
-    //         .with_main(special_lw_main)
-    //         .with_end(special_lw_end)
-    // );
 }
