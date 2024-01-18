@@ -218,6 +218,144 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter", script = "effect_cliffattack" , category = ACMD_EFFECT , low_priority)]
+unsafe fn cliffattack_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 5, 3.5, 12, -29, -27, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "effect_slipattack" , category = ACMD_EFFECT , low_priority)]
+unsafe fn slipattack_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
+    }
+    frame(lua_state, 30.0);
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -30, 170, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+    }
+    else {
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -10, 160, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+}
+}
+}
+}
+
+#[acmd_script( agent = "richter", script = "effect_downattacku" , category = ACMD_EFFECT , low_priority)]
+unsafe fn downattacku_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+        frame(lua_state, 17.0);
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 3, 0, 0, 0, 180, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 1.5);
+        }
+        frame(lua_state, 18.0);
+        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+            if is_excute(fighter) {
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1, 3, 0, 1, 180, 187, 1, true);
+                LAST_EFFECT_SET_RATE(fighter, 1.3);
+                LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+            }
+            else {
+            if is_excute(fighter) {
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, 0, 1, 169, 187, 1, true);
+                LAST_EFFECT_SET_RATE(fighter, 1.3);
+                LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+            }
+        }
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+    }
+    frame(lua_state, 25.0);
+    if sv_animcmd::get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -30, 170, 1, true);
+            LAST_EFFECT_SET_RATE(fighter, 2);
+            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+        }
+        else {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -10, 160, 1, true);
+            LAST_EFFECT_SET_RATE(fighter, 2);
+            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+        }
+    }
+    }
+    }
+
+#[acmd_script( agent = "richter", script = "effect_downattackd" , category = ACMD_EFFECT , low_priority)]
+unsafe fn downattackd_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 3, 0, 0, 0, 180, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 18.0);
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1, 3, 0, 1, 180, 187, 1, true);
+            LAST_EFFECT_SET_RATE(fighter, 1.3);
+            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+        }
+        else {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, 0, 1, 169, 187, 1, true);
+            LAST_EFFECT_SET_RATE(fighter, 1.3);
+            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+        }
+    }
+}
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
+    }
+    frame(lua_state, 25.0);
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -30, 170, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+    }
+    else {
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -10, 160, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
+    }
+}
+}
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -230,7 +368,11 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        cliffattack_effect,
+        slipattack_effect,
+        downattacku_effect,
+        downattackd_effect
     );
 }
 
