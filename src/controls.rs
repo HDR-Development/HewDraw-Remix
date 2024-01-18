@@ -1,24 +1,26 @@
-use std::sync::atomic::{Ordering, AtomicBool};
 use skyline::hooks::InlineCtx;
+use std::sync::atomic::{AtomicBool, Ordering};
+
+mod css;
+mod submenu;
+mod swkbd;
 
 #[repr(C)]
 pub struct HashedString {
     pub hash: smash::phx::Hash40,
-    pub contents: [u8; 0x100]
+    pub contents: [u8; 0x100],
 }
 
 #[repr(C)]
 pub struct CppVector<T> {
     start: *mut T,
     end: *mut T,
-    eos: *mut T
+    eos: *mut T,
 }
 
 impl<T> CppVector<T> {
     pub fn len(&self) -> usize {
-        unsafe {
-            self.end.offset_from(self.start) as usize
-        }
+        unsafe { self.end.offset_from(self.start) as usize }
     }
 }
 
@@ -34,10 +36,10 @@ impl<T: Copy> CppVector<T> {
                 self.start = new_ptr as _;
                 self.end = self.start.add(length as usize);
                 self.eos = self.start.add((cap * 2) as usize);
-    
+
                 skyline::libc::free(old as _);
             }
-    
+
             *self.end = value;
             self.end = self.end.add(1);
         }
@@ -45,25 +47,32 @@ impl<T: Copy> CppVector<T> {
 }
 
 #[skyline::hook(offset = 0x1d39500)]
-unsafe fn get_button_label_by_operation_kind(hashed_string: &mut HashedString, operation: u8, arg: bool) {
+unsafe fn get_button_label_by_operation_kind(
+    hashed_string: &mut HashedString,
+    operation: u8,
+    arg: bool,
+) {
     if operation == utils::ext::InputKind::JumpMini as u8 {
         for (index, byte) in "mnu_opt_btn_key_short_hop\0".as_bytes().iter().enumerate() {
             hashed_string.contents[index] = *byte;
         }
         hashed_string.hash = smash::phx::Hash40::new("mnu_opt_btn_key_short_hop");
     } else if operation == utils::ext::InputKind::TiltAttack as u8 {
-        for (index, byte) in "mnu_opt_btn_key_tilt_attack\0".as_bytes().iter().enumerate() {
+        for (index, byte) in "mnu_opt_btn_key_tilt_attack\0"
+            .as_bytes()
+            .iter()
+            .enumerate()
+        {
             hashed_string.contents[index] = *byte;
         }
         hashed_string.hash = smash::phx::Hash40::new("mnu_opt_btn_key_tilt_attack");
-    } 
-    else if operation == utils::ext::InputKind::Parry as u8 {
+    } else if operation == utils::ext::InputKind::Parry as u8 {
         for (index, byte) in "mnu_opt_btn_key_parry\0".as_bytes().iter().enumerate() {
             hashed_string.contents[index] = *byte;
         }
         hashed_string.hash = smash::phx::Hash40::new("mnu_opt_btn_key_parry");
     } else {
-        return call_original!(hashed_string, operation, arg)
+        return call_original!(hashed_string, operation, arg);
     }
 }
 
@@ -71,7 +80,8 @@ unsafe fn get_button_label_by_operation_kind(hashed_string: &mut HashedString, o
 unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
     let button = *ctx.registers[25].w.as_ref();
     if ![0x3, 0x4, 0x5, 0x8].contains(&button) {
-        let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
+        let input_list_vector =
+            &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
 
         if input_list_vector.len() < 9 {
             input_list_vector.push(utils::ext::InputKind::Parry as u8);
@@ -103,7 +113,7 @@ unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x1d3395c, inline)]
 unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
     let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
-    
+
     if input_list_vector.len() < 9 {
         input_list_vector.push(utils::ext::InputKind::Parry as u8);
         input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
@@ -155,11 +165,12 @@ unsafe fn vsync_count_thread(_: &skyline::hooks::InlineCtx) {
 static mut OFFSET1: u64 = 0;
 static mut OFFSET2: u64 = 0;
 
-
 pub fn install() {
     unsafe {
         skyline::patching::Patch::in_text(0x1d34e4c).nop();
     }
+
+    css::install();
 
     if !super::is_on_ryujinx() {
         unsafe {
@@ -182,5 +193,4 @@ pub fn install() {
         add_footstool_to_jc,
         add_more_buttons
     );
-
 }
