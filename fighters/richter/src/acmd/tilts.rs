@@ -61,22 +61,6 @@ unsafe fn richter_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
 unsafe fn richter_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    FT_MOTION_RATE(fighter, 0.5);
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_MOVE);
-    }
-    
 }
 
 #[acmd_script( agent = "richter", script = "game_attacksquats3" , category = ACMD_GAME , low_priority)]
@@ -210,7 +194,7 @@ unsafe fn richter_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 188, 24, 184, 0.95, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, -0.2, 188, 31, 184, 0.95, true);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 }
@@ -223,7 +207,7 @@ unsafe fn richter_whip_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot10"), 0, 0, 0, 0, 0, 0, 1, false, 0.65);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("hookshot3"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot26"), 1, 0, 0, 0, 0, 0, 1, true);
     }
 }
 

@@ -183,18 +183,6 @@ unsafe fn richter_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
 unsafe fn richter_whip_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        VisibilityModule::set_int64(boma, hash40("hookshot27") as i64, hash40("stake_visible") as i64);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    
 }
 
 #[acmd_script( agent = "richter_whip", script = "effect_attackairfhi" , category = ACMD_EFFECT , low_priority)]
@@ -206,13 +194,7 @@ unsafe fn richter_whip_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("hookshot7"), -8, 0, 0, 0, -40, -90, 0.7, true);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot9"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot23"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot18"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot14"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot26"), 1, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot10"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
         LAST_EFFECT_SET_RATE(fighter, 2);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot4"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
@@ -275,15 +257,6 @@ unsafe fn richter_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 unsafe fn richter_whip_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    
 }
 
 #[acmd_script( agent = "richter_whip", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
@@ -295,13 +268,7 @@ unsafe fn richter_whip_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("hookshot7"), -8, 0, 0, 0, -75, -90, 0.7, true);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot9"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot23"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot18"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot14"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot14"), 1, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot10"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
         LAST_EFFECT_SET_RATE(fighter, 2);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot4"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
@@ -364,15 +331,6 @@ unsafe fn richter_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn richter_whip_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    
 }
 
 #[acmd_script( agent = "richter_whip", script = "effect_attackairflw" , category = ACMD_EFFECT , low_priority)]
@@ -384,13 +342,7 @@ unsafe fn richter_whip_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("hookshot7"), -8, 0, 0, 0, -130, -90, 0.7, true);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot9"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot23"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot18"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot14"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot26"), 1, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot10"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
         LAST_EFFECT_SET_RATE(fighter, 2);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot4"), 0, 0, 0, 0, 0, 0, 1.2, false, 0.65);
@@ -399,6 +351,14 @@ unsafe fn richter_whip_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("richter_whip_straight"), true, true);
+    }
+}
+
+#[acmd_script( agent = "richter_whip", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_landing_air_f_game(fighter: &mut L2CAgentBase) {
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -681,7 +641,7 @@ unsafe fn richter_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), 0, 14, 3, 0, 75, 82, 0.9, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), 0, 13.2, 2.5, 0, 75, 82, 0.88, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
         LAST_EFFECT_SET_RATE(fighter, 1.4);
     }
@@ -782,6 +742,7 @@ pub fn install() {
         richter_attack_air_f_lw_effect,
         richter_whip_attack_air_f_lw_game,
         richter_whip_attack_air_f_lw_effect,
+        richter_landing_air_f_game,
         richter_attack_air_b_hi_game,
         richter_attack_air_b_hi_effect,
         richter_attack_air_b_hi_sound,
