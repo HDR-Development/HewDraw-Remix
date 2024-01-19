@@ -45,7 +45,7 @@ unsafe fn lucina_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 
@@ -86,7 +86,41 @@ unsafe fn lucina_attack_air_n_sound(fighter: &mut L2CAgentBase) {
         PLAY_SEQUENCE(fighter, Hash40::new_raw(0x1554a9d10d));
         PLAY_SE(fighter, Hash40::new_raw(0x158eb52a6f));
     }
-    
+
+}
+
+#[acmd_script( agent = "lucina", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucina_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -180,7 +214,7 @@ unsafe fn lucina_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 23.625);  // f32 ingame
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    } 
+    }
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -211,7 +245,7 @@ unsafe fn lucina_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -255,14 +289,20 @@ unsafe fn lucina_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucina_attack_air_n_game,
-        lucina_attack_air_f_game,
-        lucina_attack_air_b_game,
-        lucina_attack_air_hi_game,
-        lucina_attack_air_lw_game,
         lucina_attack_air_n_effect,
+        lucina_attack_air_n_sound,
+        lucina_attack_air_n_expression,
+
+
+        lucina_attack_air_f_game,
         lucina_attack_air_f_effect,
         lucina_attack_air_f_expression,
-        lucina_attack_air_n_sound,
+
+        lucina_attack_air_b_game,
+
+        lucina_attack_air_hi_game,
+
+        lucina_attack_air_lw_game,
     );
 }
 

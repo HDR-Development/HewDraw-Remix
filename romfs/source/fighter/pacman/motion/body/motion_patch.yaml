@@ -5,7 +5,7 @@ throw_f:
     cancel_frame: 33
 throw_lw:
   extra:
-    cancel_frame: 63
+    cancel_frame: 56
 throw_hi:
   extra:
     cancel_frame: 40

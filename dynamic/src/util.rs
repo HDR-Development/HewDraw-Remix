@@ -4,6 +4,7 @@ use crate::offsets;
 use crate::ext::*;
 use std::arch::asm;
 use smash::phx::Vector2f;
+use crate::se;
 
 #[macro_export]
 macro_rules! dump_trace {

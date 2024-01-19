@@ -213,7 +213,7 @@ unsafe fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhi2(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -249,6 +249,28 @@ unsafe fn game_specialairhi2(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 2.0, 361, 180, 0, 30, 5.5, 0.0, 8.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_specialairhi2", category = ACMD_EFFECT, low_priority )]
+unsafe extern "C" fn kirby_special_air_hi2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        effect!(fighter, *MA_MSC_CMD_EFFECT_AFTER_IMAGE3_ON, Hash40::new("tex_kirby_cutter"), Hash40::new("tex_kirby_cutter"), 12, Hash40::new("haver"), 0, 3, 0.25, Hash40::new("haver"), 0, 20, 0.5, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_BLEND_SRC_ONE, 1);
+        EFFECT_FOLLOW(fighter, Hash40::new("kirby_fcut_rise"), Hash40::new("haver"), 0, 3, 0.3, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 3);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        effect!(fighter, *MA_MSC_CMD_EFFECT_AFTER_IMAGE3_ON, Hash40::new("tex_kirby_cutter"), Hash40::new("tex_kirby_cutter"), 12, Hash40::new("haver"), 0, 2.5, 0.5, Hash40::new("haver"), 0, 16, 0.3, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_BLEND_SRC_ONE, 1);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -4, 16, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
@@ -342,6 +364,21 @@ unsafe fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "expression_specialhih", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 #[acmd_script( agent = "kirby", script = "game_specialairhih", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -426,6 +463,21 @@ unsafe fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_kirby_special_h04"));
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "expression_specialairhih", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -538,13 +590,16 @@ pub fn install() {
         kirby_special_air_s_start_game,
         kirby_special_air_s_game,
         kirby_special_air_ss_game,
-        game_specialairhi2,
+        kirby_special_air_hi2_game,
+        kirby_special_air_hi2_effect,
         kirby_special_hi_h_game,
         kirby_special_hi_h_effect,
         kirby_special_hi_h_sound,
+        kirby_special_hi_h_expression,
         kirby_special_air_hi_h_game,
         kirby_special_air_hi_h_effect,
         kirby_special_air_hi_h_sound,
+        kirby_special_air_hi_h_expression,
         kirby_special_air_lw_game,
         kirby_special_air_lw_effect
     );

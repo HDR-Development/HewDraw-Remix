@@ -88,6 +88,27 @@ unsafe fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool", script = "effect_attack13" , category = ACMD_EFFECT , low_priority)]
+unsafe fn krool_attack_13_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        EFFECT_FLIP_ALPHA(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 12, 2, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.5);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, -5, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.5);
+        LAST_EFFECT_SET_COLOR(agent, 3, 0.4, 0.5);
+        EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12, 16, 0, 0, 0, 2, 0, 0, 0, 0, 0, 360, true, 0.65);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+    }
+}
+
 #[acmd_script( agent = "krool", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -145,6 +166,7 @@ pub fn install() {
         krool_attack_12_game,
         krool_attack_12_effect,
         krool_attack_13_game,
+        krool_attack_13_effect,
         krool_attack_dash_game,
     );
 }

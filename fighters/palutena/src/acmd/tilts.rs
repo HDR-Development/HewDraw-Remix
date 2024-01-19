@@ -44,7 +44,7 @@ unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
     }
-    
+
 }
 
 #[acmd_script( agent = "palutena", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
@@ -58,7 +58,7 @@ unsafe fn palutena_attack_s3_s_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 14.0);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
@@ -185,7 +185,7 @@ unsafe fn palutena_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "palutena", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
@@ -330,7 +330,29 @@ unsafe fn palutena_attack_lw3_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 12.0/(35.0-25.0));
         AttackModule::clear_all(boma);
     }
-    
+
+}
+
+#[acmd_script( agent = "palutena", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 15);
+    }
 }
 
 #[acmd_script( agent = "palutena", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
@@ -384,7 +406,7 @@ unsafe fn palutena_attack_lw3_effect(agent: &mut L2CAgentBase) {
     }
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light4"), Hash40::new("stick"), 0, 8.65, 0, 0, 180, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
     }
     frame(lua_state, 29.0);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
@@ -440,7 +462,8 @@ pub fn install() {
         palutena_attack_hi3_game,
         palutena_attack_hi3_effect,
         palutena_attack_lw3_game,
-        palutena_attack_lw3_effect
+        palutena_attack_lw3_effect,
+        palutena_attack_lw3_expression
     );
 }
 

@@ -19,7 +19,7 @@ throw_lw:
     cancel_frame: 44
 throw_hi:
   extra:
-    cancel_frame: 47
+    cancel_frame: 44
 special_s:
   extra:
     cancel_frame: 63
@@ -37,6 +37,9 @@ attack_s3_s:
 attack_air_b:
   extra:
     cancel_frame: 41
+attack_air_hi:
+  extra:
+    cancel_frame: 55
 attack_air_f:
   extra:
     cancel_frame: 34
@@ -94,7 +97,7 @@ special_n_r:
     - name: d00specialnr.nuanmb
       unk: 0
   scripts:
-    - expression_attacks4
+    - expression_specialnr
     - sound_specialnr
     - effect_specialnr
   extra:
@@ -121,7 +124,7 @@ special_air_n_r:
     - name: d00specialairnr.nuanmb
       unk: 0
   scripts:
-    - expression_attacks4
+    - expression_specialairnr
     - sound_specialairnr
     - effect_specialairnr
   extra:
@@ -148,7 +151,7 @@ special_n_b:
     - name: d00specialnb.nuanmb
       unk: 0
   scripts:
-    - expression_attackhi4
+    - expression_specialnb
     - sound_specialnb
     - effect_specialnb
   extra:
@@ -175,7 +178,7 @@ special_air_n_b:
     - name: d00specialairnb.nuanmb
       unk: 0
   scripts:
-    - expression_attackhi4
+    - expression_specialairnb
     - sound_specialairnb
     - effect_specialairnb
   extra:
@@ -202,13 +205,13 @@ special_n_y:
     - name: d00specialny.nuanmb
       unk: 0
   scripts:
-    - expression_specialn
+    - expression_specialny
     - sound_specialny
     - effect_specialny
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 60
+    cancel_frame: 43
     no_stop_intp: false
 special_air_n_y:
   game_script: game_specialairny
@@ -229,13 +232,13 @@ special_air_n_y:
     - name: d00specialairny.nuanmb
       unk: 0
   scripts:
-    - expression_specialairn
+    - expression_specialairny
     - sound_specialairny
     - effect_specialairny
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 60
+    cancel_frame: 43
     no_stop_intp: false
 special_n_p:
   game_script: game_specialnp
@@ -256,13 +259,13 @@ special_n_p:
     - name: d00specialnp.nuanmb
       unk: 0
   scripts:
-    - expression_attacklw4
+    - expression_specialnp
     - sound_specialnp
     - effect_specialnp
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 67
+    cancel_frame: 69
     no_stop_intp: false
 special_air_n_p:
   game_script: game_specialairnp
@@ -283,13 +286,13 @@ special_air_n_p:
     - name: d00specialairnp.nuanmb
       unk: 0
   scripts:
-    - expression_attacklw4
+    - expression_specialairnp
     - sound_specialairnp
     - effect_specialairnp
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 67
+    cancel_frame: 69
     no_stop_intp: false
 special_n_o:
   game_script: game_specialno
@@ -310,7 +313,7 @@ special_n_o:
     - name: d00specialno.nuanmb
       unk: 0
   scripts:
-    - expression_speciallwreflect
+    - expression_specialno
     - sound_specialno
     - effect_specialno
   extra:
@@ -337,7 +340,7 @@ special_air_n_o:
     - name: d00specialairno.nuanmb
       unk: 0
   scripts:
-    - expression_specialairlwreflect
+    - expression_specialairno
     - sound_specialairno
     - effect_specialairno
   extra:
@@ -364,7 +367,7 @@ special_n_g:
     - name: d00specialng.nuanmb
       unk: 0
   scripts:
-    - expression_throwf
+    - expression_specialng
     - sound_specialng
     - effect_specialng
   extra:
@@ -391,7 +394,7 @@ special_air_n_g:
     - name: d00specialairng.nuanmb
       unk: 0
   scripts:
-    - expression_throwf
+    - expression_specialairng
     - sound_specialairng
     - effect_specialairng
   extra:

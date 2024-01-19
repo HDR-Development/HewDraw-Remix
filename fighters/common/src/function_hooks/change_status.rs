@@ -115,19 +115,22 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         }
         else if boma.kind() == *FIGHTER_KIND_REFLET
         && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
-        && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
+        && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
+        && !VarModule::is_flag(boma.object(), vars::reflet::instance::UP_SPECIAL_FREEFALL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         else if boma.kind() == *FIGHTER_KIND_MEWTWO 
         && StatusModule::status_kind(boma) == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
         && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
-        && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
+        && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL)
+        && !VarModule::is_flag(boma.object(), vars::mewtwo::instance::UP_SPECIAL_FREEFALL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         else if boma.kind() == *FIGHTER_KIND_PALUTENA 
         && StatusModule::status_kind(boma) == *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3
         && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
-        && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
+        && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL)
+        && !VarModule::is_flag(boma.object(), vars::palutena::instance::UP_SPECIAL_FREEFALL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         // Transition into regular fall when attempting to jump off of Wario bike when out of jumps
@@ -138,12 +141,19 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             next_status = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
             clear_buffer = true;
         }
-        // Prevent jumping out of Clown Kart Dash when out of jumps
-        else if boma.kind() == *FIGHTER_KIND_KOOPAJR
-        && boma.is_status_one_of(&[*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_SPIN_TURN])
-        && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
-        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
-            return 0;
+        else if boma.kind() == *FIGHTER_KIND_KOOPAJR {
+            // Prevent jumping out of Clown Kart Dash when out of jumps
+            if boma.is_status_one_of(&[*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_SPIN_TURN])
+            && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
+            && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+                return 0;
+            }
+            // Prevent airdodging out of upB for first 10 frames
+            if boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_SHOOT)
+            && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE
+            && boma.status_frame() < 10 {
+                return 0;
+            }
         }
         // Prevent jumping out of Splat Roller when out of jumps
         else if boma.kind() == *FIGHTER_KIND_INKLING
