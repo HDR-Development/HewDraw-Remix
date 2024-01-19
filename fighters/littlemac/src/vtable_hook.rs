@@ -16,6 +16,48 @@ pub struct CollisionLog {
     padding_3: [u8;10]
 }
 
+//#[skyline::from_offset(0xc45530)]
+//pub unsafe fn update_ko_ui(arg1: f32, arg2: f32, arg3: *mut Fighter);
+
+// static mut num: u32 = 0;
+
+
+// pub fn offset_to_addr(offset: usize) -> *const () {
+//     unsafe { (getRegionAddress(Region::Text) as *const u8).add(offset) as _ }
+// }
+
+// #[skyline::from_offset(0x68cd80)]
+// pub fn update_battle_ui(x: *const u64, y: u32);
+
+
+// pub fn update_little_mac_meter(player_id: u8, val: u32){
+//     unsafe {
+//         let player_id = player_id as u64;
+//         let off = **(offset_to_addr(0x52b74f8) as *const *const u64);
+//         let ptr = (off + (player_id * 8) + 0x20) as *const u64;
+//         let res = (*ptr + 0x41e4) as *const u64;
+//         update_battle_ui(res, val);
+//     }
+// }
+
+// #[fighter_frame( agent = FIGHTER_KIND_LITTLEMAC )]
+// fn mac_frame(fighter: &mut L2CFighterCommon) {
+//     unsafe {
+//         num += 1;
+//         update_little_mac_meter(0, num);
+//         if num > 100 {
+//             num = 0;
+//         }
+//     }
+// }
+
+// #[skyline::main(name = "little_mac_test")]
+// pub fn main() {
+//     smashline::install_agent_frames!(
+//         mac_frame
+//     );
+// }
+
 #[skyline::hook(offset = 0xc45680)]
 pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut BattleObject, collisionLog: CollisionLog, damage: f32) -> u64 {
     let boma = (&mut *(battle_object)).boma();
@@ -26,7 +68,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
     if boma.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2) {
         let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         if meter != 100.0 {
-            let size = if meter < 30.0 { 0.5 } else { 0.7 };
+            let size = if meter < 40.0 { 0.5 } else { 0.7 };
             EffectModule::req_on_joint(boma, Hash40::new("sys_hit_normal_l"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.8, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             return 1
         }
@@ -87,9 +129,9 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         meter_gain *= 2.0;
     }
 
-    //println!("Current Meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));
-    //println!("Gained Meter: {}", meter_gain);
-    //println!();
+    println!("Current Meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));
+    println!("Gained Meter: {}", meter_gain);
+    println!();
 
     call_original!(vtable, battle_object, collisionLog, meter_gain)
 }

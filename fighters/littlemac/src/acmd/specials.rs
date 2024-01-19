@@ -69,7 +69,7 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         let mut meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
-        let meter_lvl = if meter < 30.0 { 0 } else if meter >= 30.0 && meter < 100.0 { 1 } else { 2 };
+        let meter_lvl = if meter < 40.0 { 0 } else if meter >= 40.0 && meter < 100.0 { 1 } else { 2 };
         let damage = (if meter_lvl == 2 { 25.0 } else { 10.0 + meter / 8.0 }) * if fighter.is_situation(*SITUATION_KIND_GROUND) { 1.0 } else { 0.8 };
         let angle = if fighter.is_situation(*SITUATION_KIND_GROUND) { 80 } else { 75 };
         let bkb = if fighter.is_situation(*SITUATION_KIND_GROUND) { 40 } else { 30 };
@@ -88,6 +88,9 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear(boma, 1, false);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 14.0);
@@ -111,7 +114,7 @@ unsafe fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
     if is_excute(fighter) {
-        let size = if meter < 30.0 { 0.5 } else if meter >= 30.0 && meter < 100.0 { 0.7 } else { 1.0 };
+        let size = if meter < 40.0 { 0.5 } else if meter >= 40.0 && meter < 100.0 { 0.7 } else { 1.0 };
         EFFECT_FLW_POS(fighter, Hash40::new("littlemac_ko_uppercut_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, size, true);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("littlemac_ko_uppercut"), Hash40::new("handr"), 0.5, 0, 0, 0, 0, 0, size, true);
     }
@@ -121,7 +124,7 @@ unsafe fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if meter >= 30.0 {
+        if meter >= 40.0 {
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
                 EFFECT_FOLLOW(fighter, Hash40::new("littlemac_ko_uppercut_arc"), Hash40::new("rot"), 0.5, 1, -3, 0, -60, 70, 1, true);
                 EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("littlemac_ko_uppercut_arc_splash"), Hash40::new("rot"), 0.5, 1, -3, 0, -60, 70, 1, false);
@@ -140,7 +143,7 @@ unsafe fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if meter == 100.0 { EffectModule::set_scale(boma, handle as u32, &Vector3f::new(0.8, 0.8, 0.8)); }
-        if meter < 30.0 {
+        if meter < 40.0 {
             EFFECT_FOLLOW(fighter, Hash40::new("littlemac_attack_arc"), Hash40::new("top"), -1, 10.5, 1.0, 4, 30, 110, 0.8, true);
             LAST_EFFECT_SET_SCALE_W(fighter, 0.7, 0.7, 0.9);
             LAST_EFFECT_SET_RATE(fighter, 1.0);
@@ -168,7 +171,7 @@ unsafe fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
             PLAY_SE(fighter, Hash40::new("se_littlemac_special_n03"));
         }
         else {
-            if (WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE) < 30.0) {
+            if (WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE) < 40.0) {
                 match smash::app::sv_math::rand(smash::hash40("fighter"), 3) {
                     0 => PLAY_SE(fighter, Hash40::new("vc_littlemac_attack06")),
                     1 => PLAY_SE(fighter, Hash40::new("vc_littlemac_attack07")),
@@ -216,7 +219,7 @@ unsafe fn littlemac_special_n2_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
-        QUAKE(fighter, if meter < 30.0 {*CAMERA_QUAKE_KIND_M} else { *CAMERA_QUAKE_KIND_L });
+        QUAKE(fighter, if meter < 40.0 {*CAMERA_QUAKE_KIND_M} else { *CAMERA_QUAKE_KIND_L });
         let rumble = if meter < 100.0 { Hash40::new("rbkind_nohitl") } else { Hash40::new("rbkind_nohitll") };
         ControlModule::set_rumble(boma, rumble, 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
