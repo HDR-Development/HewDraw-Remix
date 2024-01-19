@@ -346,7 +346,7 @@ unsafe fn sonic_special_n_hit_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_specialnlanding" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+    let boma = fighter.boma(); 
 }
 
 pub fn install() {
