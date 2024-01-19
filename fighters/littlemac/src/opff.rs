@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn handle_ko_meter(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if !sv_information::is_ready_go()
     || boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
@@ -67,48 +67,6 @@ unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
     }
 }
 
-// TODO: MOVE TO SPECIALNSTART_MAIN_LOOP
-unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.status_frame() >= 10 {
-            if fighter.is_cat_flag(Cat2::StickEscape) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
-            }
-            else if fighter.is_cat_flag(Cat2::StickEscapeF) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
-            }
-            else if fighter.is_cat_flag(Cat2::StickEscapeB) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
-            }
-            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
-            }
-            if fighter.sub_check_command_guard().get_bool() {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
-            }
-        }
-        else if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.status_frame() >= 8 {
-            if fighter.is_cat_flag(Cat1::AirEscape)  {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_AIR);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
-            }
-            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
-            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
-            {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_JUMP_AERIAL);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, true, false);
-            }
-        }
-    }
-}
-
 // Fixes weird vanilla behavior where touching ground during upB puts you into special fall for 1f before landing
 unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP)
@@ -165,7 +123,7 @@ unsafe fn training_mode_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     && boma.is_status(*FIGHTER_STATUS_KIND_APPEAL)
     && boma.is_button_trigger(Buttons::Guard) {
         let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
-        let meter_inc = (meter + 20.0).clamp(0.0, 100.0);
+        let meter_inc = (meter + 40.0).clamp(0.0, 100.0);
         WorkModule::set_float(boma, meter_inc, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         EffectModule::req_on_joint(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::new(6.0, 15.0, 0.0), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
         //println!("meter_inc: {}", meter_inc);
@@ -175,9 +133,8 @@ unsafe fn training_mode_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    handle_ko_meter(boma, status_kind);
+    handle_ko_meter_decrement(boma, status_kind);
     tech_roll_help(boma, motion_kind, facing, frame);
-    nspecial_cancels(fighter);
     up_special_proper_landing(fighter);
     dreamland_express(fighter);
     fastfall_specials(fighter);

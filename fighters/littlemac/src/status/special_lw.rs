@@ -55,7 +55,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let charge_motion_rate = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_max_charge_motion_rate_"));
     MotionModule::change_motion(
         fighter.module_accessor,
-        if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("special_air_start") } else { Hash40::new("special_air_n_start") },
+        if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("special_n_start") } else { Hash40::new("special_air_n_start") },
         0.0, charge_motion_rate, false, 0.0, false, false
     );
     let reset_type = if fighter.is_situation(*SITUATION_KIND_GROUND) { ENERGY_STOP_RESET_TYPE_GROUND } else { ENERGY_STOP_RESET_TYPE_AIR };
@@ -64,11 +64,12 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let facing = PostureModule::lr(fighter.module_accessor);
     sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, -0.01 * facing, 0.0);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     if fighter.is_situation(*SITUATION_KIND_AIR) {
+        sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, sum_spd_y, 0.0, 0.0, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
     else {
+        sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
@@ -89,6 +90,148 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if (fighter.is_prev_situation(*SITUATION_KIND_GROUND) && fighter.is_situation(*SITUATION_KIND_AIR))
+    || (fighter.is_prev_situation(*SITUATION_KIND_AIR) && fighter.is_situation(*SITUATION_KIND_GROUND)) {
+        KineticModule::clear_speed_all(fighter.module_accessor);
+    }
+    let max_charge_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_max_charge_frame"));
+    let frame = MotionModule::frame(fighter.module_accessor);
+    let a0 = (1.0 / max_charge_frame as f32);
+    WorkModule::set_float(fighter.module_accessor, a0, *FIGHTER_LITTLEMAC_STATUS_WORK_ID_FLOAT_SPECIAL_N_CHARGE_RATE);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH) {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_DASH_RESERVE);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
+        }
+    }
+    if MotionModule::frame(fighter.module_accessor) <= max_charge_frame as f32 - 1.0 {
+        if (fighter.global_table[CURRENT_FRAME].get_f32() < max_charge_frame as f32 - 1.0) {
+            if fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+                if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_n_start"), -1.0, 1.0, 0.0);
+                    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
+                    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                }
+            }
+            else {
+                if fighter.is_situation(*SITUATION_KIND_AIR) {
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                    MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_air_n_start"), -1.0, 1.0, 0.0);
+                    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
+                    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                }
+            }
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_DASH_RESERVE) {
+                let active_start_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_active_start_frame"));
+                if active_start_frame <= MotionModule::frame(fighter.module_accessor) {
+                    DamageModule::set_no_reaction_mode_status(fighter.module_accessor, DamageNoReactionMode { _address: *DAMAGE_NO_REACTION_MODE_NORMAL as u8 }, -1.0, -1.0, -1);
+                    let facing = PostureModule::lr(fighter.module_accessor);
+                    let turn_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_stick_x"));
+                    if fighter.stick_x() * facing > turn_stick_x {
+                        fighter.change_status(FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_DASH.into(), false.into());
+                    }
+                    else {
+                        fighter.change_status(FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_DASH_TURN.into(), false.into());
+                    }
+                    return 1.into()
+                }
+            }
+            if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.status_frame() >= 10 {
+                if fighter.is_cat_flag(Cat2::StickEscape) {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                }
+                else if fighter.is_cat_flag(Cat2::StickEscapeF) {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                }
+                else if fighter.is_cat_flag(Cat2::StickEscapeB) {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                }
+                else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                }
+                if fighter.sub_check_command_guard().get_bool() {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+                }
+            }
+            else if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.status_frame() >= 8 {
+                if fighter.is_cat_flag(Cat1::AirEscape)  {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_AIR);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+                }
+                else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
+                && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
+                {
+                    VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_JUMP_AERIAL);
+                    fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, true, false);
+                }
+            }
+            // let cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_cancel_frame")); //l70
+            // if cancel_frame <= MotionModule::frame(fighter.module_accessor) {
+            //     if fighter.is_situation(*SITUATION_KIND_AIR) {
+            //         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
+            //             if fighter.is_cat_flag(Cat1::AirEscape)
+            //             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+            //                 fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
+            //                 return 1.into()
+            //             }
+            //         }
+            //     }
+            // }
+            // else {
+            //     if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+            //         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F)
+            //         && fighter.sub_check_command_guard().get_bool()
+            //         && fighter.is_cat_flag(Cat2::StickEscapeF) {
+            //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+            //             return 1.into()
+            //         }
+            //         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B)
+            //         && fighter.sub_check_command_guard().get_bool()
+            //         && fighter.is_cat_flag(Cat2::StickEscapeB) {
+            //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+            //             return 1.into()
+            //         }
+            //         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
+            //         && fighter.sub_check_command_guard().get_bool()
+            //         && fighter.is_cat_flag(Cat2::StickEscapeF) {
+            //             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+            //             return 1.into()
+            //         }
+            //     }
+            //     if fighter.sub_check_command_guard().get_bool()
+            //     && fighter.is_cat_flag(Cat2::StickEscape) {
+            //         fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
+            //         return 1.into()
+            //     }
+            // }
+        }
+    }
+    else {
+        let facing = PostureModule::lr(fighter.module_accessor);
+        let turn_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_stick_x")); //l80
+        if fighter.stick_x() * facing > turn_stick_x {
+            fighter.change_status(FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_MAX_DASH.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_MAX_DASH_TURN.into(), false.into());
+        }
+        return 1.into()
+    }
+
     return 0.into()
 }
 
@@ -104,5 +247,6 @@ pub fn install() {
         special_lw_old_pre,
         special_lw_hit_init,
         special_lw_pre,
+        special_lw_main,
     );
 }
