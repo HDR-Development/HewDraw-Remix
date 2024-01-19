@@ -1,3 +1,60 @@
+passive:
+  extra:
+    cancel_frame: 29
+passive_stand_f:
+  extra:
+    cancel_frame: 43
+passive_stand_b:
+  extra:
+    cancel_frame: 43
+down_stand_u:
+  extra:
+    cancel_frame: 32
+down_stand_d:
+  extra:
+    cancel_frame: 32
+down_attack_u:
+  extra:
+    cancel_frame: 48
+down_attack_d:
+  extra:
+    cancel_frame: 48
+down_forward_u:
+  extra:
+    cancel_frame: 38
+down_forward_d:
+  extra:
+    cancel_frame: 38
+down_back_u:
+  extra:
+    cancel_frame: 38
+down_back_d:
+  extra:
+    cancel_frame: 38
+down_spot_d:
+  extra:
+    cancel_frame: 32
+cliff_climb_quick:
+  extra:
+    cancel_frame: 37
+cliff_attack_quick:
+  extra:
+    cancel_frame: 58
+cliff_escape_quick:
+  extra:
+    cancel_frame: 52
+slip_stand:
+  extra:
+    cancel_frame: 24
+slip_attack:
+  extra:
+    cancel_frame: 52
+slip_escape_f:
+  extra:
+    cancel_frame: 31
+slip_escape_b:
+  extra:
+    cancel_frame: 31
 fall:
   blend_frames: 6
 guard_off:
