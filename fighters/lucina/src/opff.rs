@@ -145,12 +145,18 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+	let long_sword_scale = Vector3f{x: 1.0, y: 1.0, z: 1.05};
+	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword1"), &long_sword_scale);
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
     //side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
     up_special_reverse(boma, status_kind, stick_x, facing, frame);
+    sword_length(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCINA )]
