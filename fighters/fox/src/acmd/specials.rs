@@ -149,6 +149,9 @@ unsafe fn effect_specialairlwstart (fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		EFFECT_FOLLOW(fighter, Hash40::new("fox_ref_loop"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(fighter, Hash40::new("fox_ref_ref"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 0.5, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 5.0, 0, 0, 0, 0, 2.8, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
 	}
 }
 

@@ -17,7 +17,7 @@ unsafe fn wolf_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "wolf", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
@@ -34,7 +34,7 @@ unsafe fn wolf_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "wolf", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -52,7 +52,7 @@ unsafe fn wolf_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "wolf", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -77,6 +77,31 @@ unsafe fn wolf_attack_hi3_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "wolf", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wolf_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+}
+
 #[acmd_script( agent = "wolf", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -94,34 +119,14 @@ unsafe fn wolf_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "wolf", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn wolf_attack_lw3_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), -2, 1.5, -4, 0, 8, -5, 1, true);
-        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 2.5, -3, 0, 8, -5, 1, 0, 0, 0, 0, 0, 0, true);
-        LAST_PARTICLE_SET_COLOR(fighter, 1.5, 0, 0.1);
-        LAST_EFFECT_SET_RATE(fighter, 1.2);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 1.5, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, 1);
-        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4.5, 0, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
-    }
-}
-
-
 pub fn install() {
     install_acmd_scripts!(
         wolf_attack_s3_hi_game,
         wolf_attack_s3_s_game,
         wolf_attack_s3_lw_game,
         wolf_attack_hi3_game,
+        wolf_attack_hi3_expression,
         wolf_attack_lw3_game,
-        wolf_attack_lw3_effect,
     );
 }
 

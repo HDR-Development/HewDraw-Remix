@@ -35,7 +35,8 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+        && fighter.status_frame() >= 19 {
             // Current FAF in motion list is 42, frame is 0 indexed so subtract a frame
             let special_s1_cancel_frame_ground = 41.0;
             // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
@@ -44,6 +45,26 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_s1_cancel_frame_ground - landing_lag, true, true, false);
             }
             LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
+// allow fair and bair to transition into their angled variants when the stick is angled up/down
+unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
+    if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
+    && (11.0..12.0).contains(&frame) {
+        if stick_y > 0.5 { // stick is held up
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_hi"), -1.0, 1.0, 0.0, false, false);
+        } else if stick_y < -0.5 { // stick is held down
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_lw"), -1.0, 1.0, 0.0, false, false);
+        }
+    } 
+    else if fighter.is_motion_one_of(&[Hash40::new("attack_air_b"), Hash40::new("attack_air_b_hi"), Hash40::new("attack_air_b_lw")])
+    && (11.0..12.0).contains(&frame) {
+        if stick_y > 0.5 { // stick is held up
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_hi"), -1.0, 1.0, 0.0, false, false);
+        } else if stick_y < -0.5 { // stick is held down
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_lw"), -1.0, 1.0, 0.0, false, false);
         }
     }
 }
@@ -81,6 +102,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     holy_water_ac(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     axe_drift(boma, status_kind, situation_kind, cat[1], stick_y);
     cross_land_cancel(fighter, boma, cat[2], stick_y);
+    whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
 }
 

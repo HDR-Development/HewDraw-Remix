@@ -34,7 +34,7 @@ unsafe fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopajr", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -69,7 +69,7 @@ unsafe fn koopajr_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopajr", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
@@ -143,7 +143,25 @@ unsafe fn koopajr_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
+}
+
+
+#[acmd_script( agent = "koopajr", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopajr_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 #[acmd_script( agent = "koopajr", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -179,7 +197,7 @@ unsafe fn koopajr_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "koopajr", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
@@ -191,7 +209,7 @@ unsafe fn koopajr_landing_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_LANDING_ATTACK_AIR_SQUAT);
         JostleModule::set_status(boma, true);
     }
-    
+
 }
 
 pub fn install() {
@@ -201,6 +219,7 @@ pub fn install() {
         koopajr_landing_air_f_game,
         koopajr_attack_air_b_game,
         koopajr_attack_air_hi_game,
+        koopajr_attack_air_hi_expression,
         koopajr_attack_air_lw_game,
         koopajr_landing_air_lw_game,
     );

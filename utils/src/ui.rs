@@ -160,6 +160,14 @@ impl UiManager {
         }
     }
 
+    #[export_name = "UiManager__change_ff_meter_cap"]
+    pub extern "C" fn change_ff_meter_cap(entry_id: u32, cap: f32) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].change_cap(cap);
+        }
+    }
+
     #[export_name = "UiManager__set_power_board_enable"]
     pub extern "C" fn set_power_board_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
@@ -347,8 +355,11 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     unsafe {
         // check the global static menu-based mode field
         let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
-        // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
-        if *mode == 0x6020000 {
+        // if we are in the following modes, there is no ui overlay, so dont update the hud
+        if [
+            0x6020000, // Controls Menu
+            0x4050000, // Mii Maker
+        ].contains(&*mode) {
             return;
         }
     }

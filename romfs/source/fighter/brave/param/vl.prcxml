@@ -73,7 +73,7 @@
       <float hash="start_max_speed_y_mul_air">0.8</float>
       <int hash="cure_limit_num">3</int>
       <float hash="deathball1_offset_y">15</float>
-      <int hash="speed_up_frame">480</int>
+      <int hash="speed_up_frame">600</int>
       <float hash="speed_up_walk_speed_mul">1.4</float>
       <float hash="speed_up_dash_speed_mul">1.4</float>
       <float hash="speed_up_run_speed_mul">1.4</float>
