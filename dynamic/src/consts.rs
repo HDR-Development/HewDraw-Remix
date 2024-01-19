@@ -725,6 +725,7 @@ pub mod vars {
             pub const SPECIAL_HI_ATTACK_IS_LEAVE_WALL: i32 = 0x1101;
             pub const SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH: i32 = 0x1102;
             pub const SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM: i32 = 0x1103;
+            pub const THUNDER_LOOSE: i32 = 0x1104;
 
             // float
             /// Holds the initial y velocity you have during up b to compare once you've touched a wall to reflect your speed the other direction if it changes

@@ -303,9 +303,6 @@ unsafe fn lucas_attack_air_b_expression(fighter: &mut L2CAgentBase) {
 unsafe fn lucas_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        fighter.set_int(10, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
-    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
