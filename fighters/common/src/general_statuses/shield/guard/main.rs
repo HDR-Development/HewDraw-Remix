@@ -10,8 +10,9 @@ unsafe fn sub_status_guard_common(fighter: &mut L2CFighterCommon) {
     if !StopModule::is_stop(fighter.module_accessor) {
         misc::sub_guard_on_uniq(fighter, false.into());
     }
-    fighter.global_table[SUB_STATUS]
-        .assign(&L2CValue::Ptr(misc::sub_guard_on_uniq as *const () as _));
+    fighter.global_table[SUB_STATUS].assign(
+        &L2CValue::Ptr(misc::sub_guard_on_uniq as *const () as _)
+    );
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common_air)]

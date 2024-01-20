@@ -5,28 +5,34 @@ use globals::*;
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__calc_shield_scale)]
 pub unsafe fn calc_shield_scale(
     fighter: &mut L2CFighterCommon,
-    shield_level: L2CValue,
+    shield_level: L2CValue
 ) -> L2CValue {
     let shield_level = shield_level.get_f32();
     let shield_max = WorkModule::get_float(
         fighter.module_accessor,
-        *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX,
+        *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX
     );
 
     let shield_size = WorkModule::get_param_float(
         fighter.module_accessor,
         hash40("common"),
-        hash40("shield_size"),
+        hash40("shield_size")
     );
-    let shield_scale =
-        WorkModule::get_param_float(fighter.module_accessor, hash40("shield_scale"), 0);
+    let shield_scale = WorkModule::get_param_float(
+        fighter.module_accessor,
+        hash40("shield_scale"),
+        0
+    );
     let shield_scale_min = WorkModule::get_param_float(
         fighter.module_accessor,
         hash40("common"),
-        hash40("shield_scale_min"),
+        hash40("shield_scale_min")
     );
-    let shield_radius =
-        WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
+    let shield_radius = WorkModule::get_param_float(
+        fighter.module_accessor,
+        hash40("shield_radius"),
+        0
+    );
 
     // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
     // let scale = if analog > 0.0 && analog < 1.0 {
@@ -47,18 +53,18 @@ pub unsafe fn check_hit_stop_delay(fighter: &mut L2CFighterCommon, arg: L2CValue
     let hit_stop_delay_stick = WorkModule::get_param_float(
         fighter.module_accessor,
         hash40("common"),
-        hash40("hit_stop_delay_stick"),
+        hash40("hit_stop_delay_stick")
     );
     if hit_stop_delay_stick <= stick_x {
         let mut pos = *PostureModule::pos(fighter.module_accessor);
         let auto_mul = WorkModule::get_param_float(
             fighter.module_accessor,
             hash40("common"),
-            hash40("hit_stop_delay_stick_auto_mul"),
+            hash40("hit_stop_delay_stick_auto_mul")
         );
         let delay_mul = WorkModule::get_float(
             fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_DELAY_MUL,
+            *FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_DELAY_MUL
         );
         pos.x += stick_x * auto_mul * delay_mul;
         PostureModule::set_pos(fighter.module_accessor, &pos);
@@ -71,32 +77,34 @@ pub unsafe fn check_hit_stop_delay(fighter: &mut L2CFighterCommon, arg: L2CValue
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__check_hit_stop_delay_flick)]
 pub unsafe fn check_hit_stop_delay_flick(
     fighter: &mut L2CFighterCommon,
-    user_mul: L2CValue,
+    user_mul: L2CValue
 ) -> L2CValue {
     let stick_x = ControlModule::get_stick_x(fighter.module_accessor).abs();
     let sub_x = ControlModule::get_flick_sub_x(fighter.module_accessor) as f32;
     let hit_stop_delay_stick = WorkModule::get_param_float(
         fighter.module_accessor,
         hash40("common"),
-        hash40("hit_stop_delay_stick"),
+        hash40("hit_stop_delay_stick")
     );
-    if !WorkModule::is_flag(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK,
-    ) && StopModule::is_hit(fighter.module_accessor)
-        && sub_x < hit_stop_delay_stick
-        && hit_stop_delay_stick <= stick_x
+    if
+        !WorkModule::is_flag(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK
+        ) &&
+        StopModule::is_hit(fighter.module_accessor) &&
+        sub_x < hit_stop_delay_stick &&
+        hit_stop_delay_stick <= stick_x
     {
         let mut pos = *PostureModule::pos(fighter.module_accessor);
         let flick_mul = WorkModule::get_param_float(
             fighter.module_accessor,
             hash40("common"),
-            hash40("hit_stop_delay_flick_mul"),
+            hash40("hit_stop_delay_flick_mul")
         );
         let guard_mul = WorkModule::get_param_float(
             fighter.module_accessor,
             hash40("common"),
-            hash40("hit_stop_delay_guard_mul"),
+            hash40("hit_stop_delay_guard_mul")
         );
         let user_mul = WorkModule::get_float(fighter.module_accessor, user_mul.get_i32());
         pos.x += stick_x * flick_mul * guard_mul * user_mul;
@@ -112,12 +120,12 @@ pub unsafe fn check_hit_stop_delay_flick(
 pub unsafe fn is_continue_just_shield_count(fighter: &mut L2CFighterCommon) -> L2CValue {
     let just_shield_count = WorkModule::get_int(
         fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT,
+        *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT
     );
     let max_count = WorkModule::get_param_int(
         fighter.module_accessor,
         hash40("common"),
-        hash40("continue_just_shield_count"),
+        hash40("continue_just_shield_count")
     );
     L2CValue::Bool(just_shield_count <= max_count)
 }
@@ -126,23 +134,23 @@ pub unsafe fn is_continue_just_shield_count(fighter: &mut L2CFighterCommon) -> L
 pub unsafe fn landing_effect_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::dec_int(
         fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_LANDING_EFFECT_FRAME,
+        *FIGHTER_STATUS_GUARD_ON_WORK_INT_LANDING_EFFECT_FRAME
     );
     let frame = WorkModule::get_int(
         fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_LANDING_EFFECT_FRAME,
+        *FIGHTER_STATUS_GUARD_ON_WORK_INT_LANDING_EFFECT_FRAME
     );
     if frame <= 0 {
         MotionAnimcmdModule::call_script_single(
             fighter.module_accessor,
             *FIGHTER_ANIMCMD_EFFECT,
             Hash40::new("effect_guardlandingeffect"),
-            -1,
+            -1
         );
         WorkModule::set_int(
             fighter.module_accessor,
             8,
-            *FIGHTER_STATUS_GUARD_ON_WORK_INT_LANDING_EFFECT_FRAME,
+            *FIGHTER_STATUS_GUARD_ON_WORK_INT_LANDING_EFFECT_FRAME
         );
     }
     L2CValue::I32(0)
@@ -155,7 +163,7 @@ pub unsafe fn set_guard_blend_motion(
     delta_y: L2CValue,
     stick_x: L2CValue,
     stick_y: L2CValue,
-    flag: L2CValue,
+    flag: L2CValue
 ) -> L2CValue {
     let magnitude = stick_x.get_f32().powi(2) + stick_y.get_f32().powi(2);
     let magnitude = magnitude.sqrt().min(1.0);
@@ -173,7 +181,7 @@ pub unsafe fn set_guard_blend_motion(
 pub unsafe fn set_guard_blend_motion_angle(
     fighter: &mut L2CFighterCommon,
     delta_x: L2CValue,
-    delta_y: L2CValue,
+    delta_y: L2CValue
 ) -> L2CValue {
     let delta_x = delta_x.get_f32();
     let delta_y = delta_y.get_f32();
@@ -195,25 +203,28 @@ pub unsafe fn set_just_shield_scale(fighter: &mut L2CFighterCommon) -> L2CValue 
     let shield_size = WorkModule::get_param_float(
         fighter.module_accessor,
         hash40("common"),
-        hash40("shield_size"),
+        hash40("shield_size")
     );
     let shield_scale_min = WorkModule::get_param_float(
         fighter.module_accessor,
         hash40("common"),
-        hash40("shield_scale_min"),
+        hash40("shield_scale_min")
     );
-    let shield_radius =
-        WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
+    let shield_radius = WorkModule::get_param_float(
+        fighter.module_accessor,
+        hash40("shield_radius"),
+        0
+    );
 
     let scale = ((1.0 - shield_scale_min) * shield_size + shield_scale_min) * shield_radius;
     ModelModule::set_joint_scale(
         fighter.module_accessor,
         Hash40::new("throw"),
-        &Vector3f {
+        &(Vector3f {
             x: scale,
             y: scale,
             z: scale,
-        },
+        })
     );
     L2CValue::I32(0)
 }
@@ -224,11 +235,11 @@ pub unsafe fn set_shield_scale(fighter: &mut L2CFighterCommon, scale: L2CValue) 
     ModelModule::set_joint_scale(
         fighter.module_accessor,
         Hash40::new("throw"),
-        &Vector3f {
+        &(Vector3f {
             x: scale,
             y: scale,
             z: scale,
-        },
+        })
     );
     L2CValue::I32(0)
 }
