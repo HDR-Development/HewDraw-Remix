@@ -180,7 +180,7 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_specialhithrow", "game_specialairhithrow" ], category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "jack", script = "game_specialairhithrow", category = ACMD_GAME , low_priority)]
 unsafe fn jack_specialhithrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -200,7 +200,7 @@ unsafe fn jack_specialhithrow(fighter: &mut L2CAgentBase) {
             false,
             -1.0
         );
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 6.0, 78, 40, 10, 65, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 6.0, 78, 40, 10, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
