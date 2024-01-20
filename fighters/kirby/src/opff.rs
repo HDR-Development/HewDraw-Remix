@@ -411,6 +411,24 @@ unsafe fn trail_magic_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
+// handles kirby's mining behavior when copying steve
+unsafe fn pickel_mining(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) { 
+    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_PICKEL {
+        if VarModule::get_int(boma.object(), vars::kirby::instance::MATERIAL_INDEX) as i32 > 99 {
+            VarModule::set_int(boma.object(), vars::kirby::instance::MATERIAL_INDEX, 0);
+        }
+        
+        // wait 2 frames before letting the material table advance, preventing any jumps in entries
+        if !VarModule::is_flag(boma.object(), vars::kirby::instance::SHOULD_CYCLE_MATERIAL) {
+            if VarModule::get_int(boma.object(), vars::kirby::status::MINING_TIMER) == 0 {
+                VarModule::on_flag(boma.object(), vars::kirby::instance::SHOULD_CYCLE_MATERIAL);
+            } else {
+                VarModule::dec_int(boma.object(), vars::kirby::status::MINING_TIMER);
+            }
+        }
+    }
+}
+
 // Bite Early Throw and Turnaround
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -1218,6 +1236,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Sora Magic Cycle Adjustment
     trail_magic_cycle(fighter, boma, frame);
+
+    // Steve Mining
+    pickel_mining(fighter, boma);
 
     // Bite Early Throw and Turnaround
     bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
