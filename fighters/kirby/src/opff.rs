@@ -1077,7 +1077,7 @@ pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommo
             let old_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
             let new_stance = VarModule::get_int(opponent_boma.object(), vars::packun::instance::CURRENT_STANCE);
             if new_stance != old_stance {
-                println!("Copying Packun Flower's Current Stance, which is {}", new_stance);
+                // println!("Copying Packun Flower's Current Stance, which is {}", new_stance);
                 VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
                 if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_WAIT)
                 && WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PACKUN {

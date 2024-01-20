@@ -21,8 +21,6 @@ unsafe fn kirby_attack_11_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
-        println!("Kirby's Current Stance is {}", VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
-
     }
     
 }
