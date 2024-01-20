@@ -372,15 +372,9 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
         hash40("common"),
         hash40("special_stick_y")
     );
-    let jump_flick_y = WorkModule::get_param_int(
-        fighter.module_accessor,
-        hash40("common"),
-        hash40("jump_flick_y")
-    );
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if
         special_stick_y <= fighter.global_table[STICK_Y].get_f32() &&
-        fighter.global_table[FLICK_Y].get_i32() < jump_flick_y &&
         (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0
     {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI);

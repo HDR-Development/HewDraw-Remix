@@ -176,19 +176,13 @@ pub unsafe fn check_guard_attack_special_hi(
             hash40("common"),
             hash40("special_stick_y")
         );
-        let jump_flick_y = WorkModule::get_param_int(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("jump_flick_y")
-        );
-        let flick_y = fighter.global_table[FLICK_Y].get_i32();
         let stick_y = fighter.global_table[STICK_Y].get_f32();
         if
             WorkModule::is_flag(
                 fighter.module_accessor,
                 *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI
             ) ||
-            (special_stick_y <= stick_y && flick_y < jump_flick_y)
+            special_stick_y <= stick_y
         {
             if
                 WorkModule::is_enable_transition_term(
