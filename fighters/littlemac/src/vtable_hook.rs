@@ -68,13 +68,19 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         *FIGHTER_STATUS_KIND_ATTACK_100,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START,
         *FIGHTER_STATUS_KIND_ATTACK]) {
         if !VarModule::is_flag(boma.object(), vars::littlemac::status::LIMIT_METER_GAIN) {
             VarModule::on_flag(boma.object(), vars::littlemac::status::LIMIT_METER_GAIN);
         }
         else {
             meter_gain *= if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_100) { 0.1 }
-            else if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) { 0.2 } else { 0.5 };
+            else if boma.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP,
+                *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START
+            ]) { 0.2 } else { 0.5 };
         }
         if boma.is_motion(Hash40::new("attack_13"))
         && VarModule::is_flag(boma.object(), vars::littlemac::instance::IS_DREAMLAND_EXPRESS) {
