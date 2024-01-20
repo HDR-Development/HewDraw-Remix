@@ -20,6 +20,7 @@ pub struct CollisionLog {
 pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut BattleObject, collisionLog: CollisionLog, damage: f32) -> u64 {
     let boma = (&mut *(battle_object)).boma();
     let opponent_boma = &mut *(sv_battle_object::module_accessor(collisionLog.opponent_battle_object_id));
+    //if HitModule::get_status(opponent_boma, collisionLog.receiver_part_id as i32, 0) != 0 { return call_original!(vtable, battle_object, collisionLog, 0.0); }
     let mut meter_gain = 5.0;
 
     // this effectively stubs the logic handling critical zoom unless at full meter
@@ -55,11 +56,11 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
     if opponent_boma.is_status(*FIGHTER_STATUS_KIND_APPEAL) {
         if TeamModule::hit_team_no(boma) != TeamModule::hit_team_no(opponent_boma) {
             SlowModule::set_whole(boma, 4, 60);
+            EffectModule::req_on_joint(boma, Hash40::new("sys_hit_dead"), Hash40::new("bust"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.6, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
+            SoundModule::play_se_no3d(boma, Hash40::new("vc_littlemac_appeal05"), true, true);
+            SoundModule::play_se_no3d(boma, Hash40::new("vc_littlemac_missfoot02"), true, true);
+            meter_gain = 100.0;
         }
-        EffectModule::req_on_joint(boma, Hash40::new("sys_hit_dead"), Hash40::new("bust"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.6, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
-        SoundModule::play_se_no3d(boma, Hash40::new("vc_littlemac_appeal05"), true, true);
-        SoundModule::play_se_no3d(boma, Hash40::new("vc_littlemac_missfoot02"), true, true);
-        meter_gain = 100.0;
     }
 
     // modify meter based on the attack used
