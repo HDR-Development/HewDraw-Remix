@@ -1211,7 +1211,6 @@ pub mod vars {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
             pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
-            pub const HIT_INIT: i32 = 0x0102;
 
             // floats
             pub const CURRENT_DAMAGE: i32 = 0x0100;

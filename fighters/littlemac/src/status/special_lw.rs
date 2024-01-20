@@ -179,45 +179,6 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                     fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, true, false);
                 }
             }
-            // let cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_cancel_frame")); //l70
-            // if cancel_frame <= MotionModule::frame(fighter.module_accessor) {
-            //     if fighter.is_situation(*SITUATION_KIND_AIR) {
-            //         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            //             if fighter.is_cat_flag(Cat1::AirEscape)
-            //             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-            //                 fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
-            //                 return 1.into()
-            //             }
-            //         }
-            //     }
-            // }
-            // else {
-            //     if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-            //         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F)
-            //         && fighter.sub_check_command_guard().get_bool()
-            //         && fighter.is_cat_flag(Cat2::StickEscapeF) {
-            //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
-            //             return 1.into()
-            //         }
-            //         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B)
-            //         && fighter.sub_check_command_guard().get_bool()
-            //         && fighter.is_cat_flag(Cat2::StickEscapeB) {
-            //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
-            //             return 1.into()
-            //         }
-            //         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
-            //         && fighter.sub_check_command_guard().get_bool()
-            //         && fighter.is_cat_flag(Cat2::StickEscapeF) {
-            //             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
-            //             return 1.into()
-            //         }
-            //     }
-            //     if fighter.sub_check_command_guard().get_bool()
-            //     && fighter.is_cat_flag(Cat2::StickEscape) {
-            //         fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
-            //         return 1.into()
-            //     }
-            // }
         }
     }
     else {

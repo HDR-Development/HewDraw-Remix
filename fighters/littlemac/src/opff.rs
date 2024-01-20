@@ -10,18 +10,18 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
         *FIGHTER_STATUS_KIND_REBIRTH,
         *FIGHTER_STATUS_KIND_ENTRY]) {
         VarModule::set_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE, 0.0);
-        VarModule::off_flag(boma.object(), vars::littlemac::instance::HIT_INIT);
     }
     let damage_statuses = [
         *FIGHTER_STATUS_KIND_DAMAGE,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR];
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_THROWN];
     if damage_statuses.contains(&status_kind) {
-        if StatusModule::is_changing(boma) && !VarModule::is_flag(boma.object(), vars::littlemac::instance::HIT_INIT) {
+        if StatusModule::is_changing(boma) {
             //println!();
-            VarModule::on_flag(boma.object(), vars::littlemac::instance::HIT_INIT);
             //println!("HIT!");
             let damage = DamageModule::damage(boma, 0);
             let dec = damage - VarModule::get_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE);
@@ -40,14 +40,6 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
         // also handle side special once-per-airtime
         if WorkModule::is_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S) {
             WorkModule::off_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S);
-        }
-    }
-    else {
-        if boma.is_prev_status_one_of(&damage_statuses)
-        && !boma.is_status_one_of(&damage_statuses)
-        && StatusModule::is_changing(boma) {
-            VarModule::off_flag(boma.object(), vars::littlemac::instance::HIT_INIT);
-            //println!("HITNT!");
         }
     }
 }

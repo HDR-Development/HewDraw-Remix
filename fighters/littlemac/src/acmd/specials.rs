@@ -101,7 +101,7 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_RESET_KO_GAUGE);
     }
-    frame(lua_state, 39.0);
+    frame(lua_state, 41.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY);
     }
@@ -175,7 +175,7 @@ unsafe fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
                 match smash::app::sv_math::rand(smash::hash40("fighter"), 3) {
                     0 => PLAY_SE(fighter, Hash40::new("vc_littlemac_attack06")),
                     1 => PLAY_SE(fighter, Hash40::new("vc_littlemac_attack07")),
-                    2 => PLAY_SE(fighter, Hash40::new("vc_littlemac_special_lo1")),
+                    2 => PLAY_SE(fighter, Hash40::new("vc_littlemac_special_l01")),
                     _ => PLAY_SE(fighter, Hash40::new("vc_littlemac_special_l01"))
                 };
             }
