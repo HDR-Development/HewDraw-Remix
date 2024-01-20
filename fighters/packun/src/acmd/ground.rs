@@ -25,6 +25,7 @@ unsafe fn packun_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
+        println!("Packun Flower's Current Stance is {}", VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     }
 }
 

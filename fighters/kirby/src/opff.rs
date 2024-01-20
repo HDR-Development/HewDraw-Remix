@@ -1070,12 +1070,21 @@ pub unsafe fn lucas_offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommo
 
 // Piranha Plant Ptooie Stance
 pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if fighter.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW, *FIGHTER_STATUS_KIND_CATCH]) {
+    if fighter.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW, *FIGHTER_STATUS_KIND_CATCH_WAIT]) {
         let opponent_boma = fighter.get_grabbed_opponent_boma();
         let grabbed_fighter = smash::app::utility::get_kind(opponent_boma);
         if grabbed_fighter == *FIGHTER_KIND_PACKUN {
+            let old_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
             let new_stance = VarModule::get_int(opponent_boma.object(), vars::packun::instance::CURRENT_STANCE);
-            VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
+            if new_stance != old_stance {
+                println!("Copying Packun Flower's Current Stance, which is {}", new_stance);
+                VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
+                if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_WAIT)
+                && WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PACKUN {
+                    EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
+                    PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+                }
+            }
         }
     }
 }
@@ -1086,6 +1095,36 @@ unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
     else {
         VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.0);
+    }
+}
+
+#[weapon_frame( agent = WEAPON_KIND_PACKUN_SPIKEBALL )]
+pub fn spikeball_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+            VarModule::on_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+            // println!("bomb");
+        }
+        else if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
+            VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+            // println!("not bomb");
+        }
+        let status_kind = StatusModule::status_kind(weapon.module_accessor);
+        let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
+        if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {
+            if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) || weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_HOP) {
+                /* if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() == 2 {
+                    println!("will bomb");
+                } */
+                if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() >= 80 && motion_kind != hash40("explode") {
+                    WorkModule::off_flag(boma, *WEAPON_PACKUN_SPIKEBALL_STATUS_HOP_WORK_FLAG_CLEARED_ATTACK);
+                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+                    // println!("is bomb");
+                }
+            }
+        }
     }
 }
 
