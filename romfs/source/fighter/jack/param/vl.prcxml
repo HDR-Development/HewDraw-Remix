@@ -27,13 +27,13 @@
     <float hash="rebel_gauge_add_handi_mul">0</float>
   </struct>
   <list hash="rebel_gauge_damage_rate">
-    <float index="0">33.75</float>
-    <float index="1">33.75</float>
-    <float index="2">33.75</float>
-    <float index="3">33.75</float>
-    <float index="4">33.75</float>
-    <float index="5">33.75</float>
-    <float index="6">33.75</float>
+    <float index="0">12</float>
+    <float index="1">12</float>
+    <float index="2">12</float>
+    <float index="3">12</float>
+    <float index="4">12</float>
+    <float index="5">12</float>
+    <float index="6">12</float>
   </list>
   <list hash="param_special_n">
     <struct index="0">
