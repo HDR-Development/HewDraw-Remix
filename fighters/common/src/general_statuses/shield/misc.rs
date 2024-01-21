@@ -137,19 +137,11 @@ pub unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -
 
 #[skyline::hook(replace = L2CFighterCommon_check_guard_hold)]
 pub unsafe fn check_guard_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let special_buttons = [*CONTROL_PAD_BUTTON_SPECIAL, *CONTROL_PAD_BUTTON_SPECIAL_RAW];
-    let special_disabled = WorkModule::is_flag(
-        fighter.module_accessor,
-        *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON
-    );
-    let special_hold = special_buttons
-        .iter()
-        .any(|x| ControlModule::check_button_on(fighter.module_accessor, *x));
     let guard_hold = ControlModule::check_button_on(
         fighter.module_accessor,
         *CONTROL_PAD_BUTTON_GUARD_HOLD
     );
-    L2CValue::Bool(/* (special_hold && !special_disabled) || */ guard_hold)
+    L2CValue::Bool(guard_hold)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_check_guard_attack_special_hi)]
@@ -159,7 +151,6 @@ pub unsafe fn check_guard_attack_special_hi(
 ) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if
-        !arg.get_bool() &&
         WorkModule::is_enable_transition_term(
             fighter.module_accessor,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
@@ -169,52 +160,225 @@ pub unsafe fn check_guard_attack_special_hi(
         !ItemModule::is_have_item(fighter.module_accessor, 0)
     {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI4_START.into(), true.into());
-        true.into()
-    } else {
-        let special_stick_y = WorkModule::get_param_float(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("special_stick_y")
-        );
-        let stick_y = fighter.global_table[STICK_Y].get_f32();
-        if
-            WorkModule::is_flag(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI
-            ) ||
-            special_stick_y <= stick_y
-        {
-            if
-                WorkModule::is_enable_transition_term(
-                    fighter.module_accessor,
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
-                ) &&
-                (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0
-            {
-                let should_cancel = if fighter.global_table[0x3a].get_bool() {
-                    let callable: extern "C" fn(
-                        &mut L2CFighterCommon
-                    ) -> L2CValue = std::mem::transmute(fighter.global_table[0x3a].get_ptr());
-                    callable(fighter).get_bool()
-                } else {
-                    true
-                };
-                if should_cancel {
-                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
-                    return true.into();
-                }
-            }
-            WorkModule::off_flag(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI
-            );
-        }
-        false.into()
+        return true.into();
     }
+    let special_stick_y = WorkModule::get_param_float(
+        fighter.module_accessor,
+        hash40("common"),
+        hash40("special_stick_y")
+    );
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+    if
+        WorkModule::is_flag(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI
+        ) ||
+        special_stick_y <= stick_y
+    {
+        if
+            WorkModule::is_enable_transition_term(
+                fighter.module_accessor,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+            ) &&
+            (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0
+        {
+            let should_cancel = if fighter.global_table[0x3a].get_bool() {
+                let callable: extern "C" fn(
+                    &mut L2CFighterCommon
+                ) -> L2CValue = std::mem::transmute(fighter.global_table[0x3a].get_ptr());
+                callable(fighter).get_bool()
+            } else {
+                true
+            };
+            if should_cancel {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
+                return true.into();
+            }
+        }
+        WorkModule::off_flag(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI
+        );
+    }
+    false.into()
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
 pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // TODO: document this
+    if fighter.global_table[0x34].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(
+            fighter.global_table[0x34].get_ptr()
+        );
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    // useful things
+    let boma = fighter.module_accessor;
+    let stick_x = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(boma);
+    let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+    let cat3 = fighter.global_table[CMD_CAT3].get_i32();
+    let guard_hold = fighter.check_guard_hold().get_bool();
+
+    // check shorthop aerial
+    if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
+        return true.into();
+    }
+
+    // check USpecial/USmash
+    let guard_hold = fighter.check_guard_hold().get_bool();
+    if fighter.check_guard_attack_special_hi(guard_hold.into()).get_bool() {
+        return false.into();
+    }
+
+    // check jump
+    if
+        fighter.sub_check_button_jump().get_bool() ||
+        (!guard_hold && fighter.sub_check_button_frick().get_bool())
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
+        return true.into();
+    }
+
+    // check escapes
+    if !guard_hold {
+        let escape_fb_stick_x = WorkModule::get_param_float(
+            boma,
+            hash40("common"),
+            hash40("escape_fb_stick_x")
+        );
+        let escape_stick_y = WorkModule::get_param_float(
+            boma,
+            hash40("common"),
+            hash40("escape_stick_y")
+        );
+        let sub_stick_x = ControlModule::get_sub_stick_x(boma) * PostureModule::lr(boma);
+        let sub_stick_y = ControlModule::get_sub_stick_y(boma);
+
+        if
+            WorkModule::is_enable_transition_term(
+                boma,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE
+            ) &&
+            ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE) != 0 || sub_stick_y <= escape_stick_y)
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
+            return true.into();
+        }
+        if
+            WorkModule::is_enable_transition_term(
+                boma,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F
+            ) &&
+            ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F) != 0 ||
+                sub_stick_x >= escape_fb_stick_x)
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+            return true.into();
+        }
+        if
+            WorkModule::is_enable_transition_term(
+                boma,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B
+            ) &&
+            ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B) != 0 ||
+                sub_stick_x <= escape_fb_stick_x * -1.0)
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+            return true.into();
+        }
+    }
+
+    // check item-toss/grab
+    // don't allow grab if holding an item
+    if ItemModule::is_have_item(boma, 0) {
+        // check item toss
+        if
+            fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND &&
+            WorkModule::is_enable_transition_term(
+                boma,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD
+            ) &&
+            // wizard shit
+            ({
+                fighter.clear_lua_stack();
+                lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
+                app::sv_module_access::item(fighter.lua_state_agent);
+                !fighter.pop_lua_stack(1).get_bool()
+            }) &&
+            ((pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) != 0 ||
+                (cat3 &
+                    (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4)) != 0)
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+            return true.into();
+        }
+    } else if
+        // check grab
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME) == 0 &&
+        WorkModule::is_enable_transition_term(
+            boma,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
+        ) &&
+        fighter.is_cat_flag(Cat1::Catch) &&
+        fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
+        return true.into();
+    }
+
+    // check shield drop
+    if guard_hold {
+        // If we are in shield lock, shield drop input only requires a downwards flick (or taunt input)
+        if
+            GroundModule::is_passable_ground(boma) &&
+            (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS) != 0
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+            return true.into();
+        }
+    } else {
+        // If your left stick is near the rim and you haven't triggered a roll
+        let escape_fb_stick_x = WorkModule::get_param_float(
+            boma,
+            hash40("common"),
+            hash40("escape_fb_stick_x")
+        );
+        if
+            fighter.global_table[STICK_X].get_f32().abs() > escape_fb_stick_x &&
+            (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F) == 0 &&
+            (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B) == 0 &&
+            !VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_UCF)
+        {
+            // Enable UCF shielddrop thresholds
+            // change spotdodge y req from -0.75 to -0.8
+            // change platdrop y req from -0.71 to -0.675
+            VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_UCF);
+        }
+        // Shielddrop with either traditional shielddrop input, or with taunt buttons
+        if GroundModule::is_passable_ground(boma) && fighter.is_cat_flag(CatHdr::ShieldDrop) {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+            return true.into();
+        }
+    }
+
+    // check parry
+    if fighter.is_parry_input() {
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into();
+    }
+
+    return false.into();
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
+pub unsafe fn sub_guard_cont_old(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[0x34].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(
             fighter.global_table[0x34].get_ptr()
