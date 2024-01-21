@@ -43,5 +43,4 @@ pub fn install(is_runtime: bool) {
     status::install();
     opff::install(is_runtime);
     opff::install_remainclown();
-    smashline::install_agent_frame_callback!(mechakoopa_callback);
 }

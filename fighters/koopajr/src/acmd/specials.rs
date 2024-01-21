@@ -71,8 +71,9 @@ unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if (VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER) <= 0) {
+        if !VarModule::is_flag(fighter.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA) {
             ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
+            VarModule::on_flag(fighter.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
         }
     }
 }
