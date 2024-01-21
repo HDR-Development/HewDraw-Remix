@@ -139,10 +139,10 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         ArticleModule::change_status(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, *WEAPON_JACK_WIREROPE_STATUS_KIND_EXTEND, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        AreaModule::reset_area(boma, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
-        ENABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
-        AreaModule::reset_area(boma, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH_ADD);
-        ENABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH_ADD);
+        //AreaModule::reset_area(boma, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
+        //ENABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
+        //AreaModule::reset_area(boma, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH_ADD);
+        //ENABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH_ADD);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -159,10 +159,10 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         SET_SEARCH_SIZE_EXIST(fighter, 2, 8);
     }
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        UNABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH_ADD);
-    }
+    //frame(lua_state, 23.0);
+    //if is_excute(fighter) {
+        //UNABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH_ADD);
+    //}
     frame(lua_state, 24.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -175,7 +175,7 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::change_status(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, *WEAPON_JACK_WIREROPE_STATUS_KIND_BACK, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
-        UNABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
+        //UNABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
     }
     
 }
@@ -202,11 +202,6 @@ unsafe fn jack_specialairhithrow(fighter: &mut L2CAgentBase) {
         );
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 6.0, 78, 40, 10, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, -20, 10);
-        //lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-    }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
@@ -217,10 +212,6 @@ unsafe fn jack_specialairhithrow(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        CancelModule::enable_cancel(fighter.module_accessor);
     }
 }
 
