@@ -181,7 +181,7 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "game_specialairhithrow", category = ACMD_GAME , low_priority)]
-unsafe fn jack_specialhithrow(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specialairhithrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -224,6 +224,18 @@ unsafe fn jack_specialhithrow(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "jack", script = "sound_specialairhithrow", category = ACMD_SOUND , low_priority)]
+unsafe extern "C" fn jack_specialairhithrow_sound(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_jack_special_h04"));
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_common_kick_hit_m"));
+    }
+}
+
 #[acmd_script( agent = "jack", script = "game_specialairhif" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -245,7 +257,8 @@ pub fn install() {
         jack_special_airn_down_game,
         jack_special_air_hi_game,
         jack_special_air_hi_f_game,
-        jack_specialhithrow,
+        jack_specialairhithrow,
+        jack_specialairhithrow_sound,
         jack_special_hi_game,
     );
 }
