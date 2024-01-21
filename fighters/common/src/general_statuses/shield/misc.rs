@@ -244,6 +244,21 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
 
+    let item_throwable =
+        ItemModule::is_have_item(boma, 0) &&
+        fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND &&
+        WorkModule::is_enable_transition_term(
+            boma,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD
+        ) &&
+        // wizard shit
+        ({
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
+            app::sv_module_access::item(fighter.lua_state_agent);
+            !fighter.pop_lua_stack(1).get_bool()
+        });
+
     // check escapes
     if !guard_hold {
         let escape_fb_stick_x = WorkModule::get_param_float(
@@ -266,7 +281,13 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             ) &&
             ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE) != 0 || sub_stick_y <= escape_stick_y)
         {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
+            // NOTE: DO NOT TOUCH
+            // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
+            // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), false.into());
+            // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
+            // and will not regenerate our pad flags
+            ControlModule::clear_command(fighter.module_accessor, true);
             return true.into();
         }
         if
@@ -277,7 +298,8 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F) != 0 ||
                 sub_stick_x >= escape_fb_stick_x)
         {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), false.into());
+            ControlModule::clear_command(fighter.module_accessor, true);
             return true.into();
         }
         if
@@ -288,7 +310,8 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B) != 0 ||
                 sub_stick_x <= escape_fb_stick_x * -1.0)
         {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), false.into());
+            ControlModule::clear_command(fighter.module_accessor, true);
             return true.into();
         }
     }
@@ -298,18 +321,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ItemModule::is_have_item(boma, 0) {
         // check item toss
         if
-            fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND &&
-            WorkModule::is_enable_transition_term(
-                boma,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD
-            ) &&
-            // wizard shit
-            ({
-                fighter.clear_lua_stack();
-                lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
-                app::sv_module_access::item(fighter.lua_state_agent);
-                !fighter.pop_lua_stack(1).get_bool()
-            }) &&
+            item_throwable &&
             ((pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) != 0 ||
                 (cat3 &
                     (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
