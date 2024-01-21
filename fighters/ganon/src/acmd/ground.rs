@@ -13,7 +13,10 @@ unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 70, 60, 0, 45, 5.0, 0.0, 12.0, 7.0, Some(0.0), Some(15.0), Some(7.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 70, 60, 0, 45, 3.5, 0.0, 12.0, 11.0, Some(0.0), Some(15.0), Some(11.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-        ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 2.75);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 70, 60, 0, 45, 2.0, 0.0, 12.0, 14.0, Some(0.0), Some(15.0), Some(14.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 2.75);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 2.75);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 2.75);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
