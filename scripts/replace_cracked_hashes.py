@@ -47,7 +47,7 @@ for root, dirs, files in os.walk(os.pardir):
                     with open(os.path.join(root, file), "w") as f:
                         f.write(text)
                         
-        elif file.endswith((".prcxml", ".xml", ".yaml")):
+        elif file.endswith((".prcxml", ".xml", ".yaml", ".lua")):
             with open(os.path.join(root, file), "r") as f:
                 changed = False
                 text = f.read()
