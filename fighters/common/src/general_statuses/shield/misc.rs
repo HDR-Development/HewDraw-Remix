@@ -203,6 +203,65 @@ pub unsafe fn check_guard_attack_special_hi(
     false.into()
 }
 
+pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let boma = fighter.module_accessor;
+    let c_stick_override = dbg!(fighter.is_button_on(Buttons::CStickOverride));
+    let c_stick_on = dbg!(fighter.is_button_on(Buttons::CStickOn) || c_stick_override);
+    let sub_stick_x = dbg!(
+        if c_stick_override {
+            ControlModule::get_stick_x(boma) * PostureModule::lr(boma)
+        } else {
+            ControlModule::get_sub_stick_x(boma) * PostureModule::lr(boma)
+        }
+    );
+    let sub_stick_y = dbg!(
+        if c_stick_override {
+            ControlModule::get_stick_y(boma)
+        } else {
+            ControlModule::get_sub_stick_y(boma)
+        }
+    );
+    let stick_vertical = sub_stick_y.abs() >= sub_stick_x.abs() && sub_stick_y < 0.0;
+
+    let escapes = [
+        (
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+            // checks if Cat2::StickEscape, or CStickOn and stick is vertical and below zero
+            fighter.is_cat_flag(Cat2::StickEscape) || (c_stick_on && stick_vertical),
+            *FIGHTER_STATUS_KIND_ESCAPE,
+        ),
+        (
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
+            // checks if Cat2::StickEscape, or CStickOn and stick is horizontal and above zero
+            fighter.is_cat_flag(Cat2::StickEscapeF) ||
+                (c_stick_on && !stick_vertical && sub_stick_x >= 0.0),
+            *FIGHTER_STATUS_KIND_ESCAPE_F,
+        ),
+        (
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
+            // checks if Cat2::StickEscape, or CStickOn and stick is horizontal and above zero
+            fighter.is_cat_flag(Cat2::StickEscapeB) ||
+                (c_stick_on && !stick_vertical && sub_stick_x < 0.0),
+            *FIGHTER_STATUS_KIND_ESCAPE_B,
+        ),
+    ];
+
+    for (term, condition, status) in escapes.iter() {
+        if WorkModule::is_enable_transition_term(boma, *term) && *condition {
+            // NOTE: DO NOT TOUCH
+            // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
+            // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
+            fighter.change_status((*status).into(), false.into());
+            // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
+            // and will not regenerate our pad flags
+            ControlModule::clear_command(fighter.module_accessor, true);
+            return true.into();
+        }
+    }
+
+    return false.into();
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
 pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     // TODO: document this
@@ -260,60 +319,8 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         });
 
     // check escapes
-    if !guard_hold {
-        let escape_fb_stick_x = WorkModule::get_param_float(
-            boma,
-            hash40("common"),
-            hash40("escape_fb_stick_x")
-        );
-        let escape_stick_y = WorkModule::get_param_float(
-            boma,
-            hash40("common"),
-            hash40("escape_stick_y")
-        );
-        let sub_stick_x = ControlModule::get_sub_stick_x(boma) * PostureModule::lr(boma);
-        let sub_stick_y = ControlModule::get_sub_stick_y(boma);
-
-        if
-            WorkModule::is_enable_transition_term(
-                boma,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE
-            ) &&
-            ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE) != 0 || sub_stick_y <= escape_stick_y)
-        {
-            // NOTE: DO NOT TOUCH
-            // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
-            // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), false.into());
-            // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
-            // and will not regenerate our pad flags
-            ControlModule::clear_command(fighter.module_accessor, true);
-            return true.into();
-        }
-        if
-            WorkModule::is_enable_transition_term(
-                boma,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F
-            ) &&
-            ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F) != 0 ||
-                sub_stick_x >= escape_fb_stick_x)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), false.into());
-            ControlModule::clear_command(fighter.module_accessor, true);
-            return true.into();
-        }
-        if
-            WorkModule::is_enable_transition_term(
-                boma,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B
-            ) &&
-            ((cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B) != 0 ||
-                sub_stick_x <= escape_fb_stick_x * -1.0)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), false.into());
-            ControlModule::clear_command(fighter.module_accessor, true);
-            return true.into();
-        }
+    if !guard_hold && check_escape_oos(fighter).get_bool() {
+        return true.into();
     }
 
     // check item-toss/grab
