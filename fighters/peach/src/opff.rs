@@ -38,10 +38,11 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 unsafe fn parasol_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let direction = ControlModule::get_stick_y(boma);
     if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END && direction <= -0.5 {
-        let vec = Vector3f{x: 0.0, y: -1.2, z: 0.0};
         let speed_y = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let diff = 2.1 + speed_y;
+        let vec = Vector3f{x: 0.0, y: -diff, z: 0.0};
 
-        if speed_y > -1.5 {
+        if speed_y > -2.1 {
             KineticModule::add_speed(boma, &vec);
         }
     }
