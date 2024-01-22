@@ -205,6 +205,11 @@ pub unsafe fn check_guard_attack_special_hi(
 
 pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.module_accessor;
+
+    if fighter.check_guard_hold().get_bool() {
+        return false.into();
+    }
+
     let c_stick_override = fighter.is_button_on(Buttons::CStickOverride);
     let c_stick_on = dbg!(
         !VarModule::is_flag(
@@ -263,65 +268,10 @@ pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     return false.into();
 }
 
-// enables (if disabled) cstick buffered rolls, if we let go of the cstick since starting shield
-// returns true if previously disabled, but now enabled
-pub unsafe fn check_enable_cstick_buffer_rolls(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if
-        VarModule::is_flag(
-            fighter.battle_object,
-            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
-        ) &&
-        !fighter.is_button_on(Buttons::CStickOn)
-    {
-        VarModule::off_flag(
-            fighter.battle_object,
-            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
-        );
-        return true.into();
-    }
-    return false.into();
-}
-
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
-pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // TODO: document this
-    if fighter.global_table[0x34].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(
-            fighter.global_table[0x34].get_ptr()
-        );
-        if callable(fighter).get_bool() {
-            return true.into();
-        }
-    }
-
-    // useful things
+pub unsafe fn check_item_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.module_accessor;
-    let stick_x = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(boma);
     let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
-    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    let cat2 = fighter.global_table[CMD_CAT2].get_i32();
     let cat3 = fighter.global_table[CMD_CAT3].get_i32();
-    let guard_hold = fighter.check_guard_hold().get_bool();
-
-    // check shorthop aerial
-    if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
-        return true.into();
-    }
-
-    // check USpecial/USmash
-    let guard_hold = fighter.check_guard_hold().get_bool();
-    if fighter.check_guard_attack_special_hi(guard_hold.into()).get_bool() {
-        return false.into();
-    }
-
-    // check jump
-    if
-        fighter.sub_check_button_jump().get_bool() ||
-        (!guard_hold && fighter.sub_check_button_frick().get_bool())
-    {
-        fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
-        return true.into();
-    }
 
     let item_throwable =
         ItemModule::is_have_item(boma, 0) &&
@@ -338,26 +288,23 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             !fighter.pop_lua_stack(1).get_bool()
         });
 
-    // check escapes
-    if !guard_hold && check_escape_oos(fighter).get_bool() {
+    if
+        item_throwable &&
+        ((pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) != 0 ||
+            (cat3 &
+                (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                    *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4)) != 0)
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
         return true.into();
     }
 
-    // check item-toss/grab
-    // don't allow grab if holding an item
-    if ItemModule::is_have_item(boma, 0) {
-        // check item toss
-        if
-            item_throwable &&
-            ((pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) != 0 ||
-                (cat3 &
-                    (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
-                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4)) != 0)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-            return true.into();
-        }
-    } else if
+    return false.into();
+}
+
+pub unsafe fn check_grab_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let boma = fighter.module_accessor;
+    if
         // check grab
         fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME) == 0 &&
         WorkModule::is_enable_transition_term(
@@ -370,8 +317,13 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
         return true.into();
     }
+    return false.into();
+}
 
-    // check shield drop
+pub unsafe fn check_plat_drop_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let boma = fighter.module_accessor;
+    let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+    let guard_hold = fighter.check_guard_hold().get_bool();
     if guard_hold {
         // If we are in shield lock, shield drop input only requires a downwards flick (or taunt input)
         if
@@ -405,6 +357,56 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
     }
+    return false.into();
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
+pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // TODO: document this
+    if fighter.global_table[0x34].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(
+            fighter.global_table[0x34].get_ptr()
+        );
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    // check shorthop aerial
+    if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
+        return true.into();
+    }
+
+    // check USpecial/USmash
+    let guard_hold = fighter.check_guard_hold().get_bool();
+    if fighter.check_guard_attack_special_hi(guard_hold.into()).get_bool() {
+        return true.into();
+    }
+
+    // check jump
+    if
+        fighter.sub_check_button_jump().get_bool() ||
+        (!guard_hold && fighter.sub_check_button_frick().get_bool())
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
+        return true.into();
+    }
+
+    if check_escape_oos(fighter).get_bool() {
+        return true.into();
+    }
+
+    if ItemModule::is_have_item(fighter.module_accessor, 0) {
+        if check_item_oos(fighter).get_bool() {
+            return true.into();
+        }
+    } else if check_grab_oos(fighter).get_bool() {
+        return true.into();
+    }
+
+    if check_plat_drop_oos(fighter).get_bool() {
+        return true.into();
+    }
 
     // check parry
     if fighter.is_parry_input() {
@@ -416,192 +418,23 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     return false.into();
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
-pub unsafe fn sub_guard_cont_old(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[0x34].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(
-            fighter.global_table[0x34].get_ptr()
+// enables (if disabled) cstick buffered rolls, if we let go of the cstick since starting shield
+// returns true if previously disabled, but now enabled
+pub unsafe fn check_enable_cstick_buffer_rolls(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if
+        VarModule::is_flag(
+            fighter.battle_object,
+            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
+        ) &&
+        !fighter.is_button_on(Buttons::CStickOn)
+    {
+        VarModule::off_flag(
+            fighter.battle_object,
+            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
         );
-        if callable(fighter).get_bool() {
-            return true.into();
-        }
-    }
-
-    let guard_hold = fighter.check_guard_hold().get_bool();
-    if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
         return true.into();
     }
-
-    let stick_x =
-        fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor);
-    let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
-    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-    let cat3 = fighter.global_table[CMD_CAT3].get_i32();
-
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        if
-            !guard_hold &&
-            WorkModule::is_enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD
-            ) &&
-            ItemModule::is_have_item(fighter.module_accessor, 0) &&
-            ({
-                fighter.clear_lua_stack();
-                lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
-                app::sv_module_access::item(fighter.lua_state_agent);
-                !fighter.pop_lua_stack(1).get_bool()
-            }) &&
-            ((pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) != 0 ||
-                (cat3 &
-                    (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
-                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4)) != 0)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-            return true.into();
-        }
-
-        let is_shield_stop =
-            fighter.global_table[STATUS_KIND_INTERRUPT] == FIGHTER_STATUS_KIND_GUARD_ON &&
-            fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_RUN;
-
-        if
-            is_shield_stop &&
-            WorkModule::is_enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN
-            ) &&
-            stick_x <=
-                WorkModule::get_param_float(
-                    fighter.module_accessor,
-                    hash40("common"),
-                    hash40("turn_run_stick_x")
-                ) &&
-            ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) &&
-            !ItemModule::is_have_item(fighter.module_accessor, 0)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_CATCH_TURN.into(), true.into());
-            return true.into();
-        }
-
-        if !guard_hold {
-            // <HDR>\
-            // If your left stick is near the rim and you haven't triggered a roll
-            let escape_fb_stick_x = WorkModule::get_param_float(
-                fighter.module_accessor,
-                hash40("common"),
-                hash40("escape_fb_stick_x")
-            );
-            if
-                fighter.global_table[STICK_X].get_f32().abs() > escape_fb_stick_x &&
-                (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F) == 0 &&
-                (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B) == 0 &&
-                !VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_UCF)
-            {
-                // Enable UCF shielddrop thresholds
-                // change spotdodge y req from -0.75 to -0.8
-                // change platdrop y req from -0.71 to -0.675
-                VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_UCF);
-            }
-            // Shielddrop with either traditional shielddrop input, or with taunt buttons
-            if
-                GroundModule::is_passable_ground(fighter.module_accessor) &&
-                fighter.is_cat_flag(CatHdr::ShieldDrop)
-            {
-                fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
-                return true.into();
-            }
-            // </HDR>
-
-            let escapes = [
-                (
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE,
-                    *FIGHTER_STATUS_KIND_ESCAPE,
-                ),
-                (
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F,
-                    *FIGHTER_STATUS_KIND_ESCAPE_F,
-                ),
-                (
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B,
-                    *FIGHTER_STATUS_KIND_ESCAPE_B,
-                ),
-            ];
-
-            for (term, flag, status) in escapes.iter() {
-                if
-                    WorkModule::is_enable_transition_term(fighter.module_accessor, *term) &&
-                    (cat2 & *flag) != 0
-                {
-                    fighter.change_status((*status).into(), true.into());
-                    return true.into();
-                }
-            }
-        } else {
-            // <HDR>\
-            // If we are in shield lock, shielddrop input only requires a downwards flick (or taunt input)
-            if
-                GroundModule::is_passable_ground(fighter.module_accessor) &&
-                (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS) != 0
-            {
-                fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
-                return true.into();
-            }
-            // </HDR>
-        }
-
-        if
-            is_shield_stop &&
-            WorkModule::is_enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH
-            ) &&
-            ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) &&
-            !ItemModule::is_have_item(fighter.module_accessor, 0)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
-            return true.into();
-        }
-    }
-
-    if !fighter.check_guard_attack_special_hi(guard_hold.into()).get_bool() {
-        if
-            WorkModule::get_int(
-                fighter.module_accessor,
-                *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME
-            ) == 0 &&
-            WorkModule::is_enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
-            ) &&
-            (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH) != 0 &&
-            fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND &&
-            !ItemModule::is_have_item(fighter.module_accessor, 0)
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
-            return true.into();
-        }
-        // Allows you to button jump out of shield when in shield lock
-        if
-            fighter.sub_check_button_jump().get_bool() ||
-            (!guard_hold && fighter.sub_check_button_frick().get_bool())
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
-            return true.into();
-        }
-
-        if fighter.is_parry_input() {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-            VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-            return true.into();
-        }
-    }
-
-    false.into()
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]
