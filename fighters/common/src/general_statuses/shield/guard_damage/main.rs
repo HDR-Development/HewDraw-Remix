@@ -228,7 +228,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             );
             let effect_handle = EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x113434cb66),
+                Hash40::new_raw(0x113434cb66), // static shield effect
                 Hash40::new("throw"),
                 &ZERO_VEC,
                 &ZERO_VEC,
