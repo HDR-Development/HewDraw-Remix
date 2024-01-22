@@ -156,11 +156,17 @@ pub unsafe fn check_guard_attack_special_hi(
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
         ) &&
         (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) != 0 &&
-        fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND &&
-        !ItemModule::is_have_item(fighter.module_accessor, 0)
+        fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     {
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI4_START.into(), true.into());
-        return true.into();
+        // if we were about to USmash, check that we shouldn't item toss instead
+        if ItemModule::is_have_item(fighter.module_accessor, 0) {
+            if check_item_oos(fighter).get_bool() {
+                return true.into();
+            }
+        } else {
+            fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI4_START.into(), true.into());
+            return true.into();
+        }
     }
     let special_stick_y = WorkModule::get_param_float(
         fighter.module_accessor,
