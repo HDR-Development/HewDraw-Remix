@@ -21,24 +21,6 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor) {
         }
     }
 }
-//Pill Slipping
-unsafe fn pill_slip(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            let velocity = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            if velocity > 0.0 || velocity < 0.0 {
-                if frame <= 6.0 {
-                    if boma.is_cat_flag(Cat1::Dash) {
-                        KineticModule::add_speed(boma, &Vector3f{ x: 0.28, y: 0.0, z: 0.0 });
-                    }
-                }
-            }
-        }
-    }
-}
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
@@ -73,7 +55,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //super_sheet_stall(boma, status_kind, situation_kind, frame);
     fastfall_specials(fighter);
-    pill_slip(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIOD )]

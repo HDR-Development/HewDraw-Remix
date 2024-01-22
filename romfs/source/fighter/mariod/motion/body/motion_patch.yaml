@@ -132,15 +132,15 @@ special_air_s:
     cancel_frame: 46
 special_hi:
     extra:
-      intangible_start_frame: 3
-      intangible_end_frame: 5
+      intangible_start_frame: 0
+      intangible_end_frame: 0
 special_air_hi:
     extra:
-      intangible_start_frame: 3
-      intangible_end_frame: 4
+      intangible_start_frame: 0
+      intangible_end_frame: 0
 throw_f:
   extra:
-    cancel_frame: 24
+    cancel_frame: 28
 throw_b:
   extra:
     cancel_frame: 47
