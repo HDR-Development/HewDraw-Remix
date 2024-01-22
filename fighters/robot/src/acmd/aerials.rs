@@ -175,16 +175,19 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         for _ in 0..5 {
             wait(lua_state, 1.0);
             if is_excute(fighter) {
-                if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && !VarModule::is_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED){
+                if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) 
+                && !VarModule::is_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED) 
+                && WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) > 10.0 {
                     // If holding down the button, increment the charge and continue the slowed animation
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                         VarModule::on_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_STARTED);
                         VarModule::add_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL, 1.0);
                         let current_fuel = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-                        let current_fuel_depletion = (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 15.0);
+                        let current_fuel_depletion = (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 13.0);
                         if (current_fuel_depletion > current_fuel) {
                             VarModule::on_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED);
                             WorkModule::set_float(boma, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+                            MeterModule::drain_direct(fighter.battle_object, 200.0);
                             FT_MOTION_RATE(fighter, 1.0);
                         } else {
                             FT_MOTION_RATE(fighter, 2.0);
@@ -201,8 +204,9 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 
     if !VarModule::is_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED) {
-        WorkModule::set_float(boma, WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 6.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-		FT_MOTION_RATE(fighter, 1.0);
+        WorkModule::set_float(boma, WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 13.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+		MeterModule::drain_direct(fighter.battle_object, (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 13.0));
+        FT_MOTION_RATE(fighter, 1.0);
 
         if VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) >= 5.0 {
             VarModule::on_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_MAX);

@@ -1099,6 +1099,9 @@ pub mod vars {
             // flags
             pub const AIRTIME_BAIR: i32 = 0x0100;
             pub const AIRTIME_SIDEB: i32 = 0x0101;
+            pub const IS_INIT_METER: i32 = 0x0102;
+            pub const GROUNDED_UPB: i32 = 0x0103;
+            pub const UPB_CANCEL: i32 = 0x0104;
             // ints
             pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
             pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
