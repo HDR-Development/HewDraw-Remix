@@ -72,7 +72,9 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_hi">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <float hash="wire_speed_pull_fighter">6</float>
+    </struct>
     <struct index="1">
       <float hash="rush_angle">90</float>
       <float hash="rush_angle_max_f">-60</float>
