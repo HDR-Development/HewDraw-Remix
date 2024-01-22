@@ -74,7 +74,8 @@ unsafe extern "C" fn rockman_rockbuster_shoot_air_main_loop(fighter: &mut L2CFig
         return 1.into();
     }
     if sit == *SITUATION_KIND_GROUND {
-        fighter.change_status(FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING.into(), false.into());
+        // fighter.change_status(FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING.into(), false.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 1.into();
     }
     0.into()
