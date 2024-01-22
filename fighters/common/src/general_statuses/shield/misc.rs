@@ -205,22 +205,23 @@ pub unsafe fn check_guard_attack_special_hi(
 
 pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.module_accessor;
-    let c_stick_override = dbg!(fighter.is_button_on(Buttons::CStickOverride));
-    let c_stick_on = dbg!(fighter.is_button_on(Buttons::CStickOn) || c_stick_override);
-    let sub_stick_x = dbg!(
-        if c_stick_override {
-            ControlModule::get_stick_x(boma) * PostureModule::lr(boma)
-        } else {
-            ControlModule::get_sub_stick_x(boma) * PostureModule::lr(boma)
-        }
+    let c_stick_override = fighter.is_button_on(Buttons::CStickOverride);
+    let c_stick_on = dbg!(
+        !VarModule::is_flag(
+            fighter.battle_object,
+            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
+        ) && (fighter.is_button_on(Buttons::CStickOn) || c_stick_override)
     );
-    let sub_stick_y = dbg!(
-        if c_stick_override {
-            ControlModule::get_stick_y(boma)
-        } else {
-            ControlModule::get_sub_stick_y(boma)
-        }
-    );
+    let sub_stick_x = if c_stick_override {
+        ControlModule::get_stick_x(boma) * PostureModule::lr(boma)
+    } else {
+        ControlModule::get_sub_stick_x(boma) * PostureModule::lr(boma)
+    };
+    let sub_stick_y = if c_stick_override {
+        ControlModule::get_stick_y(boma)
+    } else {
+        ControlModule::get_sub_stick_y(boma)
+    };
     let stick_vertical = sub_stick_y.abs() >= sub_stick_x.abs() && sub_stick_y < 0.0;
 
     let escapes = [
@@ -259,6 +260,25 @@ pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
 
+    return false.into();
+}
+
+// enables (if disabled) cstick buffered rolls, if we let go of the cstick since starting shield
+// returns true if previously disabled, but now enabled
+pub unsafe fn check_enable_cstick_buffer_rolls(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if
+        VarModule::is_flag(
+            fighter.battle_object,
+            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
+        ) &&
+        !fighter.is_button_on(Buttons::CStickOn)
+    {
+        VarModule::off_flag(
+            fighter.battle_object,
+            vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
+        );
+        return true.into();
+    }
     return false.into();
 }
 

@@ -483,6 +483,7 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_Main)]
 unsafe fn status_GuardDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    misc::check_enable_cstick_buffer_rolls(fighter);
     if !status_guard_damage_main_common_air(fighter).get_bool() {
         if
             fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND &&
@@ -521,6 +522,7 @@ unsafe fn status_GuardDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage)]
 unsafe fn status_GuardDamage(fighter: &mut L2CFighterCommon) -> L2CValue {
+    misc::check_enable_cstick_buffer_rolls(fighter);
     status_GuardDamage_common(fighter, true.into());
     fighter.sub_shift_status_main(L2CValue::Ptr(status_GuardDamage_Main as *const () as _))
 }

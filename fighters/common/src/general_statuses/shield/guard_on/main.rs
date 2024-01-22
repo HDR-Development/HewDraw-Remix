@@ -64,6 +64,7 @@ unsafe fn sub_status_guard_on_main_air_common(fighter: &mut L2CFighterCommon) ->
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOn_Main)]
 unsafe fn status_GuardOn_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    misc::check_enable_cstick_buffer_rolls(fighter);
     if
         !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_EFFECT) &&
         0.0 < fighter.global_table[CURRENT_FRAME].get_f32()
@@ -93,6 +94,7 @@ unsafe fn status_GuardOn_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOn)]
 unsafe fn status_GuardOn(fighter: &mut L2CFighterCommon) -> L2CValue {
+    misc::check_enable_cstick_buffer_rolls(fighter);
     sub_status_guard_on_common(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(status_GuardOn_Main as *const () as _))
 }
