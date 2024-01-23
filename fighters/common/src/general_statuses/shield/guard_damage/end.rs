@@ -8,7 +8,7 @@ unsafe fn status_end_GuardDamage(fighter: &mut L2CFighterCommon) -> L2CValue {
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x113434cb66), true, true);
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x12be304eab), true, true);
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x12c9377e3d), true, true);
-    effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x10da0b43c8), true, true);
+    // effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x10da0b43c8), true, true);
     if
         WorkModule::is_flag(
             fighter.module_accessor,
