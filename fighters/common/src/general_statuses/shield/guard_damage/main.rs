@@ -70,6 +70,25 @@ unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> 
             );
         }
     }
+
+    // this code is responsible for making the static shield effect transparent as shieldlag ends
+    let stiff_frame = WorkModule::get_int(
+        fighter.module_accessor,
+        *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME
+    ) as f32;
+    let static_eff_handle = WorkModule::get_int(
+        fighter.module_accessor,
+        *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE
+    );
+    let static_alpha_decay_frame = 10.0 as f32;
+    if stiff_frame < static_alpha_decay_frame && static_eff_handle != 0 {
+        EffectModule::set_alpha(
+            fighter.module_accessor,
+            static_eff_handle as u32,
+            stiff_frame / static_alpha_decay_frame
+        );
+    }
+
     if
         !WorkModule::count_down_int(
             fighter.module_accessor,
