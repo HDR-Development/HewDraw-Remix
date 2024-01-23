@@ -249,6 +249,7 @@ unsafe fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE) {
         if LinkModule::get_parent_status_kind(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT) as i32 != *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
             VarModule::on_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE);
+            MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("move"), 0.0, 1.0, 1.0);
             return 0.into();
         }
         original!(weapon);
