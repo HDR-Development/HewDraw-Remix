@@ -834,6 +834,13 @@ pub mod vars {
         }
     }
 
+    pub mod ness {
+        pub mod status {
+            // flags
+            pub const THUNDER_LOOSE: i32 = 0x1100;
+        }
+    }
+
     pub mod pickel {
         pub mod instance {
             // flags

@@ -9,11 +9,33 @@
       <float hash="p1_y">14.5</float>
     </struct>
   </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="nobang_time">12</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_pkflash">
     <struct index="0">
       <float hash="accel_x">0.04</float>
       <float hash="speed_max_x">0.875</float>
-      <int hash="bang_time">11</int>
+      <float hash="size_min">0.75</float>
+      <float hash="size_max">1.35</float>
+      <float hash="power_min">11</float>
+      <float hash="power_mul">0.15</float>
+      <int hash="bang_time">18</int>
+      <int hash="no_bomb_frame_on_button">12</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+    <list hash="param_pkfire">
+    <struct index="0">
+      <int hash="pillar_life">55</int>
+      <float hash="pillar_scale_min">0.65</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -22,7 +44,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <int hash="stop_y_time">40</int>
-      <float hash="accel_y">0.00035</float>
+      <float hash="accel_y">0.001</float>
       <int hash="time">0</int>
       <float hash="landing_frame">20</float>
       <float hash="attack_speed">3.5</float>
@@ -60,8 +82,8 @@
       <float hash="accel_y">0.02</float>
       <float hash="brake_x_on_air">0.015</float>
       <float hash="start_ymul">0.1</float>
-      <float hash="phy_magnet_size">9.3</float>
-      <float hash="phy_magnet_effect_scale">0.5</float>
+      <float hash="phy_magnet_size">9.9</float>
+      <float hash="phy_magnet_effect_scale">0.54</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
