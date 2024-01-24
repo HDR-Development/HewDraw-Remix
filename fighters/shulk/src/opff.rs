@@ -53,8 +53,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 unsafe fn monado_beat(fighter: &mut L2CFighterCommon, status_kind: i32) {
     if fighter.is_motion_one_of(&[
-        Hash40::new("attack_11"),
-        Hash40::new("attack_12"),
         Hash40::new("attack_13"),
         Hash40::new("attack_dash"),
         Hash40::new("attack_s3_s"),
@@ -71,8 +69,6 @@ unsafe fn monado_beat(fighter: &mut L2CFighterCommon, status_kind: i32) {
         }
     }
     else if !fighter.is_motion_one_of(&[
-        Hash40::new("attack_11"),
-        Hash40::new("attack_12"),
         Hash40::new("attack_13"),
         Hash40::new("attack_dash"),
         Hash40::new("attack_s3_s"),
