@@ -76,7 +76,7 @@ unsafe fn shulk_special_s_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::set_int(agent.object(), vars::shulk::instance::SPECIAL_S_STEP, 2);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 37.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

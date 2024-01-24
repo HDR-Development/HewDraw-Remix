@@ -26,48 +26,15 @@ attack_13:
 attack_11:
   extra:
     cancel_frame: 17
-attack_dash:
-  extra:
-    cancel_frame: 0
-attack_air_dash:
-  game_script: game_attackairdash
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-    - name: c00attackairdash.nuanmb
-      unk: 0
-  scripts:
-    - expression_attackairdash
-    - sound_attackairdash
-    - effect_attackairdash
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-    cancel_frame: 0
-    no_stop_intp: false
-special_air_s_fall:
-  extra:
-    cancel_frame: 35
 attack_lw3:
   extra:
     cancel_frame: 31
 attack_hi4:
   extra:
     cancel_frame: 72
+special_lw:
+  flags:
+    move: false
 attack_hi3:
   extra:
     cancel_frame: 45
@@ -136,8 +103,6 @@ catch_attack:
   extra:
     cancel_frame: 0
 special_lw:
-  flags:
-    move: false
   extra:
     xlu_start: 0
     xlu_end: 0
