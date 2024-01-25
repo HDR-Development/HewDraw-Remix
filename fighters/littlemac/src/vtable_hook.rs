@@ -50,7 +50,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
         *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD]) {
-        EffectModule::req_on_joint(boma, Hash40::new("sys_piyo"), Hash40::new("head"), &Vector3f::new(2.5, 0.0, 2.0), &Vector3f::new(0.0, 0.0, 0.0), 1.0, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
+        EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("top"), &Vector3f::new(0.0, 15.0, 4.0), &Vector3f::new(0.0, 0.0, 0.0), 1.0, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
         meter_gain = 30.0;
     }
     if opponent_boma.is_status(*FIGHTER_STATUS_KIND_APPEAL) {

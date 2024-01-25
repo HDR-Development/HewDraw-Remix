@@ -28,12 +28,14 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
             let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
             //println!("old meter: {}", meter);
             //println!("dec: {}", dec);
+            let loss = ((meter - dec* 0.8)).clamp(0.0, 100.0);
+            WorkModule::set_float(boma, loss, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+            VarModule::set_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE, damage);
             if meter == 100.0 {
                 WorkModule::set_int(boma, 0, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_INT_KO_GAGE_MAX_KEEP_FRAME);
                 WorkModule::off_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_REQUEST_KO_GAUGE_MAX_EFFECT);
+                WorkModule::set_int(boma, 0, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_INT_KO_COUNT);
             }
-            WorkModule::set_float(boma, (meter - dec).clamp(0.0, 100.0), *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
-            VarModule::set_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE, damage);
             //println!("new damage: {}", VarModule::get_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE));
             //println!("new meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));
         }
@@ -81,12 +83,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2,
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END,
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END,
-        *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP,
-        *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_LW_HIT
+        *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

@@ -1,23 +1,12 @@
 use super::*;
 
-#[acmd_script( agent = "littlemac", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "littlemac", scripts = ["game_specialnstart", "game_specialairnstart"] , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 23.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
-    }
-}
-
-#[acmd_script( agent = "littlemac", script = "game_specialairnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_air_n_start_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8.0);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
@@ -73,7 +62,7 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
         let damage = (if meter_lvl == 2 { 25.0 } else { 10.0 + meter / 8.0 }) * if fighter.is_situation(*SITUATION_KIND_GROUND) { 1.0 } else { 0.8 };
         let angle = if fighter.is_situation(*SITUATION_KIND_GROUND) { 80 } else { 75 };
         let bkb = if fighter.is_situation(*SITUATION_KIND_GROUND) { 40 } else { 30 };
-        let kbg = if fighter.is_situation(*SITUATION_KIND_GROUND) { 93 } else { 115 };
+        let kbg = if fighter.is_situation(*SITUATION_KIND_GROUND) { 104 } else { 124 };
         let hitlag = if meter_lvl == 0 { 1.0 } else if meter_lvl == 1 { 1.2 } else { 1.5 };
         let shield_damage = if fighter.is_situation(*SITUATION_KIND_GROUND) { 2 } else { 0 };
         let sfx_lvl = if meter_lvl == 0 { *ATTACK_SOUND_LEVEL_M } else { *ATTACK_SOUND_LEVEL_L };
@@ -101,7 +90,7 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_RESET_KO_GAUGE);
     }
-    frame(lua_state, 41.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY);
     }
@@ -400,7 +389,6 @@ unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         littlemac_special_n_start_game,
-        littlemac_special_air_n_start_game,
         littlemac_special_n_cancel_game,
         littlemac_special_n_cancel_effect,
         littlemac_special_n_cancel_sound,
