@@ -11,11 +11,12 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
         }
     }
-    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
-        if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
-            WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-    }
+    // Uncomment for Cross Chop descent to refresh double jump
+    // if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
+    //     if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
+    //         WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    //     }
+    // }
 }
 
 // Incineroar Fthrow Movement
