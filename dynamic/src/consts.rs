@@ -649,7 +649,8 @@ pub mod vars {
         pub mod status {
             // copy ability
             // flags
-            pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
+            pub use super::super::mario::status::FIREBRAND;
+            pub use super::super::luigi::status::THUNDERHAND;
             pub use super::super::mariod::status::CHILL_PILL;
             pub const MINING_TIMER: i32 = 0x11F4;
         }
@@ -776,8 +777,7 @@ pub mod vars {
         }
         pub mod status {
             // flag
-            pub use super::super::mario::status::IS_SPECIAL_N_DOUBLE_FIREBALL;
-            pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
+            pub const THUNDERHAND: i32 = 0x1100;
         }
     }
 
@@ -785,10 +785,8 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const NOKNOK_SHELL: i32 = 0x0100;
-            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x0101;
-            pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0102;
-            pub const DISABLE_DSPECIAL_STALL:                i32 = 0x0103;
-            pub const SPECIAL_S_DISABLE_STALL:               i32 = 0x0104;
+            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0101;
+            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0102;
         }
 
         pub mod status {
@@ -797,8 +795,7 @@ pub mod vars {
             pub const AERIAL_COMMAND_RISING: i32 = 0x1101;
             pub const AERIAL_COMMAND_RISEN: i32 = 0x1102;
 
-            pub const IS_SPECIAL_N_FIREBRAND: i32 = 0x1100;
-            pub const IS_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x1101;
+            pub const FIREBRAND: i32 = 0x1100;
         }
     }
 

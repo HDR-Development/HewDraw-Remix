@@ -473,9 +473,125 @@ luigi_special_n:
 luigi_special_air_n:
   extra:
     cancel_frame: 41
+luigi_special_n_thunder:
+  game_script: game_luigispecialnthunder
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: luigid00specialnthunder.nuanmb
+  scripts:
+  - expression_luigispecialnthunder
+  - sound_luigispecialnthunder
+  - effect_luigispecialnthunder
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 55
+    freeze_during_hitstop: false
+luigi_special_air_n_thunder:
+  game_script: game_luigispecialairnthunder
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: luigid00specialairnthunder.nuanmb
+  scripts:
+  - expression_luigispecialairnthunder
+  - sound_luigispecialairnthunder
+  - effect_luigispecialairnthunder
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 55
+    freeze_during_hitstop: false
 mario_special_n:
   extra:
     cancel_frame: 41
+mario_special_n_fire:
+  game_script: game_mariospecialnfire
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: mariod00specialnfire.nuanmb
+  scripts:
+  - expression_mariospecialnfire
+  - sound_mariospecialnfire
+  - effect_mariospecialnfire
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 46
+    freeze_during_hitstop: false
+mario_special_air_n_fire:
+  game_script: game_mariospecialairnfire
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: mariod00specialairnfire.nuanmb
+  scripts:
+  - expression_mariospecialairnfire
+  - sound_mariospecialairnfire
+  - effect_mariospecialairnfire
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 46
+    freeze_during_hitstop: false
 mariod_special_n:
   extra:
     cancel_frame: 47

@@ -2,6 +2,8 @@ use super::*;
 use globals::*;
 mod special_hi_h;
 mod gaogaen_special_n;
+mod luigi_special_n;
+mod mario_special_n;
 mod mariod_special_n;
 mod ridley_special_n;
 mod ganon_special_n;
@@ -25,6 +27,8 @@ pub fn install() {
     ridley_special_n::install();
     ganon_special_n::install();
     koopa_special_n::install();
+    luigi_special_n::install();
+    mario_special_n::install();
     mariod_special_n::install();
     lucas_special_n::install();
     sonic::install();
