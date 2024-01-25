@@ -841,36 +841,36 @@ unsafe fn diddy_nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             if fighter.is_cat_flag(Cat2::StickEscape) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
             }
             else if fighter.is_cat_flag(Cat2::StickEscapeF) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_F);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE_F);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
             }
             else if fighter.is_cat_flag(Cat2::StickEscapeB) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_B);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE_B);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
             }
             else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
             }
             if fighter.sub_check_command_guard().get_bool() {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GUARD);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_GUARD);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
             }
         }
         else {
             if fighter.is_cat_flag(Cat1::AirEscape)  {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
             }
             else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
             && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
             {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL_JUMP, true, false);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL_JUMP, true, false);
             }
         }
     }
@@ -1116,7 +1116,7 @@ pub unsafe fn lucas_offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommo
 
 // Piranha Plant Ptooie Stance
 pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if fighter.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW, *FIGHTER_STATUS_KIND_CATCH_WAIT]) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW) {
         let opponent_boma = fighter.get_grabbed_opponent_boma();
         let grabbed_fighter = smash::app::utility::get_kind(opponent_boma);
         if grabbed_fighter == *FIGHTER_KIND_PACKUN {
@@ -1125,11 +1125,6 @@ pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommo
             if new_stance != old_stance {
                 // println!("Copying Packun Flower's Current Stance, which is {}", new_stance);
                 VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
-                if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_WAIT)
-                && WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PACKUN {
-                    EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-                    PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
-                }
             }
         }
     }
