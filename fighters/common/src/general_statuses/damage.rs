@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
@@ -147,6 +148,14 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
 }
 
 unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
+    match utils::game_modes::get_custom_mode() {
+        Some(modes) => {
+            if modes.contains(&CustomMode::Smash64Mode) {
+                return;
+            }
+        },
+        _ => {}
+    }
     if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR // prevents ASDI on wall bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U // prevents ASDI on ceiling bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D // prevents ASDI on ground bounces

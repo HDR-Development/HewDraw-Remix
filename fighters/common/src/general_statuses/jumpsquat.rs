@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use utils::game_modes::CustomMode;
 // This file contains code for wavedashing out of jumpsquat, fullhop buffered aerials/attack canceling
 
 pub fn install() {
@@ -90,7 +91,14 @@ unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
     if fighter.is_cat_flag(CatHdr::Wavedash) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if !modes.contains(&CustomMode::Smash64Mode) {
+                    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+                }
+            },
+            _ => { VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT); }
+        }
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
@@ -298,7 +306,14 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
         if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
         && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+            match utils::game_modes::get_custom_mode() {
+                Some(modes) => {
+                    if !modes.contains(&CustomMode::Smash64Mode) {
+                        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+                    }
+                },
+                _ => { VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT); }
+            }
         }
     }
     let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
