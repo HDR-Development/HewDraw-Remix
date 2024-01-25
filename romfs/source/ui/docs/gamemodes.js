@@ -8,10 +8,10 @@ enabled_modes.set('smash64', false);
 function toggle_mode(mode_name, self) {
     if (event && event.keyCode !== 13) return
     //alert("toggling: " + mode_name);
-    var is_now_enabled = !enabled_modes.get(mode_name.toLowerCase());
-    enabled_modes.set(mode_name.toLowerCase(), is_now_enabled);
+    var is_now_enabled = !enabled_modes.get(mode_name.replace(/\s+/g, '').toLowerCase());
+    enabled_modes.set(mode_name.replace(/\s+/g, '').toLowerCase(), is_now_enabled);
     var button_text = mode_name + " Mode (" + (is_now_enabled ? "ON" : "OFF") + ")";
-    var element = document.getElementById(mode_name.toLowerCase() + "-text-field");
+    var element = document.getElementById(mode_name.replace(/\s+/g, '').toLowerCase() + "-text-field");
     element.innerHTML = button_text;
     self.blur();
     self.focus();
