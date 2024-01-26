@@ -3,6 +3,9 @@ use globals::*;
 
 #[status_script(agent = "peach", status = FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StopModule::is_stop(fighter.module_accessor) {
+        special_hi_substatus(fighter, false.into());
+    }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_substatus as *const () as _));
     original!(fighter)
 }
