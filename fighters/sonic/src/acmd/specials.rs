@@ -328,13 +328,18 @@ unsafe fn sonic_special_n_homing_sound(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_special_n_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.3);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         let temp = Vector3f { x: -0.3, y: 1.0, z: 0.0 };
 		KineticModule::add_speed(boma, &temp);
     }
-    FT_MOTION_RATE(fighter, 1.0);
-    
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
 }
 
 #[acmd_script( agent = "sonic", script = "effect_specialnhit" , category = ACMD_EFFECT , low_priority)]
@@ -346,7 +351,7 @@ unsafe fn sonic_special_n_hit_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_specialnlanding" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+    let boma = fighter.boma(); 
 }
 
 pub fn install() {
