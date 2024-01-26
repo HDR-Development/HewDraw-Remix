@@ -1316,10 +1316,10 @@ pub mod vars {
             pub const STANCE_REVERSE: i32 = 0x0103;
 
             // floats
-            pub const PTOOIE_SCALE: i32 = 0x0100;
+            pub const PTOOIE_SCALE: i32 = 0x01BF;
 
             // ints
-            pub const CURRENT_STANCE: i32 = 0x0100; // 0 = Normal, 1 = Putrid, 2 = Prickly
+            pub const CURRENT_STANCE: i32 = 0x01BE; // 0 = Normal, 1 = Putrid, 2 = Prickly
             pub const STANCE_STATUS: i32 = 0x0101;
         }
         pub mod status {

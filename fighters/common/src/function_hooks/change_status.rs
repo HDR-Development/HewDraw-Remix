@@ -191,6 +191,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
             return 0;
         }
+        else if boma.kind() == *FIGHTER_KIND_KIRBY
+        && (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DIDDY)
+        && boma.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE])
+        && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
+            return 0;
+        }
         // Allows Clay Pigeon smash input to work properly
         else if boma.kind() == *FIGHTER_KIND_DUCKHUNT
         && next_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
