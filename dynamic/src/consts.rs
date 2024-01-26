@@ -628,6 +628,13 @@ pub mod vars {
         }
     }
 
+    pub mod jack {
+        pub mod instance {
+            // flags
+            pub const GROUNDED_DOYLE_DASH: i32 = 0x0100;
+        }
+    }
+
     pub mod kamui {
         pub mod status {
             // floats
@@ -1406,14 +1413,6 @@ pub mod vars {
             pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
-
-    pub mod jack {
-        pub mod instance {
-            // flags
-            pub const GROUNDED_DOYLE_DASH: i32 = 0x0100;
-        }    
-    }
-
 }
 
 pub mod statuses {
