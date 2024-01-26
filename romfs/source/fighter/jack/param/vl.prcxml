@@ -73,6 +73,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <int hash="hit_stop_frame_fighter">6</int>
       <float hash="wire_speed_pull_fighter">6</float>
     </struct>
     <struct index="1">
