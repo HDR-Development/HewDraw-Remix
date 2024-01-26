@@ -996,8 +996,12 @@ pub mod vars {
 
     pub mod sonic {
         pub mod instance {
+            // flags
             pub const USED_AIR_ACTION: i32 = 0x0100;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
+
+            // ints
+            pub const SPECIAL_N_POSE: i32 = 0x0100;
         }
         pub mod status {
             // flags
