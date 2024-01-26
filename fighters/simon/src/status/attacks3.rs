@@ -31,7 +31,12 @@ unsafe extern "C" fn attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
     // <HDR>
     if StatusModule::is_changing(fighter.module_accessor)
-    && fighter.stick_y() <= -0.5 {
+    && [*FIGHTER_STATUS_KIND_SQUAT,
+        *FIGHTER_STATUS_KIND_SQUAT_WAIT, 
+        *FIGHTER_STATUS_KIND_SQUAT_RV, 
+        *FIGHTER_STATUS_KIND_SQUAT_F, 
+        *FIGHTER_STATUS_KIND_ATTACK_S3].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32())
+    && fighter.left_stick_y() <= -0.5 {
         WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_squat_s3"), 0.0, 1.0, false, 0.0, false, false);
     }

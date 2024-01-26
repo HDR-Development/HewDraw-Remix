@@ -677,6 +677,8 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            pub const DISABLE_MECHAKOOPA: i32 = 0x0101;
+            pub const MECHAKOOPA_IS_COOLDOWN: i32 = 0x0102;
         }
     }
 
@@ -743,7 +745,10 @@ pub mod vars {
 
     pub mod lucina {
         pub mod instance {
-            //int
+            // flag
+            pub const EQUIP_MASK: i32 = 0x0100;
+            
+            // int
             /// This int stores damage received from an attack during quick riposte
             pub const CURRENT_DAMAGE: i32 = 0x0100;
         }
