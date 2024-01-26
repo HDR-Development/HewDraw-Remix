@@ -207,14 +207,14 @@ unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCt
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 
-const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 5] = [
+const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 6] = [
     // transition_groups::CHECK_GROUND_SPECIAL,
     // transition_groups::CHECK_AIR_SPECIAL,
     transition_groups::CHECK_GROUND_ESCAPE,
     // transition_groups::CHECK_AIR_ESCAPE,
     transition_groups::CHECK_GROUND_GUARD,
     transition_groups::CHECK_GROUND_ATTACK,
-    // transition_groups::CHECK_GROUND_CATCH,
+    transition_groups::CHECK_GROUND_CATCH,
     transition_groups::CHECK_AIR_ATTACK,
     transition_groups::CHECK_AIR_CLIFF
 ];
