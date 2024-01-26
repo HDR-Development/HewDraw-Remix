@@ -35,19 +35,6 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     }
 }
 
-unsafe fn parasol_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    let direction = ControlModule::get_stick_y(boma);
-    if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END && direction <= -0.5 {
-        let speed_y = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        let diff = 2.1 + speed_y;
-        let vec = Vector3f{x: 0.0, y: -diff, z: 0.0};
-
-        if speed_y > -2.1 {
-            KineticModule::add_speed(boma, &vec);
-        }
-    }
-}
-
 unsafe fn up_special_freefall_land_cancel(fighter: &mut L2CFighterCommon) {
     if (fighter.is_prev_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL) || fighter.is_prev_status(*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END)) 
     && fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
@@ -89,7 +76,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     wall_bounce(boma, status_kind);
     up_special_freefall_land_cancel(fighter);
     fastfall_specials(fighter);
-    parasol_ff(boma, status_kind);
 }
 
 #[::utils::macros::opff(FIGHTER_KIND_PEACH )]
