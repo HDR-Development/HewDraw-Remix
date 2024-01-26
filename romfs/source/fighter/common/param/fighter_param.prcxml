@@ -592,12 +592,12 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">11.5</float>
-      <bool hash="attach_wall_type">False</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- ZELDA -->
     <struct index="17">
@@ -1190,12 +1190,12 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">0.97</float>
       <float hash="shield_radius">9.2</float>
-      <bool hash="attach_wall_type">False</bool>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- IVYSAUR -->
     <struct index="34">
@@ -1293,7 +1293,6 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">9.7</float>
-      <bool hash="attach_wall_type">False</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
       <float hash="item_lift_accel_mul">0.0792308</float>
@@ -1301,6 +1300,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- LUCAS -->
     <struct index="37">
@@ -1479,12 +1479,12 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1.05</float>
       <float hash="shield_radius">10.6</float>
-      <bool hash="attach_wall_type">False</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- R.O.B. -->
     <struct index="42">
@@ -1810,12 +1810,12 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">10</float>
-      <bool hash="attach_wall_type">False</bool>
       <float hash="tread_jump_speed_y_mul">0.65</float>
       <float hash="tread_mini_jump_speed_y_mul">0.65</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- PALUTENA -->
     <struct index="51">
@@ -2169,13 +2169,13 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.03</float>
       <float hash="shield_radius">12.6</float>
-      <bool hash="attach_wall_type">False</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
       <float hash="combo_attack_33_end">5</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="attach_wall_type">false</bool>
     </struct>
     <!-- INKLING -->
     <struct index="61">
