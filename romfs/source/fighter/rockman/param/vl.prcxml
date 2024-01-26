@@ -27,6 +27,11 @@
       <float hash="limit_speed">0.75</float>
     </struct>
   </list>
+  <list hash="param_hardknuckle">
+    <struct index="0">
+      <float hash="speed">4.9</float>
+    </struct>
+  </list>
   <list hash="param_metalblade_other">
     <struct index="0">
       <float hash="stick_percent">100</float>

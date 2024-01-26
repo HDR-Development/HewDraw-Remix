@@ -85,7 +85,7 @@ special_n_chill:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d00specialn.nuanmb
+  - name: d00specialnchill.nuanmb
   scripts:
   - expression_specialnchill
   - sound_specialnchill
@@ -114,7 +114,7 @@ special_air_n_chill:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d00specialairn.nuanmb
+  - name: d00specialairnchill.nuanmb
   scripts:
   - expression_specialairnchill
   - sound_specialairnchill

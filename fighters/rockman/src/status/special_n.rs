@@ -61,6 +61,12 @@ unsafe fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+            return 0.into();
+        }
+    }
     if StatusModule::is_changing(fighter.module_accessor) || StatusModule::is_situation_changed(fighter.module_accessor) {
         rockman_special_motion_helper(
             fighter,
