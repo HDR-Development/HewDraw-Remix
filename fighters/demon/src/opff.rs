@@ -28,18 +28,19 @@ unsafe fn slaughter_high_kick_devastator(boma: &mut BattleObjectModuleAccessor, 
     }
 }
 
-unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_ESCAPE].contains(&status_kind)
-        && boma.status_frame() > 17 {
-        if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N){
-            VarModule::on_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
-        }
-    }
-    if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
-    }
-}
+// unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+//     if [*FIGHTER_STATUS_KIND_ESCAPE].contains(&status_kind)
+//         && boma.status_frame() > 17 {
+//         if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N){
+//             VarModule::on_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
+//             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
+//         }
+//     }
+//     if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) {
+//         VarModule::off_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
+//     }
+// }
+
 unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_stand_21") {
         if frame < 19.0{
@@ -232,7 +233,7 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     slaughter_high_kick_devastator(boma, cat[0], status_kind, situation_kind, motion_kind);
-    jaw_breaker(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
+    // jaw_breaker(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     korean_back_dash(boma, cat[0], status_kind, stick_y);
     lightning_screw_uppercut(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     spinning_demon(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
