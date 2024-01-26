@@ -91,7 +91,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
             if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) 
             && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
-            && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP)
+            && (!ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) || boma.left_stick_y() >= -0.66)
             {
                 WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
@@ -209,6 +209,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                 }
             } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
+                if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && boma.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+                }
                 if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 50  {
                 // consume double jump on f10 of float
                     fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);

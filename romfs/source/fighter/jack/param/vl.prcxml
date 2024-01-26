@@ -19,18 +19,21 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <float hash="rebel_gauge_damage_add">0.6</float>
+    <float hash="rebel_gauge_damage_add">0</float>
+    <float hash="rebel_gauge_damage_add_handi">0</float>
     <float hash="rebel_gauge_add_dead">1</float>
-    <int hash="doyle_frame">2700</int>
+    <int hash="doyle_frame">1200</int>
+    <float hash="rebel_gauge_keep_ratio">0</float>
+    <float hash="rebel_gauge_add_handi_mul">0</float>
   </struct>
   <list hash="rebel_gauge_damage_rate">
-    <float index="0">33.75</float>
-    <float index="1">33.75</float>
-    <float index="2">33.75</float>
-    <float index="3">33.75</float>
-    <float index="4">33.75</float>
-    <float index="5">33.75</float>
-    <float index="6">33.75</float>
+    <float index="0">12</float>
+    <float index="1">12</float>
+    <float index="2">12</float>
+    <float index="3">12</float>
+    <float index="4">12</float>
+    <float index="5">12</float>
+    <float index="6">12</float>
   </list>
   <list hash="param_special_n">
     <struct index="0">
@@ -69,7 +72,10 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_hi">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <int hash="hit_stop_frame_fighter">6</int>
+      <float hash="wire_speed_pull_fighter">6</float>
+    </struct>
     <struct index="1">
       <float hash="rush_angle">90</float>
       <float hash="rush_angle_max_f">-60</float>
@@ -77,7 +83,7 @@
       <float hash="rush_speed">4.0</float>
       <int hash="rush_brake_frame">1</int>
       <float hash="end_speed_rate_x">0.15</float>
-      <float hash="end_speed_rate_y">0.12</float>
+      <float hash="end_speed_rate_y">0.15</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
