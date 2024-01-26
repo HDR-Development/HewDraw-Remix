@@ -101,12 +101,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
             next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
         }
-        else if boma.kind() == *FIGHTER_KIND_BAYONETTA
-        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
-        && next_status == *FIGHTER_STATUS_KIND_DAMAGE_FALL {
-            next_status = *FIGHTER_STATUS_KIND_FALL;
-            clear_buffer = true;
-        }
         else if boma.kind() == *FIGHTER_KIND_KOOPAJR
         && StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH
         && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
