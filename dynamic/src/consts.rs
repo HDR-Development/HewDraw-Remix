@@ -300,14 +300,11 @@ pub mod vars {
 
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
-            pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
+            pub const FAIR_STATE: i32 = 0x0101;
         }
         pub mod status {
-            // flags
-            pub const IS_ACTIVATE: i32 = 0x1100;
-            pub const DIRECT_HIT: i32 = 0x1101;
             // floats
-            pub const ABK_ANGLE: i32 = 0x1102;
+            pub const ABK_ANGLE: i32 = 0x1100;
         }
     }
 
@@ -628,6 +625,13 @@ pub mod vars {
         }
     }
 
+    pub mod jack {
+        pub mod instance {
+            // flags
+            pub const GROUNDED_DOYLE_DASH: i32 = 0x0100;
+        }
+    }
+
     pub mod kamui {
         pub mod status {
             // floats
@@ -729,6 +733,7 @@ pub mod vars {
             pub const SPECIAL_HI_ATTACK_IS_LEAVE_WALL: i32 = 0x1101;
             pub const SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH: i32 = 0x1102;
             pub const SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM: i32 = 0x1103;
+            pub const THUNDER_LOOSE: i32 = 0x1104;
 
             // float
             /// Holds the initial y velocity you have during up b to compare once you've touched a wall to reflect your speed the other direction if it changes
@@ -1412,14 +1417,6 @@ pub mod vars {
             pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
-
-    pub mod jack {
-        pub mod instance {
-            // flags
-            pub const GROUNDED_DOYLE_DASH: i32 = 0x0100;
-        }    
-    }
-
 }
 
 pub mod statuses {
