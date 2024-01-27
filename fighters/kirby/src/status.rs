@@ -9,7 +9,7 @@ mod ridley_special_n;
 mod ganon_special_n;
 mod ganon_special_n_float;
 mod koopa_special_n;
-mod littlemac_special_n_cancel;
+mod littlemac_special_n;
 mod diddy_special_n_cancel;
 mod lucas_special_n;
 mod sonic;
@@ -31,6 +31,7 @@ pub fn install() {
     luigi_special_n::install();
     mario_special_n::install();
     mariod_special_n::install();
+    littlemac_special_n::install();
     lucas_special_n::install();
     sonic::install();
 }
@@ -38,7 +39,6 @@ pub fn install() {
 pub fn add_statuses() {
     special_hi_h::install();
     ganon_special_n_float::install();
-    littlemac_special_n_cancel::install();
     diddy_special_n_cancel::install();
 }
 
