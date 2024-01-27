@@ -52,7 +52,7 @@ attack_air_b:
     cancel_frame: 30
 attack_air_hi:
   extra:
-    cancel_frame: 28
+    cancel_frame: 30
 attack_air_lw:
   extra:
     cancel_frame: 43
@@ -60,12 +60,12 @@ special_n:
   animations:
   - name: d00specialntoss.nuanmb
   extra:
-    cancel_frame: 40
+    cancel_frame: 47
 special_air_n:
   animations:
   - name: d00specialairntoss.nuanmb
   extra:
-    cancel_frame: 40
+    cancel_frame: 47
 special_n_chill:
   game_script: game_specialnchill
   flags:
@@ -146,10 +146,10 @@ throw_b:
     cancel_frame: 47
 throw_lw:
   extra:
-    cancel_frame: 38
+    cancel_frame: 40
 throw_hi:
   extra:
-    cancel_frame: 37
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0
