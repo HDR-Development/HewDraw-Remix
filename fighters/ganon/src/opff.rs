@@ -3,20 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn aerial_wiz_foot_jump_reset_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,
-        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_WALL_END].contains(&status_kind) {
-        if situation_kind == *SITUATION_KIND_AIR {
-            let jump_count_max = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == jump_count_max {
-                WorkModule::set_int(boma, jump_count_max - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-            }
-        }
-    }
-}
-
 // Dtaunt Counter
 // unsafe fn dtaunt_counter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
 //     if [hash40("appeal_lw_l"), hash40("appeal_lw_r")].contains(&motion_kind)
@@ -76,7 +62,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
     // dtaunt_counter(boma, motion_kind, frame);
     // repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
     fastfall_specials(fighter);
