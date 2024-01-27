@@ -108,6 +108,7 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind:
             }
         }
     }
+}
 // lets lucina toggle her mask on/off with down taunt
 unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
