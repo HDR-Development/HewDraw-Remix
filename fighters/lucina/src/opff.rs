@@ -92,7 +92,22 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
     }
 }
-
+// Up Special Reverse
+unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    //Lucina frame 6
+    let mut target_frame = 6.0;
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        if frame == target_frame {
+            if stick_x * facing < 0.0 {
+                PostureModule::reverse_lr(boma);
+                PostureModule::update_rot_y_lr(boma);
+            }
+        }
+    }
+}
 // lets lucina toggle her mask on/off with down taunt
 unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
@@ -134,6 +149,7 @@ extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -168,12 +184,19 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+	let long_sword_scale = Vector3f{x: 1.0, y: 1.0, z: 1.05};
+	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword1"), &long_sword_scale);
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
     //side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
     up_special_proper_landing(fighter);
     mask_toggle(fighter, boma, frame);
     fastfall_specials(fighter);
+    up_special_reverse(boma, status_kind, stick_x, facing, frame);
+    sword_length(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCINA )]
@@ -181,7 +204,6 @@ pub fn lucina_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		lucina_frame(fighter);
-        fe_common(fighter);
     }
 }
 
