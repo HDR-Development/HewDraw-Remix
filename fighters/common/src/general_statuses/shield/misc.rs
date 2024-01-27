@@ -209,12 +209,8 @@ pub unsafe fn check_guard_attack_special_hi(
     false.into()
 }
 
-pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.module_accessor;
-
-    if fighter.check_guard_hold().get_bool() {
-        return false.into();
-    }
 
     let c_stick_override = fighter.is_button_on(Buttons::CStickOverride);
     let c_stick_on = dbg!(
@@ -238,22 +234,54 @@ pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     let escapes = [
         (
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
-            // checks if Cat2::StickEscape, or CStickOn and stick is vertical and below zero
-            fighter.is_cat_flag(Cat2::StickEscape) || (c_stick_on && stick_vertical),
+            c_stick_on && stick_vertical,
             *FIGHTER_STATUS_KIND_ESCAPE,
         ),
         (
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
-            // checks if Cat2::StickEscape, or CStickOn and stick is horizontal and above zero
-            fighter.is_cat_flag(Cat2::StickEscapeF) ||
-                (c_stick_on && !stick_vertical && sub_stick_x >= 0.0),
+            c_stick_on && !stick_vertical && sub_stick_x >= 0.0,
             *FIGHTER_STATUS_KIND_ESCAPE_F,
         ),
         (
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
-            // checks if Cat2::StickEscape, or CStickOn and stick is horizontal and above zero
-            fighter.is_cat_flag(Cat2::StickEscapeB) ||
-                (c_stick_on && !stick_vertical && sub_stick_x < 0.0),
+            c_stick_on && !stick_vertical && sub_stick_x < 0.0,
+            *FIGHTER_STATUS_KIND_ESCAPE_B,
+        ),
+    ];
+
+    for (term, condition, status) in escapes.iter() {
+        if WorkModule::is_enable_transition_term(boma, *term) && *condition {
+            // NOTE: DO NOT TOUCH
+            // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
+            // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
+            fighter.change_status((*status).into(), false.into());
+            // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
+            // and will not regenerate our pad flags
+            ControlModule::clear_command(fighter.module_accessor, true);
+            return true.into();
+        }
+    }
+
+    return false.into();
+}
+
+pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let boma = fighter.module_accessor;
+
+    let escapes = [
+        (
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+            fighter.is_cat_flag(Cat2::StickEscape),
+            *FIGHTER_STATUS_KIND_ESCAPE,
+        ),
+        (
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
+            fighter.is_cat_flag(Cat2::StickEscapeF),
+            *FIGHTER_STATUS_KIND_ESCAPE_F,
+        ),
+        (
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
+            fighter.is_cat_flag(Cat2::StickEscapeB),
             *FIGHTER_STATUS_KIND_ESCAPE_B,
         ),
     ];
@@ -398,8 +426,10 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
 
-    if check_escape_oos(fighter).get_bool() {
-        return true.into();
+    if !guard_hold {
+        if check_escape_oos(fighter).get_bool() || check_cstick_escape_oos(fighter).get_bool() {
+            return true.into();
+        }
     }
 
     if ItemModule::is_have_item(fighter.module_accessor, 0) {
