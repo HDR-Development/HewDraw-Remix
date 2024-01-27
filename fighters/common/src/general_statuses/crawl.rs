@@ -90,9 +90,9 @@ pub unsafe fn status_sub_squat_walk_main_hook(fighter: &mut L2CFighterCommon) ->
     let speed_stick_ratio = crawl_speed / stick_x;
     if 0.0 < speed_stick_ratio && speed_stick_ratio < 1.0 {
         // This param is set to 0
-        let mysterious_param = WorkModule::get_param_float(boma, Hash40::new("common").hash, Hash40::new_raw(0xef53a098).hash);
+        let walk_accel_mul = WorkModule::get_param_float(boma, Hash40::new("common").hash, Hash40::new("walk_accel_mul").hash);
         // So despite all the math this just sets squat_walk_accel to 0 lol
-        squat_walk_accel *= (1.0 - speed_stick_ratio) * mysterious_param;
+        squat_walk_accel *= (1.0 - speed_stick_ratio) * walk_accel_mul;
     }
 
     let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
