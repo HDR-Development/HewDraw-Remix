@@ -14,7 +14,7 @@ pub fn install() {
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0x976c3b29b), 0.0, 1.0, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
     StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_main_loop as *const () as _))
 }
