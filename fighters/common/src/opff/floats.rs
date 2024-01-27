@@ -91,8 +91,8 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
             if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) 
             && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
-            && (!ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) || boma.left_stick_y() >= -0.66)
-            {
+            && (boma.left_stick_y() >= -0.66 && InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= 4)
+            { //disables held floats unless jump is held 5f
                 WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
             // Immediately transition to fall/double jump fall when activating float
