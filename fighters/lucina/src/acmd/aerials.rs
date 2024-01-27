@@ -128,7 +128,7 @@ unsafe fn lucina_attack_air_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 1.0);
-    FT_DESIRED_RATE(fighter, (7.0-1.0), 6.0);
+    FT_DESIRED_RATE(fighter, (7.0-1.0), 5.0);
     frame(lua_state, 7.0);
     FT_DESIRED_RATE(fighter, (15.0-7.0), 5.0);
     if is_excute(fighter) {
@@ -143,7 +143,7 @@ unsafe fn lucina_attack_air_f_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 24.0);
-    FT_DESIRED_RATE(fighter, (27.0-24.0),7.0);
+    FT_DESIRED_RATE(fighter, (27.0-24.0),8.0);
     frame(lua_state, 27.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 30.0);
