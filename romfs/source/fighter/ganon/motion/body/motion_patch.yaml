@@ -57,13 +57,42 @@ throw_hi:
   extra:
     cancel_frame: 40
 attack_11:
-  extra:
-    cancel_frame: 29
-attack_lw3:
   flags:
-    move: false
+    move: true
   extra:
-    cancel_frame: 33
+    cancel_frame: 23
+attack_lw3:
+  extra:
+    cancel_frame: 36
+attack_lw3_2:
+  game_script: game_attacklw32
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c02attacklw32.nuanmb
+  scripts:
+    - expression_attacklw32
+    - sound_attacklw32
+    - effect_attacklw32
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 36
+    freeze_during_hitstop: false
 attack_hi4:
   extra:
     cancel_frame: 66
@@ -71,10 +100,8 @@ attack_lw4:
   extra:
     cancel_frame: 66
 attack_hi3:
-  flags:
-    move: false
   extra:
-    cancel_frame: 48
+    cancel_frame: 38
 appeal_lw_r:
   extra:
     cancel_frame: 90
@@ -159,7 +186,7 @@ attack_air_f:
     cancel_frame: 40
 attack_air_n:
   extra:
-    cancel_frame: 40
+    cancel_frame: 42
 attack_s3_hi:
   game_script: game_attacks3hi
   flags:

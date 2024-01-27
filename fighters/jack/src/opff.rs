@@ -54,29 +54,31 @@ unsafe fn arsene_grappling_hook(boma: &mut BattleObjectModuleAccessor, situation
     }
 }
 
-// Joker Aerial Grappling Hook stall
-unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if motion_kind == hash40("special_air_hi_throw") {
-        if frame < 37.0 {
-            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
-        if frame >= 37.0 {
-            KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
-    }
-}
-
-// Joker Grappling Hook Spike Cancel
-unsafe fn grappling_hook_spike_cancel (fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.is_situation(*SITUATION_KIND_AIR) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-        MotionModule::set_rate(boma, 2.0);
-    }
-}
-
 // Lengthen knife
 unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
 	let long_sword_scale = Vector3f{x: 1.01, y: 1.1, z: 1.01};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("knife"), &long_sword_scale);
+}
+
+/// Gets the last damage dealt and adds it to rebel's guage
+unsafe fn damage_to_meter(fighter: &mut L2CFighterCommon) {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        VarModule::set_float(fighter.battle_object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT, 0.0);
+        return;
+    }
+    const MULTIPLIER: f32 = 1.0;
+
+    // Exit if the last dealt damage was 0.0 or if we currently have Arsene out
+    let last_damage = VarModule::get_float(fighter.battle_object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
+    if last_damage == 0.0 {
+        return;
+    }
+
+    app::FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, app::FighterEntryID(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)), last_damage * MULTIPLIER);
+
+    // Set the const to 0.0 since we don't have a different way to detect when we hit someone
+    // (need to implement something beter for this, probably in MeterModule refactor)
+    VarModule::set_float(fighter.battle_object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT, 0.0);
 }
 
 unsafe fn arsene_dtilt_motion_change(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
@@ -124,15 +126,30 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe extern "C" fn jack_training_tools(fighter: &mut L2CFighterCommon) {
+    if smashball::is_training_mode() {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+            if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+                let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+                FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, FighterEntryID(entry_id), 25.0);
+            }
+            if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+                let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+                FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, FighterEntryID(entry_id), -25.0);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     wings_of_rebellion_cancel(boma, status_kind);
     //arsene_grappling_hook(boma, situation_kind, motion_kind);
-    aerial_grappling_hook_stall(boma, motion_kind, frame);
-    grappling_hook_spike_cancel(fighter, boma);
 	knife_length(boma);
     //arsene_summon_desmummon(boma);
     fastfall_specials(fighter);
+    damage_to_meter(fighter);
     arsene_dtilt_motion_change(fighter, boma, motion_kind, frame);
+    jack_training_tools(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_JACK )]
