@@ -170,7 +170,7 @@ unsafe fn ganon_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
-    FT_MOTION_RATE(fighter, 3.0/(7.5 - 3.0));
+    FT_MOTION_RATE(fighter, 4.0/(7.5 - 3.0));
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
