@@ -252,7 +252,7 @@ attack_12:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 28
+    cancel_frame: 24
     no_stop_intp: false
 attack_13:
   game_script: game_attack13
