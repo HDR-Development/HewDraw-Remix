@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 
+mod special_n;
 
 // Prevents downB from being used if upB walljump cancel has been used
 unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -32,16 +33,5 @@ fn mario_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(mario_init);
-    install_status_scripts!(
-        //mario_special_lw_shoot_main,
-    );
-}
-
-
-#[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn mario_special_lw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue{
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-
-    return 0.into();
+    special_n::install();
 }

@@ -128,18 +128,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 // Double fireball handling
-unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
-        let restart_frame = 10.0;
-        if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
-            VarModule::off_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
-            VarModule::off_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
-            VarModule::on_flag(boma.object(), vars::mario::instance::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
-            //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
-        }
-    }
-}
+// unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+//     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
+//         let restart_frame = 10.0;
+//         if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
+//             VarModule::off_flag(fighter.battle_object, vars::mario::status::FIREBRAND);
+//             VarModule::off_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
+//             VarModule::on_flag(boma.object(), vars::mario::instance::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
+//             //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
+//             boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
+//         }
+//     }
+// }
 
 // Once down special is called, immediately uses special low shoot and circumvent the charge mechanic of the og down-b
 unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjectModuleAccessor, status_kind: i32) {

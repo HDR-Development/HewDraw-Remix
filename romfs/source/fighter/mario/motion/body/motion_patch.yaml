@@ -86,6 +86,67 @@ landing_air_lw:
       - name: c05landingairlw.nuanmb
     extra:
       cancel_frame: 10
+attack_air_hi:
+  extra:
+    cancel_frame: 30
+special_n_fire:
+  game_script: game_specialnfire
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialnfire.nuanmb
+  scripts:
+  - expression_specialnfire
+  - sound_specialnfire
+  - effect_specialnfire
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 46
+    freeze_during_hitstop: false
+special_air_n_fire:
+  game_script: game_specialairnfire
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialairnfire.nuanmb
+  scripts:
+  - expression_specialairnfire
+  - sound_specialairnfire
+  - effect_specialairnfire
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 46
+    freeze_during_hitstop: false
 special_lw_light:
     game_script: game_speciallwlight
     flags:

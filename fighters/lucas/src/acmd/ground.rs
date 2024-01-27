@@ -118,7 +118,7 @@ unsafe fn lucas_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 5.0, 0.5, 2.0, 0, 0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 5.0, -0.75, 0.0, 0, 0, 0, 0.4, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {

@@ -4,6 +4,9 @@ mod attack;
 mod batwithin;
 mod escape;
 mod attackair;
+mod specialairs;
+mod specials;
+mod jumpaerial;
 
 
 pub fn install() {
@@ -11,4 +14,7 @@ pub fn install() {
     batwithin::install();
     escape::install();
     attackair::install();
+    specialairs::install();
+    specials::install();
+    jumpaerial::install();
 }
