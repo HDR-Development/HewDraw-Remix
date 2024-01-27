@@ -92,7 +92,6 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
     }
 }
-
 // Up Special Reverse
 unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if StatusModule::is_changing(boma) {
