@@ -225,7 +225,7 @@ fall_aerial_b:
   blend_frames: 6
 attack_air_hi:
   extra:
-    cancel_frame: 31
+    cancel_frame: 33
 fall_special_b:
   blend_frames: 6
 fall_special_f:
