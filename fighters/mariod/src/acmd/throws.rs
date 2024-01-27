@@ -165,9 +165,9 @@ unsafe fn mariod_throw_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mariod_grab,
-        mariod_dashgrab,
-        mariod_pivotgrab,
+        //mariod_grab,
+        //mariod_dashgrab,
+        //mariod_pivotgrab,
         mariod_throw_f_game,
         mariod_throw_b_game,
         mariod_throw_hi_game,
