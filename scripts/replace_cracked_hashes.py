@@ -16,6 +16,8 @@ uncrackedHashes = set()
 
 
 for root, dirs, files in os.walk(os.pardir):
+    if "build" in root:
+        continue
     for file in files:
         if file.endswith(".rs"):
             with open(os.path.join(root, file), "r") as f:
