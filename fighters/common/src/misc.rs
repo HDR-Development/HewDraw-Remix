@@ -90,7 +90,7 @@ pub fn install() {
         set_team_hook,
         set_team_owner_id_hook,
         ptrainer_swap_backwards_hook,
-        ptrainer_stub_death_switch
+        ptrainer_stub_death_switch,
         // shield_damage_analog,
         // shield_pushback_analog
     );
