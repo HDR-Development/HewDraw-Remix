@@ -56,18 +56,18 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("littlemac_special_air_n_cancel"), -1.0, 1.0, 0.0, false, false);
-        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE);
+        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE);
     }
     else if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("littlemac_special_n_cancel"), -1.0, 1.0, 0.0, false, false);
-        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE);
+        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE);
     }
-    if VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE) == vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE && MotionModule::is_end(fighter.module_accessor) {
+    if VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE) == vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE && MotionModule::is_end(fighter.module_accessor) {
         fighter.fastshift(L2CValue::Ptr(special_n_cancel_main_loop_electric_boogaloo as *const () as _))
     }
-    else if VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE) != vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE
+    else if VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE) != vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE
         && (MotionModule::is_end(fighter.module_accessor) || (!MotionModule::is_end(fighter.module_accessor) && CancelModule::is_enable_cancel(fighter.module_accessor))) {
         fighter.fastshift(L2CValue::Ptr(special_n_cancel_main_loop_electric_boogaloo as *const () as _))
     }
@@ -83,20 +83,20 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
 
 unsafe extern "C" fn special_n_cancel_main_loop_electric_boogaloo(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        match VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE) {
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into()),
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_B => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into()),
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_F => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into()),
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_GUARD => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP => fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), false.into()),
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
+        match VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE) {
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into()),
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into()),
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into()),
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP => fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), false.into()),
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
             _ => {},
         }
     }
     else {
-        match VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE) {
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR => fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into()),
-            vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE => fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()),
+        match VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE) {
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_AIR => fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into()),
+            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE => fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()),
             _ => {},
         }
     }
@@ -154,8 +154,8 @@ unsafe extern "C" fn special_n_jump_cancel_main_loop(fighter: &mut L2CFighterCom
         return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        let cancel_type = VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE);
-        if cancel_type == vars::littlemac::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL {
+        let cancel_type = VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE);
+        if cancel_type == vars::littlemac::SPECIAL_LW_CANCEL_TYPE_JUMP_AERIAL {
             fighter.change_status(FIGHTER_STATUS_KIND_FLY.into(), false.into());
         }
         else {
@@ -176,7 +176,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_kirby"),
-        statuses::littlemac::SPECIAL_N_CANCEL,
+        statuses::littlemac::SPECIAL_LW_CANCEL,
         StatusInfo::new()
             .with_pre(special_n_cancel_pre)
             .with_main(special_n_cancel_main)
@@ -184,7 +184,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_kirby"),
-        statuses::littlemac::SPECIAL_N_CANCEL_JUMP,
+        statuses::littlemac::SPECIAL_LW_CANCEL_JUMP,
         StatusInfo::new()
             .with_pre(special_n_jump_cancel_pre)
             .with_main(special_n_jump_cancel_main)

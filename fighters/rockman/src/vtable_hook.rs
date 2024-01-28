@@ -41,12 +41,12 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             rockman_kill_charge(module_accessor, object);
         }
         else if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING) {
-            if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
                 VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING);
             }
         }
         else {
-            if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 == 0 {
                 if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
                     rockman_kill_charge(module_accessor, object);
                 }
@@ -124,48 +124,48 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
     original!()(vtable, fighter);
 }
 
-pub unsafe fn is_damage_check(module_accessor: *mut BattleObjectModuleAccessor, is_prev: bool) -> bool {
-    let status : i32;
-    if is_prev {
-        status = StatusModule::prev_status_kind(module_accessor, 0);
-    }
-    else {
-        status = StatusModule::status_kind(module_accessor);
-    }
-    if FighterStopModuleImpl::is_damage_stop(module_accessor)
-    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
-    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-    || (*FIGHTER_STATUS_KIND_CAPTURE_PULLED..=*FIGHTER_STATUS_KIND_DAMAGE_FALL).contains(&status)
-    || (*FIGHTER_STATUS_KIND_DOWN..=*FIGHTER_STATUS_KIND_LAY_DOWN).contains(&status)
-    || (*FIGHTER_STATUS_KIND_DOWN_DAMAGE..=*FIGHTER_STATUS_KIND_BIND).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SLIP..=*FIGHTER_STATUS_KIND_SLIP_WAIT).contains(&status)
-    || (*FIGHTER_STATUS_KIND_TREAD_DAMAGE..=*FIGHTER_STATUS_KIND_ICE_JUMP).contains(&status)
-    || (*FIGHTER_STATUS_KIND_LINK_FINAL..=*FIGHTER_STATUS_KIND_PIT_FALL).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SWALLOWED..=*FIGHTER_STATUS_KIND_CAPTURE_DAMAGE_YOSHI).contains(&status)
-    || (*FIGHTER_STATUS_KIND_CATCHED_REFLET..=*FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND).contains(&status)
-    || status == *FIGHTER_STATUS_KIND_GIMMICK_EATEN
-    || (*FIGHTER_STATUS_KIND_CAPTURE_ITEM..=*FIGHTER_STATUS_KIND_CAPTURE_CLAPTRAP).contains(&status)
-    || (*FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER..=*FIGHTER_STATUS_KIND_RIDLEY_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_CATCHED_RIDLEY..=*FIGHTER_STATUS_KIND_STABBED_DAMAGE).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED..=*FIGHTER_STATUS_KIND_SWING_GAOGAEN_FAILURE).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SHEIK_FINAL_CAPTURE..=*FIGHTER_STATUS_KIND_CAPTURE_WAIT_OCTOPUS).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SIMON_FINAL_TARGET_START..=*FIGHTER_STATUS_KIND_YOSHI_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SUICIDE_BOMB..=*FIGHTER_STATUS_KIND_TANTAN_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD..=*FIGHTER_STATUS_KIND_EDGE_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_CAPTURE_TRAIL_KEYHOLE..=*FIGHTER_STATUS_KIND_TRAIL_FINAL_TARGET_END).contains(&status) {
-        return true;
-    }
-    false
-}
+// pub unsafe fn is_damage_check(module_accessor: *mut BattleObjectModuleAccessor, is_prev: bool) -> bool {
+//     let status : i32;
+//     if is_prev {
+//         status = StatusModule::prev_status_kind(module_accessor, 0);
+//     }
+//     else {
+//         status = StatusModule::status_kind(module_accessor);
+//     }
+//     if FighterStopModuleImpl::is_damage_stop(module_accessor)
+//     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
+//     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+//     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+//     || (*FIGHTER_STATUS_KIND_CAPTURE_PULLED..=*FIGHTER_STATUS_KIND_DAMAGE_FALL).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_DOWN..=*FIGHTER_STATUS_KIND_LAY_DOWN).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_DOWN_DAMAGE..=*FIGHTER_STATUS_KIND_BIND).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SLIP..=*FIGHTER_STATUS_KIND_SLIP_WAIT).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_TREAD_DAMAGE..=*FIGHTER_STATUS_KIND_ICE_JUMP).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_LINK_FINAL..=*FIGHTER_STATUS_KIND_PIT_FALL).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SWALLOWED..=*FIGHTER_STATUS_KIND_CAPTURE_DAMAGE_YOSHI).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_CATCHED_REFLET..=*FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND).contains(&status)
+//     || status == *FIGHTER_STATUS_KIND_GIMMICK_EATEN
+//     || (*FIGHTER_STATUS_KIND_CAPTURE_ITEM..=*FIGHTER_STATUS_KIND_CAPTURE_CLAPTRAP).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER..=*FIGHTER_STATUS_KIND_RIDLEY_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_CATCHED_RIDLEY..=*FIGHTER_STATUS_KIND_STABBED_DAMAGE).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED..=*FIGHTER_STATUS_KIND_SWING_GAOGAEN_FAILURE).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SHEIK_FINAL_CAPTURE..=*FIGHTER_STATUS_KIND_CAPTURE_WAIT_OCTOPUS).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SIMON_FINAL_TARGET_START..=*FIGHTER_STATUS_KIND_YOSHI_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SUICIDE_BOMB..=*FIGHTER_STATUS_KIND_TANTAN_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD..=*FIGHTER_STATUS_KIND_EDGE_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_CAPTURE_TRAIL_KEYHOLE..=*FIGHTER_STATUS_KIND_TRAIL_FINAL_TARGET_END).contains(&status) {
+//         return true;
+//     }
+//     false
+// }
 
 unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
-    if is_damage_check(module_accessor, false) {
-        return false;
-    }
+    // if is_damage_check(module_accessor, false) {
+    //     return false;
+    // }
     let status = StatusModule::status_kind(module_accessor);
     ![
         *FIGHTER_STATUS_KIND_DEAD,
@@ -207,14 +207,14 @@ unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCt
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 
-const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 5] = [
+const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 6] = [
     // transition_groups::CHECK_GROUND_SPECIAL,
     // transition_groups::CHECK_AIR_SPECIAL,
     transition_groups::CHECK_GROUND_ESCAPE,
     // transition_groups::CHECK_AIR_ESCAPE,
     transition_groups::CHECK_GROUND_GUARD,
     transition_groups::CHECK_GROUND_ATTACK,
-    // transition_groups::CHECK_GROUND_CATCH,
+    transition_groups::CHECK_GROUND_CATCH,
     transition_groups::CHECK_AIR_ATTACK,
     transition_groups::CHECK_AIR_CLIFF
 ];

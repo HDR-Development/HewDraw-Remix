@@ -74,56 +74,87 @@ unsafe fn lucas_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("hip"), 5.0, 366, 130, 50, 0, 9.0, 3.0, -3.0, 0.0, None, None, None, 0.3, 0.3, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 366, 130, 50, 0, 9.0, -2.0, 0.0, 0.0, None, None, None, 0.3, 0.3, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("hip"), 5.0, 367, 130, 50, 0, 8.2, 3.5, -3.0, 0.0, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 367, 130, 50, 0, 8.2, -2.0, 0.0, 0.0, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
         JostleModule::set_status(boma, false);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 2.0, 366, 130, 50, 0, 7.0, 0.0, 2.5, 5.5, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 2.0, 363, 130, 50, 0, 5.7, 0.0, 1.0, -2.2, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        AttackModule::set_attack_composition_speed(boma, 0, true);
     }
-    for _ in 0..4{
-        wait(lua_state, 1.0);
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("rot"), 2.0, 366, 130, 50, 0, 7.5, 0.0, 2.5, 5.0, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-            ATTACK(fighter, 1, 0, Hash40::new("rot"), 1.0, 366, 130, 50, 0, 5.7, 0.0, 1.0, -2.2, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-            AttackModule::set_attack_composition_speed(boma, 0, true);
-            //AttackModule::set_attack_composition_speed(boma, 1, true);
-        }
-        wait(lua_state, 2.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-        }
-    }
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_ATTACK_FALL_START);
     }
-    for _ in 0..4{
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("rot"), 2.0, 366, 130, 50, 0, 7.5, 0.0, 2.5, 5.0, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-            ATTACK(fighter, 1, 0, Hash40::new("rot"), 1.0, 366, 130, 50, 0, 5.7, 0.0, 1.0, -2.2, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        }wait(lua_state, 2.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-        }
-        wait(lua_state, 1.0);
-    }
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("rot"), 10.0, 50, 74, 0, 90, 8.5, 0.0, 2.5, 5.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("rot"), 10.0, 50, 74, 0, 90, 5.7, 0.0, 1.0, -2.2, None, None, Some(-2.2), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_CRITICAL);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCAS_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_NO_LAST_ATTACK);
-    }
-    wait(lua_state, 1.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_ATTACK_END);
-        WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_LANDING_ENABLE);
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 10.0, 50, 74, 0, 90, 8.0, 0.0, 2.5, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 10.0, 50, 74, 0, 90, 6.5, 0.0, 1.0, -2.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        fighter.on_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_CRITICAL);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        fighter.on_flag(*FIGHTER_LUCAS_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_NO_LAST_ATTACK);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        fighter.on_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_ATTACK_END);
+        fighter.on_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_LANDING_ENABLE);
         JostleModule::set_status(boma, true);
         fighter.select_cliff_hangdata_from_name("special_air_hi_end");
+    }
+}
+
+#[acmd_script( agent = "lucas", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_pkt_attack"), Hash40::new("rot"), 0, 1, 8, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT(fighter, Hash40::new("lucas_pkt_bomb"), Hash40::new("top"), 0, 2.2, 2.9, 0, 0, 0, 0.64, 0, 0, 0, 0, 0, 0, true);
+    }
+    for _ in 0..15 {
+        if is_excute(fighter) {
+            BURN_COLOR(fighter, 0.5, 0.2, 1, 0.9);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            BURN_COLOR_FRAME(fighter, 1, 0.5, 0.2, 1, 0);
+            BURN_COLOR_NORMAL(fighter);
+            FLASH(fighter, 0, 0, 0.1, 0.8);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            FLASH_FRM(fighter, 1, 0, 0, 0.1, 0);
+            COL_NORMAL(fighter);
+        }
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_attack"), false, false);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.9, true);
+        BURN_COLOR(fighter, 0.7, 0.2, 1, 0.6);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        BURN_COLOR_FRAME(fighter, 1, 0.7, 0.2, 1, 0);
+        BURN_COLOR_NORMAL(fighter);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.8, 0.7, 1, 0.5);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 1, 0.8, 0.7, 1, 0);
+        COL_NORMAL(fighter);
     }
 }
 
@@ -454,6 +485,7 @@ pub fn install() {
         lucas_special_lw_end_effect,
         lucas_special_lw_hit_effect,
         lucas_special_air_hi_game,
+        lucas_special_air_hi_effect,
         game_specialhiend,
         game_fallspecial,
     );

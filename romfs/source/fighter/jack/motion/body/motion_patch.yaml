@@ -1,3 +1,13 @@
+summon:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 15
+dispatch:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 15
 fall:
   blend_frames: 5
 fall_aerial:
@@ -31,13 +41,76 @@ attack_11:
     cancel_frame: 16
 attack_hi4:
   extra:
-    cancel_frame: 60
+    cancel_frame: 56
 attack_lw4:
   extra:
     cancel_frame: 54
+attack_lw3:
+  game_script: game_attacklw3_ex
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c02attacklw3_ex.nuanmb
+      unk: 0
+  scripts:
+    - expression_attacklw3_ex
+    - sound_attacklw3_ex
+    - effect_attacklw3_ex
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 32
+    no_stop_intp: false
+attack_lw3_ex:
+  game_script: game_attacklw3
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c02attacklw3.nuanmb
+      unk: 0
+  scripts:
+    - expression_attacklw3
+    - sound_attacklw3
+    - effect_attacklw3
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 27
+    no_stop_intp: false
 attack_hi3:
   extra:
     cancel_frame: 30
+attack_dash:
+  extra:
+    cancel_frame: 40
 attack_s4_s:
   extra:
     cancel_frame: 57
@@ -46,7 +119,7 @@ special_hi2:
     intangible_end_frame: 0
 attack_air_f:
   extra:
-    cancel_frame: 39
+    cancel_frame: 41
 attack_air_n:
   extra:
     cancel_frame: 51
@@ -58,6 +131,9 @@ special_air_lw:
   extra:
     xlu_start: 0
     xlu_end: 0
+special_air_hi_throw:
+  extra:
+    cancel_frame: 15
 special_hi2_f:
   extra:
     intangible_start_frame: 0

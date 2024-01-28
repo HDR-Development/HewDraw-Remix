@@ -118,9 +118,7 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 13.0/(21.0 - 1.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 21.0, 11.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_FISHINGROD, false, 0);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);
@@ -137,8 +135,9 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_push_speed_x_overlap_rate(boma, 20.0);
     }
     frame(lua_state, 21.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 350, 100, 30, 0, 5.0, 0.0, 6.0, 4.0, Some(0.0), Some(6.0), Some(11.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FEB, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -147,6 +146,7 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_SHOOT);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {

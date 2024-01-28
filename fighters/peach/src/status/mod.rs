@@ -3,6 +3,7 @@ use smashline::*;
 
 mod attack_air;
 mod jump_aerial;
+mod special_hi;
 mod special_s;
 mod special_lw;
 
@@ -54,6 +55,7 @@ pub fn install() {
     smashline::install_agent_init_callbacks!(peach_init);
     attack_air::install();
     jump_aerial::install();
+    special_hi::install();
     special_s::install();
     special_lw::install();
 }

@@ -176,7 +176,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::DISABLE_NSPECIAL_PARRY_FORGIVENESS);
     lucario_special_n_save_charge_status(fighter);
     0.into()
 }

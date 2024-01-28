@@ -111,6 +111,20 @@ unsafe fn attack_s3_lw(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "donkey", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("donkey_attack_arc"), Hash40::new("top"), 3, 9, 1.5, 2.5, -42, 15, 1.9, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "donkey", script = "expression_attacks3lw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -199,6 +213,7 @@ pub fn install() {
         attack_s3_s,
         attack_s3_s_expression,
         attack_s3_lw,
+        attack_s3_lw_effect,
         attack_s3_lw_expression,
         attack_hi3,
         attack_lw3,
