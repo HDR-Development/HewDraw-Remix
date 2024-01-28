@@ -30,7 +30,7 @@ pub mod shoto_status;
 
 #[smashline::fighter_init]
 fn common_init(fighter: &mut L2CFighterCommon) {
-    VarModule::set_int(fighter.module_accessor, vars::common::instance::LEDGE_ID, -1);
+    VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
 }
 
 pub fn install() {
