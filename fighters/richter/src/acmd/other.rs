@@ -392,6 +392,16 @@ unsafe fn appeallwl_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter_whip", script = "game_guardon" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_attack_guardon_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -410,7 +420,8 @@ pub fn install() {
         downattacku_effect,
         downattackd_effect,
         appeallwr_sound,
-        appeallwl_sound
+        appeallwl_sound,
+        richter_whip_attack_guardon_game
     );
 }
 

@@ -24,7 +24,7 @@ unsafe fn richter_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
         }
         */
     }
-    frame(lua_state, 27.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -40,24 +40,23 @@ unsafe fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 74, 0, 60, 6.5, 0.0, 7.5, 17.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 361, 80, 0, 60, 5.0, 0.0, 7.5, 28.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 16.0, 361, 80, 0, 60, 4.0, 0.0, 7.5, 36.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 18.0, 361, 80, 0, 60, 3.5, 0.0, 7.5, 43.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-        ATTACK(fighter, 4, 0, Hash40::new("top"), 18.0, 361, 80, 0, 60, 3.0, 0.0, 7.5, 50.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-        /*
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            ATTACK(fighter, 3, 0, Hash40::new("top"), 15.0, 115, 40, 0, 65, 5.0, 0.0, 7.0, 40.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-            ATTACK(fighter, 4, 0, Hash40::new("top"), 15.0, 115, 40, 0, 65, 5.0, 0.0, 7.0, 45.5, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+    for _ in 0..5 {
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 366, 100, 30, 0, 3.0, 0.0, 7.6, 44.5, Some(0.0), Some(7.6), Some(7.5), 0.75, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
         }
-        */
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
+        wait(lua_state, 1.0);
     }
-    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 85, 0, 60, 4.5, 0.0, 7.6, 44.0, Some(0.0), Some(7.6), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_WHIP);
+    }
+    wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
@@ -82,7 +81,7 @@ unsafe fn richter_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
         }
         */
     }
-    frame(lua_state, 27.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -101,9 +100,59 @@ unsafe fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 0.7);
     }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_firebar_trace"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.1, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_firebar_trace"), Hash40::new("throw"), 0, 0, 0.5, 0, 0, 0, 1.2, true);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.3, false);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.1, 0.0);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.5);
+    }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 65, 0, 1.3, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 65, 0, 1.2, true);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+    EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.3, false);
+    LAST_EFFECT_SET_COLOR(fighter, 1.0, 1.0, 0.7);
+    LAST_EFFECT_SET_RATE(fighter, 2.0);
+    EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 65, 0, 1.2, true);
+    LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.3, false);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.1, 0.0);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 65, 0, 1.2, true);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_firebar_trace"), false, true);
+
+    }
+
+}
+
+#[acmd_script( agent = "richter_whip", script = "game_attacks4charge" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_attack_s4_charge_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
     }
 }
 
@@ -111,53 +160,44 @@ unsafe fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
 unsafe fn richter_whip_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0 , 0.6, 0.0, 0.3);
-        BURN_COLOR(fighter, 1.0, 1.0, 1.0, 0.5);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0, 1.0, 1.0, 0.5);
-        BURN_COLOR(fighter, 1.0 , 0.6, 0.0, 0.3);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0 , 0.6, 0.0, 0.3);
-        BURN_COLOR(fighter, 1.0, 1.0, 1.0, 0.5);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0, 1.0, 1.0, 0.5);
-        BURN_COLOR(fighter, 1.0 , 0.6, 0.0, 0.3);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0 , 0.6, 0.0, 0.3);
-        BURN_COLOR(fighter, 1.0, 1.0, 1.0, 0.5);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0, 1.0, 1.0, 0.5);
-        BURN_COLOR(fighter, 1.0 , 0.6, 0.0, 0.3);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0 , 0.6, 0.0, 0.3);
-        BURN_COLOR(fighter, 1.0, 1.0, 1.0, 0.5);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 1.0, 1.0, 1.0, 0.5);
-        BURN_COLOR(fighter, 1.0 , 0.6, 0.0, 0.3);
-    }
-    frame(lua_state, 23.0);
+    frame(lua_state, 24.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot11"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("hookshot3"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);    
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);    
     }
-
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot11"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("hookshot3"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);    
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot11"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("hookshot3"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);  
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.0);  
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("hookshot27"), 0, 3.6, -2.5, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 3.0);    
+    }
 }
 
 
@@ -363,6 +403,7 @@ pub fn install() {
         richter_attack_s4_effect,
         richter_attack_s4_lw_game,
         richter_whip_attack_s4_effect,
+        richter_whip_attack_s4_charge_game,
         richter_attack_hi4_game,
         richter_attack_hi4_effect,
         richter_attack_hi4_sound,
