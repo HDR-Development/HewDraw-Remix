@@ -58,6 +58,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         } else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
             
+            VarModule::on_flag(fighter.battle_object, vars::robot::instance::GROUNDED_UPB);
             fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
             PostureModule::add_pos(fighter.module_accessor, &Vector3f{x: 0.00, y: 3.0, z: 0.0});
             
@@ -103,6 +104,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
         } else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
+            VarModule::on_flag(fighter.battle_object, vars::robot::instance::GROUNDED_UPB);
             
             fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
             PostureModule::add_pos(fighter.module_accessor, &Vector3f{x: 0.00, y: 3.0, z: 0.0});
@@ -339,6 +341,13 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
     VarModule::add_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB_RISE, 1.0);
     let robotKeepFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB_RISE);
 
+    /*if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }*/
+
     //return to upright
     let rotX = PostureModule::rot_x(fighter.module_accessor, 0);
     let lr = PostureModule::lr(fighter.module_accessor);
@@ -391,16 +400,17 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
         }
     } */
 
-    if (robotKeepFrames > 22.0) {
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
-    } 
+    if VarModule::is_flag(fighter.battle_object, vars::robot::instance::UPB_CANCEL) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        VarModule::off_flag(fighter.battle_object, vars::robot::instance::UPB_CANCEL);
+    }
 
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), true.into());
     }
     
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     } 
 
     0.into()
@@ -420,7 +430,7 @@ unsafe fn special_hi_keep_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
-    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    //KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     KineticModule::resume_energy_all(fighter.module_accessor);
     0.into()

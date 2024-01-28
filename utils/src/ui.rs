@@ -6,12 +6,14 @@ use self::ff_meter::FfMeter;
 use self::power_board::PowerBoard;
 use self::pichu_meter::PichuMeter;
 use self::aura_meter::AuraMeter;
+use self::robot_meter::RobotMeter;
 
 mod ex_meter;
 mod ff_meter;
 mod power_board;
 mod pichu_meter;
 mod aura_meter;
+mod robot_meter;
 
 trait UiObject {
     fn update(&mut self);
@@ -26,6 +28,7 @@ static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager 
     power_board: [PowerBoard::default(); 8],
     pichu_meter: [PichuMeter::default(); 8],
     aura_meter: [AuraMeter::default(); 8],
+    robot_meter: [RobotMeter::default(); 8]
 }));
 
 #[repr(C)]
@@ -34,7 +37,8 @@ pub struct UiManager {
     ff_meter: [FfMeter; 8],
     power_board: [PowerBoard; 8],
     pichu_meter: [PichuMeter; 8],
-    aura_meter: [AuraMeter; 8]
+    aura_meter: [AuraMeter; 8],
+    robot_meter: [RobotMeter; 8]
 }
 
 impl UiManager {
@@ -223,6 +227,22 @@ impl UiManager {
             manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, burnout);
         }
     }
+
+    #[export_name = "UiManager__set_robot_meter_enable"]
+    pub extern "C" fn set_robot_meter_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        }
+    }
+
+    #[export_name = "UiManager__set_robot_meter_info"]
+    pub extern "C" fn set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
+        }
+    }
 }
 
 fn set_pane_visible(pane: u64, visible: bool) {
@@ -348,6 +368,7 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.power_board[index] = PowerBoard::new(layout_udata);
     manager.pichu_meter[index] = PichuMeter::new(layout_udata);
     manager.aura_meter[index] = AuraMeter::new(layout_udata);
+    manager.robot_meter[index] = RobotMeter::new(layout_udata);
 }
 
 #[skyline::hook(offset = 0x138a6f0, inline)]
@@ -387,6 +408,11 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     for aura_meter in mgr.aura_meter.iter_mut() {
         if aura_meter.is_valid() && aura_meter.is_enabled() {
             aura_meter.update();
+        }
+    }
+    for robot_meter in mgr.robot_meter.iter_mut() {
+        if robot_meter.is_valid() && robot_meter.is_enabled() {
+            robot_meter.update();
         }
     }
 }

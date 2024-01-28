@@ -99,12 +99,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
             next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
         }
-        else if boma.kind() == *FIGHTER_KIND_BAYONETTA
-        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
-        && next_status == *FIGHTER_STATUS_KIND_DAMAGE_FALL {
-            next_status = *FIGHTER_STATUS_KIND_FALL;
-            clear_buffer = true;
-        }
         else if boma.kind() == *FIGHTER_KIND_KOOPAJR
         && StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH
         && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
@@ -186,6 +180,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         // Stubs vanilla Popgun cancel behavior
         else if boma.kind() == *FIGHTER_KIND_DIDDY
         && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE])
+        && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
+            return 0;
+        }
+        else if boma.kind() == *FIGHTER_KIND_KIRBY
+        && (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DIDDY)
+        && boma.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE])
         && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
             return 0;
         }
