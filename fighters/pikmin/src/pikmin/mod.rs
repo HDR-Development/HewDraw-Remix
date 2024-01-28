@@ -20,7 +20,7 @@ impl From<i32> for PikminInfo {
         match other {
             0 => PikminInfo { // Red
                 dmg: 1.0,
-                shield_dmg: 0.5,
+                shield_dmg: 0.25,
                 angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_fire"),
@@ -35,7 +35,7 @@ impl From<i32> for PikminInfo {
                 angle: 8,
                 hitlag: 1.25,
                 attr: Hash40::new("collision_attr_elec"),
-                attr_special: Hash40::new("collision_attr_elec"),
+                attr_special: Hash40::new("collision_attr_paralyze"),
                 sound: *COLLISION_SOUND_ATTR_ELEC,
                 color: Vector3f{x: 1.0, y: 1.0, z: 0.14},
                 cling_frame: 30 * 6
@@ -43,7 +43,7 @@ impl From<i32> for PikminInfo {
             2 => PikminInfo { // Blue
                 dmg: 1.0,
                 shield_dmg: 0.0,
-                angle: 5,
+                angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_water"),
                 attr_special: Hash40::new("collision_attr_water"),
@@ -54,7 +54,7 @@ impl From<i32> for PikminInfo {
             3 => PikminInfo { // White
                 dmg: 0.75,
                 shield_dmg: 0.75,
-                angle: 8,
+                angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_purple"),
                 attr_special: Hash40::new("collision_attr_flower"),
@@ -64,7 +64,7 @@ impl From<i32> for PikminInfo {
             },
             _ => PikminInfo { // Violet (Rock), also default
                 dmg: 1.2,
-                shield_dmg: 0.1,
+                shield_dmg: 0.0,
                 angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_normal"),

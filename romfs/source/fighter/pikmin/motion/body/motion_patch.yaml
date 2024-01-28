@@ -49,7 +49,7 @@ attack_air_hi:
     cancel_frame: 34
 special_n_start:
   extra:
-    cancel_frame: 9
+    cancel_frame: 16
 special_n_failure:
   extra:
     cancel_frame: 29
