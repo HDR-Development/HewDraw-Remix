@@ -2,7 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
 unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -21,18 +20,6 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Dair only bounces once per airtime
-unsafe fn dair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    if boma.is_situation(*SITUATION_KIND_GROUND)
-    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD,
-                                  *FIGHTER_STATUS_KIND_REBIRTH,
-                                  *FIGHTER_STATUS_KIND_WIN,
-                                  *FIGHTER_STATUS_KIND_LOSE,
-                                  *FIGHTER_STATUS_KIND_ENTRY]){
-        WorkModule::on_flag(boma, vars::robot::instance::AIRTIME_DAIR);
-    }
-}
-
 // Bair only bounces once per airtime
 unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if boma.is_situation(*SITUATION_KIND_GROUND)
@@ -42,6 +29,18 @@ unsafe fn bair_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i
                                   *FIGHTER_STATUS_KIND_LOSE,
                                   *FIGHTER_STATUS_KIND_ENTRY]){
         WorkModule::on_flag(boma, vars::robot::instance::AIRTIME_BAIR);
+    }
+}
+
+// Sideb only bounces once per airtime
+unsafe fn sideb_boost_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if boma.is_situation(*SITUATION_KIND_GROUND)
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD,
+                                  *FIGHTER_STATUS_KIND_REBIRTH,
+                                  *FIGHTER_STATUS_KIND_WIN,
+                                  *FIGHTER_STATUS_KIND_LOSE,
+                                  *FIGHTER_STATUS_KIND_ENTRY]){
+        WorkModule::on_flag(boma, vars::robot::instance::AIRTIME_SIDEB);
     }
 }
 
@@ -67,17 +66,6 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && situation_kind == *SITUATION_KIND_AIR {
-        if frame > 13.0 {
-            if boma.is_button_on(Buttons::Attack) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
-            }
-        }
-    }
-}
-
 unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
     if boma.get_aerial() == Some(AerialKind::Bair) && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_CSTICK_ON) {
         if boma.is_cat_flag(Cat1::AttackS4){
@@ -89,114 +77,6 @@ unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
     }
 }
 
-unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
-    let max_fuel = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("energy_max_frame"));
-    let current_fuel = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-
-    // Bools to hold which fuel level we're at
-    let mut low_fuel = false;
-    let mut mid_fuel = false;
-    let mut high_fuel = false;
-
-    // Fuel level thresholds
-    let high_fuel_threshold = max_fuel * 0.75;
-    let mid_fuel_threshold = max_fuel * 0.66;
-    let low_fuel_threshold = max_fuel * 0.33;
-
-    // Bool to hold whether or not our fuel threshold has changed
-    let mut is_fuel_threshold_changed = false;
-    let prev_fuel_threshold = VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD);
-    if current_fuel < low_fuel_threshold{
-        if VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD) != 1 {
-            is_fuel_threshold_changed = true;
-        }
-        VarModule::set_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD, 1);
-        low_fuel = true;
-    }
-    else if current_fuel < mid_fuel_threshold{
-        if VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD) != 2 {
-            is_fuel_threshold_changed = true;
-        }
-        VarModule::set_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD, 2);
-        mid_fuel = true;
-    }
-    else{
-        if VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD) != 3 {
-            is_fuel_threshold_changed = true;
-        }
-        VarModule::set_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD, 3);
-        high_fuel = true;
-    }
-
-    // Respawn the effect if it's been removed
-    let fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE);
-    if !EffectModule::is_exist_effect(boma, fuel_effect_indicator_handle as u32) && !high_fuel { // Don't spawn the effect at high fuel
-        //EFFECT_FOLLOW(fighter, Hash40::new("robot_lamp_l"), Hash40::new("waist2"), 5.0, 0, 0, 0, 0, 0, 2.0, true);
-        let new_fuel_effect_indicator_handle = EffectModule::req_follow(
-            boma,
-            Hash40::new("robot_lamp_l"),
-            Hash40::new("waist1"),
-            &Vector3f::zero(),
-            &Vector3f::zero(),
-            1.75,
-            true,
-            0,
-            0,
-            0,
-            0,
-            0,
-            true,
-            true
-        ) as u32;
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
-        //VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
-        VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
-    }
-
-    // Kill the old effect and spawn the effect again with a new color if the fuel threshold has changed
-    let current_fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE) as u32;
-    if is_fuel_threshold_changed{
-        EffectModule::kill(boma, current_fuel_effect_indicator_handle as u32, true, true);
-        //EFFECT_FOLLOW(fighter, Hash40::new("robot_lamp_l"), Hash40::new("waist2"), 5.0, 0, 0, 0, 0, 0, 2.0, true);
-        if !high_fuel{ // Don't spawn the effect if high fuel
-            let new_fuel_effect_indicator_handle = EffectModule::req_follow(
-                boma,
-                Hash40::new("robot_lamp_l"),
-                Hash40::new("waist1"),
-                &Vector3f::new(0.0, 0.0, 0.0),
-                &Vector3f::zero(),
-                1.75,
-                true,
-                0,
-                0,
-                0,
-                0,
-                0,
-                true,
-                true
-            ) as u32;
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            //VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
-            VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
-            if low_fuel {
-                // Don't change the effect color since it's already red
-            }
-            else if mid_fuel {
-                // Yellow fuel indicator
-                LAST_EFFECT_SET_COLOR(fighter, 2.0, 2.5, 0.1);
-            }
-            /*
-            // High fuel
-            else {
-                // Blue fuel indicator
-                LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.1, 1.2);
-            }
-            */
-        }
-    }
-    
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -204,7 +84,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END
         ]) 
@@ -230,16 +109,111 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn upb_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) < 0.0 {
+        WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+    } else if WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) == 0.0 {
+        WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+    }
+
+    if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP {
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB_RISE, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::robot::instance::JOINT_ROT, 0.0);
+        VarModule::off_flag(fighter.battle_object, vars::robot::instance::UPB_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::robot::instance::GROUNDED_UPB);
+    }
+
+    if StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+    {
+        PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
+    }
+}
+
+unsafe fn meter_control(boma: &mut BattleObjectModuleAccessor) {
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
+    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
+        MeterModule::reset(boma.object());
+    }
+    
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,]) {
+        MeterModule::reset(boma.object());
+    }
+
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ENTRY,]) || !sv_information::is_ready_go() {
+        VarModule::on_flag(boma.object(), vars::robot::instance::IS_INIT_METER);
+    }
+
+    if VarModule::is_flag(boma.object(), vars::robot::instance::IS_INIT_METER) {
+        MeterModule::reset(boma.object());
+        MeterModule::set_meter_cap(boma.object(), 200);
+        MeterModule::set_meter_per_level(boma.object(), 100.0);
+        
+        MeterModule::add(boma.object(), 200.0);
+        VarModule::off_flag(boma.object(), vars::robot::instance::IS_INIT_METER);
+    }
+
+    if MeterModule::meter(boma.object()) < 200.0 && boma.is_situation(*SITUATION_KIND_GROUND) {
+        MeterModule::add(boma.object(), 0.75);
+    }
+
+
+    if MeterModule::meter(boma.object()) != WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) 
+    && !boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        let diff = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - MeterModule::meter(boma.object());
+
+        if WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) == 10.0 {
+            let remain = MeterModule::meter(boma.object());
+            MeterModule::drain_direct(boma.object(), remain);
+        } else {
+            if diff >= 0.0 {
+                MeterModule::add(boma.object(), diff);
+            } else {
+                MeterModule::drain_direct(boma.object(), diff.abs());
+            }
+        }
+    }
+
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        let robotFrames = VarModule::get_float(boma.object(), vars::robot::instance::FRAMES_SINCE_UPB);
+
+        if robotFrames == 1.0 {
+            MeterModule::drain_direct(boma.object(), 20.0);
+        } else if robotFrames > 10.0 {
+            MeterModule::drain_direct(boma.object(), 2.0);
+        }
+    }
+
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    uspecial_cancels(boma, situation_kind, frame);
-    dair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_reset(boma, status_kind, situation_kind);
+    sideb_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);
-    fuel_indicator_effect(fighter, boma);
     fastfall_specials(fighter);
+    upb_opff(fighter, boma);
+    meter_control(boma);
+}
+
+#[fighter_frame( agent = FIGHTER_KIND_ROBOT )]
+pub fn robot_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        MeterModule::update(fighter.object(), false);
+        utils::ui::UiManager::set_robot_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_robot_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+            MeterModule::meter_per_level(fighter.object())
+        );
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ROBOT )]

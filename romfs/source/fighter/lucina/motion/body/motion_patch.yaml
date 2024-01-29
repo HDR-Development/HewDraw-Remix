@@ -41,10 +41,10 @@ special_s1:
 attack_s3_s:
 attack_air_b:
   extra:
-    cancel_frame: 30
+    cancel_frame: 33
 attack_air_f:
   extra:
-    cancel_frame: 43
+    cancel_frame: 35
 attack_lw4:
   extra:
     cancel_frame: 56
@@ -67,3 +67,6 @@ special_air_hi:
 catch_attack:
   extra:
     cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 10

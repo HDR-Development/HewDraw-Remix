@@ -154,6 +154,11 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     } {
         interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
     }
+    if fighter.is_parry_input() {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into()
+    }
 
 	call_original!(fighter)
 }
@@ -162,7 +167,6 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     symbol = "_ZN7lua2cpp16L2CFighterCommon19status_TurnRunBrakeEv")]
 unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_TurnRunBrake_Sub();
-
     let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
     let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
     let mut hip_translate = Vector3f::zero();
@@ -170,7 +174,18 @@ unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
     ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
     
-    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TurnRunBrake_Main as *const () as _))
+    fighter.main_shift(status_turnrunbrake_main)
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon24status_TurnRunBrake_MainEv")]
+unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_parry_input() {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into()
+    }
+
+    call_original!(fighter)
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_TURN_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
@@ -194,7 +209,8 @@ pub fn install() {
     install_hooks!(
         status_run_sub,
         status_run_main,
-        status_runbrake_main
+        status_runbrake_main,
+        status_turnrunbrake_main,
     );
 
     install_status_scripts!(

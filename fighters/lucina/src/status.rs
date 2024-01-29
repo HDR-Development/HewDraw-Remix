@@ -10,6 +10,7 @@ pub fn install() {
         lucina_specials2_main,
         lucina_specials3_main,
         lucina_specials3_exec_stop,
+        appeal_end
     );
 }
 
@@ -477,3 +478,8 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+// stub out mask removal at the end of taunt
+#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    1.into()
+}

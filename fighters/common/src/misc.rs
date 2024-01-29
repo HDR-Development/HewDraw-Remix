@@ -89,6 +89,8 @@ pub fn install() {
         set_team_second_hook,
         set_team_hook,
         set_team_owner_id_hook,
+        ptrainer_swap_backwards_hook,
+        ptrainer_stub_death_switch,
         // shield_damage_analog,
         // shield_pushback_analog
     );
@@ -209,3 +211,21 @@ pub unsafe fn psych_up_hit() {
 pub unsafe fn krool_belly_damage_hook(damage: f32, fighter: *mut Fighter, unk: bool) {
     krool_belly_damage_hook_impl(damage, fighter, unk);
 }
+
+#[skyline::hook(offset = 0x34cdc64, inline)]
+unsafe fn ptrainer_swap_backwards_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let object = *ctx.registers[20].x.as_ref() as *mut BattleObject;
+    if VarModule::is_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS) {
+        let new = match *ctx.registers[8].x.as_ref() {
+            0 => 1,
+            1 => 2,
+            2 => 0,
+            _ => unreachable!()
+        };
+
+        *ctx.registers[8].x.as_mut() = new;
+    }
+}
+
+#[skyline::hook(offset = 0xf96310)]
+unsafe fn ptrainer_stub_death_switch() {}

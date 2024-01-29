@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+
 unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, situation_kind: i32, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
         //let motion_vec = Vector3f{x:0.0, y: 2.5, z: 0.0};
@@ -120,18 +120,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 // Double fireball handling
-unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
-        let restart_frame = 10.0;
-        if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
-            VarModule::off_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
-            VarModule::off_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
-            VarModule::on_flag(boma.object(), vars::mario::instance::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
-            //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
-        }
-    }
-}
+// unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+//     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
+//         let restart_frame = 10.0;
+//         if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
+//             VarModule::off_flag(fighter.battle_object, vars::mario::status::FIREBRAND);
+//             VarModule::off_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
+//             VarModule::on_flag(boma.object(), vars::mario::instance::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
+//             //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
+//             boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
+//         }
+//     }
+// }
 
 // Once down special is called, imediately uses special low shoot and circumvent the charge mechanic of the og down-b
 unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -144,40 +144,45 @@ unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjec
 unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
     let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
     let air_fri = Vector3f{x: 0.89, y: 1.0, z: 0.0}; // air friction
+    let start_x_mul = 0.4;
     if motion_kind == hash40("special_air_lw_light") {
         if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) {
-            if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
+            if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) && fighter.is_situation(*SITUATION_KIND_AIR)  {
+                if frame <= 2.0 {
+                    let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_speed * start_x_mul);
+                    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                }
                 if frame >= 6.0 && frame < 35.0 {  
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.0);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.06);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
                 }
                 if frame >= 35.0 && frame < 45.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 }
                 if frame >= 45.0 && frame < 50.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.075);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 }
                 if frame >= 50.0 {
-                    VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.095);
+                    VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                 }
             }  
         }
     }
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY]) 
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR]) 
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT {
-        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF) 
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
     || fighter.is_situation(*SITUATION_KIND_LADDER) {
-        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
     }
 }
 

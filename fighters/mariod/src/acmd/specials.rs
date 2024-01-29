@@ -47,17 +47,14 @@ unsafe fn mariod_special_n_sound(fighter: &mut L2CAgentBase) {
 unsafe fn mariod_special_n_chill_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
-    FT_MOTION_RATE_RANGE(fighter, 10.0, 14.0, 5.0);
-    frame(lua_state, 14.0);
     FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 69, 90, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 69, 90, 0, 50, 4.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 10.0, 69, 90, 0, 50, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 69, 84, 0, 42, 3.5, 0.0, 6.5, 4.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 69, 84, 0, 42, 4.75, 0.0, 4.0, 7.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 18.0);
-    FT_MOTION_RATE_RANGE(fighter, 18.0, 43.0, 37.0);
+    frame(lua_state, 19.0);
+    FT_MOTION_RATE_RANGE(fighter, 19.0, 43.0, 36.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -69,68 +66,27 @@ unsafe fn mariod_special_n_chill_game(fighter: &mut L2CAgentBase) {
 unsafe fn mariod_special_n_chill_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 2.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-        }
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_ice"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.35, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_ice_landing"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.75, true);
-        LAST_EFFECT_SET_RATE(fighter, 0.75);
-        EffectModule::enable_sync_init_pos_last(boma);
-        EFFECT_FLIP(fighter, Hash40::new("mariod_capsule_shoot"), Hash40::new("mariod_capsule_shoot"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.46, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -1, 8, 11, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        }
+        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 8, 11, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         FLASH(fighter, 0.5, 0.25, 1, 0.35);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_ice"), Hash40::new("top"), 0, 4, 7, 0, 0, 0, 0.35, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_ice_landing"), Hash40::new("top"), 0, 4, 7, 0, 0, 0, 0.75, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.75);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT_FLIP(fighter, Hash40::new("mariod_capsule_shoot"), Hash40::new("mariod_capsule_shoot"), Hash40::new("top"), 0, 4, 7, 0, 0, 0, 0.46, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        EFFECT_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 4, 7, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.2, 0.2, 0.2);
+            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
     }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 0.5, 0.25, 1, 0.75);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 0.5, 0.25, 1, 0.35);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        COL_NORMAL(fighter);
-    }
-    frame(lua_state, 27.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 0.75, 0.75, 1.0, 0.75);
-    }
-    frame(lua_state, 33.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-    }
-    frame(lua_state, 36.0);
-    if is_excute(fighter) {
-        COL_NORMAL(fighter);
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_ice"), false, true);
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice_landing"), false, true);
-    }
-    frame(lua_state, 39.0);
-    if is_excute(fighter) {
-        FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("mario_fb_shoot"), false, false);
-    }
-    frame(lua_state, 42.0);
+    frame(lua_state, 19.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
@@ -140,10 +96,10 @@ unsafe fn mariod_special_n_chill_effect(fighter: &mut L2CAgentBase) {
 unsafe fn mariod_special_n_chill_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 14.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_frieze_l"));
-        PLAY_SE(fighter, Hash40::new("vc_mariod_012")); //vc_mariod_win02_02
+        PLAY_SE(fighter, Hash40::new("vc_mariod_012"));
     }
 }
 
@@ -154,7 +110,7 @@ unsafe fn mariod_special_n_chill_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_55_smash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
@@ -264,7 +220,10 @@ unsafe fn mariod_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MARIOD_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
+        if !VarModule::is_flag(fighter.battle_object, vars::mariod::instance::SPECIAL_S_DISABLE_STALL) {
+            WorkModule::on_flag(boma, *FIGHTER_MARIOD_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
+            VarModule::on_flag(fighter.battle_object, vars::mariod::instance::SPECIAL_S_DISABLE_STALL);
+        }
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 110, 100, 80, 0, 4.5, 0.0, 13.0, 8.0, Some(0.0), Some(1.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13c64f9fca), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIOD_MANT, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 110, 100, 80, 0, 5.0, 0.0, 6.7, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13c64f9fca), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIOD_MANT, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 35, 100, 45, 0, 10, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(13.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);

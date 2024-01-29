@@ -915,7 +915,7 @@ unsafe fn effect_specialsstart (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, -1.5, 4.8, 0, 0, 0, 1, true);
 		EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
 		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
 		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
@@ -936,7 +936,7 @@ unsafe fn effect_specialairsstart (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, -1.5, 4.8, 0, 0, 0, 1, true);
 		EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
 		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
 		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
@@ -992,8 +992,8 @@ unsafe fn game_specials (fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("rot"), 15.0, 90, 105, 0, 45, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("rot"), 7.0, 120, 100, 65, 30, 10.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 15.0, 90, 105, 0, 45, 3.25, 0.0, -1.5, 4.8, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 7.0, 120, 100, 65, 30, 10.0, 0.0, -1.5, 4.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -1066,6 +1066,43 @@ unsafe fn effect_specialairs(fighter: &mut L2CAgentBase) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0{
             EFFECT_FLW_UNSYNC_VIS(fighter, Hash40::new("elight_attack100_finish"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.0, true);
         }
+    }
+}
+
+#[acmd_script( agent = "elight", scripts = ["expression_specials", "expression_specialairs"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specials(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+	frame(lua_state, 6.0);
+	if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+	}
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+		RUMBLE_HIT(fighter, Hash40::new("rbkind_79_slashlarge"), 0);
+    }
+	frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		RUMBLE_HIT(fighter, Hash40::new("rbkind_79_slashsmall"), 0);
+	}
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attacks"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -1198,7 +1235,7 @@ unsafe fn effect_specials5(fighter: &mut L2CAgentBase) {
         //EFFECT(fighter, Hash40::new("elight_photon_appear"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.7);
         //EFFECT(fighter, Hash40::new("elight_photon_start"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("elight_appeal_spark"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("elight_appeal_spark"), Hash40::new("rot"), 0, -1.5, 4.8, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.7);
         EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         EFFECT(fighter, Hash40::new("elight_photon_speedline"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
@@ -1273,6 +1310,7 @@ pub fn install() {
         game_specials,
         effect_specials,
         effect_specialairs,
+		expression_specials,
         sound_specials,
         effect_specialsend,
         effect_specialairsend,

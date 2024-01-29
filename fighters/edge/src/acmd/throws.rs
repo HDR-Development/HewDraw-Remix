@@ -1,9 +1,7 @@
-
 use super::*;
 
-
 #[acmd_script( agent = "edge", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -28,11 +26,11 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "edge", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 65, 100, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 67, 60, 0, 77, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 18.0);
@@ -50,7 +48,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "edge", script = "effect_throwlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
+unsafe fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -58,7 +56,7 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if PostureModule::lr(boma) < 0.0{
+        if PostureModule::lr(boma) < 0.0 {
             EFFECT(fighter, Hash40::new("edge_throwlw_gravity"), Hash40::new("top"), 12, 0.1, -2, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(fighter, 1.2);
         }
@@ -92,9 +90,8 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_throwb,
-        game_throwlw,
-        effect_throwlw,
+        edge_throw_b_game,
+        edge_throw_lw_game,
+        edge_throw_lw_effect,
     );
 }
-

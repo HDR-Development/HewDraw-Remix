@@ -139,7 +139,7 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL, *FIGHTER_STATUS_KIND_SPECIAL_N])
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL])
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     && fighter.global_table[CURRENT_FRAME].get_i32() <= 1
     && fighter.is_parry_input()

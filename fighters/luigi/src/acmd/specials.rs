@@ -1,200 +1,145 @@
-
 use super::*;
 
-#[acmd_script( agent = "luigi", script = "game_specialn" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
+unsafe fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
-        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_DOUBLE_FIREBALL);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-            VarModule::on_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
-        }
-    }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            ATTACK(fighter, 0, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 4.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 9.0, 69, 55, 0, 65, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-            //HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            //HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_XLU);
-            //HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-            FT_MOTION_RATE(fighter, 2.0);
-        }
-        else{
-            ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
-        }
+        ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
     }
-    wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            FT_MOTION_RATE(fighter, 0.5);
-        }
-    }
-    
+
 }
 
-#[acmd_script( agent = "luigi", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", scripts = ["effect_specialn", "effect_specialairn"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("havel"), 3.0, 0.0, 0.0, 0, 90, 90, 0.5, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 90, 90, 0.8, true);
-            LAST_EFFECT_SET_RATE(fighter, 1.25);
-            FLASH(fighter, 0, 0.25, 1.0, 0.7);
-        }
-        else{
-            EFFECT_FOLLOW(fighter, Hash40::new("luigi_fb_shoot"), Hash40::new("havel"), 0, 0, 0, -30, 0, 0, 1, true);
-            FLASH(fighter, 0, 1, 0, 0.353);
-        }
+        EFFECT_FOLLOW(fighter, Hash40::new("luigi_fb_shoot"), Hash40::new("havel"), 0, 0, 0, -30, 0, 0, 1, true);
+        FLASH(fighter, 0, 1, 0, 0.353);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    frame(lua_state, 28.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, false);
-    }
-    frame(lua_state, 32.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec_s"), true, true);
-    }
     frame(lua_state, 37.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("luigi_fb_shoot"), false, false);
     }
+
 }
 
-#[acmd_script( agent = "luigi", script = "sound_specialn" , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_specialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", scripts = ["sound_specialn", "sound_specialairn"] , category = ACMD_SOUND , low_priority)]
+unsafe fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            PLAY_SE(fighter, Hash40::new("se_common_elec_s_damage"));
-        }
-    }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            PLAY_SE(fighter, Hash40::new("vc_luigi_attack07"));
-            PLAY_SE(fighter, Hash40::new("se_common_elec_m_damage"));
-        }
-        else{
-            PLAY_SE(fighter, Hash40::new("se_luigi_special_n01"));
-        }
+        PLAY_SE(fighter, Hash40::new("se_luigi_special_n01"));
     }
+
 }
 
-#[acmd_script( agent = "luigi", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn luigi_special_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
-        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_DOUBLE_FIREBALL);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-            VarModule::on_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
-        }
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            ATTACK(fighter, 0, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 4.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 9.0, 69, 55, 0, 65, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-            //HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            //HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_XLU);
-            //HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-            FT_MOTION_RATE(fighter, 2.0);
-        }
-        else{
-            ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
-        }
-    }
-    wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            FT_MOTION_RATE(fighter, 0.5);
-        }
-    }
-    
-}
-
-#[acmd_script( agent = "luigi", script = "effect_specialairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialairn(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("havel"), 3.0, 0.0, 0.0, 0, 90, 90, 0.5, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 90, 90, 0.8, true);
-            LAST_EFFECT_SET_RATE(fighter, 1.25);
-            FLASH(fighter, 0, 0.25, 1.0, 0.7);
-        }
-        else{
-            EFFECT_FOLLOW(fighter, Hash40::new("luigi_fb_shoot"), Hash40::new("havel"), 0, 0, 0, -30, 0, 0, 1, true);
-            FLASH(fighter, 0, 1, 0, 0.353);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+}
+
+#[acmd_script( agent = "luigi", scripts = ["game_specialnthunder", "game_specialairnthunder"] , category = ACMD_GAME , low_priority)]
+unsafe fn luigi_special_n_thunder_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 68, 55, 0, 65, 5.0, 0.0, 9.0, 8.0, None, None, None, 0.6, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 68, 55, 0, 65, 3.0, 0.0, 9.0, 2.0, None, None, None, 0.6, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "luigi", scripts = ["effect_specialnthunder", "effect_specialairnthunder"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn luigi_special_n_thunder_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 5, 15, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        let mut rand = &Vector3f::new(
+            app::sv_math::rand(hash40("fighter"), 50) as f32,
+            app::sv_math::rand(hash40("stage"), 50) as f32,
+            app::sv_math::rand(hash40("luigi"), 50) as f32
+        );
+        let mut flip = &Vector3f::new(
+            if app::sv_math::rand(hash40("fighter"), 1) == 0 { -1 } else { 1 } as f32,
+            if app::sv_math::rand(hash40("stage"), 1) == 0 { -1 } else { 1 } as f32,
+            if app::sv_math::rand(hash40("luigi"), 1) == 0 { -1 } else { 1 } as f32
+        );
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_mball_beam"), Hash40::new("top"), 0.0, 9.0, 8.0, 0.0 + (rand.x * flip.x), 0, 0, 0.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_mball_beam"), Hash40::new("top"), 0.0, 9.0, 8.0, 120.0 + (rand.y * flip.y), 0, 0, 0.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_mball_beam"), Hash40::new("top"), 0.0, 9.0, 8.0, 240.0 + (rand.z * flip.z), 0, 0, 0.5, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0, 0.25, 1.0, 0.7);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("top"), 0.0, 9.0, 8.0, 0, 90, 90, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_sp_flash"), Hash40::new("top"), 0.0, 9.0, 8.0, 0, 90, 90, 0.5, true);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.2, 0.2, 0.2);
+            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 20.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    frame(lua_state, 28.0);
+}
+
+#[acmd_script( agent = "luigi", scripts = ["sound_specialnthunder", "sound_specialairnthunder"], category = ACMD_SOUND, low_priority )]
+unsafe fn luigi_special_n_thunder_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, false);
-    }
-    frame(lua_state, 32.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec_s"), true, true);
-    }
-    frame(lua_state, 37.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("luigi_fb_shoot"), false, false);
+        PLAY_SE(fighter, Hash40::new("vc_luigi_attack07"));
+        PLAY_SE(fighter, Hash40::new("se_common_electric_hit_l"));
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_specialairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_specialairn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", scripts = ["expression_specialnthunder", "expression_specialairnthunder"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn luigi_special_n_thunder_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            PLAY_SE(fighter, Hash40::new("se_common_elec_s_damage"));
-        }
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
-            PLAY_SE(fighter, Hash40::new("vc_luigi_attack07"));
-            PLAY_SE(fighter, Hash40::new("se_common_elec_m_damage"));
-        }
-        else{
-            PLAY_SE(fighter, Hash40::new("se_luigi_special_n01"));
-        }
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_55_smash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -389,7 +334,7 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_RISE);
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
@@ -433,7 +378,7 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BUOYANCY);
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
@@ -505,25 +450,24 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_specialn,
-        game_specialairn,
+        luigi_special_n_game,
+        luigi_special_n_effect,
+        luigi_special_n_sound,
+        luigi_special_n_expression,
+        luigi_special_n_thunder_game,
+        luigi_special_n_thunder_effect,
+        luigi_special_n_thunder_sound,
+        luigi_special_n_thunder_expression,
         game_specialairsstart,
         game_specials,
-        game_specialsdischarge,
-        game_specialairsend,
-        game_speciallw,
-        game_specialairlw,
-        game_specialhi,
-        game_specialairhi,
-
-        effect_specialn,
-        effect_specialairn,
         effect_specialshold,
         effect_specialairshold,
+        game_specialsdischarge,
         effect_specialsdischarge,
-
-        sound_specialn,
-        sound_specialairn,
+        game_specialairsend,
+        game_specialhi,
+        game_specialairhi,
+        game_speciallw,
+        game_specialairlw,
     );
 }
-

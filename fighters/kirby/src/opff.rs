@@ -411,6 +411,24 @@ unsafe fn trail_magic_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
+// handles kirby's mining behavior when copying steve
+unsafe fn pickel_mining(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) { 
+    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_PICKEL {
+        if VarModule::get_int(boma.object(), vars::kirby::instance::MATERIAL_INDEX) as i32 > 99 {
+            VarModule::set_int(boma.object(), vars::kirby::instance::MATERIAL_INDEX, 0);
+        }
+        
+        // wait 2 frames before letting the material table advance, preventing any jumps in entries
+        if !VarModule::is_flag(boma.object(), vars::kirby::instance::SHOULD_CYCLE_MATERIAL) {
+            if VarModule::get_int(boma.object(), vars::kirby::status::MINING_TIMER) == 0 {
+                VarModule::on_flag(boma.object(), vars::kirby::instance::SHOULD_CYCLE_MATERIAL);
+            } else {
+                VarModule::dec_int(boma.object(), vars::kirby::status::MINING_TIMER);
+            }
+        }
+    }
+}
+
 // Bite Early Throw and Turnaround
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -819,17 +837,45 @@ unsafe fn pzenigame_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, stat
 }
 
 // Diddy Kong
-unsafe fn diddy_nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE) {
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
+unsafe fn diddy_nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.is_cat_flag(Cat2::StickEscape) {
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
+            }
+            else if fighter.is_cat_flag(Cat2::StickEscapeF) {
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE_F);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
+            }
+            else if fighter.is_cat_flag(Cat2::StickEscapeB) {
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE_B);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
+            }
+            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
+            }
+            if fighter.sub_check_command_guard().get_bool() {
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_GUARD);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
+            }
+        }
+        else {
             if fighter.is_cat_flag(Cat1::AirEscape)  {
-                ControlModule::reset_trigger(boma);
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
-                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL, true, false);
+            }
+            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
+            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
+            {
+                VarModule::set_int(fighter.battle_object, vars::diddy::status::SPECIAL_N_CANCEL_TYPE, vars::diddy::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL);
+                fighter.change_to_custom_status(statuses::diddy::SPECIAL_N_CANCEL_JUMP, true, false);
             }
         }
     }
 }
+
 
 // Lucario
 unsafe fn lucario_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32) {
@@ -874,38 +920,38 @@ unsafe fn littlemac_nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCom
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             if fighter.is_cat_flag(Cat2::StickEscape) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
             }
             else if fighter.is_cat_flag(Cat2::StickEscapeF) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_F);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
             }
             else if fighter.is_cat_flag(Cat2::StickEscapeB) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_B);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
             }
             else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
             }
             if fighter.sub_check_command_guard().get_bool() {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GUARD);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
             }
         }
         else {
             if fighter.is_cat_flag(Cat1::AirEscape)  {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_AIR);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
             }
             else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
             && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
             {
-                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL);
-                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL_JUMP, true, false);
+                VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_JUMP_AERIAL);
+                fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, true, false);
             }
         }
     }
@@ -1067,6 +1113,64 @@ pub unsafe fn lucas_offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommo
     } 
 }
 
+
+// Piranha Plant Ptooie Stance
+pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW) {
+        let opponent_boma = fighter.get_grabbed_opponent_boma();
+        let grabbed_fighter = smash::app::utility::get_kind(opponent_boma);
+        if grabbed_fighter == *FIGHTER_KIND_PACKUN {
+            let old_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+            let new_stance = VarModule::get_int(opponent_boma.object(), vars::packun::instance::CURRENT_STANCE);
+            if new_stance != old_stance {
+                // println!("Copying Packun Flower's Current Stance, which is {}", new_stance);
+                VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
+            }
+        }
+    }
+}
+
+unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.3);
+    }
+    else {
+        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.0);
+    }
+}
+
+#[weapon_frame( agent = WEAPON_KIND_PACKUN_SPIKEBALL )]
+pub fn spikeball_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+            VarModule::on_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+            // println!("bomb");
+        }
+        else if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
+            VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+            // println!("not bomb");
+        }
+        let status_kind = StatusModule::status_kind(weapon.module_accessor);
+        let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
+        if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {
+            if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) || weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_HOP) {
+                /* if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() == 2 {
+                    println!("will bomb");
+                } */
+                if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() >= 80 && motion_kind != hash40("explode") {
+                    WorkModule::off_flag(boma, *WEAPON_PACKUN_SPIKEBALL_STATUS_HOP_WORK_FLAG_CLEARED_ATTACK);
+                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+                    // println!("is bomb");
+                }
+            }
+        }
+    }
+}
+
+// End of Copy Abilities
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     let copystatus = StatusModule::status_kind(fighter.module_accessor);
     if !fighter.is_in_hitlag()
@@ -1115,6 +1219,19 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Shrink sword
+unsafe fn cutter_size(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if ArticleModule::is_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        let article_motion = MotionModule::motion_kind(article_boma);
+        if article_motion == hash40("special_hi2") {
+            PostureModule::set_scale(article_boma, 0.8, false);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
@@ -1122,6 +1239,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
     fastfall_specials(fighter);
+    cutter_size(boma, status_kind);
     reset_flags(fighter, boma, status_kind, situation_kind);
 
     // Magic Series
@@ -1141,6 +1259,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Sora Magic Cycle Adjustment
     trail_magic_cycle(fighter, boma, frame);
+
+    // Steve Mining
+    pickel_mining(fighter, boma);
 
     // Bite Early Throw and Turnaround
     bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
@@ -1212,6 +1333,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     lucas_offense_charge(fighter, boma, situation_kind);
     lucas_offense_effct_handler(fighter);
 
+    // Piranha Plant Ptooie Stance
+    packun_ptooie_stance(fighter, boma, status_kind);
+    packun_ptooie_scale(boma);
+
     // PM-like Neutral B Cancels
     donkey_nspecial_cancels(fighter, boma, status_kind, situation_kind);
     samus_nspecial_cancels(boma, status_kind, situation_kind);
@@ -1219,7 +1344,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sheik_nspecial_cancels(fighter, boma, status_kind, situation_kind);
     mewtwo_nspecial_cancels(boma, status_kind, situation_kind);
     pzenigame_nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
-    diddy_nspecial_cancels(fighter, boma);
+    diddy_nspecial_cancels(fighter, boma, status_kind);
     lucario_nspecial_cancels(boma, status_kind, situation_kind, cat[2]);
     wiifit_nspecial_cancels(boma, status_kind, situation_kind);
     littlemac_nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);

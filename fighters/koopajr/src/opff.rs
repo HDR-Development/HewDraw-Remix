@@ -49,6 +49,37 @@ unsafe fn upB_kart_respawn(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
     }
 }
 
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+unsafe fn mechakoopa_cooldown(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    let cooldown_timer = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+    let item_exists = ArticleModule::is_exist(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA);
+    let koopa_is_disabled = VarModule::is_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+    let in_cooldown = VarModule::is_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+
+    // make sure disable flag is set if the koopa exists
+    if item_exists && !koopa_is_disabled {
+        VarModule::on_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+    }
+    // initiate cooldown once the koopa stops existing
+    if !item_exists && !in_cooldown && koopa_is_disabled {
+        VarModule::on_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 120);
+    }
+    // decrement cooldown timer when active
+    if cooldown_timer > 0 {
+        VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+    }
+    // enable the koopa once the timer is over
+    if cooldown_timer <= 0 && in_cooldown {
+        VarModule::off_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+        VarModule::off_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+        gimmick_flash(boma);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -92,10 +123,11 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     kart_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     upB_kart_respawn(fighter, boma, status_kind);
     fastfall_specials(fighter);
+    mechakoopa_cooldown(fighter, boma);
 }
 
 
-#[utils::macros::opff(FIGHTER_KIND_KOOPAJR )]
+#[utils::macros::opff(FIGHTER_KIND_KOOPAJR)]
 pub fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

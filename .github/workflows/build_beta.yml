@@ -92,7 +92,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
       env:
         HOME: /root
 
@@ -106,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: version
-        path: plugin/hdr_version.txt
+        path: hdr_version.txt
 
     - uses: dev-drprasad/delete-tag-and-release@master
       with:
@@ -115,6 +115,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Sleep to ensure tag gets deleted
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '60s'
 
     # upload asset
     - name: Upload binaries to release

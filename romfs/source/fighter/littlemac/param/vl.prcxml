@@ -10,9 +10,9 @@
       <int hash="special_n_max_charge_frame">110</int>
       <int hash="special_n_active_start_frame">25</int>
       <int hash="special_n_cancel_frame">25</int>
-      <float hash="special_n_hit_damage_mul_">1.05</float>
-      <float hash="special_n_atk_damage_mul_">0.5</float>
-      <int hash="special_n_gage_max_frame_">540</int>
+      <float hash="special_n_hit_damage_mul_">0.0</float>
+      <float hash="special_n_atk_damage_mul_">1.0</float>
+      <int hash="special_n_gage_max_frame_">99999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

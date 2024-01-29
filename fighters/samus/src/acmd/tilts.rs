@@ -188,12 +188,12 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 1, 11, 5, 1.7, -39, -92, 1.65, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 1, 11, -5, 1.7, -39, -92, 1.65, true);
         LAST_EFFECT_SET_RATE(fighter, 1);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 20, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 11, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
 }
 

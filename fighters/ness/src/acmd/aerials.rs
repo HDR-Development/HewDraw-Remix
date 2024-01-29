@@ -79,6 +79,26 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "ness", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "ness", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -301,6 +321,7 @@ pub fn install() {
     install_acmd_scripts!(
         game_attackairn,
         game_attackairf,
+        expression_attackairf,
         game_attackairb,
         game_attackairhi,
         game_attackairlw,

@@ -118,7 +118,7 @@ unsafe fn lucas_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 5.0, 0.5, 2.0, 0, 0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 5.0, -0.75, 0.0, 0, 0, 0, 0.4, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -148,7 +148,7 @@ unsafe fn lucas_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
@@ -172,7 +172,7 @@ unsafe fn lucas_attack_dash_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_atk"), false, false);
     }
-    
+
 }
 
 #[acmd_script( agent = "lucas", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
@@ -188,7 +188,7 @@ unsafe fn lucas_attack_dash_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_STEP(fighter, Hash40::new_raw(0x148a41094f));
     }
-    
+
 }
 
 
@@ -204,7 +204,7 @@ unsafe fn lucas_attack_dash_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4, true);
     }
 
-    frame(lua_state, 5.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);

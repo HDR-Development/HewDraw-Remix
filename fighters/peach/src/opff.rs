@@ -36,7 +36,7 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 }
 
 unsafe fn up_special_freefall_land_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL)
+    if (fighter.is_prev_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL) || fighter.is_prev_status(*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END)) 
     && fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
     }
@@ -48,9 +48,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_PEACH_STATUS_KIND_SPECIAL_N_HIT,
-        *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP,
-        *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END,
-        *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
