@@ -491,12 +491,13 @@ unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            MotionModule::set_rate(boma, 2.0);
-        }
-        else{
-            MotionModule::set_rate(boma, 0.9);
-        }
+        MotionModule::set_rate(boma, 1.08);
+        // if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        //     MotionModule::set_rate(boma, 2.0);
+        // }
+        // else{
+        //     MotionModule::set_rate(boma, 0.9);
+        // }
     }
 }
 
@@ -570,12 +571,13 @@ pub fn install() {
         edge_special_air_n1_game,
         edge_special_n2_game,
         edge_special_air_n2_game,
-        game_specialhistart,
-        effect_specialhistart,
+        //game_specialhistart,
+        //effect_specialhistart,
+        //game_specialairhistart,
         edge_special_hi2_game,
         edge_special_hi2_effect,
-        game_specialhi1,
-        effect_specialhi1,
+        //game_specialhi1,
+        //effect_specialhi1,
         edge_special_hi1_end_game,
         game_specialairhi1end,
         edge_special_hi2_end_game,
