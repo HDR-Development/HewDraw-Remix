@@ -38,11 +38,11 @@ unsafe fn pacman_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("throw"), 0, 4, 1, 0, 0, 90, 0.8, true, *EF_FLIP_YZ, 0.4);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 5.9, 0.8, 0, 0, 90, 0.8, true, *EF_FLIP_YZ, 0.4);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("throw"), 0, 7, 0, 0, 0, 90, 0.75, true, *EF_FLIP_YZ, 0.4);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 5.9, 0.7, 0, 0, 90, 0.75, true, *EF_FLIP_YZ, 0.4);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
