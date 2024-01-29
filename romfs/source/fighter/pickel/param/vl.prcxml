@@ -38,7 +38,7 @@
       <float hash="continuous_generate_x_mul_big">0.5</float>
       <int hash="0x2292c2e1b1">1</int>
       <int hash="0x1f4a111697">1</int>
-      <float hash="0x1da2122271">0.65</float>
+      <float hash="mining_tool_diamond_frame_mul">0.65</float>
       <int hash="mining_iron_get_num">1</int>
       <int hash="mining_gold_get_num">6</int>
       <int hash="mining_red_stone_get_num">3</int>

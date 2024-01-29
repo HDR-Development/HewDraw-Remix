@@ -194,12 +194,12 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     let pos3 = Vector3f{x: 0.0, y: 0.0, z: -0.5};
                     let pos4 = Vector3f{x: 2.0, y: 0.0, z: -0.5};
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), &pos1, &Vector3f::zero(), 2.5, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x09aee445d1), &pos2, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("clavicler"), &pos2, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneer"), &pos3, &Vector3f::zero(), 1.70000005, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footr"), &Vector3f::zero(), &Vector3f::zero(), 2.0999999, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x0954eb78b2), &pos4, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("claviclel"), &pos4, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), &Vector3f::zero(), &Vector3f::zero(), 1.70000005, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footl"), &Vector3f::zero(), &Vector3f::zero(), 2.0999999, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);

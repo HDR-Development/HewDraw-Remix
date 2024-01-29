@@ -1183,7 +1183,7 @@ unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) != *SITUATION_KIND_GROUND {
         if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) == *SITUATION_KIND_GROUND {
             if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_AIR {
-                MotionModule::change_motion(fighter.module_accessor,Hash40::new_raw(0x13226e47df),0.0,1.0,false,0.0,false,false);
+                MotionModule::change_motion(fighter.module_accessor,Hash40::new("special_lw3_end_air"),0.0,1.0,false,0.0,false,false);
                 if StopModule::is_stop(fighter.module_accessor) == false {
                     some1(fighter,false.into());
                 }
@@ -1195,14 +1195,14 @@ unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
             if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_GROUND {
                 some4(fighter);
                 KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                let rate = WorkModule::get_param_float(fighter.module_accessor,0x1018dfb2f4,0x1a840fe7e4);
-                MotionModule::change_motion(fighter.module_accessor,Hash40::new_raw(0x139e9a22d6),0.0,rate,false,0.0,false,false);
+                let rate = WorkModule::get_param_float(fighter.module_accessor,hash40("param_special_lw"),hash40("lw3_end_air_to_ground_rate"));
+                MotionModule::change_motion(fighter.module_accessor,Hash40::new("special_air_lw3_end"),0.0,rate,false,0.0,false,false);
                 fighter.sub_shift_status_main(L2CValue::Ptr(some5 as *const () as _));
             }
         }
         if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) == *SITUATION_KIND_AIR {
             if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_AIR {
-                MotionModule::change_motion(fighter.module_accessor,Hash40::new_raw(0x1755e40919),0.0,1.0,false,0.0,false,false);
+                MotionModule::change_motion(fighter.module_accessor,Hash40::new("special_air_lw3_end_air"),0.0,1.0,false,0.0,false,false);
                 WorkModule::enable_transition_term(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_JET_STUB_AA_TRANSITION_TERM_ID_INHERIT_FALL);
                 WorkModule::unable_transition_term(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_JET_STUB_AA_TRANSITION_TERM_ID_LANDING_FALL);
                 WorkModule::unable_transition_term(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_JET_STUB_AA_TRANSITION_TERM_ID_LANDING_WAIT);
@@ -1213,8 +1213,8 @@ unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     else {
         GroundModule::correct(fighter.module_accessor,GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        let rate = WorkModule::get_param_float(fighter.module_accessor,0x1018dfb2f4,0x1d8867dce8);
-        MotionModule::change_motion(fighter.module_accessor,Hash40::new_raw(0xf9503af02),0.0,rate,false,0.0,false,false);
+        let rate = WorkModule::get_param_float(fighter.module_accessor,hash40("param_special_lw"),hash40("lw3_end_ground_to_ground_rate"));
+        MotionModule::change_motion(fighter.module_accessor,Hash40::new("special_lw3_end"),0.0,rate,false,0.0,false,false);
         fighter.sub_shift_status_main(L2CValue::Ptr(some5 as *const () as _))
     }
 }
@@ -1302,13 +1302,13 @@ unsafe extern "C" fn some6(fighter: &mut L2CFighterCommon) -> L2CValue {
                     }
                     if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_GROUND {
                         if WorkModule::is_flag(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_LANDING_FALL_SPECIAL) {
-                            let landing_frame = WorkModule::get_param_int(fighter.module_accessor,0x1018dfb2f4,0x11a96aed54);
+                            let landing_frame = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_lw"),hash40("lw3_landing_frame"));
                             WorkModule::set_float(fighter.module_accessor,landing_frame as f32,*FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
                             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(),false.into());
                         }
                         some4(fighter);
                         KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                        MotionModule::change_motion(fighter.module_accessor,Hash40::new_raw(0x139e9a22d6),0.0,1.0,false,0.0,false,false);
+                        MotionModule::change_motion(fighter.module_accessor,Hash40::new("special_air_lw3_end"),0.0,1.0,false,0.0,false,false);
                         WorkModule::enable_transition_term(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_JET_STUB_AA_TRANSITION_TERM_ID_INHERIT_FALL);
                         WorkModule::unable_transition_term(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_JET_STUB_AA_TRANSITION_TERM_ID_LANDING_FALL);
                         WorkModule::unable_transition_term(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_JET_STUB_AA_TRANSITION_TERM_ID_LANDING_WAIT);

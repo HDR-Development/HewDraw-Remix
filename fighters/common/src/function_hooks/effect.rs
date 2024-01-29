@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), 0xde89fce0a];
+const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), hash40("sys_nopassive")];
 const SMOKE_FX: [u64 ; 16] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
@@ -346,7 +346,7 @@ unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smas
 unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
     let mut eff_size = size;
     // Shrink knockback smoke effect by 25%
-    if effHash.hash == 0x1154cb72bf as u64 {  // hash for kb smoke
+    if effHash.hash == hash40("sys_flyroll_smoke") as u64 {  // hash for kb smoke
         eff_size = size * 0.75;
     }
     original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)

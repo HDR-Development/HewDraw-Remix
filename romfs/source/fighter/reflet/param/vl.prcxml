@@ -6,10 +6,10 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <int hash="0x20682d7c6b">8</int>
-    <int hash="0x2203952c8f">5</int>
-    <int hash="0x223d7cc6af">20</int>
-    <int hash="0x1f3fcc7e7d">3</int>
+    <int hash="grimoire_thunder_usage_count_max">8</int>
+    <int hash="grimoire_giga_fire_usage_count_max">5</int>
+    <int hash="grimoire_el_window_usage_count_max">20</int>
+    <int hash="grimoire_rizaia_usage_count_max">3</int>
     <int hash="thunder_sword_revival_time">480</int>
     <int hash="grimoire_thunder_revival_time">540</int>
     <int hash="grimoire_giga_fire_revival_time">540</int>
