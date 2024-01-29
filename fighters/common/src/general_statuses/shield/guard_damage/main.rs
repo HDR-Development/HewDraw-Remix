@@ -122,7 +122,7 @@ unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> 
         }
         EffectModule::req_on_joint(
             fighter.module_accessor,
-            Hash40::new_raw(0xc004c15ac),
+            Hash40::new("sys_windwave"),
             Hash40::new("top"),
             &ZERO_VEC,
             &ZERO_VEC,
@@ -208,7 +208,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             };
             EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x12c9377e3d),
+                Hash40::new("sys_shield_damage3"),
                 Hash40::new("throw"),
                 &ZERO_VEC,
                 &ZERO_VEC,
@@ -225,7 +225,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             EffectModule::set_rgb_partial_last(fighter.module_accessor, color.x, color.y, color.z);
             let effect2_handle = EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x12be304eab),
+                Hash40::new("sys_shield_damage2"),
                 Hash40::new("throw"),
                 &ZERO_VEC,
                 &ZERO_VEC,
@@ -247,7 +247,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             );
             let effect_handle = EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x113434cb66), // static shield effect
+                Hash40::new("sys_shield_damage"),
                 Hash40::new("throw"),
                 &ZERO_VEC,
                 &ZERO_VEC,
@@ -323,7 +323,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
         }
         EffectModule::req_on_joint(
             fighter.module_accessor,
-            Hash40::new_raw(0xff4f9200f),
+            Hash40::new("sys_just_shield"),
             Hash40::new("throw"),
             &ZERO_VEC,
             &ZERO_VEC,
@@ -351,7 +351,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
         if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_GUARD_OFF {
             EffectModule::req_screen(
                 fighter.module_accessor,
-                Hash40::new_raw(0x12698ccf2b),
+                Hash40::new("just_shield_screen"),
                 false,
                 false,
                 false

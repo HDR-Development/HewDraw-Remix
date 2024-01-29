@@ -99,7 +99,7 @@ unsafe fn pitb_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("bust"), 7.0, 68, 110, 0, 60, 6.5, 0.0, -3.0, -2.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("bust"), 7.0, 68, 110, 0, 60, 6.5, 0.0, -3.0, -2.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {

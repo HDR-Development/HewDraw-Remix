@@ -11,14 +11,14 @@ pub unsafe fn status_end_Guard(fighter: &mut L2CFighterCommon) -> L2CValue {
         effect!(
             fighter,
             MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-            Hash40::new_raw(0xafae75f05),
+            Hash40::new("sys_shield"),
             true,
             true
         );
         effect!(
             fighter,
             MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-            Hash40::new_raw(0x10da0b43c8),
+            Hash40::new("sys_shield_smoke")),
             true,
             true
         );

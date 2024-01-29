@@ -29,6 +29,25 @@ unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
+// Joker Aerial Grappling Hook stall
+unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if motion_kind == hash40("special_air_hi_throw") {
+        if frame < 37.0 {
+            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+        if frame >= 37.0 {
+            KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+    }
+}
+
+// Joker Grappling Hook Spike Cancel
+unsafe fn grappling_hook_spike_cancel (fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.is_situation(*SITUATION_KIND_AIR) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+        MotionModule::set_rate(boma, 2.0);
+    }
+}
+
 unsafe fn arsene_summon_desmummon(boma: &mut BattleObjectModuleAccessor) {
 
     //if boma.is_motion_one_of(&[Hash40::new("special_lw_start"), Hash40::new("special_lw_loop")]) {
@@ -143,6 +162,8 @@ unsafe extern "C" fn jack_training_tools(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     wings_of_rebellion_cancel(boma, status_kind);
+    aerial_grappling_hook_stall(boma, motion_kind, frame);
+    grappling_hook_spike_cancel(fighter, boma);
     //arsene_grappling_hook(boma, situation_kind, motion_kind);
 	knife_length(boma);
     //arsene_summon_desmummon(boma);

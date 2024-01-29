@@ -328,9 +328,9 @@ unsafe fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x0c1e107c25), Hash40::new("top"), 0, 6, 0, -90, 0, 0, 0.8, true, 0.9);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sheik_atk_lw"), Hash40::new("top"), 0, 6, 0, -90, 0, 0, 0.8, true, 0.9);
         LAST_EFFECT_SET_RATE(fighter, 1.1);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x0c1e107c25), Hash40::new("top"), 2, 6, 0, -90, 0, 0, 0.8, true, 0.9);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sheik_atk_lw"), Hash40::new("top"), 2, 6, 0, -90, 0, 0, 0.8, true, 0.9);
         LAST_EFFECT_SET_RATE(fighter, 1.1);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 13, -2.5, 78, 0, 0, 1.1, true, 0.9);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_club_tornado"), Hash40::new("top"), 0.0, -5.0, 0.0, 120, 70, 100, 0.65, true);
@@ -342,12 +342,12 @@ unsafe fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true, 1.0);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true, 1.0);
         EFFECT_FOLLOW(fighter, Hash40::new("kamui_transform_splash_end"), Hash40::new("top"), 0, -5.0, 0, 0, 0, 0, 1.0, true);
         EFFECT_FOLLOW(fighter, Hash40::new("kamui_ryusensya_shot"), Hash40::new("top"), 0, -5.0, 0, 0, 0, 0, 1.0, true);
         EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, -7.0, 0.0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("top"), 0.0, -12.0, 0.0, 0, 0, 0, 1.25, true, 1.0);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, -12.0, 0.0, 0, 0, 0, 1.25, true, 1.0);
     }
 
 }

@@ -79,12 +79,12 @@ unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
         LAST_EFFECT_SET_ALPHA(fighter, 0.6);
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new_raw(0x11c7b3e40a), Hash40::new("top"), 0, 4.5, -10.0, 0, -90, 0, 0.8, false);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("murabito_firework"), Hash40::new("top"), 0, 4.5, -10.0, 0, -90, 0, 0.8, false);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
-        EFFECT(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -5.0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
+        EFFECT(fighter, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -5.0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
 
@@ -96,11 +96,11 @@ unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1946174757));
+        PLAY_SE(fighter, Hash40::new("se_murabito_attackair_b01"));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x152d914323));
+        PLAY_SE(fighter, Hash40::new("se_murabito_smash_h02"));
     }
 
 }

@@ -80,7 +80,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_execStop_common(fighter: &mut L2CFi
                 z: scale,
             })
         );
-        EffectModule::detach_kind(fighter.module_accessor, Hash40::new_raw(0x12c9377e3d), 5);
+        EffectModule::detach_kind(fighter.module_accessor, Hash40::new("sys_shield_damage3"), 5);
         let frame = StopModule::get_hit_stop_real_frame(fighter.module_accessor) as i32;
         WorkModule::set_int(
             fighter.module_accessor,
@@ -224,14 +224,14 @@ unsafe fn FighterStatusUniqProcessGuardDamage_leave_stop(
     effect!(
         fighter,
         MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-        Hash40::new_raw(0x12be304eab),
+        Hash40::new("sys_shield_damage2"),
         false,
         false
     );
     effect!(
         fighter,
         MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-        Hash40::new_raw(0x12c9377e3d),
+        Hash40::new("sys_shield_damage3"),
         false,
         false
     );
