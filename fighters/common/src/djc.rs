@@ -23,6 +23,14 @@ pub unsafe extern "C" fn attack_air_main_status(fighter: &mut L2CFighterCommon) 
 /// Performs the leniency check for double jump canceling
 #[utils::export(common::djc)]
 pub unsafe extern "C" fn attack_air_main_status_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND 
+    && !fighter.is_in_hitlag()
+    && MotionModule::frame_2nd(fighter.module_accessor) >= 2.0
+    && fighter.global_table[CURRENT_FRAME].get_i32() <= ParamModule::get_int(fighter.battle_object, ParamType::Common, "djc_leniency_frame")
+    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+    }
     if !fighter.status_AttackAir_Main_common().get_bool() {
         fighter.sub_air_check_superleaf_fall_slowly();
         if !fighter.global_table[IS_STOPPING].get_bool() {
@@ -48,7 +56,8 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
         fighter.sub_attack_air_kind();
         if motion_kind == smash::hash40("jump_aerial_f") || motion_kind == smash::hash40("jump_aerial_b") {
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION)
-            && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
+            && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) 
+            || MotionModule::frame_2nd(fighter.module_accessor) < 2.0) {
                 MotionModule::add_motion_2nd(fighter.module_accessor, Hash40::new_raw(motion_kind), frame, 1.0, false, 1.0);
                 MotionModule::set_weight(fighter.module_accessor, 1.0, true);
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
