@@ -1489,4 +1489,8 @@ pub mod statuses {
         pub const SPECIAL_N_O: i32 = 4;
         pub const SPECIAL_N_G: i32 = 5;
     }
+    
+    pub mod bayonetta {
+        pub const SPECIAL_S_KICK: i32 = 0;
+    }
 }
