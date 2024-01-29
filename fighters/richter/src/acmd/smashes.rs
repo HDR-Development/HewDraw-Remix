@@ -42,7 +42,7 @@ unsafe fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     for _ in 0..5 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 366, 100, 30, 0, 3.0, 0.0, 7.6, 44.5, Some(0.0), Some(7.6), Some(7.5), 0.75, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 365, 100, 30, 0, 2.0, 0.0, 7.6, 44.5, Some(0.0), Some(7.6), Some(7.5), 0.75, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -51,7 +51,8 @@ unsafe fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 85, 0, 60, 4.5, 0.0, 7.6, 44.0, Some(0.0), Some(7.6), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_WHIP);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 50, 85, 0, 60, 3.0, 0.0, 7.6, 41.0, Some(0.0), Some(7.6), Some(7.5), 0.75, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 85, 0, 60, 4.0, 0.0, 7.6, 45.0, Some(0.0), Some(7.6), Some(43.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_WHIP);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
