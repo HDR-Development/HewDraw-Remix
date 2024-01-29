@@ -1,6 +1,33 @@
 
 use super::*;
 
+#[acmd_script( agent = "pacman", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn pacman_attack_air_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        ATTACK(fighter, 0, 0, Hash40::new("pizzapacman"), 10.0, 50, 70, 0, 45, 7.6, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("pizzapacman"), 8.5, 50, 70, 0, 45, 7.2, 0.0, 0.5, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("pizzapacman"), 6.0, 50, 70, 0, 45, 4.5, 0.0, 0.5, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 45.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
 #[acmd_script( agent = "pacman", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn pacman_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -11,11 +38,11 @@ unsafe fn pacman_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 4, 1, 0, 0, 90, 0.8, true, *EF_FLIP_YZ, 0.4);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("throw"), 0, 4, 1, 0, 0, 90, 0.8, true, *EF_FLIP_YZ, 0.4);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7, 0, 0, 0, 90, 0.75, true, *EF_FLIP_YZ, 0.4);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("throw"), 0, 7, 0, 0, 0, 90, 0.75, true, *EF_FLIP_YZ, 0.4);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
@@ -179,6 +206,7 @@ unsafe fn pacman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        pacman_attack_air_n_game,
         pacman_attack_air_n_effect,
         pacman_attack_air_f_game,
         pacman_attack_air_b_game,
