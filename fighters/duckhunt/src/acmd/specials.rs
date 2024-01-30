@@ -1,5 +1,16 @@
 use super::*;
 
+#[acmd_script( agent = "duckhunt", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn duckhunt_special_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_REQUEST_SPECIAL_HI_CANCEL);
+    }
+    
+}
+
 #[acmd_script( agent = "duckhunt" , scripts = ["game_specialairlw", "game_speciallw"], category = ACMD_GAME , low_priority)]
 unsafe fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
@@ -52,15 +63,7 @@ unsafe fn duckhunt_special_s_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        //gumshoe {{{
         duckhunt_special_hi_game,
-        duckhunt_special_hi2_game,
-        duckhunt_special_hi3_game,
-        duckhunt_special_hi_effect,
-        duckhunt_special_hi_sound,
-        duckhunt_special_hi_expression,
-        reticle_special_hi_game,
-        //gumshoe }}}
         duckhunt_special_n_game,
         duckhunt_special_lw_game,
         duckhunt_special_s_game,
