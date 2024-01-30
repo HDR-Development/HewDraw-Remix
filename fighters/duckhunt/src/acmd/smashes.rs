@@ -10,56 +10,10 @@ unsafe fn duckhunt_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        WorkModule::set_int(
-            boma,
-            5,
-            *FIGHTER_DUCKHUNT_STATUS_ATTACK_INT_SMASH_DELAY_FRAME,
-        );
-        WorkModule::set_int(
-            boma,
-            6,
-            *FIGHTER_DUCKHUNT_STATUS_ATTACK_INT_SMASH_RETICLE_DISPLAY_FRAME,
-        );
+        WorkModule::set_int( boma, 5, *FIGHTER_DUCKHUNT_STATUS_ATTACK_INT_SMASH_DELAY_FRAME);
+        WorkModule::set_int( boma, 6, *FIGHTER_DUCKHUNT_STATUS_ATTACK_INT_SMASH_RETICLE_DISPLAY_FRAME);
         FT_MOTION_RATE_RANGE(fighter, 17.0, 57.0, 28.0);
-        ATTACK(
-            fighter,
-            /*ID*/ 0,
-            /*Part*/ 0,
-            /*Bone*/ Hash40::new("top"),
-            /*Damage*/ 5.0,
-            /*Angle*/ 127,
-            /*KBG*/ 0,
-            /*FKB*/ 0,
-            /*BKB*/ 110,
-            /*Size*/ 5.3,
-            /*X*/ 0.0,
-            /*Y*/ 6.0,
-            /*Z*/ 9.0,
-            /*X2*/ None,
-            /*Y2*/ None,
-            /*Z2*/ None,
-            /*Hitlag*/ 1.0,
-            /*SDI*/ 0.5,
-            /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_THRU,
-            /*FacingRestrict*/ *ATTACK_LR_CHECK_POS,
-            /*SetWeight*/ false,
-            /*ShieldDamage*/ 0,
-            /*Trip*/ 0.0,
-            /*Rehit*/ 0,
-            /*Reflectable*/ false,
-            /*Absorbable*/ false,
-            /*Flinchless*/ false,
-            /*DisableHitlag*/ false,
-            /*Direct_Hitbox*/ true,
-            /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_GA,
-            /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL,
-            /*CollisionPart*/ *COLLISION_PART_MASK_ALL,
-            /*FriendlyFire*/ false,
-            /*Effect*/ Hash40::new("collision_attr_fire"),
-            /*SFXLevel*/ *ATTACK_SOUND_LEVEL_M,
-            /*SFXType*/ *COLLISION_SOUND_ATTR_PUNCH,
-            /*Type*/ *ATTACK_REGION_NONE,
-        );
+        ATTACK( fighter, /*ID*/ 0, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 5.0, /*Angle*/ 127, /*KBG*/ 0, /*FKB*/ 0, /*BKB*/ 110, /*Size*/ 5.3, /*X*/ 0.0, /*Y*/ 6.0, /*Z*/ 9.0, /*X2*/ None, /*Y2*/ None, /*Z2*/ None, /*Hitlag*/ 1.0, /*SDI*/ 0.5, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_THRU, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 0, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_GA, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_fire"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_M, /*SFXType*/ *COLLISION_SOUND_ATTR_PUNCH, /*Type*/ *ATTACK_REGION_NONE);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -169,46 +123,8 @@ unsafe fn duckhunt_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     FT_MOTION_RATE_RANGE(fighter, 18.0, 24.0, 4.0);
     if is_excute(fighter) {
-        ATTACK(
-            fighter,
-            1,
-            0,
-            Hash40::new("top"),
-            4.0,
-            45,
-            100,
-            70,
-            0,
-            7.0,
-            0.0,
-            6.0,
-            18.0,
-            None,
-            None,
-            None,
-            1.0,
-            1.0,
-            *ATTACK_SETOFF_KIND_THRU,
-            *ATTACK_LR_CHECK_F,
-            false,
-            0,
-            0.0,
-            0,
-            false,
-            false,
-            false,
-            false,
-            true,
-            *COLLISION_SITUATION_MASK_GA,
-            *COLLISION_CATEGORY_MASK_ALL,
-            *COLLISION_PART_MASK_ALL,
-            false,
-            Hash40::new("collision_attr_fire"),
-            *ATTACK_SOUND_LEVEL_M,
-            *COLLISION_SOUND_ATTR_PUNCH,
-            *ATTACK_REGION_NONE,
-        );
-    }
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 45, 100, 70, 0, 7.0, 0.0, 6.0, 18.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE,); 
+    } 
     frame(lua_state, 24.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
