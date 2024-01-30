@@ -6,7 +6,9 @@ utils::import!(common::djc::attack_air_main_status);
 pub fn install() {
     install_status_scripts!(
         //lucas_attack_lw4_main,
-        attack_air, 
+        attack_air,
+        move_exec,
+        special_hi_hold_end,
         special_hi_attack, 
         //lucas_special_s_pre,
         lucas_special_n_pre,
@@ -240,6 +242,38 @@ pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
+// WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE //
+
+#[status_script(agent = "lucas_pkthunder", status = WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
+    if !VarModule::is_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE) {
+        if LinkModule::get_parent_status_kind(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT) as i32 != *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
+            VarModule::on_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE);
+            MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("move"), 0.0, 1.0, 1.0);
+            return 0.into();
+        }
+        original!(weapon);
+    }
+    0.into() 
+}
+
+// FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD //
+
+#[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if LinkModule::is_link(fighter.module_accessor, *FIGHTER_LUCAS_LINK_NO_PK_THUNDER) {
+        LinkModule::unlink(fighter.module_accessor, *FIGHTER_LUCAS_LINK_NO_PK_THUNDER);
+    }
+    if [*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_REFLECT].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_THUNDER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    if fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE) != 0 {
+        EffectModule::detach(fighter.module_accessor, fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE) as u32, 5);
+        fighter.set_int(0, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE);
+    }
+    0.into() 
+}
+
 // FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK //
 
 #[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -279,7 +313,7 @@ pub unsafe fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32, //Repair later for ledge slipoffs? Anyone?
+        *GROUND_CORRECT_KIND_GROUND as u32, //Repair later for ledge slipoffs? Anyone?
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_LINK_SPECIAL_HI_END_FLAG,

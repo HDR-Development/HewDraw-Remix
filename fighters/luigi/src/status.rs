@@ -1,4 +1,5 @@
 use super::*;
+mod special_n;
 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -137,4 +138,5 @@ pub fn install() {
         special_s_charge_end,
         special_s_charge_exit
     );
+    special_n::install();
 }
