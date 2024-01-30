@@ -41,8 +41,10 @@ special_air_lw:
     xlu_start: 0
     xlu_end: 0
 attack_hi3:
+  flags:
+    move: false
   extra:
-    cancel_frame: 34
+    cancel_frame: 37
 attack_dash:
   extra:
     cancel_frame: 40
@@ -62,7 +64,6 @@ furafura_end:
   extra:
     cancel_frame: 10
 special_s1:
-  blend_frame: 16
   extra:
     cancel_frame: 30
 attack_air_b:
