@@ -46,6 +46,7 @@ unsafe fn richter_special_n_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_richter_special_l01"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_special_s"));
     }
 }
 
@@ -104,6 +105,7 @@ unsafe fn richter_special_air_n_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_richter_special_l01"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_special_s"));
     }
 }
 
