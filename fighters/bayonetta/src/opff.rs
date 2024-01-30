@@ -24,7 +24,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                 new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
             }
         }
-        fighter.check_airdodge_cancel();
+        if !fighter.is_motion(Hash40::new("attack_air_lw")) {fighter.check_airdodge_cancel(); }
         if is_input_cancel && VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2 {
             StatusModule::change_status_force(boma, new_status, true);
         } //special cancel
@@ -59,7 +59,7 @@ unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 0);
     }
     //resets flags if hit
-    if StopModule::is_stop(boma) {
+    if StopModule::is_stop(boma) || StopModule::is_damage(boma) {
         if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) > 1 {
             VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);

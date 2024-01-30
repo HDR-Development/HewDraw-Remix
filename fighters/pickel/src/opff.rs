@@ -445,7 +445,7 @@ pub fn pickel_forge_frame(weapon: &mut smash::lua2cpp::L2CFighterBase){
             && !boma.is_situation(*SITUATION_KIND_GROUND) 
             //&& !pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START)
             && WorkModule::is_flag(boma, *WEAPON_PICKEL_FORGE_INSTANCE_WORK_ID_FLAG_UPDATE_ATTACK){
-                MotionAnimcmdModule::call_script_single(boma, *FIGHTER_ANIMCMD_GAME, Hash40::new_raw(0x1397d77a71), -1);
+                MotionAnimcmdModule::call_script_single(boma, *FIGHTER_ANIMCMD_GAME, Hash40::new("game_fallattackride"), -1);
             }
         }
     }

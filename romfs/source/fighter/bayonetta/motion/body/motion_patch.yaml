@@ -110,7 +110,7 @@ special_air_s_u:
     cancel_frame: 44
 special_s:
   extra:
-    cancel_frame: 63
+    cancel_frame: 62
 special_s_hold_end:
   extra:
     cancel_frame: 61

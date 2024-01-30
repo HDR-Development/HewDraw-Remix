@@ -167,7 +167,7 @@ unsafe fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x128beb5f99));
+        PLAY_SE(fighter, Hash40::new("se_daisy_smash_s01"));
     }
     
 }
@@ -182,7 +182,7 @@ unsafe fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("footl"), 0.0, 0.0, 0.0, 0, 0, 0, 1.6, true, 1.0);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("footl"), 0.0, 0.0, 0.0, 0, 0, 0, 1.6, true, 1.0);
     }
     
 }
