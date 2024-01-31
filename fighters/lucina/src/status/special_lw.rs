@@ -113,6 +113,16 @@ unsafe extern "C" fn special_lw_hit_main_motion_helper(fighter: &mut L2CFighterC
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -air_accel_y
         );
+        let stable_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+        let dive_y = WorkModule::get_param_float(fighter.module_accessor, hash40("dive_speed_y"), 0);
+        let max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {stable_y} else {dive_y};
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            max_speed_y,
+        );
+
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT) {
             println!("New mot");
@@ -168,25 +178,22 @@ unsafe extern "C" fn special_lw_hit_check_follow_up(fighter: &mut L2CFighterComm
     let stick_y = fighter.global_table[globals::STICK_Y].get_f32();
     let mot;
     let mot_air;
-    let brake;
     if stick_y >= 0.5 {
-        brake=false;
         mot = hash40("special_s4_hi");
         mot_air = hash40("special_air_s4_hi")
     }
     else if stick_y <= -0.5 {
-        brake=true;
         mot = hash40("special_s4_lw");
         mot_air = hash40("special_air_s4_lw");
+        
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        macros::SET_SPEED_EX(fighter, lr*speed_x/2.0, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     else {
-        brake=false;
         mot = hash40("special_s4_s");
         mot_air = hash40("special_air_s4_s");
-    }
-    if brake {
-        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        macros::SET_SPEED_EX(fighter, 0.0, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     let stick_x = fighter.global_table[globals::STICK_X].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);
