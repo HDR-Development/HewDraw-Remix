@@ -35,6 +35,8 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
+      <float hash="start_mul_spd_x">1.0</float>
+      <float hash="attack_max_y">0.5</float>
       <float hash="attack_mul">1.15</float>
       <float hash="attack_power_limit">6</float>
     </struct>
