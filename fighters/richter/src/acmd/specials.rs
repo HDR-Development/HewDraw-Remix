@@ -123,7 +123,6 @@ unsafe fn richter_special_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 #[acmd_script( agent = "richter_axe", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_axe_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -201,18 +200,17 @@ unsafe fn richter_axe_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FLASH(fighter, 1.0, 1.0, 1.0, 0.5);
     }
-
 }
 
 #[acmd_script( agent = "richter_axe", script = "sound_fly" , category = ACMD_SOUND , low_priority)]
 unsafe fn richter_axe_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-        frame(lua_state, 2.0);
-        if is_excute(fighter) {
-            PLAY_SE(fighter, Hash40::new("se_common_sword_swing_s"));
-        }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_sword_swing_s"));
     }
+}
 
 #[acmd_script( agent = "richter", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
@@ -269,6 +267,7 @@ unsafe fn richter_special_s1_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
+
 #[acmd_script( agent = "richter", script = "sound_specials1" , category = ACMD_SOUND , low_priority)]
 unsafe fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -282,6 +281,7 @@ unsafe fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_richter_attackdash"));
     }
 }
+
 #[acmd_script( agent = "richter", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -311,8 +311,8 @@ unsafe fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
-
 }
+
 #[acmd_script( agent = "richter", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn richter_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -401,7 +401,6 @@ unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
@@ -487,8 +486,8 @@ unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    
 }
+
 #[acmd_script( agent = "richter", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn richter_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -538,7 +537,6 @@ unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
         }
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_speciallw" , category = ACMD_EFFECT , low_priority)]
@@ -721,16 +719,19 @@ pub fn install() {
         richter_axe_game,
         richter_axe_effect,
         richter_axe_sound,
+
         richter_special_s1_game,
         richter_special_s1_effect,
         richter_special_s1_sound,
         richter_special_air_s1_game,
         richter_special_air_s1_effect,
         richter_special_air_s1_sound,
+        
         richter_special_hi_game,
         richter_special_hi_effect,
         richter_special_air_hi_game,
         richter_special_air_hi_effect,
+
         richter_special_lw_game,
         richter_special_lw_effect,
         richter_special_lw_sound,

@@ -156,7 +156,7 @@ unsafe fn richter_attack_13_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, false);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
-        }
+    }
 }
 
 #[acmd_script( agent = "richter", script = "sound_attack13" , category = ACMD_SOUND , low_priority)]
@@ -208,8 +208,8 @@ unsafe fn richter_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-
 }
+
 #[acmd_script( agent = "richter", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -268,8 +268,7 @@ unsafe fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, -0.5, 0, 0, 0, 0.8, false);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
         LAST_EFFECT_SET_ALPHA(fighter, 0.4);
-        }
-
+    }
 }
 
 #[acmd_script( agent = "richter", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
@@ -313,13 +312,16 @@ pub fn install() {
         richter_attack_11_game,
         richter_attack_11_effect,
         richter_attack_11_sound,
+
         richter_attack_12_game,
         richter_attack_12_effect,
         richter_attack_12_sound,
+
         richter_attack_13_game,
         richter_attack_13_effect,
         richter_attack_13_sound,
         richter_attack_13_expression,
+        
         richter_attack_dash_game,
         richter_attack_dash_effect,
         richter_attack_dash_sound,

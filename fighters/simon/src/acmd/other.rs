@@ -217,42 +217,6 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "sound_appeallwl" , category = ACMD_SOUND , low_priority)]
-unsafe fn appeallwl_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_simon_whip_holding"));
-        PLAY_SE(fighter, Hash40::new("vc_simon_appeal_l01"));
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_simon_appeal_l01"));
-    }
-    frame(lua_state, 68.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_simon_whip_holding"));
-    }
-}
-
-#[acmd_script( agent = "simon", script = "sound_appeallwr" , category = ACMD_SOUND , low_priority)]
-unsafe fn appeallwr_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_simon_whip_holding"));
-        PLAY_SE(fighter, Hash40::new("vc_simon_appeal_l01"));
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_simon_appeal_l01"));
-    }
-    frame(lua_state, 68.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_simon_whip_holding"));
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -264,9 +228,8 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound,
-        appeallwl_sound,
-        appeallwr_sound
+        damageflytop_sound
+        
     );
 }
 

@@ -59,15 +59,6 @@ unsafe fn richter_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
-}
-
-#[acmd_script( agent = "richter_whip", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_landing_air_n_game(fighter: &mut L2CAgentBase) {
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
@@ -87,6 +78,28 @@ unsafe fn richter_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("richter_attack100_end"), false, true);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
+unsafe fn richter_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_whip_holding"));
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_swing_m"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_richter_swing_s"));
     }
 }
 
@@ -111,25 +124,11 @@ unsafe fn richter_whip_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_attack_air_n_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
+#[acmd_script( agent = "richter_whip", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_richter_whip_holding"));
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
-    }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_richter_swing_m"));
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_richter_swing_s"));
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -156,8 +155,8 @@ unsafe fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
+
 #[acmd_script( agent = "richter", script = "effect_attackairfhi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn richter_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -229,7 +228,6 @@ unsafe fn richter_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
@@ -303,7 +301,6 @@ unsafe fn richter_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairflw" , category = ACMD_EFFECT , low_priority)]
@@ -392,7 +389,6 @@ unsafe fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairbhi" , category = ACMD_EFFECT , low_priority)]
@@ -477,8 +473,7 @@ unsafe fn richter_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    
+    } 
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
@@ -564,7 +559,6 @@ unsafe fn richter_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairblw" , category = ACMD_EFFECT , low_priority)]
@@ -734,16 +728,16 @@ unsafe fn richter_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
-    
 }
 
 pub fn install() {
     install_acmd_scripts!(
         richter_attack_air_n_game,
-        richter_landing_air_n_game,
         richter_attack_air_n_effect,
-        richter_whip_attack_air_n_effect,
         richter_attack_air_n_sound,
+        richter_whip_attack_air_n_effect,
+        richter_landing_air_n_game,
+
         richter_attack_air_f_hi_game,
         richter_attack_air_f_hi_effect,
         richter_whip_attack_air_f_hi_game,
@@ -757,6 +751,7 @@ pub fn install() {
         richter_whip_attack_air_f_lw_game,
         richter_whip_attack_air_f_lw_effect,
         richter_landing_air_f_game,
+
         richter_attack_air_b_hi_game,
         richter_attack_air_b_hi_effect,
         richter_attack_air_b_hi_sound,
@@ -773,11 +768,13 @@ pub fn install() {
         richter_whip_attack_air_b_lw_game,
         richter_whip_attack_air_b_lw_effect,
         richter_landing_air_b_game,
+
         richter_attack_air_hi_game,
         richter_attack_air_hi_effect,
         richter_whip_attack_air_hi_effect,
         richter_attack_air_hi_sound,
         richter_whip_attack_air_hi_game,
+
         richter_attack_air_lw_game,
     );
 }

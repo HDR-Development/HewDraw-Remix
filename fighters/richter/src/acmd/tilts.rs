@@ -21,7 +21,6 @@ unsafe fn richter_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_HOLD);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
@@ -99,7 +98,6 @@ unsafe fn richter_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_MOVE);
     }
-    
 }
 
 #[acmd_script( agent = "richter_whip", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
@@ -216,7 +214,6 @@ unsafe fn richter_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
@@ -311,7 +308,6 @@ unsafe fn richter_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 #[acmd_script( agent = "richter", script = "game_attacklw32" , category = ACMD_GAME , low_priority)]
@@ -340,7 +336,6 @@ unsafe fn richter_attack_lw32_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
     }
-    
 }
 
 pub fn install() {
@@ -351,14 +346,17 @@ pub fn install() {
         richter_attack_s3_expression,
         richter_whip_attack_s3_s_game,
         richter_whip_attack_s3_s_effect,
+
         richter_attack_squat_s3_game,
         richter_attack_squat_s3_effect,
         richter_attack_squat_s3_sound,
         richter_attack_squat_s3_expression,
+
         richter_attack_hi3_game,
         richter_attack_hi3_effect,
         richter_whip_attack_hi3_effect,
         richter_attack_hi3_sound,
+        
         richter_attack_lw3_game,
         richter_attack_lw32_game,
     );
