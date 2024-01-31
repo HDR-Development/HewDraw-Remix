@@ -257,6 +257,16 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "roy", script = "sound_jumpsquat" , category = ACMD_SOUND , low_priority)]
+unsafe fn roy_jumpsquat_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_roy_jump01"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -264,6 +274,7 @@ pub fn install() {
         roy_landing_air_lw_game,
         roy_catch_game,
         roy_dash_game,
+        roy_jumpsquat_sound,
         dash_sound,
         roy_turn_dash_game,
         roy_appeallwr_game,

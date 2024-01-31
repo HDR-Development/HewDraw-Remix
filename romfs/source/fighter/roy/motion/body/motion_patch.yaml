@@ -66,6 +66,15 @@ furafura_end:
 special_s1:
   extra:
     cancel_frame: 30
+special_air_s1:
+  extra:
+    cancel_frame: 30
+special_s2_hi:
+  extra:
+    cancel_frame: 41
+special_air_s2_hi:
+  extra:
+    cancel_frame: 41
 attack_air_b:
   extra:
     cancel_frame: 41
