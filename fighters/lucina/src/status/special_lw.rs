@@ -114,38 +114,28 @@ unsafe extern "C" fn special_lw_hit_main_motion_helper(fighter: &mut L2CFighterC
             -air_accel_y
         );
         let stable_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
-        let dive_y = WorkModule::get_param_float(fighter.module_accessor, hash40("dive_speed_y"), 0);
-        let max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {stable_y} else {dive_y};
         sv_kinetic_energy!(
             set_limit_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            max_speed_y,
+            stable_y*0.75,
         );
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT,
+            0.0,
+            0.0
+        ); 
 
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT) {
             println!("New mot");
             let speed_y = VarModule::get_float(fighter.battle_object, vars::lucina::instance::SPECIAL_LW_SPEED_Y);
-            /* 
-            println!("New Speed Y: {speed_y}");
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                speed_y
-            ); */
-
             MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
         }
         else {
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT,
-                0.0
-            ); 
             let frame = MotionModule::frame(fighter.module_accessor);
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0);
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, frame, true, true, true);
@@ -189,7 +179,7 @@ unsafe extern "C" fn special_lw_hit_check_follow_up(fighter: &mut L2CFighterComm
         let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let lr = PostureModule::lr(fighter.module_accessor);
         let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        macros::SET_SPEED_EX(fighter, lr*speed_x/2.0, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        macros::SET_SPEED_EX(fighter, lr*speed_x/1.0, speed_y-0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     else {
         mot = hash40("special_s4_s");
@@ -224,6 +214,12 @@ unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) ->
         }
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             special_lw_hit_main_motion_helper(fighter);
+        }
+    }
+    if !VarModule::is_flag(fighter.battle_object,vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK) {
+        if AttackModule::is_infliction(fighter.module_accessor,*COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+        || StopModule::is_hit(fighter.module_accessor) {
+            macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
