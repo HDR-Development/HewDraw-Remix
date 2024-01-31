@@ -321,7 +321,7 @@ pub fn install() {
         richter_attack_13_effect,
         richter_attack_13_sound,
         richter_attack_13_expression,
-        
+
         richter_attack_dash_game,
         richter_attack_dash_effect,
         richter_attack_dash_sound,

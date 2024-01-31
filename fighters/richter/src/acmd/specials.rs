@@ -726,7 +726,7 @@ pub fn install() {
         richter_special_air_s1_game,
         richter_special_air_s1_effect,
         richter_special_air_s1_sound,
-        
+
         richter_special_hi_game,
         richter_special_hi_effect,
         richter_special_air_hi_game,
