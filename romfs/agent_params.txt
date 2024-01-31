@@ -36,4 +36,3 @@ falco: fighter/falco/param/hdr.prc
 ness: fighter/ness/param/hdr.prc
 ryu: fighter/ryu/param/hdr.prc
 ken: fighter/ken/param/hdr.prc
-roy: fighter/roy/param/hdr.prc
