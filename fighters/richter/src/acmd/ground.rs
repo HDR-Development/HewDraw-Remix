@@ -191,6 +191,16 @@ unsafe fn richter_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter_whip", script = "game_attack13whip" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_attack_13_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+}
+
 #[acmd_script( agent = "richter", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -321,6 +331,7 @@ pub fn install() {
         richter_attack_13_effect,
         richter_attack_13_sound,
         richter_attack_13_expression,
+        richter_whip_attack_13_game,
 
         richter_attack_dash_game,
         richter_attack_dash_effect,

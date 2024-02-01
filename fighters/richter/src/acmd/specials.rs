@@ -282,6 +282,16 @@ unsafe fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter_whip", script = "game_specials1whip" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_special_s1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+}
+
 #[acmd_script( agent = "richter", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -346,6 +356,16 @@ unsafe fn richter_special_air_s1_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
         PLAY_SE(fighter, Hash40::new("se_richter_attackdash"));
+    }
+}
+
+#[acmd_script( agent = "richter_whip", script = "game_specialairs1whip" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_special_air_s1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
     }
 }
 
@@ -723,9 +743,11 @@ pub fn install() {
         richter_special_s1_game,
         richter_special_s1_effect,
         richter_special_s1_sound,
+        richter_whip_special_s1_game,
         richter_special_air_s1_game,
         richter_special_air_s1_effect,
         richter_special_air_s1_sound,
+        richter_whip_special_air_s1_game,
 
         richter_special_hi_game,
         richter_special_hi_effect,
