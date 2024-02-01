@@ -213,7 +213,7 @@ pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValu
     let boma = fighter.module_accessor;
 
     let c_stick_override = fighter.is_button_on(Buttons::CStickOverride);
-    let c_stick_on = dbg!(
+    let c_stick_on = (
         !VarModule::is_flag(
             fighter.battle_object,
             vars::common::instance::DISABLE_CSTICK_BUFFER_ROLL_OOS
@@ -230,6 +230,10 @@ pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValu
         ControlModule::get_sub_stick_y(boma)
     };
     let stick_vertical = sub_stick_y.abs() >= sub_stick_x.abs() && sub_stick_y < 0.0;
+
+    if sub_stick_y > 0.2 && sub_stick_x.abs() < 0.4 {
+        return false.into();
+    }
 
     let escapes = [
         (
