@@ -75,6 +75,30 @@ special_s2_hi:
 special_air_s2_hi:
   extra:
     cancel_frame: 41
+special_s3_lw:
+  extra:
+    cancel_frame: 47
+special_air_s3_lw:
+  extra:
+    cancel_frame: 47
+special_s3_s:
+  extra:
+    cancel_frame: 47
+special_air_s3_s:
+  extra:
+    cancel_frame: 47
+special_s4_hi:
+  extra:
+    cancel_frame: 51
+special_air_s4_hi:
+  extra:
+    cancel_frame: 51
+special_s4_s:
+  extra:
+    cancel_frame: 51
+special_air_s4_s:
+  extra:
+    cancel_frame: 51
 attack_air_b:
   extra:
     cancel_frame: 41
