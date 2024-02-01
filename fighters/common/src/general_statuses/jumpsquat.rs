@@ -438,12 +438,17 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     // This cuts a single frame off of the end of the specified characters' jumpsquat animations
     // This is a purely aesthetic change, makes for snappier jumps
-    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("landing_heavy")) * 0.25;
+    let mut end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash());
+    let mut start_frame = 0.0;
+    if motion_hash.get_hash().hash == hash40("jump_squat") {
+        end_frame *= 0.25;
+        start_frame = 3.0;
+    }
 
     // vanilla logic
     let mut motion_rate = end_frame / jump_squat_frame;
     if motion_rate < 1.0 {
         motion_rate += 0.001;
     }
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 3.0, motion_rate, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, motion_hash.get_hash(), start_frame, motion_rate, false, 0.0, false, false);
 }
