@@ -136,7 +136,7 @@ unsafe fn popo_catch_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 3.6, 0.0, 5.0, 3.6, Some(0.0), Some(5.0), Some(7.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 3.75, 0.0, 5.75, 3.5, Some(0.0), Some(5.75), Some(6.75), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 3.0);
@@ -161,8 +161,8 @@ unsafe fn popo_catch_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     FT_MOTION_RATE(fighter, 1.000);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 2.9, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(8.1), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
-        CATCH(fighter, 1, Hash40::new("top"), 1.45, 0.0, 5.0, 2.55, Some(0.0), Some(5.0), Some(9.55), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 0, Hash40::new("top"), 3.0, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(8.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 2.0, 0.0, 5.0, 3.0, Some(0.0), Some(5.0), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
     }
     game_CaptureCutCommon(fighter);
     frame(lua_state, 10.0);
@@ -187,8 +187,8 @@ unsafe fn popo_catch_turn_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     FT_MOTION_RATE(fighter, 1.000);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 3.6, 0.0, 5.0, -4.0, Some(0.0), Some(5.0), Some(-11.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
-        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 5.0, -2.2, Some(0.0), Some(5.0), Some(-13.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 5.0, -5.0, Some(0.0), Some(5.0), Some(-13.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 3.0, 0.0, 5.0, -4.0, Some(0.0), Some(5.0), Some(-14.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 2.0);

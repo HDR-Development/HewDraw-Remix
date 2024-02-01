@@ -9,7 +9,7 @@ pub fn install() {
     );
 }
 
-// FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S_D //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D //
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -47,7 +47,7 @@ unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighte
     0.into()
 }
 
-// FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S_U //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U //
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {

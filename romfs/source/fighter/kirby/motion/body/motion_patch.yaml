@@ -592,6 +592,9 @@ luigi_special_air_n_thunder:
 mario_special_n:
   extra:
     cancel_frame: 41
+mario_special_air_n:
+  extra:
+    cancel_frame: 41
 mario_special_n_fire:
   game_script: game_mariospecialnfire
   flags:
