@@ -111,6 +111,30 @@ unsafe fn sheik_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "sheik", script = "expression_attackhi4" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn sheik_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    sv_animcmd::execute(lua_state, 7.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
 #[acmd_script( agent = "sheik", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn sheik_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -157,6 +181,7 @@ pub fn install() {
         sheik_attack_s4_s_game,
         sheik_attack_hi4_game,
         sheik_attack_hi4_effect,
+        sheik_attack_hi4_expression,
         sheik_attack_lw4_game,
     );
 }

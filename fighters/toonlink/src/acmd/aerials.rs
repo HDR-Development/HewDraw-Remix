@@ -219,7 +219,7 @@ unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_spinattack"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
@@ -227,7 +227,7 @@ unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercem"), 0);
     }
     frame(lua_state, 55.0);
     if is_excute(fighter) {
