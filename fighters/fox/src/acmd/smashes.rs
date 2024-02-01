@@ -58,6 +58,8 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 30.0);
+        FT_MOTION_RATE(fighter, 0.7);
     
 }
 
