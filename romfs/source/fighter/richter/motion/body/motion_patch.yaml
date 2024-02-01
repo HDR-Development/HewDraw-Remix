@@ -82,8 +82,10 @@ fall_leaning_c:
   extra:
     cancel_frame: 22
 attack_100_end:
-  extra:
-    cancel_frame: 99
+  animations:
+  - name: ~
+  scripts: ~
+  extra: ~
 item_light_throw_f:
   flags:
     move: false
