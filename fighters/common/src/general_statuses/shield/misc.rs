@@ -209,7 +209,7 @@ pub unsafe fn check_guard_attack_special_hi(
     false.into()
 }
 
-pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon, should_transition: bool) -> L2CValue {
     let boma = fighter.module_accessor;
 
     let c_stick_override = fighter.is_button_on(Buttons::CStickOverride);
@@ -255,13 +255,15 @@ pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValu
 
     for (term, condition, status) in escapes.iter() {
         if WorkModule::is_enable_transition_term(boma, *term) && *condition {
-            // NOTE: DO NOT TOUCH
-            // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
-            // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
-            fighter.change_status((*status).into(), false.into());
-            // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
-            // and will not regenerate our pad flags
-            ControlModule::clear_command(fighter.module_accessor, true);
+            if should_transition {
+                // NOTE: DO NOT TOUCH
+                // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
+                // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
+                fighter.change_status((*status).into(), false.into());
+                // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
+                // and will not regenerate our pad flags
+                ControlModule::clear_command(fighter.module_accessor, true);
+            }
             return true.into();
         }
     }
@@ -269,7 +271,7 @@ pub unsafe fn check_cstick_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValu
     return false.into();
 }
 
-pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon, should_transition: bool) -> L2CValue {
     let boma = fighter.module_accessor;
 
     let escapes = [
@@ -292,13 +294,15 @@ pub unsafe fn check_escape_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     for (term, condition, status) in escapes.iter() {
         if WorkModule::is_enable_transition_term(boma, *term) && *condition {
-            // NOTE: DO NOT TOUCH
-            // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
-            // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
-            fighter.change_status((*status).into(), false.into());
-            // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
-            // and will not regenerate our pad flags
-            ControlModule::clear_command(fighter.module_accessor, true);
+            if should_transition {
+                // NOTE: DO NOT TOUCH
+                // We must pass `false` to `change_status` so that the game does not clear our buffer/pad flag.
+                // When it is done via `change_status`, the game will regenerate them the next time `sub_shift_status_main` is called.
+                fighter.change_status((*status).into(), false.into());
+                // We then must pass `true` to `clear_command` so that game "forgets" that we cleared our buffer
+                // and will not regenerate our pad flags
+                ControlModule::clear_command(fighter.module_accessor, true);
+            }
             return true.into();
         }
     }
@@ -431,7 +435,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if !guard_hold {
-        if check_escape_oos(fighter).get_bool() || check_cstick_escape_oos(fighter).get_bool() {
+        if check_escape_oos(fighter, true).get_bool() || check_cstick_escape_oos(fighter, true).get_bool() {
             return true.into();
         }
     }
