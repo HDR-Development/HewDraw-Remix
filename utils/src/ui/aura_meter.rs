@@ -95,7 +95,7 @@ impl AuraMeter {
         set_pane_visible(self.bars[1], false);
         set_pane_visible(self.bars_background[0], false);
         set_pane_visible(self.bars_background[1], false);
-        set_pane_visible(self.number, true);
+        set_pane_visible(self.number, false);
 
         if self.original_bar_height < 0.0 {
             self.original_bar_width = get_width_height(self.bars[0]).0;
@@ -112,7 +112,7 @@ impl AuraMeter {
     }
 
     pub fn update_number(&mut self) {
-        set_pane_visible(self.number, true);
+        set_pane_visible(self.number, false);
 
         let left_x = self.current_number as f32 / 6.0;
         let right_x = (self.current_number + 1) as f32 / 6.0;
@@ -132,15 +132,15 @@ impl AuraMeter {
         let bar_total = per_level * 2.0;
 
         let number = current / bar_total;
-        let number = number.clamp(0.0, 3.0) as usize;
+        let number = number.clamp(0.0, 1.0) as usize;
 
-        let percent = if number == 3 {
+        let percent = if number == 1 {
             1.0
         } else {
             (current % bar_total) / bar_total
         };
 
-        if number != self.current_number && number != 3 {
+        if number != self.current_number && number != 1 {
             self.actual_percentage = percent;
             self.visual_percentage = 0.0;
         } else {
@@ -262,7 +262,7 @@ impl UiObject for AuraMeter {
             set_pane_visible(self.bars[1], false);
             set_pane_visible(self.number, false);
         } else {
-            set_pane_visible(self.number, true);
+            set_pane_visible(self.number, false);
         }
     }
 
