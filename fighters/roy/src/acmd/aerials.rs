@@ -48,7 +48,7 @@ unsafe fn roy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 42.0);
+    frame(lua_state, 35.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -232,7 +232,7 @@ unsafe fn roy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 42.0);
+    frame(lua_state, 40.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -290,7 +290,6 @@ pub fn install() {
         roy_attack_air_n_effect,
         roy_attack_air_f_game,
         roy_attack_air_f_expression,
-        roy_attack_air_b_game,
         roy_attack_air_b_game,
         roy_attack_air_b_effect,
         roy_attack_air_hi_game,

@@ -106,6 +106,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     double_edge_dance_during_hitlag(fighter);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
+    sword_length(boma);
 }
 
 
@@ -119,8 +120,13 @@ pub fn roy_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		roy_frame(fighter);
-        fe_common(fighter);
     }
+}
+
+unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+    let long_sword_scale = Vector3f{x: 1.0, y: 1.05, z: 1.0};
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
 pub unsafe fn roy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
