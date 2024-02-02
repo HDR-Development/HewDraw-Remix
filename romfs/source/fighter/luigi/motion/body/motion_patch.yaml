@@ -10,10 +10,10 @@ guard_off:
     cancel_frame: 12
 catch:
   extra:
-    cancel_frame: 52
+    cancel_frame: 44
 catch_l:
   extra:
-    cancel_frame: 52
+    cancel_frame: 44
 special_n:
   extra:
     cancel_frame: 41

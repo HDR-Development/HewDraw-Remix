@@ -367,7 +367,7 @@ unsafe fn miigunner_special_lw3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
-	FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 8.0);
+	FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 5.0);
 }
 
 #[acmd_script( agent = "miigunner", scripts = ["game_speciallw3hold", "game_specialairlw3hold"] , category = ACMD_GAME , low_priority)]
@@ -375,7 +375,7 @@ unsafe fn miigunner_special_lw3_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
-	FT_MOTION_RATE(fighter, 1.0);
+	FT_MOTION_RATE(fighter, 0.8);
 	if is_excute(fighter) {
 		let offset_y = if fighter.is_situation(*SITUATION_KIND_GROUND) { 6.5 } else { 9.5 };
 		ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 367, 100, 25, 0, 12.5, 0.0, offset_y, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
@@ -384,7 +384,7 @@ unsafe fn miigunner_special_lw3_hold_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 		let offset_y = if fighter.is_situation(*SITUATION_KIND_GROUND) { 6.5 } else { 9.5 };
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 366, 100, 25, 0, 22.0, 0.0, offset_y, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 10, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 366, 100, 25, 0, 22.0, 0.0, offset_y, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 10, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
 }
 
@@ -418,7 +418,7 @@ unsafe fn miigunner_special_lw3_end_game(fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 9.0);
 	if is_excute(fighter) {
 		let offset_y = if fighter.is_situation(*SITUATION_KIND_GROUND) { 6.5 } else { 9.5 };
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 361, 70, 0, 30, 14.0, 0.0, offset_y, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 55, 70, 0, 30, 14.0, 0.0, offset_y, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
     }
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {

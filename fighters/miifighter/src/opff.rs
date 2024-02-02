@@ -42,8 +42,8 @@ unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {
 }
 
 //Earthquake Punch
-unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND {
+unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND) {
         let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
         let charge = VarModule::get_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE);
         let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE) as f32;
@@ -84,7 +84,7 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     //Allows Divekick to be cancelled into freefall with second B press
     if boma.is_motion_one_of(&[Hash40::new("special_lw1_loop")]) {
         let is_press = ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
-        if is_press {
+        if is_press || fighter.motion_frame() >= 30.0 {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
         }
     }
@@ -156,7 +156,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     feint_jump_jc(boma);
     wild_throw(boma, status_kind, frame);
-    earthquake_punch(fighter, boma, status_kind);
+    earthquake_punch(fighter, boma);
     onslaught(boma, frame);
     fastfall_specials(fighter);
 }
