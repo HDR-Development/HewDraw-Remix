@@ -121,9 +121,9 @@ unsafe fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 20.0);
 	if is_excute(fighter) {
 		// if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		// 	EFFECT(fighter, Hash40::new_raw(0x1287005d5d), Hash40::new("armr"), 5.3, 0, 0, 70, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_shot_add"), Hash40::new("armr"), 5.3, 0, 0, 70, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
-		// 	EFFECT(fighter, Hash40::new_raw(0x168b3949cd), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_blaster_shot"), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 		// 	LAST_EFFECT_SET_RATE(fighter, 1.6);
 		// 	EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 19.0, -26.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -275,7 +275,7 @@ unsafe fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
 		// if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		// 	EFFECT(fighter, Hash40::new_raw(0x168b3949cd), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_blaster_shot"), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 		// 	LAST_EFFECT_SET_RATE(fighter, 1.6);
 		// 	EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 36.0, 0.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
@@ -297,7 +297,7 @@ unsafe fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
 		// if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		// 	EFFECT(fighter, Hash40::new_raw(0x168b3949cd), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_blaster_shot"), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 		// 	LAST_EFFECT_SET_RATE(fighter, 1.6);
 		// 	EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 43.0, 0.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);

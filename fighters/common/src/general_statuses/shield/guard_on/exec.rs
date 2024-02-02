@@ -17,22 +17,23 @@ unsafe fn ftStatusUniqProcessGuardOn_execStatus(fighter: &mut L2CFighterCommon) 
 pub unsafe fn ftStatusUniqProcessGuardOn_execStop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let shield = WorkModule::get_float(
         fighter.module_accessor,
-        *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD,
+        *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD
     );
-    let scale =
-        super::super::fighter_status_guard::calc_shield_scale(fighter, shield.into()).get_f32();
+    let scale = super::super::fighter_status_guard
+        ::calc_shield_scale(fighter, shield.into())
+        .get_f32();
     ModelModule::set_joint_scale(
         fighter.module_accessor,
         Hash40::new("throw"),
-        &Vector3f {
+        &(Vector3f {
             x: scale,
             y: scale,
             z: scale,
-        },
+        })
     );
     sub_ftStatusUniqProcessGuardOn_execStop_Inner(
         fighter,
-        FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_DELAY_MUL.into(),
+        FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_DELAY_MUL.into()
     );
     L2CValue::I32(0)
 }
@@ -40,7 +41,7 @@ pub unsafe fn ftStatusUniqProcessGuardOn_execStop(fighter: &mut L2CFighterCommon
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_execStop_Inner)]
 pub unsafe fn sub_ftStatusUniqProcessGuardOn_execStop_Inner(
     fighter: &mut L2CFighterCommon,
-    arg: L2CValue,
+    arg: L2CValue
 ) {
     if super::super::fighter_status_guard::check_hit_stop_delay_flick(fighter, arg).get_bool() {
         let clears = [
@@ -54,7 +55,7 @@ pub unsafe fn sub_ftStatusUniqProcessGuardOn_execStop_Inner(
             ControlModule::clear_command_one(
                 fighter.module_accessor,
                 *FIGHTER_PAD_COMMAND_CATEGORY1,
-                *x,
+                *x
             );
         }
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);

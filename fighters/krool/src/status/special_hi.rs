@@ -341,17 +341,17 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
 //FUN_71000210d0
 unsafe extern "C" fn special_hi_movement_helper(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
-        let gravity_minus = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y_speed_minus"));   //0x2041e0d192
-        let acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));   //0x141a28d9bf
-        let touch_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_touch_max_spd_x"));   //0x1eff745701
-        let max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_max_spd_x"));   //0x187c1ef75f
-        let stick_mul_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_stick_mul_max_spd_x"));   //0x22c9b49999
-        let stick_mul_acl_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_stick_mul_acl_spd_y"));   //0x228933e5bb
-        let brake_movement_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_movement_y")); //0x1ffbac0abc
-        let fly_brake_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_y"));   //0x16a2f66223
-        let fall_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_x")); //0x19ecf9d8dc
-        let fall_stick_mul_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_stick_mul_max_spd_y")); //0x2388140c3b
-        let fall_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_y")); //0x199bfee84a
+        let gravity_minus = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y_speed_minus"));   //hash40("special_hi_fly_acl_y_speed_minus")
+        let acl_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_acl_y"));   //hash40("special_hi_fly_acl_y")
+        let touch_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_touch_max_spd_x"));   //hash40("special_hi_fly_touch_max_spd_x")
+        let max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_max_spd_x"));   //hash40("special_hi_fly_max_spd_x")
+        let stick_mul_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_stick_mul_max_spd_x"));   //hash40("special_hi_fly_stick_mul_max_spd_x")
+        let stick_mul_acl_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_stick_mul_acl_spd_y"));   //hash40("special_hi_fly_stick_mul_acl_spd_y")
+        let brake_movement_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_movement_y")); //hash40("special_hi_fly_brake_movement_y")
+        let fly_brake_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fly_brake_y"));   //hash40("special_hi_fly_brake_y")
+        let fall_max_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_x")); //hash40("special_hi_fall_max_spd_x")
+        let fall_stick_mul_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_stick_mul_max_spd_y")); //hash40("special_hi_fall_stick_mul_max_spd_y")
+        let fall_max_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_fall_max_spd_y")); //hash40("special_hi_fall_max_spd_y")
         let unknown_param = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), 0x1f32a7c5bf);
         let mut stick_mul_x_delta;  //l160
         let mut stick_mul_acl_y_delta; //l170

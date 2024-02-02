@@ -164,7 +164,7 @@ unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CVa
     fighter.sub_air_check_fall_common_pre();
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_STOP_CEIL);
     let mut motion = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_POWBLOCK_QUAKE_JUMP) {
-        Hash40::new_raw(0xb38c9ab48)
+        Hash40::new("jump_f_mini")
     } else {
         let stick_x = fighter.global_table[STICK_X].get_f32();
         let lr = -PostureModule::lr(fighter.module_accessor);
@@ -186,7 +186,7 @@ unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CVa
             }
         };
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
-            SoundModule::play_se(fighter.module_accessor, Hash40::new_raw(0x18ed402875), true, false, false, false, app::enSEType(0));
+            SoundModule::play_se(fighter.module_accessor, Hash40::new("se_item_usagihat_jump_01"), true, false, false, false, app::enSEType(0));
         }
         _motion
     };

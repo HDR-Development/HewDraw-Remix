@@ -159,6 +159,18 @@ unsafe fn dashattack_land_cancel(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn no_cap(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::is_flag(boma.object(), vars::diddy::instance::NO_CAP)
+    && !boma.is_motion_one_of(&[Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r")]) {
+        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_invisible") as i64);
+        ModelModule::set_mesh_visibility(boma, Hash40::new("cap"), false);
+    }
+    else {
+        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_normal") as i64);
+        ModelModule::set_mesh_visibility(boma, Hash40::new("cap"), true);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     peanut_popgun_ac(boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind);
@@ -167,6 +179,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dashattack_land_cancel(boma);
     fastfall_specials(fighter);
     fastfall_dashattack(fighter);
+    no_cap(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DIDDY )]

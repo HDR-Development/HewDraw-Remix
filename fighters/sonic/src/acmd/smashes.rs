@@ -138,7 +138,7 @@ unsafe fn sonic_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10e97de698), Hash40::new("top"), 0, 13, 0, 0, 50, 90, 1.2, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 13, 0, 0, 50, 90, 1.2, true);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
@@ -158,7 +158,7 @@ unsafe fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-        PLAY_SE(fighter, Hash40::new_raw(0x1651c5e760));
+        PLAY_SE(fighter, Hash40::new("se_sonic_attackair_f03"));
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {

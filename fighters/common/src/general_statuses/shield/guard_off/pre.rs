@@ -32,7 +32,5 @@ unsafe fn status_pre_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    skyline::install_hook!(
-        status_pre_GuardOff
-    );
+    skyline::install_hook!(status_pre_GuardOff);
 }

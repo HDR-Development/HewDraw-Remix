@@ -46,8 +46,10 @@ unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 365, 45, 0, 35, 3.5, 0.0, 5.5, -0.5, Some(0.0), Some(5.5), Some(-3.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 365, 45, 0, 35, 5.5, 0.0, 5.5, -10.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 365, 45, 0, 35, 3.5, 0.0, 5.5, -0.5, Some(0.0), Some(5.5), Some(-3.5),   0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 365, 45, 0, 35, 5.5, 0.0, 5.5, -10.0, None, None, None,                  0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 80, 45, 0, 35, 3.5, 0.0, 5.5, -0.5, Some(0.0), Some(5.5), Some(-3.5),    0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 2.0, 80, 45, 0, 35, 5.5, 0.0, 5.5, -10.0, None, None, None,                   0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -56,11 +58,11 @@ unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 361, 135, 0, 40, 3.5, 0.0, 5.5, -0.5, Some(0.0), Some(5.5), Some(-3.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 361, 135, 0, 40, 6.0, 0.0, 5.5, -10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 361, 135, 0, 40, 6.0, 0.0, 5.5, -10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 28.0);
+    FT_MOTION_RATE(fighter, 19.0/(41.0-28.0));
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 19.0/(41.0-28.0));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 31.0);
@@ -77,12 +79,12 @@ unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
         LAST_EFFECT_SET_ALPHA(fighter, 0.6);
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new_raw(0x11c7b3e40a), Hash40::new("top"), 0, 4.5, -10.0, 0, -90, 0, 0.8, false);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("murabito_firework"), Hash40::new("top"), 0, 4.5, -10.0, 0, -90, 0, 0.8, false);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
-        EFFECT(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -5.0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
+        EFFECT(fighter, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -5.0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
 
@@ -94,11 +96,11 @@ unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1946174757));
+        PLAY_SE(fighter, Hash40::new("se_murabito_attackair_b01"));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x152d914323));
+        PLAY_SE(fighter, Hash40::new("se_murabito_smash_h02"));
     }
 
 }
@@ -169,9 +171,9 @@ unsafe fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 23.0);
+    FT_MOTION_RATE(fighter, 0.7);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.7);
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
@@ -185,13 +187,9 @@ unsafe fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.769);
-    }
+    FT_MOTION_RATE(fighter, 0.769);
     frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
+    FT_MOTION_RATE(fighter, 1.000);
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
