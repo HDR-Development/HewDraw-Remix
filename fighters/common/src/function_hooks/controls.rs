@@ -1151,6 +1151,12 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 }
 
 pub fn install() {
+    // Custom buffer-state handling
+    // Always uses the hitlag handling that cat4 uses
+    skyline::patching::Patch::in_text(0x6bd428).nop();
+    skyline::patching::Patch::in_text(0x6bd484).nop();
+
+    // Stuff for parry input
     skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
     skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
 

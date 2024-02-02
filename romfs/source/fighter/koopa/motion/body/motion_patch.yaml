@@ -117,7 +117,7 @@ throw_hi:
     cancel_frame: 74
 throw_lw:
   extra:
-    cancel_frame: 65
+    cancel_frame: 60
 appeal_hi_l:
   extra:
     cancel_frame: 70

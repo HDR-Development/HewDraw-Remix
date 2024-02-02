@@ -1,8 +1,7 @@
-
 use super::*;
 
 #[acmd_script( agent = "pickel", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
+unsafe fn pickel_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -14,12 +13,10 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_PUSHOBJECT, false, -1);
         ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_PUSHOBJECT, Hash40::new("throw_f"), false, -1.0);
     }
-    // frame(lua_state, 13.0);
-    // if is_excute(fighter) {
-    //     CHECK_FINISH_CAMERA(fighter, 17, 4.8);
-    //     lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.7);
-    //     lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 6.0, y: 4.0, z: 0.0});
-    // }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        CHECK_FINISH_CAMERA(fighter, 17, 4.8);
+    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
@@ -34,7 +31,7 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe fn pickel_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -45,12 +42,10 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_THROW_FLAG_FORGE_GENERATE_ENABLE);
     }
-    // frame(lua_state, 19.0);
-    // if is_excute(fighter) {
-    //     CHECK_FINISH_CAMERA(fighter, 9, 2);
-    //     lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-    //     lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 7.0, y: 0.0, z: 0.0});
-    // }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        CHECK_FINISH_CAMERA(fighter, 9, 2);
+    }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
@@ -72,8 +67,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_throwf,
-        game_throwlw
+        pickel_throw_f_game,
+        pickel_throw_lw_game
     );
 }
-

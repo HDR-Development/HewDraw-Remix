@@ -62,7 +62,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         hash40("common"),
         hash40("shield_setoff_add"),
     );
-    let max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x16a1c7df3f);
+    let max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_frame_max"));
     if max < shield_power {
         shield_power = max;
     }

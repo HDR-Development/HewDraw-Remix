@@ -116,7 +116,6 @@ unsafe fn rockman_hardknuckle_regular_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
 	if is_excute(fighter) {
-        AttackModule::clear_all(boma);
         sv_kinetic_energy!(
             set_speed,
             fighter,
@@ -138,6 +137,10 @@ unsafe fn rockman_hardknuckle_regular_game(fighter: &mut L2CAgentBase) {
             0.0,
             0.05
         );
+    }
+    frame(lua_state, 6.0);
+	if is_excute(fighter) {
+        AttackModule::clear_all(boma);
     }
 }
 

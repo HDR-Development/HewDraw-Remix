@@ -208,6 +208,24 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "diddy", scripts = ["game_appealhil", "game_appealhir"], category = ACMD_GAME, low_priority )]
+unsafe fn game_appealhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_invisible") as i64);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::diddy::instance::NO_CAP);
+    }
+    frame(lua_state, 49.0);
+    if is_excute(agent) {
+        VarModule::off_flag(boma.object(), vars::diddy::instance::NO_CAP);
+        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_normal") as i64);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -219,7 +237,8 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        game_appealhi
     );
 }
 
