@@ -54,66 +54,6 @@ attack_s4_s:
 attack_s3_s:
   extra:
     cancel_frame: 38
-attack_s3_hi:
-    game_script: game_attacks3hi
-    flags:
-      turn: false
-      loop: false
-      move: true
-      fix_trans: false
-      fix_rot: false
-      fix_scale: false
-      unk_40: false
-      unk_80: true
-      unk_100: false
-      unk_200: false
-      unk_400: false
-      unk_800: false
-      unk_1000: false
-      unk_2000: false
-    blend_frames: 0
-    animations:
-      - name: c01attacks3hi.nuanmb
-        unk: 0
-    scripts:
-      - expression_attacks3
-      - sound_attacks3
-      - effect_attacks3
-    extra:
-      xlu_start: 0
-      xlu_end: 0
-      cancel_frame: 38
-      no_stop_intp: false
-attack_s3_lw:
-    game_script: game_attacks3lw
-    flags:
-      turn: false
-      loop: false
-      move: true
-      fix_trans: false
-      fix_rot: false
-      fix_scale: false
-      unk_40: false
-      unk_80: true
-      unk_100: false
-      unk_200: false
-      unk_400: false
-      unk_800: false
-      unk_1000: false
-      unk_2000: false
-    blend_frames: 0
-    animations:
-      - name: c01attacks3lw.nuanmb
-        unk: 0
-    scripts:
-      - expression_attacks3
-      - sound_attacks3
-      - effect_attacks3
-    extra:
-      xlu_start: 0
-      xlu_end: 0
-      cancel_frame: 38
-      no_stop_intp: false
 attack_air_f:
   extra:
     cancel_frame: 37
