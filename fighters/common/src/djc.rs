@@ -23,14 +23,6 @@ pub unsafe extern "C" fn attack_air_main_status(fighter: &mut L2CFighterCommon) 
 /// Performs the leniency check for double jump canceling
 #[utils::export(common::djc)]
 pub unsafe extern "C" fn attack_air_main_status_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND 
-    && !fighter.is_in_hitlag()
-    && MotionModule::frame_2nd(fighter.module_accessor) >= 2.0
-    && fighter.global_table[CURRENT_FRAME].get_i32() <= ParamModule::get_int(fighter.battle_object, ParamType::Common, "djc_leniency_frame")
-    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
-    }
     if !fighter.status_AttackAir_Main_common().get_bool() {
         fighter.sub_air_check_superleaf_fall_slowly();
         if !fighter.global_table[IS_STOPPING].get_bool() {
