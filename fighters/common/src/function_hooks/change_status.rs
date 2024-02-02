@@ -91,13 +91,20 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             VarModule::on_flag(boma.object(), vars::common::instance::IS_CC_NON_TUMBLE);
         }
 
-        else if boma.kind() == *FIGHTER_KIND_TRAIL
-        && StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH
-        && next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN
-        && ((!VarModule::is_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT)
-        && !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)))
-            || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
-            next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
+        else if boma.kind() == *FIGHTER_KIND_TRAIL {
+            if StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH
+            && next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN
+            && ((!VarModule::is_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT)
+            && !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)))
+                || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
+                next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
+            }
+            // prevent sora from immediately acting out of the down smash bounce 
+            if boma.is_status(*FIGHTER_STATUS_KIND_CLIFF_JUMP2)
+            && !boma.is_prev_status(*FIGHTER_STATUS_KIND_CLIFF_JUMP1)
+            && boma.status_frame() < 16 {
+                return 0;
+            }
         }
         else if boma.kind() == *FIGHTER_KIND_KOOPAJR
         && StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH

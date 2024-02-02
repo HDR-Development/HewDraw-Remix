@@ -2732,7 +2732,7 @@
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_lw">10</float>
-      <bool hash="wall_jump_type">false</bool>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="passive_wall_jump_y_speed">1.8</float>
       <float hash="passive_wall_jump_x_speed">1.2</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
