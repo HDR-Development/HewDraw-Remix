@@ -118,7 +118,7 @@ unsafe fn lucas_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 5.0, 0.5, 2.0, 0, 0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 5.0, -0.75, 0.0, 0, 0, 0, 0.4, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -181,12 +181,12 @@ unsafe fn lucas_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x14b1c72abf));
-        PLAY_SE(fighter, Hash40::new_raw(0x13f2de7da4));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_lucas_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_lucas_attackdash"));
     }
     wait(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new_raw(0x148a41094f));
+        PLAY_STEP(fighter, Hash40::new("se_lucas_step_left_m"));
     }
 
 }

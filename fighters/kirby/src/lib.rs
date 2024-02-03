@@ -50,6 +50,8 @@ pub fn install(is_runtime: bool) {
         smashline::install_agent_frames!(
             hammer_swing_drift_landcancel
         );
+    // Copy Abilities
+    smashline::install_agent_frames!(spikeball_frame);
     }
 
     if !is_runtime || is_hdr_available() {

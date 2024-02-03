@@ -10,17 +10,16 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
         if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND])
         && [*FIGHTER_STATUS_KIND_CLIFF_CATCH, *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE, *FIGHTER_STATUS_KIND_CLIFF_WAIT].contains(&next_status) {
             let player_number = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
-            let pos = GroundModule::hang_cliff_pos_3f(boma);
+            let cliff_id = GroundModule::get_cliff_id_uint32(boma);
 
             for object_id in util::get_all_active_battle_object_ids() {
                 let object = ::utils::util::get_battle_object_from_id(object_id);
                 if !object.is_null() {
-                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-                    || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) {
                         continue;
                     }
     
-                    if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                    if VarModule::get_int(object, vars::common::instance::LEDGE_ID) == cliff_id as i32 {
                         next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                     }
                 }
@@ -71,17 +70,16 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         else if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND])
         && [*FIGHTER_STATUS_KIND_CLIFF_CATCH, *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE, *FIGHTER_STATUS_KIND_CLIFF_WAIT].contains(&next_status) {
             let player_number = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
-            let pos = GroundModule::hang_cliff_pos_3f(boma);
+            let cliff_id = GroundModule::get_cliff_id_uint32(boma);
 
             for object_id in util::get_all_active_battle_object_ids() {
                 let object = ::utils::util::get_battle_object_from_id(object_id);
                 if !object.is_null() {
-                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-                    || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) {
                         continue;
                     }
     
-                    if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                    if VarModule::get_int(object, vars::common::instance::LEDGE_ID) == cliff_id as i32 {
                         next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                     }
                 }
@@ -100,12 +98,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)))
             || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
             next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
-        }
-        else if boma.kind() == *FIGHTER_KIND_BAYONETTA
-        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
-        && next_status == *FIGHTER_STATUS_KIND_DAMAGE_FALL {
-            next_status = *FIGHTER_STATUS_KIND_FALL;
-            clear_buffer = true;
         }
         else if boma.kind() == *FIGHTER_KIND_KOOPAJR
         && StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH
@@ -188,6 +180,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         // Stubs vanilla Popgun cancel behavior
         else if boma.kind() == *FIGHTER_KIND_DIDDY
         && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE])
+        && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
+            return 0;
+        }
+        else if boma.kind() == *FIGHTER_KIND_KIRBY
+        && (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DIDDY)
+        && boma.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE])
         && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
             return 0;
         }

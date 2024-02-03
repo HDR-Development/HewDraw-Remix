@@ -224,12 +224,12 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10001e43ad), Hash40::new("top"), 2.0, 8.0, -3.5, 23, 120, 220, 0.9, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 2.0, 8.0, -3.5, 23, 120, 220, 0.9, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("top"), 0, 6.5, -12.0, 0, 0, 0, 1.35, 0, 0, 0, 0, 0, 0, true, 0.65);
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 6.5, -12.0, 0, 0, 0, 1.35, 0, 0, 0, 0, 0, 0, true, 0.65);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     
@@ -241,8 +241,8 @@ unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x12ed1e99ca));
-        PLAY_SE(fighter, Hash40::new_raw(0x0e82b22350));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_fox_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_fox_swing_m"));
     }
     
 }

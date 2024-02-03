@@ -24,13 +24,11 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             return 1.into();
         }
     }
-
     if fighter.status_frame() == 10 && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
         VarModule::on_flag(fighter.object(), vars::kirby::status::CHILL_PILL);
         let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("mariod_special_n_chill") } else { Hash40::new("mariod_special_air_n_chill") };
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, motion, -1.0, 1.0, 0.0, false, false);
     }
-
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -47,7 +45,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             }
         }
     }
-
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
@@ -56,6 +53,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
+
     return 0.into()
 }
 

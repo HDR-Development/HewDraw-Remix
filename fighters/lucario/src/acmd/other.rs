@@ -343,10 +343,6 @@ unsafe fn game_downattacku(fighter: &mut L2CAgentBase) {
 unsafe fn game_appealhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 50.0);
-    if is_excute(fighter) {
-        MeterModule::add(fighter.battle_object, 0.2 * MeterModule::meter_per_level(fighter.battle_object));
-    }
 }
 
 pub fn install() {
