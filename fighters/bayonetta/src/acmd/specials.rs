@@ -63,6 +63,64 @@ unsafe fn bayonetta_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "bayonetta", script = "game_specialsedge", category = ACMD_GAME, low_priority )]
+unsafe fn bayonetta_special_s_edge_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_WALL_CHECK);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, false, false, true, 10, 0, 20, 0, false);
+        ATTACK(fighter, 0, 0, Hash40::new("footr"), 7.0, 62, 8, 0, 69, 4.0, 0.0, 0.0, 0.0, Some(-8.0), Some(0.0), Some(0.0), 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        fighter.set_int(*FIGHTER_BAYONETTA_SHOOTING_STEP_WAIT_END, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SHOOTING_STEP);
+        //fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+}
+
+#[acmd_script( agent = "bayonetta", script = "effect_specialsedge", category = ACMD_EFFECT, low_priority )]
+unsafe fn bayonetta_special_s_edge_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("bayonetta_heelslide_burst"), Hash40::new("kneer"), 9.5, 0, 0, 0, 90, 0, 1.1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+        if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_COSTUME_KIND) != 2 {LAST_PARTICLE_SET_COLOR(fighter, 0.048, 0.452, 1); }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("bayonetta_heelslide_burst"), false, false);
+    }
+}
+
+#[acmd_script( agent = "bayonetta", script = "sound_specialsedge", category = ACMD_SOUND, low_priority )]
+unsafe fn bayonetta_special_s_edge_sound(fighter: &mut L2CAgentBase) {
+}
+
+#[acmd_script( agent = "bayonetta", script = "expression_specialsedge", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn bayonetta_special_s_edge_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
+    }
+}
+
 #[acmd_script( agent = "bayonetta", script = "game_specialsholdend", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_special_s_hold_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -302,7 +360,6 @@ unsafe fn bayonetta_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
-        KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new( 0.0, 4.0, 0.0));
         if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_HI_FLAG_REUSE) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 3.5, 22, 35, 0, 40, 4.6, 0.0, 23.1, 0.0, Some(0.0), Some(18.4), Some(0.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -310,7 +367,7 @@ unsafe fn bayonetta_special_hi_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 3.5, 42, 55, 0, 45, 4.6, 0.0, 23.1, 0.0, Some(0.0), Some(18.4), Some(0.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         }
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 23.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2bfb02b69a), true);
@@ -324,14 +381,14 @@ unsafe fn bayonetta_special_hi_game(fighter: &mut L2CAgentBase) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
-    frame(lua_state, 35.0);
+    frame(lua_state, 32.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["effect_specialairhi", "effect_specialhi"], category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "bayonetta", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn bayonetta_special_hi_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if is_excute(fighter) {
@@ -362,7 +419,7 @@ unsafe fn bayonetta_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["sound_specialhi", "sound_specialairhi"], category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "bayonetta", script = "sound_specialhi", category = ACMD_SOUND, low_priority )]
 unsafe fn bayonetta_special_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -430,6 +487,10 @@ pub fn install() {
         bayonetta_special_n_end_game,
         bayonetta_special_n_start_game,
         bayonetta_special_s_game,
+        bayonetta_special_s_edge_game,
+        bayonetta_special_s_edge_effect,
+        bayonetta_special_s_edge_sound,
+        bayonetta_special_s_edge_expression,
         bayonetta_special_s_hold_end_game,
         bayonetta_special_air_s_u_game,
         bayonetta_special_air_s_u_effect,

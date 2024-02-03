@@ -305,6 +305,7 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const FAIR_STATE: i32 = 0x0101;
+            pub const SPECIAL_S_FRAME: i32 = 0x0102;
         }
         pub mod status {
             // floats
@@ -1494,5 +1495,6 @@ pub mod statuses {
     
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0;
+        pub const SPECIAL_S_EDGE: i32 = 1;
     }
 }
