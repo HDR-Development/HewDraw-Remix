@@ -21,6 +21,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <int hash="rot_decide_frame">15</int>
+      <int hash="rot_end_frame">23</int>
       <int hash="rush_frame">5</int>
       <float hash="rush_speed">13.5</float>
       <float hash="ground_speed_x_mul">0.25</float>

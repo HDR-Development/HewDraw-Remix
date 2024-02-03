@@ -349,17 +349,17 @@ unsafe fn marth_special_s1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0acb1ddeaf), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_1"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -378,17 +378,17 @@ unsafe fn marth_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0acb1ddeaf), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_1"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -404,17 +404,17 @@ unsafe fn marth_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c9221001d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10fef5ab02), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -430,17 +430,17 @@ unsafe fn marth_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c9221001d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10fef5ab02), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -459,17 +459,17 @@ unsafe fn marth_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c0c42f87a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_2lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -488,17 +488,17 @@ unsafe fn marth_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c0c42f87a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_2lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -517,17 +517,17 @@ unsafe fn marth_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c93e36a2a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10fef5ab02), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -546,17 +546,17 @@ unsafe fn marth_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c93e36a2a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10fef5ab02), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -572,17 +572,17 @@ unsafe fn marth_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0b6f9a0e2e), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_3s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -598,17 +598,17 @@ unsafe fn marth_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0b6f9a0e2e), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_3s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -627,17 +627,17 @@ unsafe fn marth_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x11f2f83bf9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c0d80924d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_3lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11f2f83bf9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_green"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -656,17 +656,17 @@ unsafe fn marth_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x11f2f83bf9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c0d80924d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_3lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11f2f83bf9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_green"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -756,17 +756,17 @@ unsafe fn marth_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 8.0, 361, 35, 0, 90, 5.5, 1.5, 0.0, 1.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 8.0, 361, 35, 0, 90, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new_raw(0x0954eb78b2), 8.0, 361, 35, 0, 90, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("claviclel"), 8.0, 361, 35, 0, 90, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 3, 0, Hash40::new("sword1"), 8.0, 361, 35, 0, 90, 5.5, 1.5, 0.0, 6.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         AttackModule::set_force_reaction(boma, 0, true, false);
         AttackModule::set_force_reaction(boma, 1, true, false);
         AttackModule::set_force_reaction(boma, 2, true, false);
         AttackModule::set_force_reaction(boma, 3, true, false);
         if WorkModule::is_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
-            AttackModule::set_optional_hit_sound(boma, 0, Hash40::new_raw(0x14eab2f110));
-            AttackModule::set_optional_hit_sound(boma, 1, Hash40::new_raw(0x14eab2f110));
-            AttackModule::set_optional_hit_sound(boma, 2, Hash40::new_raw(0x14eab2f110));
-            AttackModule::set_optional_hit_sound(boma, 3, Hash40::new_raw(0x14eab2f110));
+            AttackModule::set_optional_hit_sound(boma, 0, Hash40::new("se_marth_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 1, Hash40::new("se_marth_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 2, Hash40::new("se_marth_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 3, Hash40::new("se_marth_criticalhit"));
         }
     }
     frame(lua_state, 8.0);
@@ -784,17 +784,17 @@ unsafe fn marth_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 8.0, 361, 35, 0, 90, 5.5, 1.5, 0.0, 1.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 8.0, 361, 35, 0, 90, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new_raw(0x0954eb78b2), 8.0, 361, 35, 0, 90, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("claviclel"), 8.0, 361, 35, 0, 90, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 3, 0, Hash40::new("sword1"), 8.0, 361, 35, 0, 90, 5.5, 1.5, 0.0, 6.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         AttackModule::set_force_reaction(boma, 0, true, false);
         AttackModule::set_force_reaction(boma, 1, true, false);
         AttackModule::set_force_reaction(boma, 2, true, false);
         AttackModule::set_force_reaction(boma, 3, true, false);
         if WorkModule::is_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
-            AttackModule::set_optional_hit_sound(boma, 0, Hash40::new_raw(0x14eab2f110));
-            AttackModule::set_optional_hit_sound(boma, 1, Hash40::new_raw(0x14eab2f110));
-            AttackModule::set_optional_hit_sound(boma, 2, Hash40::new_raw(0x14eab2f110));
-            AttackModule::set_optional_hit_sound(boma, 3, Hash40::new_raw(0x14eab2f110));
+            AttackModule::set_optional_hit_sound(boma, 0, Hash40::new("se_marth_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 1, Hash40::new("se_marth_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 2, Hash40::new("se_marth_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 3, Hash40::new("se_marth_criticalhit"));
         }
     }
     frame(lua_state, 8.0);

@@ -60,12 +60,15 @@ pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     fighter.sub_attack_air_kind();
     if motion_kind == smash::hash40("jump_aerial_f") || motion_kind == smash::hash40("jump_aerial_b") {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION)
-        && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) 
-        || MotionModule::frame_2nd(fighter.module_accessor) < 2.0) {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION) {
             MotionModule::add_motion_2nd(fighter.module_accessor, Hash40::new_raw(motion_kind), frame, 1.0, false, 1.0);
             MotionModule::set_weight(fighter.module_accessor, 1.0, true);
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) || frame < 2.0 {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
+            } else {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+            }
         } else {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
@@ -91,24 +94,24 @@ unsafe extern "C" fn attack_air_n_change_motion(fighter: &mut L2CFighterCommon) 
     let combo_count = ComboModule::count(fighter.module_accessor);
     if combo_count != 1 {
         if combo_count != 2 {
-            int_arg = 0xd0383c659;
+            int_arg = hash40("attack_air_n3") as i64;
             const_arg = FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_02;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0xd0383c659), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n3"), 0.0, 1.0, false, 0.0, false, false);
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
         }
         else {
-            int_arg = 0xd7484f6cf;
+            int_arg = hash40("attack_air_n2") as i64;
             const_arg = FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_01;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0xd7484f6cf), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n2"), 0.0, 1.0, false, 0.0, false, false);
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
         }
     }
     else {
-        int_arg = 0xc3a4e2597;
+        int_arg = hash40("attack_air_n") as i64;
         const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N;
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0xc3a4e2597), 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }
     fighter.clear_lua_stack();
     lua_args!(fighter, 0x2b94de0d96i64, FIGHTER_LOG_ACTION_CATEGORY_ATTACK, const_arg);
@@ -127,20 +130,23 @@ unsafe extern "C" fn sub_attack_air_n(fighter: &mut L2CFighterCommon) {
     attack_air_n_change_motion(fighter);
 
     fighter.sub_attack_air_kind();
-    if motion_kind != 0xd0b71815b as u64 {
-        if motion_kind != 0xd0c1c4542 as u64 {
+    if motion_kind != hash40("jump_aerial_f") as u64 {
+        if motion_kind != hash40("jump_aerial_b") as u64 {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             fighter.sub_attack_air_uniq_process_init();
             return;
         }
     }
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION)
-    && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) 
-    || MotionModule::frame_2nd(fighter.module_accessor) < 2.0) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION) {
         MotionModule::add_motion_2nd(fighter.module_accessor, Hash40::new_raw(motion_kind), frame, 1.0, false, 1.0);
         MotionModule::set_weight(fighter.module_accessor, 1.0, true);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) || frame < 2.0 {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
+        } else {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+        }
     } else {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
@@ -176,24 +182,24 @@ unsafe extern "C" fn attack_air_f_change_motion(fighter: &mut L2CFighterCommon) 
     let combo_count = ComboModule::count(fighter.module_accessor);
     if combo_count != 1 {
         if combo_count != 2 {
-            int_arg = 0xdcb5a4c51;
+            int_arg = hash40("attack_air_f3") as i64;
             const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F3;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0xd0383c659), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n3"), 0.0, 1.0, false, 0.0, false, false);
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
         }
         else {
-            int_arg = 0xdbc5d7cc7;
+            int_arg = hash40("attack_air_f2") as i64;
             const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F2;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0xd7484f6cf), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n2"), 0.0, 1.0, false, 0.0, false, false);
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
         }
     }
     else {
-        int_arg = 0xc3495ada5;
+        int_arg = hash40("attack_air_f") as i64;
         const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F;
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(0xc3a4e2597), 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }
     fighter.clear_lua_stack();
     lua_args!(fighter, 0x2b94de0d96i64, FIGHTER_LOG_ACTION_CATEGORY_ATTACK, const_arg);
@@ -212,20 +218,23 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
     attack_air_f_change_motion(fighter);
 
     fighter.sub_attack_air_kind();
-    if motion_kind != 0xd0b71815b as u64 {
-        if motion_kind != 0xd0c1c4542 as u64 {
+    if motion_kind != hash40("jump_aerial_f") as u64 {
+        if motion_kind != hash40("jump_aerial_b") as u64 {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             fighter.sub_attack_air_uniq_process_init();
             return;
         }
     }
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION)
-    && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) 
-    || MotionModule::frame_2nd(fighter.module_accessor) < 2.0) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION) {
         MotionModule::add_motion_2nd(fighter.module_accessor, Hash40::new_raw(motion_kind), frame, 1.0, false, 1.0);
         MotionModule::set_weight(fighter.module_accessor, 1.0, true);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) || frame < 2.0 {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
+        } else {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+        }
     } else {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);

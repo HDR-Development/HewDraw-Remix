@@ -543,8 +543,8 @@ unsafe fn game_specialssearch(_fighter: &mut L2CAgentBase) {
 unsafe fn effect_specialssearch(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "trail", script = 0x15bfed9702 , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialsturn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "trail", script = "effect_specialsstart2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialsstart2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -552,7 +552,7 @@ unsafe fn effect_specialsturn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = 0x1152d69c4b , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "trail", script = "effect_specialsup" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_specialsup(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -570,8 +570,8 @@ unsafe fn effect_specialsdown(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = 0x18f6f0b024 , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialairsturn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "trail", script = "effect_specialairsstart2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialairsstart2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -579,7 +579,7 @@ unsafe fn effect_specialairsturn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = 0x1424373288 , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "trail", script = "effect_specialairsup" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_specialairsup(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -818,10 +818,10 @@ pub fn install() {
         game_specialairs3,
         sound_specials3,
         game_specialssearch, effect_specialssearch,
-        effect_specialsturn,
+        effect_specialsstart2,
         effect_specialsup,
         effect_specialsdown,
-        effect_specialairsturn,
+        effect_specialairsstart2,
         effect_specialairsup,
         effect_specialairsdown,
         game_specialhi,
