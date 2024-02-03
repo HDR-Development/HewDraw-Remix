@@ -178,6 +178,8 @@ pub mod vars {
 
             pub const IS_ATTACK_CANCEL: i32 = 0x0063;
 
+            pub const DISABLE_CSTICK_BUFFER_ROLL_OOS: i32 = 0x0064;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
