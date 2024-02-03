@@ -18,3 +18,7 @@ pub fn install() {
     specials::install();
     jumpaerial::install();
 }
+
+pub fn add_statuses() {
+    specials::install_custom();
+}

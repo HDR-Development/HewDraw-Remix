@@ -8,54 +8,72 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-throw_lw:
-  extra:
-    cancel_frame: 38
-throw_hi:
-  extra:
-    cancel_frame: 37
-attack_12:
-  extra:
-    cancel_frame: 18
-special_n:
-  extra:
-    cancel_frame: 41
-attack_13:
-  extra:
-    cancel_frame: 25
 attack_11:
   extra:
     cancel_frame: 16
+attack_12:
+  extra:
+    cancel_frame: 18
+attack_13:
+  extra:
+    cancel_frame: 25
+attack_s3_s:
+  flags:
+    move: false
+attack_s3_hi:
+  flags:
+    move: false
+attack_s3_lw:
+  flags:
+    move: false
 attack_lw3:
   extra:
     cancel_frame: 25
+attack_s4_s:
+  extra:
+    cancel_frame: 50
+attack_s4_hi:
+  extra:
+    cancel_frame: 50
+attack_s4_lw:
+  extra:
+    cancel_frame: 50
 attack_hi4:
   extra:
     cancel_frame: 44
 attack_lw4:
   extra:
     cancel_frame: 45
-appeal_hi_l:
+attack_air_f:
   extra:
-    cancel_frame: 65
-attack_s3_s:
-  flags:
-    move: false
-appeal_hi_r:
-  extra:
-    cancel_frame: 65
-attack_s3_lw:
-  flags:
-    move: false
+    cancel_frame: 46
 attack_air_b:
   extra:
     cancel_frame: 30
-attack_air_f:
+attack_air_hi:
   extra:
-    cancel_frame: 48
-attack_s3_hi:
-  flags:
-    move: false
+    cancel_frame: 30
+throw_f:
+  extra:
+    cancel_frame: 28
+throw_lw:
+  extra:
+    cancel_frame: 38
+throw_hi:
+  extra:
+    cancel_frame: 37
+special_n:
+  extra:
+    cancel_frame: 41
+special_air_n:
+  extra:
+    cancel_frame: 41
+appeal_hi_l:
+  extra:
+    cancel_frame: 65
+appeal_hi_r:
+  extra:
+    cancel_frame: 65
 attack_air_lw:
     blend_frames: 3
     animations:

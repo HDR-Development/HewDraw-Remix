@@ -236,11 +236,11 @@ unsafe fn catch_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1281c86397));
+        PLAY_SE(fighter, Hash40::new("se_common_swing_06"));
     }
     wait(lua_state, 7.0);
     if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new_raw(0x1281c86397));
+        STOP_SE(fighter, Hash40::new("se_common_swing_06"));
     }
     
 }

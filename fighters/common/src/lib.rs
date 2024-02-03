@@ -28,6 +28,10 @@ pub mod function_hooks;
 pub mod shoto_status;
 // pub mod tag;
 
+#[smashline::fighter_init]
+fn common_init(fighter: &mut L2CFighterCommon) {
+    VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
+}
 
 pub fn install() {
     djc::install();
@@ -36,4 +40,8 @@ pub fn install() {
     general_statuses::install();
     function_hooks::install();
     opff::install();
+
+    smashline::install_agent_init_callbacks!(
+        common_init
+    );
 }

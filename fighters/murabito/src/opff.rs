@@ -4,10 +4,10 @@ use super::*;
 use globals::*;
 
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if frame < 12.0
-    || boma.is_button_on(Buttons::SpecialAll)
-    || StatusModule::is_changing(boma)
-    || !boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP,
@@ -17,13 +17,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_B,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_B,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_F,
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F]) {
-        return;
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F])
+    && frame > 12.0
+    && boma.is_button_on(Buttons::Guard) {
+        if situation_kind == *SITUATION_KIND_AIR {
+            WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+        }
+        if situation_kind == *SITUATION_KIND_GROUND {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+        }
     }
-    WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
-    EffectModule::kill_kind(boma, Hash40::new("murabito_water"), false, false);
-    SoundModule::stop_se(boma, Hash40::new("se_murabito_special_l02"), 0);
-    CancelModule::enable_cancel(boma);
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {

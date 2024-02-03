@@ -103,16 +103,16 @@ unsafe fn rockman_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x12c494c114), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("rockman_flamesword"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 0, 0, 1.0, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new_raw(0x16bf0151a0), Hash40::new("top"), 0, 9.0, 0.0, 0, 0, 0, 1.0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x16f4bf3f61), Hash40::new("top"), 0.0, 9.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("rockman_flamesword_ptc"), Hash40::new("top"), 0, 9.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("rockman_flamesword_arc"), Hash40::new("top"), 0.0, 9.0, 0.0, 0, 0, 0, 1.0, true);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT_DETACH_KIND(fighter, Hash40::new_raw(0x12c494c114), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("rockman_flamesword"), -1);
     }
 }
 
