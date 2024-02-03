@@ -271,7 +271,7 @@ unsafe fn expression_specialn2(fighter: &mut L2CAgentBase) {
 unsafe fn game_specials_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 0.875);
+    FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 16.0);
     FT_MOTION_RATE(fighter, 1.0);
 }

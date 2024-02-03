@@ -148,6 +148,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
 unsafe fn blizzaga_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, facing: f32, stick_x: f32) {
     // allow the move to be turned around
     if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
+    && fighter.status_frame() >= 5
     && stick_x * facing < 0.0 {
         PostureModule::reverse_lr(boma);
         PostureModule::update_rot_y_lr(boma);
@@ -264,23 +265,15 @@ unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut Batt
 }
 
 // wall jump out of sonic blade
-unsafe fn side_special_walljump(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if status_kind != *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK {
-        return;
-    }
-    
-    if situation_kind == *SITUATION_KIND_AIR {
-        if !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
-            let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-            let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-            if touch_left || touch_right {
-                if boma.is_cat_flag(Cat1::WallJumpLeft) || boma.is_cat_flag(Cat1::WallJumpRight)
-                || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
-                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-                }
-            }
-        }
+unsafe fn side_special_walljump(boma: &mut BattleObjectModuleAccessor, cat1: i32) {
+    if boma.is_status_one_of(&[ *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK,
+                                *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END ]) 
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP)
+    && GroundModule::is_wall_touch_line(boma, (*GROUND_TOUCH_FLAG_LEFT_SIDE as u32 | *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32))
+    && (boma.is_cat_flag(Cat1::WallJumpLeft | Cat1::WallJumpRight) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)) {
+        VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
     }
 }
 
@@ -376,7 +369,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     flower_frame(boma, status_kind);
     side_special_actionability(boma);
     side_special_hit_check(fighter, boma, status_kind, situation_kind, id);
-    side_special_walljump(boma, status_kind, situation_kind, cat[0]);
+    side_special_walljump(boma, cat[0]);
     //aerial_sweep_hit_actionability(boma, frame);
     training_cycle(fighter, boma, frame);
     run_sfx(fighter, frame);

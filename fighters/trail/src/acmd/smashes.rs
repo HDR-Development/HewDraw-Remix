@@ -144,6 +144,7 @@ unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("trail_smash_lw_flash"), false, true);
         EFFECT(fighter, Hash40::new("trail_smash_lw_impact"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("trail_keyblade_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true, 0.4);
         EFFECT(fighter, Hash40::new("trail_smash_lw_attack"), Hash40::new("haver"), 0, -2, 0, 90, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
