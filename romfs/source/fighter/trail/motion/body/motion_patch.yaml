@@ -45,9 +45,12 @@ throw_lw:
 catch_attack:
   extra:
     cancel_frame: 0
+special_s_end:
+  extra:
+    cancel_frame: 31
 special_air_s_end:
   extra:
-    cancel_frame: 22
+    cancel_frame: 24
 special_lw:
   extra:
     xlu_start: 0
