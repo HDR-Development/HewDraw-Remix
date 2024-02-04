@@ -3,8 +3,8 @@ use globals::*;
 
 // FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP
 
-#[status_script(agent = "wario", status = FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_hi_jump"),
@@ -40,8 +40,8 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
     1.into()
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL);
         return 1.into();
@@ -49,9 +49,14 @@ pub unsafe fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Fall()
 }
 
+
 pub fn install() {
-    install_status_scripts!(
-        special_hi_jump_main,
-        fall_pre
-    );
+    smashline::Agent::new("wario")
+        .status(
+            Main,
+            *FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP,
+            special_hi_jump_main,
+        )
+        .status(Pre, *FIGHTER_STATUS_KIND_FALL, fall_pre)
+        .install();
 }

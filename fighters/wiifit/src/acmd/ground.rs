@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script(agent = "wiifit", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -28,8 +28,8 @@ unsafe fn wiifit_attack_11_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script(agent = "wiifit", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -59,8 +59,8 @@ unsafe fn wiifit_attack_12_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script(agent = "wiifit", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_13_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -83,8 +83,8 @@ unsafe fn wiifit_attack_13_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "wiifit", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.95);
@@ -108,8 +108,8 @@ unsafe fn wiifit_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wiifit", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wiifit_attack_dash_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -122,12 +122,14 @@ unsafe fn wiifit_attack_dash_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        wiifit_attack_11_game,
-        wiifit_attack_12_game,
-        wiifit_attack_13_game,
-        wiifit_attack_dash_game,
-        wiifit_attack_dash_effect,
-    );
+    smashline::Agent::new("wiifit")
+        .acmd("game_attack11", wiifit_attack_11_game)
+        .acmd("game_attack12", wiifit_attack_12_game)
+        .acmd("game_attack13", wiifit_attack_13_game)
+        .acmd("game_attackdash", wiifit_attack_dash_game)
+        .acmd("effect_attackdash", wiifit_attack_dash_effect)
+        .install();
 }

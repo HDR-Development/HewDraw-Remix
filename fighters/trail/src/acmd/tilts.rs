@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "trail", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -70,8 +70,8 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attacks32" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3s2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacks3s2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -110,8 +110,8 @@ unsafe fn game_attacks3s2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attacks33" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3s3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacks3s3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -142,8 +142,8 @@ unsafe fn game_attacks3s3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -209,8 +209,8 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "trail", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -240,13 +240,15 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     } 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_attacks3,
-        game_attacks3s2,
-        game_attacks3s3,
-        game_attackhi3,
-        game_attacklw3,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("trail")
+        .acmd("game_attacks3", game_attacks3)
+        .acmd("game_attacks32", game_attacks3s2)
+        .acmd("game_attacks33", game_attacks3s3)
+        .acmd("game_attackhi3", game_attackhi3)
+        .acmd("game_attacklw3", game_attacklw3)
+        .install();
+}
