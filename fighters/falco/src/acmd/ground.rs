@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "falco", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -29,8 +29,8 @@ unsafe fn falco_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -52,8 +52,8 @@ unsafe fn falco_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn falco_attack_12_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -70,8 +70,8 @@ unsafe fn falco_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.93);
@@ -97,12 +97,14 @@ unsafe fn falco_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        falco_attack_11_game,
-        falco_attack_12_game,
-        falco_attack_12_expression,
-        falco_attack_dash_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("falco")
+        .acmd("game_attack11", falco_attack_11_game)
+        .acmd("game_attack12", falco_attack_12_game)
+        .acmd("expression_attack12", falco_attack_12_expression)
+        .acmd("game_attackdash", falco_attack_dash_game)
+        .install();
+}

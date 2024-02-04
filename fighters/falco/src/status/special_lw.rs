@@ -2,8 +2,8 @@ use super::*;
 use globals::*;
 
 
-#[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -35,8 +35,8 @@ unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_SPECIAL_LW
 
-#[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         // Returning here allows for running shine
         return 0.into();
@@ -71,8 +71,8 @@ unsafe fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
         let stop_y_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_stop_y_frame");
         VarModule::set_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME, stop_y_frame);
@@ -100,7 +100,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         return 0.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_to_custom_status(statuses::falco::SPECIAL_LW_LOOP, false, false);
+        fighter.change_status(statuses::falco::SPECIAL_LW_LOOP.into(), false.into());
     }
     0.into()
 }
@@ -118,8 +118,8 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
         return 0.into();
     }
@@ -158,9 +158,9 @@ unsafe fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::status_kind_next(fighter.module_accessor) != CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::falco::SPECIAL_LW_LOOP) {
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::status_kind_next(fighter.module_accessor) != statuses::falco::SPECIAL_LW_LOOP {
         VarModule::set_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
     }
     0.into()
@@ -237,7 +237,7 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
     let reflector_init_keep_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_init_keep_frame");
     if fighter.global_table[CURRENT_FRAME].get_i32() > reflector_init_keep_frame {
         if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            fighter.change_to_custom_status(statuses::falco::SPECIAL_LW_END, false, false); 
+            fighter.change_status(statuses::falco::SPECIAL_LW_END.into(), false.into()); 
             return 0.into();
         }
     }
@@ -272,7 +272,7 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::status_kind_next(fighter.module_accessor) != CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::falco::SPECIAL_LW_END) {
+    if StatusModule::status_kind_next(fighter.module_accessor) != statuses::falco::SPECIAL_LW_END {
         VarModule::set_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
     }
     0.into()
@@ -455,34 +455,22 @@ unsafe extern "C" fn special_lw_end_exec(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        special_lw_pre,
-        special_lw_init,
-        special_lw_main,
-        special_lw_exec,
-        special_lw_end,
-    );
-}
 
-pub fn install_custom() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_falco"),
-        statuses::falco::SPECIAL_LW_LOOP,
-        StatusInfo::new()
-            .with_pre(special_lw_loop_pre)
-            .with_init(special_lw_loop_init)
-            .with_main(special_lw_loop_main)
-            .with_exec(special_lw_loop_exec)
-            .with_end(special_lw_loop_end)    
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_falco"),
-        statuses::falco::SPECIAL_LW_END,
-        StatusInfo::new()
-            .with_pre(special_lw_end_pre)
-            .with_main(special_lw_end_main)
-            .with_exec(special_lw_end_exec)
-            .with_end(special_lw_end_end)    
-    );
+pub fn install() {
+    smashline::Agent::new("falco")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end)
+        .status(Pre, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_pre)
+        .status(Init, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_init)
+        .status(Main, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_main)
+        .status(Exec, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_exec)
+        .status(End, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_end)
+        .status(Pre, statuses::falco::SPECIAL_LW_END, special_lw_end_pre)
+        .status(Main, statuses::falco::SPECIAL_LW_END, special_lw_end_main)
+        .status(Exec, statuses::falco::SPECIAL_LW_END, special_lw_end_exec)
+        .status(End, statuses::falco::SPECIAL_LW_END, special_lw_end_end)
+        .install();
 }

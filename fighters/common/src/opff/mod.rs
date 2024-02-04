@@ -128,7 +128,7 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 pub fn install() {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
-    Agent::new("common")
+    Agent::new("fighter")
         .on_line(Main, decrease_knockdown_bounce_heights)
         .on_line(Main, left_stick_flick_counter)
         .install();

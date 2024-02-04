@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "donkey", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_11(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -26,8 +26,8 @@ unsafe fn attack_11(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "donkey", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn attack_12_exp(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_12_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -47,8 +47,8 @@ unsafe fn attack_12_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -67,8 +67,8 @@ unsafe fn dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", scripts = [ "game_attackdash", "game_attackairdash" ] , category = ACMD_GAME , low_priority)]
-unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,8 +116,8 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", scripts = [ "effect_attackdash", "effect_attackairdash" ] , category = ACMD_EFFECT , low_priority)]
-unsafe fn attack_dash_eff(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_dash_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -126,8 +126,8 @@ unsafe fn attack_dash_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", scripts = [ "sound_attackdash", "sound_attackairdash" ] , category = ACMD_SOUND , low_priority)]
-unsafe fn attack_dash_snd(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_dash_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -137,8 +137,8 @@ unsafe fn attack_dash_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", scripts = [ "expression_attackdash", "expression_attackairdash" ] , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn attack_dash_exp(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_dash_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -174,12 +174,21 @@ unsafe fn attack_dash_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        attack_11,
-        attack_12_exp,
-        attack_dash, attack_dash_eff, attack_dash_snd, attack_dash_exp,
-        dash
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("donkey")
+        .acmd("game_attack11", attack_11)
+        .acmd("expression_attack12", attack_12_exp)
+        .acmd("game_dash", dash)
+        .acmd("game_attackdash", attack_dash)
+        .acmd("game_attackairdash", attack_dash)
+        .acmd("effect_attackdash", attack_dash_eff)
+        .acmd("effect_attackairdash", attack_dash_eff)
+        .acmd("sound_attackdash", attack_dash_snd)
+        .acmd("sound_attackairdash", attack_dash_snd)
+        .acmd("expression_attackdash", attack_dash_exp)
+        .acmd("expression_attackairdash", attack_dash_exp)
+        .install();
+}

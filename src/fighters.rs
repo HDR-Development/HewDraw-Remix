@@ -119,13 +119,4 @@ pub fn install() {
 }
 
 pub fn delayed_install() {
-    delayed_install_fighters! {
-        delayed_install;
-        diddy = "diddy",
-        elight = "elight",
-        falco = "falco",
-        ganon = "ganon",
-        littlemac = "littlemac",
-        wolf = "wolf"
-    }
 }

@@ -3,8 +3,8 @@ use globals::*;
 // status script import
 
 /// cargo carry
-#[status_script(agent = "donkey", status = FIGHTER_DONKEY_STATUS_KIND_SHOULDER_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn shoulder_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn shoulder_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.boma(), Hash40::new("shoulder_landing"), 0.0, 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(shoulder_landing_main_loop as *const () as _))
 }
@@ -29,9 +29,15 @@ unsafe extern "C" fn shoulder_landing_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into();
 }
 
-pub fn install() {
-    install_status_scripts!(
-        shoulder_landing_main
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("donkey")
+        .status(
+            Main,
+            *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_LANDING,
+            shoulder_landing_main,
+        )
+        .install();
+}

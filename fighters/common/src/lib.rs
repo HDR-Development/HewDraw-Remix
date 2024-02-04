@@ -40,7 +40,7 @@ pub fn install() {
     function_hooks::install();
     opff::install();
 
-    Agent::new("common")
+    Agent::new("fighter")
         .on_init(common_init)
         .install();
 }

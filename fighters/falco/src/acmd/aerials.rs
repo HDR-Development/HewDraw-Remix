@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "falco", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 4.0);
@@ -37,8 +37,8 @@ unsafe fn falco_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn falco_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 4.0);
@@ -47,8 +47,8 @@ unsafe fn falco_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 2.0);
@@ -63,8 +63,8 @@ unsafe fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "expression_attackairn" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -77,8 +77,8 @@ unsafe fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
@@ -137,8 +137,8 @@ unsafe fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "sound_attackairf" , category = ACMD_SOUND , low_priority)]
-unsafe fn falco_attack_air_f_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 3.0);
@@ -156,15 +156,15 @@ unsafe fn falco_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_landing_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {  }
 }
 
-#[acmd_script( agent = "falco", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn falco_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
@@ -195,8 +195,8 @@ unsafe fn falco_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "expression_attackairf" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn falco_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 2.0);
@@ -222,8 +222,8 @@ unsafe fn falco_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn falco_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 4.0);
@@ -233,8 +233,8 @@ unsafe fn falco_attack_air_b_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "falco", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -270,8 +270,8 @@ unsafe fn falco_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn falco_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -287,8 +287,8 @@ unsafe fn falco_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn falco_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -301,8 +301,8 @@ unsafe fn falco_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -348,8 +348,8 @@ unsafe fn falco_attack_air_hi_effect(fighter: &mut L2CAgentBase){
         LAST_EFFECT_SET_RATE(fighter, 4.0)
     }
 }
-#[acmd_script( agent = "falco", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn falco_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -388,23 +388,25 @@ unsafe fn falco_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.000);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        falco_attack_air_n_game,
-        falco_attack_air_n_sound,
-        falco_attack_air_n_effect,
-        falco_attack_air_n_expression,
-        falco_attack_air_f_game,
-        falco_attack_air_f_sound,
-        falco_landing_air_f_game,
-        falco_attack_air_f_effect,
-        falco_attack_air_f_expression,
-        falco_attack_air_b_sound,
-        falco_attack_air_b_game,
-        falco_attack_air_b_effect,
-        falco_attack_air_b_expression,
-        falco_attack_air_hi_game,
-        falco_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("falco")
+        .acmd("game_attackairn", falco_attack_air_n_game)
+        .acmd("sound_attackairn", falco_attack_air_n_sound)
+        .acmd("effect_attackairn", falco_attack_air_n_effect)
+        .acmd("expression_attackairn", falco_attack_air_n_expression)
+        .acmd("game_attackairf", falco_attack_air_f_game)
+        .acmd("sound_attackairf", falco_attack_air_f_sound)
+        .acmd("game_landingairf", falco_landing_air_f_game)
+        .acmd("effect_attackairf", falco_attack_air_f_effect)
+        .acmd("expression_attackairf", falco_attack_air_f_expression)
+        .acmd("sound_attackairb", falco_attack_air_b_sound)
+        .acmd("game_attackairb", falco_attack_air_b_game)
+        .acmd("effect_attackairb", falco_attack_air_b_effect)
+        .acmd("expression_attackairb", falco_attack_air_b_expression)
+        .acmd("game_attackairhi", falco_attack_air_hi_game)
+        .acmd("game_attackairlw", falco_attack_air_lw_game)
+        .install();
+}

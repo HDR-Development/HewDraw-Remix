@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "fox", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -25,8 +25,8 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "fox", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -48,8 +48,8 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "fox", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -71,11 +71,13 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_attack11,
-        game_attack12,
-        game_attackdash,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("fox")
+        .acmd("game_attack11", game_attack11)
+        .acmd("game_attack12", game_attack12)
+        .acmd("game_attackdash", game_attackdash)
+        .install();
+}
