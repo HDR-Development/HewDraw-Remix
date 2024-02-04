@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "captain", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -20,8 +20,8 @@ unsafe fn captain_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_s3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -39,8 +39,8 @@ unsafe fn captain_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -60,8 +60,8 @@ unsafe fn captain_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "captain", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -98,8 +98,8 @@ unsafe fn captain_attack_hi3_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "captain", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
-unsafe fn captain_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -118,8 +118,8 @@ unsafe fn captain_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "captain", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -139,8 +139,8 @@ unsafe fn captain_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "captain", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn captain_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -155,15 +155,17 @@ unsafe fn captain_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-pub fn install() {
-    install_acmd_scripts!(
-        captain_attack_s3_game,
-        captain_attack_s3_hi_game,
-        captain_attack_s3_lw_game,
-        captain_attack_hi3_game,
-        captain_attack_lw3_game,
-        captain_attack_hi3_effect,
-        captain_attack_lw3_effect,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("captain")
+        .acmd("game_attacks3hi", captain_attack_s3_hi_game)
+        .acmd("game_attacks3", captain_attack_s3_game)
+        .acmd("game_attacks3lw", captain_attack_s3_lw_game)
+        .acmd("game_attackhi3", captain_attack_hi3_game)
+        .acmd("effect_attackhi3", captain_attack_hi3_effect)
+        .acmd("game_attacklw3", captain_attack_lw3_game)
+        .acmd("effect_attacklw3", captain_attack_lw3_effect)
+        .install();
+}

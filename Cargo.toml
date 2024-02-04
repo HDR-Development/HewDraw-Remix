@@ -230,8 +230,8 @@ utils.workspace = true
 default = [
     "bayonetta",
     "brave",
-    # "buddy",
-    # "captain",
+    "buddy",
+    "captain",
     # "chrom",
     # "cloud",
     "common",

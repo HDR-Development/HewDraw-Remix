@@ -1457,7 +1457,7 @@ pub mod statuses {
     }
 
     pub mod buddy {
-        pub const BUDDY_BAYONET_END: i32 = 0;
+        pub const BUDDY_BAYONET_END: i32 = 0x1FB;
     }
 
     pub mod littlemac {

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "captain", script = "game_specialn" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -31,8 +31,8 @@ unsafe fn captain_special_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_specialnturn" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 21.0);
@@ -61,8 +61,8 @@ unsafe fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -104,8 +104,8 @@ unsafe fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_specialairnturn" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 21.0);
@@ -144,8 +144,8 @@ unsafe fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -175,8 +175,8 @@ unsafe fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -198,8 +198,8 @@ unsafe fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "expression_specialsend", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn captain_special_s_end_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_s_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -216,8 +216,8 @@ unsafe fn captain_special_s_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -247,8 +247,8 @@ unsafe fn captain_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -275,8 +275,8 @@ unsafe fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 2.0);
@@ -291,8 +291,8 @@ unsafe fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "captain", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -310,8 +310,8 @@ unsafe fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_specialhithrow", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhithrow(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialhithrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -345,8 +345,8 @@ unsafe fn game_specialhithrow(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", scripts = ["game_specialairhi", "game_specialhi"], category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -391,21 +391,24 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_specialairhi,
-        captain_special_n_game,
-        captain_special_n_turn_game,
-        captain_special_air_n_game,
-        captain_special_air_n_turn_game,
-        captain_special_s_start_game,
-        captain_special_s_end_game,
-        captain_special_s_end_expression,
-        captain_special_air_s_end_game,
-        captain_special_air_lw_game,
-        captain_special_air_lw_effect,
-        captain_special_air_lw_end_game,
-        game_specialhithrow
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("captain")
+        .acmd("game_specialn", captain_special_n_game)
+        .acmd("game_specialnturn", captain_special_n_turn_game)
+        .acmd("game_specialairn", captain_special_air_n_game)
+        .acmd("game_specialairnturn", captain_special_air_n_turn_game)
+        .acmd("game_specialsstart", captain_special_s_start_game)
+        .acmd("game_specialsend", captain_special_s_end_game)
+        .acmd("expression_specialsend", captain_special_s_end_expression)
+        .acmd("game_specialairsend", captain_special_air_s_end_game)
+        .acmd("game_specialairlw", captain_special_air_lw_game)
+        .acmd("effect_specialairlw", captain_special_air_lw_effect)
+        .acmd("game_specialairlwend", captain_special_air_lw_end_game)
+        .acmd("game_specialhithrow", game_specialhithrow)
+        .acmd("game_specialairhi", game_specialairhi)
+        .acmd("game_specialhi", game_specialairhi)
+        .install();
+}
