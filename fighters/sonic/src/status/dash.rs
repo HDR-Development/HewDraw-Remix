@@ -2,14 +2,10 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-  install_status_scripts!(
-      pre_dash
-  );
-}
 
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+
+pub unsafe extern "C" fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
@@ -27,5 +23,10 @@ pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 	VarModule::set_float(fighter.battle_object, vars::common::instance::MOONWALK_SPEED, 0.0);
 
-    original!(fighter)
+	smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_DASH)(fighter)
+}
+pub fn install() {
+    smashline::Agent::new("sonic")
+        .status(Pre, *FIGHTER_STATUS_KIND_DASH, pre_dash)
+        .install();
 }

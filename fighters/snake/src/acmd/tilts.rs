@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "snake", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn snake_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -28,8 +28,8 @@ unsafe fn snake_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attacks3s2" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn snake_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -55,8 +55,8 @@ unsafe fn snake_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn snake_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -87,8 +87,8 @@ unsafe fn snake_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn snake_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -122,12 +122,14 @@ unsafe fn snake_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        snake_attack_s3_s_game,
-        snake_attack_s3_s2_game,
-        snake_attack_hi3_game,
-        snake_attack_lw3_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("snake")
+        .acmd("game_attacks3", snake_attack_s3_s_game)
+        .acmd("game_attacks3s2", snake_attack_s3_s2_game)
+        .acmd("game_attackhi3", snake_attack_hi3_game)
+        .acmd("game_attacklw3", snake_attack_lw3_game)
+        .install();
+}

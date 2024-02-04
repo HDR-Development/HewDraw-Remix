@@ -2,17 +2,13 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-  install_status_scripts!(
-    special_n_hit_main
-  );
-}
+
 
 // Randomized Homing Attack Poses
-#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     
-    let ret = original!(fighter);
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT)(fighter);
     
     let hit_pose: [&str; 8] = [
         "special_n_hit1",
@@ -39,4 +35,14 @@ pub unsafe fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     ret
+}
+
+pub fn install() {
+    smashline::Agent::new("sonic")
+        .status(
+            Main,
+            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT,
+            special_n_hit_main,
+        )
+        .install();
 }
