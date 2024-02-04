@@ -79,7 +79,9 @@ unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    smashline::install_agent_resets!(fighter_reset);
+    smashline::Agent::new("common")
+        .on_start(fighter_reset)
+        .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
     // skyline::patching::Patch::in_text(0x6285d0).nop();
     skyline::install_hooks!(
@@ -156,8 +158,7 @@ unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i3
     }
 }
 
-#[smashline::fighter_reset]
-pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
+pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let ratio =
             (WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0)

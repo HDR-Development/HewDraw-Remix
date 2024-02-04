@@ -5,10 +5,10 @@ use globals::*;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    install_status_scripts!(
-        status_end_AttackHi4Start,
-        status_end_AttackLw4Start,
-    );
+    Agent::new("common")
+        .status(End, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, status_end_AttackHi4Start)
+        .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, status_end_AttackLw4Start)
+        .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -19,6 +19,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_AttackHi4Start_Main,
             //status_AttackHi4Start_Common,
             status_AttackLw4Start_Main,
+            status_end_AttackHi4Start,
+            status_end_AttackLw4Start,
         );
     }
 }
@@ -115,8 +117,7 @@ unsafe fn status_AttackHi4Start_Common(fighter: &mut L2CFighterCommon, motion: L
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackHi4Start_Main as *const () as _));
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_HI4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon25status_end_AttackHi4StartEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_end_AttackHi4Start)]
 unsafe fn status_end_AttackHi4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
     fighter.status_end_AttackXX4Start();
@@ -206,8 +207,7 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into()
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_LW4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon25status_end_AttackLw4StartEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_end_AttackLw4Start)]
 unsafe fn status_end_AttackLw4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
     fighter.status_end_AttackXX4Start();

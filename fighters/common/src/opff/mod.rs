@@ -128,8 +128,9 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 pub fn install() {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
-    smashline::install_agent_frame_callbacks!(
-        decrease_knockdown_bounce_heights,
-        left_stick_flick_counter,
-    );
+    Agent::new("common")
+        .on_line(Main, decrease_knockdown_bounce_heights)
+        .on_line(Main, left_stick_flick_counter)
+        .install();
+
 }
