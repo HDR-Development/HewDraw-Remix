@@ -2,17 +2,12 @@ use super::*;
 use globals::*;
 
  
-pub fn install() {
-    install_status_scripts!(
-        bayonetta_specialairs_d_main,
-        bayonetta_specialairs_u_main
-    );
-}
+
 
 // FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D //
 
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
     if fighter.is_prev_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 6.0, 1.0, false, 0.0, false, false);
@@ -49,8 +44,8 @@ unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighte
 
 // FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U //
 
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_u"), 0.0, 1.0, false, 0.0, false, false);
     fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
@@ -246,4 +241,17 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
         rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
         ModelModule::set_joint_rotate(fighter.module_accessor, joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     }
+}pub fn install() {
+    smashline::Agent::new("bayonetta")
+        .status(
+            Main,
+            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,
+            bayonetta_specialairs_d_main,
+        )
+        .status(
+            Main,
+            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,
+            bayonetta_specialairs_u_main,
+        )
+        .install();
 }

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "bayonetta", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -42,8 +42,8 @@ unsafe fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -86,8 +86,8 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -113,8 +113,8 @@ unsafe fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attack100", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_attack_100_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn bayonetta_attack_100_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     for _ in 0..99 {
@@ -178,8 +178,8 @@ unsafe fn bayonetta_attack_100_game(fighter: &mut L2CAgentBase) {
 }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -217,8 +217,8 @@ unsafe fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 18/(41-30));
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.93);
@@ -256,12 +256,12 @@ unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_attack_11_game,
-        bayonetta_attack_12_game,
-        bayonetta_attack_13_game,
-        bayonetta_attack_100_game,
-        bayonetta_attack_100_end_game,
-        bayonetta_attack_dash_game,
-    );
+    smashline::Agent::new("bayonetta")
+        .acmd("game_attack11", bayonetta_attack_11_game)
+        .acmd("game_attack12", bayonetta_attack_12_game)
+        .acmd("game_attack13", bayonetta_attack_13_game)
+        .acmd("game_attack100", bayonetta_attack_100_game)
+        .acmd("game_attack100end", bayonetta_attack_100_end_game)
+        .acmd("game_attackdash", bayonetta_attack_dash_game)
+        .install();
 }

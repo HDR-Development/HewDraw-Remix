@@ -34,12 +34,11 @@ use smashline::*;
 
 pub mod acmd;
 
-pub mod status;
+pub mod menu;
 pub mod opff;
-pub use status::hero_rng_hook_impl;
+pub use menu::hero_rng_hook_impl;
 
-#[smashline::fighter_init]
-fn brave_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn brave_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // init roll history
         VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_1_1, -1);
@@ -53,16 +52,16 @@ fn brave_init(fighter: &mut L2CFighterCommon) {
     
         // roll to get two sets of fresh values
         let mut vals = vec![];
-        status::roll_spells(fighter, &mut vals);
-        status::roll_spells(fighter, &mut vals);
+        menu::roll_spells(fighter, &mut vals);
+        menu::roll_spells(fighter, &mut vals);
 
         VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
         VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
     }
 }
 
-pub fn install(is_runtime: bool) {
-    smashline::install_agent_init_callbacks!(brave_init);
+pub fn install(_: bool) {
     acmd::install();
-    opff::install(is_runtime);
+    opff::install();
+    smashline::Agent::new("brave").on_init(brave_init).install();
 }

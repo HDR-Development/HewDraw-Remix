@@ -2,16 +2,12 @@ use super::*;
 use globals::*;
 
  
-pub fn install() {
-    install_status_scripts!(
-        batwithin_end,
-    );
-}
+
 
 // FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN //
 
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let batwithin_status_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_BATWITHIN_INT_STATUS_KIND);
     if [*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&batwithin_status_kind) {
         fighter.sub_status_end_EscaleFB();
@@ -28,4 +24,8 @@ unsafe fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
     }
     0.into()
+}pub fn install() {
+    smashline::Agent::new("bayonetta")
+        .status(End, *FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN, batwithin_end)
+        .install();
 }

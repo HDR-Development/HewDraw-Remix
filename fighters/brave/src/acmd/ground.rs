@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script(agent = "brave", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -28,8 +28,8 @@ unsafe fn brave_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn brave_attack_11_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -47,8 +47,8 @@ unsafe fn brave_attack_11_expression(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script(agent = "brave", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -76,8 +76,8 @@ unsafe fn brave_attack_12_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script(agent = "brave", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_13_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -106,8 +106,8 @@ unsafe fn brave_attack_13_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "brave", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -139,8 +139,8 @@ unsafe fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn brave_attack_dash_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -171,14 +171,15 @@ unsafe fn brave_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        brave_attack_11_game,
-        brave_attack_11_expression,
-        brave_attack_12_game,
-        brave_attack_13_game,
-        brave_attack_dash_game,
-        brave_attack_dash_expression
-    );
-}
 
+
+pub fn install() {
+    smashline::Agent::new("brave")
+        .acmd("game_attack11", brave_attack_11_game)
+        .acmd("expression_attack11", brave_attack_11_expression)
+        .acmd("game_attack12", brave_attack_12_game)
+        .acmd("game_attack13", brave_attack_13_game)
+        .acmd("game_attackdash", brave_attack_dash_game)
+        .acmd("expression_attackdash", brave_attack_dash_expression)
+        .install();
+}

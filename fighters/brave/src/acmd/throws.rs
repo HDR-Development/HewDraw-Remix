@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "brave", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn brave_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,8 +25,8 @@ unsafe fn brave_throw_f_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "brave", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn brave_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -51,8 +51,8 @@ unsafe fn brave_throw_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "brave", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn brave_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -72,8 +72,8 @@ unsafe fn brave_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn brave_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -95,10 +95,10 @@ unsafe fn brave_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        brave_throw_f_game,
-        brave_throw_b_game,
-        brave_throw_hi_game,
-        brave_throw_lw_game,
-    );
+    smashline::Agent::new("brave")
+        .acmd("game_throwf", brave_throw_f_game)
+        .acmd("game_throwb", brave_throw_b_game)
+        .acmd("game_throwhi", brave_throw_hi_game)
+        .acmd("game_throwlw", brave_throw_lw_game)
+        .install();
 }
