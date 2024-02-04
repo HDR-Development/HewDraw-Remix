@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "buddy", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -28,8 +28,8 @@ unsafe fn buddy_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,8 +56,8 @@ unsafe fn buddy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "buddy", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -84,8 +84,8 @@ unsafe fn buddy_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "buddy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 3.0);
@@ -129,8 +129,8 @@ unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
     }
 }
-#[acmd_script( agent = "buddy", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
@@ -177,8 +177,8 @@ unsafe fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 
 
 }
-#[acmd_script( agent = "buddy", script = "sound_attackhi3" , category = ACMD_SOUND , low_priority)]
-unsafe fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     //frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -191,8 +191,8 @@ unsafe fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn buddy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -213,8 +213,8 @@ unsafe fn buddy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let slide_speed = 0.9;
@@ -260,15 +260,16 @@ unsafe fn buddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        buddy_attack_s3_hi_game,
-        buddy_attack_s3_s_game,
-        buddy_attack_s3_lw_game,
-        buddy_attack_hi3_game,
-        buddy_attack_hi3_sound,
-        buddy_attack_hi3_expression,
-        buddy_attack_hi3_effect,
-        buddy_attack_lw3_game,
-    );
+    smashline::Agent::new("buddy")
+        .acmd("game_attacks3hi", buddy_attack_s3_hi_game)
+        .acmd("game_attacks3", buddy_attack_s3_s_game)
+        .acmd("game_attacks3lw", buddy_attack_s3_lw_game)
+        .acmd("game_attackhi3", buddy_attack_hi3_game)
+        .acmd("effect_attackhi3", buddy_attack_hi3_effect)
+        .acmd("sound_attackhi3", buddy_attack_hi3_sound)
+        .acmd("expression_attackhi3", buddy_attack_hi3_expression)
+        .acmd("game_attacklw3", buddy_attack_lw3_game)
+        .install();
 }

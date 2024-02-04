@@ -70,11 +70,17 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_CAPTAIN )]
-pub unsafe fn captain_frame_wrapper(fighter: &mut L2CFighterCommon) {
+
+pub unsafe extern "C" fn captain_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     air_falcon_kick_jump_reset(fighter);
     repeated_falcon_punch_turnaround(fighter);
     yes(fighter);
     fastfall_specials(fighter);
+}
+
+pub fn install() {
+    smashline::Agent::new("captain")
+        .on_line(Main, captain_frame_wrapper)
+        .install();
 }
