@@ -411,7 +411,7 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
                     -1.0
                 }
             };
-            energy.speed_limit = PaddedVec2::new(dbg!(air_x_speed_max), 0.0);
+            energy.speed_limit = PaddedVec2::new(air_x_speed_max, 0.0);
             energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0);
             energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0);
             VarModule::set_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.0);

@@ -2,11 +2,7 @@ use super::*;
 use globals::*;
 // status script import
  
-pub fn install() {
-    install_status_scripts!(
-        init_specials,
-    );
-}
+
 
 pub fn set_gravity_delay_resume_frame(energy: *mut FighterKineticEnergyGravity, frames: i32) {
     unsafe {
@@ -15,8 +11,8 @@ pub fn set_gravity_delay_resume_frame(energy: *mut FighterKineticEnergyGravity, 
     }
   }
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_specials(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValue {
+
+pub unsafe extern "C" fn init_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fighter_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
     let customize_special_hi_no = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CUSTOMIZE_SPECIAL_HI_NO);
     let start_spd_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("start_spd_x_mul"));
@@ -89,4 +85,10 @@ pub unsafe fn init_specials(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValu
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 
     0.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("marth")
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_specials)
+        .install();
 }

@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "mariod", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -26,8 +26,8 @@ unsafe fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -49,8 +49,8 @@ unsafe fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn mariod_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -68,8 +68,8 @@ unsafe fn mariod_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -102,8 +102,8 @@ unsafe fn mariod_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -138,8 +138,8 @@ unsafe fn mariod_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -166,8 +166,8 @@ unsafe fn mariod_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }   
 }
 
-#[acmd_script( agent = "mariod", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -187,8 +187,8 @@ unsafe fn mariod_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -220,8 +220,8 @@ unsafe fn mariod_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }    
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -253,8 +253,8 @@ unsafe fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mariod_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -286,16 +286,16 @@ unsafe fn mariod_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mariod_attack_air_n_game,
-        mariod_attack_air_n_effect,
-        mariod_attack_air_n_sound,
-        mariod_attack_air_f_game,
-        mariod_attack_air_f_effect,
-        mariod_attack_air_b_game,
-        mariod_attack_air_b_effect,
-        mariod_attack_air_hi_game,
-        mariod_attack_air_lw_game,
-        mariod_attack_air_lw_effect,
-    );
+    smashline::Agent::new("mariod")
+        .acmd("game_attackairn", mariod_attack_air_n_game)
+        .acmd("effect_attackairn", mariod_attack_air_n_effect)
+        .acmd("sound_attackairn", mariod_attack_air_n_sound)
+        .acmd("game_attackairf", mariod_attack_air_f_game)
+        .acmd("effect_attackairf", mariod_attack_air_f_effect)
+        .acmd("game_attackairb", mariod_attack_air_b_game)
+        .acmd("effect_attackairb", mariod_attack_air_b_effect)
+        .acmd("game_attackairhi", mariod_attack_air_hi_game)
+        .acmd("game_attackairlw", mariod_attack_air_lw_game)
+        .acmd("effect_attackairlw", mariod_attack_air_lw_effect)
+        .install();
 }
