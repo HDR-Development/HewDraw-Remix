@@ -4,8 +4,8 @@ use globals::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_S
 
-#[status_script(agent = "wiifit", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         set_speed,
         fighter,
@@ -76,8 +76,8 @@ unsafe fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "wiifit", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP {
         VarModule::set_flag(fighter.battle_object, vars::wiifit::instance::SPECIAL_S_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
     }
@@ -86,25 +86,34 @@ unsafe fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP
 
-#[status_script(agent = "wiifit", status = FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::wiifit::instance::SPECIAL_S_DISABLE_STALL) {
         return 0.into();
     }
-    original!(fighter)
+    smashline::original_status(Init, fighter, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP)(fighter)
 }
 
-#[status_script(agent = "wiifit", status = FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_s_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_flag(fighter.battle_object, vars::wiifit::instance::SPECIAL_S_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
     0.into()
 }
 
+
 pub fn install() {
-    install_status_scripts!(
-        special_s_init,
-        special_s_end,
-        special_s_jump_init,
-        special_s_jump_end,
-    );
+    smashline::Agent::new("wiifit")
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end)
+        .status(
+            Init,
+            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP,
+            special_s_jump_init,
+        )
+        .status(
+            End,
+            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP,
+            special_s_jump_end,
+        )
+        .install();
 }

@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "zelda", script = "game_specialn", category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -35,8 +35,8 @@ unsafe fn zelda_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_specialairn", category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_n_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_n_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -65,8 +65,8 @@ unsafe fn zelda_special_n_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", scripts = ["game_specialsstart", "game_specialairsstart"] , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -76,8 +76,8 @@ unsafe fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", scripts = ["effect_specialsend", "effect_specialairsend"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -94,8 +94,8 @@ unsafe fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -114,8 +114,8 @@ unsafe fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -135,8 +135,8 @@ unsafe fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -165,8 +165,8 @@ unsafe fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -198,8 +198,8 @@ unsafe fn zelda_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "zelda", scripts = ["effect_specialhi", "effect_specialairhi"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -253,8 +253,8 @@ unsafe fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_landingfallspecial" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_special_hi_land_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_special_hi_land_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
@@ -263,18 +263,23 @@ unsafe fn zelda_special_hi_land_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        zelda_special_n_game,
-        zelda_special_n_air_game,
-        zelda_special_s_start_game,
-        zelda_special_s_end_effect,
-        zelda_special_hi_start_game,
-        zelda_special_air_hi_start_game,
-        zelda_special_hi_game,
-        zelda_special_air_hi_game,
-        zelda_special_air_hi_effect,
-        zelda_special_hi_land_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("zelda")
+        .acmd("game_specialn", zelda_special_n_game)
+        .acmd("game_specialairn", zelda_special_n_air_game)
+        .acmd("game_specialsstart", zelda_special_s_start_game)
+        .acmd("game_specialairsstart", zelda_special_s_start_game)
+        .acmd("effect_specialsend", zelda_special_s_end_effect)
+        .acmd("effect_specialairsend", zelda_special_s_end_effect)
+        .acmd("game_specialhistart", zelda_special_hi_start_game)
+        .acmd("game_specialairhistart", zelda_special_air_hi_start_game)
+        .acmd("game_specialhi", zelda_special_hi_game)
+        .acmd("game_specialairhi", zelda_special_air_hi_game)
+        .acmd("effect_specialhi", zelda_special_air_hi_effect)
+        .acmd("effect_specialairhi", zelda_special_air_hi_effect)
+        .acmd("game_landingfallspecial", zelda_special_hi_land_game)
+        .install();
+}

@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "trail", script = "game_specialn3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -29,8 +29,8 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_specialairn3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -62,8 +62,8 @@ unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = ["game_specialn2", "game_specialairn2"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialn2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if fighter.kind() == *FIGHTER_KIND_KIRBY {
@@ -196,8 +196,8 @@ unsafe fn game_specialn2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = ["effect_specialn2", "effect_specialairn2"] , category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_specialn2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -214,8 +214,8 @@ unsafe fn effect_specialn2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = ["sound_specialn2", "sound_specialairn2"] , category = ACMD_SOUND, low_priority )]
-unsafe fn sound_specialn2(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specialn2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -232,8 +232,8 @@ unsafe fn sound_specialn2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = ["expression_specialn2", "expression_specialairn2"] , category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_specialn2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -265,8 +265,8 @@ unsafe fn expression_specialn2(fighter: &mut L2CAgentBase) {
 }
 
 // Now unused
-#[acmd_script( agent = "trail", script = "game_specials1" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specials1(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specials1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -288,8 +288,8 @@ unsafe fn game_specials1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairs1(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairs1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -314,8 +314,8 @@ unsafe fn game_specialairs1(fighter: &mut L2CAgentBase) {
 
 
 // Is now effectively Sonic Blade 1
-#[acmd_script( agent = "trail", script = "game_specials2" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specials2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specials2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -355,8 +355,8 @@ unsafe fn game_specials2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_specialairs2" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairs2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairs2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -396,8 +396,8 @@ unsafe fn game_specialairs2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = [ "sound_specials2", "sound_specialairs2" ] , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_specials2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specials2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_trail_special_s01"));
@@ -408,8 +408,8 @@ unsafe fn sound_specials2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_specials3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specials3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specials3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -462,8 +462,8 @@ unsafe fn game_specials3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_specialairs3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairs3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairs3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -516,8 +516,8 @@ unsafe fn game_specialairs3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = [ "sound_specials3", "sound_specialairs3" ] , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_specials3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specials3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -535,16 +535,16 @@ unsafe fn sound_specials3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = [ "game_specialssearch", "game_specialairssearch" ], category = ACMD_GAME, low_priority )]
-unsafe fn game_specialssearch(_fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialssearch(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "trail", scripts = [ "effect_specialssearch", "effect_specialairssearch" ] , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialssearch(_fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialssearch(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "trail", script = "effect_specialsstart2" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialsstart2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialsstart2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -552,8 +552,8 @@ unsafe fn effect_specialsstart2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_specialsup" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialsup(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialsup(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -561,8 +561,8 @@ unsafe fn effect_specialsup(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_specialsdown" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialsdown(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialsdown(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -570,8 +570,8 @@ unsafe fn effect_specialsdown(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_specialairsstart2" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialairsstart2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialairsstart2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -579,8 +579,8 @@ unsafe fn effect_specialairsstart2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_specialairsup" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialairsup(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialairsup(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -588,8 +588,8 @@ unsafe fn effect_specialairsup(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_specialairsdown" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialairsdown(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialairsdown(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -597,8 +597,8 @@ unsafe fn effect_specialairsdown(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -773,8 +773,8 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail_fire", scripts = ["game_fly", "game_fly2"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -800,30 +800,45 @@ unsafe fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_trail_fire_fly,
-        game_specialairn3,
-        game_specialn3,
-        game_specialn2,
-        effect_specialn2,
-        sound_specialn2,
-        expression_specialn2,
-        game_specials1,
-        game_specialairs1,
-        game_specials2,
-        game_specialairs2,
-        sound_specials2,
-        game_specials3,
-        game_specialairs3,
-        sound_specials3,
-        game_specialssearch, effect_specialssearch,
-        effect_specialsstart2,
-        effect_specialsup,
-        effect_specialsdown,
-        effect_specialairsstart2,
-        effect_specialairsup,
-        effect_specialairsdown,
-        game_specialhi,
-    );
+    smashline::Agent::new("trail")
+        .acmd("game_specialn3", game_specialn3)
+        .acmd("game_specialairn3", game_specialairn3)
+        .acmd("game_specialn2", game_specialn2)
+        .acmd("game_specialairn2", game_specialn2)
+        .acmd("effect_specialn2", effect_specialn2)
+        .acmd("effect_specialairn2", effect_specialn2)
+        .acmd("sound_specialn2", sound_specialn2)
+        .acmd("sound_specialairn2", sound_specialn2)
+        .acmd("expression_specialn2", expression_specialn2)
+        .acmd("expression_specialairn2", expression_specialn2)
+        .acmd("game_specials1", game_specials1)
+        .acmd("game_specialairs1", game_specialairs1)
+        .acmd("game_specials2", game_specials2)
+        .acmd("game_specialairs2", game_specialairs2)
+        .acmd("sound_specials2", sound_specials2)
+        .acmd("sound_specialairs2", sound_specials2)
+        .acmd("game_specials3", game_specials3)
+        .acmd("game_specialairs3", game_specialairs3)
+        .acmd("sound_specials3", sound_specials3)
+        .acmd("sound_specialairs3", sound_specials3)
+        .acmd("game_specialssearch", game_specialssearch)
+        .acmd("game_specialairssearch", game_specialssearch)
+        .acmd("effect_specialssearch", effect_specialssearch)
+        .acmd("effect_specialairssearch", effect_specialssearch)
+        .acmd("effect_specialsstart2", effect_specialsstart2)
+        .acmd("effect_specialsup", effect_specialsup)
+        .acmd("effect_specialsdown", effect_specialsdown)
+        .acmd("effect_specialairsstart2", effect_specialairsstart2)
+        .acmd("effect_specialairsup", effect_specialairsup)
+        .acmd("effect_specialairsdown", effect_specialairsdown)
+        .acmd("game_specialhi", game_specialhi)
+        .acmd("game_specialairhi", game_specialhi)
+        .install();
+    smashline::Agent::new("trail_fire")
+        .acmd("game_fly", game_trail_fire_fly)
+        .acmd("game_fly2", game_trail_fire_fly)
+        .install();
 }

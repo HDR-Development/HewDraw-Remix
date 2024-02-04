@@ -2,50 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "wario", script = "game_specialnbite" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("head"), 2.0, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        //AttackModule::clear_all(boma);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        //AttackModule::clear_all(boma);
-        //ATTACK(fighter, 0, 0, Hash40::new("head"), 0.1, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    for _ in 0..999{
-        wait(lua_state, 35.0);
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("head"), 2.0, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
-        }
-        wait(lua_state, 2.0);
-        if is_excute(fighter) {
-            //AttackModule::clear_all(boma);
-        }
-        wait(lua_state, 1.0);
-        if is_excute(fighter) {
-            //AttackModule::clear_all(boma);
-            //ATTACK(fighter, 0, 0, Hash40::new("head"), 0.1, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
-        }
-        wait(lua_state, 1.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-        }
-    }
-}
 
-#[acmd_script( agent = "wario", script = "game_specialairnbite" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 21.0);
@@ -87,8 +45,50 @@ unsafe fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "wario", script = "game_specialhijump" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("head"), 2.0, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        //AttackModule::clear_all(boma);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        //AttackModule::clear_all(boma);
+        //ATTACK(fighter, 0, 0, Hash40::new("head"), 0.1, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    for _ in 0..999{
+        wait(lua_state, 35.0);
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("head"), 2.0, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            //AttackModule::clear_all(boma);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            //AttackModule::clear_all(boma);
+            //ATTACK(fighter, 0, 0, Hash40::new("head"), 0.1, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_BITE);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
+    }
+}
+
+
+
+unsafe extern "C" fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -139,8 +139,8 @@ unsafe fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "expression_specialhijump", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -182,8 +182,8 @@ unsafe fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase) {
 //     }
 // }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -200,8 +200,8 @@ unsafe fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -230,14 +230,18 @@ unsafe fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wario_special_n_bite_game,
-        wario_special_air_n_bite_game,
-        wario_special_hi_jump_game,
-        wario_special_hi_jump_expression,
-        wario_special_lw_lr_game,
-        wario_special_lw_flyr_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("wario")
+        .acmd("game_specialnbite", wario_special_n_bite_game)
+        .acmd("game_specialairnbite", wario_special_air_n_bite_game)
+        .acmd("game_specialhijump", wario_special_hi_jump_game)
+        .acmd("expression_specialhijump", wario_special_hi_jump_expression)
+        .acmd("game_speciallwlr", wario_special_lw_lr_game)
+        .acmd("game_specialairlwlr", wario_special_lw_lr_game)
+        .acmd("game_speciallwflyr", wario_special_lw_flyr_game)
+        .acmd("game_specialairlwflyr", wario_special_lw_flyr_game)
+        .install();
+}

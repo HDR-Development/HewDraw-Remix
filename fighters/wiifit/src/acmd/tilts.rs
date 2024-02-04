@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "wiifit", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -22,8 +22,8 @@ unsafe fn wiifit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wiifit", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wiifit_attack_s3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -33,8 +33,8 @@ unsafe fn wiifit_attack_s3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wiifit", script = "expression_attacks3" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wiifit_attack_s3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -54,8 +54,8 @@ unsafe fn wiifit_attack_s3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -80,8 +80,8 @@ unsafe fn wiifit_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wiifit", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wiifit_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -94,8 +94,8 @@ unsafe fn wiifit_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     // }
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -125,8 +125,8 @@ unsafe fn wiifit_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wiifit", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wiifit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wiifit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -139,14 +139,15 @@ unsafe fn wiifit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        wiifit_attack_s3_s_game,
-        wiifit_attack_s3_effect,
-        wiifit_attack_s3_expression,
-        wiifit_attack_hi3_game,
-        wiifit_attack_hi3_effect,
-        wiifit_attack_lw3_game,
-        wiifit_attack_lw3_effect,
-    );
+    smashline::Agent::new("wiifit")
+        .acmd("game_attacks3", wiifit_attack_s3_s_game)
+        .acmd("effect_attacks3", wiifit_attack_s3_effect)
+        .acmd("expression_attacks3", wiifit_attack_s3_expression)
+        .acmd("game_attackhi3", wiifit_attack_hi3_game)
+        .acmd("effect_attackhi3", wiifit_attack_hi3_effect)
+        .acmd("game_attacklw3", wiifit_attack_lw3_game)
+        .acmd("effect_attacklw3", wiifit_attack_lw3_effect)
+        .install();
 }

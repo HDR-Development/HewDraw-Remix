@@ -39,8 +39,8 @@ use utils::{
 use smashline::*;
 
 // cycle magic to firaga at start of match
-#[smashline::fighter_init]
-fn trail_init(fighter: &mut L2CFighterCommon) { 
+
+extern "C" fn trail_init(fighter: &mut L2CFighterCommon) { 
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_TRAIL {
             if !is_training_mode() {
@@ -61,9 +61,10 @@ fn trail_init(fighter: &mut L2CFighterCommon) {
     } 
 }
 
-pub fn install(is_runtime: bool) {
-    smashline::install_agent_init_callbacks!(trail_init);
+
+pub fn install() {
     acmd::install();
+    opff::install();
     status::install();
-    opff::install(is_runtime);
+    smashline::Agent::new("trail").on_init(trail_init).install();
 }

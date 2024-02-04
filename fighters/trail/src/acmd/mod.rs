@@ -7,12 +7,13 @@ mod specials;
 mod smashes;
 mod throws;
 
+
 pub fn install() {
     aerials::install();
     tilts::install();
-    ground::install();
     other::install();
-    specials::install();
     smashes::install();
+    specials::install();
     throws::install();
+    ground::install();
 }

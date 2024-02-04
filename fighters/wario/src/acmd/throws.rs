@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "wario", script = "game_catchattack" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -27,15 +27,15 @@ unsafe fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_catch_only_all(boma, true, false);
     }
 }
-#[acmd_script( agent = "wario", script = "effect_catchattack", category = ACMD_EFFECT )]
-unsafe fn wario_catch_attack_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_catch_attack_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.0, 7.25, 11.0, 260, 0, 0, 1.1, true);
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -62,8 +62,8 @@ unsafe fn wario_throw_lw_game(fighter: &mut L2CAgentBase) {
 
 pub const THROWHI_FRAME_FALL: f32 = 48.0;
 pub const THROWHI_FRAME_LAND: f32 = 55.0;
-#[acmd_script( agent = "wario", script = "game_throwhi", category = ACMD_GAME )]
-unsafe fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -174,8 +174,8 @@ unsafe fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "effect_throwhi", category = ACMD_EFFECT )]
-unsafe fn wario_throw_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let opponent = boma.get_grabbed_opponent_boma();
@@ -209,8 +209,8 @@ unsafe fn wario_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "sound_throwhi", category = ACMD_SOUND )]
-unsafe fn wario_throw_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -244,8 +244,8 @@ unsafe fn wario_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "expression_throwhi", category = ACMD_EXPRESSION )]
-unsafe fn wario_throw_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -278,8 +278,8 @@ unsafe fn wario_throw_hi_expression(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "wario", script = "game_throwf", category = ACMD_GAME )]
-unsafe fn wario_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -304,8 +304,8 @@ unsafe fn wario_throw_f_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "wario", script = "effect_throwf", category = ACMD_EFFECT )]
-unsafe fn wario_throw_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -318,8 +318,8 @@ unsafe fn wario_throw_f_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
-#[acmd_script( agent = "wario", script = "sound_throwf", category = ACMD_SOUND )]
-unsafe fn wario_throw_f_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -336,8 +336,8 @@ unsafe fn wario_throw_f_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
     }
 }
-#[acmd_script( agent = "wario", script = "expression_throwf", category = ACMD_EXPRESSION )]
-unsafe fn wario_throw_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_throw_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -357,22 +357,21 @@ unsafe fn wario_throw_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        wario_catch_attack_game,
-        wario_catch_attack_effect,
-
-        wario_throw_lw_game,
-        
-        wario_throw_hi_game,
-        wario_throw_hi_effect,
-        wario_throw_hi_sound,
-        wario_throw_hi_expression,
-        
-        wario_throw_f_game,
-        wario_throw_f_effect,
-        wario_throw_f_sound,
-        wario_throw_f_expression
-    );
+    smashline::Agent::new("wario")
+        .acmd("game_catchattack", wario_catch_attack_game)
+        .acmd("effect_catchattack", wario_catch_attack_effect)
+        .acmd("game_throwlw", wario_throw_lw_game)
+        .acmd("game_throwhi", wario_throw_hi_game)
+        .acmd("effect_throwhi", wario_throw_hi_effect)
+        .acmd("sound_throwhi", wario_throw_hi_sound)
+        .acmd("expression_throwhi", wario_throw_hi_expression)
+        .acmd("game_throwf", wario_throw_f_game)
+        .acmd("effect_throwf", wario_throw_f_effect)
+        .acmd("sound_throwf", wario_throw_f_sound)
+        .acmd("expression_throwf", wario_throw_f_expression)
+        .install();
 }
-

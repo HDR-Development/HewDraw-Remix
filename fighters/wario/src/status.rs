@@ -4,31 +4,9 @@ use globals::*;
 mod special_s;
 mod special_hi;
 
-pub fn install() {
-    special_s::install();
-    special_hi::install();
-    smashline::install_agent_init_callbacks!(
-        wario_init
-    );
-    install_status_scripts!(
-        catch_attack_exec,
-        catch_attack_end,
-
-        wario_throwk_pre,
-        wario_throwk_init,
-        wario_throwk_main,
-        wario_throwk_exit,
-        wario_throwk_end,
-        wario_throwk_exec,
-
-        wario_landing_attack_end,
-        wario_attack_air_exec
-    );
-}
-
 pub const THROW_HI_STATUS_KIND: i32 = 0x47;
-#[smashline::fighter_init]
-fn wario_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn wario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_WARIO {
             fighter.global_table[THROW_HI_STATUS_KIND].assign(&FIGHTER_STATUS_KIND_THROW_KIRBY.into());
@@ -37,8 +15,8 @@ fn wario_init(fighter: &mut L2CFighterCommon) {
 }
 
 //Force opponent rotation
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_CATCH_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn catch_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn catch_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     let boma = fighter.boma();
 
@@ -53,8 +31,8 @@ unsafe fn catch_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     return false.into();
 }
 //Reset opponent rotation
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_CATCH_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
 
     PostureModule::set_rot(
@@ -62,17 +40,18 @@ unsafe fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         &Vector3f::zero(),
         0
     );
-    return original!(fighter);
+
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_CATCH_ATTACK)(fighter)
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn wario_throwk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_throwk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
 
     return fighter.status_pre_ThrowKirby();
 }
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn wario_throwk_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_throwk_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_uniq_process_ThrowKirby_initStatus();
     
     let hitStop = 8;
@@ -80,23 +59,23 @@ unsafe fn wario_throwk_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     return false.into();
 }
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn wario_throwk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_throwk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_ThrowKirby();
 }
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn wario_throwk_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_throwk_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.sub_status_uniq_process_ThrowKirby_exitStatus();
 }
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn wario_throwk_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_throwk_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.status_end_ThrowKirby();
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let FRAME_FALL = 48.0;
     let FRAME_FALLLOOP = FRAME_FALL+2.0;
     let FRAME_LAND = 55.0;
@@ -150,14 +129,14 @@ unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn wario_landing_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_landing_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return false.into();
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn wario_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn wario_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let dairAnim = Hash40::new("attack_air_lw");
     let dairRiseAnim = Hash40::new("attack_air_lw2");
     
@@ -171,4 +150,26 @@ unsafe fn wario_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     
     return false.into();
+}
+pub fn install() {
+    special_s::install();
+    special_hi::install();
+
+    smashline::Agent::new("wario")
+        .on_init(wario_init)
+        .status(Exec, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_exec)
+        .status(End, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_end)
+        .status(Pre, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_pre)
+        .status(Init, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_init)
+        .status(Main, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_main)
+        .status(Exit, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exit)
+        .status(End, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_end)
+        .status(Exec, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exec)
+        .status(
+            End,
+            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+            wario_landing_attack_end,
+        )
+        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, wario_attack_air_exec)
+        .install();
 }

@@ -313,13 +313,13 @@ default = [
     # "szerosuit",
     # "tantan",
     # "toonlink",
-    # "trail",
-    # "wario",
-    # "wiifit",
+    "trail",
+    "wario",
+    "wiifit",
     "wolf",
     "yoshi",
     "younglink",
-    # "zelda",
+    "zelda",
 ]
 dev = ["utils/no-offset-search"]
 main_nro = ["skyline-web", "common"]

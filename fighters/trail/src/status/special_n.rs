@@ -1,8 +1,8 @@
 use super::*;
 
 // swapping the cycle order of thundaga and blizzaga
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[0x10].get_i32();
     WorkModule::set_int(fighter.module_accessor, prev_status, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_STATUS_KIND_ATTACK_PREV);
     let mut magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
@@ -27,8 +27,8 @@ unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 1.into();
 }
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -104,8 +104,8 @@ unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n2"), L2CValue::Hash40s("special_air_n2"), false.into());
     let initial_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_SPECIAL_N2_HOP) {
         fighter.clear_lua_stack();
@@ -157,10 +157,12 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.main_shift(special_n2_main_loop);
 }
 
+
+
 pub fn install() {
-    install_status_scripts!(
-        special_n_pre,
-        special_n2_pre,
-        special_n2_main
-    );
+    smashline::Agent::new("trail")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre)
+        .status(Pre, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_pre)
+        .status(Main, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_main)
+        .install();
 }

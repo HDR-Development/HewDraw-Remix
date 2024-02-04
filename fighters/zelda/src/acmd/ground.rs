@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "zelda", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -60,8 +60,8 @@ unsafe fn zelda_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "zelda", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
-unsafe fn zelda_attack_11_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -79,8 +79,8 @@ unsafe fn zelda_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn zelda_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -102,8 +102,8 @@ unsafe fn zelda_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "zelda", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn zelda_attack_dash_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn zelda_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -120,12 +120,14 @@ unsafe fn zelda_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        zelda_attack_11_game,
-        zelda_attack_11_effect,
-        zelda_attack_dash_game,
-        zelda_attack_dash_effect,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("zelda")
+        .acmd("game_attack11", zelda_attack_11_game)
+        .acmd("effect_attack11", zelda_attack_11_effect)
+        .acmd("game_attackdash", zelda_attack_dash_game)
+        .acmd("effect_attackdash", zelda_attack_dash_effect)
+        .install();
+}
