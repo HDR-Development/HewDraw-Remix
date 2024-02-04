@@ -100,8 +100,8 @@ unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon
     }
 }
 
-#[smashline::fighter_init]
-fn eflame_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn eflame_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_EFLAME {
@@ -112,6 +112,9 @@ fn eflame_init(fighter: &mut L2CFighterCommon) {
 }
 
 
+
 pub fn install() {
-    smashline::install_agent_init_callbacks!(eflame_init);
+    smashline::Agent::new("eflame")
+        .on_init(eflame_init)
+        .install();
 }

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "edge", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -39,8 +39,8 @@ unsafe fn sephiroth_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -89,8 +89,8 @@ unsafe fn sephiroth_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -126,8 +126,8 @@ unsafe fn sephiroth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -176,8 +176,8 @@ unsafe fn sephiroth_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -213,8 +213,8 @@ unsafe fn sephiroth_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -267,8 +267,8 @@ unsafe fn sephiroth_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -329,8 +329,8 @@ unsafe fn sephiroth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -380,8 +380,8 @@ unsafe fn sephiroth_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -407,8 +407,8 @@ unsafe fn sephiroth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sephiroth_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -443,18 +443,20 @@ unsafe fn sephiroth_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        sephiroth_attack_s3_hi_game,
-        sephiroth_attack_s3_hi_effect,
-        sephiroth_attack_s3_s_game,
-        sephiroth_attack_s3_s_effect,
-        sephiroth_attack_s3_lw_game,
-        sephiroth_attack_s3_lw_effect,
-        sephiroth_attack_hi3_game,
-        sephiroth_attack_hi3_effect,
-        sephiroth_attack_lw3_game,
-        sephiroth_attack_lw3_effect,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("edge")
+        .acmd("game_attacks3hi", sephiroth_attack_s3_hi_game)
+        .acmd("effect_attacks3hi", sephiroth_attack_s3_hi_effect)
+        .acmd("game_attacks3", sephiroth_attack_s3_s_game)
+        .acmd("effect_attacks3", sephiroth_attack_s3_s_effect)
+        .acmd("game_attacks3lw", sephiroth_attack_s3_lw_game)
+        .acmd("effect_attacks3lw", sephiroth_attack_s3_lw_effect)
+        .acmd("game_attackhi3", sephiroth_attack_hi3_game)
+        .acmd("effect_attackhi3", sephiroth_attack_hi3_effect)
+        .acmd("game_attacklw3", sephiroth_attack_lw3_game)
+        .acmd("effect_attacklw3", sephiroth_attack_lw3_effect)
+        .install();
+}

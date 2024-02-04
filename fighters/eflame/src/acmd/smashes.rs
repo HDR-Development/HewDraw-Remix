@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "eflame", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn eflame_attack_s4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn eflame_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -79,9 +79,11 @@ unsafe fn eflame_attack_s4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        eflame_attack_s4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("eflame")
+        .acmd("game_attacks4", eflame_attack_s4_game)
+        .install();
+}

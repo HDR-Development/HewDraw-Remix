@@ -4,8 +4,8 @@ use globals::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_N
 
-#[status_script(agent = "duckhunt", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
@@ -87,7 +87,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_n_main
-    );
+    smashline::Agent::new("duckhunt")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
+        .install();
 }

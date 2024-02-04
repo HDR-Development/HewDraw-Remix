@@ -1,7 +1,7 @@
 use super::*;
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_hi_finish_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_finish_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
@@ -31,8 +31,8 @@ unsafe fn special_hi_finish_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_finish_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_finish_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] change motion and enable energy so that we can drift
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_end"), 0.0, 1.0, false, 0.0, false, false);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -155,15 +155,15 @@ unsafe extern "C" fn special_hi_finish_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_finish_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_finish_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_hi_finish_pre,
-        special_hi_finish_main,
-        special_hi_finish_end
-    );
+    smashline::Agent::new("elight")
+        .status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_pre)
+        .status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_main)
+        .status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_end)
+        .install();
 }

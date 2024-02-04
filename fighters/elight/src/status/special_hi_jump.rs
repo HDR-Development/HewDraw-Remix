@@ -1,7 +1,7 @@
 use super::*;
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
@@ -31,8 +31,8 @@ unsafe fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
     VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
     
@@ -123,7 +123,7 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
     match VarModule::get_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION) {
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1.into(), false.into()),
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2.into(), false.into()),
-        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL    => fighter.change_to_custom_status(statuses::elight::SPECIAL_HI_FINISH2, false, false),
+        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL    => fighter.change_status(statuses::elight::SPECIAL_HI_FINISH2.into(), false.into()),
         _ => {} // undefined behavior
     }
 
@@ -131,8 +131,8 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] the only natural conclusion of this move is that you do spreadbullet or ray of punishment
     //      so if you are doing neither of those, then you were interrupted
     if fighter.global_table[globals::STATUS_KIND] != FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1 
@@ -141,7 +141,7 @@ unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
     }
 
-    if fighter.global_table[globals::STATUS_KIND].get_i32() != CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::elight::SPECIAL_HI_FINISH2) {
+    if fighter.global_table[globals::STATUS_KIND].get_i32() != statuses::elight::SPECIAL_HI_FINISH2 {
         VarModule::on_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL);
     }
     
@@ -152,18 +152,18 @@ unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_hi_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] increment this flag, just like regular special hi for spreadbullet check
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
     0.into()
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_hi_jump_pre,
-        special_hi_jump_main,
-        special_hi_jump_end,
-        special_hi_jump_exec,
-    );
+    smashline::Agent::new("elight")
+        .status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_pre)
+        .status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main)
+        .status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_end)
+        .status(Exec, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exec)
+        .install();
 }

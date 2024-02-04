@@ -1,7 +1,7 @@
 use super::*;
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
@@ -31,8 +31,8 @@ unsafe fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
@@ -62,8 +62,8 @@ unsafe fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_attack1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_attack1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] special_hi_attack1 and special_hi_attack2 both use the same inner block they just start
     //      with different motions
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi1"), 0.0, 1.0, false, 0.0, false, false);
@@ -71,8 +71,8 @@ unsafe fn special_hi_attack1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_attack2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_attack2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] special_hi_attack1 and special_hi_attack2 both use the same inner block they just start
     //      with different motions
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi2"), 0.0, 1.0, false, 0.0, false, false);
@@ -93,26 +93,25 @@ unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_attack1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_attack1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] empty status
     0.into()
 }
 
-#[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_attack2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_attack2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] empty status
     0.into()
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_hi_attack1_pre,
-        special_hi_attack1_main,
-        special_hi_attack1_end,
-
-        special_hi_attack2_pre,
-        special_hi_attack2_main,
-        special_hi_attack2_end,
-    );
+    smashline::Agent::new("elight")
+        .status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, special_hi_attack1_pre)
+        .status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, special_hi_attack2_pre)
+        .status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, special_hi_attack1_main)
+        .status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, special_hi_attack2_main)
+        .status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, special_hi_attack1_end)
+        .status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, special_hi_attack2_end)
+        .install();
 }
