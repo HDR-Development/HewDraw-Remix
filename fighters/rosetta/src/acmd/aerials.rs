@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "rosetta", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -18,8 +18,8 @@ unsafe fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rosetta", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -69,8 +69,8 @@ unsafe fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "rosetta", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn rosetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -100,8 +100,8 @@ unsafe fn rosetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "rosetta_tico", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn rosetta_tico_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_tico_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -114,8 +114,8 @@ unsafe fn rosetta_tico_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rosetta", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -166,8 +166,8 @@ unsafe fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "rosetta", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn rosetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -214,8 +214,8 @@ unsafe fn rosetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "rosetta_tico", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn rosetta_tico_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn rosetta_tico_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -228,15 +228,19 @@ unsafe fn rosetta_tico_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        rosetta_attack_air_n_expression,
-        rosetta_attack_air_f_game,
-        rosetta_attack_air_b_game,
-        rosetta_tico_attack_air_b_game,
-        rosetta_attack_air_hi_game,
-        rosetta_attack_air_lw_game,
-        rosetta_tico_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("rosetta_tico")
+        .acmd("game_attackairb", rosetta_tico_attack_air_b_game)
+        .acmd("game_attackairlw", rosetta_tico_attack_air_lw_game)
+        .install();
+    smashline::Agent::new("rosetta")
+        .acmd("expression_attackairn", rosetta_attack_air_n_expression)
+        .acmd("game_attackairf", rosetta_attack_air_f_game)
+        .acmd("game_attackairb", rosetta_attack_air_b_game)
+        .acmd("game_attackairhi", rosetta_attack_air_hi_game)
+        .acmd("game_attackairlw", rosetta_attack_air_lw_game)
+        .install();
+}

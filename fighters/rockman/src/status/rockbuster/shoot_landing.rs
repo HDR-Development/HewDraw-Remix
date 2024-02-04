@@ -1,8 +1,8 @@
 use super::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn rockman_rockbuster_shoot_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn rockman_rockbuster_shoot_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     let was_rockbuster_status = rockman_rockbuster_pre_helper(prev_status.into()).get_bool();
     let fs_succeeds_add = if was_rockbuster_status || prev_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
@@ -45,8 +45,8 @@ unsafe fn rockman_rockbuster_shoot_landing_pre(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_rockbuster_shoot_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn rockman_rockbuster_shoot_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     rockman_rockbuster_main_helper(fighter, true.into(), false.into(), L2CValue::Void(), L2CValue::Void());
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
@@ -97,8 +97,18 @@ unsafe extern "C" fn rockman_rockbuster_shoot_landing_main_loop(fighter: &mut L2
     1.into()
 }
 
+
 pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_landing_pre, rockman_rockbuster_shoot_landing_main
-    );
+    smashline::Agent::new("rockman")
+        .status(
+            Pre,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING,
+            rockman_rockbuster_shoot_landing_pre,
+        )
+        .status(
+            Main,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING,
+            rockman_rockbuster_shoot_landing_main,
+        )
+        .install();
 }

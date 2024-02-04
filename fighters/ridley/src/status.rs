@@ -2,8 +2,8 @@ use super::*;
 use globals::*;
 
 /// Hold neutral special to explode
-#[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM) >= WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("max_fire_num"))
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
@@ -15,10 +15,11 @@ unsafe fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValu
         }
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_NORMAL);
         fighter.sub_shift_status_main(L2CValue::Ptr(special_n_shoot_main_loop as *const () as _))
-    }else {
-        original!(fighter)
+    } else {
+        smashline::original_status(Main, fighter, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT)(fighter)
     }
 }
+
 unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) != StatusModule::prev_situation_kind(fighter.module_accessor) {
         special_n_air_to_ground_transition(fighter);
@@ -55,8 +56,8 @@ unsafe extern "C" fn special_n_air_to_ground_transition(fighter: &mut L2CFighter
 }
 
 // Normalizes side b landing lag to be based on remaining aerial lag
-#[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s_failure_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s_failure_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cancel_frame = (FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("special_s_start"), false) - MotionModule::frame(fighter.module_accessor)) + WorkModule::get_param_int(fighter.module_accessor, hash40("landing_heavy_frame"), 0) as f32 + 5.0;
     if cancel_frame < 1.0 {
         VarModule::set_float(fighter.battle_object, vars::ridley::instance::SPECIAL_S_FAILURE_CANCEL_FRAME, 1.0);
@@ -102,12 +103,12 @@ pub unsafe fn side_special_failure_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 /// Pogo down special
-#[status_script(agent = "ridley", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
     || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB) {
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB);
-        original!(fighter)
+        smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
     }
     else {
         if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0 {
@@ -256,11 +257,24 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 //     return true.into()
 // }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_n_shoot_status_main,
-        special_lw_status_main,
-        special_s_failure_status_main,
-        //attack_air_lasso_status_main,
-    );
+    smashline::Agent::new("ridley")
+        .status(
+            Main,
+            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT,
+            special_n_shoot_status_main,
+        )
+        .status(
+            Main,
+            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE,
+            special_s_failure_status_main,
+        )
+        .status(
+            Main,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            special_lw_status_main,
+        )
+        .install();
 }

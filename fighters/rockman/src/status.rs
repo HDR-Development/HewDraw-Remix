@@ -30,8 +30,8 @@ unsafe extern "C" fn rockman_special_lw_uniq(fighter: &mut L2CFighterCommon) -> 
     (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)).into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_ROCKMAN {
@@ -50,9 +50,9 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_resets!(
-        agent_reset
-    );
+    smashline::Agent::new("rockman")
+        .on_start(agent_reset)
+        .install();
 
     walk::install();
 

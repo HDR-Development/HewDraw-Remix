@@ -42,9 +42,10 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
+
+pub fn install() {
     acmd::install();
+    opff::install();
     status::install();
-    vtable_hook::install(is_runtime);
-    opff::install(is_runtime);
+    vtable_hook::install();
 }

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ridley", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn ridley_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ridley_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -29,8 +29,8 @@ unsafe fn ridley_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ridley", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn ridley_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ridley_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -54,8 +54,8 @@ unsafe fn ridley_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ridley", script = "expression_attacklw4", category = ACMD_EXPRESSION )]
-unsafe fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
+
+unsafe extern "C" fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -87,11 +87,13 @@ unsafe fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ridley_attack_s4_s_game,
-        ridley_attack_hi4_game,
-        ridley_attack_lw4_expression,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("ridley")
+        .acmd("game_attacks4", ridley_attack_s4_s_game)
+        .acmd("game_attackhi4", ridley_attack_hi4_game)
+        .acmd("expression_attacklw4", ridley_attack_lw4_expression)
+        .install();
+}

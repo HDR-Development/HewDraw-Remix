@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ryu", script = "game_attack11w" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_11_w_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_11_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -50,8 +50,8 @@ unsafe fn ryu_attack_11_w_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -96,8 +96,8 @@ unsafe fn ryu_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_13_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -126,8 +126,8 @@ unsafe fn ryu_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "game_attack11nears" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -177,8 +177,8 @@ unsafe fn ryu_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attack11nears" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_attack_11_near_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_11_near_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -191,8 +191,8 @@ unsafe fn ryu_attack_11_near_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_attack11s" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_11_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_11_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -223,8 +223,8 @@ unsafe fn ryu_attack_11_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -257,15 +257,17 @@ unsafe fn ryu_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ryu_attack_11_w_game,
-        ryu_attack_12_game,
-        ryu_attack_13_game,
-        ryu_attack_11_near_s_game,
-        ryu_attack_11_near_s_effect,
-        ryu_attack_11_s_game,
-        ryu_attack_dash_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("ryu")
+        .acmd("game_attack11w", ryu_attack_11_w_game)
+        .acmd("game_attack12", ryu_attack_12_game)
+        .acmd("game_attack13", ryu_attack_13_game)
+        .acmd("game_attack11nears", ryu_attack_11_near_s_game)
+        .acmd("effect_attack11nears", ryu_attack_11_near_s_effect)
+        .acmd("game_attack11s", ryu_attack_11_s_game)
+        .acmd("game_attackdash", ryu_attack_dash_game)
+        .install();
+}

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ryu", script = "game_specialn" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -56,8 +56,8 @@ unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -110,8 +110,8 @@ unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -146,8 +146,8 @@ unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -232,8 +232,8 @@ unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specials" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -292,8 +292,8 @@ unsafe fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -316,8 +316,8 @@ unsafe fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialsend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -345,8 +345,8 @@ unsafe fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -379,8 +379,8 @@ unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -455,8 +455,8 @@ unsafe fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -478,8 +478,8 @@ unsafe fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialairsend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -501,8 +501,8 @@ unsafe fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialairs" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -554,8 +554,8 @@ unsafe fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -648,8 +648,8 @@ unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -793,8 +793,8 @@ unsafe fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -887,8 +887,8 @@ unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -1028,8 +1028,8 @@ unsafe fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialhicommand" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1130,8 +1130,8 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialhicommand" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -1293,8 +1293,8 @@ unsafe fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairhicommand" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1395,8 +1395,8 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialairhicommand" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -1557,27 +1557,32 @@ unsafe fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        ryu_special_n_game,
-        ryu_special_air_n_game,
-        ryu_special_s_start_game,
-        ryu_special_s_game,
-        ryu_special_s_effect,
-        ryu_special_s_end_game,
-        ryu_special_s_end_effect,
-        ryu_special_air_s_start_game,
-        ryu_special_air_s_game,
-        ryu_special_air_s_effect,
-        ryu_special_air_s_end_game,
-        ryu_special_air_s_end_effect,
-        ryu_special_hi_game,
-        ryu_special_hi_effect,
-        ryu_special_air_hi_game,
-        ryu_special_air_hi_effect,
-        ryu_special_hi_command_game,
-        ryu_special_hi_command_effect,
-        ryu_special_air_hi_command_game,
-        ryu_special_air_hi_command_effect,
-    );
+    smashline::Agent::new("ryu")
+        .acmd("game_specialn", ryu_special_n_game)
+        .acmd("game_specialairn", ryu_special_air_n_game)
+        .acmd("game_specialsstart", ryu_special_s_start_game)
+        .acmd("game_specials", ryu_special_s_game)
+        .acmd("effect_specials", ryu_special_s_effect)
+        .acmd("game_specialsend", ryu_special_s_end_game)
+        .acmd("effect_specialsend", ryu_special_s_end_effect)
+        .acmd("game_specialairsstart", ryu_special_air_s_start_game)
+        .acmd("game_specialairs", ryu_special_air_s_game)
+        .acmd("game_specialairsend", ryu_special_air_s_end_game)
+        .acmd("effect_specialairsend", ryu_special_air_s_end_effect)
+        .acmd("effect_specialairs", ryu_special_air_s_effect)
+        .acmd("game_specialhi", ryu_special_hi_game)
+        .acmd("effect_specialhi", ryu_special_hi_effect)
+        .acmd("game_specialairhi", ryu_special_air_hi_game)
+        .acmd("effect_specialairhi", ryu_special_air_hi_effect)
+        .acmd("game_specialhicommand", ryu_special_hi_command_game)
+        .acmd("effect_specialhicommand", ryu_special_hi_command_effect)
+        .acmd("game_specialairhicommand", ryu_special_air_hi_command_game)
+        .acmd(
+            "effect_specialairhicommand",
+            ryu_special_air_hi_command_effect,
+        )
+        .install();
 }
