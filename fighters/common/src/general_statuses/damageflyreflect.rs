@@ -5,7 +5,7 @@ use globals::*;
 
 
 pub fn install() {
-    Agent::new("common")
+    Agent::new("fighter")
         .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY, damage_fly_end)
         .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, damage_fly_reflect_d_end)
         .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD, damage_fly_reflect_jump_board_end)

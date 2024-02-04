@@ -5,7 +5,7 @@ use globals::*;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("common")
+    Agent::new("fighter")
         .status(Exec, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_exec_JumpSquat)
         .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_end_JumpSquat)
         .status(Main, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_JumpSquat)

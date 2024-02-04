@@ -79,7 +79,7 @@ unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    smashline::Agent::new("common")
+    smashline::Agent::new("fighter")
         .on_start(fighter_reset)
         .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
@@ -100,6 +100,7 @@ pub fn install() {
        //set_hit_team_hook,
        hero_rng_hook,
        psych_up_hit,
+       donkey_link_event,
     );
     skyline::install_hooks!(
         krool_belly_damage_hook,
@@ -196,6 +197,27 @@ extern "C" {
 #[skyline::hook(replace = special_lw_open_command)]
 pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
     hero_rng_hook_impl(fighter);
+}
+
+#[skyline::hook(offset = 0x993ec0)]
+pub unsafe extern "C" fn donkey_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash2::app::LinkEvent) -> u64 {
+    // param_3 + 0x10
+    if event.link_event_kind.0 == hash40("capture") {
+        // println!("hi");
+        let capture_event : &mut smash2::app::LinkEventCapture = std::mem::transmute(event);
+        let module_accessor = fighter.battle_object.module_accessor;
+        if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+            // param_3[0x28]
+            capture_event.result = true;
+            // capture_event.constraint = false;
+            // param_3 + 0x30
+            capture_event.node = smash2::phx::Hash40::new("throw");
+            StatusModule::change_status_request(module_accessor, *FIGHTER_STATUS_KIND_CATCH_PULL, false);
+            return 0;
+        }
+        return 1;
+    }
+    original!()(vtable, fighter, event)
 }
 
 #[skyline::hook(offset = 0x853df0)]

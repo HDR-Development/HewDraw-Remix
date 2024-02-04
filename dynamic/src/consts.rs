@@ -1436,8 +1436,8 @@ pub mod statuses {
     }
 
     pub mod falco {
-        pub const SPECIAL_LW_LOOP: i32 = 0;
-        pub const SPECIAL_LW_END: i32 = 1;
+        pub const SPECIAL_LW_LOOP: i32 = 0x1e8;
+        pub const SPECIAL_LW_END: i32 = 0x1e9;
     }
 
     pub mod gamewatch {
