@@ -145,8 +145,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 	fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_ROSETTA )]
-pub fn rosetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn rosetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		rosetta_frame(fighter)
@@ -158,8 +158,7 @@ pub unsafe fn rosetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-#[weapon_frame( agent = WEAPON_KIND_ROSETTA_TICO )]
-fn tico_frame(weapon: &mut L2CFighterBase) {
+unsafe extern "C" fn tico_frame(weapon: &mut L2CFighterBase) {
     unsafe {
 		let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		let rosetta = utils::util::get_battle_object_from_id(owner_id);
@@ -214,4 +213,13 @@ fn tico_frame(weapon: &mut L2CFighterBase) {
 			}
 		}
 	}
+}
+pub fn install() {
+    smashline::Agent::new("rosetta")
+        .on_line(Main, rosetta_frame_wrapper)
+        .install();
+
+	smashline::Agent::new("rosetta_tico")
+		.on_line(Main, tico_frame)
+		.install();
 }

@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "robot", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -38,8 +38,8 @@ unsafe fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,8 +67,8 @@ unsafe fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -114,8 +114,8 @@ unsafe fn robot_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -148,8 +148,8 @@ unsafe fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -262,8 +262,8 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -346,8 +346,8 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -378,8 +378,8 @@ unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -391,8 +391,8 @@ unsafe fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -458,8 +458,8 @@ unsafe fn robot_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -494,8 +494,8 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut effectX = 48.0;
@@ -527,8 +527,8 @@ unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -558,8 +558,8 @@ unsafe fn robot_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -585,20 +585,21 @@ unsafe fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        robot_attack_air_n_game,
-        robot_attack_air_n_effect,
-        robot_attack_air_f_game,
-        robot_attack_air_f_effect,
-        robot_attack_air_b_game,
-        robot_attack_air_b_effect,
-        robot_attack_air_b_sound,
-        robot_landing_air_b_game,
-        robot_attack_air_hi_game,
-        robot_attack_air_lw_game,
-        robot_attack_air_lw_effect,
-        robot_attack_air_lw_sound,
-        robot_attack_air_lw_expression
-    );
+    smashline::Agent::new("robot")
+        .acmd("game_attackairn", robot_attack_air_n_game)
+        .acmd("effect_attackairn", robot_attack_air_n_effect)
+        .acmd("game_attackairf", robot_attack_air_f_game)
+        .acmd("effect_attackairf", robot_attack_air_f_effect)
+        .acmd("game_attackairb", robot_attack_air_b_game)
+        .acmd("effect_attackairb", robot_attack_air_b_effect)
+        .acmd("sound_attackairb", robot_attack_air_b_sound)
+        .acmd("game_landingairb", robot_landing_air_b_game)
+        .acmd("game_attackairhi", robot_attack_air_hi_game)
+        .acmd("game_attackairlw", robot_attack_air_lw_game)
+        .acmd("effect_attackairlw", robot_attack_air_lw_effect)
+        .acmd("sound_attackairlw", robot_attack_air_lw_sound)
+        .acmd("expression_attackairlw", robot_attack_air_lw_expression)
+        .install();
 }

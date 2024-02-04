@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "robot", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -15,8 +15,8 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -34,9 +34,10 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwlw,
-        game_throwhi,
-    );
+    smashline::Agent::new("robot")
+        .acmd("game_throwlw", game_throwlw)
+        .acmd("game_throwhi", game_throwhi)
+        .install();
 }

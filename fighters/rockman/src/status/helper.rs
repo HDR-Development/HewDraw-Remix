@@ -49,3 +49,5 @@ pub unsafe fn rockman_special_motion_helper(
         );
     }
 }
+
+pub fn install() {}

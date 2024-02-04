@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "ridley", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn ridley_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ridley_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -21,7 +21,7 @@ unsafe fn ridley_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+
 unsafe extern "C" fn ridley_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -44,8 +44,8 @@ unsafe extern "C" fn ridley_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn ridley_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ridley_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -66,10 +66,11 @@ unsafe fn ridley_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        ridley_throw_f_game,
-        ridley_throw_b_game,
-        ridley_throw_lw_game,
-    );
+    smashline::Agent::new("ridley")
+        .acmd("game_throwf", ridley_throw_f_game)
+        .acmd("game_throwb", ridley_throw_b_game)
+        .acmd("game_throwlw", ridley_throw_lw_game)
+        .install();
 }

@@ -12,8 +12,8 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
     }
 }
 
-#[smashline::fighter_init]
-fn rosetta_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn rosetta_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_ROSETTA {
@@ -22,8 +22,8 @@ fn rosetta_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(rosetta_init);
-    special_hi::install();
+    smashline::Agent::new("rosetta")
+        .on_init(rosetta_init)
+        .install();
 }

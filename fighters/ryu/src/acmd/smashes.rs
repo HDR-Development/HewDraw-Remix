@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ryu", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,8 +116,8 @@ unsafe fn ryu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ryu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -214,8 +214,8 @@ unsafe fn ryu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -295,8 +295,8 @@ unsafe fn ryu_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ryu", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn ryu_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ryu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -348,12 +348,14 @@ unsafe fn ryu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ryu_attack_s4_s_game,
-        ryu_attack_s4_s_effect,
-        ryu_attack_hi4_game,
-        ryu_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("ryu")
+        .acmd("game_attacks4", ryu_attack_s4_s_game)
+        .acmd("effect_attacks4", ryu_attack_s4_s_effect)
+        .acmd("game_attackhi4", ryu_attack_hi4_game)
+        .acmd("game_attacklw4", ryu_attack_lw4_game)
+        .install();
+}
