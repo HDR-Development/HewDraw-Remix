@@ -8,16 +8,16 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
+        fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if boma.is_button_on(Buttons::Guard | Buttons::GuardHold)
         && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
         && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN) {
-            WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED);
+            fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED);
         } else {
-            WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
+            fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
             if fighter.kind() != *FIGHTER_KIND_KIRBY 
             && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 MeterModule::add(fighter.battle_object, 2.0 * MeterModule::damage_gain_mul(fighter.battle_object));
@@ -25,7 +25,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 14.0);
-    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+    if fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 18.0);
     } else if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
         FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 26.0);
@@ -33,15 +33,15 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 31.0);
     }
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        fighter.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
+        fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 58.0);
     FT_MOTION_RATE(fighter, 1.0);
@@ -52,13 +52,13 @@ unsafe fn effect_specialn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
-    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+    if fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
         if is_excute(fighter) {
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 11, -7, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 4.0);
-    if !WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+    if !fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         if is_excute(fighter) {
             if fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
                 EFFECT_FOLLOW(fighter, Hash40::new("ryu_hadoken_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -148,7 +148,7 @@ unsafe fn game_movewms(fighter: &mut L2CAgentBase) {
         Hash40::new("collision_attr_normal")
     };
     if is_excute(fighter) {
-        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let owner_module_accessor = &mut *sv_battle_object::module_accessor((fighter.get_int(*WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         VarModule::set_flag(
             fighter.battle_object, 
             vars::shotos::instance::IS_USE_EX_SPECIAL,
@@ -165,7 +165,7 @@ unsafe fn game_movewms(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             let speed = KineticModule::get_sum_speed3f(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            WorkModule::set_int(boma, 41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            fighter.set_int(41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
 
             ATTACK(fighter, 0, 0, Hash40::new("top"), 9.5, 0, 10, 0, 67, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 9.5, 0, 10, 0, 67, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
@@ -198,7 +198,7 @@ unsafe fn effect_movemws(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if WorkModule::is_flag(boma, *WEAPON_RYU_HADOKEN_INSTANCE_WORK_ID_FLAG_COMMAND) {
+        if fighter.is_flag(*WEAPON_RYU_HADOKEN_INSTANCE_WORK_ID_FLAG_COMMAND) {
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_hadoken_bullet2"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, false);
         }
         else{
@@ -223,7 +223,7 @@ unsafe fn game_movespwms(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let owner_module_accessor = &mut *sv_battle_object::module_accessor((fighter.get_int(*WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         VarModule::set_flag(
             fighter.battle_object, 
             vars::shotos::instance::IS_USE_EX_SPECIAL,
@@ -241,7 +241,7 @@ unsafe fn game_movespwms(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             let speed = KineticModule::get_sum_speed3f(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 2.1 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            WorkModule::set_int(boma, 38, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            fighter.set_int(38, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
 
             ATTACK(fighter, 0, 0, Hash40::new("top"), 1.1, 80, 10, 0, 42, 3.5, 0.0, -5.2, 0.0, Some(0.0), Some(-5.2), Some(0.0), 0.15, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 1.1, 366, 10, 0, 40, 3.5, 0.0, 0.5, 0.0, Some(0.0), Some(-5.2), Some(0.0), 0.15, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY); 

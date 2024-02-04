@@ -137,7 +137,7 @@ unsafe fn ryu_turn_dash_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
+        fighter.on_flag(*FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -167,7 +167,7 @@ unsafe fn ryu_catch_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        fighter.on_flag(*FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
     
@@ -196,7 +196,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+        fighter.on_flag(*FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {

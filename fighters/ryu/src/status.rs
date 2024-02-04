@@ -98,7 +98,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     }
     
     // ORIGINAL
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLAG_AUTO_TURN_END_STATUS);
+    fighter.off_flag(*FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLAG_AUTO_TURN_END_STATUS);
     let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
     if lr == 0.0
     || PostureModule::lr(fighter.module_accessor) == lr
@@ -244,8 +244,8 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
     && is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         return true.into();
     }
@@ -581,14 +581,14 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
     }
-    // if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME) {
+    // if 0 < fighter.get_int(*FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME) {
     //     if !StopModule::is_stop(fighter.module_accessor) {
     //         if fighter.sub_check_button_jump().get_bool() {
 
     //         }
     //     }
     // }
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART) {
+    if !fighter.is_flag(*FIGHTER_STATUS_ATTACK_FLAG_RESTART) {
         if !MotionModule::is_end(fighter.module_accessor) {
             common::shoto_status::ryu_idkwhatthisis2(fighter);
         } else {
