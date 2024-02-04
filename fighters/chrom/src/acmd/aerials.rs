@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "chrom", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -46,8 +46,8 @@ unsafe fn chrom_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -80,8 +80,8 @@ unsafe fn chrom_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn chrom_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -97,8 +97,8 @@ unsafe fn chrom_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -124,8 +124,8 @@ unsafe fn chrom_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -157,8 +157,8 @@ unsafe fn chrom_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -202,14 +202,16 @@ unsafe fn chrom_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        chrom_attack_air_n_game,
-        chrom_attack_air_f_game,
-        chrom_attack_air_f_expression,
-        chrom_attack_air_b_game,
-        chrom_attack_air_hi_game,
-        chrom_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("chrom")
+        .acmd("game_attackairn", chrom_attack_air_n_game)
+        .acmd("game_attackairf", chrom_attack_air_f_game)
+        .acmd("expression_attackairf", chrom_attack_air_f_expression)
+        .acmd("game_attackairb", chrom_attack_air_b_game)
+        .acmd("game_attackairhi", chrom_attack_air_hi_game)
+        .acmd("game_attackairlw", chrom_attack_air_lw_game)
+        .install();
+}

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "chrom", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -33,8 +33,8 @@ unsafe fn chrom_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn chrom_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -61,8 +61,8 @@ unsafe fn chrom_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -105,8 +105,8 @@ unsafe fn chrom_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -150,12 +150,14 @@ unsafe fn chrom_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        chrom_attack_s4_s_game,
-        chrom_attack_s4_s_expression,
-        chrom_attack_hi4_game,
-        chrom_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("chrom")
+        .acmd("game_attacks4", chrom_attack_s4_s_game)
+        .acmd("expression_attacks4", chrom_attack_s4_s_expression)
+        .acmd("game_attackhi4", chrom_attack_hi4_game)
+        .acmd("game_attacklw4", chrom_attack_lw4_game)
+        .install();
+}

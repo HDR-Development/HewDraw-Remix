@@ -188,8 +188,8 @@ extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_CHROM )]
-pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub unsafe extern "C" fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     fe_common(fighter);
     soaring_slash_drift(fighter);
@@ -205,4 +205,9 @@ pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon
         *FIGHTER_STATUS_KIND_ATTACK]) {
         ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.015, 1.115, 1.045));
     }
+}
+pub fn install() {
+    smashline::Agent::new("chrom")
+        .on_line(Main, chrom_frame_wrapper)
+        .install();
 }
