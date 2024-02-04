@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "shizue", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -19,8 +19,8 @@ unsafe fn shizue_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialnfailure" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -38,8 +38,8 @@ unsafe fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "shizue", scripts = ["effect_specialnfailure", "effect_specialairnfailure"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -48,8 +48,8 @@ unsafe fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairnfailure" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -68,8 +68,8 @@ unsafe fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "shizue", scripts = ["expression_specialnfailure", "expression_specialairnfailure"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn shizue_special_n_failure_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_n_failure_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -82,8 +82,8 @@ unsafe fn shizue_special_n_failure_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairhidetach", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -96,8 +96,8 @@ unsafe fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_speciallwset", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -113,8 +113,8 @@ unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialsstart", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -165,8 +165,8 @@ unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairsstart", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -207,8 +207,8 @@ unsafe fn shizue_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialsthrowb", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -226,8 +226,8 @@ unsafe fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairsthrowb", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -246,8 +246,8 @@ unsafe fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialsthrowf", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_s_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_s_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -261,8 +261,8 @@ unsafe fn shizue_special_s_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairsthrowf", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -277,8 +277,8 @@ unsafe fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialsthrowhi", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.8);
@@ -291,8 +291,8 @@ unsafe fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairsthrowhi", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.8);
@@ -307,8 +307,8 @@ unsafe fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialsthrowlw", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.1);
@@ -344,8 +344,8 @@ unsafe fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_specialairsthrowlw", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -382,8 +382,8 @@ unsafe fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue_clayrocket", script = "game_ready", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     wait(lua_state, 20.0);
@@ -394,8 +394,8 @@ unsafe fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.1);
 }
 
-#[acmd_script( agent = "shizue_clayrocket", script = "game_fly", category = ACMD_GAME, low_priority)]
-unsafe fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.1);
@@ -410,8 +410,8 @@ unsafe fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue_clayrocket", script = "game_burst", category = ACMD_GAME, low_priority )]
-unsafe fn shizue_clayrocket_burst_game(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_clayrocket_burst_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -423,32 +423,47 @@ unsafe fn shizue_clayrocket_burst_game(agent: &mut L2CAgentBase) {
     }
 }
 
+
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        shizue_special_n_game,
-        shizue_special_n_failure_game,
-        shizue_special_n_failure_effect,
-        shizue_special_air_n_failure_game,
-        shizue_special_n_failure_expression,
-        shizue_special_air_hi_detach_game,
-        shizue_special_lw_set_game,
-
-        //Fishing Rod
-        shizue_special_s_start_game,
-        shizue_special_air_s_start_game,
-        shizue_special_s_throw_f_game,
-        shizue_special_air_s_throw_f_game,
-        shizue_special_s_throw_hi_game,
-        shizue_special_air_s_throw_hi_game,
-        shizue_special_s_throw_lw_game,
-        shizue_special_air_s_throw_lw_game,
-        shizue_special_s_throw_b_game,
-        shizue_special_air_s_throw_b_game,
-
-        //Clayrocet
-        shizue_clayrocket_ready_game,
-        shizue_clayrocket_fly_game,
-        shizue_clayrocket_burst_game
-    );
+    smashline::Agent::new("shizue")
+        .acmd("game_specialn", shizue_special_n_game)
+        .acmd("game_specialairn", shizue_special_n_game)
+        .acmd("game_specialnfailure", shizue_special_n_failure_game)
+        .acmd("effect_specialnfailure", shizue_special_n_failure_effect)
+        .acmd("effect_specialairnfailure", shizue_special_n_failure_effect)
+        .acmd("game_specialairnfailure", shizue_special_air_n_failure_game)
+        .acmd(
+            "expression_specialnfailure",
+            shizue_special_n_failure_expression,
+        )
+        .acmd(
+            "expression_specialairnfailure",
+            shizue_special_n_failure_expression,
+        )
+        .acmd("game_specialairhidetach", shizue_special_air_hi_detach_game)
+        .acmd("game_speciallwset", shizue_special_lw_set_game)
+        .acmd("game_specialsstart", shizue_special_s_start_game)
+        .acmd("game_specialairsstart", shizue_special_air_s_start_game)
+        .acmd("game_specialsthrowb", shizue_special_s_throw_b_game)
+        .acmd("game_specialairsthrowb", shizue_special_air_s_throw_b_game)
+        .acmd("game_specialsthrowf", shizue_special_s_throw_f_game)
+        .acmd("game_specialairsthrowf", shizue_special_air_s_throw_f_game)
+        .acmd("game_specialsthrowhi", shizue_special_s_throw_hi_game)
+        .acmd(
+            "game_specialairsthrowhi",
+            shizue_special_air_s_throw_hi_game,
+        )
+        .acmd("game_specialsthrowlw", shizue_special_s_throw_lw_game)
+        .acmd(
+            "game_specialairsthrowlw",
+            shizue_special_air_s_throw_lw_game,
+        )
+        .install();
+    smashline::Agent::new("shizue_clayrocket")
+        .acmd("game_ready", shizue_clayrocket_ready_game)
+        .acmd("game_fly", shizue_clayrocket_fly_game)
+        .acmd("game_burst", shizue_clayrocket_burst_game)
+        .install();
 }
-
