@@ -197,39 +197,28 @@ unsafe fn ryu_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
-    ])
-    || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    ]) {
         return;
     }
-    // only check EX if this is a heavy shoryu with A+B on f4
-    if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
+
+    // enter EX if A+B on frame<5
+    if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
     && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
-    && frame <= 4.0 {
-        // change into different motions depending on current motion
-        // MeterModule and VarModule calls are repeated so that I know
-        // for 100% fact they can only be called if we change motion
-        if boma.is_motion(Hash40::new("special_hi"))
-        && MeterModule::drain(boma.object(), 2) {
-            MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+    && [
+        hash40("special_hi"), 
+        hash40("special_hi_command"), 
+        hash40("special_air_hi"), 
+        hash40("special_air_hi_command")
+    ].contains(&motion_kind) && frame < 5.0
+    && MeterModule::level(boma.object()) >= 2 {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+    }
 
-        } else if boma.is_motion(Hash40::new("special_hi_command"))
-        && MeterModule::drain(boma.object(), 2) {
-            MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-
-        } else if boma.is_motion(Hash40::new("special_air_hi"))
-        && MeterModule::drain(boma.object(), 2) {
-            MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-
-        } else if boma.is_motion(Hash40::new("special_air_hi_command"))
-        && MeterModule::drain(boma.object(), 2) {
-            MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-
-        }
+    // always use heavy during EX
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_S {
+        fighter.set_int(*FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     }
 }
 
