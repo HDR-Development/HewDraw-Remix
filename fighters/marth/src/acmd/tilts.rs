@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "marth", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -22,8 +22,8 @@ unsafe fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,8 +56,8 @@ unsafe fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 
 
-#[acmd_script( agent = "marth", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn marth_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -74,8 +74,8 @@ unsafe fn marth_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -93,12 +93,13 @@ unsafe fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        marth_attack_s3_s_game,
-        marth_attack_hi3_game,
-        marth_attack_hi3_expression,
-        marth_attack_lw3_game
-    );
-}
 
+
+pub fn install() {
+    smashline::Agent::new("marth")
+        .acmd("game_attacks3", marth_attack_s3_s_game)
+        .acmd("game_attackhi3", marth_attack_hi3_game)
+        .acmd("expression_attackhi3", marth_attack_hi3_expression)
+        .acmd("game_attacklw3", marth_attack_lw3_game)
+        .install();
+}
