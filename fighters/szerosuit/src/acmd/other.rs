@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "szerosuit", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +27,8 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +53,8 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +79,8 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +95,8 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +121,8 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -152,8 +152,8 @@ unsafe fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_catch_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -189,8 +189,8 @@ unsafe fn szerosuit_catch_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_catch_turn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -227,8 +227,8 @@ unsafe fn szerosuit_catch_turn_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_catch" , category = ACMD_SOUND , low_priority)]
-unsafe fn szerosuit_catch_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_catch_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -242,15 +242,15 @@ unsafe fn szerosuit_catch_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_catch" , category = ACMD_EFFECT , low_priority)]
-unsafe fn szerosuit_catch_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_catch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_catch" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn szerosuit_catch_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_catch_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -262,8 +262,8 @@ unsafe fn szerosuit_catch_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -273,8 +273,8 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -292,8 +292,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -307,8 +307,8 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit_paralyzer_bullet", script = "game_shoot" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_paralyzer_bullet_shoot_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_paralyzer_bullet_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -331,8 +331,8 @@ unsafe fn szerosuit_paralyzer_bullet_shoot_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit_paralyzer_bullet", script = "game_shoottame" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_paralyzer_bullet_shoot_tame_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_paralyzer_bullet_shoot_tame_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -355,8 +355,8 @@ unsafe fn szerosuit_paralyzer_bullet_shoot_tame_game(fighter: &mut L2CAgentBase)
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -371,8 +371,8 @@ unsafe fn szerosuit_escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -386,26 +386,30 @@ unsafe fn szerosuit_escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_escape_air_game,
-        szerosuit_escape_air_slide_game,
-        szerosuit_catch_game,
-        szerosuit_catch_sound,
-        szerosuit_catch_effect,
-        szerosuit_catch_expression,
-        szerosuit_catch_dash_game,
-        szerosuit_catch_turn_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        szerosuit_paralyzer_bullet_shoot_game,
-        szerosuit_paralyzer_bullet_shoot_tame_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("szerosuit_paralyzer_bullet")
+        .acmd("game_shoot", szerosuit_paralyzer_bullet_shoot_game)
+        .acmd("game_shoottame", szerosuit_paralyzer_bullet_shoot_tame_game)
+        .install();
+    smashline::Agent::new("szerosuit")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_catch", szerosuit_catch_game)
+        .acmd("game_catchdash", szerosuit_catch_dash_game)
+        .acmd("game_catchturn", szerosuit_catch_turn_game)
+        .acmd("sound_catch", szerosuit_catch_sound)
+        .acmd("effect_catch", szerosuit_catch_effect)
+        .acmd("expression_catch", szerosuit_catch_expression)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", szerosuit_escape_air_game)
+        .acmd("game_escapeairslide", szerosuit_escape_air_slide_game)
+        .install();
+}

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 4.0/(8.0-1.0));
@@ -58,8 +58,8 @@ unsafe fn szerosuit_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit_whip", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_whip_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_whip_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 4.0/(8.0-1.0));
@@ -78,8 +78,8 @@ unsafe fn szerosuit_whip_attack_air_n_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "szerosuit", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn szerosuit_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -92,8 +92,8 @@ unsafe fn szerosuit_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -140,8 +140,8 @@ unsafe fn szerosuit_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -168,8 +168,8 @@ unsafe fn szerosuit_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -212,8 +212,8 @@ unsafe fn szerosuit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn szerosuit_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -228,8 +228,8 @@ unsafe fn szerosuit_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let dive_motion_rate = 10.0/(50.0-14.0);
@@ -267,8 +267,8 @@ unsafe fn szerosuit_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn szerosuit_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let dive_motion_rate = 15.0/(50.0-14.0);
@@ -288,15 +288,15 @@ unsafe fn szerosuit_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn szerosuit_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -304,8 +304,8 @@ unsafe fn szerosuit_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn szerosuit_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -315,8 +315,8 @@ unsafe fn szerosuit_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "szerosuit", script = "game_aircatch", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_air_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -357,28 +357,35 @@ unsafe fn szerosuit_air_catch_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "szerosuit", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn szerosuit_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_attack_air_n_game,
-        szerosuit_whip_attack_air_n_game,
-        szerosuit_attack_air_n_expression,
-        szerosuit_attack_air_f_game,
-        szerosuit_attack_air_b_game,
-        szerosuit_attack_air_hi_game,
-        szerosuit_attack_air_hi_effect,
-        szerosuit_attack_air_lw_game,
-        szerosuit_attack_air_lw_effect,
-        szerosuit_landing_air_lw_game,
-        szerosuit_landing_air_lw_expression,
-        szerosuit_landing_air_lw_effect,
-        szerosuit_landing_air_catch_game,
-        szerosuit_landing_air_catch_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("szerosuit")
+        .acmd("game_attackairn", szerosuit_attack_air_n_game)
+        .acmd("expression_attackairn", szerosuit_attack_air_n_expression)
+        .acmd("game_attackairf", szerosuit_attack_air_f_game)
+        .acmd("game_attackairb", szerosuit_attack_air_b_game)
+        .acmd("game_attackairhi", szerosuit_attack_air_hi_game)
+        .acmd("effect_attackairhi", szerosuit_attack_air_hi_effect)
+        .acmd("game_attackairlw", szerosuit_attack_air_lw_game)
+        .acmd("effect_attackairlw", szerosuit_attack_air_lw_effect)
+        .acmd("game_landingairlw", szerosuit_landing_air_lw_game)
+        .acmd("effect_landingairlw", szerosuit_landing_air_lw_effect)
+        .acmd(
+            "expression_landingairlw",
+            szerosuit_landing_air_lw_expression,
+        )
+        .acmd("game_aircatch", szerosuit_air_catch_game)
+        .acmd("game_aircatchlanding", szerosuit_landing_air_catch_game)
+        .install();
+    smashline::Agent::new("szerosuit_whip")
+        .acmd("game_attackairn", szerosuit_whip_attack_air_n_game)
+        .install();
+}
