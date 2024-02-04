@@ -258,31 +258,35 @@ unsafe fn ryu_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         return;
     }
 
-    // EX Tatsu
-    // if A+B on f4 and not already EX tatsu, set EX_SPECIAL flag
+    // enter EX if A+B on frame<5
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
     ])
     && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN)
     && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
-    && frame <= 7.0
-    && MeterModule::drain(boma.object(), 2) {
+    && frame < 5.0
+    && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 
-    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    // always use heavy during EX
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_S {
+        fighter.set_int(*FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        // no speed in EX
         KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    } 
-    // Tatsu gravity
-    // if holding special in the air, we float
-    // params have been modified to make us fall otherwise
-    else if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
+    } else if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
     && boma.is_situation(*SITUATION_KIND_AIR)
     && boma.is_button_on(Buttons::SpecialAll)
-    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
-    {
+    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0 {
+        // Tatsu gravity
+        // if holding special in the air, we float
+        // params have been modified to make us fall otherwise
         KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
