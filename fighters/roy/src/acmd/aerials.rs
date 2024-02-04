@@ -79,6 +79,23 @@ unsafe fn roy_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "roy", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
+unsafe fn roy_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_roy_rnd_attack_air"));
+        PLAY_SE(fighter, Hash40::new("se_roy_swing_s"));
+    }
+    wait(lua_state, 9.0);
+        if is_excute(fighter) {
+            PLAY_SEQUENCE(fighter, Hash40::new("seq_roy_rnd_attack"));
+            PLAY_SE(fighter, Hash40::new("se_roy_attackl_s01"));
+            
+    }
+}
+
 #[acmd_script( agent = "roy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -292,6 +309,7 @@ pub fn install() {
     install_acmd_scripts!(
         roy_attack_air_n_game,
         roy_attack_air_n_effect,
+        roy_attack_air_n_sound,
         roy_attack_air_f_game,
         roy_attack_air_f_expression,
         roy_attack_air_b_game,
