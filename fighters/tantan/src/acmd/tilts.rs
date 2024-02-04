@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "tantan", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn tantan_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -49,8 +49,8 @@ unsafe fn tantan_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "tantan", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut powerFactor = 1.0;
@@ -106,8 +106,8 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn tantan_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -140,8 +140,8 @@ unsafe fn tantan_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
-unsafe fn tantan_attack_lw3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut powerFactor = 1.0;
@@ -160,8 +160,8 @@ unsafe fn tantan_attack_lw3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_tantan_attack01_catch"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_attacklw3" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn tantan_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut powerFactor = 1.0;
@@ -184,8 +184,8 @@ unsafe fn tantan_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", scripts = ["game_attacks3hi","game_attacks3","game_attacks3lw"], category = ACMD_GAME, low_priority)]
-unsafe fn tantan_attack_s3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -211,8 +211,8 @@ unsafe fn tantan_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority)]
-unsafe fn tantan_attack_s3hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_s3hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     
     frame(lua_state, 6.0);
@@ -225,8 +225,8 @@ unsafe fn tantan_attack_s3hi_effect(fighter: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "effect_attacks3", category = ACMD_EFFECT, low_priority)]
-unsafe fn tantan_attack_s3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 6.0);
@@ -239,8 +239,8 @@ unsafe fn tantan_attack_s3_effect(fighter: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority)]
-unsafe fn tantan_attack_s3lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_s3lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 6.0);
@@ -254,8 +254,8 @@ unsafe fn tantan_attack_s3lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", scripts = ["sound_attacks3hi","sound_attacks3","sound_attacks3lw"], category = ACMD_SOUND, low_priority)]
-unsafe fn tantan_attack_s3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_s3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 3.0);
@@ -267,8 +267,8 @@ unsafe fn tantan_attack_s3_sound(fighter: &mut L2CAgentBase) {
         macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_tantan_rnd_attack01"));
     }
 }
-#[acmd_script( agent = "tantan", scripts = ["expression_attacks3hi","expression_attacks3","expression_attacks3lw"], category = ACMD_EXPRESSION, low_priority)]
-unsafe fn tantan_attack_s3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -289,21 +289,27 @@ unsafe fn tantan_attack_s3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        tantan_attack_hi3_game,
-
-        tantan_attack_lw3_game,
-        tantan_attack_lw3_effect,
-        tantan_attack_lw3_sound,
-        tantan_attack_lw3_expression,
-
-        tantan_attack_s3_game,
-        tantan_attack_s3hi_effect,
-        tantan_attack_s3_effect,
-        tantan_attack_s3lw_effect,
-        tantan_attack_s3_sound,
-        tantan_attack_s3_expression
-    );
+    smashline::Agent::new("tantan")
+        .acmd("game_attackhi3", tantan_attack_hi3_game)
+        .acmd("game_attacklw3", tantan_attack_lw3_game)
+        .acmd("effect_attacklw3", tantan_attack_lw3_effect)
+        .acmd("sound_attacklw3", tantan_attack_lw3_sound)
+        .acmd("expression_attacklw3", tantan_attack_lw3_expression)
+        .acmd("game_attacks3hi", tantan_attack_s3_game)
+        .acmd("game_attacks3", tantan_attack_s3_game)
+        .acmd("game_attacks3lw", tantan_attack_s3_game)
+        .acmd("effect_attacks3hi", tantan_attack_s3hi_effect)
+        .acmd("effect_attacks3", tantan_attack_s3_effect)
+        .acmd("effect_attacks3lw", tantan_attack_s3lw_effect)
+        .acmd("sound_attacks3hi", tantan_attack_s3_sound)
+        .acmd("sound_attacks3", tantan_attack_s3_sound)
+        .acmd("sound_attacks3lw", tantan_attack_s3_sound)
+        .acmd("expression_attacks3hi", tantan_attack_s3_expression)
+        .acmd("expression_attacks3", tantan_attack_s3_expression)
+        .acmd("expression_attacks3lw", tantan_attack_s3_expression)
+        .install();
 }
-
