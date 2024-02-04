@@ -11,7 +11,7 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="nobang_time">12</int>
+      <int hash="nobang_time">14</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -21,12 +21,7 @@
     <struct index="0">
       <float hash="accel_x">0.04</float>
       <float hash="speed_max_x">0.875</float>
-      <float hash="size_min">0.75</float>
-      <float hash="size_max">1.35</float>
-      <float hash="power_min">11</float>
-      <float hash="power_mul">0.15</float>
-      <int hash="bang_time">18</int>
-      <int hash="no_bomb_frame_on_button">12</int>
+      <int hash="bang_time">11</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -44,9 +39,10 @@
   <list hash="param_special_hi">
     <struct index="0">
       <int hash="stop_y_time">40</int>
-      <float hash="accel_y">0.001</float>
+      <float hash="accel_y">0.002</float>
       <int hash="time">0</int>
       <float hash="landing_frame">20</float>
+      <int hash="stop_time">20</int>
       <float hash="attack_speed">3.5</float>
       <float hash="bound_angle">85</float>
       <float hash="attack_brake">0.08</float>
