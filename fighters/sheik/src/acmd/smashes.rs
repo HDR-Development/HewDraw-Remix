@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "sheik", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sheik_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -48,8 +48,8 @@ unsafe fn sheik_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sheik_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -87,8 +87,8 @@ unsafe fn sheik_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
-unsafe fn sheik_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sheik_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,8 +111,8 @@ unsafe fn sheik_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sheik_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -152,12 +152,14 @@ unsafe fn sheik_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        sheik_attack_s4_s_game,
-        sheik_attack_hi4_game,
-        sheik_attack_hi4_effect,
-        sheik_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("sheik")
+        .acmd("game_attacks4", sheik_attack_s4_s_game)
+        .acmd("game_attackhi4", sheik_attack_hi4_game)
+        .acmd("effect_attackhi4", sheik_attack_hi4_effect)
+        .acmd("game_attacklw4", sheik_attack_lw4_game)
+        .install();
+}

@@ -94,8 +94,8 @@ pub unsafe extern "Rust" fn common_samusd(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_SAMUSD )]
-pub fn samusd_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn samusd_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		samusd_frame(fighter);
@@ -133,3 +133,9 @@ pub unsafe fn samusd_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 //         }
 //     }
 // }
+
+pub fn install() {
+    smashline::Agent::new("samusd")
+        .on_line(Main, samusd_frame_wrapper)
+        .install();
+}

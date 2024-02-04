@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "samus", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -20,8 +20,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn samus_turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn samus_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -35,8 +35,8 @@ unsafe fn samus_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samus_supermissile", script = "game_ready" , category = ACMD_GAME , low_priority)]
-unsafe fn samus_supermissile_ready_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn samus_supermissile_ready_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -46,8 +46,8 @@ unsafe fn samus_supermissile_ready_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samus_supermissile", script = "game_straight" , category = ACMD_GAME , low_priority)]
-unsafe fn samus_supermissile_straight_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn samus_supermissile_straight_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -56,8 +56,8 @@ unsafe fn samus_supermissile_straight_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samus_cshot", script = "game_shoot" , category = ACMD_GAME , low_priority)]
-unsafe fn samus_cshot_shoot_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn samus_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -68,8 +68,8 @@ unsafe fn samus_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samus_cshot", script = "sound_shoot", category = ACMD_SOUND, low_priority)]
-unsafe fn samus_cshot_shoot_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn samus_cshot_shoot_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -90,8 +90,8 @@ unsafe fn samus_cshot_shoot_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samus", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -106,8 +106,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -121,16 +121,22 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dash_sound,
-        samus_turn_dash_game,
-        samus_supermissile_ready_game,
-        samus_supermissile_straight_game,
-        samus_cshot_shoot_game,
-        samus_cshot_shoot_sound,
-        escape_air_game,
-        escape_air_slide_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("samus_supermissile")
+        .acmd("game_ready", samus_supermissile_ready_game)
+        .acmd("game_straight", samus_supermissile_straight_game)
+        .install();
+    smashline::Agent::new("samus_cshot")
+        .acmd("game_shoot", samus_cshot_shoot_game)
+        .acmd("sound_shoot", samus_cshot_shoot_sound)
+        .install();
+    smashline::Agent::new("samus")
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", samus_turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+}

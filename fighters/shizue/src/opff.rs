@@ -58,8 +58,7 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 //Lloid explode on hit
-#[smashline::weapon_frame_callback(main)]
-pub fn lloid_callback(weapon : &mut L2CFighterBase) {
+unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         if weapon.kind() != *WEAPON_KIND_SHIZUE_CLAYROCKET {
             return
@@ -153,8 +152,7 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
 }
  
 //Disable grab on fishingrod when pullingback
-#[smashline::weapon_frame_callback(main)]
-pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
+unsafe extern "C" fn fishingrod_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         let object_id = (*weapon.battle_object).battle_object_id;
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
@@ -282,8 +280,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fair_scale(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_SHIZUE )]
-pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
@@ -294,4 +292,17 @@ pub unsafe fn shizue_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("shizue")
+        .on_line(Main, shizue_frame_wrapper)
+        .install();
+
+    smashline::Agent::new("shizue_fishingrod")
+        .on_line(Main, fishingrod_callback)
+        .install();
+
+    smashline::Agent::new("shizue_clayrocket")
+        .on_line(Main, lloid_callback)
+        .install();
 }
