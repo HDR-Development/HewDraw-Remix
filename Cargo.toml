@@ -232,7 +232,7 @@ default = [
     "brave",
     "buddy",
     "captain",
-    # "chrom",
+    "chrom",
     # "cloud",
     "common",
     # "daisy",
