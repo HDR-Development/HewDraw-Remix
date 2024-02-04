@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "dedede", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -36,8 +36,8 @@ unsafe fn dedede_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -72,8 +72,8 @@ unsafe fn dedede_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.86);
@@ -100,8 +100,8 @@ unsafe fn dedede_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_attack100end", category = ACMD_GAME, low_priority )]
-unsafe fn dedede_attack_100_end_game(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_100_end_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -115,8 +115,8 @@ unsafe fn dedede_attack_100_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "effect_attack100end", category = ACMD_EFFECT, low_priority )]
-unsafe fn dedede_attack_100_end_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_100_end_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -140,13 +140,15 @@ unsafe fn dedede_attack_100_end_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dedede_attack_11_game,
-        dedede_attack_12_game,
-        dedede_attack_dash_game,
-        dedede_attack_100_end_game,
-        dedede_attack_100_end_effect,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("dedede")
+        .acmd("game_attack11", dedede_attack_11_game)
+        .acmd("game_attack12", dedede_attack_12_game)
+        .acmd("game_attackdash", dedede_attack_dash_game)
+        .acmd("game_attack100end", dedede_attack_100_end_game)
+        .acmd("effect_attack100end", dedede_attack_100_end_effect)
+        .install();
+}

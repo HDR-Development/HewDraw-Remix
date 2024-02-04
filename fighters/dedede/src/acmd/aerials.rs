@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "dedede", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -36,8 +36,8 @@ unsafe fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede", script = "expression_landingairn" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -51,8 +51,8 @@ unsafe fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -82,8 +82,8 @@ unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn dedede_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -117,8 +117,8 @@ unsafe fn dedede_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dedede_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -132,8 +132,8 @@ unsafe fn dedede_attack_air_f_expression(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "dedede", script = "expression_landingairf" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -147,8 +147,8 @@ unsafe fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -182,8 +182,8 @@ unsafe fn dedede_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dedede_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -194,8 +194,8 @@ unsafe fn dedede_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -206,8 +206,8 @@ unsafe fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dedede_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -220,8 +220,8 @@ unsafe fn dedede_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "expression_landingairb" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dedede_landing_air_b_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_landing_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -235,8 +235,8 @@ unsafe fn dedede_landing_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -278,8 +278,8 @@ unsafe fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede", script = "expression_landingairhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dedede_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -289,8 +289,8 @@ unsafe fn dedede_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -334,8 +334,8 @@ unsafe fn dedede_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dedede_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -345,22 +345,24 @@ unsafe fn dedede_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        dedede_attack_air_n_game,
-        dedede_landing_air_n_expression,
-        dedede_attack_air_f_game,
-        dedede_attack_air_f_expression,
-        dedede_landing_air_f_expression,
-        dedede_attack_air_f_effect,
-        dedede_attack_air_b_game,
-        dedede_attack_air_b_effect,
-        dedede_attack_air_b_sound,
-        dedede_attack_air_b_expression,
-        dedede_landing_air_b_expression,
-        dedede_attack_air_hi_game,
-        dedede_landing_air_hi_expression,
-        dedede_attack_air_lw_game,
-        dedede_landing_air_lw_expression,
-    );
+    smashline::Agent::new("dedede")
+        .acmd("game_attackairn", dedede_attack_air_n_game)
+        .acmd("expression_landingairn", dedede_landing_air_n_expression)
+        .acmd("game_attackairf", dedede_attack_air_f_game)
+        .acmd("effect_attackairf", dedede_attack_air_f_effect)
+        .acmd("expression_attackairf", dedede_attack_air_f_expression)
+        .acmd("expression_landingairf", dedede_landing_air_f_expression)
+        .acmd("game_attackairb", dedede_attack_air_b_game)
+        .acmd("effect_attackairb", dedede_attack_air_b_effect)
+        .acmd("sound_attackairb", dedede_attack_air_b_sound)
+        .acmd("expression_attackairb", dedede_attack_air_b_expression)
+        .acmd("expression_landingairb", dedede_landing_air_b_expression)
+        .acmd("game_attackairhi", dedede_attack_air_hi_game)
+        .acmd("expression_landingairhi", dedede_landing_air_hi_expression)
+        .acmd("game_attackairlw", dedede_attack_air_lw_game)
+        .acmd("expression_landingairlw", dedede_landing_air_lw_expression)
+        .install();
 }

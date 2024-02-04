@@ -9,27 +9,10 @@ mod special_s_jump;
 mod special_hi;
 
 
-pub fn install() {
-    install_status_scripts!(
-        end_jump_squat
-    );
-    smashline::install_agent_init_callbacks!(diddy_init);
-    special_n::install();
-
-    special_s::install();
-    special_s_jump::install();
-
-    special_hi::install();
-}
-
-pub fn add_statuses() {
-    special_n::install_custom();
-}
-
 // FIGHTER_STATUS_KIND_JUMP_SQUAT
 
-#[status_script(agent = "diddy", status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn end_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn end_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_JumpSquat();
     0.into()
 }
@@ -52,8 +35,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn diddy_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn diddy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_DIDDY {
@@ -61,4 +44,15 @@ fn diddy_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
         }
     }
+}
+
+pub fn install() {
+    special_n::install();
+    special_s::install();
+    special_s_jump::install();
+    special_hi::install();
+    smashline::Agent::new("diddy")
+        .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, end_jump_squat)
+        .on_init(diddy_init)
+        .install();
 }

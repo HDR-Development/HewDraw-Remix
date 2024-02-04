@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "dolly", script = "game_specialn" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -28,8 +28,8 @@ unsafe fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsfstart" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -62,8 +62,8 @@ unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialsfstart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);    
@@ -104,8 +104,8 @@ unsafe fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairsfstart" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -138,8 +138,8 @@ unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialairsfstart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);    
@@ -180,8 +180,8 @@ unsafe fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsfattack" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -296,8 +296,8 @@ unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialsfattack" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -403,8 +403,8 @@ unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsfend" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -412,8 +412,8 @@ unsafe fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairsfend" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -422,8 +422,8 @@ unsafe fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsbstart" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -458,8 +458,8 @@ unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialsbstart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_b_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -485,8 +485,8 @@ unsafe fn dolly_special_b_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairsbstart" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -521,8 +521,8 @@ unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialairsbstart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_air_b_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_b_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -547,8 +547,8 @@ unsafe fn dolly_special_air_b_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsbattackw" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut add_jump_h_speed = -1.4;
@@ -726,8 +726,8 @@ unsafe fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialsbattackw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -810,8 +810,8 @@ unsafe fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsbattack" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let  mut add_jump_h_speed = -1.0;
@@ -978,8 +978,8 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialsbattack" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1062,8 +1062,8 @@ unsafe fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialsbend" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1077,8 +1077,8 @@ unsafe fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialhi1" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1227,8 +1227,8 @@ unsafe fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialhicommand" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1440,8 +1440,8 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialhicommand" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -1657,8 +1657,8 @@ unsafe fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairhi1" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1778,8 +1778,8 @@ unsafe fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairhicommand" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1991,8 +1991,8 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialairhicommand" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -2208,8 +2208,8 @@ unsafe fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialhifall" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2219,8 +2219,8 @@ unsafe fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairhiend" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2229,8 +2229,8 @@ unsafe fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -2256,8 +2256,8 @@ unsafe fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -2277,8 +2277,8 @@ unsafe fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairlwrisew" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2348,8 +2348,8 @@ unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialairlwrisew" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_lw_w_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_w_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2365,8 +2365,8 @@ unsafe fn dolly_special_lw_w_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairlwrise" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2442,8 +2442,8 @@ unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialairlwrise" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2496,8 +2496,8 @@ unsafe fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
             
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -2739,8 +2739,8 @@ unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2800,8 +2800,8 @@ unsafe fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_speciallwend" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2877,8 +2877,8 @@ unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_speciallwend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_special_lw_landing_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_special_lw_landing_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2908,8 +2908,8 @@ unsafe fn dolly_special_lw_landing_effect(fighter: &mut L2CAgentBase) {
     }   
 }
 
-#[acmd_script( agent = "dolly", script = "game_superspecial" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -2959,8 +2959,8 @@ unsafe fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_superspecial" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -3001,8 +3001,8 @@ unsafe fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_superspecial2start" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -3074,8 +3074,8 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_superspecial2start" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -3135,8 +3135,8 @@ unsafe fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_superspecial2" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_super_special_2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dolly_super_special_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -3163,49 +3163,51 @@ unsafe fn dolly_super_special_2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_special_n_game,
-        dolly_special_f_start_game,
-        dolly_special_f_start_effect,
-        dolly_special_air_f_start_game,
-        dolly_special_air_f_start_effect,
-        dolly_special_f_attack_game,
-        dolly_special_f_attack_effect,
-        dolly_special_f_end_game,
-        dolly_special_air_f_end_game,
-        dolly_special_b_start_game,
-        dolly_special_b_start_effect,
-        dolly_special_air_b_start_game,
-        dolly_special_air_b_start_effect,
-        dolly_special_b_attack_w_game,
-        dolly_special_b_attack_w_effect,
-        dolly_special_b_attack_game,
-        dolly_special_b_attack_effect,
-        dolly_special_b_end_game,
-        dolly_special_hi1_game,
-        dolly_special_hi_command_game,
-        dolly_special_hi_command_effect,
-        dolly_special_air_hi_command_effect,
-        dolly_special_air_hi1_game,
-        dolly_special_air_hi_command_game,
-        dolly_special_hi_fall_game,
-        dolly_special_air_hi_end_game,
-        dolly_special_lw_start_game,
-        dolly_special_air_lw_start_game,
-        dolly_special_lw_w_game,
-        dolly_special_lw_w_effect,
-        dolly_special_lw_game,
-        dolly_special_lw_effect,
-        dolly_special_lw_attack_game,
-        dolly_special_lw_attack_effect,
-        dolly_special_lw_landing_game,
-        dolly_special_lw_landing_effect,
-        dolly_super_special_game,
-        dolly_super_special_effect,
-        dolly_super_special_2_start_game,
-        dolly_super_special_2_start_effect,
-        dolly_super_special_2_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("dolly")
+        .acmd("game_specialn", dolly_special_n_game)
+        .acmd("game_specialsfstart", dolly_special_f_start_game)
+        .acmd("effect_specialsfstart", dolly_special_f_start_effect)
+        .acmd("game_specialairsfstart", dolly_special_air_f_start_game)
+        .acmd("effect_specialairsfstart", dolly_special_air_f_start_effect)
+        .acmd("game_specialsfattack", dolly_special_f_attack_game)
+        .acmd("effect_specialsfattack", dolly_special_f_attack_effect)
+        .acmd("game_specialsfend", dolly_special_f_end_game)
+        .acmd("game_specialairsfend", dolly_special_air_f_end_game)
+        .acmd("game_specialsbstart", dolly_special_b_start_game)
+        .acmd("effect_specialsbstart", dolly_special_b_start_effect)
+        .acmd("game_specialairsbstart", dolly_special_air_b_start_game)
+        .acmd("effect_specialairsbstart", dolly_special_air_b_start_effect)
+        .acmd("game_specialsbattackw", dolly_special_b_attack_w_game)
+        .acmd("effect_specialsbattackw", dolly_special_b_attack_w_effect)
+        .acmd("game_specialsbattack", dolly_special_b_attack_game)
+        .acmd("effect_specialsbattack", dolly_special_b_attack_effect)
+        .acmd("game_specialsbend", dolly_special_b_end_game)
+        .acmd("game_specialhi1", dolly_special_hi1_game)
+        .acmd("game_specialhicommand", dolly_special_hi_command_game)
+        .acmd("effect_specialhicommand", dolly_special_hi_command_effect)
+        .acmd("game_specialairhi1", dolly_special_air_hi1_game)
+        .acmd("game_specialairhicommand", dolly_special_air_hi_command_game)
+        .acmd("effect_specialairhicommand", dolly_special_air_hi_command_effect)
+        .acmd("game_specialhifall", dolly_special_hi_fall_game)
+        .acmd("game_specialairhiend", dolly_special_air_hi_end_game)
+        .acmd("game_speciallwstart", dolly_special_lw_start_game)
+        .acmd("game_specialairlwstart", dolly_special_air_lw_start_game)
+        .acmd("game_specialairlwrisew", dolly_special_lw_w_game)
+        .acmd("effect_specialairlwrisew", dolly_special_lw_w_effect)
+        .acmd("game_specialairlwrise", dolly_special_lw_game)
+        .acmd("effect_specialairlwrise", dolly_special_lw_effect)
+        .acmd("game_specialairlw", dolly_special_lw_attack_game)
+        .acmd("effect_specialairlw", dolly_special_lw_attack_effect)
+        .acmd("game_speciallwend", dolly_special_lw_landing_game)
+        .acmd("effect_speciallwend", dolly_special_lw_landing_effect)
+        .acmd("game_superspecial", dolly_super_special_game)
+        .acmd("effect_superspecial", dolly_super_special_effect)
+        .acmd("game_superspecial2start", dolly_super_special_2_start_game)
+        .acmd("effect_superspecial2start", dolly_super_special_2_start_effect)
+        .acmd("game_superspecial2", dolly_super_special_2_game)
+        .install();
+}

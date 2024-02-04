@@ -35,8 +35,8 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
     }
 }
 
-#[smashline::fighter_init]
-fn daisy_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_DAISY {
@@ -49,7 +49,7 @@ fn daisy_init(fighter: &mut L2CFighterCommon) {
 
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(daisy_init);
+    smashline::Agent::new("daisy").on_init(daisy_init).install();
     special_s::install();
     special_lw::install();
 }

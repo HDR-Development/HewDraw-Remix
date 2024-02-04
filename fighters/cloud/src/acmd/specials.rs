@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "cloud", script = "game_specials1" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -42,8 +42,8 @@ unsafe fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -79,8 +79,8 @@ unsafe fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specials2" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -113,8 +113,8 @@ unsafe fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairs2" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -150,8 +150,8 @@ unsafe fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specials1_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -179,8 +179,8 @@ unsafe fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairs1_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -208,8 +208,8 @@ unsafe fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specials2_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -234,8 +234,8 @@ unsafe fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairs2_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
@@ -260,8 +260,8 @@ unsafe fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specials3_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -323,8 +323,8 @@ unsafe fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairs3_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -382,8 +382,8 @@ unsafe fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -452,8 +452,8 @@ unsafe fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 1.0);
@@ -493,8 +493,8 @@ unsafe fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialhi2fall" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -520,8 +520,8 @@ unsafe fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialhi_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -597,8 +597,8 @@ unsafe fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairhi_lb" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -674,8 +674,8 @@ unsafe fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -730,8 +730,8 @@ unsafe fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_special_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -786,25 +786,27 @@ unsafe fn cloud_special_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_special_s1_game,
-        cloud_special_air_s1_game,
-        cloud_special_s2_game,
-        cloud_special_air_s2_game,
-        cloud_special_s1_lb_game,
-        cloud_special_air_s1_lb_game,
-        cloud_special_s2_lb_game,
-        cloud_special_air_s2_lb_game,
-        cloud_special_s3_lb_game,
-        cloud_special_air_s3_lb_game,
-        cloud_special_hi_game,
-        cloud_special_hi2_game,
-        cloud_special_hi2_fall_game,
-        cloud_special_hi_lb_game,
-        cloud_special_air_hi_lb_game,
-        cloud_special_lw_game,
-        cloud_special_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("cloud")
+        .acmd("game_specials1", cloud_special_s1_game)
+        .acmd("game_specialairs1", cloud_special_air_s1_game)
+        .acmd("game_specials2", cloud_special_s2_game)
+        .acmd("game_specialairs2", cloud_special_air_s2_game)
+        .acmd("game_specials1_lb", cloud_special_s1_lb_game)
+        .acmd("game_specialairs1_lb", cloud_special_air_s1_lb_game)
+        .acmd("game_specials2_lb", cloud_special_s2_lb_game)
+        .acmd("game_specialairs2_lb", cloud_special_air_s2_lb_game)
+        .acmd("game_specials3_lb", cloud_special_s3_lb_game)
+        .acmd("game_specialairs3_lb", cloud_special_air_s3_lb_game)
+        .acmd("game_specialhi", cloud_special_hi_game)
+        .acmd("game_specialhi2", cloud_special_hi2_game)
+        .acmd("game_specialhi2fall", cloud_special_hi2_fall_game)
+        .acmd("game_specialhi_lb", cloud_special_hi_lb_game)
+        .acmd("game_specialairhi_lb", cloud_special_air_hi_lb_game)
+        .acmd("game_speciallw", cloud_special_lw_game)
+        .acmd("game_specialairlw", cloud_special_air_lw_game)
+        .install();
+}
