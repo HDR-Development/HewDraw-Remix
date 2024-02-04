@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "marth", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -35,8 +35,8 @@ unsafe fn marth_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -62,8 +62,8 @@ unsafe fn marth_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -88,8 +88,8 @@ unsafe fn marth_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -131,8 +131,8 @@ unsafe fn marth_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -160,8 +160,8 @@ unsafe fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -189,8 +189,8 @@ unsafe fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -218,8 +218,8 @@ unsafe fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -247,8 +247,8 @@ unsafe fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -301,8 +301,8 @@ unsafe fn marth_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn marth_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -354,19 +354,20 @@ unsafe fn marth_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+
 
 pub fn install() {
-    install_acmd_scripts!(
-        marth_attack_s4_s_game,
-        marth_attack_s4_s_effect,
-        marth_attack_hi4_game,
-        marth_attack_lw4_game,
-        marth_special_s4_hi_effect,
-        marth_special_air_s4_hi_effect,
-        marth_special_s4_s_effect,
-        marth_special_air_s4_s_effect,
-        marth_special_s4_lw_effect,
-        marth_special_air_s4_lw_effect,
-    );
+    smashline::Agent::new("marth")
+        .acmd("game_attacks4", marth_attack_s4_s_game)
+        .acmd("effect_attacks4", marth_attack_s4_s_effect)
+        .acmd("game_attackhi4", marth_attack_hi4_game)
+        .acmd("game_attacklw4", marth_attack_lw4_game)
+        .acmd("effect_specials4hi", marth_special_s4_hi_effect)
+        .acmd("effect_specialairs4hi", marth_special_air_s4_hi_effect)
+        .acmd("effect_specials4s", marth_special_s4_s_effect)
+        .acmd("effect_specialairs4s", marth_special_air_s4_s_effect)
+        .acmd("effect_specials4lw", marth_special_s4_lw_effect)
+        .acmd("effect_specialairs4lw", marth_special_air_s4_lw_effect)
+        .install();
 }
-
