@@ -24,7 +24,7 @@ use smash_script::{macros::*, *};
 use smashline::*;
 use utils::{consts::*, ext::*, util::*, *};
 
-pub fn install(_: bool) {
+pub fn install() {
     acmd::install();
     status::install();
     opff::install();

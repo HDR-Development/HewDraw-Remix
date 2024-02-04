@@ -486,8 +486,8 @@ pub fn install() {
             luigi_special_n_thunder_expression,
         )
         .acmd("game_specialairsstart", game_specialairsstart)
-        .acmd("effect_specialsstart", luigi_special_s_start_game)
-        .acmd("effect_specialairsstart", luigi_special_s_start_game)
+        .acmd("effect_specialsstart", luigi_special_s_start_effect)
+        .acmd("effect_specialairsstart", luigi_special_s_start_effect)
         .acmd("effect_specialshold", effect_specialshold)
         .acmd("effect_specialairshold", effect_specialairshold)
         .acmd("game_specials", game_specials)

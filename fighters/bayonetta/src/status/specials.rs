@@ -48,7 +48,7 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             fighter.set_situation(SITUATION_KIND_AIR.into());
             GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            if frame < 45 {fighter.change_status(statuses::bayonetta::SPECIAL_S_EDGE.into(), false);}
+            if frame < 45 {fighter.change_status(statuses::bayonetta::SPECIAL_S_EDGE.into(), false.into());}
         }
     }
     0.into()

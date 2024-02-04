@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "younglink", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn younglink_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -20,8 +20,8 @@ unsafe fn younglink_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "younglink", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn younglink_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -46,8 +46,8 @@ unsafe fn younglink_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn younglink_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -63,11 +63,13 @@ unsafe fn younglink_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        younglink_attack_s3_s_game,
-        younglink_attack_lw3_game,
-        younglink_attack_hi3_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("younglink")
+        .acmd("game_attacks3", younglink_attack_s3_s_game)
+        .acmd("game_attacklw3", younglink_attack_lw3_game)
+        .acmd("game_attackhi3", younglink_attack_hi3_game)
+        .install();
+}

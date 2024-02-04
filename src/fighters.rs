@@ -2,7 +2,7 @@ macro_rules! install_fighters {
     ($func:ident; $($name:ident = $feature:expr),*) => {{
         $(
             #[cfg(feature = $feature)]
-            { $name::$func(cfg!(feature = "runtime")) }
+            { $name::$func() }
         )*
     }}
 }

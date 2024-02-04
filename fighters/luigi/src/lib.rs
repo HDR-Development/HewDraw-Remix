@@ -68,7 +68,7 @@ pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install(_: bool) {
+pub fn install() {
     status::install();
     acmd::install();
     opff::install();

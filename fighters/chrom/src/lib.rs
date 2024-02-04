@@ -38,7 +38,7 @@ use utils::{
 use smashline::*;
 
 
-pub fn install(_: bool) {
+pub fn install() {
     acmd::install();
     opff::install();
     status::install();

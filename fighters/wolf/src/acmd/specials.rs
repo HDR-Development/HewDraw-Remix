@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "wolf", scripts = ["game_specialsend", "game_specialairsend"] , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -24,8 +23,8 @@ unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wolf", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -49,8 +48,8 @@ unsafe fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wolf", script = "game_specialhifall" , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_special_hi_fall_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -72,8 +71,8 @@ unsafe fn wolf_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "wolf", scripts = ["effect_specialairsend", "effect_specialsend"], category = ACMD_EFFECT, low_priority)]
-unsafe fn wolf_special_s_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_s_end_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash_scratch"), Hash40::new("top"), 5, 13, 0, -40, 0, 0, 0.45, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 2);
@@ -85,8 +84,8 @@ unsafe fn wolf_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "wolf", scripts = ["game_specialairs", "game_specials"], category = ACMD_GAME, low_priority)]
-unsafe fn wolf_special_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_s_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.5);
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
@@ -98,15 +97,15 @@ unsafe fn wolf_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "wolf_illusion", scripts = ["game_moveair", "game_moveground"], category = ACMD_GAME, low_priority)]
-unsafe fn wolf_illusion_move_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_illusion_move_game(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         // macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 60, 60, 0, 68, 3.0, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
     }
 }
 
-#[acmd_script(agent = "wolf", scripts = ["effect_specialairs", "effect_specials"], category = ACMD_EFFECT, low_priority)]
-unsafe fn wolf_special_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_s_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash"), Hash40::new("top"), -3, 5.5, 0, 65, 0, 0, 0.75, false);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
@@ -114,8 +113,8 @@ unsafe fn wolf_special_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "wolf", scripts = ["sound_specialairs", "sound_specials"], category = ACMD_SOUND, low_priority)]
-unsafe fn wolf_special_s_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_s_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.33);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_wolf_special_s01"));
@@ -123,8 +122,8 @@ unsafe fn wolf_special_s_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "wolf", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority)]
-unsafe fn wolf_special_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, -1);
@@ -159,8 +158,8 @@ unsafe fn wolf_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wolf", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wolf_special_n_effect (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_n_effect (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -190,8 +189,8 @@ unsafe fn wolf_special_n_effect (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "wolf", script = "effect_specialairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wolf_special_air_n_effect (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_air_n_effect (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -216,8 +215,8 @@ unsafe fn wolf_special_air_n_effect (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "wolf", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -234,8 +233,8 @@ unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wolf", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -252,8 +251,8 @@ unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wolf", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn wolf_special_lw_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_lw_start_effect(fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -278,8 +277,8 @@ unsafe fn wolf_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wolf", scripts = ["sound_speciallwstart", "sound_specialairlwstart"] , category = ACMD_SOUND , low_priority)]
-unsafe fn wolf_special_lw_start_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_lw_start_sound(fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 0.0);
@@ -288,8 +287,8 @@ unsafe fn wolf_special_lw_start_sound(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "wolf", script = "expression_speciallwstart" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wolf_special_lw_start_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_lw_start_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -306,8 +305,8 @@ unsafe fn wolf_special_lw_start_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wolf", script = "expression_specialairlwstart" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wolf_special_air_lw_start_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wolf_special_air_lw_start_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -324,23 +323,32 @@ unsafe fn wolf_special_air_lw_start_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wolf_special_air_n_game,
-        wolf_special_n_effect,
-        wolf_special_air_n_effect,
-        wolf_special_s_game,
-        wolf_special_s_effect,
-        wolf_special_s_sound,
-        wolf_illusion_move_game,
-        wolf_special_s_end_game,
-        wolf_special_s_end_effect,
-        wolf_special_hi_game,
-        wolf_special_lw_start_game,
-        wolf_special_air_lw_start_game,
-        wolf_special_hi_fall_game,
-        wolf_special_lw_start_effect,
-        wolf_special_lw_start_sound,
-        wolf_special_lw_start_expression,
-        wolf_special_air_lw_start_expression,
-    );
+    smashline::Agent::new("wolf")
+        .acmd("game_specialsend", wolf_special_s_end_game)
+        .acmd("game_specialairsend", wolf_special_s_end_game)
+        .acmd("game_specialhi", wolf_special_hi_game)
+        .acmd("game_specialhifall", wolf_special_hi_fall_game)
+        .acmd("game_speciallwstart", wolf_special_lw_start_game)
+        .acmd("game_specialairlwstart", wolf_special_air_lw_start_game)
+        .acmd("effect_speciallwstart", wolf_special_lw_start_effect)
+        .acmd("effect_specialairlwstart", wolf_special_lw_start_effect)
+        .acmd("sound_speciallwstart", wolf_special_lw_start_sound)
+        .acmd("sound_specialairlwstart", wolf_special_lw_start_sound)
+        .acmd("effect_specialairsend", wolf_special_s_end_effect)
+        .acmd("effect_specialsend", wolf_special_s_end_effect)
+        .acmd("game_specialairs", wolf_special_s_game)
+        .acmd("game_specials", wolf_special_s_game)
+        .acmd("effect_specialairs", wolf_special_s_effect)
+        .acmd("effect_specials", wolf_special_s_effect)
+        .acmd("sound_specialairs", wolf_special_s_sound)
+        .acmd("sound_specials", wolf_special_s_sound)
+        .acmd("game_specialn", wolf_special_air_n_game)
+        .acmd("game_specialairn", wolf_special_air_n_game)
+        .acmd("effect_specialn", wolf_special_n_effect)
+        .acmd("effect_specialairn", wolf_special_air_n_effect)
+        .install();
+    smashline::Agent::new("wolf_illusion")
+        .acmd("game_moveair", wolf_illusion_move_game)
+        .acmd("game_moveground", wolf_illusion_move_game)
+        .install();
 }
