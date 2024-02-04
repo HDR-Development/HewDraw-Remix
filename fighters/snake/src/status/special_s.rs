@@ -2,15 +2,11 @@ use super::*;
 use globals::*;
  
 
-pub fn install() {
-    install_status_scripts!(
-        snake_side_special_status_main
-    );
-}
+
 
 ////side-special tranq gun
-#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn snake_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
     fighter.set_int64(hash40("special_s_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
@@ -69,4 +65,13 @@ pub unsafe fn change_motion_by_situation(fighter: &mut L2CFighterCommon, skip_ch
         let motion = fighter.get_int64(*FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }
+}
+pub fn install() {
+    smashline::Agent::new("snake")
+        .status(
+            Main,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            snake_side_special_status_main,
+        )
+        .install();
 }

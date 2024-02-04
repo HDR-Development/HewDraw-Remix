@@ -3,14 +3,10 @@ use globals::*;
 use smashline::*;
 
 
-pub fn install() {
-    install_status_scripts!(
-        pre_special_s, main_special_s
-    );
-}
 
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+
+pub unsafe extern "C" fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
 	StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -45,8 +41,8 @@ pub unsafe fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     // fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_s"), L2CValue::Hash40s("special_air_s"), false.into());
     VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_START);
     MotionModule::change_motion(
@@ -312,4 +308,11 @@ unsafe fn sonic_special_s_ledge_cancel_helper(fighter: &mut L2CFighterCommon) {
         );
     }
     VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_END);
+}
+
+pub fn install() {
+    smashline::Agent::new("sonic")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, pre_special_s)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, main_special_s)
+        .install();
 }

@@ -36,8 +36,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn sonic_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn sonic_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_SONIC {
@@ -46,12 +46,12 @@ fn sonic_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
             fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+        }
     }
 }
-}
+
 
 pub fn install() {
-    install_agent_init_callbacks!(sonic_init);
     wait::install();
     dash::install();
     special_n::install();
@@ -60,4 +60,6 @@ pub fn install() {
     special_lw_hold::install();
     special_hi::install();
     special_n_hit::install();
+
+    smashline::Agent::new("sonic").on_init(sonic_init).install();
 }
