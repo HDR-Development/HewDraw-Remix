@@ -12,8 +12,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn mario_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn mario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_MARIO {
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
@@ -22,6 +22,6 @@ fn mario_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(mario_init);
     special_n::install();
+    smashline::Agent::new("mario").on_init(mario_init).install();
 }

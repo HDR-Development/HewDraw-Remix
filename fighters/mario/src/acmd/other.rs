@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "mario", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +27,8 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +53,8 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +79,8 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +95,8 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +121,8 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_utauntr(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mario_utauntr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -138,8 +138,8 @@ unsafe fn mario_utauntr(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_utauntl(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mario_utauntl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -155,8 +155,8 @@ unsafe fn mario_utauntl(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -166,8 +166,8 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -181,8 +181,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -198,8 +198,8 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -214,8 +214,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -229,8 +229,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario_fireball", script = "game_regular" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -248,8 +248,8 @@ unsafe fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
 }
 
 // Removing flood projectile, properties, and sounds
-#[acmd_script( agent = "mario_pump", script = "effect_light", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_light(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /*
@@ -264,8 +264,8 @@ unsafe fn effect_light(fighter: &mut L2CAgentBase) {
     */
 }
 
-#[acmd_script( agent = "mario_pumpwater", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn game_regular(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /* 
@@ -276,8 +276,8 @@ unsafe fn game_regular(fighter: &mut L2CAgentBase) {
     */
 }
 
-#[acmd_script( agent = "mario_pumpwater", script = "effect_regular", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_regular(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /*
@@ -287,21 +287,21 @@ unsafe fn effect_regular(fighter: &mut L2CAgentBase) {
     */
 }
 
-#[acmd_script( agent = "mario_pumpwater", script = "effect_hit", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_hit(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_hit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "mario_pumpwater", script = "effect_clash", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_clash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_clash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "mario_pumpwater", script = "sound_regular", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_regular(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /*
@@ -312,8 +312,8 @@ unsafe fn sound_regular(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "mario", script = "game_appealsl", category = ACMD_GAME, low_priority )]
-unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_appealsl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -329,8 +329,8 @@ unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_appealsr", category = ACMD_GAME, low_priority )]
-unsafe fn game_appealsr(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_appealsr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -346,8 +346,8 @@ unsafe fn game_appealsr(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["expression_appealsl", "expression_appealsr"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_appeals(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -375,30 +375,38 @@ unsafe fn expression_appeals(fighter: &mut L2CAgentBase) {
 
 
 
-pub fn install() {
-    install_acmd_scripts!(
-        //mario_utauntr,
-        //mario_utauntl,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        escape_air_game,
-        escape_air_slide_game,
-        mario_fireball_regular_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound,
-        effect_light,
-        game_regular,
-        effect_regular,
-        effect_hit,
-        effect_clash,
-        sound_regular,
-        game_appealsl,
-        game_appealsr,
-        expression_appeals
-    );
-}
 
+
+pub fn install() {
+    smashline::Agent::new("mario_fireball")
+        .game_acmd("game_regular", mario_fireball_regular_game)
+        .install();
+    smashline::Agent::new("mario_pump")
+        .effect_acmd("effect_light", effect_light)
+        .install();
+    smashline::Agent::new("mario_pumpwater")
+        .game_acmd("game_regular", game_regular)
+        .effect_acmd("effect_regular", effect_regular)
+        .effect_acmd("effect_hit", effect_hit)
+        .effect_acmd("effect_clash", effect_clash)
+        .sound_acmd("sound_regular", sound_regular)
+        .install();
+    smashline::Agent::new("mario")
+        .sound_acmd("sound_damageflyhi", damageflyhi_sound)
+        .sound_acmd("sound_damageflylw", damageflylw_sound)
+        .sound_acmd("sound_damageflyn", damageflyn_sound)
+        .sound_acmd("sound_damageflyroll", damageflyroll_sound)
+        .sound_acmd("sound_damageflytop", damageflytop_sound)
+        .game_acmd("game_appealhir", mario_utauntr)
+        .game_acmd("game_appealhil", mario_utauntl)
+        .game_acmd("game_dash", dash_game)
+        .sound_acmd("sound_dash", dash_sound)
+        .game_acmd("game_turndash", turn_dash_game)
+        .game_acmd("game_escapeair", escape_air_game)
+        .game_acmd("game_escapeairslide", escape_air_slide_game)
+        .game_acmd("game_appealsl", game_appealsl)
+        .game_acmd("game_appealsr", game_appealsr)
+        .expression_acmd("expression_appealsl", expression_appeals)
+        .expression_acmd("expression_appealsr", expression_appeals)
+        .install();
+}
