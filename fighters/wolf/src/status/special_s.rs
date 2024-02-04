@@ -4,7 +4,7 @@ use globals::*;
 use vars::wolf::status::*;
 use consts::statuses::wolf::*;
 
-#[status_script(agent = "wolf", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+
 unsafe extern "C" fn special_s_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -35,7 +35,7 @@ unsafe extern "C" fn special_s_start_pre(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "wolf", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+
 unsafe extern "C" fn special_s_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.set_int(-1, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME);
     fighter.set_int(0, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_REVERT_ANGLE_COUNT);
@@ -107,12 +107,12 @@ unsafe extern "C" fn special_s_start_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "wolf", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+
 unsafe extern "C" fn special_s_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "wolf", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+
 unsafe extern "C" fn special_s_start_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.set_int_from_param(*FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME, "param_special_s", "illusion_stop_y_frame");
     let total_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -136,7 +136,7 @@ unsafe extern "C" fn special_s_start_init(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "wolf", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+
 unsafe extern "C" fn special_s_start_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_situation(*SITUATION_KIND_AIR) {
         return 0.into();
@@ -422,8 +422,8 @@ unsafe extern "C" fn special_s_end_exec(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 
-#[fighter_init]
-fn wolf_init(fighter: &mut L2CFighterCommon) {
+
+extern "C" fn wolf_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_WOLF {
             return;
@@ -436,34 +436,21 @@ fn wolf_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_s_start_pre,
-        special_s_start_main,
-        special_s_start_end,
-        special_s_start_exec,
-        special_s_start_init
-    );
-    install_agent_init_callbacks!(wolf_init);
-}
-
-pub fn add_statuses() {
-    CustomStatusManager::add_new_agent_status_script(
-        "fighter_kind_wolf".to_hash(),
-        SPECIAL_S_RUSH,
-        StatusInfo::new()
-            .with_pre(special_s_rush_pre)
-            .with_main(special_s_rush_main)
-            .with_end(special_s_rush_end)
-            .with_init(special_s_rush_init)    
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        "fighter_kind_wolf".to_hash(),
-        SPECIAL_S_END,
-        StatusInfo::new()
-            .with_pre(special_s_end_pre)
-            .with_main(special_s_end_main)
-            .with_end(special_s_end_end)
-            .with_init(special_s_end_init)
-            .with_exec(special_s_end_exec)
-    );
+    smashline::Agent::new("wolf")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_main)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_end)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_init)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_exec)
+        .status(Pre, SPECIAL_S_RUSH, special_s_rush_pre)
+        .status(Main, SPECIAL_S_RUSH, special_s_rush_main)
+        .status(End, SPECIAL_S_RUSH, special_s_rush_end)
+        .status(Init, SPECIAL_S_RUSH, special_s_rush_init)
+        .status(Pre, SPECIAL_S_END, special_s_end_pre)
+        .status(Main, SPECIAL_S_END, special_s_end_main)
+        .status(End, SPECIAL_S_END, special_s_end_end)
+        .status(Init, SPECIAL_S_END, special_s_end_init)
+        .status(Init, SPECIAL_S_END, special_s_end_exec)
+        .on_init(wolf_init)
+        .install();
 }

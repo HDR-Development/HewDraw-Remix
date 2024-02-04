@@ -316,9 +316,9 @@ default = [
     # "trail",
     # "wario",
     # "wiifit",
-    # "wolf",
-    # "yoshi",
-    # "younglink",
+    "wolf",
+    "yoshi",
+    "younglink",
     # "zelda",
 ]
 dev = ["utils/no-offset-search"]
