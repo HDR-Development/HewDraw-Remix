@@ -57,11 +57,17 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_CLOUD)]
-pub unsafe fn cloud_frame_wrapper(fighter: &mut L2CFighterCommon) {
+
+pub unsafe extern "C" fn cloud_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     dspecial_cancels(fighter);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
+}
+
+pub fn install() {
+    smashline::Agent::new("cloud")
+        .on_line(Main, cloud_frame_wrapper)
+        .install();
 }

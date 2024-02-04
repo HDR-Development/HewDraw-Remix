@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "demon", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -44,8 +44,8 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -89,8 +89,8 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack13(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,8 +116,8 @@ unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack14", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack14(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack14(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,8 +141,8 @@ unsafe fn game_attack14(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack15", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack15(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack15(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -168,8 +168,8 @@ unsafe fn game_attack15(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack16", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack16(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack16(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -206,8 +206,8 @@ unsafe fn game_attack16(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack17", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack17(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack17(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -231,8 +231,8 @@ unsafe fn game_attack17(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack18", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack18(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack18(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -258,8 +258,8 @@ unsafe fn game_attack18(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack19", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack19(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack19(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -282,8 +282,8 @@ unsafe fn game_attack19(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack110", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack110(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attack110(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -302,8 +302,8 @@ unsafe fn game_attack110(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_flashpunch" , category = ACMD_GAME , low_priority)]
-unsafe fn game_flashpunch(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_flashpunch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -345,18 +345,19 @@ unsafe fn game_flashpunch(fighter: &mut L2CAgentBase) {
     
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_attack11,
-        game_attack12,
-        game_attack13,
-        game_attack14,
-        game_attack15,
-        game_attack16,
-        game_attack17,
-        game_attack18,
-        game_attack19,
-        game_attack110,
-        game_flashpunch,
-    );
+    smashline::Agent::new("demon")
+        .acmd("game_attack11", game_attack11)
+        .acmd("game_attack12", game_attack12)
+        .acmd("game_attack13", game_attack13)
+        .acmd("game_attack14", game_attack14)
+        .acmd("game_attack15", game_attack15)
+        .acmd("game_attack16", game_attack16)
+        .acmd("game_attack17", game_attack17)
+        .acmd("game_attack18", game_attack18)
+        .acmd("game_attack19", game_attack19)
+        .acmd("game_attack110", game_attack110)
+        .acmd("game_flashpunch", game_flashpunch)
+        .install();
 }

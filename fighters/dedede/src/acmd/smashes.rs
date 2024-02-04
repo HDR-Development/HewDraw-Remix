@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "dedede", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 34.0);
@@ -39,8 +39,8 @@ unsafe fn dedede_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -70,8 +70,8 @@ unsafe fn dedede_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dedede_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -104,11 +104,13 @@ unsafe fn dedede_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dedede_attack_s4_s_game,
-        dedede_attack_hi4_game,
-        dedede_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("dedede")
+        .acmd("game_attacks4", dedede_attack_s4_s_game)
+        .acmd("game_attackhi4", dedede_attack_hi4_game)
+        .acmd("game_attacklw4", dedede_attack_lw4_game)
+        .install();
+}

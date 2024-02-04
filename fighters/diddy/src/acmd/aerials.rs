@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "diddy", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -47,8 +46,8 @@ unsafe fn diddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "diddy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn diddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -82,8 +81,8 @@ unsafe fn diddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "diddy", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn diddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -110,8 +109,8 @@ unsafe fn diddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "diddy", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn diddy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn diddy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -129,8 +128,8 @@ unsafe fn diddy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -154,8 +153,8 @@ unsafe fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "diddy", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn diddy_attack_air_hi_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn diddy_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -169,8 +168,8 @@ unsafe fn diddy_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn diddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn diddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.1);
@@ -183,8 +182,23 @@ unsafe fn diddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("diddy_attack_arc"), Hash40::new("diddy_attack_arc"), Hash40::new("top"), 0, 10, 1, -48, 78.5, 51, 1.1, true, *EF_FLIP_YZ, 0.7);
+        LAST_EFFECT_SET_RATE(agent, 1.9);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_arc"), true, true);
+    }
+}
+
+
+unsafe extern "C" fn diddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -213,14 +227,14 @@ unsafe fn diddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_attack_air_n_game,
-        diddy_attack_air_f_game,
-        diddy_attack_air_b_game,
-        diddy_attack_air_b_effect,
-        diddy_attack_air_hi_game,
-        diddy_attack_air_hi_effect,
-        diddy_attack_air_hi_expression,
-        diddy_attack_air_lw_game,
-    );
+    smashline::Agent::new("diddy")
+        .acmd("game_attackairn", diddy_attack_air_n_game)
+        .acmd("game_attackairf", diddy_attack_air_f_game)
+        .acmd("game_attackairb", diddy_attack_air_b_game)
+        .acmd("effect_attackairb", diddy_attack_air_b_effect)
+        .acmd("game_attackairhi", diddy_attack_air_hi_game)
+        .acmd("expression_attackairhi", diddy_attack_air_hi_expression)
+        .acmd("effect_attackairhi", effect_attackairhi)
+        .acmd("game_attackairlw", diddy_attack_air_lw_game)
+        .install();
 }

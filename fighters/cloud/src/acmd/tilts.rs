@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "cloud", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,8 +26,8 @@ unsafe fn cloud_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn cloud_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -48,8 +48,8 @@ unsafe fn cloud_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -76,8 +76,8 @@ unsafe fn cloud_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "cloud", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn cloud_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -94,8 +94,8 @@ unsafe fn cloud_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn cloud_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
@@ -121,11 +121,11 @@ unsafe fn cloud_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        cloud_attack_s3_s_game,
-        cloud_attack_s3_s_expression,
-        cloud_attack_hi3_game,
-        cloud_attack_hi3_expression,
-        cloud_attack_lw3_game,
-    );
+    smashline::Agent::new("cloud")
+        .acmd("game_attacks3", cloud_attack_s3_s_game)
+        .acmd("expression_attacks3", cloud_attack_s3_s_expression)
+        .acmd("game_attackhi3", cloud_attack_hi3_game)
+        .acmd("expression_attackhi3", cloud_attack_hi3_expression)
+        .acmd("game_attacklw3", cloud_attack_lw3_game)
+        .install();
 }

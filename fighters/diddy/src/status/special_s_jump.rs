@@ -4,8 +4,8 @@ use globals::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-#[status_script(agent = "diddy", status = FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("monkey_flip_jump_start_spd_y"));
     let lr = PostureModule::lr(fighter.module_accessor);
     let start_speed_x = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_FLAG_SMASH) {
@@ -105,7 +105,7 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_s_jump_main
-    );
+    smashline::Agent::new("diddy")
+        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main)
+        .install();
 }
