@@ -276,7 +276,7 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             let can_cancel = fighter.motion_frame() >= transition_frame;
             if (!can_cancel) {return;}
 
-            fighter.change_to_custom_status(statuses::buddy::BUDDY_BAYONET_END, false, false);
+            fighter.change_status(statuses::buddy::BUDDY_BAYONET_END.into(), false.into());
 
             let currentEggs=
             //VarModule::get_int(boma.object(), vars::buddy::instance::BAYONET_EGGS);

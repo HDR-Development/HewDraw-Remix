@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "duckhunt", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -12,8 +12,8 @@ unsafe fn duckhunt_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "duckhunt" , scripts = ["game_specialairlw", "game_speciallw"], category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,8 +26,8 @@ unsafe fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.15);
 }
 
-#[acmd_script( agent = "duckhunt" , scripts = ["game_specialairn", "game_specialn"], category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -40,8 +40,8 @@ unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_special_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -62,11 +62,16 @@ unsafe fn duckhunt_special_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        duckhunt_special_hi_game,
-        duckhunt_special_n_game,
-        duckhunt_special_lw_game,
-        duckhunt_special_s_game,
-    );
+    smashline::Agent::new("duckhunt")
+        .acmd("game_specialhi", duckhunt_special_hi_game)
+        .acmd("game_specialairlw", duckhunt_special_lw_game)
+        .acmd("game_speciallw", duckhunt_special_lw_game)
+        .acmd("game_specialairn", duckhunt_special_n_game)
+        .acmd("game_specialn", duckhunt_special_n_game)
+        .acmd("game_specials", duckhunt_special_s_game)
+        .acmd("game_specialairs", duckhunt_special_s_game)
+        .install();
 }

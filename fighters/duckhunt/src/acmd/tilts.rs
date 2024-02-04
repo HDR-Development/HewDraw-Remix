@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "duckhunt", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.1);
@@ -19,8 +19,8 @@ unsafe fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -36,8 +36,8 @@ unsafe fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -53,8 +53,8 @@ unsafe fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -80,8 +80,8 @@ unsafe fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -110,8 +110,8 @@ unsafe fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -131,14 +131,16 @@ unsafe fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        duckhunt_attack_s3_hi_game,
-        duckhunt_attack_s3_game,
-        duckhunt_attack_s3_lw_game,
-        duckhunt_attack_hi3_game,
-        duckhunt_attack_hi3_expression,
-        duckhunt_attack_lw3_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("duckhunt")
+        .acmd("game_attacks3hi", duckhunt_attack_s3_hi_game)
+        .acmd("game_attacks3", duckhunt_attack_s3_game)
+        .acmd("game_attacks3lw", duckhunt_attack_s3_lw_game)
+        .acmd("game_attackhi3", duckhunt_attack_hi3_game)
+        .acmd("expression_attackhi3", duckhunt_attack_hi3_expression)
+        .acmd("game_attacklw3", duckhunt_attack_lw3_game)
+        .install();
+}

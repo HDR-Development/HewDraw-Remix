@@ -82,11 +82,17 @@ unsafe fn side_special_landing_lag(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_ELIGHT )]
-pub unsafe fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub unsafe extern "C" fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     hit_cancel_blade_switch(fighter);
     photon_edge_actionability(fighter);
     fastfall_specials(fighter);
     side_special_landing_lag(fighter);
+}
+
+pub fn install() {
+    smashline::Agent::new("elight")
+        .on_line(Main, elight_frame_wrapper)
+        .install();
 }
