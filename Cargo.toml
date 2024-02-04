@@ -228,8 +228,8 @@ utils.workspace = true
 
 [features]
 default = [
-    # "bayonetta",
-    # "brave",
+    "bayonetta",
+    "brave",
     # "buddy",
     # "captain",
     # "chrom",

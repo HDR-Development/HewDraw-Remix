@@ -1493,6 +1493,6 @@ pub mod statuses {
     }
     
     pub mod bayonetta {
-        pub const SPECIAL_S_KICK: i32 = 0;
+        pub const SPECIAL_S_KICK: i32 = 0x1F2;
     }
 }
