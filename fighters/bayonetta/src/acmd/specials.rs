@@ -93,7 +93,8 @@ unsafe fn bayonetta_special_s_edge_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("bayonetta_heelslide_burst"), Hash40::new("kneer"), 9.5, 0, 0, 0, 90, 0, 1.1, true);
         EffectModule::enable_sync_init_pos_last(boma);
-        if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_COSTUME_KIND) != 2 {LAST_PARTICLE_SET_COLOR(fighter, 0.048, 0.452, 1); }
+        if WorkModule::get_int(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_COSTUME_KIND) == 2 {LAST_EFFECT_SET_COLOR(fighter, 1, 0.118, 0.118); }
+        else {LAST_EFFECT_SET_COLOR(fighter, 0.059, 0.38, 1); }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
