@@ -478,12 +478,16 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 		let charge = VarModule::get_float(fighter.battle_object, vars::miigunner::status::CURRENT_CHARGE);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
 			let charge_mul = 1.0 + (charge * 0.025);
+			let mul = if VarModule::is_flag(fighter.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME) { 0.5 } else { 1.0 };
+			if !VarModule::is_flag(fighter.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME) {
+				VarModule::on_flag(fighter.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME);
+			}
 			ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 12.0 * charge_mul, 80, 65, 0, 50, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 1, 0, Hash40::new("handr"), 12.0 * charge_mul, 80, 65, 0, 50, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 2, 0, Hash40::new("handr"), 14.0 * charge_mul, 80, 65, 0, 50, 5.5, 8.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			SET_SPEED_EX(fighter,
-				KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(boma) * (20.0 - charge)/20.0,
-				1.0 + (0.125 * charge),
+				(KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(boma) * (20.0 - charge)/20.0) * mul,
+				(1.0 + (0.125 * charge)) * mul,
 				*KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
 			);
 		}

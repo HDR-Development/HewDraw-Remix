@@ -15,6 +15,9 @@ unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn luigi_always_misfire_training_mode(fighter: &mut L2CFighterCommon, status_kind: i32) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ENTRY) && fighter.status_frame() <= 10 {
+        super::calculate_misfire_number(fighter);
+    }
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL && ControlModule::check_button_trigger(fighter.boma(), *CONTROL_PAD_BUTTON_GUARD) { 
             if !VarModule::is_flag(fighter.battle_object, vars::luigi::instance::TRAINING_ALWAYS_MISFIRES) {
