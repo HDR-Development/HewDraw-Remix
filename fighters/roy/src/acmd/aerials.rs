@@ -48,7 +48,7 @@ unsafe fn roy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 35.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -85,12 +85,10 @@ unsafe fn roy_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_roy_rnd_attack_air"));
         PLAY_SE(fighter, Hash40::new("se_roy_swing_s"));
     }
     wait(lua_state, 9.0);
         if is_excute(fighter) {
-            PLAY_SEQUENCE(fighter, Hash40::new("seq_roy_rnd_attack"));
             PLAY_SE(fighter, Hash40::new("se_roy_attackl_s01"));
             
     }
