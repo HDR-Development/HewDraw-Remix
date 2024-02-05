@@ -18,6 +18,15 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_pikmin_particular">
+    <struct index="0">
+      <int hash="special_s_lever_clatter_frame">0</int>
+      <int hash="special_s_damage_remove_rate">0</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_pikmin_particular">
     <hash40 index="0">dummy</hash40>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
