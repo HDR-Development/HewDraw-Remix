@@ -44,7 +44,7 @@ unsafe fn samusd_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 16, 11, 30, 0, 195, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 13.5, 5, 30, 0, 195, 1, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
@@ -93,7 +93,7 @@ unsafe fn samusd_attack_s3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 14, 2, 5, 165, 0.95, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 9, 2, 5, 165, 0.95, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
@@ -143,7 +143,7 @@ unsafe fn samusd_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 11, -15, 0, 195, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 6, -15, 0, 195, 1, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }

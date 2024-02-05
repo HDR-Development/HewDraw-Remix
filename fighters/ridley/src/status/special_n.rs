@@ -1,20 +1,20 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
-    WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_air_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("ridley_special_n_hold"), 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_hold"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("ridley_special_air_n_hold"), 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_hold"), 0.0, 1.0, false, 0.0, false, false);
     }
     let max_charge_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("max_charge_frame")) as f32;
     let end_frame = MotionModule::end_frame(fighter.module_accessor);
@@ -48,7 +48,7 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("virtualweakpoint"), &Vector3f::new(size, size, size));
     if !MotionModule::is_end(fighter.module_accessor) {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE);
+            VarModule::on_flag(fighter.object(), vars::ridley::instance::SPECIAL_N_EXPLODE);
         }
         else if !ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             return 0.into()
@@ -59,7 +59,7 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
     let max_fire_num = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("max_fire_num"));
     let fire_num = ((max_fire_num - 1) * (charge_count / max_charge_frame)) + 1;
     WorkModule::set_int(fighter.module_accessor, fire_num, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
-    fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT.into(), false.into());
+    fighter.change_status(FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
 
     return 0.into()
 }
@@ -72,17 +72,17 @@ unsafe extern "C" fn special_n_charge_substatus(fighter: &mut L2CFighterCommon, 
     return 0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE) {
-        VarModule::off_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE);
-        WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
-        WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_air_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
+    if VarModule::is_flag(fighter.object(), vars::ridley::instance::SPECIAL_N_EXPLODE) {
+        VarModule::off_flag(fighter.object(), vars::ridley::instance::SPECIAL_N_EXPLODE);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("ridley_special_n_explode"), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_explode"), 0.0, 1.0, false, 0.0, false, false);
         }
         else {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("ridley_special_air_n_explode"), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_explode"), 0.0, 1.0, false, 0.0, false, false);
         }
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_NORMAL);
 
@@ -134,7 +134,7 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         special_n_charge_main,
         special_n_shoot_main,
     );
