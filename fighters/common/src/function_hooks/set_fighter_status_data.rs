@@ -39,7 +39,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_MIIGUNNER
             && boma.is_status_one_of(&[*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_GROUND, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_GROUND, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR]))
         || (boma.kind() == *FIGHTER_KIND_PACMAN
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N]))
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_PIKMIN
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_RICHTER

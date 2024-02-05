@@ -52,6 +52,9 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					VisibilityModule::set_whole(boma, false);
 					JostleModule::set_status(boma, false);
 					VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 2);
+					if fighter.is_situation(*SITUATION_KIND_GROUND) {
+						VarModule::on_flag(fighter.battle_object, vars::rosetta::status::GROUNDED_TELEPORT);
+					}
 				}
 				if frame == 26.0 {	// perform the actual swap
 					macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -73,7 +76,12 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
 				}
 				if frame > 38.0 {
-					CancelModule::enable_cancel(boma);
+					if VarModule::is_flag(fighter.battle_object, vars::rosetta::status::GROUNDED_TELEPORT) {
+						CancelModule::enable_cancel(boma);
+					}
+					else {
+						StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
+					}
 				}
 			}
 		}
@@ -88,7 +96,12 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 			VisibilityModule::set_whole(boma, true);
 			if MotionModule::frame(boma) > 38.0 {
 				VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
-				CancelModule::enable_cancel(boma);
+				if VarModule::is_flag(fighter.battle_object, vars::rosetta::status::GROUNDED_TELEPORT) {
+					CancelModule::enable_cancel(boma);
+				}
+				else {
+					StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
+				}
 			}
 		}
 	}

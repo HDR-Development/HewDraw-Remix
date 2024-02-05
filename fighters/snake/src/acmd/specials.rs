@@ -93,7 +93,7 @@ unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
@@ -115,7 +115,7 @@ unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
