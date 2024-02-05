@@ -1,4 +1,3 @@
-
 use super::*;
 
 
@@ -28,7 +27,6 @@ unsafe fn pikmin_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 #[acmd_script(agent = "pikmin", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -44,7 +42,6 @@ unsafe fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 1.5);
     }
 }
-
 
 #[acmd_script( agent = "pikmin", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
@@ -63,7 +60,6 @@ unsafe fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 pub fn install() {
     install_acmd_scripts!(
