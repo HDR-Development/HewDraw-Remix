@@ -101,7 +101,7 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
 
         // critical zoom if out of health
         if WorkModule::get_float(boma, 0x4d) <= 0.0 {
-            MotionAnimcmdModule::call_script_single(boma, 2, Hash40::new_raw(0x10412c2da3), -1);
+            MotionAnimcmdModule::call_script_single(boma, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_waistbreak"), -1);
         }
         else {
             let krool = utils::util::get_fighter_common_from_accessor(&mut (*boma));

@@ -41,6 +41,8 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="guard_speed_mul_x">0.5</float>
+      <float hash="hs_shooting_speed_mul_x">0.8</float>
       <int hash="ab_u_landing_frame">16</int>
       <int hash="ab_u_landing_frame_2nd">22</int>
       <float hash="ab_d_hit_after_speed_y">2.5</float>
@@ -59,8 +61,6 @@
       <int hash="ab_d_enable_frame">-1</int>
       <int hash="ab_d_change_frame">-1</int>
       <int hash="disable_jump_after_frame">0</int>
-      <float hash="guard_speed_mul_x">0.6</float>
-      <float hash="hs_shooting_speed_mul_x">0.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

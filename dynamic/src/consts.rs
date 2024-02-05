@@ -178,6 +178,8 @@ pub mod vars {
 
             pub const IS_ATTACK_CANCEL: i32 = 0x0063;
 
+            pub const DISABLE_CSTICK_BUFFER_ROLL_OOS: i32 = 0x0064;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -209,6 +211,8 @@ pub mod vars {
             pub const LEFT_STICK_FLICK_X: i32 = 0x000F;
             pub const LEFT_STICK_FLICK_Y: i32 = 0x0010;
 
+            pub const LEDGE_ID: i32 = 0x0011;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -223,10 +227,10 @@ pub mod vars {
             pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
             pub const DOUBLE_JUMP_TIMER: i32 = 0x0008; // Only used by Lucas, and it's commented out, goes unused.
             pub const ROLL_SPEED: i32 = 0x0009;
-            pub const LEDGE_POS: i32 = 0x000A;
-            pub const LEDGE_POS_X: i32 = 0x000A;
-            pub const LEDGE_POS_Y: i32 = 0x000B;
-            pub const LEDGE_POS_Z: i32 = 0x000C;
+            // pub const LEDGE_POS: i32 = 0x000A;
+            // pub const LEDGE_POS_X: i32 = 0x000A;
+            // pub const LEDGE_POS_Y: i32 = 0x000B;
+            // pub const LEDGE_POS_Z: i32 = 0x000C;
             pub const GET_DIST_TO_FLOOR: i32 = 0x000D;
             pub const ECB_BOTTOM_Y_OFFSET: i32 = 0x000E;
             pub const CURR_DASH_SPEED: i32 = 0x000F;
@@ -513,6 +517,13 @@ pub mod vars {
 
             // flags
             pub const IS_INVALID_TELEPORT: i32 = 0x1101;
+        }
+    }
+
+    pub mod edge {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x1000;
         }
     }
 
@@ -1480,5 +1491,9 @@ pub mod statuses {
         pub const SPECIAL_N_P: i32 = 3;
         pub const SPECIAL_N_O: i32 = 4;
         pub const SPECIAL_N_G: i32 = 5;
+    }
+    
+    pub mod bayonetta {
+        pub const SPECIAL_S_KICK: i32 = 0;
     }
 }

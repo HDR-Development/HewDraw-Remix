@@ -69,7 +69,7 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F);
     }
     if ItemModule::is_have_item(fighter.module_accessor, 0) {
-        VisibilityModule::set_int64(fighter.module_accessor, hash40("0x88fc722e4") as i64, hash40("0x110ed68a57") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("gun_hand") as i64, hash40("gun_hand_show_all") as i64);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
     false.into()
