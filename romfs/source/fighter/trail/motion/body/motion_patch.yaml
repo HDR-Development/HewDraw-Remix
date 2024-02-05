@@ -51,6 +51,12 @@ special_s_end:
 special_air_s_end:
   extra:
     cancel_frame: 24
+special_lw_start:
+  extra:
+    cancel_frame: 64
+special_air_lw_start:
+  extra:
+    cancel_frame: 64
 special_lw:
   extra:
     xlu_start: 0
