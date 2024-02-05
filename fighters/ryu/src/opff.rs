@@ -362,6 +362,10 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        fighter.check_airdash();
+    }
+    
     // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
     if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
     || CancelModule::is_enable_cancel(boma) 
@@ -474,18 +478,19 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         return;
     }
 
-    let dir = boma.get_aerial();
-    if dir == None {
-        return;
-    }
-    match MotionModule::motion_kind(boma) {
-        super::hash40!("attack_air_n")  if matches!(dir, Some(AerialKind::Nair)) => return,
-        super::hash40!("attack_air_hi") if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Uair)) => return,
-        super::hash40!("attack_air_f")  if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Uair) | Some(AerialKind::Fair)) => return,
-        super::hash40!("attack_air_b") => return,
-        super::hash40!("attack_air_lw") => return,
-        _ => {
-            boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-        }
-    }
+    // uncomment to allow MvC style aerial chains
+    // let dir = boma.get_aerial();
+    // if dir == None {
+    //     return;
+    // }
+    // match MotionModule::motion_kind(boma) {
+    //     super::hash40!("attack_air_n")  if matches!(dir, Some(AerialKind::Nair)) => return,
+    //     super::hash40!("attack_air_hi") if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Uair)) => return,
+    //     super::hash40!("attack_air_f")  if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Uair) | Some(AerialKind::Fair)) => return,
+    //     super::hash40!("attack_air_b") => return,
+    //     super::hash40!("attack_air_lw") => return,
+    //     _ => {
+    //         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+    //     }
+    // }
 }
