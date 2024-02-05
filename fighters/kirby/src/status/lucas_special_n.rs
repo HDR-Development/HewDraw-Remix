@@ -1,30 +1,25 @@
 use super::*;
 
-pub fn install() {
-    install_status_scripts!(
-        lucas_special_n_pre,
-        lucas_special_n_hold_main
-    );
-}
+
 
 // SPECIAL N //
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+
+unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_FIRE.into(), false.into());
         return 0.into();
     }
     else {
-        original!(fighter)
+        smashline::original_status(Pre, fighter, *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N)(fighter)
     }
     
 }
 
 // SPECIAL N HOLD //
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //
     // OLD SPECIAL N STATUS MAIN CODE //
     //
@@ -192,4 +187,18 @@ unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
         fighter.set_int(*SITUATION_KIND_AIR, mtrans_kind_work_id);
     }
     fighter.on_flag(flag_work_id);
+}
+pub fn install() {
+    smashline::Agent::new("kirby")
+        .status(
+            Pre,
+            *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N,
+            lucas_special_n_pre,
+        )
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_HOLD,
+            lucas_special_n_hold_main,
+        )
+        .install();
 }

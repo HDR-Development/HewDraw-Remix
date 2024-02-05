@@ -1,7 +1,7 @@
 use super::*;
 
-#[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
     special_lw_mot_helper(fighter);
     fighter.main_shift(special_lw_main_loop)
@@ -90,8 +90,8 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[globals::STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
             ArticleModule::remove(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -101,8 +101,11 @@ unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_lw_main, special_lw_end
-    );
+    smashline::Agent::new("kamui")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end)
+        .install();
 }

@@ -1,8 +1,7 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
     WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
     WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_air_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
@@ -72,8 +71,9 @@ unsafe extern "C" fn special_n_charge_substatus(fighter: &mut L2CFighterCommon, 
     return 0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+/// Hold neutral special to explode
+
+unsafe extern "C" fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE) {
         VarModule::off_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE);
         WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
@@ -87,9 +87,8 @@ unsafe fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_NORMAL);
 
         fighter.sub_shift_status_main(L2CValue::Ptr(special_n_shoot_main_loop as *const () as _))
-    }
-    else {
-        original!(fighter)
+    } else {
+        smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT)(fighter)
     }
 }
 
@@ -133,9 +132,19 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
     }
 }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_n_charge_main,
-        special_n_shoot_main,
-    );
+    smashline::Agent::new("kirby")
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE,
+            special_n_charge_main,
+        )
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT,
+            special_n_shoot_status_main,
+        )
+        .install();
 }

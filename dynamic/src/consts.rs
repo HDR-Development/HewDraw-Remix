@@ -1506,6 +1506,11 @@ pub mod statuses {
 
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0x3E6; //Weird value to avoid conflicts with copy ability values
+        pub const GANON_SPECIAL_N_FLOAT: i32 = 0x3E7; 
+        pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8; 
+        pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9; 
+        pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
+        pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB; 
     }
 
     pub mod krool {

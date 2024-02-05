@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "gamewatch", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gamewatch_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -28,8 +28,8 @@ unsafe fn gamewatch_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gamewatch_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,8 +76,8 @@ unsafe fn gamewatch_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gamewatch_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -112,10 +112,11 @@ unsafe fn gamewatch_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_attack_s3_s_game,
-        gamewatch_attack_hi3_game,
-        gamewatch_attack_lw3_game,
-    );
+    smashline::Agent::new("gamewatch")
+        .acmd("game_attacks3", gamewatch_attack_s3_s_game)
+        .acmd("game_attackhi3", gamewatch_attack_hi3_game)
+        .acmd("game_attacklw3", gamewatch_attack_lw3_game)
+        .install();
 }

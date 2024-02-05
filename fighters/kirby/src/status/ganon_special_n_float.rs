@@ -133,13 +133,5 @@ unsafe extern "C" fn special_n_float_end(_fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_kirby"),
-        statuses::ganon::SPECIAL_N_FLOAT,
-        StatusInfo::new()
-            .with_pre(special_n_float_pre)
-            .with_main(special_n_float_main)
-            .with_end(special_n_float_end)
-    );
-}
+
+pub fn install() {}

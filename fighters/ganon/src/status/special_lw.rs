@@ -2,8 +2,8 @@ use super::*;
 use globals::*;
 
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -33,11 +33,11 @@ unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 
-    let ret = original!(fighter);
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END)(fighter);
 
     let start_situation = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GANON_STATUS_WORK_ID_INT_GANON_KICK_START_SITUATION);
     let end_situation = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GANON_STATUS_WORK_ID_INT_GANON_KICK_END_SITUATION);
@@ -55,9 +55,15 @@ unsafe fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ret
 }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_lw_pre,
-        special_lw_end_main
-    );
+    smashline::Agent::new("ganon")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
+        .status(
+            Main,
+            *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,
+            special_lw_end_main,
+        )
+        .install();
 }

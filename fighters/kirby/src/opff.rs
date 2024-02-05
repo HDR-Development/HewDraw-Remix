@@ -58,8 +58,7 @@ unsafe fn dash_attack_jump_cancels(boma: &mut BattleObjectModuleAccessor) {
 //     }
 // }
 
-#[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
-pub fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
             if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
@@ -1139,8 +1138,7 @@ unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-#[weapon_frame( agent = WEAPON_KIND_PACKUN_SPIKEBALL )]
-pub fn spikeball_frame(weapon: &mut L2CFighterBase) {
+pub extern "C" fn spikeball_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -1356,8 +1354,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     ken_air_hado_distinguish(fighter, boma, frame);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_KIRBY )]
-pub fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		kirby_frame(fighter)
@@ -1368,4 +1366,14 @@ pub unsafe fn kirby_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("kirby")
+        .on_line(Main, kirby_frame_wrapper)
+        .on_line(Main, hammer_swing_drift_landcancel)
+        .install();
+
+    smashline::Agent::new("packun_spikeball")
+        .on_line(Main, spikeball_frame)
+        .install()
 }

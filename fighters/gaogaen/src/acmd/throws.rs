@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "gaogaen", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
@@ -39,8 +39,8 @@ unsafe fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_throwf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_throw_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -122,8 +122,8 @@ unsafe fn gaogaen_throw_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -187,8 +187,8 @@ unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_throwb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -237,8 +237,8 @@ unsafe fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
@@ -289,8 +289,8 @@ unsafe fn gaogaen_throw_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "gaogaen", script = "effect_throwhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_throw_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -339,8 +339,8 @@ unsafe fn gaogaen_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "sound_throwhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn gaogaen_throw_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -368,8 +368,8 @@ unsafe fn gaogaen_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
@@ -395,8 +395,8 @@ unsafe fn gaogaen_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_throwlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -438,16 +438,17 @@ unsafe fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        gaogaen_throw_f_game,
-        gaogaen_throw_f_effect,
-        gaogaen_throw_b_game,
-        gaogaen_throw_b_effect,
-        gaogaen_throw_hi_game,
-        gaogaen_throw_hi_effect,
-        gaogaen_throw_hi_sound,
-        gaogaen_throw_lw_game,
-        gaogaen_throw_lw_effect,
-    );
+    smashline::Agent::new("gaogaen")
+        .acmd("game_throwf", gaogaen_throw_f_game)
+        .acmd("effect_throwf", gaogaen_throw_f_effect)
+        .acmd("game_throwb", gaogaen_throw_b_game)
+        .acmd("effect_throwb", gaogaen_throw_b_effect)
+        .acmd("game_throwhi", gaogaen_throw_hi_game)
+        .acmd("effect_throwhi", gaogaen_throw_hi_effect)
+        .acmd("sound_throwhi", gaogaen_throw_hi_sound)
+        .acmd("game_throwlw", gaogaen_throw_lw_game)
+        .acmd("effect_throwlw", gaogaen_throw_lw_effect)
+        .install();
 }

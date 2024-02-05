@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "inkling", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_special_n_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -24,8 +24,8 @@ unsafe fn inkling_special_n_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -47,8 +47,8 @@ unsafe fn inkling_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "effect_specialsend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn inkling_special_s_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -64,8 +64,8 @@ unsafe fn inkling_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_specialhijump", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhijump(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -77,12 +77,14 @@ unsafe fn game_specialhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        inkling_special_n_end_game,
-        inkling_special_air_n_end_game,
-        inkling_special_s_end_effect,
-        game_specialhijump
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("inkling")
+        .acmd("game_specialnend", inkling_special_n_end_game)
+        .acmd("game_specialairnend", inkling_special_air_n_end_game)
+        .acmd("effect_specialsend", inkling_special_s_end_effect)
+        .acmd("game_specialhijump", game_specialhijump)
+        .install();
+}

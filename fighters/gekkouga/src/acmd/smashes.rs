@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "gekkouga", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gekkouga_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -23,8 +23,8 @@ unsafe fn gekkouga_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gekkouga_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -64,8 +64,8 @@ unsafe fn gekkouga_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gekkouga_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -95,11 +95,13 @@ unsafe fn gekkouga_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_attack_s4_s_game,
-        gekkouga_attack_hi4_game,
-        gekkouga_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("gekkouga")
+        .acmd("game_attacks4", gekkouga_attack_s4_s_game)
+        .acmd("game_attackhi4", gekkouga_attack_hi4_game)
+        .acmd("game_attacklw4", gekkouga_attack_lw4_game)
+        .install();
+}

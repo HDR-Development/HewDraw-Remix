@@ -8,9 +8,9 @@ mod specials;
 mod throws;
 mod ground;
 
+
 pub fn install() {
     aerials::install();
-    copyspecials::install();
     tilts::install();
     other::install();
     smashes::install();

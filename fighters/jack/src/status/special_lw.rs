@@ -19,3 +19,4 @@ pub unsafe extern "C" fn jack_special_lw2_pre(fighter: &mut L2CFighterCommon) ->
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_JACK_STATUS_KIND_DISPATCH);
     1.into()
 }
+pub fn install() {}
