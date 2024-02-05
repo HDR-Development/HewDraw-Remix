@@ -891,6 +891,7 @@ pub mod vars {
 
     pub mod pikmin {
         pub mod instance {
+            // flags
             pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
         }
     }
