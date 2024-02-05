@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "kirby", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -60,8 +60,8 @@ unsafe fn kirby_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_s4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -120,8 +120,8 @@ unsafe fn kirby_attack_s4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -168,8 +168,8 @@ unsafe fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", scripts = ["sound_attacks4hi", "sound_attacks4", "sound_attacks4lw"], category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_attack_s4_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -197,8 +197,8 @@ unsafe fn kirby_attack_s4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -279,8 +279,8 @@ unsafe fn kirby_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_attack_hi4_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -308,8 +308,8 @@ unsafe fn kirby_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -388,8 +388,8 @@ unsafe fn kirby_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn kirby_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -420,8 +420,8 @@ unsafe fn kirby_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_attacklw4", category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_attack_lw4_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -447,17 +447,21 @@ unsafe fn kirby_attack_lw4_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_attack_s4_hi_game,
-        kirby_attack_s4_game,
-        kirby_attack_s4_lw_game,
-        kirby_attack_s4_sound,
-        kirby_attack_hi4_game,
-        kirby_attack_hi4_sound,
-        kirby_attack_lw4_game,
-        kirby_attack_lw4_sound,
-        kirby_attack_lw4_expression,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("kirby")
+        .acmd("game_attacks4hi", kirby_attack_s4_hi_game)
+        .acmd("game_attacks4", kirby_attack_s4_game)
+        .acmd("game_attacks4lw", kirby_attack_s4_lw_game)
+        .acmd("sound_attacks4hi", kirby_attack_s4_sound)
+        .acmd("sound_attacks4", kirby_attack_s4_sound)
+        .acmd("sound_attacks4lw", kirby_attack_s4_sound)
+        .acmd("game_attackhi4", kirby_attack_hi4_game)
+        .acmd("sound_attackhi4", kirby_attack_hi4_sound)
+        .acmd("game_attacklw4", kirby_attack_lw4_game)
+        .acmd("expression_attacklw4", kirby_attack_lw4_expression)
+        .acmd("sound_attacklw4", kirby_attack_lw4_sound)
+        .install();
+}

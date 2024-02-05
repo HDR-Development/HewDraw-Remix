@@ -1,7 +1,7 @@
 use super::*;
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     fighter.main_shift(attack_lw3_main_loop)
 }
@@ -67,8 +67,8 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         set_speed,
         fighter,
@@ -79,9 +79,11 @@ unsafe fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_AttackLw3()
 }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        attack_lw3_main,
-        attack_lw3_end
-    );
+    smashline::Agent::new("ganon")
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main)
+        .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_end)
+        .install();
 }

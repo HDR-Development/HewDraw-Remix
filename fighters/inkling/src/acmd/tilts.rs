@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "inkling", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -20,8 +20,8 @@ unsafe fn inkling_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,8 +50,8 @@ unsafe fn inkling_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "inkling", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn inkling_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -72,8 +72,8 @@ unsafe fn inkling_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn inkling_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -99,12 +99,14 @@ unsafe fn inkling_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        inkling_attack_s3_s_game,
-        inkling_attack_hi3_game,
-        inkling_attack_hi3_expression,
-        inkling_attack_lw3_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("inkling")
+        .acmd("game_attacks3", inkling_attack_s3_s_game)
+        .acmd("game_attackhi3", inkling_attack_hi3_game)
+        .acmd("expression_attackhi3", inkling_attack_hi3_expression)
+        .acmd("game_attacklw3", inkling_attack_lw3_game)
+        .install();
+}

@@ -1,7 +1,7 @@
 use super::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,8 +32,8 @@ unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Motion Kind change depending on situation.
     VarModule::on_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
@@ -159,29 +159,50 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_n_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
+
 
 
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_n_pre,
-        special_n_main,
-        special_n_end,
-        special_n_init,
-        special_n_exec
-    );
+    smashline::Agent::new("kirby")
+        .status(
+            Pre,
+            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
+            special_n_pre,
+        )
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
+            special_n_main,
+        )
+        .status(
+            End,
+            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
+            special_n_end,
+        )
+        .status(
+            Init,
+            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
+            special_n_init,
+        )
+        .status(
+            Exec,
+            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
+            special_n_exec,
+        )
+        .install();
 }

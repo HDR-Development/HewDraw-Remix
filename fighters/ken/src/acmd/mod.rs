@@ -8,6 +8,7 @@ mod throws;
 mod ground;
 mod finals;
 
+
 pub fn install() {
     aerials::install();
     tilts::install();
@@ -16,5 +17,4 @@ pub fn install() {
     specials::install();
     throws::install();
     ground::install();
-    finals::install();
 }

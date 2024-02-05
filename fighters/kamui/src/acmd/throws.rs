@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "kamui", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -31,8 +31,8 @@ unsafe fn kamui_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -66,9 +66,10 @@ unsafe fn kamui_throw_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_throw_b_game,
-        kamui_throw_lw_game,
-    );
+    smashline::Agent::new("kamui")
+        .acmd("game_throwb", kamui_throw_b_game)
+        .acmd("game_throwlw", kamui_throw_lw_game)
+        .install();
 }

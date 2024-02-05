@@ -2,18 +2,7 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_ken"),
-        statuses::ken::ATTACK_COMMAND_4,
-        StatusInfo::new()
-            .with_pre(ken_attack_command_4_pre)
-            .with_main(ken_attack_command_4_main)
-            .with_end(ken_attack_command_4_end)
-    );
-    install_status_scripts!(
-    );
-}
+
 
 pub unsafe extern "C" fn ken_attack_command_4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -86,3 +75,4 @@ pub unsafe extern "C" fn ken_attack_command_4_main_loop(fighter: &mut L2CFighter
 pub unsafe extern "C" fn ken_attack_command_4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
+pub fn install() {}

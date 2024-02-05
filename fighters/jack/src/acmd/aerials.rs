@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "jack", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,8 +50,8 @@ unsafe fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -82,8 +82,8 @@ unsafe fn jack_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn jack_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -99,8 +99,8 @@ unsafe fn jack_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_landing_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_n"), 0);
@@ -111,8 +111,8 @@ unsafe fn jack_landing_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -183,8 +183,8 @@ unsafe fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "jack", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_landing_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_f"), 0);
@@ -195,8 +195,8 @@ unsafe fn jack_landing_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -254,8 +254,8 @@ unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn jack_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -271,8 +271,8 @@ unsafe fn jack_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_landing_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -285,8 +285,8 @@ unsafe fn jack_landing_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -333,8 +333,8 @@ unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "game_landingairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_hi"), 0);
@@ -345,8 +345,8 @@ unsafe fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -424,8 +424,8 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn jack_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -447,8 +447,8 @@ unsafe fn jack_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
@@ -459,22 +459,24 @@ unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        jack_attack_air_n_game,
-        jack_attack_air_n_effect,
-        jack_attack_air_n_expression,
-        jack_landing_air_n_game,
-        jack_attack_air_f_game,
-        jack_landing_air_f_game,
-        jack_attack_air_b_game,
-        jack_attack_air_b_expression,
-        jack_landing_air_b_game,
-        jack_attack_air_hi_game,
-        jack_landing_air_hi_game,
-        jack_attack_air_lw_game,
-        jack_attack_air_lw_expression,
-        jack_landing_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("jack")
+        .acmd("game_attackairn", jack_attack_air_n_game)
+        .acmd("effect_attackairn", jack_attack_air_n_effect)
+        .acmd("expression_attackairn", jack_attack_air_n_expression)
+        .acmd("game_landingairn", jack_landing_air_n_game)
+        .acmd("game_attackairf", jack_attack_air_f_game)
+        .acmd("game_landingairf", jack_landing_air_f_game)
+        .acmd("game_attackairb", jack_attack_air_b_game)
+        .acmd("expression_attackairb", jack_attack_air_b_expression)
+        .acmd("game_landingairb", jack_landing_air_b_game)
+        .acmd("game_attackairhi", jack_attack_air_hi_game)
+        .acmd("game_landingairhi", jack_landing_air_hi_game)
+        .acmd("game_attackairlw", jack_attack_air_lw_game)
+        .acmd("expression_attackairlw", jack_attack_air_lw_expression)
+        .acmd("game_landingairlw", jack_landing_air_lw_game)
+        .install();
+}

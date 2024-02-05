@@ -67,13 +67,11 @@ unsafe extern "C" fn special_hi_h_end(fighter: &mut L2CFighterCommon) -> L2CValu
     return 0.into()
 }
 
+
 pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_kirby"),
-        statuses::kirby::SPECIAL_HI_H,
-        StatusInfo::new()
-            .with_pre(special_hi_h_pre)
-            .with_main(special_hi_h_main)
-            .with_end(special_hi_h_end)
-    );
+    Agent::new("kirby")
+        .status(Pre, statuses::kirby::SPECIAL_HI_H, special_hi_h_pre)
+        .status(Main, statuses::kirby::SPECIAL_HI_H, special_hi_h_main)
+        .status(End, statuses::kirby::SPECIAL_HI_H, special_hi_h_end)
+        .install();
 }

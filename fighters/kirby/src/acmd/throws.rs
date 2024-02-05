@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "kirby", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +27,8 @@ unsafe fn kirby_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_catch_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -49,8 +49,8 @@ unsafe fn kirby_catch_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_catch_turn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -71,8 +71,8 @@ unsafe fn kirby_catch_turn_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_throwf", category = ACMD_GAME , low_priority)]
-unsafe fn kirby_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -108,8 +108,8 @@ unsafe fn kirby_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_throwb", category = ACMD_GAME , low_priority)]
-unsafe fn kirby_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -133,8 +133,8 @@ unsafe fn kirby_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -171,8 +171,8 @@ unsafe fn kirby_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_throwlw", category = ACMD_GAME , low_priority)]
-unsafe fn kirby_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -215,15 +215,17 @@ unsafe fn kirby_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_catch_game,
-        kirby_catch_dash_game,
-        kirby_catch_turn_game,
-        kirby_throw_f_game,
-        kirby_throw_b_game,
-        kirby_throw_hi_game,
-        kirby_throw_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("kirby")
+        .acmd("game_catch", kirby_catch_game)
+        .acmd("game_catchdash", kirby_catch_dash_game)
+        .acmd("game_catchturn", kirby_catch_turn_game)
+        .acmd("game_throwf", kirby_throw_f_game)
+        .acmd("game_throwb", kirby_throw_b_game)
+        .acmd("game_throwhi", kirby_throw_hi_game)
+        .acmd("game_throwlw", kirby_throw_lw_game)
+        .install();
+}

@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "kamui", scripts = ["game_specialnend1", "game_specialairnend1"] , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_n_end1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_n_end1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -41,8 +41,8 @@ unsafe fn kamui_special_n_end1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_dragonhand", scripts = ["game_dhspecialnend1", "game_dhspecialairnend1"], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_dragonhand_special_n_end1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_dragonhand_special_n_end1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -54,8 +54,8 @@ unsafe fn kamui_dragonhand_special_n_end1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_specialsattack", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_special_s_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -69,8 +69,8 @@ unsafe fn kamui_special_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_specialairsattack", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -84,8 +84,8 @@ unsafe fn kamui_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_spearhand", script = "game_specialsattack", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_spearhand_special_s_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_spearhand_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -120,8 +120,8 @@ unsafe fn kamui_spearhand_special_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_spearhand", script = "game_specialairsattack", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_spearhand_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_spearhand_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -164,8 +164,8 @@ unsafe fn kamui_spearhand_special_air_s_attack_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_specialswallattackf" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -197,8 +197,8 @@ unsafe fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
         
 }
 
-#[acmd_script( agent = "kamui", script = "effect_specialswallattackf", category = ACMD_EFFECT, low_priority )]
-unsafe fn kamui_special_s_wall_attack_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_attack_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -221,8 +221,8 @@ unsafe fn kamui_special_s_wall_attack_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_specialswallattackb" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -262,8 +262,8 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
         
 }
 
-#[acmd_script( agent = "kamui", script = "effect_specialswallattackb", category = ACMD_EFFECT, low_priority )]
-unsafe fn kamui_special_s_wall_attack_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_attack_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -293,8 +293,8 @@ unsafe fn kamui_special_s_wall_attack_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_specialswalljump" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_s_wall_jump_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -324,8 +324,8 @@ unsafe fn kamui_special_s_wall_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "effect_specialswalljump", category = ACMD_EFFECT, low_priority )]
-unsafe fn kamui_special_s_wall_jump_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_jump_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -345,8 +345,8 @@ unsafe fn kamui_special_s_wall_jump_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_specialswallend" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -355,8 +355,8 @@ unsafe fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_hi_game (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_hi_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 3.0);
@@ -411,8 +411,8 @@ unsafe fn kamui_special_hi_game (fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 0.8);
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"] , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_DESIRED_RATE(fighter, 26.0, 30.0);
@@ -444,8 +444,8 @@ unsafe fn kamui_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = ["effect_speciallwhit", "effect_specialairlwhit"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -495,8 +495,8 @@ unsafe fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"] , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_DESIRED_RATE(fighter, 26.0, 30.0);
@@ -532,24 +532,58 @@ unsafe fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_special_n_end1_game,
-        kamui_dragonhand_special_n_end1_game,
-        kamui_special_s_attack_game,
-        kamui_special_air_s_attack_game,
-        kamui_spearhand_special_s_attack_game,
-        kamui_spearhand_special_air_s_attack_game,
-        kamui_special_s_wall_attack_f_game,
-        kamui_special_s_wall_attack_f_effect,
-        kamui_special_s_wall_attack_b_game,
-        kamui_special_s_wall_attack_b_effect,
-        kamui_special_s_wall_jump_game,
-        kamui_special_s_wall_jump_effect,
-        kamui_special_s_wall_end_game,
-        kamui_special_hi_game,
-        kamui_special_lw_hit_game,
-        kamui_special_lw_hit_effect,
-        kamui_waterdragon_special_lw_hit_game,
-    );
+    smashline::Agent::new("kamui")
+        .acmd("game_specialnend1", kamui_special_n_end1_game)
+        .acmd("game_specialairnend1", kamui_special_n_end1_game)
+        .acmd("game_specialsattack", kamui_special_s_attack_game)
+        .acmd("game_specialairsattack", kamui_special_air_s_attack_game)
+        .acmd(
+            "game_specialswallattackf",
+            kamui_special_s_wall_attack_f_game,
+        )
+        .acmd(
+            "effect_specialswallattackf",
+            kamui_special_s_wall_attack_f_effect,
+        )
+        .acmd(
+            "game_specialswallattackb",
+            kamui_special_s_wall_attack_b_game,
+        )
+        .acmd(
+            "effect_specialswallattackb",
+            kamui_special_s_wall_attack_b_effect,
+        )
+        .acmd("game_specialswalljump", kamui_special_s_wall_jump_game)
+        .acmd("effect_specialswalljump", kamui_special_s_wall_jump_effect)
+        .acmd("game_specialswallend", kamui_special_s_wall_end_game)
+        .acmd("game_specialhi", kamui_special_hi_game)
+        .acmd("game_specialairhi", kamui_special_hi_game)
+        .acmd("game_speciallwhit", kamui_special_lw_hit_game)
+        .acmd("game_specialairlwhit", kamui_special_lw_hit_game)
+        .acmd("effect_speciallwhit", kamui_special_lw_hit_effect)
+        .acmd("effect_specialairlwhit", kamui_special_lw_hit_effect)
+        .install();
+    smashline::Agent::new("kamui_spearhand")
+        .acmd("game_specialsattack", kamui_spearhand_special_s_attack_game)
+        .acmd(
+            "game_specialairsattack",
+            kamui_spearhand_special_air_s_attack_game,
+        )
+        .install();
+    smashline::Agent::new("kamui_dragonhand")
+        .acmd("game_dhspecialnend1", kamui_dragonhand_special_n_end1_game)
+        .acmd(
+            "game_dhspecialairnend1",
+            kamui_dragonhand_special_n_end1_game,
+        )
+        .install();
+    smashline::Agent::new("kamui_waterdragon")
+        .acmd("game_speciallwhit", kamui_waterdragon_special_lw_hit_game)
+        .acmd(
+            "game_specialairlwhit",
+            kamui_waterdragon_special_lw_hit_game,
+        )
+        .install();
 }

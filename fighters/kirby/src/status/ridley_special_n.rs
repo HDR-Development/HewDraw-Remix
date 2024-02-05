@@ -2,8 +2,8 @@ use super::*;
 use globals::*;
 
 /// Hold neutral special to explode
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM) >= WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("max_fire_num"))
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
@@ -16,7 +16,7 @@ unsafe fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValu
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_NORMAL);
         fighter.sub_shift_status_main(L2CValue::Ptr(special_n_shoot_main_loop as *const () as _))
     }else {
-        original!(fighter)
+        smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT)(fighter)
     }
 }
 unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -54,8 +54,14 @@ unsafe extern "C" fn special_n_air_to_ground_transition(fighter: &mut L2CFighter
     }
 }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_n_shoot_status_main
-    );
+    smashline::Agent::new("kirby")
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT,
+            special_n_shoot_status_main,
+        )
+        .install();
 }

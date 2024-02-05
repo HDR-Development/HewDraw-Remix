@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ken", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ken_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -39,8 +39,8 @@ unsafe fn ken_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ken_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -77,8 +77,8 @@ unsafe fn ken_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -139,8 +139,8 @@ unsafe fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ken", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ken_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ken_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -155,8 +155,8 @@ unsafe fn ken_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ken_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -190,8 +190,8 @@ unsafe fn ken_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -205,8 +205,8 @@ unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn ken_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -242,15 +242,17 @@ unsafe fn ken_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ken_attack_air_n_game,
-        ken_attack_air_f_game,
-        ken_attack_air_b_game,
-        ken_attack_air_b_effect,
-        ken_attack_air_hi_game,
-        effect_attackairhi,
-        ken_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("ken")
+        .acmd("game_attackairn", ken_attack_air_n_game)
+        .acmd("game_attackairf", ken_attack_air_f_game)
+        .acmd("game_attackairb", ken_attack_air_b_game)
+        .acmd("effect_attackairb", ken_attack_air_b_effect)
+        .acmd("game_attackairhi", ken_attack_air_hi_game)
+        .acmd("effect_attackairhi", effect_attackairhi)
+        .acmd("game_attackairlw", ken_attack_air_lw_game)
+        .install();
+}

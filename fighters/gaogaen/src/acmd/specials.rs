@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "gaogaen", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -171,8 +171,8 @@ unsafe fn gaogaen_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -308,8 +308,8 @@ unsafe fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_specialsstart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_special_s_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -393,8 +393,8 @@ unsafe fn gaogaen_special_s_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -445,8 +445,8 @@ unsafe fn gaogaen_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_script( agent = "gaogaen", scripts = ["game_specialsthrow", "game_specialairsthrow"], category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_special_s_throw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -466,8 +466,8 @@ unsafe fn gaogaen_special_s_throw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 95.0);
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_specialsthrow" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_special_s_throw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -561,8 +561,8 @@ unsafe fn gaogaen_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialslariat" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -631,8 +631,8 @@ unsafe fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairslariat" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_air_s_lariat_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_s_lariat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -668,8 +668,8 @@ unsafe fn gaogaen_special_air_s_lariat_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialsshoulder" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_s_shoulder_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_s_shoulder_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -740,8 +740,8 @@ unsafe fn gaogaen_special_s_shoulder_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairsshoulder" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_air_s_shoulder_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_s_shoulder_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -785,8 +785,8 @@ unsafe fn gaogaen_special_air_s_shoulder_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -865,8 +865,8 @@ unsafe fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -940,8 +940,8 @@ unsafe fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_specialairhistart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -980,8 +980,8 @@ unsafe fn gaogaen_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhiturn" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1015,8 +1015,8 @@ unsafe fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "effect_specialairhiturn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1048,8 +1048,8 @@ unsafe fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhifall" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_air_hi_fall_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_air_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -1082,8 +1082,8 @@ unsafe fn gaogaen_special_air_hi_fall_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialhibound" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_special_hi_bound_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gaogaen_special_hi_bound_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1103,25 +1103,38 @@ unsafe fn gaogaen_special_hi_bound_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gaogaen_special_n_game,
-        gaogaen_special_s_start_game,
-        gaogaen_special_air_s_start_game,
-        gaogaen_special_s_start_effect,
-        gaogaen_special_s_throw_game,
-        gaogaen_special_s_throw_effect,
-        gaogaen_special_s_lariat_game,
-        gaogaen_special_air_s_lariat_game,
-        gaogaen_special_s_shoulder_game,
-        gaogaen_special_air_s_shoulder_game,
-        gaogaen_special_hi_start_game,
-        gaogaen_special_air_hi_start_game,
-        gaogaen_special_air_hi_start_effect,
-        gaogaen_special_air_hi_turn_game,
-        gaogaen_special_air_hi_turn_effect,
-        gaogaen_special_air_hi_fall_game,
-        gaogaen_special_hi_bound_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("gaogaen")
+        .acmd("game_specialn", gaogaen_special_n_game)
+        .acmd("game_specialairn", gaogaen_special_n_game)
+        .acmd("game_specialsstart", gaogaen_special_s_start_game)
+        .acmd("effect_specialsstart", gaogaen_special_s_start_effect)
+        .acmd("game_specialairsstart", gaogaen_special_air_s_start_game)
+        .acmd("game_specialsthrow", gaogaen_special_s_throw_game)
+        .acmd("game_specialairsthrow", gaogaen_special_s_throw_game)
+        .acmd("effect_specialsthrow", gaogaen_special_s_throw_effect)
+        .acmd("game_specialslariat", gaogaen_special_s_lariat_game)
+        .acmd("game_specialairslariat", gaogaen_special_air_s_lariat_game)
+        .acmd("game_specialsshoulder", gaogaen_special_s_shoulder_game)
+        .acmd(
+            "game_specialairsshoulder",
+            gaogaen_special_air_s_shoulder_game,
+        )
+        .acmd("game_specialhistart", gaogaen_special_hi_start_game)
+        .acmd("game_specialairhistart", gaogaen_special_air_hi_start_game)
+        .acmd(
+            "effect_specialairhistart",
+            gaogaen_special_air_hi_start_effect,
+        )
+        .acmd("game_specialairhiturn", gaogaen_special_air_hi_turn_game)
+        .acmd(
+            "effect_specialairhiturn",
+            gaogaen_special_air_hi_turn_effect,
+        )
+        .acmd("game_specialairhifall", gaogaen_special_air_hi_fall_game)
+        .acmd("game_specialhibound", gaogaen_special_hi_bound_game)
+        .install();
+}

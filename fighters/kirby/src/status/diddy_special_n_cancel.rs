@@ -2,20 +2,20 @@ use super::*;
 use globals::*;
 
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N)(fighter)
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE)(fighter)
 }
 
 unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -183,12 +183,7 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
     return 0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        special_n_main,
-        special_n_charge_main
-    );
-}
+
 pub fn install_custom() {
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_kirby"),
@@ -206,4 +201,49 @@ pub fn install_custom() {
             .with_main(special_n_jump_cancel_main)
             .with_end(special_n_jump_cancel_end)
     );
+}
+
+pub fn install() {
+    smashline::Agent::new("kirby")
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N,
+            special_n_main,
+        )
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE,
+            special_n_charge_main,
+        )
+        .status(
+            Pre,
+            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
+            special_n_cancel_pre,
+        )
+        .status(
+            Main,
+            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
+            special_n_cancel_main,
+        )
+        .status(
+            End,
+            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
+            special_n_cancel_end,
+        )
+        .status(
+            Pre,
+            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
+            special_n_cancel_pre,
+        )
+        .status(
+            Main,
+            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
+            special_n_cancel_main,
+        )
+        .status(
+            End,
+            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
+            special_n_cancel_end,
+        )
+        .install();
 }

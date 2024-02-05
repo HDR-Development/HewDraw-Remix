@@ -63,13 +63,5 @@ unsafe extern "C" fn special_hi_open_exit(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_gamewatch"),
-        statuses::gamewatch::SPECIAL_HI_OPEN,
-        StatusInfo::new()
-            .with_pre(special_hi_open_pre)
-            .with_main(special_hi_open_main)
-            .with_exit(special_hi_open_exit)
-    );
-}
+
+pub fn install() {}

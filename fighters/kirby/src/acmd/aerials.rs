@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "kirby", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -42,8 +42,8 @@ unsafe fn kirby_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.77778);
@@ -84,8 +84,8 @@ unsafe fn kirby_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -122,8 +122,8 @@ unsafe fn kirby_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -147,8 +147,8 @@ unsafe fn kirby_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -174,8 +174,8 @@ unsafe fn kirby_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn kirby_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -183,14 +183,16 @@ unsafe fn kirby_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_attack_air_n_game,
-        kirby_attack_air_f_game,
-        kirby_attack_air_b_game,
-        kirby_attack_air_hi_game,
-        kirby_attack_air_lw_game,
-        kirby_landing_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("kirby")
+        .acmd("game_attackairn", kirby_attack_air_n_game)
+        .acmd("game_attackairf", kirby_attack_air_f_game)
+        .acmd("game_attackairb", kirby_attack_air_b_game)
+        .acmd("game_attackairhi", kirby_attack_air_hi_game)
+        .acmd("game_attackairlw", kirby_attack_air_lw_game)
+        .acmd("game_landingairlw", kirby_landing_air_lw_game)
+        .install();
+}

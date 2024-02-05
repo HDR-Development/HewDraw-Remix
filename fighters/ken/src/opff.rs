@@ -63,8 +63,7 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-#[fighter_frame_callback]
-pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         if fighter.kind() != FIGHTER_KIND_KEN {
             return;
@@ -82,8 +81,8 @@ pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_KEN)]
-pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
         shotos_common(fighter);
@@ -403,4 +402,10 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
     }
+}
+pub fn install() {
+    smashline::Agent::new("ken")
+        .on_line(Main, ken_frame_wrapper)
+        .on_line(Exec, ken_meter)
+        .install();
 }

@@ -115,8 +115,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_GAMEWATCH )]
-pub fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		gamewatch_frame(fighter)
@@ -129,8 +129,7 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback(main)]
-pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
             return
@@ -150,4 +149,14 @@ pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             }
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("gamewatch")
+        .on_line(Main, gamewatch_frame_wrapper)
+        .install();
+
+    smashline::Agent::new("gamewatch_box")
+        .on_line(Main, box_callback)
+        .install();
 }
