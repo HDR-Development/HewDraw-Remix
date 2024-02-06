@@ -3,6 +3,7 @@ use globals::*;
 use std::arch::asm;
 // Addresses, offsets, and inline hooking
 use skyline::hooks::{getRegionAddress, Region, InlineCtx};
+use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::install_hooks!(
@@ -46,6 +47,19 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if boma_reference.is_fighter() {
+
+
+
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::Smash64Mode) {
+                    if x1 == hash40("landing_heavy_frame") {
+                        return 4;
+                    }
+                }
+            },
+            _ => {}
+        }
 
         if x2 == hash40("just_shield_precede_extension") {
             return 1000;
@@ -116,6 +130,65 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if boma_reference.is_fighter() {
+
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::Smash64Mode) {
+                    if x2 == hash40("shield_setoff_add") {
+                        return 4.0;
+                    }
+            
+                    if x2 == hash40("shield_setoff_mul") {
+                        return 1.62;
+                    }
+            
+                    if x1 == hash40("air_speed_y_stable") {
+                        return original!()(x0, x1, x2) * 0.8;
+                    }
+            
+                    if x1 == hash40("air_accel_y") {
+                        return original!()(x0, x1, x2) * 0.8;
+                    }
+            
+                    if x1 == hash40("damage_fly_top_air_accel_y") {
+                        return original!()(x0, x1, x2) * 0.8;
+                    }
+            
+                    if x1 == hash40("damage_fly_top_speed_y_stable") {
+                        return original!()(x0, x1, x2) * 0.8;
+                    }
+            
+                    if x1 == hash40("dive_speed_y") {
+                        return original!()(x0, x1, x2) * 0.8;
+                    }
+            
+                    if x1 == hash40("landing_frame") {
+                        return 4.0;
+                    }
+            
+                    if x1 == hash40("landing_attack_air_frame_n") {
+                        return 4.0;
+                    }
+            
+                    if x1 == hash40("landing_attack_air_frame_f") {
+                        return 4.0;
+                    }
+            
+                    if x1 == hash40("landing_attack_air_frame_b") {
+                        return 4.0;
+                    }
+            
+                    if x1 == hash40("landing_attack_air_frame_hi") {
+                        return 4.0;
+                    }
+            
+                    if x1 == hash40("landing_attack_air_frame_lw") {
+                        return 4.0;
+                    }
+                }
+            },
+            _ => {}
+        }
 
         /*if x1 == hash40("air_speed_x_stable") {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
