@@ -1080,6 +1080,10 @@ pub mod vars {
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
             pub const CYCLE_MAGIC: i32 = 0x0103; // used to properly cycle Sora's HUD to fire in training mode
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0104;
+
+            // floats
+            pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1098,8 +1102,12 @@ pub mod vars {
 
             pub const UP_SPECIAL_HIT: i32 = 0x1100;
 
+            // ints
+            pub const ATTACK_LW4_TIMER: i32 = 0x1100;
+
             // floats
             pub const SONIC_BLADE_Y: i32 = 0x1100;
+            pub const DACUS_SPEED_Y: i32 = 0x1101;
         }
     }
 
