@@ -1,4 +1,3 @@
-
 use super::*;
 
 #[acmd_script( agent = "sheik", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
@@ -111,7 +110,7 @@ unsafe fn sheik_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "expression_attackhi4" , category = ACMD_EXPRESSION , low_priority)]
+#[acmd_script( agent = "sheik", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn sheik_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -180,9 +179,9 @@ pub fn install() {
     install_acmd_scripts!(
         sheik_attack_s4_s_game,
         sheik_attack_hi4_game,
+        sheik_attack_hi4_expression,
         sheik_attack_hi4_effect,
         sheik_attack_hi4_expression,
         sheik_attack_lw4_game,
     );
 }
-

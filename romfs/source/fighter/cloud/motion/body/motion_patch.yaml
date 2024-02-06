@@ -55,7 +55,7 @@ attack_air_b:
     cancel_frame: 40
 attack_air_lw:
   extra:
-    cancel_frame: 59
+    cancel_frame: 55
 fall_aerial_f:
   blend_frames: 5
 fall_aerial_b:

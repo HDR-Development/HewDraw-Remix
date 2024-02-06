@@ -21,6 +21,9 @@ throw_hi:
 throw_f:
   extra:
     cancel_frame: 32
+throw_b:
+  extra:
+    cancel_frame: 36
 attack_13:
   extra:
     cancel_frame: 32
