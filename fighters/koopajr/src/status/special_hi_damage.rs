@@ -2,17 +2,13 @@ use super::*;
 use globals::*;
 // status script import
  
-pub fn install() {
-    install_status_scripts!(
-        special_hi_damage_end_main
-    );
-}
+
 
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END
 
-#[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_hi_damage_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    original!(fighter);
+
+pub unsafe extern "C" fn special_hi_damage_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    smashline::original_status(Main, fighter, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END)(fighter);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
     }
@@ -25,4 +21,10 @@ pub unsafe fn special_hi_damage_end_main(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     1.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("koopajr")
+        .status(Main, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, special_hi_damage_end_main)
+        .install();
 }

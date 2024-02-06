@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "murabito", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -33,8 +33,8 @@ unsafe fn murabito_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -68,8 +68,8 @@ unsafe fn murabito_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -145,8 +145,8 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -187,8 +187,8 @@ unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "sound_attacklw3" , category = ACMD_SOUND , low_priority)]
-unsafe fn murabito_attack_lw3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -203,13 +203,15 @@ unsafe fn murabito_attack_lw3_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-pub fn install() {
-    install_acmd_scripts!(
-        murabito_attack_s3_s_game,
-        murabito_attack_hi3_game,
-        murabito_attack_lw3_game,
-        murabito_attack_lw3_effect,
-        murabito_attack_lw3_sound,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("murabito")
+        .acmd("game_attacks3", murabito_attack_s3_s_game)
+        .acmd("game_attackhi3", murabito_attack_hi3_game)
+        .acmd("game_attacklw3", murabito_attack_lw3_game)
+        .acmd("effect_attacklw3", murabito_attack_lw3_effect)
+        .acmd("sound_attacklw3", murabito_attack_lw3_sound)
+        .install();
+}

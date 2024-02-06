@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "link", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -36,8 +36,8 @@ unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_f(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -82,8 +82,8 @@ unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "link", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -105,8 +105,8 @@ unsafe fn attack_air_f_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "link", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn attack_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -127,8 +127,8 @@ unsafe fn attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_b(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -167,8 +167,8 @@ unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -196,8 +196,8 @@ unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackairhi (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairhi (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 11.0);
@@ -213,8 +213,8 @@ unsafe fn effect_attackairhi (fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "link", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_lw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -246,8 +246,8 @@ unsafe fn attack_air_lw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackairlw (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairlw (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 7.0);
@@ -268,17 +268,19 @@ unsafe fn effect_attackairlw (fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        attack_air_n,
-        attack_air_f,
-        attack_air_f_expression,
-        attack_air_b,
-        attack_air_hi,
-        attack_air_lw,
-        effect_attackairhi,
-        effect_attackairlw,
-        attack_air_f_effect,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("link")
+        .acmd("game_attackairn", attack_air_n)
+        .acmd("game_attackairf", attack_air_f)
+        .acmd("effect_attackairf", attack_air_f_effect)
+        .acmd("expression_attackairf", attack_air_f_expression)
+        .acmd("game_attackairb", attack_air_b)
+        .acmd("game_attackairhi", attack_air_hi)
+        .acmd("effect_attackairhi", effect_attackairhi)
+        .acmd("game_attackairlw", attack_air_lw)
+        .acmd("effect_attackairlw", effect_attackairlw)
+        .install();
+}

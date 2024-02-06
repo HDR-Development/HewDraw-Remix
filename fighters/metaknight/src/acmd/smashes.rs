@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "metaknight", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 21.0);
@@ -22,8 +22,8 @@ unsafe fn metaknight_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attacks4(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -46,8 +46,8 @@ unsafe fn effect_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -87,8 +87,8 @@ unsafe fn metaknight_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn metaknight_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -116,8 +116,8 @@ unsafe fn metaknight_attack_hi4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -144,8 +144,8 @@ unsafe fn metaknight_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -165,14 +165,16 @@ unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        metaknight_attack_s4_s_game,
-        effect_attacks4,
-        metaknight_attack_hi4_game,
-        metaknight_attack_hi4_effect,
-        metaknight_attack_lw4_game,
-        effect_attacklw4
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("metaknight")
+        .acmd("game_attacks4", metaknight_attack_s4_s_game)
+        .acmd("effect_attacks4", effect_attacks4)
+        .acmd("game_attackhi4", metaknight_attack_hi4_game)
+        .acmd("effect_attackhi4", metaknight_attack_hi4_effect)
+        .acmd("game_attacklw4", metaknight_attack_lw4_game)
+        .acmd("effect_attacklw4", effect_attacklw4)
+        .install();
+}

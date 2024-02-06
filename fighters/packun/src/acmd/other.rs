@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "packun", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,8 +26,8 @@ unsafe fn packun_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "packun", script = "game_catchattack", category = ACMD_GAME, low_priority )]
-unsafe fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -47,8 +47,8 @@ unsafe fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -58,8 +58,8 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "packun", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -77,8 +77,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -92,8 +92,8 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "packun", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -108,8 +108,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -123,8 +123,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME , low_priority)]
-unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -145,8 +145,8 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["sound_appealhil", "sound_appealhir"], category = ACMD_SOUND, low_priority )]
-unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -163,8 +163,8 @@ unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_appealhi2", category = ACMD_GAME , low_priority)]
-unsafe fn appeal_hi_2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_hi_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -184,14 +184,14 @@ unsafe fn appeal_hi_2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_appealhi2", category = ACMD_EFFECT , low_priority)]
-unsafe fn appeal_hi_2_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_hi_2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "packun", script = "sound_appealhi2", category = ACMD_SOUND , low_priority)]
-unsafe fn appeal_hi_2_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_hi_2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 29.0);
@@ -208,8 +208,8 @@ unsafe fn appeal_hi_2_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "expression_appealhi2", category = ACMD_EXPRESSION , low_priority)]
-unsafe fn appeal_hi_2_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_hi_2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -230,8 +230,8 @@ unsafe fn appeal_hi_2_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["game_appealsl", "game_appealsr"] , category = ACMD_GAME , low_priority)]
-unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -250,8 +250,8 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["sound_appealsl", "sound_appealsr"], category = ACMD_SOUND, low_priority )]
-unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -280,8 +280,8 @@ unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME , low_priority)]
-unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let cur_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -294,8 +294,8 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["sound_appeallwl", "sound_appeallwr"], category = ACMD_SOUND, low_priority )]
-unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -312,8 +312,8 @@ unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_start", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_start(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -334,8 +334,8 @@ unsafe fn packun_spikeball_game_start(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_startair", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -356,8 +356,8 @@ unsafe fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_loop", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_loop(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_loop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -375,8 +375,8 @@ unsafe fn packun_spikeball_game_loop(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "effect_loop" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_spikeball_loop_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_loop_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -389,8 +389,8 @@ unsafe fn packun_spikeball_loop_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_shoot", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -433,8 +433,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "effect_shoot" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_spikeball_shoot_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_shoot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -451,8 +451,8 @@ unsafe fn packun_spikeball_shoot_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_fall", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_fall(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_fall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -470,8 +470,8 @@ unsafe fn packun_spikeball_game_fall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "effect_fall" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_spikeball_fall_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_fall_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -484,8 +484,8 @@ unsafe fn packun_spikeball_fall_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_wait", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -511,8 +511,8 @@ unsafe fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
     }*/
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "effect_wait" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_spikeball_wait_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_wait_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -525,8 +525,8 @@ unsafe fn packun_spikeball_wait_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "game_explode", category = ACMD_GAME, low_priority )]
-unsafe fn packun_spikeball_game_explode(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_game_explode(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -539,8 +539,8 @@ unsafe fn packun_spikeball_game_explode(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "effect_explode", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_spikeball_effect_explode(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_effect_explode(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -552,8 +552,8 @@ unsafe fn packun_spikeball_effect_explode(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_spikeball", script = "sound_explode", category = ACMD_SOUND, low_priority )]
-unsafe fn packun_spikeball_sound_explode(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_spikeball_sound_explode(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -563,8 +563,8 @@ unsafe fn packun_spikeball_sound_explode(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_poisonbreath", script = "game_shoot", category = ACMD_GAME, low_priority )]
-unsafe fn game_shoot(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_shoot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -578,8 +578,8 @@ unsafe fn game_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_poisonbreath", script = "game_shootmax", category = ACMD_GAME, low_priority )]
-unsafe fn game_shootmax(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_shootmax(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -589,8 +589,8 @@ unsafe fn game_shootmax(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_poisonbreath", scripts = ["game_start", "game_shoot"], category = ACMD_GAME, low_priority )]
-unsafe fn packun_poisonbreath_start_game(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_start(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -605,8 +605,8 @@ unsafe fn packun_poisonbreath_start_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun_poisonbreath", scripts = ["game_startmax", "game_shootmax"], category = ACMD_GAME, low_priority )]
-unsafe fn packun_poisonbreath_start_max_game(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_startmax(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -617,8 +617,8 @@ unsafe fn packun_poisonbreath_start_max_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "packun_poisonbreath", script =  "game_explode", category = ACMD_GAME, low_priority)]
-unsafe fn packun_poisonbreath_game_explode(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_poisonbreath_game_explode(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -639,8 +639,8 @@ unsafe fn packun_poisonbreath_game_explode(fighter: &mut L2CAgentBase) {
 	}
 }	
 
-#[acmd_script(agent = "packun_poisonbreath", script =  "effect_explode", category = ACMD_EFFECT, low_priority)]
-unsafe fn packun_poisonbreath_effect_explode(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_poisonbreath_effect_explode(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -658,8 +658,8 @@ unsafe fn packun_poisonbreath_effect_explode(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "packun_poisonbreath", script =  "sound_explode", category = ACMD_SOUND, low_priority)]
-unsafe fn packun_poisonbreath_sound_explode(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_poisonbreath_sound_explode(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -669,43 +669,57 @@ unsafe fn packun_poisonbreath_sound_explode(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        packun_catch_game,
-        packun_catch_attack_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        appeal_hi_game,
-        appeal_hi_sound,
-        appeal_hi_2_game,
-        appeal_hi_2_effect,
-        appeal_hi_2_sound,
-        appeal_hi_2_expression,
-        appeal_s_game,
-        appeal_s_sound,
-        appeal_lw_game,
-        appeal_lw_sound,
-        packun_spikeball_game_start,
-        packun_spikeball_game_start_air,
-        packun_spikeball_game_loop,
-        packun_spikeball_loop_effect,
-        packun_spikeball_game_shoot,
-        packun_spikeball_shoot_effect,
-        packun_spikeball_game_fall,
-        packun_spikeball_fall_effect,
-        packun_spikeball_game_wait,
-        packun_spikeball_wait_effect,
-        packun_spikeball_game_explode,
-        packun_spikeball_effect_explode,
-        packun_spikeball_sound_explode,
-        packun_poisonbreath_start_game,
-        packun_poisonbreath_start_max_game,
-        packun_poisonbreath_game_explode,
-        packun_poisonbreath_effect_explode,
-        packun_poisonbreath_sound_explode,
-    );
-}
 
+pub fn install() {
+    smashline::Agent::new("packun")
+        .acmd("game_catch", packun_catch_game)
+        .acmd("game_catchattack", packun_catch_attack_game)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("game_appealhil", appeal_hi_game)
+        .acmd("game_appealhir", appeal_hi_game)
+        .acmd("sound_appealhil", appeal_hi_sound)
+        .acmd("sound_appealhir", appeal_hi_sound)
+        .acmd("game_appealhi2", appeal_hi_2_game)
+        .acmd("effect_appealhi2", appeal_hi_2_effect)
+        .acmd("sound_appealhi2", appeal_hi_2_sound)
+        .acmd("expression_appealhi2", appeal_hi_2_expression)
+        .acmd("game_appealsl", appeal_s_game)
+        .acmd("game_appealsr", appeal_s_game)
+        .acmd("sound_appealsl", appeal_s_sound)
+        .acmd("sound_appealsr", appeal_s_sound)
+        .acmd("game_appeallwl", appeal_lw_game)
+        .acmd("game_appeallwr", appeal_lw_game)
+        .acmd("sound_appeallwl", appeal_lw_sound)
+        .acmd("sound_appeallwr", appeal_lw_sound)
+        .install();
+    smashline::Agent::new("packun_spikeball")
+        .acmd("game_start", packun_spikeball_game_start)
+        .acmd("game_startair", packun_spikeball_game_start_air)
+        .acmd("game_loop", packun_spikeball_game_loop)
+        .acmd("effect_loop", packun_spikeball_loop_effect)
+        .acmd("game_shoot", packun_spikeball_game_shoot)
+        .acmd("effect_shoot", packun_spikeball_shoot_effect)
+        .acmd("game_fall", packun_spikeball_game_fall)
+        .acmd("effect_fall", packun_spikeball_fall_effect)
+        .acmd("game_wait", packun_spikeball_game_wait)
+        .acmd("effect_wait", packun_spikeball_wait_effect)
+        .acmd("game_explode", packun_spikeball_game_explode)
+        .acmd("effect_explode", packun_spikeball_effect_explode)
+        .acmd("sound_explode", packun_spikeball_sound_explode)
+        .install();
+    smashline::Agent::new("packun_poisonbreath")
+        .acmd("game_shoot", game_shoot)
+        .acmd("game_shootmax", game_shootmax)
+        .acmd("game_start", game_start)
+        .acmd("game_shoot", game_start)
+        .acmd("game_startmax", game_startmax)
+        .acmd("game_shootmax", game_startmax)
+        .acmd("game_explode", packun_poisonbreath_game_explode)
+        .acmd("effect_explode", packun_poisonbreath_effect_explode)
+        .acmd("sound_explode", packun_poisonbreath_sound_explode)
+        .install();
+}

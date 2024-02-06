@@ -1,8 +1,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "lucina", script = "game_specialnendhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_n_end_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_n_end_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -36,8 +36,8 @@ unsafe fn lucina_special_n_end_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_n_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -69,8 +69,8 @@ unsafe fn lucina_special_n_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialnendlw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_n_end_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_n_end_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -104,8 +104,8 @@ unsafe fn lucina_special_n_end_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialnendmaxhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -139,8 +139,8 @@ unsafe fn lucina_special_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialnendmax" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_n_end_max_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_n_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -172,8 +172,8 @@ unsafe fn lucina_special_n_end_max_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialnendmaxlw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -207,8 +207,8 @@ unsafe fn lucina_special_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairnendhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_n_end_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_n_end_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -242,8 +242,8 @@ unsafe fn lucina_special_air_n_end_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -275,8 +275,8 @@ unsafe fn lucina_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairnendlw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_n_end_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_n_end_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -310,8 +310,8 @@ unsafe fn lucina_special_air_n_end_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairnendmaxhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -345,8 +345,8 @@ unsafe fn lucina_special_air_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairnendmax" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_n_end_max_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_n_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -378,8 +378,8 @@ unsafe fn lucina_special_air_n_end_max_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairnendmaxlw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -413,8 +413,8 @@ unsafe fn lucina_special_air_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specials1" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -443,8 +443,8 @@ unsafe fn lucina_special_s1_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s1_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -473,8 +473,8 @@ unsafe fn lucina_special_s1_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -503,8 +503,8 @@ unsafe fn lucina_special_air_s1_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s1_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -532,8 +532,8 @@ unsafe fn lucina_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specials2hi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s2_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -562,8 +562,8 @@ unsafe fn lucina_special_s2_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -589,8 +589,8 @@ unsafe fn lucina_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specials2hi" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_s2_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s2_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -600,8 +600,8 @@ unsafe fn lucina_special_s2_hi_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs2hi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -630,8 +630,8 @@ unsafe fn lucina_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -657,8 +657,8 @@ unsafe fn lucina_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specialairs2hi" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_air_s2_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s2_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -668,8 +668,8 @@ unsafe fn lucina_special_air_s2_hi_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials2lw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s2_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -698,8 +698,8 @@ unsafe fn lucina_special_s2_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -728,8 +728,8 @@ unsafe fn lucina_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specials2lw" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_s2_lw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s2_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -739,8 +739,8 @@ unsafe fn lucina_special_s2_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs2lw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -769,8 +769,8 @@ unsafe fn lucina_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -799,8 +799,8 @@ unsafe fn lucina_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specialairs2lw" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_air_s2_lw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s2_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -810,8 +810,8 @@ unsafe fn lucina_special_air_s2_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -837,8 +837,8 @@ unsafe fn lucina_special_s3_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -867,8 +867,8 @@ unsafe fn lucina_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specials3hi" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_s3_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -882,8 +882,8 @@ unsafe fn lucina_special_s3_hi_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -909,8 +909,8 @@ unsafe fn lucina_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -939,8 +939,8 @@ unsafe fn lucina_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specialairs3hi" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_air_s3_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -954,8 +954,8 @@ unsafe fn lucina_special_air_s3_hi_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials3s" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -981,8 +981,8 @@ unsafe fn lucina_special_s3_s_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s3_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1008,8 +1008,8 @@ unsafe fn lucina_special_s3_s_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specials3s" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_s3_s_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1023,8 +1023,8 @@ unsafe fn lucina_special_s3_s_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs3s" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1050,8 +1050,8 @@ unsafe fn lucina_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1077,8 +1077,8 @@ unsafe fn lucina_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specialairs3s" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_air_s3_s_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1092,8 +1092,8 @@ unsafe fn lucina_special_air_s3_s_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1118,8 +1118,8 @@ unsafe fn lucina_special_s3_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1148,8 +1148,8 @@ unsafe fn lucina_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specials3lw" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_s3_lw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s3_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1163,8 +1163,8 @@ unsafe fn lucina_special_s3_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1189,8 +1189,8 @@ unsafe fn lucina_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1219,8 +1219,8 @@ unsafe fn lucina_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "sound_specialairs3lw" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucina_special_air_s3_lw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s3_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1234,8 +1234,8 @@ unsafe fn lucina_special_air_s3_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
@@ -1253,8 +1253,8 @@ unsafe fn lucina_special_s4_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1283,8 +1283,8 @@ unsafe fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
@@ -1302,8 +1302,8 @@ unsafe fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1332,8 +1332,8 @@ unsafe fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials4s" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
@@ -1350,8 +1350,8 @@ unsafe fn lucina_special_s4_s_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1380,8 +1380,8 @@ unsafe fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs4s" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
@@ -1398,8 +1398,8 @@ unsafe fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1428,8 +1428,8 @@ unsafe fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specials4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_s4_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
@@ -1460,8 +1460,8 @@ unsafe fn lucina_special_s4_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1515,8 +1515,8 @@ unsafe fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairs4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_s4_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let add_damage = 0.5*(DamageModule::damage(boma, 0) - VarModule::get_float(boma.object(), vars::lucina::instance::CURRENT_DAMAGE));
@@ -1547,8 +1547,8 @@ unsafe fn lucina_special_air_s4_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucina_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1601,8 +1601,8 @@ unsafe fn lucina_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1639,8 +1639,8 @@ unsafe fn lucina_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1676,8 +1676,8 @@ unsafe fn lucina_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1702,8 +1702,8 @@ unsafe fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucina", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1728,69 +1728,68 @@ unsafe fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
 
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucina_special_n_end_hi_game,
-        lucina_special_n_end_game,
-        lucina_special_n_end_lw_game,
-        lucina_special_n_end_max_hi_game,
-        lucina_special_n_end_max_game,
-        lucina_special_n_end_max_lw_game,
-        lucina_special_air_n_end_hi_game,
-        lucina_special_air_n_end_game,
-        lucina_special_air_n_end_lw_game,
-        lucina_special_air_n_end_max_hi_game,
-        lucina_special_air_n_end_max_game,
-        lucina_special_air_n_end_max_lw_game,
-        lucina_special_s1_game,
-        lucina_special_air_s1_game,
-        lucina_special_s2_hi_game,
-        lucina_special_air_s2_hi_game,
-        lucina_special_s2_lw_game,
-        lucina_special_air_s2_lw_game,
-        lucina_special_s3_hi_game,
-        lucina_special_air_s3_hi_game,
-        lucina_special_s3_s_game,
-        lucina_special_air_s3_s_game,
-        lucina_special_s3_lw_game,
-        lucina_special_air_s3_lw_game,
-        lucina_special_s4_hi_game,
-        lucina_special_air_s4_hi_game,
-        lucina_special_s4_s_game,
-        lucina_special_air_s4_s_game,
-        lucina_special_s4_lw_game,
-        lucina_special_air_s4_lw_game,
-        lucina_special_s1_effect,
-        lucina_special_air_s1_effect,
-        lucina_special_s2_hi_effect,
-        lucina_special_air_s2_hi_effect,
-        lucina_special_s2_lw_effect,
-        lucina_special_air_s2_lw_effect,
-        lucina_special_s3_hi_effect,
-        lucina_special_air_s3_hi_effect,
-        lucina_special_s3_s_effect,
-        lucina_special_air_s3_s_effect,
-        lucina_special_s3_lw_effect,
-        lucina_special_air_s3_lw_effect,
-        lucina_special_s4_hi_effect,
-        lucina_special_air_s4_hi_effect,
-        lucina_special_s4_s_effect,
-        lucina_special_air_s4_s_effect,
-        lucina_special_s4_lw_effect,
-        lucina_special_air_s4_lw_effect,
-        lucina_special_s2_hi_sound,
-        lucina_special_air_s2_hi_sound,
-        lucina_special_s2_lw_sound,
-        lucina_special_air_s2_lw_sound,
-        lucina_special_s3_hi_sound,
-        lucina_special_air_s3_hi_sound,
-        lucina_special_s3_s_sound,
-        lucina_special_air_s3_s_sound,
-        lucina_special_s3_lw_sound,
-        lucina_special_air_s3_lw_sound,
-        lucina_special_hi_game,
-        lucina_special_air_hi_game,
-        lucina_special_lw_game,
-        lucina_special_air_lw_game,
-    );
+    smashline::Agent::new("lucina")
+        .acmd("game_specialnendhi", lucina_special_n_end_hi_game)
+        .acmd("game_specialnend", lucina_special_n_end_game)
+        .acmd("game_specialnendlw", lucina_special_n_end_lw_game)
+        .acmd("game_specialnendmaxhi", lucina_special_n_end_max_hi_game)
+        .acmd("game_specialnendmax", lucina_special_n_end_max_game)
+        .acmd("game_specialnendmaxlw", lucina_special_n_end_max_lw_game)
+        .acmd("game_specialairnendhi", lucina_special_air_n_end_hi_game)
+        .acmd("game_specialairnend", lucina_special_air_n_end_game)
+        .acmd("game_specialairnendlw", lucina_special_air_n_end_lw_game)
+        .acmd("game_specialairnendmaxhi", lucina_special_air_n_end_max_hi_game)
+        .acmd("game_specialairnendmax", lucina_special_air_n_end_max_game)
+        .acmd("game_specialairnendmaxlw", lucina_special_air_n_end_max_lw_game)
+        .acmd("game_specials1", lucina_special_s1_game)
+        .acmd("effect_specials1", lucina_special_s1_effect)
+        .acmd("game_specialairs1", lucina_special_air_s1_game)
+        .acmd("effect_specialairs1", lucina_special_air_s1_effect)
+        .acmd("game_specials2hi", lucina_special_s2_hi_game)
+        .acmd("effect_specials2hi", lucina_special_s2_hi_effect)
+        .acmd("sound_specials2hi", lucina_special_s2_hi_sound)
+        .acmd("game_specialairs2hi", lucina_special_air_s2_hi_game)
+        .acmd("effect_specialairs2hi", lucina_special_air_s2_hi_effect)
+        .acmd("sound_specialairs2hi", lucina_special_air_s2_hi_sound)
+        .acmd("game_specials2lw", lucina_special_s2_lw_game)
+        .acmd("effect_specials2lw", lucina_special_s2_lw_effect)
+        .acmd("sound_specials2lw", lucina_special_s2_lw_sound)
+        .acmd("game_specialairs2lw", lucina_special_air_s2_lw_game)
+        .acmd("effect_specialairs2lw", lucina_special_air_s2_lw_effect)
+        .acmd("sound_specialairs2lw", lucina_special_air_s2_lw_sound)
+        .acmd("game_specials3hi", lucina_special_s3_hi_game)
+        .acmd("effect_specials3hi", lucina_special_s3_hi_effect)
+        .acmd("sound_specials3hi", lucina_special_s3_hi_sound)
+        .acmd("game_specialairs3hi", lucina_special_air_s3_hi_game)
+        .acmd("effect_specialairs3hi", lucina_special_air_s3_hi_effect)
+        .acmd("sound_specialairs3hi", lucina_special_air_s3_hi_sound)
+        .acmd("game_specials3s", lucina_special_s3_s_game)
+        .acmd("effect_specials3s", lucina_special_s3_s_effect)
+        .acmd("sound_specials3s", lucina_special_s3_s_sound)
+        .acmd("game_specialairs3s", lucina_special_air_s3_s_game)
+        .acmd("effect_specialairs3s", lucina_special_air_s3_s_effect)
+        .acmd("sound_specialairs3s", lucina_special_air_s3_s_sound)
+        .acmd("game_specials3lw", lucina_special_s3_lw_game)
+        .acmd("effect_specials3lw", lucina_special_s3_lw_effect)
+        .acmd("sound_specials3lw", lucina_special_s3_lw_sound)
+        .acmd("game_specialairs3lw", lucina_special_air_s3_lw_game)
+        .acmd("effect_specialairs3lw", lucina_special_air_s3_lw_effect)
+        .acmd("sound_specialairs3lw", lucina_special_air_s3_lw_sound)
+        .acmd("game_specials4hi", lucina_special_s4_hi_game)
+        .acmd("effect_specials4hi", lucina_special_s4_hi_effect)
+        .acmd("game_specialairs4hi", lucina_special_air_s4_hi_game)
+        .acmd("effect_specialairs4hi", lucina_special_air_s4_hi_effect)
+        .acmd("game_specials4s", lucina_special_s4_s_game)
+        .acmd("effect_specials4s", lucina_special_s4_s_effect)
+        .acmd("game_specialairs4s", lucina_special_air_s4_s_game)
+        .acmd("effect_specialairs4s", lucina_special_air_s4_s_effect)
+        .acmd("game_specials4lw", lucina_special_s4_lw_game)
+        .acmd("effect_specials4lw", lucina_special_s4_lw_effect)
+        .acmd("game_specialairs4lw", lucina_special_air_s4_lw_game)
+        .acmd("effect_specialairs4lw", lucina_special_air_s4_lw_effect)
+        .acmd("game_specialhi", lucina_special_hi_game)
+        .acmd("game_specialairhi", lucina_special_air_hi_game)
+        .acmd("game_speciallw", lucina_special_lw_game)
+        .acmd("game_specialairlw", lucina_special_air_lw_game)
+        .install();
 }
-

@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "murabito", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -12,8 +12,8 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -23,8 +23,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -38,8 +38,8 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito_slingshot", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_slingshot_attackairb_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_slingshot_attackairb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -48,8 +48,8 @@ unsafe fn murabito_slingshot_attackairb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito_bullet", script = "game_shootf" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_bullet_shoot_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_bullet_shoot_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -67,8 +67,8 @@ unsafe fn murabito_bullet_shoot_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito_clayrocket", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 6.0);
@@ -78,8 +78,8 @@ unsafe fn murabito_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito_flowerpot", script = "game_throwed" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_flowerpot_throwed_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_flowerpot_throwed_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -93,8 +93,8 @@ unsafe fn murabito_flowerpot_throwed_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito_flowerpot", script = "effect_bound" , category = ACMD_EFFECT , low_priority)]
-unsafe fn murabito_flowerpot_bound_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_flowerpot_bound_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !WorkModule::is_flag(boma, *WEAPON_MURABITO_FLOWERPOT_INSTANCE_WORK_ID_FLAG_ASASE) {
@@ -114,8 +114,8 @@ unsafe fn murabito_flowerpot_bound_effect(fighter: &mut L2CAgentBase) {
 
 
 
-#[acmd_script( agent = "murabito", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -130,8 +130,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -145,8 +145,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -184,8 +184,8 @@ unsafe fn murabito_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_catchdash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_catchdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -219,8 +219,8 @@ unsafe fn murabito_catchdash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_catchturn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_catchturn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -254,21 +254,31 @@ unsafe fn murabito_catchturn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        murabito_slingshot_attackairb_game,
-        murabito_bullet_shoot_f_game,
-        murabito_flowerpot_throwed_game,
-        murabito_flowerpot_bound_effect,
-        murabito_clayrocket_fly_game,
-        murabito_catch_game,
-        murabito_catchdash_game,
-        murabito_catchturn_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("murabito_bullet")
+        .acmd("game_shootf", murabito_bullet_shoot_f_game)
+        .install();
+    smashline::Agent::new("murabito_slingshot")
+        .acmd("game_attackairb", murabito_slingshot_attackairb_game)
+        .install();
+    smashline::Agent::new("murabito")
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("game_catch", murabito_catch_game)
+        .acmd("game_catchdash", murabito_catchdash_game)
+        .acmd("game_catchturn", murabito_catchturn_game)
+        .install();
+    smashline::Agent::new("murabito_clayrocket")
+        .acmd("game_fly", murabito_clayrocket_fly_game)
+        .install();
+    smashline::Agent::new("murabito_flowerpot")
+        .acmd("game_throwed", murabito_flowerpot_throwed_game)
+        .acmd("effect_bound", murabito_flowerpot_bound_effect)
+        .install();
+}

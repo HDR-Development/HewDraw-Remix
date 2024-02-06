@@ -435,8 +435,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     pkt2_edgeslipoff(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_LUCAS)]
-pub fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		lucas_frame(fighter)
@@ -449,12 +449,20 @@ pub unsafe fn lucas_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback]
-pub fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_LUCAS_PK_THUNDER {
             return
         }
         WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("lucas")
+        .on_line(Main, lucas_frame_wrapper)
+        .install();
+    smashline::Agent::new("lucas_pkthunder")
+        .on_line(Main, pkthunder_callback)
+        .install();
 }

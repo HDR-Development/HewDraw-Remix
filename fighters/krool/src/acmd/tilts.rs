@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "krool", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -32,8 +32,8 @@ unsafe fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
-unsafe fn krool_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -51,8 +51,8 @@ unsafe fn krool_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -81,8 +81,8 @@ unsafe fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
-unsafe fn krool_attack_s3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -100,8 +100,8 @@ unsafe fn krool_attack_s3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -130,8 +130,8 @@ unsafe fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
-unsafe fn krool_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -149,8 +149,8 @@ unsafe fn krool_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", scripts = ["sound_attacks3hi", "sound_attacks3", "sound_attacks3lw"], category = ACMD_SOUND, low_priority )]
-unsafe fn krool_attack_s3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_s3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -171,8 +171,8 @@ unsafe fn krool_attack_s3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -224,8 +224,8 @@ unsafe fn krool_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
-unsafe fn krool_attack_hi3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -245,8 +245,8 @@ unsafe fn krool_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -294,8 +294,8 @@ unsafe fn krool_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn krool_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -313,8 +313,8 @@ unsafe fn krool_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
-unsafe fn krool_attack_lw3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn krool_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -333,19 +333,23 @@ unsafe fn krool_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        krool_attack_s3_hi_game,
-        krool_attack_s3_hi_effect,
-        krool_attack_s3_s_game,
-        krool_attack_s3_effect,
-        krool_attack_s3_lw_game,
-        krool_attack_s3_lw_effect,
-        krool_attack_s3_sound,
-        krool_attack_hi3_game,
-        krool_attack_hi3_sound,
-        krool_attack_lw3_game,
-        krool_attack_lw3_effect,
-        krool_attack_lw3_sound,
-    );
+    smashline::Agent::new("krool")
+        .acmd("game_attacks3hi", krool_attack_s3_hi_game)
+        .acmd("effect_attacks3hi", krool_attack_s3_hi_effect)
+        .acmd("game_attacks3", krool_attack_s3_s_game)
+        .acmd("effect_attacks3", krool_attack_s3_effect)
+        .acmd("game_attacks3lw", krool_attack_s3_lw_game)
+        .acmd("effect_attacks3lw", krool_attack_s3_lw_effect)
+        .acmd("sound_attacks3hi", krool_attack_s3_sound)
+        .acmd("sound_attacks3", krool_attack_s3_sound)
+        .acmd("sound_attacks3lw", krool_attack_s3_sound)
+        .acmd("game_attackhi3", krool_attack_hi3_game)
+        .acmd("sound_attackhi3", krool_attack_hi3_sound)
+        .acmd("game_attacklw3", krool_attack_lw3_game)
+        .acmd("effect_attacklw3", krool_attack_lw3_effect)
+        .acmd("sound_attacklw3", krool_attack_lw3_sound)
+        .install();
 }

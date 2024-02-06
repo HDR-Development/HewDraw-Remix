@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "link", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks4 (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacks4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 10.0);
@@ -36,8 +36,8 @@ unsafe fn game_attacks4 (fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "link", script = "game_attacks4s2" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_s4_2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_s4_2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -54,8 +54,8 @@ unsafe fn attack_s4_2(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 6.0);
@@ -107,8 +107,8 @@ unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
 	} 
 }
 
-#[acmd_script( agent = "link", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_lw4(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -143,12 +143,14 @@ unsafe fn attack_lw4(fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 12.0/(56.0-38.0));
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-		game_attacks4,
-		attack_s4_2,
-		attack_hi4,
-		attack_lw4,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("link")
+        .acmd("game_attacks4", game_attacks4)
+        .acmd("game_attacks4s2", attack_s4_2)
+        .acmd("game_attackhi4", attack_hi4)
+        .acmd("game_attacklw4", attack_lw4)
+        .install();
+}

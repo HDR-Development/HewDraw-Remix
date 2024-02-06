@@ -95,8 +95,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_MURABITO )]
-pub fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		murabito_frame(fighter);
@@ -109,8 +109,7 @@ pub unsafe fn murabito_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback(main)]
-pub fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() == *WEAPON_KIND_MURABITO_FLOWERPOT {
             if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -122,4 +121,13 @@ pub fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             return;
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("murabito")
+        .on_line(Main, murabito_frame_wrapper)
+        .install();
+    smashline::Agent::new("murabito_flowerpot")
+        .on_line(Main, article_frame_callback)
+        .install();
 }

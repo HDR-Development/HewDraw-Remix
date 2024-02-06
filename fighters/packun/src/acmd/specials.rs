@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "packun", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
-unsafe fn packun_special_n_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -23,8 +23,8 @@ unsafe fn packun_special_n_start_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.7);
 }
 
-#[acmd_script( agent = "packun", scripts = [ "game_specialsshoot", "game_specialairsshoot" ] , category = ACMD_GAME , low_priority)]
-unsafe fn packun_special_s_shoot_game(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -82,8 +82,8 @@ unsafe fn packun_special_s_shoot_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = [ "game_specialsshoots", "game_specialairsshoots" ] , category = ACMD_GAME , low_priority)]
-unsafe fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let charged = WorkModule::get_int(boma, *FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) == 60;
@@ -155,8 +155,8 @@ unsafe fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialsend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_special_s_end_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_end_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -182,8 +182,8 @@ unsafe fn packun_special_s_end_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialsshoot" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -226,8 +226,8 @@ unsafe fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialsshoots" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_special_s_shoot_s_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_s_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     if is_excute(agent) {
@@ -249,8 +249,8 @@ unsafe fn packun_special_s_shoot_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialairsend", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_special_air_s_end_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_air_s_end_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -275,8 +275,8 @@ unsafe fn packun_special_air_s_end_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialairsshoot", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -316,8 +316,8 @@ unsafe fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["expression_specialsshoot", "expression_specialairsshoot"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -355,8 +355,8 @@ unsafe fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialairsshoots" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     frame(lua_state, 19.0);
@@ -375,8 +375,8 @@ unsafe fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["sound_specialsshoot", "sound_specialairsshoot"], category = ACMD_SOUND, low_priority )]
-unsafe fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -407,8 +407,8 @@ unsafe fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["sound_specialsshoots", "sound_specialairsshoots"], category = ACMD_SOUND, low_priority )]
-unsafe fn packun_special_s_shoot_s_sound(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_s_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 17.0);
@@ -424,8 +424,8 @@ unsafe fn packun_special_s_shoot_s_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", scripts = ["expression_specialsshoots", "expression_specialairsshoots"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn packun_special_s_shoot_s_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_s_shoot_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -448,8 +448,8 @@ unsafe fn packun_special_s_shoot_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -483,8 +483,8 @@ unsafe fn packun_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "packun", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -522,8 +522,8 @@ unsafe fn packun_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "packun", script = "game_speciallwbiteattack", category = ACMD_GAME, low_priority )]
-unsafe fn packun_special_lw_bite_attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_lw_bite_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -556,8 +556,8 @@ unsafe fn packun_special_lw_bite_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_speciallwbite_attack", category = ACMD_GAME, low_priority )]
-unsafe fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -590,8 +590,8 @@ unsafe fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_speciallwbite", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_special_lw_bite_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_lw_bite_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -633,8 +633,8 @@ unsafe fn packun_special_lw_bite_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_specialairlwbite", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_special_air_lw_bite_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn packun_special_air_lw_bite_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -670,25 +670,32 @@ unsafe fn packun_special_air_lw_bite_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        packun_special_n_start_game,
-        packun_special_s_shoot_game,
-        packun_special_s_shoot_s_game,
-        packun_special_s_end_effect,
-        packun_special_s_shoot_effect,
-        packun_special_s_shoot_s_effect,
-        packun_special_air_s_end_effect,
-        packun_special_air_s_shoot_effect,
-        packun_special_s_shoot_expression,
-        packun_special_air_s_shoot_s_effect,
-        packun_special_s_shoot_sound,
-        packun_special_s_shoot_s_sound,
-        packun_special_s_shoot_s_expression,
-        packun_special_hi_game,
-        packun_special_air_hi_game,
-        packun_special_lw_bite_attack_game,
-        packun_special_lw_bite__attack_game,
-        packun_special_lw_bite_effect,
-        packun_special_air_lw_bite_effect,
-    );
+    smashline::Agent::new("packun")
+        .acmd("game_specialnstart", packun_special_n_start_game)
+        .acmd("game_specialairnstart", packun_special_n_start_game)
+        .acmd("game_specialsshoot", packun_special_s_shoot_game)
+        .acmd("game_specialairsshoot", packun_special_s_shoot_game)
+        .acmd("game_specialsshoots", packun_special_s_shoot_s_game)
+        .acmd("game_specialairsshoots", packun_special_s_shoot_s_game)
+        .acmd("effect_specialsend", packun_special_s_end_effect)
+        .acmd("effect_specialsshoot", packun_special_s_shoot_effect)
+        .acmd("effect_specialsshoots", packun_special_s_shoot_s_effect)
+        .acmd("effect_specialairsend", packun_special_air_s_end_effect)
+        .acmd("effect_specialairsshoot", packun_special_air_s_shoot_effect)
+        .acmd("expression_specialsshoot", packun_special_s_shoot_expression)
+        .acmd("expression_specialairsshoot", packun_special_s_shoot_expression)
+        .acmd("effect_specialairsshoots", packun_special_air_s_shoot_s_effect)
+        .acmd("sound_specialsshoot", packun_special_s_shoot_sound)
+        .acmd("sound_specialairsshoot", packun_special_s_shoot_sound)
+        .acmd("sound_specialsshoots", packun_special_s_shoot_s_sound)
+        .acmd("sound_specialairsshoots", packun_special_s_shoot_s_sound)
+        .acmd("expression_specialsshoots", packun_special_s_shoot_s_expression)
+        .acmd("expression_specialairsshoots", packun_special_s_shoot_s_expression)
+        .acmd("game_specialhi", packun_special_hi_game)
+        .acmd("game_specialairhi", packun_special_air_hi_game)
+        .acmd("game_speciallwbiteattack", packun_special_lw_bite_attack_game)
+        .acmd("game_speciallwbite_attack", packun_special_lw_bite__attack_game)
+        .acmd("effect_speciallwbite", packun_special_lw_bite_effect)
+        .acmd("effect_specialairlwbite", packun_special_air_lw_bite_effect)
+        .install();
 }

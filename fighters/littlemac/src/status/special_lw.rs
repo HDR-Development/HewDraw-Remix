@@ -1,19 +1,19 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "littlemac", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+
 unsafe extern "C" fn special_lw_old_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START);
     return 1.into()
 }
 
-#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+
 unsafe extern "C" fn special_lw_hit_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into()
 }
 
-#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -42,8 +42,8 @@ unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_AIR);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_GROUND);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_MOTION_END);
@@ -147,37 +147,37 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 if fighter.is_situation(*SITUATION_KIND_GROUND) {
                     if fighter.is_cat_flag(Cat2::StickEscape) {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                     }
                     else if fighter.is_cat_flag(Cat2::StickEscapeF) {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                     }
                     else if fighter.is_cat_flag(Cat2::StickEscapeB) {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                     }
                     else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                     }
                     if fighter.sub_check_command_guard().get_bool() {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
                     }
                 }
                 else if fighter.is_situation(*SITUATION_KIND_AIR) {
                     if fighter.is_cat_flag(Cat1::AirEscape)  {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_AIR);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
                     }
                     else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
                     && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
                     {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_JUMP_AERIAL);
-                        fighter.change_to_custom_status(statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, true, false);
+                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL_JUMP.into(), true.into());
                     }
                 }
             }
@@ -206,10 +206,10 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_lw_old_pre,
-        special_lw_hit_init,
-        special_lw_pre,
-        special_lw_main,
-    );
+    smashline::Agent::new("littlemac")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_old_pre)
+        .status(Init, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_init)
+        .status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, special_lw_pre)
+        .status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, special_lw_main)
+        .install();
 }

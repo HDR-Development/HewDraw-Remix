@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "lucario", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -35,8 +35,8 @@ unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,8 +67,8 @@ unsafe fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "lucario", script = "game_specialairsthrow", category = ACMD_GAME)]
-unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 22.0);
@@ -116,8 +116,8 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialsthrow", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialsthrow(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialsthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -152,8 +152,8 @@ unsafe fn game_specialsthrow(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "lucario", script = "effect_specialairsthrow", category = ACMD_EFFECT)]
-unsafe fn lucario_special_air_s_throw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -166,8 +166,8 @@ unsafe fn lucario_special_air_s_throw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "lucario", script = "sound_specialairsthrow", category = ACMD_SOUND)]
-unsafe fn lucario_special_air_s_throw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_s_throw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 23.0);
@@ -191,8 +191,8 @@ unsafe fn lucario_special_air_s_throw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "lucario", script = "expression_specialairsthrow", category = ACMD_EXPRESSION)]
-unsafe fn lucario_special_air_s_throw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_s_throw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -212,8 +212,8 @@ unsafe fn lucario_special_air_s_throw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_DESIRED_RATE(fighter, 30.0, 34.0);
@@ -224,8 +224,8 @@ unsafe fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_DESIRED_RATE(fighter, 30.0, 34.0);
@@ -236,24 +236,8 @@ unsafe fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_air_hi_l_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    FT_DESIRED_RATE(fighter, 30.0, 34.0);
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
-    }
 
-}
-
-#[acmd_script( agent = "lucario", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_air_hi_r_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_special_air_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_DESIRED_RATE(fighter, 30.0, 34.0);
@@ -268,8 +252,24 @@ unsafe fn lucario_special_air_hi_r_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialhimove" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_hi_r_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_DESIRED_RATE(fighter, 30.0, 34.0);
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
+    }
+
+}
+
+
+unsafe extern "C" fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -288,8 +288,8 @@ unsafe fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialhimove", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucario_special_hi_move_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_hi_move_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -302,8 +302,8 @@ unsafe fn lucario_special_hi_move_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialhiend" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     wait(lua_state, 1.0);
@@ -323,8 +323,8 @@ unsafe fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairhiend" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     wait(lua_state, 1.0);
@@ -348,8 +348,8 @@ unsafe fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialnbomb", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 37.0);
@@ -361,8 +361,8 @@ unsafe fn game_specialnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialnbomb", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_specialnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 35.0);
@@ -371,8 +371,8 @@ unsafe fn effect_specialnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialnbomb", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_specialnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specialnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 37.0);
@@ -381,8 +381,8 @@ unsafe fn sound_specialnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialnbomb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_specialnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_specialnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -395,8 +395,8 @@ unsafe fn expression_specialnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairnbomb", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 37.0);
@@ -408,13 +408,13 @@ unsafe fn game_specialairnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairnbomb", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_specialairnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialairnbomb(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairnbomb", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_specialairnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specialairnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 37.0);
@@ -423,8 +423,8 @@ unsafe fn sound_specialairnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairnbomb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_specialairnbomb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_specialairnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -437,8 +437,8 @@ unsafe fn expression_specialairnbomb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -447,8 +447,8 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "lucario", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -497,8 +497,8 @@ unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["sound_speciallw", "sound_specialairlw"], category = ACMD_SOUND, low_priority )]
-unsafe fn sound_speciallw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -510,8 +510,8 @@ unsafe fn sound_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_speciallw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -532,8 +532,8 @@ unsafe fn expression_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -542,8 +542,8 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_specialairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -592,35 +592,37 @@ unsafe fn effect_specialairlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_special_s_game,
-        game_specialsthrow,
-        lucario_special_air_s_game,
-        lucario_special_air_s_throw_game,
-        lucario_special_air_s_throw_effect,
-        lucario_special_air_s_throw_sound,
-        lucario_special_air_s_throw_expression,
-        lucario_special_hi_l_game,
-        lucario_special_hi_r_game,
-        lucario_special_air_hi_l_game,
-        lucario_special_air_hi_r_game,
-        lucario_special_hi_move_game,
-        lucario_special_hi_move_expression,
-        lucario_special_hi_end_game,
-        lucario_special_air_hi_end_game,
-        game_specialnbomb,
-        effect_specialnbomb,
-        sound_specialnbomb,
-        expression_specialnbomb,
-        game_specialairnbomb,
-        effect_specialairnbomb,
-        sound_specialairnbomb,
-        expression_specialairnbomb,
-        game_speciallw,
-        effect_speciallw,
-        sound_speciallw,
-        expression_speciallw,
-        game_specialairlw,
-        effect_specialairlw,
-    );
+    smashline::Agent::new("lucario")
+        .acmd("game_specials", lucario_special_s_game)
+        .acmd("game_specialairs", lucario_special_air_s_game)
+        .acmd("game_specialairsthrow", lucario_special_air_s_throw_game)
+        .acmd("game_specialsthrow", game_specialsthrow)
+        .acmd("effect_specialairsthrow", lucario_special_air_s_throw_effect)
+        .acmd("sound_specialairsthrow", lucario_special_air_s_throw_sound)
+        .acmd("expression_specialairsthrow", lucario_special_air_s_throw_expression)
+        .acmd("game_specialhi", lucario_special_hi_l_game)
+        .acmd("game_specialhi", lucario_special_hi_r_game)
+        .acmd("game_specialairhi", lucario_special_air_hi_l_game)
+        .acmd("game_specialairhi", lucario_special_air_hi_r_game)
+        .acmd("game_specialhimove", lucario_special_hi_move_game)
+        .acmd("expression_specialhimove", lucario_special_hi_move_expression)
+        .acmd("game_specialhiend", lucario_special_hi_end_game)
+        .acmd("game_specialairhiend", lucario_special_air_hi_end_game)
+        .acmd("game_specialnbomb", game_specialnbomb)
+        .acmd("effect_specialnbomb", effect_specialnbomb)
+        .acmd("sound_specialnbomb", sound_specialnbomb)
+        .acmd("expression_specialnbomb", expression_specialnbomb)
+        .acmd("game_specialairnbomb", game_specialairnbomb)
+        .acmd("effect_specialairnbomb", effect_specialairnbomb)
+        .acmd("sound_specialairnbomb", sound_specialairnbomb)
+        .acmd("expression_specialairnbomb", expression_specialairnbomb)
+        .acmd("game_speciallw", game_speciallw)
+        .acmd("effect_speciallw", effect_speciallw)
+        .acmd("sound_speciallw", sound_speciallw)
+        .acmd("sound_specialairlw", sound_speciallw)
+        .acmd("expression_speciallw", expression_speciallw)
+        .acmd("expression_specialairlw", expression_speciallw)
+        .acmd("game_specialairlw", game_specialairlw)
+        .acmd("effect_specialairlw", effect_specialairlw)
+        .install();
 }

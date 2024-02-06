@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "metaknight", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -27,8 +27,8 @@ unsafe fn metaknight_throw_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "metaknight", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -49,8 +49,8 @@ unsafe fn metaknight_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -82,8 +82,8 @@ unsafe fn metaknight_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn metaknight_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn metaknight_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.8);
@@ -118,11 +118,12 @@ unsafe fn metaknight_throw_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        metaknight_throw_f_game,
-        metaknight_throw_b_game,
-        metaknight_throw_hi_game,
-        metaknight_throw_lw_game,
-    );
+    smashline::Agent::new("metaknight")
+        .acmd("game_throwf", metaknight_throw_f_game)
+        .acmd("game_throwb", metaknight_throw_b_game)
+        .acmd("game_throwhi", metaknight_throw_hi_game)
+        .acmd("game_throwlw", metaknight_throw_lw_game)
+        .install();
 }

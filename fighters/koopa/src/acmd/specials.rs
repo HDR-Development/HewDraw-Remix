@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", scripts = ["effect_specialnstart","effect_specialairnstart"], category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_special_n_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_n_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -18,8 +18,8 @@ unsafe fn koopa_special_n_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", scripts = ["game_specialnend","game_specialairnend"], category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_special_n_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +27,8 @@ unsafe fn koopa_special_n_end_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "koopa", scripts = ["game_specialnmax","game_specialairnmax"], category = ACMD_GAME, low_priority )]
-unsafe fn koopa_special_n_max_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_n_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -46,8 +46,8 @@ unsafe fn koopa_special_n_max_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "koopa", scripts = ["effect_specialnmax","effect_specialairnmax"], category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_special_n_max_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_n_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -98,8 +98,8 @@ unsafe fn koopa_special_n_max_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", scripts = ["sound_specialnmax","sound_specialairnmax"], category = ACMD_SOUND, low_priority )]
-unsafe fn koopa_special_n_max_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_n_max_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -123,8 +123,8 @@ unsafe fn koopa_special_n_max_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", scripts = ["expression_specialnmax","expression_specialairnmax"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,8 +141,8 @@ unsafe fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -202,8 +202,8 @@ unsafe fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "expression_specialhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn koopa_special_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -251,8 +251,8 @@ unsafe fn koopa_special_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -293,8 +293,8 @@ unsafe fn koopa_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -318,8 +318,8 @@ unsafe fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_special_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 31.0);
@@ -334,19 +334,25 @@ unsafe fn koopa_special_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        koopa_special_n_start_effect,
-        koopa_special_n_end_game,
-        koopa_special_n_max_game,
-        koopa_special_n_max_sound,
-        koopa_special_n_max_effect,
-        koopa_special_n_max_expression,
-        koopa_special_hi_game,
-        koopa_special_hi_expression,
-        koopa_special_air_hi_game,
 
-        koopa_special_lw_game,
-        koopa_special_air_lw_game,
-    );
+pub fn install() {
+    smashline::Agent::new("koopa")
+        .acmd("effect_specialnstart", koopa_special_n_start_effect)
+        .acmd("effect_specialairnstart", koopa_special_n_start_effect)
+        .acmd("game_specialnend", koopa_special_n_end_game)
+        .acmd("game_specialairnend", koopa_special_n_end_game)
+        .acmd("game_specialnmax", koopa_special_n_max_game)
+        .acmd("game_specialairnmax", koopa_special_n_max_game)
+        .acmd("effect_specialnmax", koopa_special_n_max_effect)
+        .acmd("effect_specialairnmax", koopa_special_n_max_effect)
+        .acmd("sound_specialnmax", koopa_special_n_max_sound)
+        .acmd("sound_specialairnmax", koopa_special_n_max_sound)
+        .acmd("expression_specialnmax", koopa_special_n_max_expression)
+        .acmd("expression_specialairnmax", koopa_special_n_max_expression)
+        .acmd("game_specialhi", koopa_special_hi_game)
+        .acmd("expression_specialhi", koopa_special_hi_expression)
+        .acmd("game_specialairhi", koopa_special_air_hi_game)
+        .acmd("game_speciallw", koopa_special_lw_game)
+        .acmd("game_specialairlw", koopa_special_air_lw_game)
+        .install();
 }

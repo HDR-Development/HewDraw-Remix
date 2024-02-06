@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,8 +26,8 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -52,8 +52,8 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -78,8 +78,8 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -94,8 +94,8 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -120,8 +120,8 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "expression_landingheavy" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -133,8 +133,8 @@ unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "koopa", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -148,8 +148,8 @@ unsafe fn koopa_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -167,8 +167,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -194,8 +194,8 @@ unsafe fn koopa_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -210,8 +210,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -225,8 +225,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa_breath", script = "game_max", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_breath_max_game(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_breath_max_game(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     //let mut halflife=30.0;
@@ -242,8 +242,8 @@ unsafe fn koopa_breath_max_game(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa_breath", script = "effect_max", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_breath_max_effect(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_breath_max_effect(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     for _ in 0..100 {
@@ -259,16 +259,16 @@ unsafe fn koopa_breath_max_effect(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa_breath", script = "game_end", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_breath_end_game(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_breath_end_game(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 1.0);
     if macros::is_excute(weapon) {
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
 }
 
-#[acmd_script( agent = "koopa_breath", script = "effect_end", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_breath_end_effect(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_breath_end_effect(weapon: &mut L2CAgentBase) {
     let lr = PostureModule::lr(weapon.module_accessor);
     let pos = *PostureModule::pos(weapon.module_accessor);
     EffectModule::req(
@@ -285,23 +285,23 @@ unsafe fn koopa_breath_end_effect(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_sound,
-        koopa_turn_dash_game,
-		koopa_catch_game,
-        // koopa_appeal_hi_r_game,
-        // koopa_appeal_hi_l_game,
-        expression_landingheavy,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound,
-        koopa_breath_max_game,
-        koopa_breath_max_effect,
-        koopa_breath_end_game,
-        koopa_breath_end_effect,
-    );
+    smashline::Agent::new("koopa")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("expression_landingheavy", expression_landingheavy)
+        .acmd("game_turndash", koopa_turn_dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_catch", koopa_catch_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("koopa_breath")
+        .acmd("game_max", koopa_breath_max_game)
+        .acmd("effect_max", koopa_breath_max_effect)
+        .acmd("game_end", koopa_breath_end_game)
+        .acmd("effect_end", koopa_breath_end_effect)
+        .install();
 }

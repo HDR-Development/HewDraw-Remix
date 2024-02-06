@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -24,8 +24,8 @@ unsafe fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -42,8 +42,8 @@ unsafe fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -61,8 +61,8 @@ unsafe fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -79,8 +79,8 @@ unsafe fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.7);
@@ -101,8 +101,8 @@ unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -136,8 +136,8 @@ unsafe fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
-unsafe fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -155,8 +155,8 @@ unsafe fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -169,15 +169,16 @@ unsafe fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        koopa_attack_11_game,
-        koopa_attack_11_effect,
-        koopa_attack_12_game,
-        koopa_attack_12_effect,
-        koopa_attack_dash_game,
-        koopa_attack_dash_effect,
-        koopa_attack_dash_sound,
-        koopa_attack_dash_expression,
-    );
+    smashline::Agent::new("koopa")
+        .acmd("game_attack11", koopa_attack_11_game)
+        .acmd("effect_attack11", koopa_attack_11_effect)
+        .acmd("game_attack12", koopa_attack_12_game)
+        .acmd("effect_attack12", koopa_attack_12_effect)
+        .acmd("game_attackdash", koopa_attack_dash_game)
+        .acmd("effect_attackdash", koopa_attack_dash_effect)
+        .acmd("sound_attackdash", koopa_attack_dash_sound)
+        .acmd("expression_attackdash", koopa_attack_dash_expression)
+        .install();
 }

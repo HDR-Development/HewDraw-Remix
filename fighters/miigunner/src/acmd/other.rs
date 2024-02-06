@@ -1,8 +1,8 @@
 use super::*;
 use smash::app::sv_battle_object;
 
-#[acmd_script( agent = "miigunner", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +27,8 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +53,8 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +79,8 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +95,8 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +121,8 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -136,8 +136,8 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -155,8 +155,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -172,8 +172,8 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miigunner", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -198,8 +198,8 @@ unsafe fn catch_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn catch_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -219,8 +219,8 @@ unsafe fn catch_dash_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn catch_turn_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 9.0);
@@ -240,8 +240,8 @@ unsafe fn catch_turn_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner_attackairf_bullet", script = "effect_fly" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_attackairf_bullet_fly_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attackairf_bullet_fly_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -250,8 +250,8 @@ unsafe fn miigunner_attackairf_bullet_fly_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_rapidshot_bullet", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_rapidshot_bullet_fly_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_rapidshot_bullet_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -268,8 +268,8 @@ unsafe fn miigunner_rapidshot_bullet_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_grenadelauncher", script = "game_explode" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_grenadelauncher_explode_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_grenadelauncher_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -291,8 +291,8 @@ unsafe fn miigunner_grenadelauncher_explode_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_fullthrottle", script = "game_final" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_fullthrottle_final_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_fullthrottle_final_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let pos2dim = Vector3f {x: 0.0, y: 40.0, z: 0.0};
@@ -303,8 +303,8 @@ unsafe fn miigunner_fullthrottle_final_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miigunner_stealthbomb", script = "effect_tame" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_stealthbomb_tame_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_stealthbomb_tame_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -350,8 +350,8 @@ unsafe fn miigunner_stealthbomb_tame_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner_stealthbomb_s", script = "game_move" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_stealthbomb_s_move_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_stealthbomb_s_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -375,8 +375,8 @@ unsafe fn miigunner_stealthbomb_s_move_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miigunner_stealthbomb_s", script = "effect_move" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_stealthbomb_s_move_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_stealthbomb_s_move_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -386,8 +386,8 @@ unsafe fn miigunner_stealthbomb_s_move_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miigunner_supermissile", script = "game_straight", category = ACMD_GAME, low_priority)]
-unsafe fn miigunner_supermissile_straight_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_supermissile_straight_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -407,8 +407,8 @@ unsafe fn miigunner_supermissile_straight_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_supermissile", script = "game_sburst", category = ACMD_GAME, low_priority)]
-unsafe fn miigunner_supermissile_burst_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_supermissile_burst_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -433,8 +433,8 @@ unsafe fn miigunner_supermissile_burst_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_supermissile", script = "effect_sburst", category = ACMD_EFFECT, low_priority)]
-unsafe fn miigunner_supermissile_burst_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_supermissile_burst_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -454,8 +454,8 @@ unsafe fn miigunner_supermissile_burst_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_supermissile", script = "sound_sburst", category = ACMD_SOUND, low_priority)]
-unsafe fn miigunner_supermissile_burst_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_supermissile_burst_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -473,8 +473,8 @@ unsafe fn miigunner_supermissile_burst_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner_bottomshoot", script = "game_shoot" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_bottomshoot_shoot_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_bottomshoot_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -488,8 +488,8 @@ unsafe fn miigunner_bottomshoot_shoot_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner_gunnercharge", script = "game_shoot" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_gunnercharge_shoot_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_gunnercharge_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -509,8 +509,8 @@ unsafe fn miigunner_gunnercharge_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miigunner_gunnercharge", script = "sound_shoot", category = ACMD_SOUND, low_priority )]
-unsafe fn miigunner_gunnercharge_shoot_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_gunnercharge_shoot_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -529,8 +529,8 @@ unsafe fn miigunner_gunnercharge_shoot_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -545,8 +545,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -560,34 +560,53 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_game,
-		dash_sound,
-        turn_dash_game,
-		catch_game,
-		catch_dash_game,
-		catch_turn_game,
-		miigunner_gunnercharge_shoot_game,
-        miigunner_gunnercharge_shoot_sound,
-        miigunner_attackairf_bullet_fly_effect,
-        miigunner_rapidshot_bullet_fly_game,
-        miigunner_grenadelauncher_explode_game,
-		//miigunner_fullthrottle_final_game,
-		miigunner_stealthbomb_tame_effect,
-		//miigunner_stealthbomb_s_move_game,
-		//miigunner_stealthbomb_s_move_effect,
-		miigunner_supermissile_straight_game,
-        miigunner_supermissile_burst_game,
-        miigunner_supermissile_burst_effect,
-        miigunner_supermissile_burst_sound,
-        miigunner_bottomshoot_shoot_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound,
-    );
+    smashline::Agent::new("miigunner")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_catch", catch_game)
+        .acmd("game_catchdash", catch_dash_game)
+        .acmd("game_catchturn", catch_turn_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("miigunner_stealthbomb_s")
+        .acmd("game_move", miigunner_stealthbomb_s_move_game)
+        .acmd("effect_move", miigunner_stealthbomb_s_move_effect)
+        .install();
+    smashline::Agent::new("miigunner_grenadelauncher")
+        .acmd("game_explode", miigunner_grenadelauncher_explode_game)
+        .install();
+    smashline::Agent::new("miigunner_gunnercharge")
+        .acmd("game_shoot", miigunner_gunnercharge_shoot_game)
+        .acmd("sound_shoot", miigunner_gunnercharge_shoot_sound)
+        .install();
+    smashline::Agent::new("miigunner_stealthbomb")
+        .acmd("effect_tame", miigunner_stealthbomb_tame_effect)
+        .install();
+    smashline::Agent::new("miigunner_attackairf_bullet")
+        .acmd("effect_fly", miigunner_attackairf_bullet_fly_effect)
+        .install();
+    smashline::Agent::new("miigunner_supermissile")
+        .acmd("game_straight", miigunner_supermissile_straight_game)
+        .acmd("game_sburst", miigunner_supermissile_burst_game)
+        .acmd("effect_sburst", miigunner_supermissile_burst_effect)
+        .acmd("sound_sburst", miigunner_supermissile_burst_sound)
+        .install();
+    smashline::Agent::new("miigunner_fullthrottle")
+        .acmd("game_final", miigunner_fullthrottle_final_game)
+        .install();
+    smashline::Agent::new("miigunner_rapidshot_bullet")
+        .acmd("game_fly", miigunner_rapidshot_bullet_fly_game)
+        .install();
+    smashline::Agent::new("miigunner_bottomshoot")
+        .acmd("game_shoot", miigunner_bottomshoot_shoot_game)
+        .install();
 }
