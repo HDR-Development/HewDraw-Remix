@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -26,8 +26,8 @@ unsafe fn attack_11_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -56,8 +56,8 @@ unsafe fn attack_12_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_13_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -75,8 +75,8 @@ unsafe fn attack_13_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -98,8 +98,8 @@ unsafe fn attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn attack_dash_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -120,13 +120,15 @@ unsafe fn attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-		attack_11_game,
-        attack_12_game,
-        attack_13_game,
-        attack_dash_game,
-        attack_dash_expression
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("miiswordsman")
+        .acmd("game_attack11", attack_11_game)
+        .acmd("game_attack12", attack_12_game)
+        .acmd("game_attack13", attack_13_game)
+        .acmd("game_attackdash", attack_dash_game)
+        .acmd("expression_attackdash", attack_dash_expression)
+        .install();
+}

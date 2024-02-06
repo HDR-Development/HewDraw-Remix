@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "master", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn master_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -40,8 +40,8 @@ unsafe fn master_throw_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "master", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn master_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -94,8 +94,8 @@ unsafe fn master_throw_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "master", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn master_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -134,10 +134,11 @@ unsafe fn master_throw_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        master_throw_f_game,
-        master_throw_b_game,
-        master_throw_lw_game,
-    );
+    smashline::Agent::new("master")
+        .acmd("game_throwf", master_throw_f_game)
+        .acmd("game_throwb", master_throw_b_game)
+        .acmd("game_throwlw", master_throw_lw_game)
+        .install();
 }

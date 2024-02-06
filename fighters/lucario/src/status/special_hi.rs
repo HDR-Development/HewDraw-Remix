@@ -2,19 +2,13 @@ use super::*;
 use globals::*;
 // status script import
 
-pub fn install() {
-    install_status_scripts!(
-        special_hi_bound_end,
-        lucario_special_hi_rush_main,
-        lucario_special_hi_rush_end_main
-    );
-}
+
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND
 
-#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
+
+pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND)(fighter);
 
     fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
     
@@ -23,8 +17,8 @@ pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
 
-#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn lucario_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.set_int(-1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
     GroundModule::set_passable_check(fighter.module_accessor, true);
     MotionModule::change_motion(
@@ -126,8 +120,8 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END
 
-#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     if situation != *SITUATION_KIND_GROUND {
         FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, false);
@@ -349,4 +343,12 @@ unsafe extern "C" fn lucario_special_hi_get_vec(_fighter: &mut L2CFighterCommon,
     vec.x *= speed_length.get_f32();
     vec.y *= speed_length.get_f32();
     vec
+}
+
+pub fn install() {
+    smashline::Agent::new("lucario")
+        .status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, special_hi_bound_end)
+        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_main)
+        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_main)
+        .install();
 }

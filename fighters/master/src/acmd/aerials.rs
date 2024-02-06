@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "master", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,8 +56,8 @@ unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,8 +67,8 @@ unsafe fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -114,8 +114,8 @@ unsafe fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn master_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -132,8 +132,8 @@ unsafe fn master_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -175,8 +175,8 @@ unsafe fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -229,8 +229,8 @@ unsafe fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn master_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -245,8 +245,8 @@ unsafe fn master_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -286,16 +286,18 @@ unsafe fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        master_attack_air_n_game,
-        master_landing_air_n_game,
-        master_attack_air_f_game,
-        master_attack_air_f_expression,
-        master_attack_air_b_game,
-        master_attack_air_hi_game,
-        master_attack_air_hi_effect,
-        master_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("master")
+        .acmd("game_attackairn", master_attack_air_n_game)
+        .acmd("game_landingairn", master_landing_air_n_game)
+        .acmd("game_attackairf", master_attack_air_f_game)
+        .acmd("expression_attackairf", master_attack_air_f_expression)
+        .acmd("game_attackairb", master_attack_air_b_game)
+        .acmd("game_attackairhi", master_attack_air_hi_game)
+        .acmd("effect_attackairhi", master_attack_air_hi_effect)
+        .acmd("game_attackairlw", master_attack_air_lw_game)
+        .install();
+}

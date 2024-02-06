@@ -1,8 +1,8 @@
 use super::*;
 use smash::app::sv_module_access::sound;
 
-#[acmd_script( agent = "miigunner", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -31,8 +31,8 @@ unsafe fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miigunner", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -89,8 +89,8 @@ unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 7.0);
@@ -117,8 +117,8 @@ unsafe fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_landing_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -129,8 +129,8 @@ unsafe fn miigunner_landing_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_landingairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_landing_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_landing_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -139,8 +139,8 @@ unsafe fn miigunner_landing_air_f_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -216,8 +216,8 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -245,8 +245,8 @@ unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miigunner", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_landing_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -257,8 +257,8 @@ unsafe fn miigunner_landing_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -343,8 +343,8 @@ unsafe fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 15.0);
@@ -377,8 +377,8 @@ unsafe fn miigunner_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn miigunner_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 14.0);
@@ -405,8 +405,8 @@ unsafe fn miigunner_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn miigunner_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 14.0);
@@ -435,8 +435,8 @@ unsafe fn miigunner_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_landingairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_landing_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -447,8 +447,8 @@ unsafe fn miigunner_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -540,8 +540,8 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 9.0);
@@ -583,21 +583,21 @@ unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        miigunner_attack_air_n_game,
-		miigunner_attack_air_f_game,
-		miigunner_attack_air_f_effect,
-		miigunner_landing_air_f_game,
-		miigunner_landing_air_f_effect,
-        miigunner_attack_air_b_game,
-		miigunner_attack_air_b_effect,
-		miigunner_landing_air_b_game,
-		miigunner_attack_air_hi_game,
-		miigunner_attack_air_hi_effect,
-        miigunner_attack_air_hi_expression,
-		miigunner_landing_air_hi_game,
-		miigunner_attack_air_hi_sound,
-		miigunner_attack_air_lw_game,
-		miigunner_attack_air_lw_effect,
-    );
+    smashline::Agent::new("miigunner")
+        .acmd("game_attackairn", miigunner_attack_air_n_game)
+        .acmd("game_attackairf", miigunner_attack_air_f_game)
+        .acmd("effect_attackairf", miigunner_attack_air_f_effect)
+        .acmd("game_landingairf", miigunner_landing_air_f_game)
+        .acmd("effect_landingairf", miigunner_landing_air_f_effect)
+        .acmd("game_attackairb", miigunner_attack_air_b_game)
+        .acmd("effect_attackairb", miigunner_attack_air_b_effect)
+        .acmd("game_landingairb", miigunner_landing_air_b_game)
+        .acmd("game_attackairhi", miigunner_attack_air_hi_game)
+        .acmd("effect_attackairhi", miigunner_attack_air_hi_effect)
+        .acmd("sound_attackairhi", miigunner_attack_air_hi_sound)
+        .acmd("expression_attackairhi", miigunner_attack_air_hi_expression)
+        .acmd("game_landingairhi", miigunner_landing_air_hi_game)
+        .acmd("game_attackairlw", miigunner_attack_air_lw_game)
+        .acmd("effect_attackairlw", miigunner_attack_air_lw_effect)
+        .install();
 }

@@ -1,8 +1,8 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "packun", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -92,7 +92,7 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
 
 // FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING
 
-#[status_script(agent = "packun", status = FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+
 unsafe extern "C" fn special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("landing_frame"));
     let anim_length = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("special_hi_landing"));
@@ -131,8 +131,8 @@ unsafe extern "C" fn special_hi_landing_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_hi_main,
-        special_hi_landing_main
-    );
+    smashline::Agent::new("packun")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
+        .status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_main)
+        .install();
 }

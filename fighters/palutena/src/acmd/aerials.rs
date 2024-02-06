@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "palutena", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -50,8 +50,8 @@ unsafe fn palutena_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -92,8 +92,8 @@ unsafe fn palutena_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -117,8 +117,8 @@ unsafe fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -151,8 +151,8 @@ unsafe fn palutena_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -178,8 +178,8 @@ unsafe fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -221,8 +221,8 @@ unsafe fn palutena_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -244,8 +244,8 @@ unsafe fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -297,8 +297,8 @@ unsafe fn palutena_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "palutena", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn palutena_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -315,8 +315,8 @@ unsafe fn palutena_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -350,18 +350,20 @@ unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        palutena_attack_air_n_game,
-        palutena_attack_air_f_game,
-        palutena_attack_air_f_effect,
-        palutena_attack_air_b_game,
-        palutena_attack_air_b_effect,
-        palutena_attack_air_hi_game,
-        palutena_attack_air_hi_effect,
-        palutena_attack_air_lw_game,
-        palutena_attack_air_lw_effect,
-        palutena_attack_air_lw_expression,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("palutena")
+        .acmd("game_attackairn", palutena_attack_air_n_game)
+        .acmd("game_attackairf", palutena_attack_air_f_game)
+        .acmd("effect_attackairf", palutena_attack_air_f_effect)
+        .acmd("game_attackairb", palutena_attack_air_b_game)
+        .acmd("effect_attackairb", palutena_attack_air_b_effect)
+        .acmd("game_attackairhi", palutena_attack_air_hi_game)
+        .acmd("effect_attackairhi", palutena_attack_air_hi_effect)
+        .acmd("game_attackairlw", palutena_attack_air_lw_game)
+        .acmd("expression_attackairlw", palutena_attack_air_lw_expression)
+        .acmd("effect_attackairlw", palutena_attack_air_lw_effect)
+        .install();
+}

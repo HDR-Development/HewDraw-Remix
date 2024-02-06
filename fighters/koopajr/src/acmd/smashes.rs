@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "koopajr", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopajr_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -38,8 +38,8 @@ unsafe fn koopajr_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopajr", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopajr_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -74,8 +74,8 @@ unsafe fn koopajr_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopajr", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopajr_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -110,8 +110,8 @@ unsafe fn koopajr_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopajr", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopajr_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -152,8 +152,8 @@ unsafe fn koopajr_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopajr", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn koopajr_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -182,13 +182,15 @@ unsafe fn koopajr_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        koopajr_attack_s4_hi_game,
-        koopajr_attack_s4_s_game,
-        koopajr_attack_s4_lw_game,
-        koopajr_attack_hi4_game,
-        koopajr_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("koopajr")
+        .acmd("game_attacks4hi", koopajr_attack_s4_hi_game)
+        .acmd("game_attacks4", koopajr_attack_s4_s_game)
+        .acmd("game_attacks4lw", koopajr_attack_s4_lw_game)
+        .acmd("game_attackhi4", koopajr_attack_hi4_game)
+        .acmd("game_attacklw4", koopajr_attack_lw4_game)
+        .install();
+}

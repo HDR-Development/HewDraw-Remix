@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "miigunner", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_s3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 2.0);
@@ -39,8 +39,8 @@ unsafe fn miigunner_attack_s3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
-unsafe fn miigunner_attack_s3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -53,8 +53,8 @@ unsafe fn miigunner_attack_s3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -80,8 +80,8 @@ unsafe fn miigunner_attack_hi3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn miigunner_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -98,11 +98,12 @@ unsafe fn miigunner_attack_lw3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-		miigunner_attack_s3_game,
-		miigunner_attack_s3_effect,
-		miigunner_attack_hi3_game,
-		miigunner_attack_lw3_game,
-	);
+    smashline::Agent::new("miigunner")
+        .acmd("game_attacks3", miigunner_attack_s3_game)
+        .acmd("effect_attacks3", miigunner_attack_s3_effect)
+        .acmd("game_attackhi3", miigunner_attack_hi3_game)
+        .acmd("game_attacklw3", miigunner_attack_lw3_game)
+        .install();
 }

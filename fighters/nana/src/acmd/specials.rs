@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "nana", script = "game_specialn_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -25,8 +25,8 @@ unsafe fn nana_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_specialairn_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_special_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -48,10 +48,12 @@ unsafe fn nana_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        nana_special_n_game,
-        nana_special_air_n_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("nana")
+        .acmd("game_specialn_nana", nana_special_n_game)
+        .acmd("game_specialairn_nana", nana_special_air_n_game)
+        .install();
+}

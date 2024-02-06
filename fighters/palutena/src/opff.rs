@@ -257,70 +257,60 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
         let color_2 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2);
         if color_1 == 1 {
             if color_2 == 2 {
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_P);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_P.into(), false.into());
                 //println!("and why he ourple");
 
             }
             else if color_2 == 3 {
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_O);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_O.into(), false.into());
                 //println!("bornana");
             }
             else {
                 if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
                     VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
                 }
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_R);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_R.into(), false.into());
                 //println!("red");
             }
         }
         else if color_1 == 2 {
             if color_2 == 1 {
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_P);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_P.into(), false.into());
                 //println!("and why he ourple");
             }
             else if color_2 == 3 {
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_G);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_R.into(), false.into());
                 //println!("i like cash from my hair to my ass");
             }
             else {
                 if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
                     VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
                 }
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_B);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_B.into(), false.into());
                 //println!("blud");
             }
         }
         else if color_1 == 3 {
             if color_2 == 1 {
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_O);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_O.into(), false.into());
                 //println!("bornana");
             }
             else if color_2 == 2 {
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_G);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_G.into(), false.into());
                 //println!("i like cash from my hair to my ass");
             }
             else {
                 if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
                     VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
                 }
-                let spell_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::palutena::SPECIAL_N_Y);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, spell_status, false);
+                fighter.change_status(statuses::palutena::SPECIAL_N_Y.into(), false.into());
                 //println!("ielo");
             }
         }
     }
 }
 
-#[fighter_frame_callback]
-pub fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         if fighter.kind() != FIGHTER_KIND_PALUTENA {
             return;
@@ -339,8 +329,8 @@ pub fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_PALUTENA )]
-pub fn palutena_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn palutena_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		palutena_frame(fighter)
@@ -353,8 +343,7 @@ pub unsafe fn palutena_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback(main)]
-pub fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_PALUTENA_REFLECTIONBOARD {
             return
@@ -368,4 +357,14 @@ pub fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             }
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("palutena")
+        .on_line(Main, palutena_frame_wrapper)
+        .on_line(Exec, palu_power_board)
+        .install();
+    smashline::Agent::new("palutena_reflectionboard")
+        .on_line(Main, reflection_board_callback)
+        .install();
 }

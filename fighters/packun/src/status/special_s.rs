@@ -1,8 +1,8 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "packun", status = FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn packun_special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn packun_special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !(fighter.is_situation(*SITUATION_KIND_GROUND))  {
         macros::CORRECT(fighter, *GROUND_CORRECT_KIND_AIR);
         let motion = if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 
@@ -166,7 +166,7 @@ unsafe fn special_s_shoot_helper(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        packun_special_s_shoot_main
-    );
+    smashline::Agent::new("packun")
+        .status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, packun_special_s_shoot_main)
+        .install();
 }

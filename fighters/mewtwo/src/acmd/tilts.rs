@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -31,8 +31,8 @@ unsafe fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -60,8 +60,8 @@ unsafe fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,44 +91,8 @@ unsafe fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "mewtwo", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mewtwo_attack_s3_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-    }
-}
 
-#[acmd_script( agent = "mewtwo", script = "expression_attacks3lw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mewtwo_attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-    }
-}
-
-#[acmd_script( agent = "mewtwo", script = "expression_attacks3hi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mewtwo_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -146,8 +110,44 @@ unsafe fn mewtwo_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "mewtwo", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+
+unsafe extern "C" fn mewtwo_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+
+
+unsafe extern "C" fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -181,8 +181,8 @@ unsafe fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -204,8 +204,8 @@ unsafe fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "mewtwo", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mewtwo_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn mewtwo_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -221,17 +221,19 @@ unsafe fn mewtwo_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attack_s3_hi_game,
-        mewtwo_attack_s3_s_game,
-        mewtwo_attack_s3_lw_game,
-        mewtwo_attack_s3_lw_expression,
-        mewtwo_attack_s3_hi_expression,
-        mewtwo_attack_s3_expression,
-        mewtwo_attack_hi3_game,
-        mewtwo_attack_lw3_game,
-        mewtwo_attack_lw3_expression,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("mewtwo")
+        .acmd("game_attacks3hi", mewtwo_attack_s3_hi_game)
+        .acmd("game_attacks3", mewtwo_attack_s3_s_game)
+        .acmd("game_attacks3lw", mewtwo_attack_s3_lw_game)
+        .acmd("expression_attacks3", mewtwo_attack_s3_expression)
+        .acmd("expression_attacks3lw", mewtwo_attack_s3_lw_expression)
+        .acmd("expression_attacks3hi", mewtwo_attack_s3_hi_expression)
+        .acmd("game_attackhi3", mewtwo_attack_hi3_game)
+        .acmd("game_attacklw3", mewtwo_attack_lw3_game)
+        .acmd("expression_attacklw3", mewtwo_attack_lw3_expression)
+        .install();
+}

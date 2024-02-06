@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "littlemac", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_s3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn littlemac_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -33,8 +33,8 @@ unsafe fn littlemac_attack_s3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn littlemac_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -51,8 +51,8 @@ unsafe fn littlemac_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn littlemac_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -82,8 +82,8 @@ unsafe fn littlemac_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn littlemac_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -101,11 +101,12 @@ unsafe fn littlemac_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        littlemac_attack_s3_game,
-        littlemac_attack_hi3_game,
-        littlemac_attack_lw3_game,
-        littlemac_attack_lw3_effect,
-    );
+    smashline::Agent::new("littlemac")
+        .acmd("game_attacks3", littlemac_attack_s3_game)
+        .acmd("game_attackhi3", littlemac_attack_hi3_game)
+        .acmd("game_attacklw3", littlemac_attack_lw3_game)
+        .acmd("effect_attacklw3", littlemac_attack_lw3_effect)
+        .install();
 }

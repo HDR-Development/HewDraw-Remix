@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ness", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -30,8 +30,8 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ness", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -79,8 +79,8 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ness", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -99,8 +99,8 @@ unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -130,8 +130,8 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ness", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -160,8 +160,8 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -194,8 +194,8 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ness", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackairn (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairn (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -222,8 +222,8 @@ unsafe fn effect_attackairn (fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairb(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -237,8 +237,8 @@ unsafe fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -275,8 +275,8 @@ unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairlw(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -291,8 +291,8 @@ unsafe fn effect_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "ness", script = "sound_attackairhi", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.5);
@@ -303,8 +303,8 @@ unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -317,20 +317,21 @@ unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_attackairn,
-        game_attackairf,
-        expression_attackairf,
-        game_attackairb,
-        game_attackairhi,
-        game_attackairlw,
-        effect_attackairn,
-        effect_attackairb,
-        effect_attackairhi,
-        effect_attackairlw,
-        sound_attackairhi,
-        expression_attackairhi,
-        
-    );
+    smashline::Agent::new("ness")
+        .acmd("game_attackairn", game_attackairn)
+        .acmd("game_attackairf", game_attackairf)
+        .acmd("expression_attackairf", expression_attackairf)
+        .acmd("game_attackairb", game_attackairb)
+        .acmd("game_attackairhi", game_attackairhi)
+        .acmd("game_attackairlw", game_attackairlw)
+        .acmd("effect_attackairn", effect_attackairn)
+        .acmd("effect_attackairb", effect_attackairb)
+        .acmd("effect_attackairhi", effect_attackairhi)
+        .acmd("effect_attackairlw", effect_attackairlw)
+        .acmd("sound_attackairhi", sound_attackairhi)
+        .acmd("expression_attackairhi", expression_attackairhi)
+        .install();
 }

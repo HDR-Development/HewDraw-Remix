@@ -3,24 +3,19 @@ use globals::*;
 utils::import!(common::djc::attack_air_main_status);
 // status script import
  
-pub fn install() {
-    install_status_scripts!(
-        attack_air,
-        special_hi_attack
-    );
-}
+
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-#[status_script(agent = "ness", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
 // FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK //
 
-#[status_script(agent = "ness", status = FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
     if !StopModule::is_stop(fighter.module_accessor) {
         sub_special_hi_attack(fighter);
@@ -77,4 +72,11 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
         fighter.change_status(FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
         1.into()
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("ness")
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
+        .status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack)
+        .install();
 }

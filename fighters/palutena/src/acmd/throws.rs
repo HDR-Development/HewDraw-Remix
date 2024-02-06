@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "palutena", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -22,8 +22,8 @@ unsafe fn palutena_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -46,8 +46,8 @@ unsafe fn palutena_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -68,8 +68,8 @@ unsafe fn palutena_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn palutena_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 24.0, 18.0);
@@ -93,11 +93,12 @@ unsafe fn palutena_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        palutena_throw_f_game,
-        palutena_throw_b_game,
-        palutena_throw_hi_game,
-        palutena_throw_lw_game,
-    );
+    smashline::Agent::new("palutena")
+        .acmd("game_throwf", palutena_throw_f_game)
+        .acmd("game_throwb", palutena_throw_b_game)
+        .acmd("game_throwhi", palutena_throw_hi_game)
+        .acmd("game_throwlw", palutena_throw_lw_game)
+        .install();
 }

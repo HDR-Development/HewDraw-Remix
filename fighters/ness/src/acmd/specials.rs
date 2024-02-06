@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "ness", script = "game_specialnfire" , category = ACMD_GAME , low_priority)]
-unsafe fn special_n_fire_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -14,8 +14,8 @@ unsafe fn special_n_fire_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_specialairnfire" , category = ACMD_GAME , low_priority)]
-unsafe fn special_air_n_fire_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn special_air_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -28,8 +28,8 @@ unsafe fn special_air_n_fire_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "sound_specials" , category = ACMD_SOUND )]
-unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -54,8 +54,8 @@ unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specials (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specials (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -70,8 +70,8 @@ unsafe fn game_specials (fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_script( agent = "ness", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairs (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialairs (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -86,8 +86,8 @@ unsafe fn game_specialairs (fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_script( agent = "ness", script = "sound_specialairs" , category = ACMD_SOUND )]
-unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let rng = app::sv_math::rand(smash::hash40("fighter"), 2);
@@ -106,8 +106,8 @@ unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
-unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     for _ in 0..999 {
@@ -124,8 +124,8 @@ unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ness", script = "game_specialairlwhold" , category = ACMD_GAME , low_priority)]
-unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     for _ in 0..999 {
@@ -143,14 +143,14 @@ unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
 }
 
 //Implemented to remove release windbox
-#[acmd_script( agent = "ness", scripts = ["game_speciallwend", "game_specialairlwend"], category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallwend(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 }
 
-#[acmd_script( agent = "ness", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_speciallwstart (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_speciallwstart (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -158,8 +158,8 @@ unsafe fn effect_speciallwstart (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "ness", script = "effect_speciallwend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_speciallwend (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_speciallwend (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -178,8 +178,8 @@ unsafe fn effect_speciallwend (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "ness", script = "effect_specialairlwend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_specialairlwend (fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_specialairlwend (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -196,19 +196,22 @@ unsafe fn effect_specialairlwend (fighter: &mut L2CAgentBase) {
 	}
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_specials,
-        game_specialairs,
-        sound_specials,
-        sound_specialairs,
-        special_n_fire_game,
-        special_air_n_fire_game,
-        special_lw_hold_game,
-        special_air_lw_hold_game,
-        game_speciallwend,
-        effect_speciallwstart,
-        effect_speciallwend,
-        effect_specialairlwend,
-    );
+    smashline::Agent::new("ness")
+        .acmd("game_specialnfire", special_n_fire_game)
+        .acmd("game_specialairnfire", special_air_n_fire_game)
+        .acmd("sound_specials", sound_specials)
+        .acmd("game_specials", game_specials)
+        .acmd("game_specialairs", game_specialairs)
+        .acmd("sound_specialairs", sound_specialairs)
+        .acmd("game_speciallwhold", special_lw_hold_game)
+        .acmd("game_specialairlwhold", special_air_lw_hold_game)
+        .acmd("game_speciallwend", game_speciallwend)
+        .acmd("game_specialairlwend", game_speciallwend)
+        .acmd("effect_speciallwstart", effect_speciallwstart)
+        .acmd("effect_specialairlwstart", effect_speciallwstart)
+        .acmd("effect_speciallwend", effect_speciallwend)
+        .acmd("effect_specialairlwend", effect_specialairlwend)
+        .install();
 }

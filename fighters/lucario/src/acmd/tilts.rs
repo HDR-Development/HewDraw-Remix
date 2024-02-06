@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "lucario", scripts = ["game_attacks3", "game_attacks3lw", "game_attacks3hi"] , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -41,8 +41,8 @@ unsafe fn lucario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -59,8 +59,8 @@ unsafe fn lucario_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -79,8 +79,8 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucario_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -99,12 +99,16 @@ unsafe fn lucario_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucario_attack_s3_s_game,
-        lucario_attack_hi3_game,
-        effect_attackhi3,
-        lucario_attack_lw3_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("lucario")
+        .acmd("game_attacks3", lucario_attack_s3_s_game)
+        .acmd("game_attacks3lw", lucario_attack_s3_s_game)
+        .acmd("game_attacks3hi", lucario_attack_s3_s_game)
+        .acmd("game_attackhi3", lucario_attack_hi3_game)
+        .acmd("effect_attackhi3", effect_attackhi3)
+        .acmd("game_attacklw3", lucario_attack_lw3_game)
+        .install();
+}

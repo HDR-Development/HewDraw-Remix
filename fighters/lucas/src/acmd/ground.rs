@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "lucas", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -27,8 +27,8 @@ unsafe fn lucas_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_11_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -47,8 +47,8 @@ unsafe fn lucas_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -69,8 +69,8 @@ unsafe fn lucas_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_12_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -90,8 +90,8 @@ unsafe fn lucas_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_13_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -106,8 +106,8 @@ unsafe fn lucas_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attack13" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_13_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -126,8 +126,8 @@ unsafe fn lucas_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -151,8 +151,8 @@ unsafe fn lucas_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_dash_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -175,8 +175,8 @@ unsafe fn lucas_attack_dash_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucas", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
-unsafe fn lucas_attack_dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -192,8 +192,8 @@ unsafe fn lucas_attack_dash_sound(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "lucas", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucas_attack_dash_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn lucas_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -215,18 +215,20 @@ unsafe fn lucas_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucas_attack_11_game,
-        lucas_attack_11_effect,
-        lucas_attack_12_game,
-        lucas_attack_12_effect,
-        lucas_attack_13_game,
-        lucas_attack_13_effect,
-        lucas_attack_dash_game,
-        lucas_attack_dash_effect,
-        lucas_attack_dash_sound,
-        lucas_attack_dash_expression,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("lucas")
+        .acmd("game_attack11", lucas_attack_11_game)
+        .acmd("effect_attack11", lucas_attack_11_effect)
+        .acmd("game_attack12", lucas_attack_12_game)
+        .acmd("effect_attack12", lucas_attack_12_effect)
+        .acmd("game_attack13", lucas_attack_13_game)
+        .acmd("effect_attack13", lucas_attack_13_effect)
+        .acmd("game_attackdash", lucas_attack_dash_game)
+        .acmd("effect_attackdash", lucas_attack_dash_effect)
+        .acmd("sound_attackdash", lucas_attack_dash_sound)
+        .acmd("expression_attackdash", lucas_attack_dash_expression)
+        .install();
+}

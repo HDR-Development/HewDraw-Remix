@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "nana", script = "game_attackairn_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -25,8 +25,8 @@ unsafe fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "nana", script = "game_attackairf_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -49,8 +49,8 @@ unsafe fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attackairf_nana" , category = ACMD_EFFECT , low_priority)]
-unsafe fn nana_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 19.0);
@@ -60,8 +60,8 @@ unsafe fn nana_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_attackairb_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -81,8 +81,8 @@ unsafe fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attackairb_nana", category = ACMD_EFFECT, low_priority )]
-unsafe fn nana_effect_attackairb_nana(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_effect_attackairb_nana(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -92,8 +92,8 @@ unsafe fn nana_effect_attackairb_nana(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_attackairhi_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -124,8 +124,8 @@ unsafe fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attackairhi_nana" , category = ACMD_EFFECT , low_priority)]
-unsafe fn nana_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -134,8 +134,8 @@ unsafe fn nana_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_attackairlw_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -167,8 +167,8 @@ unsafe fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -177,8 +177,8 @@ unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attackairlw_nana", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -187,8 +187,8 @@ unsafe fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_landingairlw_nana" , category = ACMD_EFFECT , low_priority)]
-unsafe fn nana_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -197,8 +197,8 @@ unsafe fn nana_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "expression_landingairlw_nana" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn nana_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 18.0);
     if is_excute(fighter){
@@ -207,19 +207,18 @@ unsafe fn nana_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        nana_attack_air_n_game,
-        nana_attack_air_f_game,
-        nana_attack_air_f_effect,
-        nana_attack_air_b_game,
-        nana_effect_attackairb_nana,
-        nana_attack_air_hi_game,
-        nana_attack_air_hi_effect,
-        nana_attack_air_lw_game,
-        effect_attackairlw,
-        effect_attackairlw_nana,
-        nana_landing_air_lw_effect,
-        nana_landing_air_lw_expression,
-    );
+    smashline::Agent::new("nana")
+        .acmd("game_attackairn_nana", nana_attack_air_n_game)
+        .acmd("game_attackairf_nana", nana_attack_air_f_game)
+        .acmd("effect_attackairf_nana", nana_attack_air_f_effect)
+        .acmd("game_attackairb_nana", nana_attack_air_b_game)
+        .acmd("effect_attackairb_nana", nana_effect_attackairb_nana)
+        .acmd("game_attackairhi_nana", nana_attack_air_hi_game)
+        .acmd("effect_attackairhi_nana", nana_attack_air_hi_effect)
+        .acmd("game_attackairlw_nana", nana_attack_air_lw_game)
+        .acmd("effect_attackairlw", effect_attackairlw)
+        .acmd("effect_attackairlw_nana", effect_attackairlw_nana)
+        .acmd("effect_landingairlw_nana", nana_landing_air_lw_effect)
+        .acmd("expression_landingairlw_nana", nana_landing_air_lw_expression)
+        .install();
 }
-

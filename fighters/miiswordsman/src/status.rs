@@ -2,48 +2,25 @@ use super::*;
 use globals::*;
 // status script import
  
-pub fn install() {
-    install_status_scripts!(
-        pre_final_hold,
-        //pre_special_s1_attack,
-        special_s1_attack,
-        pre_special_s1_end,
-        special_s1_end,
-        special_s2_dash,
-        special_s2_attack,
-        pre_special_s2_end,
-        special_s2_end,
-        pre_chakram_hop,
-        pre_special_hi2_rush,
-        //exec_special_hi2_rush,
-        //exec_special_hi2_rush_end,
-        //exec_special_hi3_hold,
-        pre_special_hi3_end,
-        special_hi3_end,
-        //special_lw,
-        //miiswordsman_speciallw1hit_main,
-        //special_lw3_end,
-        special_hi2_bound_end
-    );
-}
+
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pre_final_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn pre_final_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::WAVE_SPECIAL_N);
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD)(fighter)
 }
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pre_special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn pre_special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     let force_air = Vector2f {x: 0.0, y: 10.0};
 
     PostureModule::add_pos_2d(fighter.module_accessor, &force_air);
     
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK)(fighter)
 
 }
 
@@ -90,8 +67,8 @@ unsafe extern "C" fn miiswordsman_specials1_main(fighter: &mut L2CFighterCommon)
     L2CValue::I32(0)
 }
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT); // Removes on side special attack
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
@@ -219,8 +196,8 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn pre_special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -248,8 +225,8 @@ pub unsafe fn pre_special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s1_end"), 0.0, 1.0, false, 0.0, false, false);
     }
@@ -332,8 +309,8 @@ unsafe extern "C" fn special_s1_end_Main(fighter: &mut L2CFighterCommon) -> L2CV
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s2_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s2_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_CONTINUE_MOT);
     let s2_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("s2_dash_frame"));
     WorkModule::set_int(fighter.module_accessor, s2_dash_frame, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_WORK_INT_DASH_COUNT);
@@ -452,8 +429,8 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s2_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s2_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_CONTINUE_MOT);
     let s2_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("s2_dash_frame"));
     WorkModule::set_int(fighter.module_accessor, s2_dash_frame, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_WORK_INT_DASH_COUNT);
@@ -546,14 +523,14 @@ unsafe extern "C" fn special_s2_attack_main_helper(fighter: &mut L2CFighterCommo
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pre_special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn pre_special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::GALE_STAB_EDGE_CANCEL);
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END)(fighter)
 }
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_CONTINUE_MOT);
     special_s2_end_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_end_Main as *const () as _))
@@ -689,19 +666,19 @@ unsafe extern "C" fn sub_special_s2_end(fighter: &mut L2CFighterCommon) -> L2CVa
 
 // WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP
 
-#[status_script(agent = "miiswordsman_chakram", status = WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pre_chakram_hop(weapon: &mut L2CWeaponCommon) -> L2CValue {
+
+unsafe extern "C" fn pre_chakram_hop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let lua_state = weapon.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     VarModule::off_flag(owner_module_accessor.object(), vars::miiswordsman::instance::CHAKRAM_STICK_ATTACK);
-    original!(weapon)
+    smashline::original_status(Pre, weapon, *WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP)(weapon)
 }
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -731,15 +708,15 @@ unsafe fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH)(fighter)
 }
 
 // not running for some reason
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
         //println!("SSD Hit");
@@ -749,8 +726,8 @@ unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END
 // not running for some reason
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         //println!("SSD Success");
         if MotionModule::frame(fighter.module_accessor) >= 30.0 {
@@ -769,8 +746,8 @@ unsafe fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-pub unsafe fn exec_special_hi3_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn exec_special_hi3_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let mut motion_value = 0.28;
 
@@ -785,8 +762,8 @@ pub unsafe fn exec_special_hi3_hold(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn pre_special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -815,8 +792,8 @@ pub unsafe fn pre_special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi3_end_Main as *const () as _))
@@ -952,8 +929,8 @@ unsafe extern "C" fn miisword_situation_helper(fighter: &mut L2CFighterCommon) -
 
 //FIGHTER_STATUS_KIND_SPECIAL_LW
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lua_state = fighter.lua_state_agent;
     WorkModule::off_flag(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_CONTINUE_MOT);
     main_setup(fighter);
@@ -1101,8 +1078,8 @@ unsafe extern "C" fn counter_setup(fighter: &mut L2CFighterCommon) {
 
 //FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if StatusModule::situation_kind(fighter.module_accessor) == WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_COUNTER_WORK_INT_SITUATION_PREV) {
             return L2CValue::I32(0)
@@ -1178,8 +1155,8 @@ unsafe fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2C
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) != *SITUATION_KIND_GROUND {
         if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) == *SITUATION_KIND_GROUND {
             if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_AIR {
@@ -1323,9 +1300,37 @@ unsafe extern "C" fn some6(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn special_hi2_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_hi2_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
     WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     0.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("miiswordsman")
+        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD, pre_final_hold)
+        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, pre_special_s1_attack)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, special_s1_attack)
+        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, pre_special_s1_end)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, special_s1_end)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH, special_s2_dash)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, special_s2_attack)
+        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, pre_special_s2_end)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, special_s2_end)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_special_hi)
+        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, pre_special_hi2_rush)
+        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, exec_special_hi2_rush)
+        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, exec_special_hi2_rush_end)
+        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, exec_special_hi3_hold)
+        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, pre_special_hi3_end)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, special_hi3_end)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw)
+        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, miiswordsman_speciallw1hit_main)
+        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, special_lw3_end)
+        .status(End, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, special_hi2_bound_end)
+        .install();
+    smashline::Agent::new("miiswordsman_chakram")
+        .status(Pre, *WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP, pre_chakram_hop)
+        .install();
 }

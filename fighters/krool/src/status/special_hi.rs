@@ -1,8 +1,8 @@
 use super::*;
 use std::convert::TryInto;
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, false, -1);
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_START, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -58,14 +58,14 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_krool_special_h02"), 0);
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
@@ -113,8 +113,8 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_TOP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_air_end"), 0.0, 1.0, false, 0.0, false, false);
     special_hi_lerp_motion(fighter, "special_hi_air_end_f", "special_hi_air_end_b");
@@ -146,8 +146,8 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FALL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     special_hi_change_motion(fighter, Hash40::new("special_hi_fall"), false, true);
     special_hi_lerp_motion(fighter, "special_hi_fall_f", "special_hi_fall_b");
@@ -532,11 +532,11 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_hi_start_main,
-        special_hi_start_exit,
-        special_hi_main,
-        special_hi_end_main,
-        special_hi_fall_main,
-    );
+    smashline::Agent::new("krool")
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_main)
+        .status(Exit, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_exit)
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, special_hi_main)
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_end_main)
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_main)
+        .install();
 }

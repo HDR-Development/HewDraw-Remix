@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "nana", script = "game_attacks4_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -31,8 +31,8 @@ unsafe fn nana_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attacks4_nana" , category = ACMD_EFFECT , low_priority)]
-unsafe fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -57,8 +57,8 @@ unsafe fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_attackhi4_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -87,8 +87,8 @@ unsafe fn nana_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "nana", script = "game_attacklw4_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -115,8 +115,8 @@ unsafe fn nana_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "effect_attacklw4_nana" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -134,8 +134,8 @@ unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "expression_attacklw4_nana", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn nana_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn nana_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -164,14 +164,16 @@ unsafe fn nana_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        nana_attack_s4_s_game,
-        nana_attack_s4_s_effect,
-        nana_attack_hi4_game,
-        nana_attack_lw4_game,
-        effect_attacklw4,
-        nana_attack_lw4_expression
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("nana")
+        .acmd("game_attacks4_nana", nana_attack_s4_s_game)
+        .acmd("effect_attacks4_nana", nana_attack_s4_s_effect)
+        .acmd("game_attackhi4_nana", nana_attack_hi4_game)
+        .acmd("game_attacklw4_nana", nana_attack_lw4_game)
+        .acmd("effect_attacklw4_nana", effect_attacklw4)
+        .acmd("expression_attacklw4_nana", nana_attack_lw4_expression)
+        .install();
+}

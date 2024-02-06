@@ -13,7 +13,3 @@ pub fn install() {
     special_lw::install();
     special_lw_cancel::install();
 }
-
-pub fn add_statuses() {
-    special_lw_cancel::install();
-}
