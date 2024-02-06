@@ -1221,6 +1221,22 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
         }
     
+        // if you have an escape_air_dash motion, change into it
+        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash")) 
+        && !self.is_motion(Hash40::new("escape_air_dash"))
+        && self.motion_frame() >= 1.0 {
+            MotionModule::change_motion(
+                self,
+                Hash40::new("escape_air_dash"),
+                self.motion_frame(),
+                1.0,
+                false,
+                0.0,
+                false,
+                false,
+            );
+        }
+    
         CancelModule::enable_cancel(self);
         if self.is_situation(*SITUATION_KIND_AIR) {
             let fighter = crate::util::get_fighter_common_from_accessor(self);
