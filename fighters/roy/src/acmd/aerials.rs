@@ -83,11 +83,7 @@ unsafe fn roy_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 unsafe fn roy_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_roy_swing_s"));
-    }
-    wait(lua_state, 9.0);
+    frame(lua_state, 6.0);
         if is_excute(fighter) {
             PLAY_SE(fighter, Hash40::new("se_roy_attackl_s01"));
             
