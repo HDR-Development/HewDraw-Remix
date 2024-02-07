@@ -189,7 +189,7 @@ unsafe fn roy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AFTER_IMAGE_OFF(fighter, 2);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_fire"), false, false);
     }
