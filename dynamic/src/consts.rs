@@ -961,6 +961,13 @@ pub mod vars {
         }
     }
 
+    pub mod rockman_airshooter {
+        pub mod status {
+            // flags
+            pub const MOVE : i32 = 0x1100;
+        }
+    }
+
     pub mod roy {
         pub mod instance {
             // flags

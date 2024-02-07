@@ -16,6 +16,42 @@ pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleA
     }
 }
 
+pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3]) {
+        return;
+    }
+    if fighter.global_table[SUB_STATUS].get_bool() {
+        // disables the original substatus - I'd rather not run it twice.
+        fighter.global_table[SUB_STATUS].assign(&L2CValue::Void());
+    }
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS) {
+            return;
+        }
+        if !ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            return;
+        }
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_CHECK) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE);
+        }
+        else {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS);
+            let enable_hi_lw = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("enable_input_hi_lw"));
+            if enable_hi_lw == 0 {
+                return;
+            }
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+            if stick_y > -squat_stick_y {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
+            }
+            else if stick_y < squat_stick_y {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW);
+            }
+        }
+    }
+}
+
 // Fixes weird vanilla behavior where touching ground during upB puts you into special fall for 1f before landing
 unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
@@ -66,6 +102,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     double_edge_dance_vertical_momentum(boma);
+    double_edge_dance_during_hitlag(fighter);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
 }

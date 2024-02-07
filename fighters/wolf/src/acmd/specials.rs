@@ -288,13 +288,33 @@ unsafe fn wolf_special_lw_start_sound(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "wolf", scripts = ["expression_speciallwstart", "expression_specialairlwstart"] , category = ACMD_EXPRESSION , low_priority)]
+#[acmd_script( agent = "wolf", script = "expression_speciallwstart" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn wolf_special_lw_start_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_shield_on"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "wolf", script = "expression_specialairlwstart" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn wolf_special_air_lw_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
     frame(lua_state, 3.0);
@@ -321,5 +341,6 @@ pub fn install() {
         wolf_special_lw_start_effect,
         wolf_special_lw_start_sound,
         wolf_special_lw_start_expression,
+        wolf_special_air_lw_start_expression,
     );
 }
