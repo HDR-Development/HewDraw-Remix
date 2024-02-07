@@ -1,4 +1,3 @@
-
 use super::*;
 
 #[acmd_script( agent = "duckhunt", script = "game_specialhi" , category = ACMD_GAME , low_priority)]

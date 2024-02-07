@@ -1997,7 +1997,7 @@
     <!-- DUCK HUNT -->
     <struct index="56">
       <float hash="ground_brake">0.0605</float>
-      <float hash="dash_speed">1.512</float>
+      <float hash="dash_speed">1.59</float>
       <float hash="run_accel_mul">0.08584</float>
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.642</float>
@@ -2006,7 +2006,7 @@
       <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">12.155</float>
       <float hash="mini_jump_y">14.48</float>
-      <float hash="air_accel_x_mul">0.048</float>
+      <float hash="air_accel_x_mul">0.056</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">1.093</float>
       <float hash="air_brake_x">0.0135</float>
@@ -2016,7 +2016,7 @@
       <float hash="damage_fly_top_speed_y_stable">1.91</float>
       <float hash="dive_speed_y">2.8</float>
       <float hash="weight">85</float>
-      <float hash="landing_attack_air_frame_n">8</float>
+      <float hash="landing_attack_air_frame_n">7</float>
       <float hash="landing_attack_air_frame_f">8</float>
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">9</float>

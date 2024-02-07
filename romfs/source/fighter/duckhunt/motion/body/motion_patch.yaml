@@ -35,6 +35,98 @@ attack_lw3:
 attack_hi3:
   extra:
     cancel_frame: 31
+attack_squat_s3:
+  game_script: game_attacksquats3
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c07attacksquats3.nuanmb
+  scripts:
+  - expression_attacksquats3
+  - sound_attacksquats3
+  - effect_attacksquats3
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 27
+    freeze_during_hitstop: false
+special_hi:
+  flags:
+    loop: false
+  extra:
+    cancel_frame: 25
+special_hi_2:
+  game_script: game_specialhi2
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 10
+  animations:
+  - name: d02specialhi2.nuanmb
+  scripts:
+  - expression_specialhi2
+  - sound_specialhi2
+  - effect_specialhi2
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_hi_3:
+  game_script: game_specialhi3
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 10
+  animations:
+  - name: d02specialhi3.nuanmb
+  scripts:
+  - expression_specialhi3
+  - sound_specialhi3
+  - effect_specialhi3
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
 fall_aerial:
   blend_frames: 5
 fall_special:
