@@ -195,21 +195,6 @@ unsafe fn roy_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    //frame(lua_state, 10.0);
-    //if is_excute(fighter) {
-    //    AFTER_IMAGE_OFF(fighter, 4);
-    //    EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_light"), false, true);
-    //    EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword"), false, false);
-    //    EFFECT_OFF_KIND(fighter, Hash40::new("roy_fire"), false, true);
-    //}
-    //frame(lua_state, 19.0);
-    //if is_excute(fighter) {
-    //    EFFECT_FOLLOW(fighter, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.9, true);
-    //    LAST_EFFECT_SET_RATE(fighter, 1.25);
-    //    EFFECT_FOLLOW(fighter, Hash40::new("roy_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.8, true);
-    //    LAST_EFFECT_SET_RATE(fighter, 1.25);
-    //    AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_roy_sword1"), Hash40::new("tex_roy_sword2"), 15, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
-    //}
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_light"), Hash40::new("sword1"), 0, 0, 10.55, 0, 0, 0, 1, true);
@@ -229,8 +214,6 @@ unsafe fn roy_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_fire"), false, true);
     }
 }
-
-
 
 pub fn install() {
     install_acmd_scripts!(
