@@ -23,7 +23,7 @@ unsafe fn duckhunt_attack_hi4_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt" , script = "sound_attackhi4" , category = ACMD_SOUND , low_priority)]
-unsafe fn duckhunt_attackhi4_sound(agent: &mut L2CAgentBase) {
+unsafe fn duckhunt_attack_hi4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -95,7 +95,7 @@ unsafe fn duckhunt_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt" , script = "sound_attacklw4" , category = ACMD_SOUND , low_priority)]
-unsafe fn duckhunt_attacklw4_sound(agent: &mut L2CAgentBase) {
+unsafe fn duckhunt_attack_lw4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -121,7 +121,7 @@ unsafe fn duckhunt_attacklw4_sound(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         duckhunt_attack_hi4_game,
-        duckhunt_attackhi4_sound,
+        duckhunt_attack_hi4_sound,
         duckhunt_attack_s4_s_game,
         duckhunt_attack_lw4_game,
         duckhunt_attack_lw4_sound
