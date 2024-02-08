@@ -31,4 +31,5 @@ pub fn install() {
     special_lw_cancel::install();
     smashline::Agent::new("littlemac")
         .on_init(littlemac_init)
+        .install();
 }
