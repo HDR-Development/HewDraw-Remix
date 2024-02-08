@@ -143,21 +143,21 @@ unsafe fn effect_attackairhi(agent: &mut L2CAgentBase) {
     for _ in 0..3 {
         if is_excute(agent) {
             agent.clear_lua_stack();
-            lua_args!(agent, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0.0, 17.5, 3.5, 19.0, 0.0, 180.0, 0.4, 4, 4, 4, 0, 0, 0, true);
+            lua_args!(agent, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0.0, 17.5, 3.5, -19.0, 0.0, 180.0, 0.4, 4, 4, 4, 0, 0, 0, true);
             sv_animcmd::EFFECT_FOLLOW_RND(agent.lua_state_agent);
             LAST_EFFECT_SET_RATE(agent, 2.5);
         }
         wait(lua_state, 1.0);
         if is_excute(agent) {
             agent.clear_lua_stack();
-            lua_args!(agent, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0.0, 15.5, 3.25, 19.0, 0.0, 180.0, 0.5, 4, 4, 4, 0, 0, 0, true);
+            lua_args!(agent, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0.0, 15.5, 3.25, -19.0, 0.0, 180.0, 0.5, 4, 4, 4, 0, 0, 0, true);
             sv_animcmd::EFFECT_FOLLOW_RND(agent.lua_state_agent);
             LAST_EFFECT_SET_RATE(agent, 2);
         }
         wait(lua_state, 1.0);
         if is_excute(agent) {
             agent.clear_lua_stack();
-            lua_args!(agent, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0.0, 12.0, 3.0, 19.0, 0.0, 180.0, 0.65, 3, 2, 3, 0, 0, 0, true);
+            lua_args!(agent, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0.0, 12.0, 3.0, -19.0, 0.0, 180.0, 0.65, 3, 2, 3, 0, 0, 0, true);
             sv_animcmd::EFFECT_FOLLOW_RND(agent.lua_state_agent);
             LAST_EFFECT_SET_RATE(agent, 2);
         }
