@@ -30,7 +30,7 @@ unsafe extern "C" fn trail_special_s_set_angle_guide(fighter: &mut L2CFighterCom
     let stick_y = ControlModule::get_stick_y(fighter.module_accessor);
     let vector = fighter.Vector2__create(stick_x.into(), stick_y.into());
     let length = fighter.Vector2__length(vector.clone());
-    let threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), 0xc7b8ee93b);
+    let threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("search_stick"));
     let angle;
     if length.get_f32() < threshold {
         if effect == 0 {
@@ -87,11 +87,11 @@ unsafe extern "C" fn trail_special_s_get_guide_pos(fighter: &mut L2CFighterCommo
     let pos = PostureModule::pos(fighter.module_accessor);
     let rad = angle.get_f32().to_radians();
     let scale = PostureModule::scale(fighter.module_accessor);
-    let dist = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), 0x12145d2880);
+    let dist = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("search_cursor_dist"));
     let dist_scaled = dist * scale;
     let x_pos = rad.cos() * dist_scaled + (*pos).x;
     let y_pos = rad.sin() * dist_scaled + (*pos).y;
-    let y_offset = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), 0x16ee6fe522);
+    let y_offset = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("search_cursor_offset_y"));
     let y_pos = y_offset * scale + y_pos;
     Vector2f{x: x_pos, y: y_pos}
 }

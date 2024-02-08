@@ -275,7 +275,7 @@ unsafe fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
 unsafe fn tantan_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10e97de698), Hash40::new("top"), 0, 10.5, 2.0, 180, -150 , 90, 0.83, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 10.5, 2.0, 180, -150 , 90, 0.83, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(fighter.lua_state_agent, 17.0);
