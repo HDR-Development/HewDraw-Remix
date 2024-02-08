@@ -47,7 +47,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         return 1.into();
     }
     // <HDR>
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 5 {
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 4 {
         if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CAN) {
             WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CAN, false, -1);

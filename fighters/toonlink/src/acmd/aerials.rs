@@ -1,7 +1,5 @@
 use super::*;
-
 use crate::vars::*;
-
 
 #[acmd_script( agent = "toonlink", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
@@ -202,7 +200,7 @@ unsafe fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "expression_attackairhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -219,7 +217,7 @@ unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_spinattack"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
@@ -227,7 +225,7 @@ unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_piercem"), 0);
     }
     frame(lua_state, 55.0);
     if is_excute(fighter) {
@@ -308,4 +306,3 @@ pub fn install() {
         toonlink_landing_air_catch_game,
     );
 }
-
