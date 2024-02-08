@@ -262,6 +262,8 @@ pub unsafe extern "C" fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
+
+
 pub fn install() {
     smashline::Agent::new("trail")
         .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
