@@ -23,7 +23,7 @@ unsafe fn mariod_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 7, 7.5, 30, -60, 135, 0.95, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 6.8, 4.0, 30, -60, 135, 0.95, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -54,7 +54,7 @@ unsafe fn mariod_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 5, 9.0, 10, -39, 154, 0.95, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 4.8, 5.8, 10, -39, 154, 0.95, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -86,7 +86,7 @@ unsafe fn mariod_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 3, 9.0, 5, -90, 170, 0.95, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 2.8, 6.0, 5, -90, 170, 0.95, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
