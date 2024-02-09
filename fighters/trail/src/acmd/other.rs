@@ -190,7 +190,6 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
@@ -199,6 +198,12 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
+}
+
+#[acmd_script( agent = "trail", script = "sound_run" , category = ACMD_SOUND , low_priority)]
+unsafe fn run_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
 }
 
 pub fn install() {
@@ -212,6 +217,7 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        run_sound,
     );
 }
