@@ -851,9 +851,9 @@
     <!-- MEWTWO -->
     <struct index="24">
       <float hash="ground_brake">0.05</float>
-      <float hash="dash_speed">1.5</float>
+      <float hash="dash_speed">1.45</float>
       <float hash="run_accel_mul">0.05</float>
-      <float hash="run_accel_add">0.1</float>
+      <float hash="run_accel_add">0.09</float>
       <float hash="run_speed_max">1.71</float>
       <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x_max">1.4</float>
@@ -862,10 +862,11 @@
       <float hash="air_accel_x_mul">0.03</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">1.2</float>
-      <float hash="air_accel_y">0.085</float>
-      <float hash="air_speed_y_stable">1.7</float>
+      <float hash="air_accel_y">0.082</float>
+      <float hash="air_speed_y_stable">1.5</float>
       <float hash="damage_fly_top_air_accel_y">0.09</float>
-      <float hash="damage_fly_top_speed_y_stable">1.7</float>
+      <float hash="damage_fly_top_speed_y_stable">1.5</float>
+      <float hash="dive_speed_y">2.3</float>
       <float hash="weight">87</float>
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_b">12</float>

@@ -13,22 +13,23 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL);
     }
 
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && !StatusModule::is_changing(boma)
-    && boma.status_frame() == 1 {
-        VarModule::off_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
-        if situation_kind == *SITUATION_KIND_GROUND {
-            VarModule::on_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
-        }
-    }
-    // Allows M2 to turnaround based on stick position when reappearing
-    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2
-    && !StatusModule::is_changing(boma)
-    && MotionModule::is_end(boma) {
-        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+    
+    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2 {
+        if StatusModule::is_changing(boma) {
+            if boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+                VarModule::off_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL);
+            } else {
+                if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL) { 
+                    VarModule::on_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL);
+                }
+                if !fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
+                    fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                } //Burns jump, enables flag if started without using DJ
+            }
+         } else if MotionModule::is_end(boma) && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL) {
             PostureModule::set_stick_lr(boma, 0.0);
             PostureModule::update_rot_y_lr(boma);
-        }
+        } // Allows M2 to turnaround based on stick position when reappearing
     }
 
     if fighter.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3) {
@@ -38,20 +39,13 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
     }
 
     // Actionability when double jump isn't burned
-    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
-    && !StatusModule::is_changing(boma)
-    && situation_kind == *SITUATION_KIND_AIR
-    && frame > 9.0
-    && boma.get_num_used_jumps() < boma.get_jump_count_max() 
-    && !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL) {
+    if fighter.is_motion(Hash40::new("special_air_hi"))
+    && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL)
+    && frame > 7.0 {
         VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         CancelModule::enable_cancel(boma);
-        // Consume double jump, except when Teleport is initiated on ground
-        if !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
-            fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-        
     }
+
      //takes away float after 5 frames of jump
     if boma.get_num_used_jumps() == 2 
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -63,23 +57,13 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
 }
 
 unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
-        // If first 3 frames of dj
-        if fighter.status_frame() <= 3 {
-            VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH);
-        }
-        else {
-            VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH);
-        }
-    }
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
     && fighter.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL)
-    && VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH) {
+    && fighter.global_table[PREV_STATUS_FRAME].get_i32() <= 3 {
         // Grants 1 extra jump if all jumps used up
         if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
             WorkModule::dec_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
-        VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH);
     }
 }
 

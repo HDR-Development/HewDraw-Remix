@@ -130,6 +130,29 @@ unsafe fn mewtwo_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "mewtwo", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
+unsafe extern "C" fn mewtwo_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 13, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("havel"), -1, 0, 1.3, 0, 0, 0, 0.7, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mewtwo_pk_hand"), false, false);
+        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new("mewtwo_pk_attack_a"), Hash40::new("mewtwo_pk_attack_a"), Hash40::new("top"), -2.5, 21.5, 0, 0, 0, 0, 0.95, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "mewtwo", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn mewtwo_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -161,6 +184,7 @@ pub fn install() {
         mewtwo_attack_s4_s_game,
         mewtwo_attack_s4_lw_game,
         mewtwo_attack_hi4_game,
+        mewtwo_attack_hi4_effect,
         mewtwo_attack_lw4_game,
     );
 }
