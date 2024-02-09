@@ -164,7 +164,6 @@ unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
     install_acmd_scripts!(
         game_attacks4,
