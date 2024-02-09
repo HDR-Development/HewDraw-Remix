@@ -114,6 +114,42 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3]) {
+        return;
+    }
+    if fighter.global_table[globals::SUB_STATUS].get_bool() {
+        // disables the original substatus - I'd rather not run it twice.
+        fighter.global_table[globals::SUB_STATUS].assign(&L2CValue::Void());
+    }
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS) {
+            return;
+        }
+        if !ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            return;
+        }
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_CHECK) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE);
+        }
+        else {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS);
+            let enable_hi_lw = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("enable_input_hi_lw"));
+            if enable_hi_lw == 0 {
+                return;
+            }
+            let stick_y = fighter.global_table[globals::STICK_Y].get_f32();
+            let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+            if stick_y > -squat_stick_y {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
+            }
+            else if stick_y < squat_stick_y {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW);
+            }
+        }
+    }
+}
+
 // Soaring Slash Hit
 unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[

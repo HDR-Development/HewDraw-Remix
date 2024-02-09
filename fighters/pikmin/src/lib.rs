@@ -3,7 +3,7 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-
+pub mod pikmin;
 pub mod status;
 pub mod opff;
 
@@ -40,6 +40,7 @@ use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
+    pikmin::install(is_runtime);
     status::install();
     opff::install(is_runtime);
 }

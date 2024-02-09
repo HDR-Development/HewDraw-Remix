@@ -23,8 +23,10 @@
   </list>
   <list hash="param_airshooter">
     <struct index="0">
-      <int hash="life">55</int>
-      <float hash="limit_speed">0.75</float>
+      <int hash="life">40</int>
+      <float hash="speed">0.3</float>
+      <float hash="accel">0.1</float>
+      <float hash="limit_speed">1.5</float>
     </struct>
   </list>
   <list hash="param_hardknuckle">
