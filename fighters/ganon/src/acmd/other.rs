@@ -51,7 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
         };
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_ganon_rnd_futtobi01"), Hash40::new("seq_ganon_rnd_futtobi02"));}
     }
-}
+} 
 
 #[acmd_script( agent = "ganon", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
 unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
