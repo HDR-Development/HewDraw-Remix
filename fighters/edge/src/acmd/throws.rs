@@ -25,6 +25,82 @@ unsafe fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "edge", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_throw_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 18.0, 12.0);
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 3.0, 98, 138, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 18.0);
+    FT_MOTION_RATE_RANGE(fighter, 18.0, 40.0, 21.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 75, 90, 0, 60, 7.0, 0.0, 20.0, 0.0, Some(0.0), Some(40.0), Some(0.0), 0.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        AttackModule::set_catch_only_all(boma, true, false);
+        CHECK_FINISH_CAMERA(fighter, 15, 14);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE(fighter, 1.0);
+
+}
+
+#[acmd_script( agent = "edge", script = "effect_throwhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn edge_throw_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light2"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 3);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 12, 0, 0.8, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 12, 0, 0.8, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_speedline"), Hash40::new("swordl2"), -15.0, 0, 1.5, 90, 0, 180, 0.9, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        EFFECT(fighter, Hash40::new("edge_sword_flash2"), Hash40::new("swordl2"), 12, 0, 0.8, 0, 0, 90, 1, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        EFFECT(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("swordl2"), 12.0, 0, 0.8, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_speedline"), false, false);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -91,6 +167,8 @@ unsafe fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         edge_throw_b_game,
+        edge_throw_hi_game,
+        edge_throw_hi_effect,
         edge_throw_lw_game,
         edge_throw_lw_effect,
     );
