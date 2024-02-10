@@ -942,6 +942,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const TRAIL_EFFECT: i32 = 0x0100;
+            pub const REVERSE_SIDEB: i32 = 0x0101;
         }
     }
 

@@ -3,6 +3,31 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+pub unsafe fn double_edge_dance_backwards(fighter: &mut L2CFighterCommon) {
+    if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3 {
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE) {
+                let lrc = PostureModule::lr(fighter.module_accessor);
+                let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
+                if lrc == 1.0 && stick_x < 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL){
+                } else if lrc == -1.0 && stick_x > 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    VarModule::on_flag(fighter.battle_object, vars::roy::instance::REVERSE_SIDEB);
+                }
+            }
+        }
+        else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE) {
+                let lrc = PostureModule::lr(fighter.module_accessor);
+                let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
+                if lrc == 1.0 && stick_x < 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    VarModule::on_flag(fighter.battle_object, vars::roy::instance::REVERSE_SIDEB);
+                } else if lrc == -1.0 && stick_x > 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    VarModule::on_flag(fighter.battle_object, vars::roy::instance::REVERSE_SIDEB);
+                }
+            }
+        }
+    }
+}
 
 pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleAccessor){
     let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
@@ -103,6 +128,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     double_edge_dance_vertical_momentum(boma);
+    double_edge_dance_backwards(fighter);
     double_edge_dance_during_hitlag(fighter);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
