@@ -725,7 +725,7 @@ unsafe fn effect_specials4hi(fighter: &mut L2CAgentBase) {
 unsafe fn sound_specials4hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("vc_roy_attack05"));
     }
@@ -791,7 +791,7 @@ unsafe fn effect_specials4s(fighter: &mut L2CAgentBase) {
 unsafe fn sound_specials4s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("vc_roy_attack06"));
     }
@@ -865,7 +865,7 @@ unsafe fn effect_specials4lw(fighter: &mut L2CAgentBase) {
 unsafe fn sound_specials4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("vc_roy_attack10"));
     }
@@ -877,6 +877,94 @@ unsafe fn sound_specials4lw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 37.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_roy_smash_h02"));
+    }
+}
+
+#[acmd_script( agent = "roy", scripts = ["game_specials4back", "game_specialairs4back"], category = ACMD_GAME , low_priority)]
+unsafe fn game_specials4back(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PostureModule::reverse_lr(boma);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("colonells"), 11.0, 40, 119, 0, 30, 3.13, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("armr"), 11.0, 40, 119, 0, 30, 3.91, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("sword1"), 11.0, 40, 119, 0, 30, 3.91, 0.0, 0.0, 2.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("sword1"), 9.0, 40, 119, 0, 30, 4.69, 0.0, 0.0, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "roy", scripts = ["effect_specials4back", "effect_specialairs4back"], category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specials4back(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 1, 0, 0, 0.7);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_roy_sword1"), Hash40::new("tex_roy_sword2"), 20, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
+        AFTER_IMAGE_OFF(fighter, 2);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+
+}
+
+#[acmd_script( agent = "roy", scripts = ["sound_specials4back", "sound_specialairs4back"], category = ACMD_SOUND , low_priority)]
+unsafe fn sound_specials4back(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_roy_attack08"));
+    }
+    frame(lua_state, 18.0);
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_roy_jump02"));
+            PLAY_SE(fighter, Hash40::new("se_roy_special_s04s"));
+            
+    }
+}
+
+#[acmd_script( agent = "roy", scripts = ["expression_specials4back", "expression_specialairs4back"], category = ACMD_EXPRESSION , low_priority)]
+unsafe fn expression_specials4back(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
 }
 
@@ -1065,6 +1153,10 @@ pub fn install() {
         game_specials4lw,
         effect_specials4lw,
         sound_specials4lw,
+        game_specials4back,
+        effect_specials4back,
+        sound_specials4back,
+        expression_specials4back,
         roy_special_hi_game,
         roy_special_air_hi_game,
         roy_special_lw_hit_game,
