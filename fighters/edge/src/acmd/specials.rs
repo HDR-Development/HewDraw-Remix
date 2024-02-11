@@ -10,7 +10,10 @@ unsafe fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+        if !VarModule::is_flag(fighter.object(), vars::edge::status::SPECIAL_N_FIRE) {
+            VarModule::off_flag(fighter.object(), vars::edge::status::SPECIAL_N_FIRE);
+            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+        }
     }
     frame(lua_state, 15.0);
     FT_MOTION_RATE_RANGE(fighter, 15.0, 35.0, 5.0);
@@ -32,7 +35,10 @@ unsafe fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+        if !VarModule::is_flag(fighter.object(), vars::edge::status::SPECIAL_N_FIRE) {
+            VarModule::off_flag(fighter.object(), vars::edge::status::SPECIAL_N_FIRE);
+            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+        }
     }
     frame(lua_state, 35.0);
     FT_MOTION_RATE(fighter, 0.4);

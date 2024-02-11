@@ -101,6 +101,39 @@ unsafe fn edge_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "edge", script = "sound_throwhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn edge_throw_hi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_edge_attackhard_h01"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_edge_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_edge_attackhard_h02"));
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_edge_attackhard_h03"));
+    }
+}
+
+#[acmd_script( agent = "edge", script = "expression_throwhi" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn edge_throw_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("top"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_78_slash"), 12);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -169,6 +202,8 @@ pub fn install() {
         edge_throw_b_game,
         edge_throw_hi_game,
         edge_throw_hi_effect,
+        edge_throw_hi_sound,
+        edge_throw_hi_expression,
         edge_throw_lw_game,
         edge_throw_lw_effect,
     );

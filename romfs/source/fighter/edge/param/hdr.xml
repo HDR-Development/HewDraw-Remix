@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-    <struct hash="blade_dash">
-        <float hash="fakeout_dash_movement_mul">0.65</float>
-        <int hash="attack_extra_startup_frames_ground">23</int>
-        <int hash="attack_extra_startup_frames_air">0</int>
-        <int hash="fakeout_extra_startup_frames_ground">6</int>
-        <int hash="fakeout_extra_startup_frames_air">0</int>
-        <int hash="attack_decision_frame_ground">10</int>
-        <int hash="attack_decision_frame_air">18</int>
-    </struct>
     <struct hash="cliff_hang_data">
         <struct hash="special_hi">
             <float hash="p1_x">16</float>
@@ -22,5 +13,24 @@
             <float hash="p2_x">-9.6</float>
             <float hash="p2_y">8.5</float>
         </struct>
+    </struct>
+    <struct hash="param_fire">
+        <float hash="speed_y_s">0.01</float>
+        <float hash="accel_y_s">1.0</float>
+        <float hash="max_speed_y_s">0.6</float>
+        <float hash="speed_x_s_stick_y_sub">0.3</float>
+        <float hash="speed_y_m">0.01</float>
+        <float hash="accel_y_m">1.0</float>
+        <float hash="max_speed_y_m">0.6</float>
+        <float hash="speed_x_m_stick_y_sub">0.3</float>
+    </struct>
+    <struct hash="blade_dash">
+        <float hash="fakeout_dash_movement_mul">0.65</float>
+        <int hash="attack_extra_startup_frames_ground">23</int>
+        <int hash="attack_extra_startup_frames_air">0</int>
+        <int hash="fakeout_extra_startup_frames_ground">6</int>
+        <int hash="fakeout_extra_startup_frames_air">0</int>
+        <int hash="attack_decision_frame_ground">10</int>
+        <int hash="attack_decision_frame_air">18</int>
     </struct>
 </struct>

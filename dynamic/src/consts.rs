@@ -528,6 +528,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FLASH_HOLD: i32 = 0x1101;
+            pub const SPECIAL_N_FIRE: i32 = 0x1102;
         }
     }
 

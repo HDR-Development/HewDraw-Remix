@@ -2,21 +2,30 @@ use super::*;
 use globals::*;
 use utils::consts::vars::edge;
 
+#[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    println!("h");
+    let ret = original!(fighter);
+    WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
+    ret
+}
+
 #[status_script(agent = "edge_fire", status = WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn fly_s_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_s"));
     WorkModule::set_int(fighter.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n1"), 0.0, 1.0, false, 0.0, false, false);
-    let facing = PostureModule::lr(fighter.module_accessor);
-    let speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("speed_x_s")) * facing;
-    let accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("accel_x_s")) * facing;
-    let max_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("max_speed_x_s"));
     let owner_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let edge = utils::util::get_battle_object_from_id(owner_id);
     let stick_y = (&mut *(*edge).module_accessor).stick_y();
-    let speed_y = 0.01 * stick_y;
-    let accel_y = 1.0 * stick_y;
-    let max_speed_y = 0.6;
+    let facing = PostureModule::lr(fighter.module_accessor);
+    let speed_x_stick_y_sub = ParamModule::get_float(edge, ParamType::Agent, "param_fire.speed_x_s_stick_y_sub") * stick_y.abs();
+    let speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("speed_x_s")) * facing;
+    let accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("accel_x_s")) * facing;
+    let max_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("max_speed_x_s")) - speed_x_stick_y_sub;
+    let speed_y = ParamModule::get_float(edge, ParamType::Agent, "param_fire.speed_y_s") * stick_y;
+    let accel_y = ParamModule::get_float(edge, ParamType::Agent, "param_fire.accel_y_s") * stick_y;
+    let max_speed_y = ParamModule::get_float(edge, ParamType::Agent, "param_fire.max_speed_y_s");
     sv_kinetic_energy!(set_speed, fighter, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, speed_x, speed_y);
     sv_kinetic_energy!(set_accel, fighter, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, accel_x, accel_y);
     sv_kinetic_energy!(set_limit_speed, fighter, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, max_speed_x, max_speed_y);
@@ -33,16 +42,17 @@ unsafe fn fly_m_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_m"));
     WorkModule::set_int(fighter.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n2"), 0.0, 1.0, false, 0.0, false, false);
-    let facing = PostureModule::lr(fighter.module_accessor);
-    let speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("speed_x_m")) * facing;
-    let accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("accel_x_m")) * facing;
-    let max_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("max_speed_x_m"));
     let owner_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let edge = utils::util::get_battle_object_from_id(owner_id);
     let stick_y = (&mut *(*edge).module_accessor).stick_y();
-    let speed_y = 0.01 * stick_y;
-    let accel_y = 1.0 * stick_y;
-    let max_speed_y = 0.6;
+    let facing = PostureModule::lr(fighter.module_accessor);
+    let speed_x_stick_y_sub = ParamModule::get_float(edge, ParamType::Agent, "param_fire.speed_x_m_stick_y_sub") * stick_y.abs();
+    let speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("speed_x_m")) * facing;
+    let accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("accel_x_m")) * facing;
+    let max_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_fire"), hash40("max_speed_x_m")) - speed_x_stick_y_sub;
+    let speed_y = ParamModule::get_float(edge, ParamType::Agent, "param_fire.speed_y_m") * stick_y;
+    let accel_y = ParamModule::get_float(edge, ParamType::Agent, "param_fire.accel_y_m") * stick_y;
+    let max_speed_y = ParamModule::get_float(edge, ParamType::Agent, "param_fire.max_speed_y_m");
     sv_kinetic_energy!(set_speed, fighter, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, speed_x, speed_y);
     sv_kinetic_energy!(set_accel, fighter, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, accel_x, accel_y);
     sv_kinetic_energy!(set_limit_speed, fighter, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, max_speed_x, max_speed_y);
@@ -55,7 +65,6 @@ unsafe extern "C" fn fly_m_main_loop(fighter: &mut L2CWeaponCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn sub_fly(fighter: &mut L2CWeaponCommon, status: L2CValue) -> L2CValue {
-    // param_1, this, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_S/M
     let life = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     if life <= 0 || (WorkModule::is_flag(fighter.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL) && fighter.status_frame() <= 2) {
         fighter.change_status(status, false.into());
@@ -96,6 +105,7 @@ unsafe extern "C" fn sub_fly(fighter: &mut L2CWeaponCommon, status: L2CValue) ->
 
 pub fn install() {
     install_status_scripts!(
+        special_n_main,
         fly_s_main,
         fly_m_main,
     );
