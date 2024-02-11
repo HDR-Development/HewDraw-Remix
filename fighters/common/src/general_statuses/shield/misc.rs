@@ -434,6 +434,10 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
 
+    if check_plat_drop_oos(fighter).get_bool() {
+        return true.into();
+    }
+
     if !guard_hold {
         if check_escape_oos(fighter, true).get_bool() || check_cstick_escape_oos(fighter, true).get_bool() {
             return true.into();
@@ -445,10 +449,6 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
     } else if check_grab_oos(fighter).get_bool() {
-        return true.into();
-    }
-
-    if check_plat_drop_oos(fighter).get_bool() {
         return true.into();
     }
 
