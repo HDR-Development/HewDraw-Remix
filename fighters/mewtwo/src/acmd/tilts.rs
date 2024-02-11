@@ -17,9 +17,9 @@ unsafe fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 7.0, 361, 100, 0, 10, 4.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 9.0, 361, 100, 0, 10, 4.0, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 2, 0, Hash40::new("s_tail6"), 11.0, 361, 100, 0, 10, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 7.0, 361, 100, 0, 15, 4.4, 0.3, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 9.0, 361, 100, 0, 15, 4.0, 1.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 2, 0, Hash40::new("s_tail6"), 11.0, 361, 100, 0, 15, 3.7, 1.9, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -40,17 +40,17 @@ unsafe fn mewtwo_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let color = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
-            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
-            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 11.1, 6.4, -34, -72, 49.5, 1, true, *EF_FLIP_YZ),
+            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
+            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 11.0, 6.4, -34, -72, 49.6, 1, true, *EF_FLIP_YZ),
         };
-        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -73,9 +73,9 @@ unsafe fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 7.0, 361, 100, 0, 10, 4.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 9.0, 361, 100, 0, 10, 4.0, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 2, 0, Hash40::new("s_tail6"), 11.0, 361, 100, 0, 10, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 7.0, 361, 100, 0, 15, 4.4, 0.3, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 9.0, 361, 100, 0, 15, 4.0, 1.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 2, 0, Hash40::new("s_tail6"), 11.0, 361, 100, 0, 15, 3.7, 1.9, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -96,17 +96,17 @@ unsafe fn mewtwo_attack_s3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let color = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
-            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
-            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 8.3, 5.8, 0, -85, -15, 1, true, *EF_FLIP_YZ),
+            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
+            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 8.0, 6.2, 0, -85, -15.3, 1, true, *EF_FLIP_YZ),
         };
-        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -129,9 +129,9 @@ unsafe fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 7.0, 361, 100, 0, 10, 4.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 9.0, 361, 100, 0, 10, 4.0, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 2, 0, Hash40::new("s_tail6"), 11.0, 361, 100, 0, 10, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 7.0, 361, 100, 0, 15, 4.4, 0.3, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 9.0, 361, 100, 0, 15, 4.0, 1.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 2, 0, Hash40::new("s_tail6"), 11.0, 361, 100, 0, 15, 3.7, 1.9, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     frame(lua_state, 13.0);
@@ -153,17 +153,17 @@ unsafe fn mewtwo_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let color = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
-            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
-            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 5, 6.6, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
+            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 2, 5, 6.5, 82, -85, -95.5, 1, true, *EF_FLIP_YZ),
         };
-        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -250,6 +250,7 @@ unsafe fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("s_tail1"), 9.0, 65, 81, 0, 45, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
         ATTACK(fighter, 1, 0, Hash40::new("s_tail3"), 8.0, 65, 81, 0, 45, 4.0, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 3, 0, Hash40::new("s_tail7"), 5.0, 65, 71, 0, 45, 3.5, 0.5, 0.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -299,16 +300,16 @@ unsafe fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("s_tail3"), 9.0, 80, 84, 0, 60, 4.5, -1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 1, 0, Hash40::new("s_tail5"), 8.0, 80, 84, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 2, 0, Hash40::new("s_tail7"), 5.0, 90, 84, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 0, 0, Hash40::new("s_tail2"), 9.0, 80, 84, 0, 60, 4.3, -0.2, -0.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 1, 0, Hash40::new("s_tail4"), 8.0, 80, 84, 0, 60, 4.0, 1.2, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 2, 0, Hash40::new("s_tail7"), 5.0, 90, 84, 0, 60, 3.8, -1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         HIT_NO(fighter, 12, *HIT_STATUS_OFF);
         HIT_NO(fighter, 13, *HIT_STATUS_OFF);
@@ -323,16 +324,17 @@ unsafe fn mewtwo_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let color = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
-            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
-            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -4.5, 4.9, 5.9, 13, -70, 180.5, 1.0, true, *EF_FLIP_YZ),
+            0 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            1 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            2 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            3 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            4 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            5 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            6 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            7 => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
+            _ => EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 0, 5, 4.5, 0, -70, 190, 1.0, true, *EF_FLIP_YZ),
         };
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
