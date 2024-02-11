@@ -1136,14 +1136,6 @@ unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
     call_original!(boma);
 }
 
-#[skyline::hook(replace=ControlModule::set_rumble)]
-unsafe fn set_rumble_hook(boma: &mut BattleObjectModuleAccessor, kind: smash::phx::Hash40, arg3: i32, arg4: bool, arg5: u32) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-        return;
-    }
-    call_original!(boma, kind, arg3, arg4, arg5);
-}
-
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hook!(is_throw_stick);
@@ -1189,7 +1181,6 @@ pub fn install() {
         exec_command_reset_attack_air_kind_hook,
         reset_flick_x,
         reset_flick_y,
-        set_rumble_hook,
     );
     skyline::nro::add_hook(nro_hook);
 }

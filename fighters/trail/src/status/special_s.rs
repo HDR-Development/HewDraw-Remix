@@ -42,7 +42,7 @@ unsafe extern "C" fn trail_special_s_set_angle_guide(fighter: &mut L2CFighterCom
         let mut degrees = vector["y"].get_f32().atan2(vector["x"].get_f32()).to_degrees();
         if degrees < 0.0 { degrees += 360.0 }
         let lr = PostureModule::lr(fighter.module_accessor);
-        let max_angle = 30.0;
+        let max_angle = 35.0;
         if lr >= 0.0 {
             if degrees <= 180.0 && degrees > max_angle {
                 degrees = max_angle;
