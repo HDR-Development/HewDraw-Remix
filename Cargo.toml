@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*", "dynamic", "fighters/*", "hdr-macros", "utils"]
+members = ["dynamic", "fighters/*", "hdr-macros", "utils"]
 
 resolver = "2"
 
@@ -225,10 +225,6 @@ skyline_smash.workspace = true
 smashline.workspace = true
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
-
-[build-dependencies]
-build-tools = { path = "crates/build-tools" }
-hdr-macros.workspace = true
 
 [features]
 default = [
