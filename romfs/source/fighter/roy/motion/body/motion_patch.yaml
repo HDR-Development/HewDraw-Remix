@@ -171,7 +171,7 @@ attack_lw4:
 special_s4_back:
     game_script: game_specials4back
     flags:
-      turn: false
+      turn: true
       loop: false
       move: true
       fix_trans: false
@@ -201,7 +201,7 @@ special_s4_back:
 special_air_s4_back:
     game_script: game_specials4back
     flags:
-      turn: false
+      turn: true
       loop: false
       move: true
       fix_trans: false
