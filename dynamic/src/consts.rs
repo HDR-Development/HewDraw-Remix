@@ -904,6 +904,12 @@ pub mod vars {
             // flags
             pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
         }
+        pub mod status {
+            // flags
+            pub const SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME: i32 = 0x1100;
+            // ints
+            pub const SPECIAL_S_PIKMIN_DETONATE_TIMER: i32 = 0x1101;
+        }
     }
 
     pub mod ptrainer {
