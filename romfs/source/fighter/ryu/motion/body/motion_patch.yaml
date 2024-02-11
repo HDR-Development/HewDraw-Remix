@@ -128,6 +128,36 @@ special_air_hi:
   extra:
     xlu_start: 0
     xlu_end: 0
+special_air_lw_install:
+  game_script: game_appeallwr
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: j01appeallwr.nuanmb
+      unk: 0
+  scripts:
+    - expression_appeallwr
+    - sound_appeallwr
+    - effect_appeallwr
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 50
+    no_stop_intp: false
 special_air_lw_step_b:
   extra:
     cancel_frame: 13
@@ -145,6 +175,36 @@ special_hi:
   extra:
     xlu_start: 0
     xlu_end: 0
+special_lw_install:
+  game_script: game_appeallwr
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: j01appeallwr.nuanmb
+      unk: 0
+  scripts:
+    - expression_appeallwr
+    - sound_appeallwr
+    - effect_appeallwr
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 50
+    no_stop_intp: false
 special_lw_step_b:
   extra:
     cancel_frame: 13

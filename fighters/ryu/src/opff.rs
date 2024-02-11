@@ -56,6 +56,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     ryu_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
     ryu_ex_hado(fighter, boma, frame);
     ryu_ex_tatsu(fighter, boma, frame);
+    ryu_ex_focus(fighter, boma, frame);
     fastfall_specials(fighter);
 }
 
@@ -291,8 +292,33 @@ unsafe fn ryu_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 }
 
+unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW, 
+    ]) {
+        return;
+    }
+
+    // enter EX if A+B on frame<5
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW, 
+    ])
+    && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+    && boma.is_button_on(Buttons::SpecialAll)
+    && frame < 5.0
+    && (MeterModule::level(fighter.battle_object) >= 4 || VarModule::is_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        fighter.change_to_custom_status(statuses::ryu::INSTALL, true, false);
+    }
+}
+
 /// determines what cancels can be done out of specials
 unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if boma.is_in_hitlag() 
+    || CancelModule::is_enable_cancel(boma){
+        return;
+    }
 
     let is_other_special_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -335,9 +361,12 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // DSpecial cancels
     // costs more meter on shield
     if boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 1) {
+    && !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
+    && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-        boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+        VarModule::set_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL, MeterModule::level(fighter.battle_object) >= 4);
+        StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+        MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
         return;
     }
 }

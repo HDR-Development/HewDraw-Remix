@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 
 mod finals;
+mod special_lw;
 mod special_s;
 
 utils::import_noreturn!(common::shoto_status::{
@@ -31,6 +32,7 @@ extern "C" {
 
 pub fn install() {
     finals::install();
+    special_lw::install();
     special_s::install();
     install_status_scripts!(
         pre_turndash,
