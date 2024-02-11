@@ -129,7 +129,7 @@ special_air_hi:
     xlu_start: 0
     xlu_end: 0
 special_air_lw_install:
-  game_script: game_appeallwr
+  game_script: game_speciallwinstall
   flags:
     turn: false
     loop: false
@@ -176,7 +176,7 @@ special_hi:
     xlu_start: 0
     xlu_end: 0
 special_lw_install:
-  game_script: game_appeallwr
+  game_script: game_speciallwinstall
   flags:
     turn: false
     loop: false
