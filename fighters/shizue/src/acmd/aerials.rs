@@ -82,7 +82,7 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 6.5, 6.5, 3, 0, -20, 90, 0.65, false);
-        LAST_EFFECT_SET_COLOR(agent, 0.4, 10.0, 0.4);
+        //LAST_EFFECT_SET_COLOR(agent, 0.4, 10.0, 0.4);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
