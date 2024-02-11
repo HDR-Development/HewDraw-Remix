@@ -41,12 +41,12 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             rockman_kill_charge(module_accessor, object);
         }
         else if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING) {
-            if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
                 VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING);
             }
         }
         else {
-            if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 == 0 {
                 if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
                     rockman_kill_charge(module_accessor, object);
                 }

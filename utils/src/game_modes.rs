@@ -16,6 +16,7 @@ lazy_static! {
     static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
     static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/hitfall.webp").unwrap();
     static ref AIRDASH_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/airdash.webp").unwrap();
+    static ref SMASH64_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/smash64.webp").unwrap();
 }
 
 static mut CURRENT_CUSTOM_MODES: Option<HashSet<CustomMode>> = None;
@@ -90,6 +91,7 @@ pub unsafe fn open_modes_session() {
         .file("hdr/turbo.webp", TURBO_WEBP.as_slice())
         .file("hdr/hitfall.webp", HITFALL_WEBP.as_slice())
         .file("hdr/airdash.webp", AIRDASH_WEBP.as_slice())
+        .file("hdr/smash64.webp", SMASH64_WEBP.as_slice())
         .start_page("help/html/USen/gamemodes.html")
         .open()
         .unwrap();

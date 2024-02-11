@@ -453,17 +453,17 @@ unsafe fn lucina_special_s1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0bc6215565), Hash40::new("top"), 0, -1.5, -6.1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_1"), Hash40::new("top"), 0, -1.5, -6.1, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -513,17 +513,17 @@ unsafe fn lucina_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0bc6215565), Hash40::new("top"), 0, -1.5, -6.1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_1"), Hash40::new("top"), 0, -1.5, -6.1, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -569,17 +569,17 @@ unsafe fn lucina_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x113a95c319), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dd95e684d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x113a95c319), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -637,17 +637,17 @@ unsafe fn lucina_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x113a95c319), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dd95e684d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x113a95c319), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -708,17 +708,17 @@ unsafe fn lucina_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0d473d902a), Hash40::new("top"), 0, 0.6, 0.2, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_2lw"), Hash40::new("top"), 0, 0.6, 0.2, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -779,17 +779,17 @@ unsafe fn lucina_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0d473d902a), Hash40::new("top"), 0, 0.6, 0.2, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_2lw"), Hash40::new("top"), 0, 0.6, 0.2, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -847,17 +847,17 @@ unsafe fn lucina_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x113a95c319), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dd89c027a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x113a95c319), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -919,17 +919,17 @@ unsafe fn lucina_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x113a95c319), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dd89c027a), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x113a95c319), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -988,17 +988,17 @@ unsafe fn lucina_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c1426190b), Hash40::new("top"), 0, -2.5, 2.5, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_3s"), Hash40::new("top"), 0, -2.5, 2.5, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1057,17 +1057,17 @@ unsafe fn lucina_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c1426190b), Hash40::new("top"), 0, -2.5, 2.5, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_3s"), Hash40::new("top"), 0, -2.5, 2.5, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1128,17 +1128,17 @@ unsafe fn lucina_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x127859927d), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0d46fffa1d), Hash40::new("top"), 0, -0.5, -1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_3lw"), Hash40::new("top"), 0, -0.5, -1, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x127859927d), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_green"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1199,17 +1199,17 @@ unsafe fn lucina_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x127859927d), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0d46fffa1d), Hash40::new("top"), 0, -0.5, -1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_3lw"), Hash40::new("top"), 0, -0.5, -1, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x127859927d), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_green"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1263,17 +1263,17 @@ unsafe fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x113a95c319), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dddd314ff), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x113a95c319), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1312,17 +1312,17 @@ unsafe fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x113a95c319), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dddd314ff), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x113a95c319), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1360,17 +1360,17 @@ unsafe fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c5b678fcc), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1408,17 +1408,17 @@ unsafe fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1088ac9fe9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c5b678fcc), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1088ac9fe9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -1470,45 +1470,45 @@ unsafe fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x127859927d), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x127859927d), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_green"), false, true);
         COL_NORMAL(fighter);
     }
     
@@ -1557,45 +1557,45 @@ unsafe fn lucina_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x127859927d), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x127859927d), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_green"), false, true);
         COL_NORMAL(fighter);
     }
     

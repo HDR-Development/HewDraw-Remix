@@ -15,6 +15,7 @@ pub mod hitstun;
 pub mod change_status;
 pub mod is_flag;
 pub mod controls;
+pub mod misc;
 pub mod jumps;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
@@ -25,6 +26,7 @@ pub mod shotos;
 pub mod aura;
 pub mod sound;
 mod fighterspecializer;
+mod fighter_util;
 
 #[repr(C)]
 pub struct TempModule {
@@ -748,6 +750,8 @@ pub fn install() {
     is_flag::install();
     controls::install();
     momentum_transfer::install();
+    misc::install();
+    //dash_dancing::install();
     jumps::install();
     stage_hazards::install();
     set_fighter_status_data::install();
@@ -758,6 +762,7 @@ pub fn install() {
     aura::install();
     sound::install();
     fighterspecializer::install();
+    fighter_util::install();
 
     unsafe {
         // Handles getting rid of the kill zoom

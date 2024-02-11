@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -44,6 +48,9 @@ attack_s3_lw:
 attack_s3_hi:
   extra:
     cancel_frame: 28
+attack_air_hi:
+  extra:
+    cancel_frame: 28
 special_n_end:
   extra:
     cancel_frame: 20
@@ -83,9 +90,6 @@ attack_s4_hold:
 special_lw_end:
   extra:
     cancel_frame: 25
-air_catch_landing:
-  extra:
-    cancel_frame: 23
 special_air_n_end:
   extra:
     cancel_frame: 20
@@ -97,7 +101,7 @@ catch_attack:
     cancel_frame: 0
 air_catch_landing:
   extra:
-    cancel_frame: 13
+    cancel_frame: 15
 throw_f:
   extra:
     cancel_frame: 43
