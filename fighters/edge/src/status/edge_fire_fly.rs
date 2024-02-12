@@ -2,13 +2,6 @@ use super::*;
 use globals::*;
 use utils::consts::vars::edge;
 
-// #[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     let ret = original!(fighter);
-//     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
-//     ret
-// }
-
 #[status_script(agent = "edge_fire", status = WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn fly_s_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_s"));
@@ -90,12 +83,7 @@ unsafe extern "C" fn sub_fly(fighter: &mut L2CWeaponCommon, status: L2CValue) ->
         }
     }
     if !WorkModule::is_flag(fighter.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_ATTACK) {
-        
-        
         return 0.into()
-        // if !GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
-        //     return 0.into()
-        // }
     }
 
     fighter.change_status(status, false.into());
@@ -104,7 +92,6 @@ unsafe extern "C" fn sub_fly(fighter: &mut L2CWeaponCommon, status: L2CValue) ->
 
 pub fn install() {
     install_status_scripts!(
-        //special_n_main,
         fly_s_main,
         fly_m_main,
     );
