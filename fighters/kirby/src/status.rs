@@ -13,6 +13,7 @@ mod littlemac_special_n_cancel;
 mod diddy_special_n_cancel;
 mod lucas_special_n;
 mod sonic;
+mod edge_special_n;
  
 pub fn install() {
     smashline::install_agent_init_callbacks!(kirby_init);
@@ -34,6 +35,7 @@ pub fn install() {
     mariod_special_n::install();
     lucas_special_n::install();
     sonic::install();
+    edge_special_n::install();
 }
 
 pub fn add_statuses() {
