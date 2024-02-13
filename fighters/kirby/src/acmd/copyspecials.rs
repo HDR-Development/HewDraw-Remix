@@ -81,6 +81,7 @@ unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
