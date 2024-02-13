@@ -90,10 +90,11 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
             if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) 
-            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
-            && (boma.left_stick_y() >= -0.66 && InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= 4)
-            { //disables held floats unless jump is held 5f
-                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
+                if (boma.left_stick_y() >= -0.66 && InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= 4) //disable helf floats for 4f
+                || fighter.is_button_off(Buttons::Jump) { //disable 1f float
+                    WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+                }
             }
             // Immediately transition to fall/double jump fall when activating float
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
