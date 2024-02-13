@@ -90,7 +90,7 @@ special_n_hit:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false    
 special_n_hit1:
   game_script: game_specialnhit
@@ -119,7 +119,7 @@ special_n_hit1:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_n_hit2:
   game_script: game_specialnhit
@@ -148,7 +148,7 @@ special_n_hit2:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_n_hit3:
   game_script: game_specialnhit
@@ -177,7 +177,7 @@ special_n_hit3:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_n_hit4:
   game_script: game_specialnhit
@@ -206,7 +206,7 @@ special_n_hit4:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_n_hit5:
   game_script: game_specialnhit
@@ -235,7 +235,7 @@ special_n_hit5:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_n_hit6:
   game_script: game_specialnhit
@@ -264,7 +264,7 @@ special_n_hit6:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_n_hit7:
   game_script: game_specialnhit
@@ -293,7 +293,7 @@ special_n_hit7:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false
 special_n_hit8:
   game_script: game_specialnhit
@@ -322,7 +322,7 @@ special_n_hit8:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 15
+    cancel_frame: 22
     freeze_during_hitstop: false  
 special_s_boost:
   game_script: game_specialsboost
