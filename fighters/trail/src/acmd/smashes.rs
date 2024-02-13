@@ -164,7 +164,6 @@ unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
     smashline::Agent::new("trail")
         .acmd("game_attacks4", game_attacks4)

@@ -190,7 +190,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
@@ -201,6 +200,24 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+unsafe extern "C" fn run_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    loop {
+        frame(lua_state, 1.0);
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_trail_step_right_l"));
+        }
+        frame(lua_state, 16.0);
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_trail_step_left_l"));
+        }
+        fighter.clear_lua_stack();
+        sv_animcmd::wait_loop_sync_mot(lua_state);
+        fighter.pop_lua_stack(1);
+    }
+}
 
 pub fn install() {
     smashline::Agent::new("trail")
@@ -214,5 +231,6 @@ pub fn install() {
         .acmd("sound_dash", dash_sound)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("sound_run", run_sound)
         .install();
 }
