@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -581,6 +585,9 @@ luigi_special_air_n_thunder:
     cancel_frame: 55
     freeze_during_hitstop: false
 mario_special_n:
+  extra:
+    cancel_frame: 41
+mario_special_air_n:
   extra:
     cancel_frame: 41
 mario_special_n_fire:

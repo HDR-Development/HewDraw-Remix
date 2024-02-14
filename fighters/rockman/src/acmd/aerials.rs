@@ -103,16 +103,16 @@ unsafe fn rockman_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x12c494c114), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("rockman_flamesword"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 0, 0, 1.0, true);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new_raw(0x16bf0151a0), Hash40::new("top"), 0, 9.0, 0.0, 0, 0, 0, 1.0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x16f4bf3f61), Hash40::new("top"), 0.0, 9.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("rockman_flamesword_ptc"), Hash40::new("top"), 0, 9.0, 0.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("rockman_flamesword_arc"), Hash40::new("top"), 0.0, 9.0, 0.0, 0, 0, 0, 1.0, true);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT_DETACH_KIND(fighter, Hash40::new_raw(0x12c494c114), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("rockman_flamesword"), -1);
     }
 }
 
@@ -195,7 +195,7 @@ unsafe fn rockman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 6.0/(9.0 - 1.0));
+        FT_MOTION_RATE(fighter, 10.0/(9.0 - 1.0));
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -204,9 +204,6 @@ unsafe fn rockman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("havel"), 1.0, 368, 100, 80, 0, 2.5, 0.0, -2.0, 0.0, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        let hit1 = Vector2f { x: 0.0, y: 19.0 };
-        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &hit1, 12, false);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {

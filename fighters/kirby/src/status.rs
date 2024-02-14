@@ -27,6 +27,7 @@ pub fn install() {
     gaogaen_special_n::install();
     ridley_special_n::install();
     ganon_special_n::install();
+    diddy_special_n_cancel::install();
     koopa_special_n::install();
     luigi_special_n::install();
     mario_special_n::install();
@@ -39,7 +40,7 @@ pub fn install() {
 pub fn add_statuses() {
     special_hi_h::install();
     ganon_special_n_float::install();
-    diddy_special_n_cancel::install();
+    diddy_special_n_cancel::install_custom();
 }
 
 #[smashline::fighter_init]
