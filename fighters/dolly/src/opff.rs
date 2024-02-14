@@ -92,7 +92,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
-        && motion_kind == 0x13434c5490 as u64 {
+        && motion_kind == hash40("super_special2_blow") as u64 {
         if boma.is_cat_flag( Cat4::SpecialN2Command) {
             if MeterModule::drain(boma.object(), 4) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
@@ -179,7 +179,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     // Buster Wolf
     else if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
-        || motion_kind == 0x13434c5490 as u64 {
+        || motion_kind == hash40("super_special2_blow") as u64 {
         // Buster Wolf -> Power Geyser
         if boma.is_cat_flag(Cat4::SuperSpecialCommand){
             if !StopModule::is_stop(boma){

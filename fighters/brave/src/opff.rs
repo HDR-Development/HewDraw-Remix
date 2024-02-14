@@ -29,6 +29,12 @@ unsafe fn persist_rng(fighter: &mut L2CFighterCommon) {
         let index = fighter.get_int(*FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
         VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, index);
     }
+    // if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
+    // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+    // && fighter.status_frame() >= 10 {
+    //     MotionModule::set_frame(fighter.module_accessor, 20.0, true);
+    //     //fighter.change_status(FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START.into(), true.into());
+    // }
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)
     || fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START)
     || fighter.is_status(*FIGHTER_STATUS_KIND_DEAD) {
@@ -45,7 +51,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
     }
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE) {
         if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) <= 0 {
-            EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11be25bbf2), false, false);
+            EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 18, -4, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
         }
@@ -66,7 +72,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
             Hash40::new("attack_air_b"),
             Hash40::new("attack_air_lw")
         ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) {
-            EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11be25bbf2), false, false);
+            EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         }

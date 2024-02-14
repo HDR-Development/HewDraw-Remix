@@ -5,9 +5,43 @@ utils::import!(common::djc::attack_air_main_status);
  
 pub fn install() {
     install_status_scripts!(
+        move_exec,
+        special_hi_hold_end,
         attack_air,
         special_hi_attack
     );
+}
+
+// WEAPON_NESS_PK_THUNDER_STATUS_KIND_MOVE
+
+#[status_script(agent = "ness_pkthunder", status = WEAPON_NESS_PK_THUNDER_STATUS_KIND_MOVE, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
+    if !VarModule::is_flag(weapon.object(), vars::ness::status::THUNDER_LOOSE) {
+        if LinkModule::get_parent_status_kind(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT) as i32 != *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD {
+            VarModule::on_flag(weapon.object(), vars::ness::status::THUNDER_LOOSE);
+            MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("move"), 0.0, 1.0, 1.0);
+            return 0.into();
+        }
+        original!(weapon);
+    }
+    0.into() 
+}
+
+// FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD //
+
+#[status_script(agent = "ness", status = FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if LinkModule::is_link(fighter.module_accessor, *FIGHTER_NESS_LINK_NO_PK_THUNDER) {
+        LinkModule::unlink(fighter.module_accessor, *FIGHTER_NESS_LINK_NO_PK_THUNDER);
+    }
+    if [*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_REFLECT].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_THUNDER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    if fighter.get_int(*FIGHTER_NESS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE) != 0 {
+        EffectModule::detach(fighter.module_accessor, fighter.get_int(*FIGHTER_NESS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE) as u32, 5);
+        fighter.set_int(0, *FIGHTER_NESS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE);
+    }
+    0.into() 
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //

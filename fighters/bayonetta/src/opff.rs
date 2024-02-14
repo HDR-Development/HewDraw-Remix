@@ -24,7 +24,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                 new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
             }
         }
-        fighter.check_airdodge_cancel();
+        if !fighter.is_motion(Hash40::new("attack_air_lw")) {fighter.check_airdodge_cancel(); }
         if is_input_cancel && VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2 {
             StatusModule::change_status_force(boma, new_status, true);
         } //special cancel
@@ -59,7 +59,7 @@ unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 0);
     }
     //resets flags if hit
-    if StopModule::is_stop(boma) {
+    if StopModule::is_stop(boma) || StopModule::is_damage(boma) {
         if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) > 1 {
             VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
@@ -80,9 +80,14 @@ unsafe fn resources(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
         VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
     }
-    //hit-flag
-    if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
-        VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT);
+    //hit-flag to filter bullets
+    if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
+        //hit cancel moves (filter shield)
+        if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, *FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP]) {
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT); }
+        } else { //other moves
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT); }
+        }
     }
 }
 

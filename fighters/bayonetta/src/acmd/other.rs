@@ -689,12 +689,8 @@ unsafe fn game_catchattack(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "effect_landingheavy", category = ACMD_EFFECT, low_priority )]
 unsafe fn bayonetta_landing_heavy_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-            EFFECT(fighter, Hash40::new("bayonetta_jump_circle"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        } else {
-            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(fighter, Hash40::new("bayonetta_butterfly_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        }
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("bayonetta_butterfly_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 

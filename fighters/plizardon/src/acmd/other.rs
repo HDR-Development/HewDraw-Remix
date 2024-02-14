@@ -266,8 +266,7 @@ unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_landl"), 0, false, 0x50000000 /* default value */);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        if !fighter.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
-        && !fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        if !fighter.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         }
     } 

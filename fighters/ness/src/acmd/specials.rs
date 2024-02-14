@@ -2,30 +2,10 @@ use super::*;
 
 #[acmd_script( agent = "ness", script = "game_specialnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn special_n_fire_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 10, 0, 150, 6.0, 0.0, 5.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-    }
-    wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
 }
 
 #[acmd_script( agent = "ness", script = "game_specialairnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_n_fire_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 10, 0, 150, 3.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-    }
-    wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
 }
 
 #[acmd_script( agent = "ness", script = "sound_specials" , category = ACMD_SOUND )]
@@ -106,6 +86,36 @@ unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ness", script = "game_specialairhi" , category = ACMD_GAME, low_priority)]
+unsafe extern "C" fn ness_special_air_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::select_cliff_hangdata(boma, *FIGHTER_NESS_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 25.0, 361, 80, 0, 55, 7.0, 0.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PSI);
+        JostleModule::set_status(boma, false);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU); //10
+        //WorkModule::on_flag(boma, *FIGHTER_NESS_STATUS_SPECIAL_HI_FLAG_CRITICAL);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 18.0, 361, 70, 0, 45, 4.8, 0.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PSI);
+        WorkModule::on_flag(boma, *FIGHTER_NESS_STATUS_SPECIAL_HI_FLAG_ATTACK_FALL_START);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);//33
+        //WorkModule::off_flag(boma, *FIGHTER_NESS_STATUS_SPECIAL_HI_FLAG_CRITICAL);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_NESS_STATUS_SPECIAL_HI_FLAG_LANDING_ENABLE);
+        JostleModule::set_status(boma, true);
+        GroundModule::select_cliff_hangdata(boma, *FIGHTER_NESS_CLIFF_HANG_DATA_DEFAULT as u32);
+    }
+}
+
 #[acmd_script( agent = "ness", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
 unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -113,7 +123,7 @@ unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
     for _ in 0..999 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 55, 90, 0, 27, 2.5, 0.0, 6.5, 2.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 55, 90, 0, 27, 8.5, 0.0, 6.5, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 55, 90, 0, 27, 8.9, 0.0, 6.7, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
         }
         wait(lua_state, 6.0);
         if is_excute(fighter) {
@@ -121,7 +131,6 @@ unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 14.0);
     }
-
 }
 
 #[acmd_script( agent = "ness", script = "game_specialairlwhold" , category = ACMD_GAME , low_priority)]
@@ -131,7 +140,7 @@ unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
     for _ in 0..999 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 55, 90, 0, 27, 2.5, 0.0, 6.5, 2.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 55, 90, 0, 27, 8.5, 0.0, 6.5, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 55, 90, 0, 27, 8.9, 0.0, 6.7, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
         }   
         wait(lua_state, 6.0);
         if is_excute(fighter) {
@@ -144,9 +153,9 @@ unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
 
 //Implemented to remove release windbox
 #[acmd_script( agent = "ness", scripts = ["game_speciallwend", "game_specialairlwend"], category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+unsafe fn game_speciallwend(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
 }
 
 #[acmd_script( agent = "ness", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
@@ -204,6 +213,7 @@ pub fn install() {
         sound_specialairs,
         special_n_fire_game,
         special_air_n_fire_game,
+        ness_special_air_hi_game,
         special_lw_hold_game,
         special_air_lw_hold_game,
         game_speciallwend,

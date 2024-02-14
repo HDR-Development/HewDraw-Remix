@@ -133,7 +133,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 //     }
 // }
 
-// Once down special is called, imediately uses special low shoot and circumvent the charge mechanic of the og down-b
+// Once down special is called, immediately uses special low shoot and circumvent the charge mechanic of the og down-b
 unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, true);

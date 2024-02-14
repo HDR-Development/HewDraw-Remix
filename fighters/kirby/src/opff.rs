@@ -1074,14 +1074,14 @@ pub unsafe fn lucas_offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommo
 
 // Piranha Plant Ptooie Stance
 pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW_WAIT) {
         let opponent_boma = fighter.get_grabbed_opponent_boma();
         let grabbed_fighter = smash::app::utility::get_kind(opponent_boma);
         if grabbed_fighter == *FIGHTER_KIND_PACKUN {
             let old_stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
             let new_stance = VarModule::get_int(opponent_boma.object(), vars::packun::instance::CURRENT_STANCE);
             if new_stance != old_stance {
-                // println!("Copying Packun Flower's Current Stance, which is {}", new_stance);
+                // println!("Copying Pirahna Plant's Current Stance, which is {}", new_stance);
                 VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, new_stance);
             }
         }

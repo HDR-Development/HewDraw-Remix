@@ -461,7 +461,7 @@ unsafe fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     ) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            0x10556e6036,
+            hash40("attack_11_near_s") as i64,
             *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION,
         );
         WorkModule::set_int(
@@ -472,7 +472,7 @@ unsafe fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     } else {
         WorkModule::set_int64(
             fighter.module_accessor,
-            0xb4f4e6f8f,
+            hash40("attack_11_s") as i64,
             *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION,
         );
         WorkModule::set_int(

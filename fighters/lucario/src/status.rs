@@ -40,13 +40,11 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
         }
         fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
         fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
-        if fighter.kind() == *FIGHTER_KIND_LUCARIO {
-            MeterModule::reset(fighter.battle_object);
-            let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
-            MeterModule::add(fighter.battle_object, meter_max / 3.0);
-            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 10 * 60);
-        }
+        MeterModule::reset(fighter.battle_object);
+        MeterModule::set_meter_cap(fighter.object(), 2);
+        MeterModule::set_meter_per_level(fighter.object(), 100.0);
+        MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     }
 }
 
@@ -73,11 +71,13 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-// FIGHTER_STATUS_KIND_DEAD
+// FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY
 // go into burnout when shield broken
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
     VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
     original!(fighter)
@@ -88,8 +88,21 @@ unsafe fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_DEAD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
-    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
-    MeterModule::add(fighter.battle_object, meter_max / 3.0);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    original!(fighter)
+}
+
+// FIGHTER_STATUS_KIND_ENTRY
+// reset meter to initial state between stocks
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_ENTRY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MeterModule::reset(fighter.battle_object);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     original!(fighter)
 }

@@ -742,7 +742,7 @@ unsafe fn sound_specialairhi1(fighter: &mut L2CAgentBase) {
     
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1a1b87a0dc));
+        PLAY_SE(fighter, Hash40::new("vc_elight_special_h01_rand"));
     }
     
     frame(lua_state, 23.0);
@@ -757,7 +757,7 @@ unsafe fn sound_specialairhi2(fighter: &mut L2CAgentBase) {
     
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1a9d13d272));
+        PLAY_SE(fighter, Hash40::new("vc_elight_special_h02_rand"));
     }
     
     frame(lua_state, 23.0);

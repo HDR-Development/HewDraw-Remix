@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use utils::game_modes::CustomMode;
 
 macro_rules! interrupt {
     () => { return L2CValue::I32(1); };
@@ -124,6 +125,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_cliff_uniq_process_exec_fix_pos,
             end_pass_ground,
             virtual_ftStatusUniqProcessDamage_exec_common,
+            FighterStatusDamage__correctDamageVector,
             FighterStatusDamage__correctDamageVectorEffect,
             sub_fighter_pre_end_status,
             sub_is_dive,
@@ -568,8 +570,29 @@ pub unsafe fn virtual_ftStatusUniqProcessDamage_exec_common(fighter: &mut L2CFig
     }
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVector)]
+pub unsafe fn FighterStatusDamage__correctDamageVector(fighter: &mut L2CFighterCommon) -> L2CValue {
+    match utils::game_modes::get_custom_mode() {
+        Some(modes) => {
+            if modes.contains(&CustomMode::Smash64Mode) {
+                return 0.into();
+            }
+        },
+        _ => {}
+    }
+    call_original!(fighter)
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
 pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon) -> L2CValue {
+    match utils::game_modes::get_custom_mode() {
+        Some(modes) => {
+            if modes.contains(&CustomMode::Smash64Mode) {
+                return 0.into();
+            }
+        },
+        _ => {}
+    }
     if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
         return call_original!(fighter);
     }

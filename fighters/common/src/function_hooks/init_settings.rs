@@ -67,8 +67,10 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
         if boma.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_CLIFF_CATCH,
             *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
-            *FIGHTER_STATUS_KIND_CLIFF_WAIT]) {
-            VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
+            *FIGHTER_STATUS_KIND_CLIFF_WAIT]
+        ) {
+            let cliff_id = GroundModule::get_cliff_id_uint32(boma);
+            VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, cliff_id as i32);
         }
 
         // heavy item pickup should keep momentum and be affected by gravity in the air

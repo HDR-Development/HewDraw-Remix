@@ -14,7 +14,7 @@ unsafe fn status_pre_Guard(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_INT,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_FLOAT,
-        *FS_SUCCEEDS_KEEP_VISIBILITY,
+        *FS_SUCCEEDS_KEEP_VISIBILITY
     );
 
     FighterStatusModuleImpl::set_fighter_status_data(
@@ -27,7 +27,7 @@ unsafe fn status_pre_Guard(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY as u32,
         0,
-        0,
+        0
     );
 
     L2CValue::I32(0)
