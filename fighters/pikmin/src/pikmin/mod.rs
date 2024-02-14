@@ -19,7 +19,7 @@ impl From<i32> for PikminInfo {
     fn from(other: i32) -> Self {
         match other {
             0 => PikminInfo { // Red
-                dmg: 1.0,
+                dmg: 1.05,
                 shield_dmg: 0.25,
                 angle: 0,
                 hitlag: 1.0,
@@ -27,7 +27,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_fire"),
                 sound: *COLLISION_SOUND_ATTR_FIRE,
                 color: Vector3f{x: 1.0, y: 0.05, z: 0.0},
-                cling_frame: 30 * 4
+                cling_frame: 5
             },
             1 => PikminInfo { // yellow
                 dmg: 0.94,
@@ -38,7 +38,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_paralyze"),
                 sound: *COLLISION_SOUND_ATTR_ELEC,
                 color: Vector3f{x: 1.0, y: 1.0, z: 0.14},
-                cling_frame: 30 * 6
+                cling_frame: 7
             },
             2 => PikminInfo { // Blue
                 dmg: 1.0,
@@ -49,7 +49,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_water"),
                 sound: *COLLISION_SOUND_ATTR_WATER,
                 color: Vector3f{x: 0.1, y: 0.4, z: 1.0},
-                cling_frame: 30 * 4
+                cling_frame: 5
             },
             3 => PikminInfo { // White
                 dmg: 0.75,
@@ -60,7 +60,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_flower"),
                 sound: *COLLISION_SOUND_ATTR_FIRE,
                 color: Vector3f{x: 1.0, y: 1.0, z: 1.0},
-                cling_frame: 30 * 2
+                cling_frame: 3
             },
             _ => PikminInfo { // Violet (Rock), also default
                 dmg: 1.2,
@@ -71,7 +71,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_normal"),
                 sound: *COLLISION_SOUND_ATTR_KICK,
                 color: Vector3f{x: 0.36, y: 0.0, z: 1.0},
-                cling_frame: 30 * 999
+                cling_frame: 999
             },
         }
     }

@@ -31,6 +31,12 @@ pub unsafe fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         let founder_power_mul_status = AttackModule::power_mul_status(founder_module_accessor);
         AttackModule::set_power_mul_status(fighter.module_accessor, founder_power_mul_status);
     }
+
+    let variation = fighter.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
+    let p = PikminInfo::from(variation);
+    VarModule::set_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER, 0);
+    VarModule::off_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME);
+
     fighter.fastshift(L2CValue::Ptr(special_s_cling_main_loop as *const () as _))
 }
 
@@ -40,8 +46,14 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
     fighter.set_int(clatter_time as i32, *WEAPON_PIKMIN_PIKMIN_STATUS_SPECIAL_S_WORK_INT_CLATTER_TIME);
     let variation = fighter.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if fighter.status_frame() >= p.cling_frame
-    && frame >= 17.0 {
+
+    let is_attack = AttackModule::is_attack(fighter.module_accessor, 0, false);
+    if is_attack && !VarModule::is_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME) {
+        VarModule::inc_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER);
+    }
+    VarModule::set_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME, is_attack);
+
+    if VarModule::get_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER) >= p.cling_frame{
         fighter.change_status(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE.into(), false.into());
         return 1.into();
     }
