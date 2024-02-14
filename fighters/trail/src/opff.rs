@@ -317,17 +317,6 @@ unsafe fn training_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
-// plays footstep sounds during sora's new run animation (acmd does not seem to work for this, as it will not loop)
-unsafe fn run_sfx(fighter: &mut L2CFighterCommon, frame: f32) {
-    if fighter.is_motion(Hash40::new("run")) {
-        if frame as i32 == 30 {
-            PLAY_SE(fighter, Hash40::new("se_trail_step_left_l"));
-        } else if frame as i32 == 16 {
-            PLAY_SE(fighter, Hash40::new("se_trail_step_right_l"));
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -372,7 +361,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     side_special_walljump(boma, cat[0]);
     //aerial_sweep_hit_actionability(boma, frame);
     training_cycle(fighter, boma, frame);
-    run_sfx(fighter, frame);
     fastfall_specials(fighter);
 }
 
