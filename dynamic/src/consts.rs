@@ -305,6 +305,7 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const FAIR_STATE: i32 = 0x0101;
+            pub const SPECIAL_S_FRAME: i32 = 0x0102;
         }
         pub mod status {
             // floats
@@ -517,6 +518,7 @@ pub mod vars {
 
             // flags
             pub const IS_INVALID_TELEPORT: i32 = 0x1101;
+            pub const GROUNDED_TELEPORT: i32 = 0x1102;
         }
     }
 
@@ -658,6 +660,7 @@ pub mod vars {
             // copy ability
             // flags
             pub const SHOULD_CYCLE_MATERIAL: i32 = 0x01F4;
+            pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
 
             // ints 
             pub const MATERIAL_INDEX: i32 = 0x01F5;
@@ -853,6 +856,13 @@ pub mod vars {
         }
     }
 
+    pub mod ness {
+        pub mod status {
+            // flags
+            pub const THUNDER_LOOSE: i32 = 0x1100;
+        }
+    }
+
     pub mod pickel {
         pub mod instance {
             // flags
@@ -891,7 +901,14 @@ pub mod vars {
 
     pub mod pikmin {
         pub mod instance {
+            // flags
             pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME: i32 = 0x1100;
+            // ints
+            pub const SPECIAL_S_PIKMIN_DETONATE_TIMER: i32 = 0x1101;
         }
     }
 
@@ -954,6 +971,13 @@ pub mod vars {
         pub mod status {
             // flags
             pub const CHARGE_SHOT_KEEP_CHARGE : i32 = 0x1100;
+        }
+    }
+
+    pub mod rockman_airshooter {
+        pub mod status {
+            // flags
+            pub const MOVE : i32 = 0x1100;
         }
     }
 
@@ -1076,6 +1100,10 @@ pub mod vars {
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
             pub const CYCLE_MAGIC: i32 = 0x0103; // used to properly cycle Sora's HUD to fire in training mode
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0104;
+
+            // floats
+            pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1094,8 +1122,12 @@ pub mod vars {
 
             pub const UP_SPECIAL_HIT: i32 = 0x1100;
 
+            // ints
+            pub const ATTACK_LW4_TIMER: i32 = 0x1100;
+
             // floats
             pub const SONIC_BLADE_Y: i32 = 0x1100;
+            pub const DACUS_SPEED_Y: i32 = 0x1101;
         }
     }
 
@@ -1198,6 +1230,7 @@ pub mod vars {
             // flags
             pub const LUNAR_LAUNCH_AIR_USED: i32 = 0x0100;
             pub const DETONATE_READY: i32 = 0x0101;
+            pub const BOOSTED_DAIR_AIRTIME: i32 = 0x0102;
 
             // ints
             pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
@@ -1237,6 +1270,7 @@ pub mod vars {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
             pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
+            pub const KO_MOTION_AIRTIME: i32 = 0x0102;
 
             // floats
             pub const CURRENT_DAMAGE: i32 = 0x0100;
@@ -1317,6 +1351,7 @@ pub mod vars {
             pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0102;
             pub const SPECIAL_LW_IS_LANDING: i32 = 0x0103;
             pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0104;
+            pub const SPECIAL_N_EXPLODE: i32 = 0x0105;
 
             // floats
             pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100; //vector, requires two indexes
@@ -1494,5 +1529,6 @@ pub mod statuses {
     
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0;
+        pub const SPECIAL_S_EDGE: i32 = 1;
     }
 }

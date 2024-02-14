@@ -58,7 +58,7 @@ unsafe fn rockman_rockbuster_shoot_jump_squat_main(fighter: &mut L2CFighterCommo
     rockman_rockbuster_main_helper(fighter, false.into(), true.into(), L2CValue::Void(), L2CValue::Void());
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("jump_squat"),
+        Hash40::new("jump_squat_buster"),
         0.0,
         1.0,
         false,

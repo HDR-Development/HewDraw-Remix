@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -10,10 +14,10 @@ guard_off:
     cancel_frame: 12
 catch:
   extra:
-    cancel_frame: 52
+    cancel_frame: 44
 catch_l:
   extra:
-    cancel_frame: 52
+    cancel_frame: 44
 special_n:
   extra:
     cancel_frame: 41

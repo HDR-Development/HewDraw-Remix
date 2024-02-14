@@ -281,7 +281,7 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
 
         sv_kinetic_energy!(reset_energy, fighter, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_x, 0.0);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, fly_limit_spd_x, 0.0);
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
@@ -443,20 +443,20 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
     sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
     if mul_stick_x != 0.0 {
         let mut calc_mul_x = mul_stick_x;
-        if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI)
-        || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END)
-        || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL) {
-            // restrict min speed based on charge
-            let fly_lean_min_acl_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_acl_x");
-            if mul_stick_x * PostureModule::lr(fighter.module_accessor) < fly_lean_min_acl_x {
-                calc_mul_x = fly_lean_min_acl_x * PostureModule::lr(fighter.module_accessor);
-                let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
-                let fly_lean_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_spd_x");
-                let fly_lean_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_charge_x_mul");
-                let calc_charge_fly_lean = fly_lean_min_spd_x + (charge_frames * fly_lean_charge_x_mul);
-                sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_fly_lean, 0.0);
-            }
-        }
+        // if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI)
+        // || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END)
+        // || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL) {
+        //     // restrict min speed based on charge and facing direction
+        //     let fly_lean_min_acl_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_acl_x");
+        //     if mul_stick_x * PostureModule::lr(fighter.module_accessor) < fly_lean_min_acl_x {
+        //         calc_mul_x = fly_lean_min_acl_x * PostureModule::lr(fighter.module_accessor);
+        //         let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
+        //         let fly_lean_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_spd_x");
+        //         let fly_lean_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_charge_x_mul");
+        //         let calc_charge_fly_lean = fly_lean_min_spd_x + (charge_frames * fly_lean_charge_x_mul);
+        //         sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_fly_lean, 0.0);
+        //     }
+        // }
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_mul_x, 0.0);
     }
     
@@ -466,9 +466,9 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
             let fly_no_lean_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_no_lean_spd_y");
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_no_lean_spd_y);
         }
-        else if fighter.stick_x() * PostureModule::lr(fighter.module_accessor) > 0.1 {
+        else {
             let fly_lean_f_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_f_spd_y");
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_lean_f_spd_y);
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - 0.05);  //fly_lean_f_spd_y, change properly when prcs are no longer ass
         }
     }
     else if (fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END) && fighter.status_frame() >= 15)

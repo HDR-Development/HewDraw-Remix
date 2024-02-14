@@ -1,122 +1,122 @@
 {
 	"new-dir-files": {
 		"0xecf7a127b": [
-			"fighter/common/hdr/param/fighter_param.prc",
-			"fighter/common/hdr/param/common.prc"
+			"fighter/common/hdr/param/fighter_param.xml",
+			"fighter/common/hdr/param/common.xml"
 		],
 		"fighter/luigi/cmn": [
-			"fighter/luigi/param/hdr.prc"
+			"fighter/luigi/param/hdr.xml"
 		],
 		"fighter/pikmin/cmn": [
-		    "fighter/pikmin/param/hdr.prc"
+			"fighter/pikmin/param/hdr.xml"
 		],
 		"fighter/lucas/cmn": [
-			"fighter/lucas/param/hdr.prc"
+			"fighter/lucas/param/hdr.xml"
 		],
 		"fighter/lucario/cmn": [
-			"fighter/lucario/param/hdr.prc"
+			"fighter/lucario/param/hdr.xml"
 		],
 		"fighter/pichu/cmn": [
-			"fighter/pichu/param/hdr.prc"
+			"fighter/pichu/param/hdr.xml"
 		],
 		"fighter/ike/cmn": [
-			"fighter/ike/param/hdr.prc"
+			"fighter/ike/param/hdr.xml"
 		],
 		"fighter/donkey/cmn": [
-			"fighter/donkey/param/hdr.prc"
+			"fighter/donkey/param/hdr.xml"
 		],
 		"fighter/captain/cmn": [
-			"fighter/captain/param/hdr.prc"
+			"fighter/captain/param/hdr.xml"
 		],
 		"fighter/chrom/cmn": [
-			"fighter/chrom/param/hdr.prc"
+			"fighter/chrom/param/hdr.xml"
 		],
 		"fighter/dolly/cmn": [
-			"fighter/dolly/param/hdr.prc"
+			"fighter/dolly/param/hdr.xml"
 		],
 		"fighter/pacman/cmn": [
-			"fighter/pacman/param/hdr.prc"
+			"fighter/pacman/param/hdr.xml"
 		],
 		"fighter/mario/cmn": [
-			"fighter/mario/param/hdr.prc"
+			"fighter/mario/param/hdr.xml"
 		],
 		"fighter/mariod/cmn": [
-			"fighter/mariod/param/hdr.prc"
+			"fighter/mariod/param/hdr.xml"
 		],
 		"fighter/link/cmn": [
-			"fighter/link/param/hdr.prc"
+			"fighter/link/param/hdr.xml"
 		],
 		"fighter/simon/cmn": [
-			"fighter/simon/param/hdr.prc"
+			"fighter/simon/param/hdr.xml"
 		],
 		"fighter/richter/cmn": [
-			"fighter/richter/param/hdr.prc"
+			"fighter/richter/param/hdr.xml"
 		],
 		"fighter/koopajr/cmn": [
-			"fighter/koopajr/param/hdr.prc"
+			"fighter/koopajr/param/hdr.xml"
 		],
 		"fighter/demon/cmn": [
-			"fighter/demon/param/hdr.prc"
+			"fighter/demon/param/hdr.xml"
 		],
 		"fighter/samus/cmn": [
-			"fighter/samus/param/hdr.prc"
+			"fighter/samus/param/hdr.xml"
 		],
 		"fighter/samusd/cmn": [
-			"fighter/samusd/param/hdr.prc"
+			"fighter/samusd/param/hdr.xml"
 		],
 		"fighter/edge/cmn": [
-			"fighter/edge/param/hdr.prc"
+			"fighter/edge/param/hdr.xml"
 		],
 		"fighter/szerosuit/cmn": [
-			"fighter/szerosuit/param/hdr.prc"
+			"fighter/szerosuit/param/hdr.xml"
 		],
 		"fighter/pit/cmn": [
-			"fighter/pit/param/hdr.prc"
+			"fighter/pit/param/hdr.xml"
 		],
 		"fighter/pitb/cmn": [
-			"fighter/pitb/param/hdr.prc"
+			"fighter/pitb/param/hdr.xml"
 		],
 		"fighter/toonlink/cmn": [
-			"fighter/toonlink/param/hdr.prc"
+			"fighter/toonlink/param/hdr.xml"
 		],
 		"fighter/younglink/cmn": [
-			"fighter/younglink/param/hdr.prc"
+			"fighter/younglink/param/hdr.xml"
 		],
 		"fighter/daisy/cmn": [
-			"fighter/daisy/param/hdr.prc"
+			"fighter/daisy/param/hdr.xml"
 		],
 		"fighter/miiswordsman/cmn": [
-			"fighter/miiswordsman/param/hdr.prc"
+			"fighter/miiswordsman/param/hdr.xml"
 		],
 		"fighter/duckhunt/cmn": [
-			"fighter/duckhunt/param/hdr.prc"
+			"fighter/duckhunt/param/hdr.xml"
 		],
 		"fighter/krool/cmn": [
-			"fighter/krool/param/hdr.prc"
+			"fighter/krool/param/hdr.xml"
 		],
 		"fighter/ganon/cmn": [
-			"fighter/ganon/param/hdr.prc"
+			"fighter/ganon/param/hdr.xml"
 		],
 		"fighter/miifighter/cmn": [
-			"fighter/miifighter/param/hdr.prc"
+			"fighter/miifighter/param/hdr.xml"
 		],
 		"fighter/sheik/cmn": [
-			"fighter/sheik/param/hdr.prc"
+			"fighter/sheik/param/hdr.xml"
 		],
 		"fighter/ness/cmn": [
-			"fighter/ness/param/hdr.prc"
+			"fighter/ness/param/hdr.xml"
 		],
 		"fighter/miigunner/cmn": [
-			"fighter/miigunner/param/hdr.prc"
+			"fighter/miigunner/param/hdr.xml"
 		],
 		"fighter/falco/cmn": [
-			"fighter/falco/param/hdr.prc"
+			"fighter/falco/param/hdr.xml"
 		],
 		"fighter/ryu/cmn": [
-			"fighter/ryu/param/hdr.prc"
+			"fighter/ryu/param/hdr.xml"
 		],
 		"fighter/ken/cmn": [
-			"fighter/ken/param/hdr.prc"
+			"fighter/ken/param/hdr.xml"
 		]
 	}
 }

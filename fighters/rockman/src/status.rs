@@ -9,6 +9,7 @@ mod attack_s4;
 
 mod attack_air;
 mod ladder_attack;
+mod airshooter;
 
 mod special_n;
 mod rockbuster;
@@ -66,10 +67,11 @@ pub fn install() {
 
     attack_air::install();
     ladder_attack::install();
-    chargeshot::install();
-
+    airshooter::install();
+    
     special_n::install();
     rockbuster::install();
+    chargeshot::install();
 
     special_s::install();
 

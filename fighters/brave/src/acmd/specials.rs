@@ -247,12 +247,14 @@ unsafe fn brave_special_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "brave", script = "game_speciallwstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "brave", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
 unsafe fn brave_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    //FT_MOTION_RATE(fighter, 17.0/(20.0 - 1.0));
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 20.0, 17.0);
+    frame(lua_state, 20.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "brave", scripts = ["game_speciallw8", "game_specialairlw8"], category = ACMD_GAME, low_priority )]
