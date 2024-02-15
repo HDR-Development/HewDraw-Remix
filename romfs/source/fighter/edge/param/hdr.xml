@@ -9,7 +9,7 @@
         </struct>
         <struct hash="charged_special_hi">
             <float hash="p1_x">16</float>
-            <float hash="p1_y">16</float>
+            <float hash="p1_y">19.5</float>
             <float hash="p2_x">-9.6</float>
             <float hash="p2_y">8.5</float>
         </struct>

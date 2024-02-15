@@ -62,10 +62,10 @@ attack_air_hi:
     cancel_frame: 51
 special_n1:
   extra:
-    cancel_frame: 46
+    cancel_frame: 44
 special_air_n1:
   extra:
-    cancel_frame: 46
+    cancel_frame: 44
 special_n2:
   extra:
     cancel_frame: 60
