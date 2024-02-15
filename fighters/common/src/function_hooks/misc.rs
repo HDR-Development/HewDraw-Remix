@@ -35,7 +35,7 @@ unsafe fn handle_max_rebel_gauge(boma: &mut app::BattleObjectModuleAccessor) {
 }
 
 // TODO: Get this from an offset search
-#[skyline::from_offset(0x37ad140)]
+#[skyline::from_offset(0x37addc0)]
 fn kill_dead_event_listeners(arg: *mut u32);
 
 unsafe fn send_rebel_gauge_event(entry_id: i32, gauge: f32) {

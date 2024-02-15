@@ -1,7 +1,7 @@
 use super::{vl, *};
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
 
-#[skyline::hook(offset = 0x107e950)]
+#[skyline::hook(offset = 0x107e970)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
@@ -195,13 +195,13 @@ unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor, 
     }
 }
 
-#[skyline::hook(offset = 0x1083bcc, inline)]
+#[skyline::hook(offset = 0x1083bec, inline)]
 unsafe fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
-#[skyline::hook(offset = 0x10838c0, inline)]
+#[skyline::hook(offset = 0x10838e0, inline)]
 unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
@@ -269,7 +269,7 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
     }
 }
 
-// #[skyline::hook(offset = 0x1085d40)]
+// #[skyline::hook(offset = 0x1085d60)]
 // pub unsafe extern "C" fn rockman_airshooter_init(article: &mut smash::app::Article, fighter: &mut smash::app::FighterModuleAccessor) -> u64 {
 //     let ret = original!()(article, fighter);
 //     println!("Initializing Air Shooter");

@@ -281,7 +281,7 @@ fn set_vertex_colors(
 }
 
 unsafe fn get_pane_by_name(layout_view: u64, name: &str) -> [u64; 4] {
-    let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37752e0));
+    let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F60));
     func(layout_view, name.as_ptr())
 }
 
@@ -338,7 +338,7 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::hook(offset = 0x1b6c108, inline)]
+#[skyline::hook(offset = 0x1b6cbe8, inline)]
 unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     let layout_udata = *ctx.registers[0].x.as_ref();
     let layout_view = *(layout_udata as *const u64).add(1);
@@ -371,11 +371,11 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.robot_meter[index] = RobotMeter::new(layout_udata);
 }
 
-#[skyline::hook(offset = 0x138a6f0, inline)]
+#[skyline::hook(offset = 0x138a710, inline)]
 fn hud_update(_: &skyline::hooks::InlineCtx) {
     unsafe {
         // check the global static menu-based mode field
-        let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+        let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0) as *const u64;
         // if we are in the following modes, there is no ui overlay, so dont update the hud
         if [
             0x6020000, // Controls Menu
