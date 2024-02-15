@@ -82,6 +82,9 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
     if boma.is_status_one_of(&[
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_HIT,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
