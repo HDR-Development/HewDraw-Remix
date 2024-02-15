@@ -9,19 +9,20 @@ unsafe extern "C" fn specials_situation_helper(fighter: &mut L2CFighterCommon, i
 
     if throw_input == -2 {
         motion_g = Hash40::new("special_s_throwlw");
-        motion_a = Hash40::new("special_air_s_throwlw");
-    }
-    else if throw_input == 0 {
-        motion_g = Hash40::new("special_s_squat");
         motion_a = Hash40::new("special_air_s_squat");
+    }
+    else if throw_input > 0 {
+        motion_g = Hash40::new("special_s_throwf");
+        motion_a = Hash40::new("special_air_s_throwf");
     }
     else if throw_input < 0 {
         motion_g = Hash40::new("special_s_throwb");
         motion_a = Hash40::new("special_air_s_throwb");
     }
+    //Should be unused
     else {
-        motion_g = Hash40::new("special_s_throwf");
-        motion_a = Hash40::new("special_air_s_throwf");
+        motion_g = Hash40::new("special_s_squat");
+        motion_a = Hash40::new("special_air_s_squat");
     }
     fighter.sub_change_motion_by_situation(motion_g.into(), motion_a.into(), (!is_start).into());
 
@@ -197,8 +198,7 @@ unsafe fn specials_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn specials_squat_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
-        let throw_Lw =  ControlModule::get_stick_y(fighter.module_accessor) < WorkModule::get_param_float(fighter.module_accessor,hash40("common"), hash40("attack_lw4_stick_y"))
-        && fighter.is_situation(*SITUATION_KIND_AIR);
+        let throw_Lw =  ControlModule::get_stick_y(fighter.module_accessor) < WorkModule::get_param_float(fighter.module_accessor,hash40("common"), hash40("attack_lw4_stick_y"));
 
         let mut throw_input = 1;
         if throw_Lw {
