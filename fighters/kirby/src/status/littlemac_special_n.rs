@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-#[skyline::from_offset(0xb96770)]
+#[skyline::from_offset(0xb96750)]
 fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
 
 #[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
