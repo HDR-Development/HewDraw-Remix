@@ -1,6 +1,9 @@
 use super::*;
 use globals::*;
 
+#[skyline::from_offset(0xb96750)]
+fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
+
 #[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn littlemac_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
@@ -83,7 +86,7 @@ unsafe extern "C" fn littlemac_special_n_main_loop(fighter: &mut L2CFighterCommo
     if fighter.is_prev_situation(*SITUATION_KIND_AIR) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("littlemac_special_n"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("littlemac_special_n"), -1.0, 1.0, 0.0, true, true);
             let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_GROUND, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, 0.0);
@@ -98,7 +101,7 @@ unsafe extern "C" fn littlemac_special_n_main_loop(fighter: &mut L2CFighterCommo
     else {
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("littlemac_special_air_n"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("littlemac_special_air_n"), -1.0, 1.0, 0.0, true, true);
             let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, 0.0);
@@ -132,6 +135,10 @@ unsafe extern "C" fn littlemac_special_n_main_loop(fighter: &mut L2CFighterCommo
 unsafe fn littlemac_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
+    let kirb = fighter.battle_object.cast::<Fighter>();
+    copy_ability_reset(kirb, false);
+    EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("kirby_star"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+    PLAY_SE(fighter, Hash40::new_raw(0x14cad4d75e));
     return 0.into()
 }
 

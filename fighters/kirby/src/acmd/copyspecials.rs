@@ -484,7 +484,7 @@ unsafe fn littlemac_special_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        let damage =  25.0 * if fighter.is_situation(*SITUATION_KIND_GROUND) { 1.0 } else { 0.8 };
+        let damage =  22.0 * if fighter.is_situation(*SITUATION_KIND_GROUND) { 1.0 } else { 0.8 };
         let angle = if fighter.is_situation(*SITUATION_KIND_GROUND) { 80 } else { 75 };
         let bkb = if fighter.is_situation(*SITUATION_KIND_GROUND) { 40 } else { 30 };
         let kbg = if fighter.is_situation(*SITUATION_KIND_GROUND) { 104 } else { 124 };
@@ -540,13 +540,15 @@ unsafe fn littlemac_special_n_effect(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 8.0);
-    let mut handle = EffectModule::req_follow(boma, Hash40::new("sys_starrod_bullet"), Hash40::new("handr"), &Vector3f::new(3.0, 0.0, 0.0), &Vector3f::new(0.0, 90.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+    let mut handle = EffectModule::req_follow(boma, Hash40::new("sys_starrod_bullet"), Hash40::new("handr"), &Vector3f::new(3.0, 0.0, 0.0), &Vector3f::new(45.0, 135.0, 45.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
     if is_excute(fighter) {
         EffectModule::set_rate(boma, handle as u32, 1.5);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EffectModule::set_scale(boma, handle as u32, &Vector3f::new(0.8, 0.8, 0.8));
+        let facing = PostureModule::lr(boma);
+        EffectModule::set_rot(boma, handle as u32, &Vector3f::new(45.0 * facing, 135.0, 45.0 * facing));
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
