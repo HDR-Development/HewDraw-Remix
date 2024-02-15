@@ -14,6 +14,30 @@ unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
     }
 }
 
+// dtilt bounce
+unsafe fn dtilt_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    if fighter.is_motion(Hash40::new("attack_lw32"))
+    && fighter.motion_frame() < 18.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_lw2"), 0.0, 1.0, false, 0.0, false, false);
+            KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(0.0, -0.25, 0.0));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            WorkModule::off_flag(boma, *FIGHTER_SIMON_STATUS_ATTACK_LW32_WORK_ID_FLAG_LANDING_AIR);
+        }
+    }
+    else if fighter.is_motion(Hash40::new("attack_lw32")) {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_lw2"), 0.0, 1.0, false, 0.0, false, false);
+            KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(0.0, -0.38, 0.0));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            WorkModule::off_flag(boma, *FIGHTER_SIMON_STATUS_ATTACK_LW32_WORK_ID_FLAG_LANDING_AIR);
+        }
+    }
+}
+
 // allow fair and bair to transition into their angled variants when the stick is angled up/down
 unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
     let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
@@ -74,8 +98,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
+    dtilt_bounce(fighter, boma);
     whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
+
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RICHTER )]

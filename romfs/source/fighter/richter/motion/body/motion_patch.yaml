@@ -47,7 +47,7 @@ attack_hi3:
     cancel_frame: 34
 attack_dash:
   extra:
-    cancel_frame: 34
+    cancel_frame: 36
 attack_s3_s:
   flags:
     move: false
@@ -138,3 +138,8 @@ attack_air_n:
 attack_air_hi:
   extra:
     cancel_frame: 35
+attack_air_lw2:
+  blend_frames: 8
+  extra:
+    cancel_frame: 26
+    

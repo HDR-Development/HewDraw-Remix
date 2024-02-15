@@ -730,6 +730,29 @@ unsafe fn richter_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter", script = "effect_attackairlw2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn richter_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("richter_air_lw"), false, true);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("richter_air_lw2"), Hash40::new("toel"), 2, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 1.0, 1.0, 1.0, 0.3);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+        EFFECT_OFF_KIND(fighter, Hash40::new("richter_air_lw2"), false, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         richter_attack_air_n_game,
@@ -776,6 +799,7 @@ pub fn install() {
         richter_whip_attack_air_hi_game,
 
         richter_attack_air_lw_game,
+        richter_attack_air_lw2_effect
     );
 }
 
