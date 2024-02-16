@@ -285,41 +285,41 @@ pub fn install(is_runtime: bool) {
         return;
     }
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
-    skyline::patching::Patch::in_text(0x107ea84).data(0x1400001Eu32);
+    skyline::patching::Patch::in_text(0x107eaa4).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
-    skyline::patching::Patch::in_text(0x107ff4c).data(0x14000007u32);
+    skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
 
     // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
     // Disable
-    skyline::patching::Patch::in_text(0x1083bcc).nop();
     skyline::patching::Patch::in_text(0x1083bec).nop();
-    skyline::patching::Patch::in_text(0x1083c08).nop();
-    skyline::patching::Patch::in_text(0x1083c1c).nop();
-    skyline::patching::Patch::in_text(0x1083c30).nop();
-    skyline::patching::Patch::in_text(0x1083c4c).nop();
-    skyline::patching::Patch::in_text(0x1083c60).nop();
-    skyline::patching::Patch::in_text(0x1083c74).nop();
-    skyline::patching::Patch::in_text(0x1083c88).nop();
-    skyline::patching::Patch::in_text(0x1083c9c).nop();
-    skyline::patching::Patch::in_text(0x1083cb0).nop();
-    skyline::patching::Patch::in_text(0x1083cc4).nop();
+    skyline::patching::Patch::in_text(0x1083c0c).nop();
+    skyline::patching::Patch::in_text(0x1083c28).nop();
+    skyline::patching::Patch::in_text(0x1083c3c).nop();
+    skyline::patching::Patch::in_text(0x1083c50).nop();
+    skyline::patching::Patch::in_text(0x1083c6c).nop();
+    skyline::patching::Patch::in_text(0x1083c80).nop();
+    skyline::patching::Patch::in_text(0x1083c94).nop();
+    skyline::patching::Patch::in_text(0x1083ca8).nop();
+    skyline::patching::Patch::in_text(0x1083cbc).nop();
+    skyline::patching::Patch::in_text(0x1083cd0).nop();
+    skyline::patching::Patch::in_text(0x1083ce4).nop();
     // Enable
-    skyline::patching::Patch::in_text(0x10838c0).nop();
     skyline::patching::Patch::in_text(0x10838e0).nop();
-    skyline::patching::Patch::in_text(0x1083908).nop();
-    skyline::patching::Patch::in_text(0x1083924).nop();
-    skyline::patching::Patch::in_text(0x1083938).nop();
-    skyline::patching::Patch::in_text(0x108394c).nop();
-    skyline::patching::Patch::in_text(0x1083968).nop();
-    skyline::patching::Patch::in_text(0x108397c).nop();
-    skyline::patching::Patch::in_text(0x1083990).nop();
-    skyline::patching::Patch::in_text(0x10839a4).nop();
-    skyline::patching::Patch::in_text(0x10839b8).nop();
-    skyline::patching::Patch::in_text(0x10839cc).nop();
+    skyline::patching::Patch::in_text(0x1083900).nop();
+    skyline::patching::Patch::in_text(0x1083928).nop();
+    skyline::patching::Patch::in_text(0x1083944).nop();
+    skyline::patching::Patch::in_text(0x1083958).nop();
+    skyline::patching::Patch::in_text(0x108396c).nop();
+    skyline::patching::Patch::in_text(0x1083988).nop();
+    skyline::patching::Patch::in_text(0x108399c).nop();
+    skyline::patching::Patch::in_text(0x10839b0).nop();
+    skyline::patching::Patch::in_text(0x10839c4).nop();
+    skyline::patching::Patch::in_text(0x10839d8).nop();
+    skyline::patching::Patch::in_text(0x10839ec).nop();
 
     // Patches which status to compare to for Metal Blade.
-    skyline::patching::Patch::in_text(0x1080264).nop();
-    skyline::patching::Patch::in_text(0x1080268).nop();
+    skyline::patching::Patch::in_text(0x1080284).nop();
+    skyline::patching::Patch::in_text(0x1080288).nop();
 
     skyline::install_hooks!(
         rockman_vtable_func,
