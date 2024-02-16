@@ -3,7 +3,34 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+// allows fair to be angled
+unsafe fn fair_angles(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
+    let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        ControlModule::get_sub_stick_y(fighter.module_accessor)
+    }
+    else {
+        ControlModule::get_stick_y(fighter.module_accessor)
+    };
+    if fighter.is_motion(Hash40::new("attack_air_f"))
+    && fighter.motion_frame() < 10.0
+    {
+        if stick_y > 0.5 { // stick is held up
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("attack_air_fhi"), -1.0, 1.0, 0.0, false, false);
+        } else if stick_y < -0.5 { // stick is held down
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("attack_air_flw"), -1.0, 1.0, 0.0, false, false);
+        }
+        if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_fhi"), Hash40::new("attack_air_flw")])
+        && fighter.motion_frame() < 10.0
+        {
+        if stick_y > 0.5 { // stick is held up
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("attack_air_fhi"), -1.0, 1.0, 0.0, false, false);
+        } else if stick_y < -0.5 { // stick is held down
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("attack_air_flw"), -1.0, 1.0, 0.0, false, false);
+        }
+    }
+}
+}
+
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH) {
         let sword_scale = Vector3f{x: 0.7, y: 1.0, z: 1.0};
@@ -86,6 +113,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    fair_angles(fighter, boma, frame, stick_y);
     sword_length(boma);
     limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);

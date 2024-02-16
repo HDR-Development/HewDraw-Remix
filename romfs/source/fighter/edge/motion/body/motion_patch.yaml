@@ -69,3 +69,35 @@ catch_attack:
 furafura_end:
   extra:
     cancel_frame: 10
+attack_air_fhi:
+  game_script: game_attackairfhi
+  flags:
+    move: true
+  blend_frames: 0
+  animations:
+  - name: c05attackairfhi.nuanmb
+  scripts:
+  - expression_attackairfhi
+  - sound_attackairfhi
+  - effect_attackairfhi
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 39
+    freeze_during_hitstop: false
+attack_air_flw:
+  game_script: game_attackairflw
+  flags:
+    move: true
+  blend_frames: 0
+  animations:
+  - name: c05attackairflw.nuanmb
+  scripts:
+  - expression_attackairflw
+  - sound_attackairflw
+  - effect_attackairflw
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 39
+    freeze_during_hitstop: false
