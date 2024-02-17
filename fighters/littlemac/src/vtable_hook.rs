@@ -112,7 +112,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
 }
 
 
-//#[skyline::from_offset(0xc45530)]
+//#[skyline::from_offset(0xc45550)]
 //pub unsafe fn update_ko_ui(arg1: f32, arg2: f32, arg3: *mut Fighter);
 
 // static mut num: u32 = 0;
@@ -122,7 +122,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
 //     unsafe { (getRegionAddress(Region::Text) as *const u8).add(offset) as _ }
 // }
 
-// #[skyline::from_offset(0x68cd80)]
+// #[skyline::from_offset(0x68cda0)]
 // pub fn update_battle_ui(x: *const u64, y: u32);
 
 

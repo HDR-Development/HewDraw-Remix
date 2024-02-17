@@ -9,14 +9,14 @@ use utils::*;
 
 use globals::*;
 
-#[skyline::hook(offset = 0xf13dbc, inline)]
+#[skyline::hook(offset = 0xf13ddc, inline)]
 unsafe fn steve_parry_stuff_fix(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[0].x.as_ref() == 0x1D {
         *((ctx as *mut _ as *mut u8).add(0x100).add(0x98) as *mut u32) = 0x1;
     }
 }
 
-#[skyline::hook(offset = 0x6417f4, inline)]
+#[skyline::hook(offset = 0x641814, inline)]
 unsafe fn shield_damage_analog(ctx: &skyline::hooks::InlineCtx) {
     let boma =
         *(*ctx.registers[0].x.as_ref() as *const u64).add(1) as *mut BattleObjectModuleAccessor;
@@ -36,7 +36,7 @@ unsafe fn shield_damage_analog(ctx: &skyline::hooks::InlineCtx) {
     WorkModule::set_float(boma, current_shield - attack_power * damage_mul, 6);
 }
 
-#[skyline::hook(offset = 0x6285d0, inline)]
+#[skyline::hook(offset = 0x6285f0, inline)]
 unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
     let fighter = *ctx.registers[19].x.as_ref();
     let boma = *(fighter as *const u64).add(4);
@@ -193,7 +193,7 @@ pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
     hero_rng_hook_impl(fighter);
 }
 
-#[skyline::hook(offset = 0x853df0)]
+#[skyline::hook(offset = 0x853e10)]
 pub unsafe fn psych_up_hit() {
     // do nothing
 }
@@ -203,12 +203,12 @@ pub unsafe fn psych_up_hit() {
 //     krool_belly_toggle_hook_impl(ctx);
 // }
 
-#[skyline::hook(offset = 0xc055d0)]
+#[skyline::hook(offset = 0xc055f0)]
 pub unsafe fn krool_belly_damage_hook(damage: f32, fighter: *mut Fighter, unk: bool) {
     krool_belly_damage_hook_impl(damage, fighter, unk);
 }
 
-#[skyline::hook(offset = 0x34cdc64, inline)]
+#[skyline::hook(offset = 0x34ce8e4, inline)]
 unsafe fn ptrainer_swap_backwards_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let object = *ctx.registers[20].x.as_ref() as *mut BattleObject;
     if VarModule::is_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS) {
@@ -223,5 +223,5 @@ unsafe fn ptrainer_swap_backwards_hook(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0xf96310)]
+#[skyline::hook(offset = 0xf96330)]
 unsafe fn ptrainer_stub_death_switch() {}

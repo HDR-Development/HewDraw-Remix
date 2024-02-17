@@ -49,5 +49,5 @@ pub fn install(is_runtime: bool) {
     // );
     
     // prevents shield break on belly
-    skyline::patching::Patch::in_text(0xc04ee0).data(0x1400001Eu32);
+    skyline::patching::Patch::in_text(0xc04f00).data(0x1400001Eu32);
 }
