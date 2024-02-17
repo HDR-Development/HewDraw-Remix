@@ -50,12 +50,14 @@ pub unsafe fn get_ptr_to_controls(entry: usize) -> ControllerInfo {
     ControllerInfo((three as *mut u8).add(entry * 0xf7d8))
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default)]
 pub struct ExtraInputDetection {
     pub pressing_down: bool,
     pub pressing_up: bool,
     pub pressing_y: bool,
     pub pressing_x: bool,
+    pub pressed_y: bool,
+    pub pressed_x: bool,
 }
 
 #[derive(Default)]
@@ -208,15 +210,15 @@ unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
             if let Some(controls_id) =
                 get_controls_id_from_button_id(root_layout, currently_pressing)
             {
-                if virt.pressing_y {
+                if virt.pressed_y {
                     *submenu = Some(Box::new(TopLevel { controls_id }));
                     true
-                } else if virt.pressing_x {
-                    let mut controls = get_ptr_to_controls(controls_id as usize);
-                    let new_name = swkbd::prompt_change_text(controls.tag_slice());
-                    controls.set_tag(&new_name);
-                    *(ptr as *mut i32).add(0xd0 / 4) = controls_id as i32;
-                    true
+                // } else if virt.pressed_x {
+                //     let mut controls = get_ptr_to_controls(controls_id as usize);
+                //     let new_name = swkbd::prompt_change_text(controls.tag_slice());
+                //     controls.set_tag(&new_name);
+                //     *(ptr as *mut i32).add(0xd0 / 4) = controls_id as i32;
+                //     true
                 } else {
                     false
                 }
@@ -270,14 +272,17 @@ unsafe fn check_for_input(mask: u32, ptr: u64) -> bool {
 unsafe fn handle_virtual_inputs(ctx: &InlineCtx) {
     let ptr = *ctx.registers[0].x.as_ref();
     let virtual_input = *(*ctx.registers[1].x.as_ref() as *const u64).add(1);
+    let mut maps = VIRTUAL_INPUT_MAPS.lock();
+    let last_frame = maps.get(&virtual_input).cloned().unwrap_or_default();
     let extra = ExtraInputDetection {
         pressing_down: check_for_input(0x00400004, virtual_input),
         pressing_up: check_for_input(0x00100001, virtual_input),
         pressing_y: check_for_input(0x00000080, virtual_input),
         pressing_x: check_for_input(0x00000010, virtual_input),
+        pressed_y: !last_frame.pressing_y && check_for_input(0x00000080, virtual_input),
+        pressed_x: !last_frame.pressing_x && check_for_input(0x00000010, virtual_input),
     };
-
-    VIRTUAL_INPUT_MAPS.lock().insert(ptr, extra);
+    maps.insert(ptr, extra);
 }
 
 /* 0x19f5cb0 -> Called where x1 is the index of the pane to render
