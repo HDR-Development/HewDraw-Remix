@@ -238,7 +238,7 @@ unsafe fn hijack_animation_get(ctx: &skyline::hooks::InlineCtx) {
 static mut SHARED_PTR1: [u64; 2] = [0, 0];
 static mut SHARED_PTR2: [u64; 2] = [0, 0];
 
-#[skyline::hook(offset = 0x1d338cc, inline)]
+#[skyline::hook(offset = 0x1d338c4, inline)]
 unsafe fn frank_talk_think_tankk(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
         SHARED_PTR1[0] = 0;
