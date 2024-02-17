@@ -327,14 +327,17 @@ pub fn install() {
         koopa_attack_air_n_effect,
         koopa_attack_air_n_sound,
         koopa_attack_air_n_expression,
+
         koopa_attack_air_f_game,
         koopa_attack_air_f_effect,
+
         koopa_attack_air_b_game,
         koopa_attack_air_b_expression,
 
         koopa_attack_air_hi_game,
         koopa_attack_air_hi_effect,
         koopa_attack_air_hi_expression,
+        
         koopa_attack_air_lw_game,
         koopa_attack_air_lw_effect,
         koopa_landing_air_lw_game,
