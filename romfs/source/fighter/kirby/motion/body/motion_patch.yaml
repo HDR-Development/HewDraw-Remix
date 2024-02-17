@@ -403,6 +403,18 @@ donkey_special_n_cancel:
 donkey_special_air_n_cancel:
   extra:
     cancel_frame: 9
+edge_special_n1:
+  extra:
+    cancel_frame: 46
+edge_special_air_n1:
+  extra:
+    cancel_frame: 46
+edge_special_n2:
+  extra:
+    cancel_frame: 60
+edge_special_air_n2:
+  extra:
+    cancel_frame: 60
 falco_special_n_end:
   extra:
     cancel_frame: 19

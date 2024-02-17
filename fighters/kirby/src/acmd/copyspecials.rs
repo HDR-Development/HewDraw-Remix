@@ -66,6 +66,86 @@ unsafe fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 }
 
+#[acmd_script( agent = "kirby", scripts = ["game_edgespecialnstart", "game_edgespecialairnstart"] , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n_start(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    FT_MOTION_RATE_RANGE(fighter, 20.0, 32.0, 8.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, *FIGHTER_EDGE_SPECIAL_N_S, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CHARGE_KIND);
+    }
+    frame(lua_state, 32.0);
+    FT_MOTION_RATE_RANGE(fighter, 32.0, 79.0, 51.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, *FIGHTER_EDGE_SPECIAL_N_M, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CHARGE_KIND);
+    }
+    frame(lua_state, 79.0);
+    FT_MOTION_RATE(fighter, 1.2);
+    frame(lua_state, 99.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 100.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, *FIGHTER_EDGE_SPECIAL_N_L, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CHARGE_KIND);
+    }
+    frame(lua_state, 105.0);
+    FT_MOTION_RATE(fighter, 1.6);
+    frame(lua_state, 115.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 120.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
+    }
+    frame(lua_state, 140.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["game_edgespecialn1", "game_edgespecialairn1"] , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 11.0, 13.0);
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE_RANGE(fighter, 15.0, 35.0, 5.0);
+    frame(lua_state, 35.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+
+}
+
+#[acmd_script( agent = "kirby", scripts = ["game_edgespecialn2", "game_edgespecialairn2"] , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 11.0, 13.0);
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 35.0);
+    FT_MOTION_RATE(fighter, 0.4);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+    frame(lua_state, 60.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    
+}
+
 #[acmd_script( agent = "kirby", script = "game_ganonfloatstart" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1587,6 +1667,9 @@ pub fn install() {
         diddy_special_air_n_cancel_effect,
         diddy_special_air_n_cancel_sound,
         diddy_special_air_n_cancel_expression,
+        edge_special_n_start,
+        edge_special_n1_game,
+        edge_special_n2_game,
         ganon_float_start_game,
         ganon_float_start_effect,
         ganon_float_start_expression,
