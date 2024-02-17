@@ -101,7 +101,7 @@ catch_attack:
     cancel_frame: 0
 air_catch_landing:
   extra:
-    cancel_frame: 15
+    cancel_frame: 17
 throw_f:
   extra:
     cancel_frame: 43
