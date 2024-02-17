@@ -202,46 +202,37 @@ koopa_special_air_n_max:
 mewtwo_special_n_shoot:
   extra:
     cancel_frame: 28
-littlemac_special_n_dash:
+littlemac_special_n:
+  game_script: game_littlemacspecialn
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: littlemacd00specialn.nuanmb
+  scripts:
+  - expression_littlemacspecialn
+  - sound_littlemacspecialn
+  - effect_littlemacspecialn
   extra:
-    cancel_frame: 45
-littlemac_special_n_dash_turn:
-  extra:
-    cancel_frame: 54
-littlemac_special_air_n_dash_turn:
-  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
     cancel_frame: 60
-littlemac_special_n_cancel:
-  game_script: game_littlemacspecialncancel
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: littlemacd00specialncancel.nuanmb
-  scripts:
-  - expression_littlemacspecialncancel
-  - sound_littlemacspecialncancel
-  - effect_littlemacspecialncancel
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 39
     freeze_during_hitstop: false
-littlemac_special_air_n_cancel:
-  game_script: game_littlemacspecialairncancel
+littlemac_special_air_n:
+  game_script: game_littlemacspecialairn
   flags:
     turn: false
     loop: false
@@ -259,15 +250,15 @@ littlemac_special_air_n_cancel:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: littlemacd00specialairncancel.nuanmb
+  - name: littlemacd00specialn.nuanmb
   scripts:
-  - expression_littlemacspecialairncancel
-  - sound_littlemacspecialairncancel
-  - effect_littlemacspecialairncancel
+  - expression_littlemacspecialairn
+  - sound_littlemacspecialairn
+  - effect_littlemacspecialairn
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 39
+    cancel_frame: 60
     freeze_during_hitstop: false
 lucas_special_n_end:
   extra:
