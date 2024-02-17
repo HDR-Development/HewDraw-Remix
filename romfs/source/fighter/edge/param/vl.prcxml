@@ -6,11 +6,122 @@
     </struct>
   </list>
   <struct hash="param_one_winged">
+    <float hash="activate_point_init">80</float>
+    <float hash="activate_point_init_hp">80</float>
     <float hash="attack_power_mul">1.05</float>
     <float hash="dash_speed_mul">1.1</float>
     <float hash="run_speed_max_mul">1.065</float>
     <float hash="air_speed_x_stable_mul">1.125</float>
+    <float hash="stock_activate_point">80</float>
+    <float hash="deactivate_point_kill">200</float>
   </struct>
+  <list hash="param_one_winged_activate_point">
+    <struct index="0">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="1">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="2">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="3">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="4">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="5">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="6">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="7">
+      <float hash="point">0</float>
+    </struct>
+    <struct index="8">
+      <float hash="point">0</float>
+    </struct>
+  </list>
+  <list hash="param_one_winged_deactivate_point">
+    <struct index="0">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="1">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="2">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="3">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="4">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="5">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="6">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="7">
+      <float hash="point">200</float>
+    </struct>
+    <struct index="8">
+      <float hash="point">200</float>
+    </struct>
+  </list>
+  <list hash="param_one_winged_init_stock_damage">
+    <struct index="0">
+      <float hash="damage_min">80</float>
+      <float hash="damage_max">80</float>
+    </struct>
+    <struct index="1">
+      <float hash="damage_min">80</float>
+      <float hash="damage_max">80</float>
+    </struct>
+    <struct index="2">
+      <float hash="damage_min">80</float>
+      <float hash="damage_max">80</float>
+    </struct>
+    <struct index="3">
+      <float hash="damage_min">80</float>
+      <float hash="damage_max">80</float>
+    </struct>
+    <struct index="4">
+      <float hash="damage_min">80</float>
+      <float hash="damage_max">80</float>
+    </struct>
+    <struct index="5">
+      <float hash="damage_min">80</float>
+      <float hash="damage_max">80</float>
+    </struct>
+  </list>
+  <list hash="param_one_winged_deactivate_point_damage_mul">
+    <struct index="0">
+      <float hash="rate">0.0</float>
+    </struct>
+    <struct index="1">
+      <float hash="rate">0.0</float>
+    </struct>
+    <struct index="2">
+      <float hash="rate">0.0</float>
+    </struct>
+    <struct index="3">
+      <float hash="rate">0.0</float>
+    </struct>
+    <struct index="4">
+      <float hash="rate">0.0</float>
+    </struct>
+    <struct index="5">
+      <float hash="rate">0.0</float>
+    </struct>
+    <struct index="6">
+      <float hash="rate">0.0</float>
+    </struct>
+  </list>
   <list hash="param_special_n">
     <struct index="0">
       <int hash="cancel_start_frame">15</int>
@@ -35,6 +146,21 @@
       <int hash="charged_landing_fix_frame">40</int>
     </struct>
     <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="4" hash="param_fire">
+    <struct index="0">
+      <int hash="life_s">85</int>
+      <float hash="speed_x_s">0.01</float>
+      <float hash="accel_x_s">2.1</float>
+      <float hash="max_speed_x_s">1.0</float>
+      <int hash="life_m">120</int>
+      <float hash="speed_x_m">0.01</float>
+      <float hash="accel_x_m">0.07</float>
+      <float hash="max_speed_x_m">0.75</float>
+    </struct>
+  <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>

@@ -66,6 +66,86 @@ unsafe fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 }
 
+#[acmd_script( agent = "kirby", scripts = ["game_edgespecialnstart", "game_edgespecialairnstart"] , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n_start(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    FT_MOTION_RATE_RANGE(fighter, 20.0, 32.0, 8.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, *FIGHTER_EDGE_SPECIAL_N_S, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CHARGE_KIND);
+    }
+    frame(lua_state, 32.0);
+    FT_MOTION_RATE_RANGE(fighter, 32.0, 79.0, 51.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, *FIGHTER_EDGE_SPECIAL_N_M, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CHARGE_KIND);
+    }
+    frame(lua_state, 79.0);
+    FT_MOTION_RATE(fighter, 1.2);
+    frame(lua_state, 99.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 100.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, *FIGHTER_EDGE_SPECIAL_N_L, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CHARGE_KIND);
+    }
+    frame(lua_state, 105.0);
+    FT_MOTION_RATE(fighter, 1.6);
+    frame(lua_state, 115.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 120.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
+    }
+    frame(lua_state, 140.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["game_edgespecialn1", "game_edgespecialairn1"] , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 11.0, 13.0);
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE_RANGE(fighter, 15.0, 35.0, 5.0);
+    frame(lua_state, 35.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+
+}
+
+#[acmd_script( agent = "kirby", scripts = ["game_edgespecialn2", "game_edgespecialairn2"] , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 11.0, 13.0);
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 35.0);
+    FT_MOTION_RATE(fighter, 0.4);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+    frame(lua_state, 60.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    
+}
+
 #[acmd_script( agent = "kirby", script = "game_ganonfloatstart" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -473,226 +553,135 @@ unsafe fn krool_special_n_loop_effect(fighter: &mut L2CAgentBase) {
     wait(lua_state, 10.0);
 }
 
-#[acmd_script( agent = "kirby", script = "game_littlemacspecialnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "game_littlemacspecialairnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_air_n_start_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 15.0);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "game_littlemacspecialncancel" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 8.0/(39.0 - 1.0));
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "effect_littlemacspecialncancel" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-
-}
-
-#[acmd_script( agent = "kirby", script = "sound_littlemacspecialncancel" , category = ACMD_SOUND , low_priority)]
-unsafe fn littlemac_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new("vc_kirby_copy_littlemac_01"));
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "expression_littlemacspecialncancel" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn littlemac_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-
-}
-
-#[acmd_script( agent = "kirby", script = "game_littlemacspecialairncancel" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 8.0/(39.0 - 1.0));
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "effect_littlemacspecialairncancel" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-
-}
-
-#[acmd_script( agent = "kirby", script = "sound_littlemacspecialairncancel" , category = ACMD_SOUND , low_priority)]
-unsafe fn littlemac_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new("vc_kirby_copy_littlemac_01"));
-    }
-}
-
-#[acmd_script( agent = "kirby", script = "expression_littlemacspecialairncancel" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn littlemac_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-
-}
-
-#[acmd_script( agent = "kirby", script = "game_littlemacspecialn2" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kirby", scripts = ["game_littlemacspecialn", "game_littlemacspecialairn"] , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        }
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
+        let damage =  22.0 * if fighter.is_situation(*SITUATION_KIND_GROUND) { 1.0 } else { 0.8 };
+        let angle = if fighter.is_situation(*SITUATION_KIND_GROUND) { 80 } else { 75 };
+        let bkb = if fighter.is_situation(*SITUATION_KIND_GROUND) { 40 } else { 30 };
+        let kbg = if fighter.is_situation(*SITUATION_KIND_GROUND) { 104 } else { 124 };
+        let shield_damage = if fighter.is_situation(*SITUATION_KIND_GROUND) { 2 } else { 0 };
+        ATTACK(fighter, 0, 0, Hash40::new("armr"), damage, angle, kbg, 0, bkb, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("armr"), damage, angle, kbg, 0, bkb, 3.0, -1.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), damage, angle, kbg, 0, bkb, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 3, 0, Hash40::new("bust"), damage, angle, kbg, 0, bkb, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         AttackModule::set_damage_shake_scale(boma, 0.67);
-        ATTACK(fighter, 0, 0, Hash40::new("armr"), 25.0, 80, 103, 0, 25, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 25.0, 80, 103, 0, 25, 3.0, -1.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), 25.0, 80, 103, 0, 25, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("bust"), 25.0, 80, 103, 0, 25, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         AttackModule::clear(boma, 1, false);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 29.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_RESET_KO_GAUGE);
-    }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY);
+        VarModule::on_flag(fighter.object(), vars::kirby::status::KO_PUNCH_GRAVITY);
     }
-
+    
 }
 
-#[acmd_script( agent = "kirby", script = "sound_littlemacspecialn2" , category = ACMD_SOUND , low_priority)]
-unsafe fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kirby", scripts = ["effect_littlemacspecialn", "effect_littlemacspecialairn"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn littlemac_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_littlemac_rnd_special_n2"));
-        PLAY_SE(fighter, Hash40::new("se_littlemac_special_n03"));
+        let size = 1.0;
+        EFFECT_FLW_POS(fighter, Hash40::new("littlemac_ko_uppercut_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, size, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("littlemac_ko_uppercut"), Hash40::new("handr"), 0.5, 0, 0, 0, 0, 0, size, true);
     }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal04"));
-        }
-        else if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) ||
-            ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)) {
-            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal05"));
-        }
-        else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal06"));
-        }
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_littlemac_swing_ll"));
-    }
-
-}
-
-#[acmd_script( agent = "kirby", script = "game_littlemacspecialairn2" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_air_n2_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("littlemac_ko_uppercut_start"), -1);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+            EFFECT_FOLLOW(fighter, Hash40::new("littlemac_ko_uppercut_arc"), Hash40::new("rot"), 0.5, 1, -3, 0, -60, 70, 1, true);
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("littlemac_ko_uppercut_arc_splash"), Hash40::new("rot"), 0.5, 1, -3, 0, -60, 70, 1, false);
+        }
+        else {
+            EFFECT_FOLLOW(fighter, Hash40::new("littlemac_ko_uppercut_arc"), Hash40::new("rot"), -4, 1, -3, -15, -60, 90, 1, true);
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("littlemac_ko_uppercut_arc_splash"), Hash40::new("rot"), -4, 1, -3, -15, -60, 90, 1, false);
+        }
+    }
+    frame(lua_state, 8.0);
+    let mut handle = EffectModule::req_follow(boma, Hash40::new("sys_starrod_bullet"), Hash40::new("handr"), &Vector3f::new(3.0, 0.0, 0.0), &Vector3f::new(45.0, 135.0, 45.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+    if is_excute(fighter) {
+        EffectModule::set_rate(boma, handle as u32, 1.5);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        AttackModule::set_damage_shake_scale(boma, 0.67);
-        ATTACK(fighter, 0, 0, Hash40::new("armr"), 20.0, 75, 125, 0, 25, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 20.0, 75, 125, 0, 25, 3.0, -1.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), 20.0, 75, 125, 0, 25, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("bust"), 20.0, 75, 125, 0, 25, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        EffectModule::set_scale(boma, handle as u32, &Vector3f::new(0.8, 0.8, 0.8));
+        let facing = PostureModule::lr(boma);
+        EffectModule::set_rot(boma, handle as u32, &Vector3f::new(45.0 * facing, 135.0, 45.0 * facing));
     }
-    wait(lua_state, 1.0);
+    frame(lua_state, 19.0);
     if is_excute(fighter) {
-        AttackModule::clear(boma, 1, false);
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        EFFECT_OFF_KIND(fighter, Hash40::new("littlemac_ko_uppercut"), false, false);
     }
-    frame(lua_state, 11.0);
-    SA_SET(fighter, *SITUATION_KIND_AIR);
-    wait(lua_state, 3.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 29.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_RESET_KO_GAUGE);
-    }
-    frame(lua_state, 39.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY);
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
     }
 
 }
 
-#[acmd_script( agent = "kirby", script = "sound_littlemacspecialairn2" , category = ACMD_SOUND , low_priority)]
-unsafe fn littlemac_special_air_n2_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kirby", scripts = ["sound_littlemacspecialn", "sound_littlemacspecialairn"] , category = ACMD_SOUND , low_priority)]
+unsafe fn littlemac_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_littlemac_rnd_special_n2"));
         PLAY_SE(fighter, Hash40::new("se_littlemac_special_n03"));
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal04"));
-        }
-        else if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) ||
-            ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)) {
-            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal05"));
-        }
-        else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal06"));
-        }
+        PLAY_SE(fighter, Hash40::new("vc_kirby_hammermax"));
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_littlemac_swing_ll"));
+    }
+
+}
+
+#[acmd_script( agent = "kirby", scripts = ["expression_littlemacspecialn", "expression_littlemacspecialairn"] , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn littlemac_special_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_elecattack"), 0);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        AREA_WIND_2ND_arg10(fighter, 0, 4, 45, 200, 1, 17, 15, 38, 30, 50);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
     }
 
 }
@@ -1679,6 +1668,9 @@ pub fn install() {
         diddy_special_air_n_cancel_effect,
         diddy_special_air_n_cancel_sound,
         diddy_special_air_n_cancel_expression,
+        edge_special_n_start,
+        edge_special_n1_game,
+        edge_special_n2_game,
         ganon_float_start_game,
         ganon_float_start_effect,
         ganon_float_start_expression,
@@ -1702,20 +1694,10 @@ pub fn install() {
         krool_special_n_fire_sound,
         krool_special_n_fire_expression,
         krool_special_n_loop_effect,
-        littlemac_special_n_start_game,
-        littlemac_special_air_n_start_game,
-        littlemac_special_n_cancel_game,
-        littlemac_special_n_cancel_effect,
-        littlemac_special_n_cancel_sound,
-        littlemac_special_n_cancel_expression,
-        littlemac_special_air_n_cancel_game,
-        littlemac_special_air_n_cancel_effect,
-        littlemac_special_air_n_cancel_sound,
-        littlemac_special_air_n_cancel_expression,
-        littlemac_special_n2_game,
-        littlemac_special_n2_sound,
-        littlemac_special_air_n2_game,
-        littlemac_special_air_n2_sound,
+        littlemac_special_n_game,
+        littlemac_special_n_effect,
+        littlemac_special_n_sound,
+        littlemac_special_n_expression,
         lucas_special_n_start_game,
         lucas_special_n_hold_game,
         lucas_special_n_hold_sound,
