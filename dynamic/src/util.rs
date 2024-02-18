@@ -234,13 +234,13 @@ pub fn get_game_state() -> *const u64 {
 
 pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
+        .add(0x52c50f0) as *const u64);
     &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
 }
 
 pub unsafe fn get_controller_mapping_from_id(player: usize) -> &'static ControllerMapping {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
+        .add(0x52c50f0) as *const u64);
     &*((base + 0x18) as *const ControllerMapping).add(player as usize)
 }
 
@@ -252,7 +252,7 @@ struct SomeControllerStruct {
 
 pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x5337860) as *const u64);
+        .add(0x5339860) as *const u64);
     let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
     let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
     (*controller_struct).controller
