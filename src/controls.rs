@@ -76,7 +76,7 @@ unsafe fn get_button_label_by_operation_kind(
     }
 }
 
-#[skyline::hook(offset = 0x1D3AAC0, inline)]
+#[skyline::hook(offset = 0x1d334c8, inline)]
 unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
     let button = *ctx.registers[25].w.as_ref();
     if ![0x3, 0x4, 0x5, 0x8].contains(&button) {
