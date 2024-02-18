@@ -16,7 +16,7 @@ pub struct CollisionLog {
     padding_3: [u8;10]
 }
 
-#[skyline::hook(offset = 0xc45680)]
+#[skyline::hook(offset = 0xc456a0)]
 pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut BattleObject, collisionLog: CollisionLog, damage: f32) -> u64 {
     let boma = (&mut *(battle_object)).boma();
     let opponent_boma = &mut *(sv_battle_object::module_accessor(collisionLog.opponent_battle_object_id));
