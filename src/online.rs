@@ -1,7 +1,7 @@
 use skyline::hooks::InlineCtx;
 use std::fmt::Display;
 
-#[skyline::from_offset(0x37a1270)]
+#[skyline::from_offset(0x37a1ef0)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
