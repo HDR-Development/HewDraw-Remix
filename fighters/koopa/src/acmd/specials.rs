@@ -318,6 +318,29 @@ unsafe fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "koopa", script = "effect_speciallw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn koopa_special_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("koopa_drop_arc"), Hash40::new("koopa_drop_arc"), Hash40::new("top"), -7, 15, 8, 12.46, -45.812, 61.035, 1.15, true, *EF_FLIP_YZ, 0.7);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("koopa_drop_arc"), true, true);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("koopa_drop"), Hash40::new("top"), 0, 12, 0, 0, 0, 0, 1, false);
+        LAST_EFFECT_SET_COLOR(fighter, 0.941, 1, 0.863);
+    }
+}
+
 #[acmd_script( agent = "koopa", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -347,6 +370,7 @@ pub fn install() {
         koopa_special_air_hi_game,
 
         koopa_special_lw_game,
+        koopa_special_lw_effect,
         koopa_special_air_lw_game,
     );
 }
