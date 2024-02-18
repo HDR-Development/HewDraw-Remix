@@ -418,7 +418,7 @@ unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d33b80, inline)]
+#[skyline::hook(offset = 0x1d33c80, inline)]
 unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
     let sp = (ctx as *const _ as *const u8).add(0x100);
     let ptr = *(sp.add(0xa8) as *const u64);
