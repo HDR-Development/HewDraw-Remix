@@ -1,6 +1,6 @@
 use super::*;
 
-#[skyline::hook( offset = 0xf10fe0 )]
+#[skyline::hook( offset = 0xf11000 )]
 pub unsafe fn check_material_attack_air_lw_generate(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let iron_count = WorkModule::get_int(module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON);
     let mut iron_needed = WorkModule::get_param_int(module_accessor, hash40("param_private"), 0x188e0b0db2);
