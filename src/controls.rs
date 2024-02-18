@@ -46,7 +46,7 @@ impl<T: Copy> CppVector<T> {
     }
 }
 
-#[skyline::hook(offset = 0x1d39500)]
+#[skyline::hook(offset = 0x1D39FE0)]
 unsafe fn get_button_label_by_operation_kind(
     hashed_string: &mut HashedString,
     operation: u8,
@@ -76,7 +76,7 @@ unsafe fn get_button_label_by_operation_kind(
     }
 }
 
-#[skyline::hook(offset = 0x1d329e8, inline)]
+#[skyline::hook(offset = 0x1d334c8, inline)]
 unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
     let button = *ctx.registers[25].w.as_ref();
     if ![0x3, 0x4, 0x5, 0x8].contains(&button) {
@@ -93,7 +93,7 @@ unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d326f8, inline)]
+#[skyline::hook(offset = 0x1D331D8, inline)]
 unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
     let button = *ctx.registers[25].w.as_ref();
     if [0x4, 0x5, 0x6, 0x9].contains(&button) {
@@ -110,7 +110,7 @@ unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d3395c, inline)]
+#[skyline::hook(offset = 0x1D33CB8, inline)]
 unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
     let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
 
@@ -123,7 +123,7 @@ unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d34e4c, inline)]
+#[skyline::hook(offset = 0x1D3592C, inline)]
 unsafe fn add_more_buttons(ctx: &mut skyline::hooks::InlineCtx) {
     let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
     // panic!("{}", input_list_vector.len());
@@ -138,7 +138,7 @@ unsafe fn calc_nnsdk_offset() -> u64 {
 
 static mut DUMMY_BLOCK: [u8; 0x100] = [0; 0x100];
 
-#[skyline::hook(offset = 0x3746afc, inline)]
+#[skyline::hook(offset = 0x374777C, inline)]
 unsafe fn run_scene_update(_: &skyline::hooks::InlineCtx) {
     while !RUN.swap(false, Ordering::SeqCst) {
         skyline::nn::hid::GetNpadFullKeyState(DUMMY_BLOCK.as_mut_ptr() as _, &0);
@@ -157,7 +157,7 @@ unsafe fn set_interval_2(ctx: &mut InlineCtx) {
 
 static mut RUN: AtomicBool = AtomicBool::new(false);
 
-#[skyline::hook(offset = 0x380f9e4, inline)]
+#[skyline::hook(offset = 0x3810664, inline)]
 unsafe fn vsync_count_thread(_: &skyline::hooks::InlineCtx) {
     RUN.store(true, Ordering::SeqCst);
 }
@@ -167,7 +167,7 @@ static mut OFFSET2: u64 = 0;
 
 pub fn install() {
     unsafe {
-        skyline::patching::Patch::in_text(0x1d34e4c).nop();
+        skyline::patching::Patch::in_text(0x1D3592C).nop();
     }
 
     css::install();

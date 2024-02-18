@@ -95,8 +95,8 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
+        HIT_RESET_ALL(fighter);
         AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     
 }

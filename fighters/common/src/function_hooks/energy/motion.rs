@@ -181,10 +181,10 @@ impl FighterKineticEnergyMotion {
 }
 
 // This function references BattleObjectWorld, which is defo for the ledge positions
-#[skyline::from_offset(0x6941c0)]
+#[skyline::from_offset(0x6941e0)]
 extern "C" fn handle_cliff(boma: &mut BattleObjectModuleAccessor, vec: &Vector4f) -> energy::Vec4;
 
-#[skyline::hook(offset = 0x6d5c90)]
+#[skyline::hook(offset = 0x6d5cb0)]
 unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut BattleObjectModuleAccessor) {
     use EnergyMotionResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);

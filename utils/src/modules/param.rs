@@ -295,9 +295,9 @@ const STAGE_SELECT_TOURNEY_LAYOUT: &str =
     "ui/layout/menu/stage_select/stage_select/layout.tourney.arc";
 const DEFAULT_ROW_LENGTH: usize = 7;
 
-const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lc";
+const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lua";
 const STAGE_SELECT_ACTOR_LUA_TOURNEY: &str =
-    "mods:/ui/script_patch/common/stage_select_actor3.tourney.lc";
+    "mods:/ui/script_patch/common/stage_select_actor3.tourney.lua";
 
 use prc::{ParamList, ParamStruct};
 use serde::{Deserialize, Serialize};

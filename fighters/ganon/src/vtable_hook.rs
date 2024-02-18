@@ -1,6 +1,6 @@
 use super::*;
 
-#[skyline::hook(offset = 0xaa67e0)]
+#[skyline::hook(offset = 0xaa6800)]
 pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let prev_status = StatusModule::prev_status_kind(module_accessor, 0) as u64;
