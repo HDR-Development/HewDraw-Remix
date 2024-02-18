@@ -13,7 +13,7 @@ static mut INKLING_COLORS: [Vector3f; 256] = [
     };256
 ];
 
-#[skyline::hook(offset = 0x07674f0, inline)]
+#[skyline::hook(offset = 0x0767510, inline)]
 pub fn get_ink_colors(ctx: &mut InlineCtx) {
     // assigns RGB values for the relevant slot in the effect.prc to the above vector
     unsafe {

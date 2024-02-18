@@ -32,8 +32,8 @@ unsafe extern "C" fn kirby_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
+        HIT_RESET_ALL(fighter);
         AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 51.0);
     if is_excute(fighter) {
@@ -112,8 +112,8 @@ unsafe extern "C" fn kirby_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
+        HIT_RESET_ALL(fighter);
         AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {

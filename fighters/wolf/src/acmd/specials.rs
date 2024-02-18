@@ -3,9 +3,12 @@ use super::*;
 unsafe extern "C" fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor, 1, false);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 34, 85, 0, 30, 4.5, 0.0, 6.0, 6.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 4.0);

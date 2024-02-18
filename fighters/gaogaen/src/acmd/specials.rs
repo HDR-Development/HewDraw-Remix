@@ -234,11 +234,9 @@ unsafe extern "C" fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_ALTERNATE_GRAB) {
             // Spawn the air grab/OTG grab box if we've detected we hit the windbox
-            if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB) {    
-                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    AttackModule::clear_all(boma);
-                    CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 5.0, 2.0, Some(0.0), Some(5.0), Some(7.0), *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED, *COLLISION_SITUATION_MASK_GA);
-                }
+            if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB) {
+                AttackModule::clear_all(boma);
+                CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 4.0, 2.0, Some(0.0), Some(4.0), Some(8.0), *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED, *COLLISION_SITUATION_MASK_GA);
             }
             else if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_AIR_GRAB) {
                 // Clear windbox and spawn the grab
@@ -253,32 +251,11 @@ unsafe extern "C" fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
             CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 8.0, 2.0, Some(0.0), Some(8.0), Some(8.0), *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED, *COLLISION_SITUATION_MASK_GA);
         }
     }
-    wait(lua_state, 1.0);
-    for _ in 0..15{
-        // Loop the logic on frame 18 while the grabs should be able to proc...
-        if is_excute(fighter) {
-            if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_ALTERNATE_GRAB) {
-                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB) {
-                        AttackModule::clear_all(boma);
-                        CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 5.0, 2.0, Some(0.0), Some(5.0), Some(7.0), *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED, *COLLISION_SITUATION_MASK_GA);
-                    }
-                }
-            }
-        }
-        wait(lua_state, 1.0);
-    }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         if !VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB) {
             grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        }
-        // Account for hitting the very last frame of OTG windbox
-        else if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB) {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 5.0, 2.0, Some(0.0), Some(5.0), Some(7.0), *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED, *COLLISION_SITUATION_MASK_GA);
-            }
         }
         GrabModule::set_rebound(boma, false);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);

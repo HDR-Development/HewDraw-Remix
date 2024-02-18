@@ -2,7 +2,7 @@ use super::*;
 use globals::*;
 use utils::*;
 
-#[skyline::hook(offset = 0x4cf6a0)]
+#[skyline::hook(offset = 0x4cf6c0)]
 unsafe fn soundmodule__play_se_hook(sound_module: u64, se: smash::phx::Hash40, arg2: bool, arg3: bool, arg4: bool, arg5: bool, se_type: smash::app::enSEType) -> u64 {
     let handle = original!()(sound_module, se, arg2, arg3, arg4, arg5, se_type);
     let boma = *(sound_module as *mut *mut BattleObjectModuleAccessor).add(1);

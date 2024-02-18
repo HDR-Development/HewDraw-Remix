@@ -46,7 +46,7 @@ unsafe fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // lets the "stuff" article generate in new statuses
-#[skyline::hook(offset = 0xf13d3c, inline)]
+#[skyline::hook(offset = 0xf13d5c, inline)]
 unsafe fn stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let new_shield_statuses = &[
         0x1B, // GUARD_ON

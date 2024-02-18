@@ -187,7 +187,16 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe extern "C" fn landingheavy_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" game_landingheavy(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
+    }
+}
+
+
+unsafe extern "C" landingheavy_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -195,9 +204,6 @@ unsafe extern "C" fn landingheavy_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("kirby")
@@ -210,6 +216,7 @@ pub fn install() {
         .acmd("game_turndash", kirby_turn_dash_game)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("game_landingheavy", game_landingheavy)
         .acmd("effect_landingheavy", landingheavy_effect)
         .install();
 }

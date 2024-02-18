@@ -42,4 +42,8 @@ pub fn install() {
     acmd::install();
     status::install();
     opff::install();
+    unsafe {
+        // Disables the sword catch animation unless you are completely idle.
+        skyline::patching::Patch::in_text(0xa0caf4).data(0x7100001F);
+    }
 }

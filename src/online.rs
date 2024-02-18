@@ -6,14 +6,14 @@ pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37752e0);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F60);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
 unsafe fn set_room_text(arg: u64, string: String) {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3778c50);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776910);
     let callable: extern "C" fn(u64, *const u8, usize, *const u16, ...) =
         std::mem::transmute(func_addr);
     callable(
@@ -113,7 +113,7 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x188702c, inline)]
+#[skyline::hook(offset = 0x1887afc, inline)]
 unsafe fn set_room_id(ctx: &skyline::hooks::InlineCtx) {
     let panel = *((*((*ctx.registers[0].x.as_ref() + 8) as *const u64) + 0x10) as *const u64);
     CURRENT_PANE_HANDLE = panel as usize;
@@ -126,7 +126,7 @@ unsafe fn set_room_id(ctx: &skyline::hooks::InlineCtx) {
 
 static mut PANE: u64 = 0;
 
-#[skyline::hook(offset = 0x1a12460)]
+#[skyline::hook(offset = 0x1a12f40)]
 unsafe fn update_css2(arg: u64) {
     static mut CURRENT_COUNTER: usize = 0;
     if ninput::any::is_press(ninput::Buttons::X) {
@@ -155,7 +155,7 @@ unsafe fn update_css2(arg: u64) {
     call_original!(arg)
 }
 
-#[skyline::hook(offset = 0x16cdb08, inline)]
+#[skyline::hook(offset = 0x16ccc58, inline)]
 unsafe fn set_online_latency(ctx: &InlineCtx) {
     let auto = *(*ctx.registers[19].x.as_ref() as *mut u8);
     MOST_RECENT_AUTO = auto as isize;

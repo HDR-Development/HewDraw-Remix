@@ -265,6 +265,10 @@ unsafe extern "C" fn sephiroth_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
         EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
     }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_slash_arc"), false, false);
+    }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);

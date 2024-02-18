@@ -30,8 +30,21 @@ unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::is_situation_changed(fighter.module_accessor) {
-        special_n_situation_helper(fighter);
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                fighter.set_situation(SITUATION_KIND_GROUND.into());
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_hold"), -1.0, 1.0, 0.0, false, false);
+            }
+            else {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                fighter.set_situation(SITUATION_KIND_AIR.into());
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n_hold"), -1.0, 1.0, 0.0, false, false);
+            }
+        }
     }
     let mut min_weak_size = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("min_weak_size"));
     let mut max_weak_size = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("max_weak_size"));
@@ -115,17 +128,17 @@ unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) {
-    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        fighter.set_situation(SITUATION_KIND_GROUND.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        fighter.set_situation(SITUATION_KIND_GROUND.into());
         let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        fighter.set_situation(SITUATION_KIND_AIR.into());
         let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }

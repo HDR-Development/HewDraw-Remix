@@ -60,13 +60,13 @@ pub enum QuakeKind {
 
 
 // Doubles camera speed
-#[skyline::hook(offset = 0x4fdbf0)]
+#[skyline::hook(offset = 0x4fdc10)]
 unsafe fn normal_camera(ptr: u64, float: f32) {
     call_original!(ptr, float);
     call_original!(ptr, float);
 }
 
-#[skyline::hook(offset = 0x26207f0)]
+#[skyline::hook(offset = 0x2621470)]
 pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCameraParams) {
     call_original!(param_obj, params);
     params.normal_camera_min_distance = params.normal_camera_min_distance.max(140.0);
@@ -78,7 +78,7 @@ pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCamer
 }
 
 // The following function hook handles Unrestricted Camera
-#[skyline::hook(offset = 0x26226b0)]
+#[skyline::hook(offset = 0x2623330)]
 pub fn parse_stprm_pause_camera_params(param_obj: u64, params: &mut PauseCameraParams) {
     call_original!(param_obj, params);
     params.pause_camera_min_fov = 4e-44_f32.to_radians();
@@ -99,7 +99,7 @@ pub fn parse_stprm_pause_camera_params(param_obj: u64, params: &mut PauseCameraP
     params.pause_camera_gyro_limit_angle_left = 0.0;
 }
 
-#[skyline::hook(offset = 0x3ebe00)]
+#[skyline::hook(offset = 0x3ebe20)]
 unsafe fn camera_module__req_quake(camera_module: *const u64, quake_kind: i32) {
     use QuakeKind::*;
     let mut quake_kind = std::mem::transmute(quake_kind.clone());

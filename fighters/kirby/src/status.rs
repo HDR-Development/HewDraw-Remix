@@ -9,10 +9,11 @@ mod ridley_special_n;
 mod ganon_special_n;
 mod ganon_special_n_float;
 mod koopa_special_n;
-mod littlemac_special_n_cancel;
+mod littlemac_special_n;
 mod diddy_special_n_cancel;
 mod lucas_special_n;
 mod sonic;
+mod edge_special_n;
 
 extern "C" fn kirby_init(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -261,6 +262,7 @@ pub fn install() {
     ganon_special_n_float::install();
     littlemac_special_n_cancel::install();
     diddy_special_n_cancel::install();
+    edge_special_n::install();
 
     smashline::Agent::new("kirby")
         .on_init(kirby_init)

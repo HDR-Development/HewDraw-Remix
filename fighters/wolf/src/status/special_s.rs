@@ -431,7 +431,7 @@ extern "C" fn wolf_init(fighter: &mut L2CFighterCommon) {
 
         let status_rush = CustomStatusModule::get_agent_status_kind(fighter.object(), SPECIAL_S_RUSH);
         let instruction = 0x7100001Fu32 | ((status_rush as u32 & 0xFFF) << 10);
-        skyline::patching::Patch::in_text(0x12c29a0).data(instruction);
+        skyline::patching::Patch::in_text(0x12c29c0).data(instruction);
     }
 }
 
