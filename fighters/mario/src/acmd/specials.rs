@@ -465,7 +465,7 @@ unsafe fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 //Galaxy spin special effects
-#[acmd_script( agent = "mario", scripts = ["effect_speciallwlight", "effect_specialairlwlight"], category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_speciallwlight", category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -503,7 +503,7 @@ unsafe fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 //Galaxy spin sound effects
-#[acmd_script( agent = "mario", scripts = ["sound_speciallwlight", "sound_specialairlwlight"], category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND, low_priority )]
 unsafe fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -586,6 +586,81 @@ unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     }
 }
 
+//Galaxy spin special effects
+#[acmd_script( agent = "mario", script = "effect_specialairlwlight", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_special_air_lw_light(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will disappear if you used galaxy spin in the air
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.55);
+            LAST_EFFECT_SET_RATE(fighter, 0.45);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.45, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.55);
+            LAST_EFFECT_SET_RATE(fighter, 0.45);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 180, 0, 1.0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.55);
+            LAST_EFFECT_SET_RATE(fighter, 0.45);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.45, 0, 0, 180, 0, 1.0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.55);
+            LAST_EFFECT_SET_RATE(fighter, 0.45);
+
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 9.0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -9.0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 4.5, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -4.5, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+        }
+        else {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.1);
+            LAST_EFFECT_SET_RATE(fighter, 0.8);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.1);
+            LAST_EFFECT_SET_RATE(fighter, 0.8);
+
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.2);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.2);
+
+        }
+    }
+}
+
+//Galaxy spin sound effects
+#[acmd_script( agent = "mario", script = "sound_specialairlwlight", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_special_air_lw_light(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+	if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will change if you used galaxy spin in the air
+			let handle = SoundModule::play_se(boma, Hash40::new("se_mario_special_l01"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(boma, handle as i32, 0.7, 0);
+            PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
+			PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
+        }
+        else {
+            PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
+            PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
+        }
+	}
+}
+
 pub fn install() {
     install_acmd_scripts!(
         mario_special_n_game,
@@ -603,6 +678,8 @@ pub fn install() {
         sound_special_lw_light,
         expression_special_lw_light,
         mario_special_air_lw_light,
+        effect_special_air_lw_light,
+        sound_special_air_lw_light,
         mario_special_hi_game,
         mario_special_hi_effect,
         mario_special_air_hi_effect,
