@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::SpecialN) {
@@ -25,46 +24,30 @@ unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut Battle
 }
 
 pub unsafe fn solimar_scaling(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
+    if StatusModule::is_changing(boma) 
+    || WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM) != 0 {
         return;
     }
-    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
-    if pikmin_count == 0 {
-        let olimar_hand_scale = Vector3f{x: 1.5, y: 1.35, z: 1.35};
-        let olimar_hand_midpoint_scale = Vector3f{x: 1.2, y: 1.17, z: 1.17};
-        if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if frame > 5.0 && frame < 16.0 {
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
-            } else if frame >= 16.0 && frame < 18.0 {
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_midpoint_scale);
-            }
-        }/* else if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4 {
-            if frame > 10.0 && frame < 14.0 {
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_scale);
-            } else if frame >= 14.0 && frame < 16.0 {
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
-            }
-        } else if (status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4) {
-            if frame > 11.0 && frame < 14.0 {
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_scale);
-            } else if frame >= 14.0 && frame < 16.0 {
-                ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
-            }
-        }*/
+    let olimar_hand_scale = Vector3f{x: 1.5, y: 1.35, z: 1.35};
+    let olimar_hand_midpoint_scale = Vector3f{x: 1.2, y: 1.17, z: 1.17};
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        if frame > 5.0 && frame < 16.0 {
+            ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
+        } else if frame >= 16.0 && frame < 18.0 {
+            ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_midpoint_scale);
+        }
     }
 }
 
 #[repr(C)]
-struct TroopManager {
-  _x0: u64,
-  max_pikmin_count: usize, // always 3
-  current_pikmin_count: usize,
-  pikmin_objects: *mut *mut BattleObject,
-  pikmin: [*mut BattleObject; 3],
-  // remainder that we don't care about
-  // funny blujay made this happen
+pub struct TroopManager {
+    pub _x0: u64,
+    pub max_pikmin_count: usize, // always 3
+    pub current_pikmin_count: usize,
+    pub pikmin_objects: *mut *mut BattleObject,
+    pub pikmin: [*mut BattleObject; 3],
+    // remainder that we don't care about
+    // funny blujay made this happen
 }
 
 unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {

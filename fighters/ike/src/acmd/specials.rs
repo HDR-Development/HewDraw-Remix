@@ -181,18 +181,10 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 70, 100, 400, 1, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(-8.0), 10.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
             //ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 361, 0, 0, 0, 6.0, 0.0, 7.0, 10.0, Some(0.0), Some(5.0), Some(-10.0), 5.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
             ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.05);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                SlowModule::set_whole(boma, 5, 30);
-                SLOW_OPPONENT(fighter, 100.0, 100.0);
-            }
         }
         frame(lua_state, 2.0);
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 70, 100, 400, 1, 6.0, 0.0, 8.0, 15.0, Some(0.0), Some(8.0), Some(-10.0), 10.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                SlowModule::set_whole(boma, 5, 30);
-                SLOW_OPPONENT(fighter, 100.0, 100.0);
-            }
         }
         frame(lua_state, 3.0);
         if is_excute(fighter) {

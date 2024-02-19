@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -19,13 +23,13 @@ throw_hi:
     cancel_frame: 35
 attack_12:
   extra:
-    cancel_frame: 25
+    cancel_frame: 27
 attack_13:
   extra:
     cancel_frame: 27
 attack_11:
   extra:
-    cancel_frame: 25
+    cancel_frame: 27
 attack_lw3:
   flags:
     move: false
@@ -103,6 +107,12 @@ attack_100_end:
   extra:
     cancel_frame: 41
 special_air_hi:
+  animations:
+  - name: d02specialhi.nuanmb
+  scripts:
+  - expression_specialhi
+  - sound_specialhi
+  - effect_specialhi
   extra:
     cancel_frame: 38
 special_air_s_u:
@@ -111,11 +121,39 @@ special_air_s_u:
 special_s:
   extra:
     cancel_frame: 62
+special_s_edge:
+  game_script: game_specialsedge
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 5
+  animations:
+  - name: d01specialsedge.nuanmb
+  scripts:
+  - expression_specialsedge
+  - sound_specialsedge
+  - effect_specialsedge
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 25
+    freeze_during_hitstop: false
 special_s_hold_end:
   extra:
     cancel_frame: 61
 special_air_s_d:
-  blend_frames: 1
 special_air_s_d_hit:
   extra:
     cancel_frame: 32

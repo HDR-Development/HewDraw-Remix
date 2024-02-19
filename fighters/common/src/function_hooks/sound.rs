@@ -2,26 +2,6 @@ use super::*;
 use globals::*;
 use utils::*;
 
-#[skyline::hook(replace=smash::app::sv_animcmd::PLAY_LANDING_SE)]
-unsafe fn PLAY_LANDING_SE_hook(lua_state: u64) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-        return;
-    }
-
-    original!()(lua_state);
-}
-
-#[skyline::hook(replace=smash::app::sv_animcmd::PLAY_SE)]
-unsafe fn PLAY_SE_hook(lua_state: u64) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-        return;
-    }
-
-    original!()(lua_state);
-}
-
 #[skyline::hook(offset = 0x4cf6a0)]
 unsafe fn soundmodule__play_se_hook(sound_module: u64, se: smash::phx::Hash40, arg2: bool, arg3: bool, arg4: bool, arg5: bool, se_type: smash::app::enSEType) -> u64 {
     let handle = original!()(sound_module, se, arg2, arg3, arg4, arg5, se_type);
@@ -57,8 +37,6 @@ unsafe fn PLAY_SEQUENCE_hook(lua_state: u64) {
 
 pub fn install() {
     skyline::install_hooks!(
-        PLAY_LANDING_SE_hook,
-        PLAY_SE_hook,
         soundmodule__play_se_hook,
         PLAY_SEQUENCE_hook,
     );
