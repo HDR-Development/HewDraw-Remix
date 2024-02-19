@@ -16,30 +16,27 @@ pub fn install() {
     //skyline::nro::add_hook(item_nro_hook);
 }
 
-static INT_OFFSET: usize = 0x4e5380; // 12.0.0
-static FLOAT_OFFSET: usize = 0x4e53C0; // 12.0.0
 
+// #[skyline::hook(offset=0x720540)]
+// unsafe fn get_offset(arg0: u64, arg1: u64) {
+//     static mut ONCE: bool = true;
+//     if ONCE {
+//         ONCE = false;
+//         //debug::dump_trace();
+//     }
+//     original!()(arg0, arg1);
+// }
 
-#[skyline::hook(offset=0x720540)]
-unsafe fn get_offset(arg0: u64, arg1: u64) {
-    static mut ONCE: bool = true;
-    if ONCE {
-        ONCE = false;
-        //debug::dump_trace();
-    }
-    original!()(arg0, arg1);
-}
+// #[skyline::hook(offset=0x1f8810c, inline)]
+// unsafe fn get_inline_offset(ctx: &InlineCtx) {
+//     static mut ONCE: bool = true;
+//     if ONCE {
+//         ONCE = false;
+//         println!("{:#x}", ctx.registers[3].x.as_ref() - getRegionAddress(Region::Text) as u64);
+//     }
+// }
 
-#[skyline::hook(offset=0x1f8810c, inline)]
-unsafe fn get_inline_offset(ctx: &InlineCtx) {
-    static mut ONCE: bool = true;
-    if ONCE {
-        ONCE = false;
-        println!("{:#x}", ctx.registers[3].x.as_ref() - getRegionAddress(Region::Text) as u64);
-    }
-}
-
-#[skyline::hook(offset=INT_OFFSET)]
+#[skyline::hook(offset=0x4E53A0)]
 pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
     let mut boma = *((x0 as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor;
     let boma_reference = &mut *boma;
@@ -122,7 +119,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
     original!()(x0, x1, x2)
 }
 
-#[skyline::hook(offset=FLOAT_OFFSET)]
+#[skyline::hook(offset=0x4E53E0)]
 pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 /*param_hash*/: u64) -> f32 {
     let mut boma = *((x0 as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor;
     let boma_reference = &mut *boma;
