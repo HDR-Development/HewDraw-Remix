@@ -1153,10 +1153,10 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x3666AF0).data(0xAA0803EAu32);
 
     // Removes 10f C-stick lockout for tilt stick and special stick
-    skyline::patching::Patch::in_text(0x17527dc).data(0x2A1F03FA);
-    skyline::patching::Patch::in_text(0x17527b0).nop();
-    skyline::patching::Patch::in_text(0x17527b4).nop();
-    skyline::patching::Patch::in_text(0x17527b8).nop();
+    skyline::patching::Patch::in_text(0x17532ac).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x17532b0).nop();
+    skyline::patching::Patch::in_text(0x17532b4).nop();
+    skyline::patching::Patch::in_text(0x17532b8).nop();
 
     // Prevents buffered C-stick aerials from triggering nair
     skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
