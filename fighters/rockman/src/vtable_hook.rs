@@ -304,7 +304,7 @@ pub fn install(is_runtime: bool) {
     skyline::patching::Patch::in_text(0x1083cd0).nop();
     skyline::patching::Patch::in_text(0x1083ce4).nop();
     // Enable
-    skyline::patching::Patch::in_text(0x10838e0).nop();
+    skyline::patching::Patch::in_text(0x1083900).nop();
     skyline::patching::Patch::in_text(0x1083900).nop();
     skyline::patching::Patch::in_text(0x1083928).nop();
     skyline::patching::Patch::in_text(0x1083944).nop();
