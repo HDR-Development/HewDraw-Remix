@@ -187,7 +187,7 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe extern "C" game_landingheavy(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -196,7 +196,7 @@ unsafe extern "C" game_landingheavy(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe extern "C" landingheavy_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn landingheavy_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {

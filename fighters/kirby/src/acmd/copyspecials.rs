@@ -67,7 +67,7 @@ unsafe extern "C" fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgen
 }
 
 
-unsafe extern "C" edge_special_n_start(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_special_n_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 20.0);
@@ -103,7 +103,7 @@ unsafe extern "C" edge_special_n_start(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe extern "C" edge_special_n1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -125,7 +125,7 @@ unsafe extern "C" edge_special_n1_game(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe extern "C" edge_special_n2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -147,7 +147,7 @@ unsafe extern "C" edge_special_n2_game(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe extern "C" ganon_float_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);

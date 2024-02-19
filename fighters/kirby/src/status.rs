@@ -260,7 +260,7 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install() {
     special_hi_h::install();
     ganon_special_n_float::install();
-    littlemac_special_n_cancel::install();
+    littlemac_special_n::install();
     diddy_special_n_cancel::install();
     edge_special_n::install();
 

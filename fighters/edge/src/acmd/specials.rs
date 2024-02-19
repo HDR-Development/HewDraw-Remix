@@ -62,7 +62,7 @@ unsafe extern "C" fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
 }
 
 
-unsafe fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);

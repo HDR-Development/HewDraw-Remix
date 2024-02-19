@@ -1,8 +1,8 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "edge_fire", status = WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn fly_s_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
+
+unsafe extern "C" fn fly_s_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_s"));
     WorkModule::set_int(fighter.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n1"), 0.0, 1.0, false, 0.0, false, false);
@@ -29,8 +29,8 @@ unsafe extern "C" fn fly_s_main_loop(fighter: &mut L2CWeaponCommon) -> L2CValue 
     return 0.into()
 }
 
-#[status_script(agent = "edge_fire", status = WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn fly_m_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
+
+unsafe extern "C" fn fly_m_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_m"));
     WorkModule::set_int(fighter.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n2"), 0.0, 1.0, false, 0.0, false, false);
@@ -92,8 +92,8 @@ unsafe extern "C" fn sub_fly(fighter: &mut L2CWeaponCommon, status: L2CValue) ->
 }
 
 pub fn install() {
-    install_status_scripts!(
-        fly_s_main,
-        fly_m_main,
-    );
+    smashline::Agent::new("edge_fire")
+        .status(Main, *WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S, fly_s_main)
+        .status(Main, *WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M, fly_m_main)
+        .install();
 }

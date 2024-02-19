@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "edge", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn edge_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -338,8 +338,8 @@ unsafe extern "C" fn edge_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_attackhi3" , category = ACMD_SOUND , low_priority)]
-unsafe fn edge_attack_hi3_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn edge_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -357,8 +357,8 @@ unsafe fn edge_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "expression_attackhi3" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn edge_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn edge_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
