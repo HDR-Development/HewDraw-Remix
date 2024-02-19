@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
 
 
-unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, situation_kind: i32, frame: f32) {
+/*unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, situation_kind: i32, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
         //let motion_vec = Vector3f{x:0.0, y: 2.5, z: 0.0};
         let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2};
@@ -69,7 +69,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN);
         VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
     }
-}
+}*/
 
 // Super Jump Punch Wall Jump
 // unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
@@ -100,7 +100,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 //     }
 // }
 
-unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+/*unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     //PM-like down-b canceling
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if situation_kind == *SITUATION_KIND_AIR {
@@ -117,7 +117,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
             }
         }
     }
-}
+}*/
 
 // Double fireball handling
 // unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
@@ -166,6 +166,7 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 if frame >= 50.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.095);
                     VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                    VarModule::on_flag(fighter.battle_object, vars::mario::instance::SPECIAL_S_DISABLE_STALL);
                 }
             }  
         }
@@ -177,6 +178,7 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR]) 
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT {
         VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::SPECIAL_S_DISABLE_STALL);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF) 
@@ -212,7 +214,23 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
-// NokNok Shell Timer Count
+//Galaxy Spin Wall Jump Cancel
+unsafe fn galaxy_spin_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if motion_kind == hash40("special_air_lw_light") 
+    && !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL)
+    && frame >= 40.0
+    && GroundModule::is_wall_touch_line(boma, (*GROUND_TOUCH_FLAG_LEFT_SIDE as u32 | *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32))
+    && (boma.is_cat_flag(Cat1::WallJumpLeft | Cat1::WallJumpRight) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)) {
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+        VarModule::on_flag(fighter.battle_object, vars::mario::instance::SPECIAL_S_DISABLE_STALL);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+}
+}
+
+/*// NokNok Shell Timer Count
 unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 1801 {
@@ -247,7 +265,7 @@ unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind
             VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
         }
     }
-}
+}*/
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
@@ -282,14 +300,15 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     //up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
-    dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
+    //dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     //double_fireball(fighter, boma);
     galaxy_spin_poc(fighter, boma, status_kind);
     galaxy_spin_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame);
     galaxy_spin_move(fighter, boma, status_kind, motion_kind, situation_kind, frame, stick_x, facing);
-    noknok_timer(fighter, boma, id);
-    noknok_reset(fighter, id, status_kind);
-    noknok_training(fighter, id, status_kind);
+    galaxy_spin_wall_jump(fighter, boma, id, status_kind, motion_kind, situation_kind, cat[0], frame);
+    //noknok_timer(fighter, boma, id);
+    //noknok_reset(fighter, id, status_kind);
+    //noknok_training(fighter, id, status_kind);
     fastfall_specials(fighter);
 }
 

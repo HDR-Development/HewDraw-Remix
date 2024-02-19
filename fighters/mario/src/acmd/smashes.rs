@@ -77,8 +77,8 @@ unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, attack_start_frame);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, motion_rate);
-        ATTACK(fighter, 0, 0, Hash40::new("head"), 14.0, 83, 95, 0, 32, 4.7, 2.5, 1.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
-        ATTACK(fighter, 1, 0, Hash40::new("bust"), 14.0, 83, 95, 0, 32, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("head"), 14.0, 83, 97, 0, 32, 4.7, 2.5, 1.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 1, 0, Hash40::new("bust"), 14.0, 83, 97, 0, 32, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
     }
     frame(lua_state, attack_end_frame);
@@ -107,7 +107,7 @@ unsafe fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mario_smash_arc"), Hash40::new("mario_smash_arc"), Hash40::new("top"), 1.0, 7.0, 0.0, -30, -100, -80, 0.95, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mario_smash_arc"), Hash40::new("mario_smash_arc"), Hash40::new("top"), 1.0, 7.0, 0.0, -30, -100, -80, 0.90, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 13.0);

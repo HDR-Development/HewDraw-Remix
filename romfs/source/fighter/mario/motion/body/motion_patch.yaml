@@ -59,10 +59,10 @@ attack_air_hi:
     cancel_frame: 30
 throw_f:
   extra:
-    cancel_frame: 28
+    cancel_frame: 25
 throw_lw:
   extra:
-    cancel_frame: 38
+    cancel_frame: 39
 throw_hi:
   extra:
     cancel_frame: 37
