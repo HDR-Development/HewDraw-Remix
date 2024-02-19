@@ -23,6 +23,12 @@ extern "C" fn mario_init(fighter: &mut L2CFighterCommon) {
 
 
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT);
+    return 1.into()
+}
+
+
+unsafe extern "C" fn special_lw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
@@ -54,6 +60,7 @@ pub fn install() {
     special_n::install();
     smashline::Agent::new("mario")
         .on_init(mario_init)
-        .status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_pre)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
+        .status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_shoot_pre)
         .install();
 }

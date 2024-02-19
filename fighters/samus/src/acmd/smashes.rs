@@ -110,10 +110,6 @@ unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 63.0);
-    if is_excute(fighter) {
-        StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_WAIT, false);
-    }
 }
 
 

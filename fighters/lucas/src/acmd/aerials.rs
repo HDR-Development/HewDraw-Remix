@@ -327,13 +327,13 @@ unsafe extern "C" fn lucas_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1.3, 8.8, 0, -55, -128, -62, 0.8, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_RATE(fighter, 2.0);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1.3, 7.8, -2.0, -55, -128, -62, 0.8, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 2.4);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.8, 0.1);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 1.05, 14.5, 0, 0, 0, 0, 1.31, 0, 0, 0, 0, 0, 0, true, 0.7);
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 1.05, 14.5, 2.0, 0, 0, 0, 1.31, 0, 0, 0, 0, 0, 0, true, 0.7);
     }
 }
 
