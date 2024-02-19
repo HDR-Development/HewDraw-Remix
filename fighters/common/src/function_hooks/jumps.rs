@@ -3,7 +3,7 @@ use utils::ext::*;
 use std::arch::asm;
 
 
-#[skyline::hook(offset = 0x6d2174, inline)]
+#[skyline::hook(offset = 0x6d2194, inline)]
 unsafe fn fullhop_initial_y_speed_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
@@ -13,7 +13,7 @@ unsafe fn fullhop_initial_y_speed_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") initital_jump_vel)
 }
 
-#[skyline::hook(offset = 0x6ce6b8, inline)]
+#[skyline::hook(offset = 0x6ce6d8, inline)]
 unsafe fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -21,7 +21,7 @@ unsafe fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6ce6ec, inline)]
+#[skyline::hook(offset = 0x6ce70c, inline)]
 unsafe fn jump1_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
@@ -39,7 +39,7 @@ unsafe fn jump1_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
 }
 
-#[skyline::hook(offset = 0x6d19a4, inline)]
+#[skyline::hook(offset = 0x6d19c4, inline)]
 unsafe fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -47,7 +47,7 @@ unsafe fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6d19d8, inline)]
+#[skyline::hook(offset = 0x6d19f8, inline)]
 unsafe fn jump2_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
@@ -65,7 +65,7 @@ unsafe fn jump2_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
 }
 
-#[skyline::hook(offset = 0x6d1af0, inline)]
+#[skyline::hook(offset = 0x6d1b10, inline)]
 unsafe fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -73,7 +73,7 @@ unsafe fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6d1b24, inline)]
+#[skyline::hook(offset = 0x6d1b44, inline)]
 unsafe fn jump3_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
@@ -91,7 +91,7 @@ unsafe fn jump3_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
 }
 
-#[skyline::hook(offset = 0x6d0434, inline)]
+#[skyline::hook(offset = 0x6d0454, inline)]
 unsafe fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -99,7 +99,7 @@ unsafe fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6d04c4, inline)]
+#[skyline::hook(offset = 0x6d04e4, inline)]
 unsafe fn jump4_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
@@ -117,7 +117,7 @@ unsafe fn jump4_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
 }
 
-#[skyline::hook(offset = 0x6ce7b0, inline)]
+#[skyline::hook(offset = 0x6ce7d0, inline)]
 unsafe fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -125,7 +125,7 @@ unsafe fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6d05ac, inline)]
+#[skyline::hook(offset = 0x6d05cc, inline)]
 unsafe fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -133,7 +133,7 @@ unsafe fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6d115c, inline)]
+#[skyline::hook(offset = 0x6d117c, inline)]
 unsafe fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -141,7 +141,7 @@ unsafe fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
-#[skyline::hook(offset = 0x6ce26c, inline)]
+#[skyline::hook(offset = 0x6ce28c, inline)]
 unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -152,25 +152,25 @@ unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 pub fn install() {
     unsafe {
         // stubs vanilla fullhop initial y velocity calculations
-        skyline::patching::Patch::in_text(0x6d2174).nop();
+        skyline::patching::Patch::in_text(0x6d2194).nop();
 
         // Stubs ControlModule::get_stick_x calls when calculating horizontal jump velocity
-        skyline::patching::Patch::in_text(0x6ce6b8).nop();
-        skyline::patching::Patch::in_text(0x6d19a4).nop();
-        skyline::patching::Patch::in_text(0x6d1af0).nop();
-        skyline::patching::Patch::in_text(0x6d0434).nop();
+        skyline::patching::Patch::in_text(0x6ce6d8).nop();
+        skyline::patching::Patch::in_text(0x6d19c4).nop();
+        skyline::patching::Patch::in_text(0x6d1b10).nop();
+        skyline::patching::Patch::in_text(0x6d0454).nop();
         
         // Stubs ControlModule::get_stick_x calls when calculating double jump velocity
-        skyline::patching::Patch::in_text(0x6ce7b0).nop();
-        skyline::patching::Patch::in_text(0x6d05ac).nop();
-        skyline::patching::Patch::in_text(0x6d115c).nop();
-        skyline::patching::Patch::in_text(0x6ce26c).nop();
+        skyline::patching::Patch::in_text(0x6ce7d0).nop();
+        skyline::patching::Patch::in_text(0x6d05cc).nop();
+        skyline::patching::Patch::in_text(0x6d117c).nop();
+        skyline::patching::Patch::in_text(0x6ce28c).nop();
 
         // Stubs vanilla initial horizontal jump speed calculations
-        skyline::patching::Patch::in_text(0x6ce6ec).nop();
-        skyline::patching::Patch::in_text(0x6d19d8).nop();
-        skyline::patching::Patch::in_text(0x6d1b24).nop();
-        skyline::patching::Patch::in_text(0x6d04c4).nop();
+        skyline::patching::Patch::in_text(0x6ce70c).nop();
+        skyline::patching::Patch::in_text(0x6d19f8).nop();
+        skyline::patching::Patch::in_text(0x6d1b44).nop();
+        skyline::patching::Patch::in_text(0x6d04e4).nop();
     }
     skyline::install_hooks!(
         fullhop_initial_y_speed_hook,

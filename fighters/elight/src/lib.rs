@@ -49,8 +49,8 @@ pub fn install(is_runtime: bool) {
     }
 
     // Disables Foresight
-    skyline::patching::Patch::in_text(0xa28e58).nop();
-    skyline::patching::Patch::in_text(0xa28e64).data(0x140000ACu32);
+    skyline::patching::Patch::in_text(0xa28e78).nop();
+    skyline::patching::Patch::in_text(0xa28e84).data(0x140000ACu32);
 }
 
 pub fn delayed_install() {

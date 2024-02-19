@@ -1,6 +1,6 @@
 use super::*;
 
-#[skyline::from_offset(0xb2f800)]
+#[skyline::from_offset(0xb2f820)]
 extern "C" fn jack_customizer(module_accessor: *mut BattleObjectModuleAccessor, customize_to: u32);
 
 #[skyline::hook(offset = 0xb30934, inline)]
