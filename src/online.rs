@@ -75,7 +75,7 @@ where
     );
 }
 
-#[skyline::hook(offset = 0x1887700, inline)]
+#[skyline::hook(offset = 0x18881d0, inline)]
 unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
     static mut CURRENT_COUNTER: usize = 0;
     if ninput::any::is_press(ninput::Buttons::RIGHT) {
