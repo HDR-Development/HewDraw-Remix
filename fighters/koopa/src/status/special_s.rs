@@ -1,21 +1,31 @@
 use super::*;
 use globals::*;
 
+
+pub const SPECIAL_S_KIND_F: i32 = 1;
+pub const SPECIAL_S_KIND_B: i32 = 2;
+pub const SPECIAL_S_KIND_LW_G: i32 = 3;
+pub const SPECIAL_S_KIND_LW_A: i32 = 4;
+
 unsafe extern "C" fn specials_situation_helper(fighter: &mut L2CFighterCommon, is_start: bool) {
     let motion_g;
     let motion_a;
     let throw_input = VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE);
-    let is_Ground = StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND;
+    let is_Ground = fighter.is_situation(*SITUATION_KIND_GROUND);
 
-    if throw_input == -2 {
-        motion_g = Hash40::new("special_s_throwlw");
+    if throw_input == SPECIAL_S_KIND_LW_A {
+        motion_g = Hash40::new("special_air_s_squat");
         motion_a = Hash40::new("special_air_s_squat");
     }
-    else if throw_input > 0 {
+    else if throw_input == SPECIAL_S_KIND_LW_G {
+        motion_g = Hash40::new("special_s_throwlw");
+        motion_a = Hash40::new("special_s_throwlw");
+    }
+    else if throw_input == SPECIAL_S_KIND_F {
         motion_g = Hash40::new("special_s_throwf");
         motion_a = Hash40::new("special_air_s_throwf");
     }
-    else if throw_input < 0 {
+    else if throw_input == SPECIAL_S_KIND_B {
         motion_g = Hash40::new("special_s_throwb");
         motion_a = Hash40::new("special_air_s_throwb");
     }
@@ -88,7 +98,7 @@ unsafe extern "C" fn specials_situation_helper(fighter: &mut L2CFighterCommon, i
 
 unsafe extern "C" fn special_s_kinetic_exec(fighter: &mut L2CFighterCommon) {
     let is_Ground = StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND;
-    let is_Landing = VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) == -2;
+    let is_Landing = VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) == SPECIAL_S_KIND_LW_A;
     if is_Ground || is_Landing {
         if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) {
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); 
@@ -201,18 +211,21 @@ unsafe extern "C" fn specials_squat_main_loop(fighter: &mut L2CFighterCommon) ->
         let throw_Lw =  ControlModule::get_stick_y(fighter.module_accessor) < WorkModule::get_param_float(fighter.module_accessor,hash40("common"), hash40("attack_lw4_stick_y"));
 
         let mut throw_input = 1;
-        if throw_Lw {
-            throw_input = -2;
-            fighter.change_status(FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP.into(),false.into());
+        let mut next_status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING;
+        if throw_Lw && fighter.is_situation(*SITUATION_KIND_AIR) {
+            throw_input = SPECIAL_S_KIND_LW_A;
+            next_status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP;
+        }
+        else if throw_Lw {
+            throw_input = SPECIAL_S_KIND_LW_G;
         }
         else {
             let throw_F = PostureModule::lr(fighter.module_accessor).signum() == ControlModule::get_stick_x(fighter.module_accessor).signum()
             || ControlModule::get_stick_x(fighter.module_accessor).abs() < 0.2;
-            throw_input = if throw_F {1} else {-1};
+            throw_input = if throw_F {SPECIAL_S_KIND_F} else {SPECIAL_S_KIND_B};
         }
 
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE,throw_input);
-        let next_status = if throw_Lw {FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP} else {FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING};
         fighter.change_status(next_status.into(),false.into());
         return 0.into();
     }
@@ -336,7 +349,7 @@ unsafe fn specials_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn specials_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) == -2 {
+    if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) == SPECIAL_S_KIND_LW_A {
         return original!(fighter);
     }
     let kinetic = KineticModule::get_kinetic_type(fighter.module_accessor);
@@ -372,7 +385,7 @@ unsafe fn specials_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn specials_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let throw_input = VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE);
 
-    if throw_input == -2 {
+    if throw_input == SPECIAL_S_KIND_LW_A {
         let start_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_WORK_FLOAT_START_Y);
         let mut max_dist = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_attack_power_max_dist"));
         max_dist*=10.0;
@@ -388,14 +401,14 @@ unsafe fn specials_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return fighter.sub_shift_status_main(L2CValue::Ptr(specials_landing_main_loop as *const () as _));
     }
 
-    let throw_F = throw_input == 1;
+    let throw_B = throw_input == SPECIAL_S_KIND_B;
     let capture_id = LinkModule::get_node_object_id(fighter.module_accessor, *LINK_NO_CAPTURE);
     if capture_id != 0x50000000 {
         let capture_boma = sv_battle_object::module_accessor(capture_id as u32);
 
         let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25eu64, 0x7d88ea0u64);
-        let throw_motion = if throw_F {36603360558 as u64} else {36554879287 as u64}; //39642420386 lw 41418534085 hi 36603360558 f 36554879287 b
-        let throw_rate = if throw_F {1.7} else {1.0};
+        let throw_motion = if !throw_B {36603360558 as u64} else {36554879287 as u64}; //39642420386 lw 41418534085 hi 36603360558 f 36554879287 b
+        let throw_rate = if !throw_B {1.7} else {1.0};
         
         let mut share_type = 0;
         if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
@@ -437,7 +450,7 @@ unsafe extern "C" fn specials_landing_main_loop(fighter: &mut L2CFighterCommon) 
 
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
-        if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) != -2
+        if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) != SPECIAL_S_KIND_LW_A
         {
             specials_situation_helper(fighter,false);
         }
