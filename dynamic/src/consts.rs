@@ -909,6 +909,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
+            pub const SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE: i32 = 0x0101;
         }
         pub mod status {
             // flags

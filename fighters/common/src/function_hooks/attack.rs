@@ -63,7 +63,7 @@ unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x406bd4, inline)]
+#[skyline::hook(offset = 0x406bf4, inline)]
 unsafe fn get_hitstop_frame_add(ctx: &mut skyline::hooks::InlineCtx) {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
