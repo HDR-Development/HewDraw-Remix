@@ -7,22 +7,24 @@ unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        let dmg = 4.8;
-        // special case for yellow pikmin
-        // reduces the length of the paralyze effect
-        let hitlag = if variation == 1 {
-            0.4
-        } else {
-            1.0
-        };
-        ATTACK(fighter, 0, 0, Hash40::new("waist"), dmg * p.dmg, 90, 105, 0, 65, 6.0, 0.0, 0.0, 0.0, None, None, None, hitlag * p.hitlag, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        fighter.change_status_req(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_DEATH.into(), false.into());
+    if VarModule::is_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE) {
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            let dmg = 4.8;
+            // special case for yellow pikmin
+            // reduces the length of the paralyze effect
+            let hitlag = if variation == 1 {
+                0.4
+            } else {
+                1.0
+            };
+            ATTACK(fighter, 0, 0, Hash40::new("waist"), dmg * p.dmg, 90, 105, 0, 65, 6.0, 0.0, 0.0, 0.0, None, None, None, hitlag * p.hitlag, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        }
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            fighter.change_status_req(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_DEATH.into(), false.into());
+        }
     }
 }
 
