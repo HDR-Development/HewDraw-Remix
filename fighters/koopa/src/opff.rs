@@ -92,8 +92,8 @@ unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
         if fighter.status_frame() == 51 { // indicates start of "excellent" frame window
             VarModule::on_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
-            macros::LAST_EFFECT_SET_RATE(fighter, 3.0);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
+            LAST_EFFECT_SET_RATE(fighter, 3.0);
         } else if fighter.status_frame() == 58 { // window ends
             VarModule::off_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
         }
@@ -102,9 +102,9 @@ unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH) {
             if VarModule::is_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                 SlowModule::set_whole(fighter.module_accessor, 8, 40);
-                macros::CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
-                macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
+                CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
+                QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
                 PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
                 PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
                 VarModule::off_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM);
