@@ -276,12 +276,12 @@ unsafe fn roy_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x169ba09789));
-        PLAY_SE(fighter, Hash40::new_raw(0x14e8f9fb62));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_roy_rnd_attack_air"));
+        PLAY_SE(fighter, Hash40::new("se_roy_attackair_h01"));
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x14eff053be));
+        PLAY_SE(fighter, Hash40::new("se_roy_attackair_l01"));
     }
     
 }

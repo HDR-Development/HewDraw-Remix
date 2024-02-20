@@ -92,7 +92,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
-        && motion_kind == 0x13434c5490 as u64 {
+        && motion_kind == hash40("super_special2_blow") as u64 {
         if boma.is_cat_flag( Cat4::SpecialN2Command) {
             if MeterModule::drain(boma.object(), 4) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
@@ -179,7 +179,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     // Buster Wolf
     else if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
-        || motion_kind == 0x13434c5490 as u64 {
+        || motion_kind == hash40("super_special2_blow") as u64 {
         // Buster Wolf -> Power Geyser
         if boma.is_cat_flag(Cat4::SuperSpecialCommand){
             if !StopModule::is_stop(boma){
@@ -244,6 +244,10 @@ unsafe fn meter_cap_control(boma: &mut BattleObjectModuleAccessor) {
         VarModule::set_int(boma.object(), vars::dolly::instance::METER_STOCKS, 0);
         VarModule::set_int(boma.object(), vars::dolly::instance::CURRENT_STOCKS, app::lua_bind::FighterInformation::stock_count(info) as i32);
         MeterModule::set_meter_cap(boma.object(), 4);
+        utils::ui::UiManager::change_ff_meter_cap(
+            entry_id as u32,
+            MeterModule::meter_cap(boma.object()) as f32 / 2.0
+        );
         MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()) * 2.0);
         VarModule::off_flag(boma.object(), vars::dolly::instance::IS_INIT_METER);
     }
@@ -255,6 +259,10 @@ unsafe fn meter_cap_control(boma: &mut BattleObjectModuleAccessor) {
                 VarModule::set_int(boma.object(), vars::dolly::instance::METER_STOCKS, VarModule::get_int(boma.object(), vars::dolly::instance::METER_STOCKS) + 1);
             }
             MeterModule::set_meter_cap(boma.object(), 4 + (VarModule::get_int(boma.object(), vars::dolly::instance::METER_STOCKS) * 2));
+            utils::ui::UiManager::change_ff_meter_cap(
+                entry_id as u32,
+                MeterModule::meter_cap(boma.object()) as f32 / 2.0
+            );
             MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()) * 2.0);
         }
         VarModule::off_flag(boma.object(), vars::dolly::instance::INCREASE_METER_STOCKS);

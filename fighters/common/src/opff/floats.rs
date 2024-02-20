@@ -90,10 +90,11 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
             if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) 
-            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
-            && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP)
-            {
-                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
+                if (boma.left_stick_y() >= -0.66 && InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= 4) //disable helf floats for 4f
+                || fighter.is_button_off(Buttons::Jump) { //disable 1f float
+                    WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+                }
             }
             // Immediately transition to fall/double jump fall when activating float
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
@@ -194,12 +195,12 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     let pos3 = Vector3f{x: 0.0, y: 0.0, z: -0.5};
                     let pos4 = Vector3f{x: 2.0, y: 0.0, z: -0.5};
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), &pos1, &Vector3f::zero(), 2.5, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x09aee445d1), &pos2, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("clavicler"), &pos2, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneer"), &pos3, &Vector3f::zero(), 1.70000005, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footr"), &Vector3f::zero(), &Vector3f::zero(), 2.0999999, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x0954eb78b2), &pos4, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("claviclel"), &pos4, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), &Vector3f::zero(), &Vector3f::zero(), 1.70000005, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footl"), &Vector3f::zero(), &Vector3f::zero(), 2.0999999, true, 0, 0, 0, 0, 0, false, false);
                     EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);
@@ -209,6 +210,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                 }
             } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
+                if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && boma.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+                }
                 if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 50  {
                 // consume double jump on f10 of float
                     fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);

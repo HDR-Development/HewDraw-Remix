@@ -1,7 +1,7 @@
 use super::{vl, *};
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
 
-#[skyline::hook(offset = 0x107e950)]
+#[skyline::hook(offset = 0x107e970)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
@@ -41,12 +41,12 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             rockman_kill_charge(module_accessor, object);
         }
         else if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING) {
-            if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
                 VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING);
             }
         }
         else {
-            if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 == 0 {
                 if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
                     rockman_kill_charge(module_accessor, object);
                 }
@@ -124,48 +124,48 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
     original!()(vtable, fighter);
 }
 
-pub unsafe fn is_damage_check(module_accessor: *mut BattleObjectModuleAccessor, is_prev: bool) -> bool {
-    let status : i32;
-    if is_prev {
-        status = StatusModule::prev_status_kind(module_accessor, 0);
-    }
-    else {
-        status = StatusModule::status_kind(module_accessor);
-    }
-    if FighterStopModuleImpl::is_damage_stop(module_accessor)
-    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
-    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-    || (*FIGHTER_STATUS_KIND_CAPTURE_PULLED..=*FIGHTER_STATUS_KIND_DAMAGE_FALL).contains(&status)
-    || (*FIGHTER_STATUS_KIND_DOWN..=*FIGHTER_STATUS_KIND_LAY_DOWN).contains(&status)
-    || (*FIGHTER_STATUS_KIND_DOWN_DAMAGE..=*FIGHTER_STATUS_KIND_BIND).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SLIP..=*FIGHTER_STATUS_KIND_SLIP_WAIT).contains(&status)
-    || (*FIGHTER_STATUS_KIND_TREAD_DAMAGE..=*FIGHTER_STATUS_KIND_ICE_JUMP).contains(&status)
-    || (*FIGHTER_STATUS_KIND_LINK_FINAL..=*FIGHTER_STATUS_KIND_PIT_FALL).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SWALLOWED..=*FIGHTER_STATUS_KIND_CAPTURE_DAMAGE_YOSHI).contains(&status)
-    || (*FIGHTER_STATUS_KIND_CATCHED_REFLET..=*FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND).contains(&status)
-    || status == *FIGHTER_STATUS_KIND_GIMMICK_EATEN
-    || (*FIGHTER_STATUS_KIND_CAPTURE_ITEM..=*FIGHTER_STATUS_KIND_CAPTURE_CLAPTRAP).contains(&status)
-    || (*FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER..=*FIGHTER_STATUS_KIND_RIDLEY_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_CATCHED_RIDLEY..=*FIGHTER_STATUS_KIND_STABBED_DAMAGE).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED..=*FIGHTER_STATUS_KIND_SWING_GAOGAEN_FAILURE).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SHEIK_FINAL_CAPTURE..=*FIGHTER_STATUS_KIND_CAPTURE_WAIT_OCTOPUS).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SIMON_FINAL_TARGET_START..=*FIGHTER_STATUS_KIND_YOSHI_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_SUICIDE_BOMB..=*FIGHTER_STATUS_KIND_TANTAN_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD..=*FIGHTER_STATUS_KIND_EDGE_FINAL_TARGET_END).contains(&status)
-    || (*FIGHTER_STATUS_KIND_CAPTURE_TRAIL_KEYHOLE..=*FIGHTER_STATUS_KIND_TRAIL_FINAL_TARGET_END).contains(&status) {
-        return true;
-    }
-    false
-}
+// pub unsafe fn is_damage_check(module_accessor: *mut BattleObjectModuleAccessor, is_prev: bool) -> bool {
+//     let status : i32;
+//     if is_prev {
+//         status = StatusModule::prev_status_kind(module_accessor, 0);
+//     }
+//     else {
+//         status = StatusModule::status_kind(module_accessor);
+//     }
+//     if FighterStopModuleImpl::is_damage_stop(module_accessor)
+//     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
+//     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+//     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+//     || (*FIGHTER_STATUS_KIND_CAPTURE_PULLED..=*FIGHTER_STATUS_KIND_DAMAGE_FALL).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_DOWN..=*FIGHTER_STATUS_KIND_LAY_DOWN).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_DOWN_DAMAGE..=*FIGHTER_STATUS_KIND_BIND).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SLIP..=*FIGHTER_STATUS_KIND_SLIP_WAIT).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_TREAD_DAMAGE..=*FIGHTER_STATUS_KIND_ICE_JUMP).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_LINK_FINAL..=*FIGHTER_STATUS_KIND_PIT_FALL).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SWALLOWED..=*FIGHTER_STATUS_KIND_CAPTURE_DAMAGE_YOSHI).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_CATCHED_REFLET..=*FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND).contains(&status)
+//     || status == *FIGHTER_STATUS_KIND_GIMMICK_EATEN
+//     || (*FIGHTER_STATUS_KIND_CAPTURE_ITEM..=*FIGHTER_STATUS_KIND_CAPTURE_CLAPTRAP).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER..=*FIGHTER_STATUS_KIND_RIDLEY_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_CATCHED_RIDLEY..=*FIGHTER_STATUS_KIND_STABBED_DAMAGE).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED..=*FIGHTER_STATUS_KIND_SWING_GAOGAEN_FAILURE).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SHEIK_FINAL_CAPTURE..=*FIGHTER_STATUS_KIND_CAPTURE_WAIT_OCTOPUS).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SIMON_FINAL_TARGET_START..=*FIGHTER_STATUS_KIND_YOSHI_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_SUICIDE_BOMB..=*FIGHTER_STATUS_KIND_TANTAN_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD..=*FIGHTER_STATUS_KIND_EDGE_FINAL_TARGET_END).contains(&status)
+//     || (*FIGHTER_STATUS_KIND_CAPTURE_TRAIL_KEYHOLE..=*FIGHTER_STATUS_KIND_TRAIL_FINAL_TARGET_END).contains(&status) {
+//         return true;
+//     }
+//     false
+// }
 
 unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
-    if is_damage_check(module_accessor, false) {
-        return false;
-    }
+    // if is_damage_check(module_accessor, false) {
+    //     return false;
+    // }
     let status = StatusModule::status_kind(module_accessor);
     ![
         *FIGHTER_STATUS_KIND_DEAD,
@@ -195,26 +195,26 @@ unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor, 
     }
 }
 
-#[skyline::hook(offset = 0x1083bcc, inline)]
+#[skyline::hook(offset = 0x1083bec, inline)]
 unsafe fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
-#[skyline::hook(offset = 0x10838c0, inline)]
+#[skyline::hook(offset = 0x10838e0, inline)]
 unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 
-const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 5] = [
+const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 6] = [
     // transition_groups::CHECK_GROUND_SPECIAL,
     // transition_groups::CHECK_AIR_SPECIAL,
     transition_groups::CHECK_GROUND_ESCAPE,
     // transition_groups::CHECK_AIR_ESCAPE,
     transition_groups::CHECK_GROUND_GUARD,
     transition_groups::CHECK_GROUND_ATTACK,
-    // transition_groups::CHECK_GROUND_CATCH,
+    transition_groups::CHECK_GROUND_CATCH,
     transition_groups::CHECK_AIR_ATTACK,
     transition_groups::CHECK_AIR_CLIFF
 ];
@@ -269,7 +269,7 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
     }
 }
 
-// #[skyline::hook(offset = 0x1085d40)]
+// #[skyline::hook(offset = 0x1085d60)]
 // pub unsafe extern "C" fn rockman_airshooter_init(article: &mut smash::app::Article, fighter: &mut smash::app::FighterModuleAccessor) -> u64 {
 //     let ret = original!()(article, fighter);
 //     println!("Initializing Air Shooter");
@@ -285,40 +285,41 @@ pub fn install(is_runtime: bool) {
         return;
     }
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
-    skyline::patching::Patch::in_text(0x107ea84).data(0x1400001Eu32);
+    skyline::patching::Patch::in_text(0x107eaa4).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
-    skyline::patching::Patch::in_text(0x107ff4c).data(0x14000007u32);
+    skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
 
     // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
     // Disable
-    skyline::patching::Patch::in_text(0x1083bcc).nop();
     skyline::patching::Patch::in_text(0x1083bec).nop();
-    skyline::patching::Patch::in_text(0x1083c08).nop();
-    skyline::patching::Patch::in_text(0x1083c1c).nop();
-    skyline::patching::Patch::in_text(0x1083c30).nop();
-    skyline::patching::Patch::in_text(0x1083c4c).nop();
-    skyline::patching::Patch::in_text(0x1083c60).nop();
-    skyline::patching::Patch::in_text(0x1083c74).nop();
-    skyline::patching::Patch::in_text(0x1083c88).nop();
-    skyline::patching::Patch::in_text(0x1083c9c).nop();
-    skyline::patching::Patch::in_text(0x1083cb0).nop();
-    skyline::patching::Patch::in_text(0x1083cc4).nop();
+    skyline::patching::Patch::in_text(0x1083c0c).nop();
+    skyline::patching::Patch::in_text(0x1083c28).nop();
+    skyline::patching::Patch::in_text(0x1083c3c).nop();
+    skyline::patching::Patch::in_text(0x1083c50).nop();
+    skyline::patching::Patch::in_text(0x1083c6c).nop();
+    skyline::patching::Patch::in_text(0x1083c80).nop();
+    skyline::patching::Patch::in_text(0x1083c94).nop();
+    skyline::patching::Patch::in_text(0x1083ca8).nop();
+    skyline::patching::Patch::in_text(0x1083cbc).nop();
+    skyline::patching::Patch::in_text(0x1083cd0).nop();
+    skyline::patching::Patch::in_text(0x1083ce4).nop();
     // Enable
-    skyline::patching::Patch::in_text(0x10838c0).nop();
     skyline::patching::Patch::in_text(0x10838e0).nop();
-    skyline::patching::Patch::in_text(0x1083908).nop();
-    skyline::patching::Patch::in_text(0x1083924).nop();
-    skyline::patching::Patch::in_text(0x1083938).nop();
-    skyline::patching::Patch::in_text(0x108394c).nop();
-    skyline::patching::Patch::in_text(0x1083968).nop();
-    skyline::patching::Patch::in_text(0x108397c).nop();
-    skyline::patching::Patch::in_text(0x1083990).nop();
-    skyline::patching::Patch::in_text(0x10839a4).nop();
-    skyline::patching::Patch::in_text(0x10839b8).nop();
-    skyline::patching::Patch::in_text(0x10839cc).nop();
+    skyline::patching::Patch::in_text(0x1083900).nop();
+    skyline::patching::Patch::in_text(0x1083928).nop();
+    skyline::patching::Patch::in_text(0x1083944).nop();
+    skyline::patching::Patch::in_text(0x1083958).nop();
+    skyline::patching::Patch::in_text(0x108396c).nop();
+    skyline::patching::Patch::in_text(0x1083988).nop();
+    skyline::patching::Patch::in_text(0x108399c).nop();
+    skyline::patching::Patch::in_text(0x10839b0).nop();
+    skyline::patching::Patch::in_text(0x10839c4).nop();
+    skyline::patching::Patch::in_text(0x10839d8).nop();
+    skyline::patching::Patch::in_text(0x10839ec).nop();
 
     // Patches which status to compare to for Metal Blade.
-    skyline::patching::Patch::in_text(0x1080264).data(0x7107741Fu32);
+    skyline::patching::Patch::in_text(0x1080284).nop();
+    skyline::patching::Patch::in_text(0x1080288).nop();
 
     skyline::install_hooks!(
         rockman_vtable_func,

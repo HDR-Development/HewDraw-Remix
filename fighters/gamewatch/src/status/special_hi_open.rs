@@ -21,7 +21,7 @@ unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CV
         false,
         false,
         false,
-        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
         *FIGHTER_STATUS_ATTR_START_TURN as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
         0
@@ -45,6 +45,7 @@ unsafe extern "C" fn special_hi_open_main_loop(fighter: &mut L2CFighterCommon) -
         fighter.change_status(status.into(), true.into());
         return 1.into()
     }
+    fighter.sub_air_check_dive();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {

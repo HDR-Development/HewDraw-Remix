@@ -109,19 +109,17 @@ pub unsafe fn murabito_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[weapon_frame( agent = WEAPON_KIND_MURABITO_FLOWERPOT )]
-fn flowerpot_frame(weapon: &mut L2CFighterBase) {
-    unsafe {
-        if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
-            weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
+#[smashline::weapon_frame_callback(main)]
+pub fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() == *WEAPON_KIND_MURABITO_FLOWERPOT {
+            if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
+            }
+        } else if weapon.kind() == *WEAPON_KIND_MURABITO_CLAYROCKET {
+            WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
+        } else {
+            return;
         }
-    }
-}
-
-/// prevents rocket from despawning in the blastzone
-#[weapon_frame( agent = WEAPON_KIND_MURABITO_CLAYROCKET )]
-fn clayrocket_frame(weapon: &mut L2CFighterBase) {
-    unsafe {
-        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }

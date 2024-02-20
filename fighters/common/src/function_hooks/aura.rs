@@ -2,7 +2,7 @@ use super::*;
 use utils::ext::*;
 use std::arch::asm;
 
-#[skyline::hook(offset = 0xc5bff0)]
+#[skyline::hook(offset = 0xc5c010)]
 pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectModuleAccessor) -> f32 {
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
@@ -11,7 +11,7 @@ pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectMo
     get_aura(object)
 }
 
-#[skyline::hook(offset = 0xc5be20)]
+#[skyline::hook(offset = 0xc5be40)]
 pub unsafe extern "C" fn lucario_check_aura2(module: u64) -> f32 {
     let module_accessor = &mut *(*((module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
@@ -21,7 +21,7 @@ pub unsafe extern "C" fn lucario_check_aura2(module: u64) -> f32 {
     get_aura(object)
 }
 
-#[skyline::hook(offset = 0xc5e530)]
+#[skyline::hook(offset = 0xc5e550)]
 pub unsafe extern "C" fn lucario_handle_aura(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
@@ -32,7 +32,7 @@ pub unsafe extern "C" fn lucario_handle_aura(_vtable: u64, fighter: &mut Fighter
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
 }
 
-#[skyline::hook(offset = 0xc5e6d0)]
+#[skyline::hook(offset = 0xc5e6f0)]
 pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let object_id = object.battle_object_id;
@@ -44,7 +44,7 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
 }
 
-// #[skyline::hook(offset = 0xc5d580)]
+// #[skyline::hook(offset = 0xc5d5a0)]
 // pub unsafe extern "C" fn lucario_on_grab(_vtable: u64, fighter: &mut Fighter, event: &mut LinkEvent) -> u64 {
 //     // param_3 + 0x10
 //     if event.link_event_kind.0 == hash40("capture") {
@@ -76,18 +76,21 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
 
     let aura_override = VarModule::get_float(object, vars::lucario::status::AURA_OVERRIDE);
     if aura_override > 0.0 {
+        // println!("aura_override: {}", aura_override);
         return aura_override;
     }
 
     if VarModule::is_flag(object, vars::lucario::instance::METER_IS_BURNOUT) {
-        return ParamModule::get_float(object, ParamType::Agent, "aura.penalty_aurapower");
+        let penalty_aurapower = ParamModule::get_float(object, ParamType::Agent, "aura.penalty_aurapower");
+        // println!("penalty_aurapower: {}", penalty_aurapower);
+        return penalty_aurapower;
     }
 
     let min_aurapower = ParamModule::get_float(object, ParamType::Agent, "aura.min_aurapower");
     let max_aurapower = ParamModule::get_float(object, ParamType::Agent, "aura.max_aurapower");
 
-    let charge = MeterModule::level(object) as f32;
-    let max_charge = MeterModule::meter_cap(object) as f32;
+    let charge = MeterModule::meter(object) as f32;
+    let max_charge = MeterModule::meter_cap(object) as f32 * MeterModule::meter_per_level(object);
 
     let diff = max_aurapower - min_aurapower;
     let aura_power = min_aurapower + (diff * charge.clamp(0.0, max_charge) / max_charge);
@@ -95,7 +98,7 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
     return aura_power;
 }
 
-#[skyline::hook(offset = 0xc5ce20)]
+#[skyline::hook(offset = 0xc5ce40)]
 pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {
     original!()(vtable, fighter);
     let object = &mut fighter.battle_object;

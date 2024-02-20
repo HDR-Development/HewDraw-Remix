@@ -236,11 +236,11 @@ unsafe fn catch_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1281c86397));
+        PLAY_SE(fighter, Hash40::new("se_common_swing_06"));
     }
     wait(lua_state, 7.0);
     if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new_raw(0x1281c86397));
+        STOP_SE(fighter, Hash40::new("se_common_swing_06"));
     }
     
 }
@@ -563,7 +563,7 @@ unsafe fn dragon_game_attackshort(fighter: &mut L2CAgentBase) {
         AttackModule::disable_tip(boma);
         AttackModule::set_damage_shake_scale(boma, 0.5);
     }
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("have"), 8.0, 45, 87, 0, 50, 2.9, 3.1, 0.5, 0.0, Some(1.0), Some(0.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TANTAN_PUNCH01, *ATTACK_REGION_PUNCH);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_76_megabolt"), 24, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -586,7 +586,7 @@ unsafe fn dragon_game_attacklong(fighter: &mut L2CAgentBase) {
         AttackModule::disable_tip(boma);
         AttackModule::set_damage_shake_scale(boma, 0.5);
     }
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("have"), 12.0, 45, 78, 0, 40, 2.9, 3.1, 0.5, 0.0, Some(1.0), Some(0.5), Some(0.0), 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -3.5, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TANTAN_PUNCH01, *ATTACK_REGION_PUNCH);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_76_megabolt"), 24, false, *BATTLE_OBJECT_ID_INVALID as u32);

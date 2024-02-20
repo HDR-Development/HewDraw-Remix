@@ -32,8 +32,8 @@ unsafe fn kirby_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
+        HIT_RESET_ALL(fighter);
         AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 51.0);
     if is_excute(fighter) {
@@ -112,14 +112,29 @@ unsafe fn kirby_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
+        HIT_RESET_ALL(fighter);
         AttackModule::clear_all(boma);
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     
+}
+
+#[acmd_script( agent = "kirby", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kirby_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 4.5, 0, 180, 0, 0, 0.85, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_NO_STOP_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 4.5, 0, 180, 0, 0, 0.85, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -14, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, false);
+    }
 }
 
 #[acmd_script( agent = "kirby", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -188,6 +203,7 @@ pub fn install() {
         kirby_attack_air_n_game,
         kirby_attack_air_f_game,
         kirby_attack_air_b_game,
+        kirby_attack_air_b_effect,
         kirby_attack_air_hi_game,
         kirby_attack_air_lw_game,
         kirby_landing_air_lw_game,

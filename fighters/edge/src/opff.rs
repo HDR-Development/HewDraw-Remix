@@ -53,11 +53,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_N_SHOOT,
-        *FIGHTER_EDGE_STATUS_KIND_SPECIAL_N_CANCEL,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_S_CHARGE,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_S_SHOOT,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END,
@@ -104,5 +102,30 @@ pub fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn edge_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+
+#[smashline::weapon_frame_callback(main)]
+pub fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_EDGE_FLAREDUMMY {
+            return
+        }
+        if weapon.is_status(*WEAPON_EDGE_FLAREDUMMY_STATUS_KIND_FLY) {
+            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let sephiroth = utils::util::get_battle_object_from_id(owner_id);
+            let sephiroth_boma = &mut *(*sephiroth).module_accessor;
+            let sephiroth_status_kind = StatusModule::status_kind(sephiroth_boma);
+            if sephiroth_status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH && AttackModule::is_infliction_status(sephiroth_boma, *COLLISION_KIND_MASK_HIT) {
+                // Explode if Sephiroth hits the target marked with this set of orbs with Blade Dash
+                let x_distance = PostureModule::pos_x(weapon.module_accessor) - PostureModule::pos_x(sephiroth_boma);
+                let y_distance = PostureModule::pos_y(weapon.module_accessor) - PostureModule::pos_y(sephiroth_boma);
+                let tolerance = 20.0;
+                if x_distance.abs() <= tolerance && y_distance.abs() <= tolerance{
+                    StatusModule::change_status_force(weapon.module_accessor, *WEAPON_EDGE_FLAREDUMMY_STATUS_KIND_TRY, false);
+                }
+            }
+        }
     }
 }

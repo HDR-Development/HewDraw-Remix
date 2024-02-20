@@ -56,24 +56,37 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.570);
-    }
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 3.5);
     frame(lua_state, 7.0);
+    FT_MOTION_RATE(fighter, 1.000);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.5, 96, 125, 0, 46, 6.5, 0.0, 18.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 96, 125, 0, 46, 4.0, 0.0, 9.0, 1.5, Some(0.0), Some(9.0), Some(-1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.5, 96, 125, 0, 46, 6.5, 0.0, 18.5, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 96, 125, 0, 46, 4.0, 0.0, 9.0, 2.2, Some(0.0), Some(9.0), Some(-0.8), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PSI);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.5);
     if is_excute(fighter) {
         AttackModule::clear(boma, 1, false);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }   
+}
+
+#[acmd_script( agent = "ness", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 9, 2, -90, 0, 0, 0.55, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 9, -2, -90, 0, 0, 0.55, true);
+        EFFECT(fighter, Hash40::new("ness_psi_atk"), Hash40::new("top"), 0, 17.5, 1, 0, -90, 0, 1.65, 0, 0, 0, 0, 0, 360, true);
     }
-    
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
 }
 
 #[acmd_script( agent = "ness", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -103,6 +116,7 @@ pub fn install() {
         game_attacks3,
         game_attacks3lw,
         game_attackhi3,
+        effect_attackhi3,
         game_attacklw3,
     );
 }

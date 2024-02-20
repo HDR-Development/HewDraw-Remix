@@ -47,6 +47,10 @@ pub fn install(is_runtime: bool) {
     if !is_runtime || is_hdr_available() {
         status::add_statuses();
     }
+
+    // Disables Foresight
+    skyline::patching::Patch::in_text(0xa28e78).nop();
+    skyline::patching::Patch::in_text(0xa28e84).data(0x140000ACu32);
 }
 
 pub fn delayed_install() {

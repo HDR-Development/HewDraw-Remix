@@ -189,6 +189,40 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "edge_fire", script = "game_specialn1" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_fire_special_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+}
+
+#[acmd_script( agent = "edge_fire", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_fire_special_n2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+}
+
+#[acmd_script( agent = "edge_fire", script = "game_bursts" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_fire_burst_s_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_furafura"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosionm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        AttackModule::disable_tip(boma);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.5, 70, 64, 0, 77, 12.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -5, 0.0, 0, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
+    }
+}
+
 #[acmd_script( agent = "edge_flare1", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_flare1_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -205,6 +239,68 @@ unsafe fn edge_flare1_fly_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 3, 6.0, false);
     }
     
+}
+
+#[acmd_script( agent = "edge_flare2", script = "game_exp" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_flare2_exp_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 75, 75, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !WorkModule::is_flag(boma, *WEAPON_EDGE_FLARE2_INSTANCE_WORK_ID_FLAG_REFLECT) {
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
+        }
+    }
+}
+
+#[acmd_script( agent = "edge_flare2", script = "game_fly" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_flare2_fly_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_furafura"), 15, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 50, 75, 0, 65, 1.5, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.4, 2.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -3, 0.0, 45, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+}
+
+#[acmd_script( agent = "edge_flare2", script = "game_try" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_flare2_try_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.5, 53, 75, 0, 50, 1.5, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+}
+
+#[acmd_script( agent = "edge_flash", script = "game_attack" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_flash_game_attack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let edge = utils::util::get_battle_object_from_id(owner_id);
+		if VarModule::is_flag(edge, vars::edge::status::FLASH_HOLD) {
+			let pos_x = PostureModule::pos_x(boma);
+			let pos_y = PostureModule::pos_y(boma);
+            let facing = PostureModule::lr(boma);
+			PostureModule::set_pos(boma, &Vector3f::new(pos_x + (35.0 * PostureModule::lr(boma)), pos_y, 0.0));
+		}
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 366, 65, 60, 40, 12.0, 0.0, 1.5, 0.0, None, None, None, 0.8, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 5, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting_flash"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.5, 60, 70, 0, 80, 13.0, 0.0, 1.5, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting_flash"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
+    }
 }
 
 #[acmd_script( agent = "edge", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
@@ -246,7 +342,14 @@ pub fn install() {
         dash_game,
         dash_sound,
         turn_dash_game,
+        edge_fire_special_n1_game,
+        edge_fire_special_n2_game,
+        edge_fire_burst_s_game,
         edge_flare1_fly_game,
+        edge_flare2_exp_game,
+        edge_flare2_fly_game,
+        edge_flare2_try_game,
+        edge_flash_game_attack,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,

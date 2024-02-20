@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -69,6 +73,9 @@ special_air_lw:
   extra:
     xlu_start: 0
     xlu_end: 0
+throw_hi:
+  extra:
+    cancel_frame: 44
 furafura_end:
   extra:
     cancel_frame: 10

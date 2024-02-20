@@ -99,8 +99,8 @@ unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         else {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
-
     }
+
     return 0.into()
 }
 
@@ -117,6 +117,10 @@ unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     };
     // Added code
     let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
+    if situation_kind == *SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+    }
     if situation_kind == *SITUATION_KIND_AIR {
         // Glide a small amount in the air unless there's too much positive y energy (to avoid flying to the top blastzone)
         let mut aerial_y_speed = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

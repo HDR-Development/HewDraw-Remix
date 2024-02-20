@@ -1,12 +1,13 @@
-
 use super::*;
 
 #[acmd_script( agent = "diddy", script = "game_throwb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 18.0, 21.0);
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 45, 55, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 45, 86, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 17.0);
@@ -22,6 +23,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
         ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
     }
     frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         let release_position = Vector3f{ x:-2.5, y: 9.0, z: -15.0 };
         ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
@@ -86,4 +88,3 @@ pub fn install() {
         game_throwlw,
     );
 }
-

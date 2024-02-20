@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use utils::game_modes::CustomMode;
 // This file contains code for wavedashing out of jumpsquat, fullhop buffered aerials/attack canceling
 
 pub fn install() {
@@ -90,7 +91,14 @@ unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
     if fighter.is_cat_flag(CatHdr::Wavedash) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if !modes.contains(&CustomMode::Smash64Mode) {
+                    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+                }
+            },
+            _ => { VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT); }
+        }
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
@@ -298,7 +306,14 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
         if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
         && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+            match utils::game_modes::get_custom_mode() {
+                Some(modes) => {
+                    if !modes.contains(&CustomMode::Smash64Mode) {
+                        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+                    }
+                },
+                _ => { VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT); }
+            }
         }
     }
     let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
@@ -438,12 +453,17 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     // This cuts a single frame off of the end of the specified characters' jumpsquat animations
     // This is a purely aesthetic change, makes for snappier jumps
-    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("landing_heavy")) * 0.25;
+    let mut end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash());
+    let mut start_frame = 0.0;
+    if motion_hash.get_hash().hash == hash40("jump_squat") {
+        end_frame *= 0.25;
+        start_frame = 3.0;
+    }
 
     // vanilla logic
     let mut motion_rate = end_frame / jump_squat_frame;
     if motion_rate < 1.0 {
         motion_rate += 0.001;
     }
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 3.0, motion_rate, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, motion_hash.get_hash(), start_frame, motion_rate, false, 0.0, false, false);
 }

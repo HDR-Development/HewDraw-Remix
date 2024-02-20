@@ -10,6 +10,7 @@ pub fn install() {
         lucina_specials2_main,
         lucina_specials3_main,
         lucina_specials3_exec_stop,
+        appeal_end
     );
 }
 
@@ -105,10 +106,7 @@ unsafe fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucina_specials_reset_helper(fighter);
     ControlModule::reset_trigger(fighter.module_accessor);
     WorkModule::set_int( fighter.module_accessor, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_CHANGE_STATUS);
-    if !StopModule::is_stop(fighter.module_accessor) {
-        lucina_specials_substatus(fighter, false.into());
-    }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucina_specials_substatus as *const () as _));
+
     WorkModule::set_int64(fighter.module_accessor,
         hash40("special_s1") as i64,
         *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
@@ -121,7 +119,37 @@ unsafe fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specials_main_loop as *const () as _))
 }
 
+pub unsafe fn dancing_blade_transition_check(fighter: &mut L2CFighterCommon) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS) {
+            return;
+        }
+        if !ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            return;
+        }
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE);
+        }
+        else {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS);
+            let enable_hi_lw = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("enable_input_hi_lw"));
+            if enable_hi_lw == 0 {
+                return;
+            }
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+            if stick_y > -squat_stick_y {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_HI);
+            }
+            else if stick_y < squat_stick_y {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW);
+            }
+        }
+    }
+}
+
 unsafe extern "C" fn lucina_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    dancing_blade_transition_check(fighter);
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             lucina_specials_mot_helper(fighter);
@@ -150,10 +178,6 @@ unsafe fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3,
         *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_CHANGE_STATUS
     );
-    if !StopModule::is_stop(fighter.module_accessor) {
-        lucina_specials_substatus(fighter, false.into());
-    }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucina_specials_substatus as *const () as _));
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
         WorkModule::set_int64(
             fighter.module_accessor,
@@ -477,3 +501,8 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+// stub out mask removal at the end of taunt
+#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    1.into()
+}

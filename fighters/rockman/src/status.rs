@@ -9,6 +9,7 @@ mod attack_s4;
 
 mod attack_air;
 mod ladder_attack;
+mod airshooter;
 
 mod special_n;
 mod rockbuster;
@@ -30,6 +31,12 @@ unsafe extern "C" fn rockman_special_lw_uniq(fighter: &mut L2CFighterCommon) -> 
     (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)).into()
 }
 
+unsafe extern "C" fn rockman_check_turn_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let leafshield = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
+    WorkModule::set_flag(fighter.module_accessor, leafshield, *FIGHTER_STATUS_TURN_FLAG_NO_TURN_TO_ESCAPE);
+    false.into()
+}
+
 #[fighter_reset]
 fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -43,7 +50,7 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
         fighter.global_table[0x2A].assign(&false.into());
         fighter.global_table[0x2B].assign(&false.into());
         fighter.global_table[0x34].assign(&false.into());
-        fighter.global_table[0x35].assign(&false.into());
+        fighter.global_table[0x35].assign(&L2CValue::Ptr(rockman_check_turn_uniq as *const () as _));
         fighter.global_table[0x4E].assign(&false.into());
         fighter.global_table[USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(rockman_special_lw_uniq as *const () as _));
     }
@@ -66,10 +73,11 @@ pub fn install() {
 
     attack_air::install();
     ladder_attack::install();
-    chargeshot::install();
-
+    airshooter::install();
+    
     special_n::install();
     rockbuster::install();
+    chargeshot::install();
 
     special_s::install();
 

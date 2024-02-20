@@ -110,10 +110,6 @@ unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 63.0);
-    if is_excute(fighter) {
-        StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_WAIT, false);
-    }
 }
 
 #[acmd_script( agent = "samus", script = "effect_attackhi4", category = ACMD_EFFECT , low_priority)]
@@ -124,17 +120,17 @@ pub unsafe fn attack_hi4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3u64), Hash40::new("top"), 0, 8, 0, -90, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8, 0, -90, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("armr"), 7.5, -0.341439992, -0.169369996, 0, 0, 0, 1.25, true, 0.9);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("armr"), 7.5, -0.341439992, -0.169369996, 0, 0, 0, 1.25, true, 0.9);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 25.0);
     if is_excute(fighter){
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x12afcb1820u64), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new_raw(0x0e60909a7cu64), Hash40::new("top"), 0.0, 28.0, 1.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("samus_atk_bomb"), Hash40::new("top"), 0.0, 28.0, 1.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
@@ -145,12 +141,12 @@ pub unsafe fn attack_hi4_sound(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 13.0);
     if is_excute(fighter){
-        STOP_SE(fighter, Hash40::new_raw(0x156bea5f43u64));
+        STOP_SE(fighter, Hash40::new("se_common_smash_start"));
         PLAY_SE(fighter, Hash40::new("se_samus_swing_l"));
     }
     frame(lua_state, 28.0);
     if is_excute(fighter){
-        PLAY_SE(fighter, Hash40::new_raw(0x1210d94515u64));
+        PLAY_SE(fighter, Hash40::new("se_samus_smash_h02"));
     }
 }
 

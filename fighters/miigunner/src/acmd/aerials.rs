@@ -228,7 +228,7 @@ unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 	frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14393ffad3), Hash40::new("armr"), 5.5, 0, 0, 0, 0, -90, 1.1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot_s"), Hash40::new("armr"), 5.5, 0, 0, 0, 0, -90, 1.1, true);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
 			EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1.0, true);
@@ -236,7 +236,7 @@ unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x185b39be1a), Hash40::new("armr"), 5.5, 0, 0, 0, 0, -90, 1.1, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot_after"), Hash40::new("armr"), 5.5, 0, 0, 0, 0, -90, 1.1, false);
 		LAST_EFFECT_SET_RATE(fighter, 0.8);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
@@ -478,12 +478,16 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 		let charge = VarModule::get_float(fighter.battle_object, vars::miigunner::status::CURRENT_CHARGE);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
 			let charge_mul = 1.0 + (charge * 0.025);
+			let mul = if VarModule::is_flag(fighter.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME) { 0.5 } else { 1.0 };
+			if !VarModule::is_flag(fighter.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME) {
+				VarModule::on_flag(fighter.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME);
+			}
 			ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 12.0 * charge_mul, 80, 65, 0, 50, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 1, 0, Hash40::new("handr"), 12.0 * charge_mul, 80, 65, 0, 50, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 2, 0, Hash40::new("handr"), 14.0 * charge_mul, 80, 65, 0, 50, 5.5, 8.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			SET_SPEED_EX(fighter,
-				KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(boma) * (20.0 - charge)/20.0,
-				1.0 + (0.125 * charge),
+				(KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(boma) * (20.0 - charge)/20.0) * mul,
+				(1.0 + (0.125 * charge)) * mul,
 				*KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
 			);
 		}
@@ -554,13 +558,13 @@ unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 20.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new_raw(0x139e44e9f0), Hash40::new("haver"), 0, 0, -3, 0, 0, 0, 1.1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot5"), Hash40::new("haver"), 0, 0, -3, 0, 0, 0, 1.1, true);
 		LAST_EFFECT_SET_RATE(fighter, 1.3);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL){
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
 		}
-		EFFECT_FOLLOW(fighter, Hash40::new_raw(0x13e943d966), Hash40::new("haver"), 0, 0, 2.5, 90, 0, 0, 0.3, true);
-		EFFECT_DETACH_KIND(fighter, Hash40::new_raw(0x139e44e9f0), -1);
+		EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot4"), Hash40::new("haver"), 0, 0, 2.5, 90, 0, 0, 0.3, true);
+		EFFECT_DETACH_KIND(fighter, Hash40::new("miigunner_atk_shot5"), -1);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
 			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_gimmckjump"), Hash40::new("armr"), 6, 0, 0, 0, -90, 0, 1, true);
@@ -574,7 +578,7 @@ unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 25.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new_raw(0x185b39be1a), Hash40::new("armr"), 6, 0, 0, 0, 0, -90, 0.75, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_shot_after"), Hash40::new("armr"), 6, 0, 0, 0, 0, -90, 0.75, true);
 		if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL){
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
 		}

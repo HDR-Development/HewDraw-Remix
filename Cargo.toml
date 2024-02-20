@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*", "dynamic", "fighters/*", "hdr-macros", "utils"]
+members = ["dynamic", "fighters/*", "hdr-macros", "utils"]
 
 resolver = "2"
 
@@ -213,6 +213,8 @@ yoshi = { workspace = true, optional = true }
 younglink = { workspace = true, optional = true }
 zelda = { workspace = true, optional = true }
 
+dynamic.workspace = true
+locks = { git = "https://github.com/HDR-Development/smashline" }
 hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["warnings"] }
 once_cell = "1"
 ninput = { git = "https://github.com/blu-dev/ninput" }
@@ -223,10 +225,6 @@ skyline_smash.workspace = true
 smashline.workspace = true
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
-
-[build-dependencies]
-build-tools = { path = "crates/build-tools" }
-hdr-macros.workspace = true
 
 [features]
 default = [

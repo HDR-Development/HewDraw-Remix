@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
@@ -147,6 +148,14 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
 }
 
 unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
+    match utils::game_modes::get_custom_mode() {
+        Some(modes) => {
+            if modes.contains(&CustomMode::Smash64Mode) {
+                return;
+            }
+        },
+        _ => {}
+    }
     if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR // prevents ASDI on wall bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U // prevents ASDI on ceiling bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D // prevents ASDI on ground bounces
@@ -196,12 +205,12 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
     fighter.clear_lua_stack();
-    lua_args!(fighter, 0xba5d667d4 as u64);
+    lua_args!(fighter, hash40("speed_vec_x") as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let damage_speed_x = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value speed x probably: {}", damage_speed_x);
     fighter.clear_lua_stack();
-    lua_args!(fighter, 0xbd2d15742 as u64);
+    lua_args!(fighter, hash40("speed_vec_y") as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let damage_speed_y = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value speed y probably: {}", damage_speed_y);
@@ -292,7 +301,7 @@ unsafe fn sub_ftStatusUniqProcessDamageFly_getMotionKind_hook(fighter: &mut L2CF
     let damage_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
     let lr = PostureModule::lr(fighter.module_accessor);
     fighter.clear_lua_stack();
-    lua_args!(fighter, 0xa96619c55 as u64);
+    lua_args!(fighter, hash40("back_slash") as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let back_damage = fighter.pop_lua_stack(1).get_bool();
     if back_damage || lr * damage_lr < 0.0 {
@@ -454,7 +463,7 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
         }
     }
     fighter.clear_lua_stack();
-    lua_args!(fighter, 0x8a6df7656 as u64);
+    lua_args!(fighter, hash40("absolute") as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let is_paralyze = fighter.pop_lua_stack(1).get_bool();
     let hashmap = fighter.local_func__fighter_status_damage_2();

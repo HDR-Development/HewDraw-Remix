@@ -34,12 +34,10 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST]))
         || (boma.kind() == *FIGHTER_KIND_LITTLEMAC
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, *FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START]))
-        || (boma.kind() == *FIGHTER_KIND_MARIO
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT]))
         || (boma.kind() == *FIGHTER_KIND_MIIGUNNER
             && boma.is_status_one_of(&[*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_GROUND, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_GROUND, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR]))
         || (boma.kind() == *FIGHTER_KIND_PACMAN
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N]))
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_PIKMIN
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_RICHTER
@@ -70,6 +68,8 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
             || (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3 && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))))
         || (boma.kind() == *FIGHTER_KIND_MIISWORDSMAN
             && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3 && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)))
+        || (boma.kind() == *FIGHTER_KIND_TRAIL
+        && boma.is_status_one_of(&[*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         {
             // if b-reverse flag does not already exist in status_attr bitmask
             if status_attr & *FIGHTER_STATUS_ATTR_START_TURN as u32 == 0 {

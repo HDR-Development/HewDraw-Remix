@@ -4,7 +4,7 @@ mod guard;
 mod guard_damage;
 mod guard_off;
 mod guard_on;
-mod misc;
+pub mod misc;
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
