@@ -29,6 +29,7 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
     && 28.0 < fighter.motion_frame() && fighter.motion_frame() < 31.0
     && !fighter.is_button_on(Buttons::Special)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
         if VarModule::is_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT) {
