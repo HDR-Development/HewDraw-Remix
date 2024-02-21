@@ -162,5 +162,8 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(on_rule_select_hook, once_per_game_frame);
+    skyline::install_hooks!(
+        on_rule_select_hook,
+        // once_per_game_frame
+    );
 }
