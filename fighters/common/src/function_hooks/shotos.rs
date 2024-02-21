@@ -6,7 +6,7 @@ pub fn install() {
     disable_negative_edge,
     // enable_terry_inputs_for_shotos
   );
-  skyline::patching::Patch::in_text(0x10d45a4).data(0x14000014u32); // enables terry's command inputs for shotos
+  skyline::patching::Patch::in_text(0x10D45C4).data(0x14000014u32); // enables terry's command inputs for shotos
 }
 
 // disables negative edge check for both shotos
