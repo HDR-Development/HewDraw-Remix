@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "pichu", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -57,8 +57,8 @@ unsafe fn pichu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pichu", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pichu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
@@ -105,8 +105,8 @@ unsafe fn pichu_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pichu", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -136,8 +136,8 @@ unsafe fn pichu_attack_hi4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pichu", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pichu_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -176,8 +176,8 @@ unsafe fn pichu_attack_hi4_effect(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "pichu", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pichu_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -194,8 +194,8 @@ unsafe fn pichu_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pichu", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -232,8 +232,8 @@ unsafe fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pichu", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pichu_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -263,15 +263,17 @@ unsafe fn pichu_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pichu_attack_s4_s_game,
-        pichu_attack_s4_s_effect,
-        pichu_attack_hi4_game,
-        pichu_attack_hi4_effect,
-        pichu_attack_hi4_expression,
-        pichu_attack_lw4_game,
-        pichu_attack_lw4_expression,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pichu")
+        .acmd("game_attacks4", pichu_attack_s4_s_game)
+        .acmd("effect_attacks4", pichu_attack_s4_s_effect)
+        .acmd("game_attackhi4", pichu_attack_hi4_game)
+        .acmd("effect_attackhi4", pichu_attack_hi4_effect)
+        .acmd("expression_attackhi4", pichu_attack_hi4_expression)
+        .acmd("game_attacklw4", pichu_attack_lw4_game)
+        .acmd("expression_attacklw4", pichu_attack_lw4_expression)
+        .install();
+}

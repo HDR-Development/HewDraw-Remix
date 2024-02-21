@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "pickel", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_throw_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pickel_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -30,8 +30,8 @@ unsafe fn pickel_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pickel_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -65,9 +65,10 @@ unsafe fn pickel_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        pickel_throw_f_game,
-        pickel_throw_lw_game
-    );
+    smashline::Agent::new("pickel")
+        .acmd("game_throwf", pickel_throw_f_game)
+        .acmd("game_throwlw", pickel_throw_lw_game)
+        .install();
 }

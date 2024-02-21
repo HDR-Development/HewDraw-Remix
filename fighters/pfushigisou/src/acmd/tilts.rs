@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "pfushigisou", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -32,8 +32,8 @@ unsafe fn pfushigisou_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -67,8 +67,8 @@ unsafe fn pfushigisou_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -103,11 +103,13 @@ unsafe fn pfushigisou_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pfushigisou_attack_s3_s_game,
-        pfushigisou_attack_hi3_game,
-        pfushigisou_attack_lw3_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pfushigisou")
+        .acmd("game_attacks3", pfushigisou_attack_s3_s_game)
+        .acmd("game_attackhi3", pfushigisou_attack_hi3_game)
+        .acmd("game_attacklw3", pfushigisou_attack_lw3_game)
+        .install();
+}

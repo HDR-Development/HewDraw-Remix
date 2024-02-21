@@ -2,14 +2,10 @@ use super::*;
 use globals::*;
 
 
-pub fn install() {
-    install_status_scripts!(
-        attack_air_main
-    );
-}
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+
+pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     fighter.main_shift(attack_air_main_loop)
 }
@@ -170,4 +166,9 @@ unsafe extern "C" fn link_event_store_l2c_table(fighter: &mut L2CFighterCommon, 
     let deleter: extern "C" fn(*mut app::LinkEvent) = std::mem::transmute(*((*(link_event as *const u64) + 0x8) as *const u64));
     deleter(link_event);
     ret
+}
+pub fn install() {
+    smashline::Agent::new("pikmin")
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
+        .install();
 }

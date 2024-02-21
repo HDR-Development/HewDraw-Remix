@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "pzenigame", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 20.0);
@@ -23,8 +23,8 @@ unsafe fn pzenigame_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -48,8 +48,8 @@ unsafe fn pzenigame_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 20.0);
@@ -69,8 +69,8 @@ unsafe fn pzenigame_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -117,12 +117,14 @@ unsafe fn pzenigame_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pzenigame_attack_s4_hi_game,
-        pzenigame_attack_s4_s_game,
-        pzenigame_attack_s4_lw_game,
-        pzenigame_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pzenigame")
+        .acmd("game_attacks4hi", pzenigame_attack_s4_hi_game)
+        .acmd("game_attacks4", pzenigame_attack_s4_s_game)
+        .acmd("game_attacks4lw", pzenigame_attack_s4_lw_game)
+        .acmd("game_attacklw4", pzenigame_attack_lw4_game)
+        .install();
+}

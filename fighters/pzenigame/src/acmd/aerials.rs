@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "pzenigame", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -27,8 +27,8 @@ unsafe fn pzenigame_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -53,8 +53,8 @@ unsafe fn pzenigame_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -82,15 +82,15 @@ unsafe fn pzenigame_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_landing_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -120,8 +120,8 @@ unsafe fn pzenigame_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "expression_attackairhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn pzenigame_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -134,8 +134,8 @@ unsafe fn pzenigame_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -165,15 +165,17 @@ unsafe fn pzenigame_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pzenigame_attack_air_n_game,
-        pzenigame_attack_air_f_game,
-        pzenigame_attack_air_b_game,
-        pzenigame_landing_air_b_game,
-        pzenigame_attack_air_hi_game,
-        pzenigame_attack_air_hi_expression,
-        pzenigame_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pzenigame")
+        .acmd("game_attackairn", pzenigame_attack_air_n_game)
+        .acmd("game_attackairf", pzenigame_attack_air_f_game)
+        .acmd("game_attackairb", pzenigame_attack_air_b_game)
+        .acmd("game_landingairb", pzenigame_landing_air_b_game)
+        .acmd("game_attackairhi", pzenigame_attack_air_hi_game)
+        .acmd("expression_attackairhi", pzenigame_attack_air_hi_expression)
+        .acmd("game_attackairlw", pzenigame_attack_air_lw_game)
+        .install();
+}

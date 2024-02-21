@@ -38,9 +38,10 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
+
+pub fn install() {
     acmd::install();
-    pikmin::install(is_runtime);
+    pikmin::install();
     status::install();
-    opff::install(is_runtime);
+    opff::install();
 }

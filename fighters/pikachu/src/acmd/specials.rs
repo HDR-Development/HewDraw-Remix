@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "pikachu", scripts = ["game_specialhi1", "game_specialairhi1"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikachu_special_hi1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikachu_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -10,8 +10,8 @@ unsafe fn pikachu_special_hi1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
-unsafe fn game_speciallwhit(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_speciallwhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -24,9 +24,11 @@ unsafe fn game_speciallwhit(fighter: &mut L2CAgentBase) {
 
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        pikachu_special_hi1_game,
-        game_speciallwhit,
-    );
+    smashline::Agent::new("pikachu")
+        .acmd("game_specialhi1", pikachu_special_hi1_game)
+        .acmd("game_specialairhi1", pikachu_special_hi1_game)
+        .acmd("game_speciallwhit", game_speciallwhit)
+        .install();
 }

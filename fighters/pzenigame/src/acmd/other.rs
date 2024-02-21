@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "pzenigame", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +27,8 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +53,8 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +79,8 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +95,8 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +121,8 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_dash", category = ACMD_EFFECT, low_priority )]
-unsafe fn dash_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -138,8 +138,8 @@ unsafe fn dash_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -149,8 +149,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_runbrake", category = ACMD_EFFECT, low_priority )]
-unsafe fn runbrake_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn runbrake_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -163,8 +163,8 @@ unsafe fn runbrake_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_runbrakel", category = ACMD_EFFECT, low_priority )]
-unsafe fn runbrakel_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn runbrakel_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -177,8 +177,8 @@ unsafe fn runbrakel_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_runbraker", category = ACMD_EFFECT, low_priority )]
-unsafe fn runbraker_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn runbraker_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -191,8 +191,8 @@ unsafe fn runbraker_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_turnrun", category = ACMD_EFFECT, low_priority )]
-unsafe fn turnrun_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turnrun_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -213,8 +213,8 @@ unsafe fn turnrun_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_turnrunbrake", category = ACMD_EFFECT, low_priority )]
-unsafe fn turnrunbrake_effect(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn turnrunbrake_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -223,8 +223,8 @@ unsafe fn turnrunbrake_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn pzenigame_catch_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pzenigame_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -250,8 +250,8 @@ unsafe fn pzenigame_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -266,8 +266,8 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -281,23 +281,25 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_effect,
-        dash_sound,
-        runbrake_effect,
-        runbrakel_effect,
-        runbraker_effect,
-        turnrun_effect,
-        turnrunbrake_effect,
-        pzenigame_catch_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pzenigame")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("effect_dash", dash_effect)
+        .acmd("sound_dash", dash_sound)
+        .acmd("effect_runbrake", runbrake_effect)
+        .acmd("effect_runbrakel", runbrakel_effect)
+        .acmd("effect_runbraker", runbraker_effect)
+        .acmd("effect_turnrun", turnrun_effect)
+        .acmd("effect_turnrunbrake", turnrunbrake_effect)
+        .acmd("game_catch", pzenigame_catch_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+}

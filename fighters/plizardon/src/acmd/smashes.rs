@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "plizardon", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -44,8 +44,8 @@ unsafe fn plizardon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -106,8 +106,8 @@ unsafe fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -133,11 +133,13 @@ unsafe fn plizardon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        plizardon_attack_s4_s_game,
-        plizardon_attack_hi4_game,
-        plizardon_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("plizardon")
+        .acmd("game_attacks4", plizardon_attack_s4_s_game)
+        .acmd("game_attackhi4", plizardon_attack_hi4_game)
+        .acmd("game_attacklw4", plizardon_attack_lw4_game)
+        .install();
+}

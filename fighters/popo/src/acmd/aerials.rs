@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "popo", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn popo_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -25,8 +25,8 @@ unsafe fn popo_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "popo", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn popo_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -49,8 +49,8 @@ unsafe fn popo_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn popo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 19.0);
@@ -60,8 +60,8 @@ unsafe fn popo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn popo_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -81,8 +81,8 @@ unsafe fn popo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
-unsafe fn popo_effect_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -92,8 +92,8 @@ unsafe fn popo_effect_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn popo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -124,8 +124,8 @@ unsafe fn popo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn popo_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -134,8 +134,8 @@ unsafe fn popo_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn popo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -167,8 +167,8 @@ unsafe fn popo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -177,8 +177,8 @@ unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "effect_attackairlw_nana", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -187,15 +187,15 @@ unsafe fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn popo_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-#[acmd_script( agent = "popo", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn popo_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn popo_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 18.0);
     if is_excute(fighter){
@@ -203,19 +203,21 @@ unsafe fn popo_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        popo_attack_air_n_game,
-        popo_attack_air_f_game,
-        popo_attack_air_f_effect,
-        popo_attack_air_b_game,
-        popo_effect_attackairb,
-        popo_attack_air_hi_game,
-        popo_attack_air_hi_effect,
-        popo_attack_air_lw_game,
-        effect_attackairlw,
-        effect_attackairlw_nana,
-        popo_landing_air_lw_effect,
-        popo_landing_air_lw_expression,
-    );
+    smashline::Agent::new("popo")
+        .acmd("game_attackairn", popo_attack_air_n_game)
+        .acmd("game_attackairf", popo_attack_air_f_game)
+        .acmd("effect_attackairf", popo_attack_air_f_effect)
+        .acmd("game_attackairb", popo_attack_air_b_game)
+        .acmd("effect_attackairb", popo_effect_attackairb)
+        .acmd("game_attackairhi", popo_attack_air_hi_game)
+        .acmd("effect_attackairhi", popo_attack_air_hi_effect)
+        .acmd("game_attackairlw", popo_attack_air_lw_game)
+        .acmd("effect_attackairlw", effect_attackairlw)
+        .acmd("effect_attackairlw_nana", effect_attackairlw_nana)
+        .acmd("effect_landingairlw", popo_landing_air_lw_effect)
+        .acmd("expression_landingairlw", popo_landing_air_lw_expression)
+        .install();
 }

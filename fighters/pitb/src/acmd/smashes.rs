@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "pitb", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn pitb_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pitb_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -30,8 +30,8 @@ unsafe fn pitb_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -86,8 +86,8 @@ unsafe fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pitb", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn pitb_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pitb_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -117,10 +117,11 @@ unsafe fn pitb_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        pitb_attack_s4_s_game,
-        pitb_attack_hi4_game,
-        pitb_attack_lw4_game,
-    );
+    smashline::Agent::new("pitb")
+        .acmd("game_attacks4", pitb_attack_s4_s_game)
+        .acmd("game_attackhi4", pitb_attack_hi4_game)
+        .acmd("game_attacklw4", pitb_attack_lw4_game)
+        .install();
 }

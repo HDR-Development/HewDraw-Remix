@@ -2,8 +2,8 @@
 use super::*;
 
 // shrinks the magma block effects to match its reduced size
-#[acmd_script( agent = "pickel", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackhi4(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -21,9 +21,11 @@ unsafe fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        effect_attackhi4
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pickel")
+        .acmd("effect_attackhi4", effect_attackhi4)
+        .install();
+}

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "purin", script = "game_specialnstartr", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_n_start_r_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_n_start_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -12,8 +12,8 @@ unsafe fn purin_special_n_start_r_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specialairnstartr", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_air_n_start_r_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_air_n_start_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -22,8 +22,8 @@ unsafe fn purin_special_air_n_start_r_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specialn", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
     if is_excute(fighter) {
@@ -34,8 +34,8 @@ unsafe fn purin_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specialairn", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -46,8 +46,8 @@ unsafe fn purin_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specialnhold", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_n_hold_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,8 +56,8 @@ unsafe fn purin_special_n_hold_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specialairnhold", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_air_n_hold_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_air_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -66,19 +66,8 @@ unsafe fn purin_special_air_n_hold_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specialnturn", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_n_turn_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
-    }
-}
 
-#[acmd_script( agent = "purin", script = "game_specialairnturn", category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn purin_special_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -88,8 +77,19 @@ unsafe fn purin_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", scripts = ["game_specialairnendl", "game_specialairnendr", "game_specialnendr", "game_specialnendl"], category = ACMD_GAME, low_priority )]
-unsafe fn purin_special_n_end(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+}
+
+
+unsafe extern "C" fn purin_special_n_end(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -99,8 +99,8 @@ unsafe fn purin_special_n_end(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_special_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -117,8 +117,8 @@ unsafe fn purin_special_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -148,8 +148,8 @@ unsafe fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", scripts = ["game_speciallwl", "game_speciallwr", "game_specialairlwl", "game_specialairlwr"] , category = ACMD_GAME , low_priority)]
-unsafe fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -172,20 +172,28 @@ unsafe fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        purin_special_n_start_r_game,
-        purin_special_air_n_start_r_game,
-        purin_special_n_game,
-        purin_special_air_n_game,
-        purin_special_n_hold_game,
-        purin_special_air_n_hold_game,
-        purin_special_n_turn_game,
-        purin_special_air_n_turn_game,
-        purin_special_n_end,
-        purin_special_s_game,
-        purin_special_air_s_game,
-        purin_special_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("purin")
+        .acmd("game_specialnstartr", purin_special_n_start_r_game)
+        .acmd("game_specialairnstartr", purin_special_air_n_start_r_game)
+        .acmd("game_specialn", purin_special_n_game)
+        .acmd("game_specialairn", purin_special_air_n_game)
+        .acmd("game_specialnhold", purin_special_n_hold_game)
+        .acmd("game_specialairnhold", purin_special_air_n_hold_game)
+        .acmd("game_specialnturn", purin_special_n_turn_game)
+        .acmd("game_specialairnturn", purin_special_air_n_turn_game)
+        .acmd("game_specialairnendl", purin_special_n_end)
+        .acmd("game_specialairnendr", purin_special_n_end)
+        .acmd("game_specialnendr", purin_special_n_end)
+        .acmd("game_specialnendl", purin_special_n_end)
+        .acmd("game_specials", purin_special_s_game)
+        .acmd("game_specialairs", purin_special_air_s_game)
+        .acmd("game_speciallwl", purin_special_lw_game)
+        .acmd("game_speciallwr", purin_special_lw_game)
+        .acmd("game_specialairlwl", purin_special_lw_game)
+        .acmd("game_specialairlwr", purin_special_lw_game)
+        .install();
+}

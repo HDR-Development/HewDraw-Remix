@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "pikachu", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pikachu_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikachu_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -26,8 +26,8 @@ unsafe fn pikachu_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "effect_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -70,8 +70,8 @@ unsafe fn pikachu_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "expression_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pikachu_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikachu_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -96,8 +96,8 @@ unsafe fn pikachu_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -130,8 +130,8 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -159,8 +159,8 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -171,8 +171,8 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -184,15 +184,15 @@ unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_landingairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_landingairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "pikachu", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -205,8 +205,8 @@ unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -241,8 +241,8 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -255,8 +255,8 @@ unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -285,51 +285,52 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pikachu", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn game_landingairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_landingairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "pikachu", script = "effect_landingairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_landingairlw(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
 }
 
-#[acmd_script( agent = "pikachu", script = "expression_landingairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_landingairlw(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
 }
 
-#[acmd_script( agent = "pikachu", script = "sound_landingairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_landingairlw(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
 }
+
 
 pub fn install() {
-    install_acmd_scripts!(
-        pikachu_attack_air_n_game,
-        pikachu_attack_air_n_effect,
-        pikachu_attack_air_n_expression,
-        game_attackairf,
-        game_attackairb,
-        expression_attackairb,
-        effect_attackairb,
-        sound_attackairb,
-        game_landingairb,
-        game_attackairhi,
-        expression_attackairhi,
-        game_attackairlw,
-        game_landingairlw,
-        effect_landingairlw,
-        sound_landingairlw,
-        expression_landingairlw,
-    );
+    smashline::Agent::new("pikachu")
+        .acmd("game_attackairn", pikachu_attack_air_n_game)
+        .acmd("effect_attackairn", pikachu_attack_air_n_effect)
+        .acmd("expression_attackairn", pikachu_attack_air_n_expression)
+        .acmd("game_attackairf", game_attackairf)
+        .acmd("game_attackairb", game_attackairb)
+        .acmd("effect_attackairb", effect_attackairb)
+        .acmd("sound_attackairb", sound_attackairb)
+        .acmd("game_landingairb", game_landingairb)
+        .acmd("expression_attackairb", expression_attackairb)
+        .acmd("game_attackairhi", game_attackairhi)
+        .acmd("expression_attackairhi", expression_attackairhi)
+        .acmd("game_attackairlw", game_attackairlw)
+        .acmd("game_landingairlw", game_landingairlw)
+        .acmd("effect_landingairlw", effect_landingairlw)
+        .acmd("expression_landingairlw", expression_landingairlw)
+        .acmd("sound_landingairlw", sound_landingairlw)
+        .install();
 }

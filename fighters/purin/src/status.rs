@@ -2,16 +2,12 @@ use super::*;
 use globals::*;
 // status script import
  
-pub fn install() {
-    install_status_scripts!(
-        special_lw
-    );
-}
+
 
 // FIGHTER_STATUS_KIND_SPECIAL_LW
 
-#[status_script(agent = "purin", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
     if PostureModule::lr(fighter.module_accessor) != 1.0 {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_l") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
         WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_l") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
@@ -108,4 +104,9 @@ unsafe extern "C" fn special_lw_situation_helper(fighter: &mut L2CFighterCommon)
         }
         MotionModule::set_rate(fighter.module_accessor, special_lw_mot_rate);
     }
+}
+pub fn install() {
+    smashline::Agent::new("purin")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw)
+        .install();
 }

@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "pikmin", scripts = ["game_specials", "game_specialairs"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_s(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikmin_special_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -14,8 +14,8 @@ unsafe fn pikmin_special_s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_n(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikmin_special_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -31,15 +31,15 @@ unsafe fn pikmin_special_n(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", scripts = ["game_specialnfailure", "game_specialairnfailure"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_n_failure(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pikmin_special_n_failure(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "pikmin", scripts = ["game_speciallw", "game_specialairlw"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -55,8 +55,8 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", scripts = ["effect_speciallw", "effect_specialairlw"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -70,13 +70,19 @@ unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pikmin_special_s,
-        pikmin_special_n,
-        pikmin_special_n_failure,
-        game_speciallw,
-        effect_speciallw
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pikmin")
+        .acmd("game_specials", pikmin_special_s)
+        .acmd("game_specialairs", pikmin_special_s)
+        .acmd("game_specialnstart", pikmin_special_n)
+        .acmd("game_specialnfailure", pikmin_special_n_failure)
+        .acmd("game_specialairnfailure", pikmin_special_n_failure)
+        .acmd("game_speciallw", game_speciallw)
+        .acmd("game_specialairlw", game_speciallw)
+        .acmd("effect_speciallw", effect_speciallw)
+        .acmd("effect_specialairlw", effect_speciallw)
+        .install();
+}

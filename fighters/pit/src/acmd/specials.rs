@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "pit", script = "game_specialairnfires" , category = ACMD_GAME , low_priority)]
-unsafe fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -14,8 +14,8 @@ unsafe fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialairnfirehi" , category = ACMD_GAME , low_priority)]
-unsafe fn pit_special_n_fire_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_n_fire_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -28,8 +28,8 @@ unsafe fn pit_special_n_fire_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn pit_special_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -50,8 +50,8 @@ unsafe fn pit_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialsend", category = ACMD_GAME, low_priority )]
-unsafe fn pit_special_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -72,8 +72,8 @@ unsafe fn pit_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn pit_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -86,8 +86,8 @@ unsafe fn pit_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
-unsafe fn pit_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -119,8 +119,8 @@ unsafe fn pit_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", scripts = ["effect_speciallwstartl", "effect_speciallwstartr", "effect_specialairlwstartl", "effect_specialairlwstartr"], category = ACMD_EFFECT, low_priority )]
-unsafe fn pit_special_lw_start_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -136,8 +136,8 @@ unsafe fn pit_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", scripts = ["effect_speciallwendl", "effect_speciallwendr", "effect_specialairlwendl", "effect_specialairlwendr"], category = ACMD_EFFECT, low_priority )]
-unsafe fn pit_special_lw_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pit_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -153,15 +153,22 @@ unsafe fn pit_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        pit_special_n_fire_s_game,
-        pit_special_n_fire_hi_game,
-        pit_special_s_start_game,
-        pit_special_air_s_start_game,
-        pit_special_s_end_game,
-        pit_special_air_s_end_game,
-        pit_special_lw_start_effect,
-        pit_special_lw_end_effect,
-    );
+    smashline::Agent::new("pit")
+        .acmd("game_specialairnfires", pit_special_n_fire_s_game)
+        .acmd("game_specialairnfirehi", pit_special_n_fire_hi_game)
+        .acmd("game_specialsstart", pit_special_s_start_game)
+        .acmd("game_specialsend", pit_special_s_end_game)
+        .acmd("game_specialairsstart", pit_special_air_s_start_game)
+        .acmd("game_specialairsend", pit_special_air_s_end_game)
+        .acmd("effect_speciallwstartl", pit_special_lw_start_effect)
+        .acmd("effect_speciallwstartr", pit_special_lw_start_effect)
+        .acmd("effect_specialairlwstartl", pit_special_lw_start_effect)
+        .acmd("effect_specialairlwstartr", pit_special_lw_start_effect)
+        .acmd("effect_speciallwendl", pit_special_lw_end_effect)
+        .acmd("effect_speciallwendr", pit_special_lw_end_effect)
+        .acmd("effect_specialairlwendl", pit_special_lw_end_effect)
+        .acmd("effect_specialairlwendr", pit_special_lw_end_effect)
+        .install();
 }

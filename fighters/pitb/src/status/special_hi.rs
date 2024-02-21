@@ -4,8 +4,8 @@ use globals::*;
 
 // FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END
 
-#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -35,8 +35,8 @@ pub unsafe fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_hi_end"),
@@ -77,9 +77,18 @@ unsafe extern "C" fn special_hi_rush_end_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
+
 pub fn install() {
-    install_status_scripts!(
-        special_hi_rush_end_pre,
-        special_hi_rush_end_main
-    );
+    smashline::Agent::new("pitb")
+        .status(
+            Pre,
+            *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END,
+            special_hi_rush_end_pre,
+        )
+        .status(
+            Main,
+            *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END,
+            special_hi_rush_end_main,
+        )
+        .install();
 }

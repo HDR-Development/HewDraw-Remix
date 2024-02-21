@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "pickel", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_dash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -16,8 +16,8 @@ unsafe fn game_dash(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pickel", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_dash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -27,8 +27,8 @@ unsafe fn sound_dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_turndash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_turndash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -49,8 +49,8 @@ unsafe fn game_turndash(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pickel", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn game_escapeair(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -65,8 +65,8 @@ unsafe fn game_escapeair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn game_escapeairslide(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -80,8 +80,8 @@ unsafe fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_catch", category = ACMD_GAME, low_priority )]
-unsafe fn game_catch(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -134,8 +134,8 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 2.0);
 }
 
-#[acmd_script( agent = "pickel", script = "game_catchdash", category = ACMD_GAME, low_priority )]
-unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_catchdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -187,8 +187,8 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 2.0);
 }
 
-#[acmd_script( agent = "pickel", script = "game_catchturn", category = ACMD_GAME, low_priority )]
-unsafe fn game_catchturn(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_catchturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -240,8 +240,8 @@ unsafe fn game_catchturn(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 2.0);
 }
 
-#[acmd_script( agent = "pickel", scripts = ["game_appealsl", "game_appealsr"], category = ACMD_GAME, low_priority )]
-unsafe fn game_appeals(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -255,8 +255,8 @@ unsafe fn game_appeals(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_guardon", category = ACMD_GAME, low_priority)]
-unsafe fn game_guardon(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_guardon(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -265,8 +265,8 @@ unsafe fn game_guardon(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_guarddamage", category = ACMD_GAME, low_priority)]
-unsafe fn game_guarddamage(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_guarddamage(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -276,7 +276,7 @@ unsafe fn game_guarddamage(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "sound_landingheavy", category = ACMD_SOUND, low_priority)]
+
 unsafe extern "C" fn sound_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -294,8 +294,8 @@ unsafe extern "C" fn sound_landingheavy(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_passive", category = ACMD_GAME, low_priority)]
-unsafe fn game_passive(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_passive(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -309,8 +309,8 @@ unsafe fn game_passive(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_melt", script = "game_passive", category = ACMD_GAME, low_priority)]
-unsafe fn melt_game_passive(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn melt_game_passive(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     if is_excute(weapon) {
@@ -318,8 +318,8 @@ unsafe fn melt_game_passive(weapon: &mut L2CAgentBase) {
     }
 } 
 
-#[acmd_script( agent = "pickel_melt", script = "effect_passive", category = ACMD_EFFECT, low_priority)]
-unsafe fn melt_effect_passive(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn melt_effect_passive(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     if is_excute(weapon) {
@@ -327,8 +327,8 @@ unsafe fn melt_effect_passive(weapon: &mut L2CAgentBase) {
     }
 } 
 
-#[acmd_script( agent = "pickel_melt", script = "sound_passive", category = ACMD_SOUND, low_priority)]
-unsafe fn melt_sound_passive(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn melt_sound_passive(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     if is_excute(weapon) {
@@ -336,24 +336,29 @@ unsafe fn melt_sound_passive(weapon: &mut L2CAgentBase) {
     }
 } 
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_dash,
-        sound_dash,
-        game_turndash,
-        game_escapeair,
-        game_escapeairslide,
-        game_catch,
-        game_catchdash,
-        game_catchturn,
-        game_appeals,
-        game_guardon,
-        game_guarddamage,
-        sound_landingheavy,
-        game_passive,
-        melt_game_passive,
-        melt_effect_passive,
-        melt_sound_passive
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pickel")
+        .acmd("game_dash", game_dash)
+        .acmd("sound_dash", sound_dash)
+        .acmd("game_turndash", game_turndash)
+        .acmd("game_escapeair", game_escapeair)
+        .acmd("game_escapeairslide", game_escapeairslide)
+        .acmd("game_catch", game_catch)
+        .acmd("game_catchdash", game_catchdash)
+        .acmd("game_catchturn", game_catchturn)
+        .acmd("game_appealsl", game_appeals)
+        .acmd("game_appealsr", game_appeals)
+        .acmd("game_guardon", game_guardon)
+        .acmd("game_guarddamage", game_guarddamage)
+        .acmd("sound_landingheavy", sound_landingheavy)
+        .acmd("game_passive", game_passive)
+        .install();
+    smashline::Agent::new("pickel_melt")
+        .acmd("game_passive", melt_game_passive)
+        .acmd("effect_passive", melt_effect_passive)
+        .acmd("sound_passive", melt_sound_passive)
+        .install();
+}

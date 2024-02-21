@@ -3,8 +3,8 @@ use super::*;
 
 // Note: Neutral air is handled in tilts.rs, as it shares a script with forward tilt/jab
 
-#[acmd_script( agent = "pickel", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -170,8 +170,8 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     }   
 }
 
-#[acmd_script( agent = "pickel", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -264,8 +264,8 @@ unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -412,8 +412,8 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )] 
-unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
+ 
+unsafe extern "C" fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -512,8 +512,8 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -575,8 +575,8 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -605,8 +605,8 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairlw2" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairlw2(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairlw2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -622,8 +622,8 @@ unsafe fn game_attackairlw2(fighter: &mut L2CAgentBase) {
     }      
 }
 
-#[acmd_script( agent = "pickel_forge", script = "game_fall", category = ACMD_GAME, low_priority )]
-unsafe fn forge_game_fall(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn forge_game_fall(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     if is_excute(weapon) {
@@ -636,8 +636,8 @@ unsafe fn forge_game_fall(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_forge", script = "game_fallattack", category = ACMD_GAME, low_priority )]
-unsafe fn forge_game_fallattack(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn forge_game_fallattack(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -665,8 +665,8 @@ unsafe fn forge_game_fallattack(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_forge", script = "game_fallattackride", category = ACMD_GAME, low_priority )]
-unsafe fn forge_game_fallattackride(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn forge_game_fallattackride(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -680,18 +680,22 @@ unsafe fn forge_game_fallattackride(weapon: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_attackairf,
-        effect_attackairf,
-        game_attackairb,
-        effect_attackairb,
-        game_attackairhi,
-        game_attackairlw,
-        game_attackairlw2,
-        forge_game_fall,
-        forge_game_fallattack,
-        forge_game_fallattackride
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pickel_forge")
+        .acmd("game_fall", forge_game_fall)
+        .acmd("game_fallattack", forge_game_fallattack)
+        .acmd("game_fallattackride", forge_game_fallattackride)
+        .install();
+    smashline::Agent::new("pickel")
+        .acmd("game_attackairf", game_attackairf)
+        .acmd("effect_attackairf", effect_attackairf)
+        .acmd("game_attackairb", game_attackairb)
+        .acmd("effect_attackairb", effect_attackairb)
+        .acmd("game_attackairhi", game_attackairhi)
+        .acmd("game_attackairlw", game_attackairlw)
+        .acmd("game_attackairlw2", game_attackairlw2)
+        .install();
+}

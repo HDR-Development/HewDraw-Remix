@@ -115,8 +115,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     quick_attack_cancel(fighter, boma);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_PIKACHU )]
-pub fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pikachu_frame(fighter);
@@ -128,4 +128,9 @@ pub unsafe fn pikachu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma);
     }
+}
+pub fn install() {
+    smashline::Agent::new("pikachu")
+        .on_line(Main, pikachu_frame_wrapper)
+        .install();
 }

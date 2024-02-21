@@ -38,9 +38,9 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
+
+pub fn install() {
     acmd::install();
     status::install();
-    opff::install(is_runtime);
-
+    opff::install();
 }

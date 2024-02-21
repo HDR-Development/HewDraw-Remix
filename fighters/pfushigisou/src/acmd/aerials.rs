@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -40,8 +40,8 @@ unsafe fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /*
@@ -57,8 +57,8 @@ unsafe fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -83,8 +83,8 @@ unsafe fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pfushigisou", script = "expression_attackairf" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn pfushigisou_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -98,8 +98,8 @@ unsafe fn pfushigisou_attack_air_f_expression(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -132,8 +132,8 @@ unsafe fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -172,8 +172,8 @@ unsafe fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -201,15 +201,17 @@ unsafe fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pfushigisou_attack_air_n_game,
-        pfushigisou_landing_air_n_game,
-        pfushigisou_attack_air_f_game,
-        pfushigisou_attack_air_f_expression,
-        pfushigisou_attack_air_b_game,
-        pfushigisou_attack_air_hi_game,
-        pfushigisou_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("pfushigisou")
+        .acmd("game_attackairn", pfushigisou_attack_air_n_game)
+        .acmd("game_landingairn", pfushigisou_landing_air_n_game)
+        .acmd("game_attackairf", pfushigisou_attack_air_f_game)
+        .acmd("expression_attackairf", pfushigisou_attack_air_f_expression)
+        .acmd("game_attackairb", pfushigisou_attack_air_b_game)
+        .acmd("game_attackairhi", pfushigisou_attack_air_hi_game)
+        .acmd("game_attackairlw", pfushigisou_attack_air_lw_game)
+        .install();
+}

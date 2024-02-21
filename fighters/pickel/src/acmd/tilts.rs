@@ -2,8 +2,8 @@
 use super::*;
 
 // this script is used for jab, forward tilt, and neutral air
-#[acmd_script( agent = "pickel", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -102,8 +102,8 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -162,8 +162,8 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
@@ -216,8 +216,8 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackhi3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn expression_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -260,8 +260,8 @@ unsafe fn expression_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -308,8 +308,8 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attacklw3(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -341,8 +341,8 @@ unsafe fn effect_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_fire", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn fire_game_attacklw3(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn fire_game_attacklw3(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     let pickel_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -384,8 +384,8 @@ unsafe fn fire_game_attacklw3(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_fire", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn fire_effect_attacklw3(weapon: &mut L2CAgentBase) {
+
+unsafe extern "C" fn fire_effect_attacklw3(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     let pickel_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -411,15 +411,18 @@ unsafe fn fire_effect_attacklw3(weapon: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_attacks3,
-        game_attackhi3,
-        effect_attackhi3,
-        expression_attackhi3,
-        game_attacklw3,
-        effect_attacklw3,
-        fire_game_attacklw3,
-        fire_effect_attacklw3
-    );
+    smashline::Agent::new("pickel_fire")
+        .acmd("game_attacklw3", fire_game_attacklw3)
+        .acmd("effect_attacklw3", fire_effect_attacklw3)
+        .install();
+    smashline::Agent::new("pickel")
+        .acmd("game_attacks3", game_attacks3)
+        .acmd("game_attackhi3", game_attackhi3)
+        .acmd("effect_attackhi3", effect_attackhi3)
+        .acmd("expression_attackhi3", expression_attackhi3)
+        .acmd("game_attacklw3", game_attacklw3)
+        .acmd("effect_attacklw3", effect_attacklw3)
+        .install();
 }

@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "purin", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_attack_11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -24,8 +24,8 @@ unsafe fn purin_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -43,10 +43,12 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        purin_attack_11_game,
-        game_attackdash
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("purin")
+        .acmd("game_attack11", purin_attack_11_game)
+        .acmd("game_attackdash", game_attackdash)
+        .install();
+}

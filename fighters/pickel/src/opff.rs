@@ -384,8 +384,8 @@ unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_PICKEL )]
-pub fn pickel_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn pickel_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pickel_frame(fighter)
@@ -403,8 +403,7 @@ pub unsafe fn pickel_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 ///               ///
 
 // minecart
-#[smashline::weapon_frame(agent = WEAPON_KIND_PICKEL_TROLLEY, main)]
-pub fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub unsafe extern "C" fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -431,8 +430,7 @@ pub fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
 }
 
 // anvil
-#[smashline::weapon_frame(agent = WEAPON_KIND_PICKEL_FORGE, main)]
-pub fn pickel_forge_frame(weapon: &mut smash::lua2cpp::L2CFighterBase){
+pub unsafe extern "C" fn pickel_forge_frame(weapon: &mut smash::lua2cpp::L2CFighterBase){
     unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -449,4 +447,15 @@ pub fn pickel_forge_frame(weapon: &mut smash::lua2cpp::L2CFighterBase){
             }
         }
     }
+}
+pub fn install() {
+    smashline::Agent::new("pickel")
+        .on_line(Main, pickel_frame_wrapper)
+        .install();
+    smashline::Agent::new("pickel_trolley")
+        .on_line(Main, pickel_trolley_frame)
+        .install();
+    smashline::Agent::new("pickel_forge")
+        .on_line(Main, pickel_forge_frame)
+        .install();
 }

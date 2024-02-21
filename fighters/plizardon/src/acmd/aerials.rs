@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "plizardon", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -25,8 +25,8 @@ unsafe fn plizardon_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "plizardon", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
-unsafe fn plizardon_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -40,8 +40,8 @@ unsafe fn plizardon_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -65,8 +65,8 @@ unsafe fn plizardon_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "plizardon", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn plizardon_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -86,8 +86,8 @@ unsafe fn plizardon_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -121,8 +121,8 @@ unsafe fn plizardon_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -159,8 +159,8 @@ unsafe fn plizardon_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "plizardon", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn plizardon_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -174,8 +174,8 @@ unsafe fn plizardon_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn plizardon_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -215,15 +215,16 @@ unsafe fn plizardon_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        plizardon_attack_air_n_game,
-        plizardon_attack_air_n_effect,
-        plizardon_attack_air_f_game,
-        plizardon_attack_air_f_effect,
-        plizardon_attack_air_b_game,
-        plizardon_attack_air_hi_game,
-        plizardon_attack_air_hi_expression,
-        plizardon_attack_air_lw_game,
-    );
+    smashline::Agent::new("plizardon")
+        .acmd("game_attackairn", plizardon_attack_air_n_game)
+        .acmd("effect_attackairn", plizardon_attack_air_n_effect)
+        .acmd("game_attackairf", plizardon_attack_air_f_game)
+        .acmd("effect_attackairf", plizardon_attack_air_f_effect)
+        .acmd("game_attackairb", plizardon_attack_air_b_game)
+        .acmd("game_attackairhi", plizardon_attack_air_hi_game)
+        .acmd("expression_attackairhi", plizardon_attack_air_hi_expression)
+        .acmd("game_attackairlw", plizardon_attack_air_lw_game)
+        .install();
 }

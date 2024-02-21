@@ -1,13 +1,13 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "peach", status = FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_hi_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         special_hi_substatus(fighter, false.into());
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_substatus as *const () as _));
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END)(fighter)
 }
 
 unsafe extern "C" fn special_hi_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
@@ -18,8 +18,14 @@ unsafe extern "C" fn special_hi_substatus(fighter: &mut L2CFighterCommon, param_
     0.into()
 }
 
+
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_hi_air_end_main
-    );
+    smashline::Agent::new("peach")
+        .status(
+            Main,
+            *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END,
+            special_hi_air_end_main,
+        )
+        .install();
 }

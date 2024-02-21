@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "purin", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -32,8 +32,8 @@ unsafe fn purin_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -64,8 +64,8 @@ unsafe fn purin_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -99,8 +99,8 @@ unsafe fn purin_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "purin", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn purin_effect_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_effect_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -111,8 +111,8 @@ unsafe fn purin_effect_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -138,8 +138,8 @@ unsafe fn purin_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn purin_effect_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -149,8 +149,8 @@ unsafe fn purin_effect_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn purin_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -184,15 +184,17 @@ unsafe fn purin_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        purin_attack_air_n_game,
-        purin_attack_air_f_game,
-        purin_attack_air_b_game,
-        purin_effect_air_b_game,
-        purin_attack_air_hi_game,
-        purin_effect_attackairhi,
-        purin_attack_air_lw_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("purin")
+        .acmd("game_attackairn", purin_attack_air_n_game)
+        .acmd("game_attackairf", purin_attack_air_f_game)
+        .acmd("game_attackairb", purin_attack_air_b_game)
+        .acmd("effect_attackairb", purin_effect_air_b_game)
+        .acmd("game_attackairhi", purin_attack_air_hi_game)
+        .acmd("effect_attackairhi", purin_effect_attackairhi)
+        .acmd("game_attackairlw", purin_attack_air_lw_game)
+        .install();
+}

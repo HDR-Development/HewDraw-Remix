@@ -3,8 +3,8 @@ use super::PikminInfo;
 use std::ops::Index;
 use globals::*;
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairn", "game_attackairn_y", "game_attackairn_b", "game_attackairn_w", "game_attackairn_v" ] , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -47,8 +47,8 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["effect_attackairn", "effect_attackairn_y", "effect_attackairn_b", "effect_attackairn_w", "effect_attackairn_v" ] , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -67,8 +67,8 @@ unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairf", "game_attackairf_y", "game_attackairf_b", "game_attackairf_w", "game_attackairf_v" ] , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -98,8 +98,8 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairb", "game_attackairb_y", "game_attackairb_b", "game_attackairb_w", "game_attackairb_v"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -121,8 +121,8 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairhi", "game_attackairhi_y", "game_attackairhi_b", "game_attackairhi_w", "game_attackairhi_v"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -146,8 +146,8 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairlw", "game_attackairlw_y", "game_attackairlw_b", "game_attackairlw_w", "game_attackairlw_v"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -176,13 +176,39 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_attackairn,
-        effect_attackairn,
-        game_attackairf,
-        game_attackairb,
-        game_attackairhi,
-        game_attackairlw,
-    );
+    smashline::Agent::new("pikmin_pikmin")
+        .acmd("game_attackairn", game_attackairn)
+        .acmd("game_attackairn_y", game_attackairn)
+        .acmd("game_attackairn_b", game_attackairn)
+        .acmd("game_attackairn_w", game_attackairn)
+        .acmd("game_attackairn_v", game_attackairn)
+        .acmd("effect_attackairn", effect_attackairn)
+        .acmd("effect_attackairn_y", effect_attackairn)
+        .acmd("effect_attackairn_b", effect_attackairn)
+        .acmd("effect_attackairn_w", effect_attackairn)
+        .acmd("effect_attackairn_v", effect_attackairn)
+        .acmd("game_attackairf", game_attackairf)
+        .acmd("game_attackairf_y", game_attackairf)
+        .acmd("game_attackairf_b", game_attackairf)
+        .acmd("game_attackairf_w", game_attackairf)
+        .acmd("game_attackairf_v", game_attackairf)
+        .acmd("game_attackairb", game_attackairb)
+        .acmd("game_attackairb_y", game_attackairb)
+        .acmd("game_attackairb_b", game_attackairb)
+        .acmd("game_attackairb_w", game_attackairb)
+        .acmd("game_attackairb_v", game_attackairb)
+        .acmd("game_attackairhi", game_attackairhi)
+        .acmd("game_attackairhi_y", game_attackairhi)
+        .acmd("game_attackairhi_b", game_attackairhi)
+        .acmd("game_attackairhi_w", game_attackairhi)
+        .acmd("game_attackairhi_v", game_attackairhi)
+        .acmd("game_attackairlw", game_attackairlw)
+        .acmd("game_attackairlw_y", game_attackairlw)
+        .acmd("game_attackairlw_b", game_attackairlw)
+        .acmd("game_attackairlw_w", game_attackairlw)
+        .acmd("game_attackairlw_v", game_attackairlw)
+        .install();
 }
