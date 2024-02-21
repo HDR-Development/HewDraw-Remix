@@ -63,9 +63,12 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
+        }
+        frame(lua_state, 25.0);
+        if is_excute(fighter) {
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
-            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
         }
     } 
     else {
@@ -117,9 +120,12 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
+        }
+        frame(lua_state, 25.0);
+        if is_excute(fighter) {
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
-            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
         }
     }
 }

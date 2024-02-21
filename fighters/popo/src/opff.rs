@@ -142,6 +142,23 @@ unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
+// make nana face the same direction as popo during down smash
+unsafe fn attacklw4_lr(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
+    if fighter.kind() != *FIGHTER_KIND_POPO {
+        return;
+    }
+
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD]) {
+        let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
+        let popo_lr = PostureModule::lr(boma);
+        let nana_lr = PostureModule::lr(nana);
+        if nana_lr != popo_lr {
+            PostureModule::reverse_lr(nana);
+            PostureModule::update_rot_y_lr(nana);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -194,6 +211,7 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
     nana_couple_indicator(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
+    attacklw4_lr(fighter, boma, id);
     fastfall_specials(fighter);
 }
 

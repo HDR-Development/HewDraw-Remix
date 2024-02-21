@@ -4,7 +4,7 @@ use std::arch::asm;
 use utils::game_modes::CustomMode;
 
 
-#[skyline::hook(offset = 0x3dc160)]
+#[skyline::hook(offset = 0x3dc180)]
 unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut smash2::app::AttackData) {
     let boma = *(module as *mut *mut BattleObjectModuleAccessor).add(1);
 
@@ -50,7 +50,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
     call_original!(module, id, group, data)
 }
 
-#[skyline::hook(offset = 0x403c1c, inline)]
+#[skyline::hook(offset = 0x403c3c, inline)]
 unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
@@ -63,7 +63,7 @@ unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x406bd4, inline)]
+#[skyline::hook(offset = 0x406bf4, inline)]
 unsafe fn get_hitstop_frame_add(ctx: &mut skyline::hooks::InlineCtx) {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {

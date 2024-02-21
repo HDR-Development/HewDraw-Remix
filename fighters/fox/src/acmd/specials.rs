@@ -113,6 +113,8 @@ unsafe fn game_speciallwstart(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 24, 24, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         AttackModule::set_add_reaction_frame_revised(boma, 0, -3.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 1, 2.0, false);
+        AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("sys_hit_elec"));
+        AttackModule::set_optional_hit_effect(boma, 1, Hash40::new("sys_hit_elec"));
         ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.54);
@@ -133,6 +135,8 @@ unsafe fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 10, 32, 0, 62, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 24, 45, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+        AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("sys_hit_elec"));
+        AttackModule::set_optional_hit_effect(boma, 1, Hash40::new("sys_hit_elec"));
         ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.54);

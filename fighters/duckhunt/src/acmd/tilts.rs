@@ -181,7 +181,6 @@ unsafe fn duckhunt_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_duckhunt_appeal_s01"));
         PLAY_SE(agent, Hash40::new("se_duckhunt_appeal_s02"));
     }
     frame(lua_state, 4.0);
@@ -215,10 +214,6 @@ unsafe fn duckhunt_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
     }
 }
 

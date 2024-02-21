@@ -3,12 +3,12 @@ use rand::prelude::SliceRandom;
 use rand::Rng;
 use utils::ext::*;
 
-#[skyline::hook(offset = 0x16d948c, inline)]
+#[skyline::hook(offset = 0x16d85dc, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
     *ctx.registers[22].x.as_mut() = 0x2;
 }
 
-#[skyline::hook(offset = 0x16d94c0, inline)]
+#[skyline::hook(offset = 0x16d8610, inline)]
 unsafe fn write_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let raw = *ctx.registers[19].x.as_ref();
 
@@ -927,7 +927,7 @@ struct ControlModuleInternal {
 static mut LAST_ALT_STICK: [f32; 2] = [0.0, 0.0];
 static mut LAST_ANALOG: f32 = 0.0;
 
-#[skyline::hook(offset = 0x3f7220)]
+#[skyline::hook(offset = 0x3f7240)]
 unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     const NEUTRAL: f32 = 0.2;
     const CLAMP_MAX: f32 = 120.0;
@@ -970,7 +970,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     call_original!(this)
 }
 
-#[skyline::hook(offset = 0x6b9c5c, inline)]
+#[skyline::hook(offset = 0x6b9c7c, inline)]
 unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     let module = *ctx.registers[19].x.as_ref();
     let internal_class = *(module as *const u64).add(0x110 / 0x8);
@@ -979,7 +979,7 @@ unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     *(internal_class as *mut f32).add(0x48 / 0x4) = LAST_ANALOG;
 }
 
-#[skyline::hook(offset = 0x16d7ee4, inline)]
+#[skyline::hook(offset = 0x16d7034, inline)]
 unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let packet = *ctx.registers[15].x.as_ref();
 
@@ -1028,7 +1028,7 @@ unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue 
 static mut SHOULD_END_RESULT_SCREEN: bool = false;
 
 // Skip results screen with start button
-#[skyline::hook(offset = 0x3664040)]
+#[skyline::hook(offset = 0x3664CC0)]
 unsafe fn process_inputs_handheld(controller: &mut Controller) {
     let entry_count = lua_bind::FighterManager::entry_count(utils::singletons::FighterManager());
     if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager())
@@ -1058,7 +1058,7 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
 
 static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 
-#[skyline::hook(offset = 0x3665e2c, inline)]
+#[skyline::hook(offset = 0x3666AAC, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
         (ctx as *const _ as *mut u8).add(0x100) as *mut _;
@@ -1068,7 +1068,7 @@ unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
 }
 
-#[skyline::hook(offset = 0x3665c8c, inline)]
+#[skyline::hook(offset = 0x366690C, inline)]
 unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
     (*controller).left_trigger = GC_TRIGGERS[0];
@@ -1099,7 +1099,7 @@ unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
 
 // These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat
 // Both found in ControlModule::exec_command
-#[skyline::hook(offset = 0x6be610)]
+#[skyline::hook(offset = 0x6be630)]
 unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
     // Only happens during jumpsquat currently
@@ -1111,7 +1111,7 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     }
     call_original!(control_module, arg);
 }
-#[skyline::hook(offset = 0x6bd6a4, inline)]
+#[skyline::hook(offset = 0x6bd6c4, inline)]
 unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[21].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -1145,25 +1145,25 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub fn install() {
     // Custom buffer-state handling
     // Always uses the hitlag handling that cat4 uses
-    skyline::patching::Patch::in_text(0x6bd428).nop();
-    skyline::patching::Patch::in_text(0x6bd484).nop();
+    skyline::patching::Patch::in_text(0x6bd448).nop();
+    skyline::patching::Patch::in_text(0x6bd4a4).nop();
 
     // Stuff for parry input
-    skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
-    skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
+    skyline::patching::Patch::in_text(0x3666ADC).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x3666AF0).data(0xAA0803EAu32);
 
     // Removes 10f C-stick lockout for tilt stick and special stick
-    skyline::patching::Patch::in_text(0x17527dc).data(0x2A1F03FA);
-    skyline::patching::Patch::in_text(0x17527e0).nop();
-    skyline::patching::Patch::in_text(0x17527e4).nop();
-    skyline::patching::Patch::in_text(0x17527e8).nop();
+    skyline::patching::Patch::in_text(0x17532ac).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x17532b0).nop();
+    skyline::patching::Patch::in_text(0x17532b4).nop();
+    skyline::patching::Patch::in_text(0x17532b8).nop();
 
     // Prevents buffered C-stick aerials from triggering nair
-    skyline::patching::Patch::in_text(0x6be644).data(0x52800040);
+    skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
 
     // Prevents attack_air_kind from resetting every frame
     // Found in ControlModule::exec_command
-    skyline::patching::Patch::in_text(0x6bd6a4).nop();
+    skyline::patching::Patch::in_text(0x6bd6c4).nop();
 
     skyline::install_hooks!(
         map_controls_hook,
