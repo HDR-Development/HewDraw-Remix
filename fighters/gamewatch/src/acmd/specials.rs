@@ -429,7 +429,7 @@ pub fn install() {
         .acmd("game_specials5", gamewatch_special_s5_game)
         .acmd("game_specialairs5", gamewatch_special_s5_game)
         .acmd("game_specials6", gamewatch_special_s6_game)
-        .acmd("specialairs6", gamewatch_special_s6_game)
+        .acmd("game_specialairs6", gamewatch_special_s6_game)
         .acmd("game_specials7", gamewatch_special_s7_game)
         .acmd("game_specialairs7", gamewatch_special_s7_game)
         .acmd("game_specials8", gamewatch_special_s8_game)

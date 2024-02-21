@@ -80,7 +80,7 @@ unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
 
 pub fn install() {
     smashline::Agent::new("fighter")
-        .on_start(fighter_reset)
+        .on_init(fighter_reset)
         .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
     // skyline::patching::Patch::in_text(0x6285d0).nop();

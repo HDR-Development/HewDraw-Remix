@@ -175,6 +175,6 @@ pub fn install() {
         .acmd("game_attackhi4", shizue_attack_hi4_game)
         .install();
     smashline::Agent::new("shizue_trafficsign")
-        .acmd("attack", shizue_trafficsign_attack_game)
+        .acmd("game_attack", shizue_trafficsign_attack_game)
         .install();
 }

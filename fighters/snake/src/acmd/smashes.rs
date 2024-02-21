@@ -432,7 +432,7 @@ pub fn install() {
         .acmd("game_attacklw4", snake_down_smash_game)
         .acmd("sound_attacklw4", snake_down_smash_snd)
         .acmd("effect_attacklw4", snake_down_smash_eff)
-        .acmd("expession_attacklw4charge", snake_down_smash_charge_exp)
+        .acmd("expression_attacklw4charge", snake_down_smash_charge_exp)
         .acmd("effect_attacklw4charge", snake_down_smash_charge_eff)
         .install();
 }
