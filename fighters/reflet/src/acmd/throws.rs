@@ -1,7 +1,7 @@
 use super::*;
 
-#[acmd_script( agent = "reflet", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn reflet_throw_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn reflet_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -23,8 +23,8 @@ unsafe fn reflet_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "reflet", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn reflet_throw_hi_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn reflet_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -48,8 +48,8 @@ unsafe fn reflet_throw_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "reflet", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn reflet_throw_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn reflet_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -73,10 +73,11 @@ unsafe fn reflet_throw_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
+
 pub fn install() {
-    install_acmd_scripts!(
-        reflet_throw_b_game,
-        reflet_throw_hi_game,
-        reflet_throw_lw_game,
-    );
+    smashline::Agent::new("reflet")
+        .acmd("game_throwb", reflet_throw_b_game)
+        .acmd("game_throwhi", reflet_throw_hi_game)
+        .acmd("game_throwlw", reflet_throw_lw_game)
+        .install();
 }

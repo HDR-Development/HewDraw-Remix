@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "reflet", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn reflet_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn reflet_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +53,8 @@ unsafe fn reflet_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "reflet", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn reflet_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn reflet_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -130,10 +130,12 @@ unsafe fn reflet_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        reflet_attack_s4_s_game,
-        reflet_attack_lw4_game,
-    );
-}
 
+
+
+pub fn install() {
+    smashline::Agent::new("reflet")
+        .acmd("game_attacks4", reflet_attack_s4_s_game)
+        .acmd("game_attacklw4", reflet_attack_lw4_game)
+        .install();
+}
