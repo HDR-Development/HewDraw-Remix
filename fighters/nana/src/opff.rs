@@ -24,7 +24,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // nothing lol
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_NANA )]
 pub fn cheer_cancel_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         cheer_cancel(fighter);
@@ -37,6 +36,7 @@ pub extern "C" fn nana_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCom
         common::opff::fighter_common_opff(fighter);
 		nana_frame(fighter);
         ice_climbers_common(fighter);
+        cheer_cancel_wrapper(fighter);
     }
 }
 

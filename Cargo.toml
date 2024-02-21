@@ -12,7 +12,7 @@ edition = "2021"
 skyline = "0.2"
 skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
-smashline = { git = "https://github.com/blu-dev/smashline", branch = "development" }
+smashline = { git = "https://github.com/HDR-Development/smashline" }
 
 dynamic = { path = "dynamic" }
 hdr-macros = { path = "hdr-macros" }
@@ -270,15 +270,15 @@ default = [
     "mario",
     "mariod",
     "marth",
-    # "master",
-    # "metaknight",
-    # "mewtwo",
-    # "miifighter",
-    # "miigunner",
-    # "miiswordsman",
-    # "murabito",
-    # "nana",
-    # "ness",
+    "master",
+    "metaknight",
+    "mewtwo",
+    "miifighter",
+    "miigunner",
+    "miiswordsman",
+    "murabito",
+    "nana",
+    "ness",
     "packun",
     "pacman",
     "palutena",

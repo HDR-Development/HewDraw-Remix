@@ -12,7 +12,7 @@ unsafe extern "C" fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
             MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("move"), 0.0, 1.0, 1.0);
             return 0.into();
         }
-        original!(weapon);
+        smashline::original_status(Exec, weapon, *WEAPON_NESS_PK_THUNDER_STATUS_KIND_MOVE)(weapon);
     }
     0.into() 
 }

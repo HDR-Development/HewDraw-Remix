@@ -35,8 +35,9 @@ use skyline::libc::c_char;
 use skyline_web::*;
 use std::{fs, path::Path};
 
-#[smashline::installer]
-pub fn install() {
+#[cfg(not(feature = "main_nro"))]
+#[no_mangle]
+pub fn smashline_install() {
     fighters::install();
 }
 
@@ -406,6 +407,7 @@ pub extern "C" fn main() {
             //game_end,
             //game_exit
         );
+        fighters::install();
     }
 
     #[cfg(not(feature = "runtime"))]
