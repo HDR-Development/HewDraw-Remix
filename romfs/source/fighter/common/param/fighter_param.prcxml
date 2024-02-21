@@ -3071,7 +3071,7 @@
     <!-- CHROM -->
     <struct index="86">
       <float hash="walk_speed_max">1.218</float>
-      <float hash="ground_brake">0.07</float>
+      <float hash="ground_brake">0.0673</float>
       <float hash="dash_speed">1.7</float>
       <float hash="run_accel_mul">0.05571</float>
       <float hash="run_accel_add">0.02</float>
@@ -3080,9 +3080,9 @@
       <float hash="jump_speed_x">0.9</float>
       <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">11.0718</float>
-      <float hash="jump_y">29.97</float>
+      <float hash="jump_y">29.0</float>
       <float hash="mini_jump_y">13.3</float>
-      <float hash="jump_aerial_y">27.97</float>
+      <float hash="jump_aerial_y">27.0</float>
       <float hash="air_accel_x_mul">0.03</float>
       <float hash="air_accel_x_add">0.03</float>
       <float hash="air_speed_x_stable">1.11</float>
@@ -3099,6 +3099,7 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">0.96</float>
       <float hash="shield_radius">12.5</float>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>

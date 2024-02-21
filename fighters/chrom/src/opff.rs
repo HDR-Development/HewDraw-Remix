@@ -21,16 +21,36 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     if StatusModule::is_changing(fighter.module_accessor) {
         return;
     }
-    let frame = fighter.motion_frame();
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) 
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT) 
+    }
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
-    && 28.0 < frame && frame < 31.0
-    && fighter.is_button_on(Buttons::Guard)
-    {
-        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
+    && 28.0 < fighter.motion_frame() && fighter.motion_frame() < 31.0
+    && !fighter.is_button_on(Buttons::Special)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
+        if VarModule::is_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT) {
+            VarModule::off_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-        } else {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        }
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT) {
+        if ((fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)) 
+        && !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2]))
+        || fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_DAMAGE,
+            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
+                VarModule::off_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
         }
     }
 }
@@ -50,7 +70,6 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
                 return;
             }
-
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
@@ -59,7 +78,6 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
                 return;
             }
-
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
@@ -68,7 +86,6 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, false);
                 return;
             }
-
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
@@ -77,7 +94,6 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
                 return;
             }
-
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
@@ -86,7 +102,6 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW3, false);
                 return;
             }
-
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
@@ -95,15 +110,10 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
                 return;
             }
-
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
         utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if !fighter.is_in_hitlag() => {
-            if fighter.check_jump_cancel(false, false) {
-                return;
-            }
-
             false
         }
         _ => false
@@ -158,7 +168,7 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3
     ])
     {
-        VarModule::off_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
     }
 
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3) {
@@ -166,7 +176,7 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
     }
 
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
+        VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
     }
 }
 
@@ -219,26 +229,32 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// symbol-based call for the fe characters' common opff
-extern "Rust" {
-    fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+// Up Special Reverse
+unsafe fn up_special_reverse(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
+    // No reversal for Chrom
+    if fighter.kind() == *FIGHTER_KIND_CHROM {
+        return;
+    }
+}
+
+unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+    let long_sword_scale = Vector3f{x: 1.015, y: 1.065, z: 1.045};
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_CHROM )]
 pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
-    fe_common(fighter);
     soaring_slash_drift(fighter);
-    //soaring_slash_cancel(fighter);
+    soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
     //soaring_slash(fighter);
     double_edge_dance_vertical_momentum(fighter);
     fastfall_specials(fighter);
-    
-    // Sword remains the same size throughout jab and utilt
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_ATTACK]) {
-        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.015, 1.115, 1.045));
-    }
+    up_special_reverse(fighter);
+    sword_length(&mut *(fighter.module_accessor));
 }
