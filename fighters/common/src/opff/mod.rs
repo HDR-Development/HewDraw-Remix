@@ -29,7 +29,6 @@ pub fn install() {
 }
 */
 
-
 /*
 This function runs exactly once per every fighter loaded into a match, every frame. I.E.  5 players in a match = 5 times per frame
 Use this instead of get_command_flag_cat

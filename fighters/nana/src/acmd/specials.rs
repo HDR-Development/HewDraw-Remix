@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn nana_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +23,6 @@ unsafe extern "C" fn nana_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,9 +44,6 @@ unsafe extern "C" fn nana_special_air_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_POPO_STATUS_SPECIAL_N_FLAG_ENABLE_COUPLE);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("nana")

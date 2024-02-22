@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn snake_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn snake_attack_11_game(fighter: &mut L2CAgentBase) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
 }
-
 
 unsafe extern "C" fn snake_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -50,7 +48,6 @@ unsafe extern "C" fn snake_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -65,7 +62,6 @@ unsafe extern "C" fn snake_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn snake_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,9 +89,6 @@ unsafe extern "C" fn snake_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("snake")

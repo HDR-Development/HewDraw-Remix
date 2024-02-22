@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,7 +30,6 @@ unsafe extern "C" fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn krool_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +47,6 @@ unsafe extern "C" fn krool_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("krool_attack_s3_impact"), Hash40::new("top"), 0, 20, 22, 0, 0, 0, 1.7, 0, 0, 0, 0, 0, 360, true, 1);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,7 +77,6 @@ unsafe extern "C" fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn krool_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -99,7 +94,6 @@ unsafe extern "C" fn krool_attack_s3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("krool_attack_s3_impact"), Hash40::new("top"), 0, 12, 24, 0, 0, 0, 1.7, 0, 0, 0, 0, 0, 360, true, 1);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -130,7 +124,6 @@ unsafe extern "C" fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn krool_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -148,7 +141,6 @@ unsafe extern "C" fn krool_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("krool_attack_s3_impact"), Hash40::new("top"), 0, 6, 22, 0, 0, 0, 1.7, 0, 0, 0, 0, 0, 360, true, 1);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_s3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -170,7 +162,6 @@ unsafe extern "C" fn krool_attack_s3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_krool_attackhard_s03"));
     }
 }
-
 
 unsafe extern "C" fn krool_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -224,7 +215,6 @@ unsafe extern "C" fn krool_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn krool_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -244,7 +234,6 @@ unsafe extern "C" fn krool_attack_hi3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_krool_attackhard_h02"));
     }
 }
-
 
 unsafe extern "C" fn krool_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -294,7 +283,6 @@ unsafe extern "C" fn krool_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -312,7 +300,6 @@ unsafe extern "C" fn krool_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 20, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -332,8 +319,6 @@ unsafe extern "C" fn krool_attack_lw3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_krool_attackhard_l02"));
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("krool")

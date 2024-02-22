@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_CONTINUE);
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME);
@@ -261,7 +260,6 @@ pub unsafe extern "C" fn special_s_air_mot(fighter: &mut L2CFighterCommon) {
         );
     }
 }
-
 
 pub unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 	let situation = fighter.global_table[SITUATION_KIND].get_i32();
@@ -561,7 +559,6 @@ pub unsafe extern "C" fn special_s_air_control(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_AIR_CONTROL);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("falco")

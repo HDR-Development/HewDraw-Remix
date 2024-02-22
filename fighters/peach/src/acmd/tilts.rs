@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +21,6 @@ unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,7 +47,6 @@ unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if is_excute(fighter) {
@@ -62,7 +59,6 @@ unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
 }
-
 
 unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -94,7 +90,6 @@ unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("peach")

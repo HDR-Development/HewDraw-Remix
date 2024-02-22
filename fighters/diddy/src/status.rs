@@ -8,9 +8,7 @@ mod special_s_jump;
 
 mod special_hi;
 
-
 // FIGHTER_STATUS_KIND_JUMP_SQUAT
-
 
 unsafe extern "C" fn end_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_JumpSquat();
@@ -34,7 +32,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     }
     true.into()
 }
-
 
 extern "C" fn diddy_init(fighter: &mut L2CFighterCommon) {
     unsafe {

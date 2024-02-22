@@ -3,10 +3,7 @@ use globals::*;
 utils::import!(common::djc::attack_air_main_status);
 // status script import
 
-
-
 // FIGHTER RESET //
-
 
 extern "C" fn lucas_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -22,7 +19,6 @@ extern "C" fn lucas_reset(fighter: &mut L2CFighterCommon) {
 
 // AttackLw4 //
 
-
 unsafe extern "C" fn lucas_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.main_shift(lucas_attack_lw_4_main_loop)
 }
@@ -32,7 +28,6 @@ unsafe extern "C" fn lucas_attack_lw_4_main_loop(fighter: &mut L2CFighterCommon)
 }
 
 // SPECIAL N //
-
 
 unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{  
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -45,7 +40,6 @@ unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 // SPECIAL N HOLD //
-
 
 unsafe extern "C" fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //
@@ -219,13 +213,11 @@ unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-
 pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
 // WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE //
-
 
 unsafe extern "C" fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE) {
@@ -240,7 +232,6 @@ unsafe extern "C" fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD //
-
 
 unsafe extern "C" fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if LinkModule::is_link(fighter.module_accessor, *FIGHTER_LUCAS_LINK_NO_PK_THUNDER) {
@@ -257,7 +248,6 @@ unsafe extern "C" fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 // FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK //
-
 
 pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64;
@@ -288,7 +278,6 @@ pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-
 pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
     StatusModule::init_settings(
@@ -317,7 +306,6 @@ pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CVal
     );
     0.into()
 }
-
 
 pub unsafe extern "C" fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_WALL_BRAKE);
@@ -427,8 +415,6 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
         1.into()
     }
 }
-
-
 
 pub unsafe extern "C" fn attack_lw4(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw4_common();

@@ -61,7 +61,6 @@ extern "C" fn trail_init(fighter: &mut L2CFighterCommon) {
     } 
 }
 
-
 pub fn install() {
     acmd::install();
     opff::install();

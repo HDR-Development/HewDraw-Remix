@@ -4,7 +4,6 @@ use super::*;
 use globals::*;
 use skyline_smash::app::FighterKineticEnergyGravity;
 
-
 unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, situation_kind: i32, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
         //let motion_vec = Vector3f{x:0.0, y: 2.5, z: 0.0};
@@ -293,7 +292,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     noknok_training(fighter, id, status_kind);
     fastfall_specials(fighter);
 }
-
 
 pub extern "C" fn mario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn edge_special_hi_param_int_helper(fighter: &mut L2CFighterCommon, hash: L2CValue, charged_rush: L2CValue) -> L2CValue {
     let param = edge_special_hi_param_helper_inner(hash, charged_rush).get_u64();
     WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), param).into()
@@ -76,7 +75,6 @@ unsafe extern "C" fn edge_special_hi_param_helper_inner(hash: L2CValue, charged_
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
-
 unsafe extern "C" fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -108,7 +106,6 @@ unsafe extern "C" fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CV
     );
     0.into()
 }
-
 
 unsafe extern "C" fn edge_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
@@ -339,7 +336,6 @@ unsafe extern "C" fn edge_special_hi_ground_touch_down(fighter: &mut L2CFighterC
 }
 
 // FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH
-
 
 pub unsafe extern "C" fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH)(fighter);

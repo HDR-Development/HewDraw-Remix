@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn toonlink_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,9 +20,6 @@ unsafe extern "C" fn toonlink_throw_b_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("toonlink")

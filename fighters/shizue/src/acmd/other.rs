@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -16,7 +15,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +24,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -44,7 +41,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -59,7 +55,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -87,7 +82,6 @@ unsafe extern "C" fn shizue_fishingrod_start_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
     }
 }
-
 
 unsafe extern "C" fn catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -123,7 +117,6 @@ unsafe extern "C" fn catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn catchturn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -153,7 +146,6 @@ unsafe extern "C" fn catchturn_game(fighter: &mut L2CAgentBase) {
         UNABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH_TURN);
     }
 }
-
 
 unsafe extern "C" fn catchdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -185,7 +177,6 @@ unsafe extern "C" fn catchdash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn shootb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -202,8 +193,6 @@ unsafe extern "C" fn shootb_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 72, 0, 15, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("shizue_fishingrod")

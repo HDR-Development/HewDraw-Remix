@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn cloud_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +36,6 @@ unsafe extern "C" fn cloud_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -83,7 +80,6 @@ unsafe extern "C" fn cloud_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -100,8 +96,6 @@ unsafe extern "C" fn cloud_attack_air_f_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn cloud_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -134,7 +128,6 @@ unsafe extern "C" fn cloud_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -147,7 +140,6 @@ unsafe extern "C" fn cloud_attack_air_b_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,7 +170,6 @@ unsafe extern "C" fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -217,8 +208,6 @@ unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, false, true);
     }
 }
-
-
 
 unsafe extern "C" fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -261,7 +250,6 @@ unsafe extern "C" fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -284,9 +272,6 @@ unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("cloud")

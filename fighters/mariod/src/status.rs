@@ -3,7 +3,6 @@ use globals::*;
 
 mod special_n;
 
-
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Reset cape stall flag on landing or ledgegrab
     if [*SITUATION_KIND_GROUND, *SITUATION_KIND_CLIFF].contains(&fighter.global_table[SITUATION_KIND].get_i32())
@@ -12,7 +11,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     }
     true.into()
 }
-
 
 extern "C" fn mariod_init(fighter: &mut L2CFighterCommon) {
     unsafe {

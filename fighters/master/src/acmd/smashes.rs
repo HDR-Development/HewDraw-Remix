@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn master_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -30,7 +29,6 @@ unsafe extern "C" fn master_attack_s4_charge_effect(fighter: &mut L2CAgentBase) 
         EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 24, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -160,7 +158,6 @@ unsafe extern "C" fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -239,7 +236,6 @@ unsafe extern "C" fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -369,7 +365,6 @@ unsafe extern "C" fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -448,7 +443,6 @@ unsafe extern "C" fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -578,7 +572,6 @@ unsafe extern "C" fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -658,7 +651,6 @@ unsafe extern "C" fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -700,7 +692,6 @@ unsafe extern "C" fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_MASTER_INSTANCE_WORK_ID_FLAG_SWORD_REQ_EFFECT_AURA);
     }
 }
-
 
 unsafe extern "C" fn master_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -748,10 +739,6 @@ unsafe extern "C" fn master_attack_lw4_game(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE,app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("master")

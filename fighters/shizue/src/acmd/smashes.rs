@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn shizue_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -41,7 +39,6 @@ unsafe extern "C" fn shizue_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn shizue_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -87,7 +84,6 @@ unsafe extern "C" fn shizue_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn shizue_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,7 +132,6 @@ unsafe extern "C" fn shizue_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -164,8 +159,6 @@ unsafe extern "C" fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) 
         AttackModule::clear_all(boma);
     }
 }
-
-
 
  
 pub fn install() {

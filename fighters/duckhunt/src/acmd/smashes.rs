@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn duckhunt_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -23,7 +22,6 @@ unsafe extern "C" fn duckhunt_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 361, 131, 0, 50, 9.0, 0.0, 6.0, 26.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -55,7 +53,6 @@ unsafe extern "C" fn duckhunt_attack_s4_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_duckhunt_smash_s03"));
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +90,6 @@ unsafe extern "C" fn duckhunt_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn duckhunt_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,7 +108,6 @@ unsafe extern "C" fn duckhunt_attack_hi4_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 11.5, 85, 120, 0, 50, 9.3, 0.0, 16.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_hi4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -136,7 +131,6 @@ unsafe extern "C" fn duckhunt_attack_hi4_sound(agent: &mut L2CAgentBase) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_duckhunt_rnd_attack_dog"));
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -170,7 +164,6 @@ unsafe extern "C" fn duckhunt_attack_hi4_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn duckhunt_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -189,7 +182,6 @@ unsafe extern "C" fn duckhunt_attack_lw4_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 35, 70, 0, 70, 7.0, 0.0, 8.0, -10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -212,7 +204,6 @@ unsafe extern "C" fn duckhunt_attack_lw4_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_duckhunt_special_l03"));
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

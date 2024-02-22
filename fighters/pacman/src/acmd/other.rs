@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -11,7 +10,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn pacman_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -26,7 +24,6 @@ unsafe extern "C" fn pacman_turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -43,7 +40,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -57,9 +53,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pacman")

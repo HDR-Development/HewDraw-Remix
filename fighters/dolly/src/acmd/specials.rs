@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,7 +58,6 @@ unsafe extern "C" fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -104,7 +100,6 @@ unsafe extern "C" fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -137,7 +132,6 @@ unsafe extern "C" fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) 
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -179,7 +173,6 @@ unsafe extern "C" fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -296,7 +289,6 @@ unsafe extern "C" fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -403,7 +395,6 @@ unsafe extern "C" fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -411,7 +402,6 @@ unsafe extern "C" fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 }
-
 
 unsafe extern "C" fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -421,7 +411,6 @@ unsafe extern "C" fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -458,7 +447,6 @@ unsafe extern "C" fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dolly_special_b_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -484,7 +472,6 @@ unsafe extern "C" fn dolly_special_b_start_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -521,7 +508,6 @@ unsafe extern "C" fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn dolly_special_air_b_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -546,7 +532,6 @@ unsafe extern "C" fn dolly_special_air_b_start_effect(fighter: &mut L2CAgentBase
         }
     }
 }
-
 
 unsafe extern "C" fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -726,7 +711,6 @@ unsafe extern "C" fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -809,7 +793,6 @@ unsafe extern "C" fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase)
         wait(lua_state, 2.0);
     }
 }
-
 
 unsafe extern "C" fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -978,7 +961,6 @@ unsafe extern "C" fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1062,7 +1044,6 @@ unsafe extern "C" fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1076,7 +1057,6 @@ unsafe extern "C" fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1226,7 +1206,6 @@ unsafe extern "C" fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1439,7 +1418,6 @@ unsafe extern "C" fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1657,7 +1635,6 @@ unsafe extern "C" fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
 unsafe extern "C" fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1777,7 +1754,6 @@ unsafe extern "C" fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1990,7 +1966,6 @@ unsafe extern "C" fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBas
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2208,7 +2183,6 @@ unsafe extern "C" fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentB
     
 }
 
-
 unsafe extern "C" fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2219,7 +2193,6 @@ unsafe extern "C" fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2228,7 +2201,6 @@ unsafe extern "C" fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2256,7 +2228,6 @@ unsafe extern "C" fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2276,7 +2247,6 @@ unsafe extern "C" fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase)
     }
     
 }
-
 
 unsafe extern "C" fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2348,7 +2318,6 @@ unsafe extern "C" fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_lw_w_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2364,7 +2333,6 @@ unsafe extern "C" fn dolly_special_lw_w_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2442,7 +2410,6 @@ unsafe extern "C" fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2495,7 +2462,6 @@ unsafe extern "C" fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
     }
             
 }
-
 
 unsafe extern "C" fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2739,7 +2705,6 @@ unsafe extern "C" fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2799,7 +2764,6 @@ unsafe extern "C" fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) 
         EFFECT_OFF_KIND(fighter, Hash40::new("dolly_down_s"), false, true);
     }
 }
-
 
 unsafe extern "C" fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2877,7 +2841,6 @@ unsafe extern "C" fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_special_lw_landing_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -2907,7 +2870,6 @@ unsafe extern "C" fn dolly_special_lw_landing_effect(fighter: &mut L2CAgentBase)
         }
     }   
 }
-
 
 unsafe extern "C" fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -2959,7 +2921,6 @@ unsafe extern "C" fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -3000,7 +2961,6 @@ unsafe extern "C" fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("dolly_wave_arc"), Hash40::new("dolly_wave_arc"), Hash40::new("top"), 0, 10, 4, 69, -46, -45, 1.2, true, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -3074,7 +3034,6 @@ unsafe extern "C" fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -3135,7 +3094,6 @@ unsafe extern "C" fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn dolly_super_special_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -3162,9 +3120,6 @@ unsafe extern "C" fn dolly_super_special_2_game(fighter: &mut L2CAgentBase) {
         WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("dolly")

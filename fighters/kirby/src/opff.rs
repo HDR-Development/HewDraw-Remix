@@ -541,7 +541,6 @@ unsafe fn repeated_falcon_punch_turnaround(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 // Blue Eggs Land Cancel
 unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
     if StatusModule::is_changing(fighter.module_accessor) {
@@ -679,8 +678,6 @@ unsafe fn colorless_attack_dash_cancel(boma: &mut BattleObjectModuleAccessor, st
         }
     }
 }
-
-
 
 // Dark Pit's Bow Land Cancel
 unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
@@ -873,7 +870,6 @@ unsafe fn diddy_nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         }
     }
 }
-
 
 // Lucario
 unsafe fn lucario_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32) {
@@ -1068,7 +1064,6 @@ pub unsafe fn lucas_offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommo
         }
     } 
 }
-
 
 // Piranha Plant Ptooie Stance
 pub unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -1309,7 +1304,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     master_nspecial_cancels(boma, status_kind, situation_kind);
     ken_air_hado_distinguish(fighter, boma, frame);
 }
-
 
 pub extern "C" fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

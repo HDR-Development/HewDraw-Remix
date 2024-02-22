@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END
-
 
 pub unsafe extern "C" fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -34,7 +32,6 @@ pub unsafe extern "C" fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon)
     
     0.into()
 }
-
 
 pub unsafe extern "C" fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
@@ -76,7 +73,6 @@ unsafe extern "C" fn special_hi_rush_end_main_loop(fighter: &mut L2CFighterCommo
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("pit")

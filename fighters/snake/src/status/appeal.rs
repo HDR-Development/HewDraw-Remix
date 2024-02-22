@@ -2,8 +2,6 @@ use super::*;
 use globals::*;
  
 
-
-
 //implimented function for checking if an article is "constrained" to snake
 extern "C" {
     #[link_name = "\u{1}_ZN3app24FighterSpecializer_Snake21is_constraint_articleERNS_7FighterEiNS_22ArticleOperationTargetE"]

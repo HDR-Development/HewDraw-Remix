@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -70,7 +67,6 @@ unsafe extern "C" fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -82,7 +78,6 @@ unsafe extern "C" fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_roy_attackl_s01"));
     }
 }
-
 
 unsafe extern "C" fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -111,7 +106,6 @@ unsafe extern "C" fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -136,7 +130,6 @@ unsafe extern "C" fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -163,7 +156,6 @@ unsafe extern "C" fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -188,7 +180,6 @@ unsafe extern "C" fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -231,7 +222,6 @@ unsafe extern "C" fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -243,7 +233,6 @@ unsafe extern "C" fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_roy_attackl_s01"));
     }
 }
-
 
 unsafe extern "C" fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -272,7 +261,6 @@ unsafe extern "C" fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -298,7 +286,6 @@ unsafe extern "C" fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -323,7 +310,6 @@ unsafe extern "C" fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -372,7 +358,6 @@ unsafe extern "C" fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -404,7 +389,6 @@ unsafe extern "C" fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -453,7 +437,6 @@ unsafe extern "C" fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -486,7 +469,6 @@ unsafe extern "C" fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -512,7 +494,6 @@ unsafe extern "C" fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -537,7 +518,6 @@ unsafe extern "C" fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -591,7 +571,6 @@ unsafe extern "C" fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -623,7 +602,6 @@ unsafe extern "C" fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -677,7 +655,6 @@ unsafe extern "C" fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -710,7 +687,6 @@ unsafe extern "C" fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -739,7 +715,6 @@ unsafe extern "C" fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -767,7 +742,6 @@ unsafe extern "C" fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -829,7 +803,6 @@ unsafe extern "C" fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -858,7 +831,6 @@ unsafe extern "C" fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -921,7 +893,6 @@ unsafe extern "C" fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -951,7 +922,6 @@ unsafe extern "C" fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -979,7 +949,6 @@ unsafe extern "C" fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1009,7 +978,6 @@ unsafe extern "C" fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1037,7 +1005,6 @@ unsafe extern "C" fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1067,7 +1034,6 @@ unsafe extern "C" fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1096,7 +1062,6 @@ unsafe extern "C" fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1124,7 +1089,6 @@ unsafe extern "C" fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1179,7 +1143,6 @@ unsafe extern "C" fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1232,7 +1195,6 @@ unsafe extern "C" fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1288,7 +1250,6 @@ unsafe extern "C" fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1341,7 +1302,6 @@ unsafe extern "C" fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1363,7 +1323,6 @@ unsafe extern "C" fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1380,9 +1339,6 @@ unsafe extern "C" fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("roy")

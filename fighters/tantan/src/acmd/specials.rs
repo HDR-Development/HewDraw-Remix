@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -120,7 +118,6 @@ unsafe extern "C" fn tantan_special_n_air_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -145,8 +142,6 @@ unsafe extern "C" fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase)
         }
     }
 }
-
-
 
 unsafe extern "C" fn tantan_special_n_air_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -205,7 +200,6 @@ unsafe extern "C" fn tantan_special_n_air_end_expression(fighter: &mut L2CAgentB
     }
 }
 
-
 unsafe extern "C" fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -237,7 +231,6 @@ unsafe extern "C" fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("tantan_hook_wind"), false, true);
     }
 }
-
 
 unsafe extern "C" fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -301,9 +294,6 @@ unsafe extern "C" fn tantan_special_s_charge_sound(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("tantan")

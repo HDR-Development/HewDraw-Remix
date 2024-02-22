@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn daisy_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +32,6 @@ unsafe extern "C" fn daisy_throw_hi_game(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
 
 unsafe extern "C" fn daisy_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -73,7 +71,6 @@ unsafe extern "C" fn daisy_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 pub fn install() {
     smashline::Agent::new("daisy")

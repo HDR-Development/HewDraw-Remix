@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_mario_rnd_futtobi01"), Hash40::new("seq_mario_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_mario_rnd_futtobi01"), Hash40::new("seq_mario_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -121,7 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mario_utauntr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -137,7 +131,6 @@ unsafe extern "C" fn mario_utauntr(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn mario_utauntl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -155,7 +148,6 @@ unsafe extern "C" fn mario_utauntl(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -165,7 +157,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -180,7 +171,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_mario_step_left_m"), Hash40::new("se_mario_step_right_m"));
     }
 }
-
 
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -198,7 +188,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -214,7 +203,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -228,7 +216,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -264,7 +251,6 @@ unsafe extern "C" fn effect_light(fighter: &mut L2CAgentBase) {
     */
 }
 
-
 unsafe extern "C" fn game_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -276,7 +262,6 @@ unsafe extern "C" fn game_regular(fighter: &mut L2CAgentBase) {
     */
 }
 
-
 unsafe extern "C" fn effect_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -287,19 +272,16 @@ unsafe extern "C" fn effect_regular(fighter: &mut L2CAgentBase) {
     */
 }
 
-
 unsafe extern "C" fn effect_hit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
-
 
 unsafe extern "C" fn effect_clash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn sound_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -310,8 +292,6 @@ unsafe extern "C" fn sound_regular(fighter: &mut L2CAgentBase) {
     }
     */
 }
-
-
 
 unsafe extern "C" fn game_appealsl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -329,7 +309,6 @@ unsafe extern "C" fn game_appealsl(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_appealsr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -345,7 +324,6 @@ unsafe extern "C" fn game_appealsr(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn expression_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -372,10 +350,6 @@ unsafe extern "C" fn expression_appeals(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_grapple"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("mario_fireball")

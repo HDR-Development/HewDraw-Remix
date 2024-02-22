@@ -1,10 +1,6 @@
 use super::*;
 use globals::*;
 
-
-
-
-
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     fighter.main_shift(attack_air_main_loop)

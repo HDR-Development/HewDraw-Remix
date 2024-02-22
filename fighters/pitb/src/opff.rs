@@ -22,7 +22,6 @@ unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-
 extern "Rust" {
     fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32);
 }
@@ -33,14 +32,12 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pits_common(fighter, boma, status_kind);
 }
 
-
 pub extern "C" fn pitb_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pitb_frame(fighter)
     }
 }
-
 
 pub unsafe fn pitb_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {

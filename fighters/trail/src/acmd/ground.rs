@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -66,7 +65,6 @@ unsafe extern "C" fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -82,7 +80,6 @@ unsafe extern "C" fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
         AFTER_IMAGE_OFF(fighter, 4);
     }
 }
-
 
 unsafe extern "C" fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -127,7 +124,6 @@ unsafe extern "C" fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -146,7 +142,6 @@ unsafe extern "C" fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("trail_keyblade_flare"), false, true);
     }
 }
-
 
 unsafe extern "C" fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -173,7 +168,6 @@ unsafe extern "C" fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -191,7 +185,6 @@ unsafe extern "C" fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("trail_keyblade_flare"), false, true);
     }
 }
-
 
 unsafe extern "C" fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -246,9 +239,6 @@ unsafe extern "C" fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 52.0);    
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("trail")

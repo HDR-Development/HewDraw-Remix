@@ -3,14 +3,12 @@ use globals::*;
 // status script import
  
 
-
 pub fn set_gravity_delay_resume_frame(energy: *mut FighterKineticEnergyGravity, frames: i32) {
     unsafe {
       *(energy as *mut i32).add(0x50 / 4) = frames;
       *(energy as *mut bool).add(0x5C) = false;
     }
   }
-
 
 pub unsafe extern "C" fn init_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fighter_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
@@ -87,8 +85,6 @@ pub unsafe extern "C" fn init_specials(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-
-
 unsafe extern "C" fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
@@ -158,7 +154,6 @@ unsafe extern "C" fn lucina_specials_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-
 unsafe extern "C" fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     lucina_specials_reset_helper(fighter);
@@ -208,7 +203,6 @@ unsafe extern "C" fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW);
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specials_main_loop as *const () as _))
 }
-
 
 unsafe extern "C" fn lucina_specials3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
@@ -279,7 +273,6 @@ unsafe extern "C" fn lucina_specials3_main_loop(fighter: &mut L2CFighterCommon) 
     }
     0.into()
 }
-
 
 unsafe extern "C" fn lucina_specials3_exec_stop(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
@@ -394,8 +387,6 @@ unsafe extern "C" fn lucina_specials_status_change_helper(fighter: &mut L2CFight
     }
     1.into()
 }
-
-
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);

@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn lucina_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +22,6 @@ unsafe extern "C" fn lucina_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn lucina_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -41,7 +38,6 @@ unsafe extern "C" fn lucina_attack_11_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
-
 
 unsafe extern "C" fn lucina_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -60,7 +56,6 @@ unsafe extern "C" fn lucina_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn lucina_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -77,7 +72,6 @@ unsafe extern "C" fn lucina_attack_12_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
-
 
 unsafe extern "C" fn lucina_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,9 +94,6 @@ unsafe extern "C" fn lucina_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("lucina")

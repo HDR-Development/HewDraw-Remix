@@ -110,7 +110,6 @@ if os.path.exists(version_file):
 with open(version_file, 'x') as version_handle:
   version_handle.write(version)
 
-
 if is_publish:
   allow_dev_build = False
 
@@ -218,7 +217,6 @@ if (is_dev_build and not is_publish):
   # collect ryujinx romfs
   pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
 
-
 else:
   feature_list = "--features=\"main_nro\""
 
@@ -257,7 +255,6 @@ else:
 
   # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "", mod_name)
-
 
   # collect ryujinx plugin
   pkgutil.collect_plugin("hdr-ryujinx", 

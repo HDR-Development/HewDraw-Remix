@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -49,7 +47,6 @@ unsafe extern "C" fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mariod_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +64,6 @@ unsafe extern "C" fn mariod_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mariod_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -101,7 +97,6 @@ unsafe extern "C" fn mariod_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mariod_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -138,7 +133,6 @@ unsafe extern "C" fn mariod_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mariod_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -166,7 +160,6 @@ unsafe extern "C" fn mariod_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }   
 }
 
-
 unsafe extern "C" fn mariod_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -186,7 +179,6 @@ unsafe extern "C" fn mariod_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_impact"), true, true);
     }
 }
-
 
 unsafe extern "C" fn mariod_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -220,7 +212,6 @@ unsafe extern "C" fn mariod_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }    
 }
 
-
 unsafe extern "C" fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -252,7 +243,6 @@ unsafe extern "C" fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mariod_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

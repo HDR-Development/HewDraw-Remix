@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn eflame_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -46,7 +45,6 @@ unsafe extern "C" fn eflame_throw_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("eflame")

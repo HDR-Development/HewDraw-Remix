@@ -149,7 +149,6 @@ extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -198,7 +197,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     up_special_reverse(boma, status_kind, stick_x, facing, frame);
     sword_length(boma);
 }
-
 
 pub extern "C" fn lucina_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn duckhunt_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -10,7 +9,6 @@ unsafe extern "C" fn duckhunt_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
@@ -25,7 +23,6 @@ unsafe extern "C" fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.15);
 }
 
-
 unsafe extern "C" fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +35,6 @@ unsafe extern "C" fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 
 }
-
 
 unsafe extern "C" fn duckhunt_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -60,8 +56,6 @@ unsafe extern "C" fn duckhunt_special_s_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("duckhunt")

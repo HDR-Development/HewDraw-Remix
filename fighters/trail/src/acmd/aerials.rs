@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -54,7 +53,6 @@ unsafe extern "C" fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -85,7 +83,6 @@ unsafe extern "C" fn sora_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -103,7 +100,6 @@ unsafe extern "C" fn sora_attack_air_n_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_trail_attackair_l02"));
     }
 }
-
 
 unsafe extern "C" fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -146,7 +142,6 @@ unsafe extern "C" fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -161,7 +156,6 @@ unsafe extern "C" fn sora_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         AFTER_IMAGE_OFF(fighter, 3);
     }
 }
-
 
 unsafe extern "C" fn sora_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -207,7 +201,6 @@ unsafe extern "C" fn sora_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -234,7 +227,6 @@ unsafe extern "C" fn sora_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_air_f3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -249,7 +241,6 @@ unsafe extern "C" fn sora_attack_air_f3_effect(fighter: &mut L2CAgentBase) {
         AFTER_IMAGE_OFF(fighter, 3);
     }
 }
-
 
 unsafe extern "C" fn sora_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -289,9 +280,7 @@ unsafe extern "C" fn sora_attack_air_b_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 
-
 }
-
 
 unsafe extern "C" fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -343,7 +332,6 @@ unsafe extern "C" fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn sora_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -358,7 +346,6 @@ unsafe extern "C" fn sora_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
         AFTER_IMAGE_OFF(fighter, 3);
     }
 }
-
 
 unsafe extern "C" fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -448,7 +435,6 @@ unsafe extern "C" fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn sora_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -469,7 +455,6 @@ unsafe extern "C" fn sora_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -479,7 +464,6 @@ unsafe extern "C" fn sora_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_trail_rnd_attack03"));
     }
 }
-
 
 unsafe extern "C" fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -494,12 +478,10 @@ unsafe extern "C" fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
-
 
 unsafe extern "C" fn sora_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -509,7 +491,6 @@ unsafe extern "C" fn sora_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sora_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -518,7 +499,6 @@ unsafe extern "C" fn sora_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_LANDING_SE(fighter, Hash40::new("se_trail_landing02"));
     }
 }
-
 
 unsafe extern "C" fn sora_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

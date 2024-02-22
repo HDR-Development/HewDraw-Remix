@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK
-
 
 pub unsafe extern "C" fn special_s_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Once per airtime
@@ -14,7 +12,6 @@ pub unsafe extern "C" fn special_s_walk(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 // FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN
-
 
 pub unsafe extern "C" fn special_s_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Once per airtime
@@ -34,7 +31,6 @@ pub unsafe extern "C" fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> 
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("inkling")

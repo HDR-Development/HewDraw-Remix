@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -61,8 +60,6 @@ unsafe extern "C" fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma,*FIGHTER_SHULK_STATUS_SPECIAL_HI_FLAG_IS_ENABLE_ADD_SHIFT_INPUT);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("shulk")

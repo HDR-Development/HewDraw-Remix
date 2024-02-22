@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn purin_special_n_start_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -12,7 +10,6 @@ unsafe extern "C" fn purin_special_n_start_r_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn purin_special_air_n_start_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +18,6 @@ unsafe extern "C" fn purin_special_air_n_start_r_game(fighter: &mut L2CAgentBase
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn purin_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -34,7 +30,6 @@ unsafe extern "C" fn purin_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn purin_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -46,7 +41,6 @@ unsafe extern "C" fn purin_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn purin_special_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -56,7 +50,6 @@ unsafe extern "C" fn purin_special_n_hold_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn purin_special_air_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -65,7 +58,6 @@ unsafe extern "C" fn purin_special_air_n_hold_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn purin_special_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -77,7 +69,6 @@ unsafe extern "C" fn purin_special_n_turn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn purin_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -88,7 +79,6 @@ unsafe extern "C" fn purin_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn purin_special_n_end(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -98,7 +88,6 @@ unsafe extern "C" fn purin_special_n_end(fighter: &mut L2CAgentBase) {
         GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, false);
     }
 }
-
 
 unsafe extern "C" fn purin_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -116,7 +105,6 @@ unsafe extern "C" fn purin_special_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +136,6 @@ unsafe extern "C" fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -171,9 +158,6 @@ unsafe extern "C" fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("purin")

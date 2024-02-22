@@ -3,9 +3,7 @@ use globals::*;
 // status script import
  
 
-
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
-
 
 pub unsafe extern "C" fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Burn double jump when jumping out of Clown Kart Dash

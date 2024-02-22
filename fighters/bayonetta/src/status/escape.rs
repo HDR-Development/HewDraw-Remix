@@ -3,9 +3,7 @@ use globals::*;
 
  
 
-
 // FIGHTER_STATUS_KIND_ESCAPE_F //
-
 
 unsafe extern "C" fn escape_f_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] != FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN {
@@ -15,7 +13,6 @@ unsafe extern "C" fn escape_f_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIGHTER_STATUS_KIND_ESCAPE_B //
-
 
 unsafe extern "C" fn escape_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] != FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN {

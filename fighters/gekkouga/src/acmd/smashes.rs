@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn gekkouga_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +20,6 @@ unsafe extern "C" fn gekkouga_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn gekkouga_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -64,7 +61,6 @@ unsafe extern "C" fn gekkouga_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn gekkouga_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,9 +90,6 @@ unsafe extern "C" fn gekkouga_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("gekkouga")

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     // Original Implementation
     // let life_min = WorkModule::get_param_int(weapon.module_accessor, hash40("param_chargeshot"), hash40("life_min"));
@@ -93,8 +92,6 @@ unsafe extern "C" fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommo
     PostureModule::set_scale(weapon.module_accessor, scale, false);
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("rockman_chargeshot")

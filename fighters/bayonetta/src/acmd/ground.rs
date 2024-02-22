@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -41,7 +39,6 @@ unsafe extern "C" fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     } 
 }
-
 
 unsafe extern "C" fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -86,7 +83,6 @@ unsafe extern "C" fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,7 +108,6 @@ unsafe extern "C" fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_100_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,7 +173,6 @@ unsafe extern "C" fn bayonetta_attack_100_game(fighter: &mut L2CAgentBase) {
 }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -216,7 +210,6 @@ unsafe extern "C" fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     FT_MOTION_RATE(fighter, 18/(41-30));
 }
-
 
 unsafe extern "C" fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

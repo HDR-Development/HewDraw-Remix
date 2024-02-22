@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn tantan_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -48,7 +46,6 @@ unsafe extern "C" fn tantan_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -106,7 +103,6 @@ unsafe extern "C" fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -139,7 +135,6 @@ unsafe extern "C" fn tantan_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("tantan_punch_end"), Hash40::new("arml1"), -1, -0.2, 0, 0, 0, 0, 0.8, true);
     }
 }
-
 
 unsafe extern "C" fn tantan_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -184,7 +179,6 @@ unsafe extern "C" fn tantan_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -210,7 +204,6 @@ unsafe extern "C" fn tantan_attack_s3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn tantan_attack_s3hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -254,7 +247,6 @@ unsafe extern "C" fn tantan_attack_s3lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_s3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
@@ -288,9 +280,6 @@ unsafe extern "C" fn tantan_attack_s3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("tantan")

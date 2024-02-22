@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn plizardon_throw_hi_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -35,7 +34,6 @@ unsafe extern "C" fn plizardon_throw_hi_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("plizardon")

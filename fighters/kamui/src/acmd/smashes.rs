@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,7 +31,6 @@ unsafe extern "C" fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
-
 
 unsafe extern "C" fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -67,7 +65,6 @@ unsafe extern "C" fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-
 unsafe extern "C" fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -99,7 +96,6 @@ unsafe extern "C" fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
-
 
 unsafe extern "C" fn kamui_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -152,7 +148,6 @@ unsafe extern "C" fn kamui_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -167,7 +162,6 @@ unsafe extern "C" fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     FT_MOTION_RATE(agent, 1.2);
 }
-
 
 unsafe extern "C" fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -194,7 +188,6 @@ unsafe extern "C" fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -218,7 +211,6 @@ unsafe extern "C" fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("kamui_spearhand")

@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END
-
 
 pub unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
@@ -37,7 +35,6 @@ pub unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-
 pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END)(fighter);
 
@@ -68,7 +65,6 @@ pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> 
 
     ret
 }
-
 
 pub fn install() {
     smashline::Agent::new("rosetta")

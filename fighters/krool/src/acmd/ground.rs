@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn krool_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn krool_attack_11_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.0)
     //WorkModule::on_flag(FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART)
 }
-
 
 unsafe extern "C" fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -57,7 +55,6 @@ unsafe extern "C" fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +64,6 @@ unsafe extern "C" fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
     EFFECT_FLIP_ALPHA(fighter, Hash40::new("krool_scratch"), Hash40::new("krool_scratch"), Hash40::new("top"), 0, 13, 13, -8, 60, -127, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.3);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -88,7 +84,6 @@ unsafe extern "C" fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_attack_13_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -108,7 +103,6 @@ unsafe extern "C" fn krool_attack_13_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(agent, 0.8);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -159,7 +153,6 @@ unsafe extern "C" fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("krool")

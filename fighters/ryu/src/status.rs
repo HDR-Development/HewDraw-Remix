@@ -29,9 +29,6 @@ extern "C" {
 
 // status script import
 
-
-
-
 extern "C" fn ryu_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -263,7 +260,6 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
     false.into()
 }
 
-
 pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     if VarModule::is_flag(
@@ -346,7 +342,6 @@ unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-
 pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr = WorkModule::get_float(
         fighter.module_accessor,
@@ -370,11 +365,9 @@ pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_RYU_STATUS_KIND_DASH_BACK //
 
-
 pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
-
 
 pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
@@ -382,7 +375,6 @@ pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 // FIGHTER_STATUS_KIND_ATTACK //
-
 
 unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
@@ -574,7 +566,6 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 // FIGHTER_STATUS_KIND_ESCAPE_AIR
-
 
 unsafe extern "C" fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FALL
@@ -1030,7 +1021,6 @@ unsafe extern "C" fn air_dash_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_WAIT //
 
-
 pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
@@ -1084,7 +1074,6 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 // FIGHTER_STATUS_KIND_LANDING //
-
 
 pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)

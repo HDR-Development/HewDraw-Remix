@@ -38,7 +38,6 @@ pub mod status;
 pub mod opff;
 pub mod material_table;
 
-
 pub fn install() {
     acmd::install();
     status::install();

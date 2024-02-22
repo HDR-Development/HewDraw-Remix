@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn daisy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +29,6 @@ unsafe extern "C" fn daisy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -51,7 +48,6 @@ unsafe extern "C" fn daisy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
-
 
 unsafe extern "C" fn daisy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -79,7 +75,6 @@ unsafe extern "C" fn daisy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,7 +88,6 @@ unsafe extern "C" fn daisy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn daisy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -145,7 +139,6 @@ unsafe extern "C" fn daisy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -161,9 +154,6 @@ unsafe extern "C" fn daisy_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("daisy")

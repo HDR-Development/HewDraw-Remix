@@ -2,9 +2,6 @@ use super::*;
 use globals::*;
 // status script import
 
-
-
-
 unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();
     StatusModule::init_settings(
@@ -34,7 +31,6 @@ unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L
     return 0.into();
 }
 
-
 unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
@@ -45,7 +41,6 @@ unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> 
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_lw_main_loop as *const () as _))
 }
-
 
 unsafe extern "C" fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()

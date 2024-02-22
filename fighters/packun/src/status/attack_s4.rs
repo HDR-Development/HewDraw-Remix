@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn attack_s4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS4Start();
     if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
@@ -13,7 +12,6 @@ unsafe extern "C" fn attack_s4_start_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Start_Main as *const () as _))
 }
 
-
 unsafe extern "C" fn attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_s4(fighter, true);
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4_Main as *const () as _))
@@ -24,7 +22,6 @@ unsafe extern "C" fn sub_attack_s4(fighter: &mut L2CFighterCommon, param_1: bool
     WorkModule::set_int64(fighter.module_accessor, hash as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_MOTION_KIND);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
 }
-
 
 unsafe extern "C" fn attack_s4_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {

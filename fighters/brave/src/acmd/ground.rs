@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn brave_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +27,6 @@ unsafe extern "C" fn brave_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -45,8 +43,6 @@ unsafe extern "C" fn brave_attack_11_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn brave_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,8 +71,6 @@ unsafe extern "C" fn brave_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn brave_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -104,8 +98,6 @@ unsafe extern "C" fn brave_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +131,6 @@ unsafe extern "C" fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -170,8 +161,6 @@ unsafe extern "C" fn brave_attack_dash_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_landl_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("brave")

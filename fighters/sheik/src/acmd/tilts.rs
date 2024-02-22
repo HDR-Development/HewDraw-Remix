@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn sheik_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -39,7 +38,6 @@ unsafe extern "C" fn sheik_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
         
     }
 }
-
 
 unsafe extern "C" fn sheik_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -101,7 +99,6 @@ unsafe extern "C" fn sheik_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sheik_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -131,9 +128,6 @@ unsafe extern "C" fn sheik_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("sheik")

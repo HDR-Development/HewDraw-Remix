@@ -2,7 +2,6 @@ use super::*;
 use utils::ext::*;
 use std::arch::asm;
 
-
 #[skyline::hook(offset = 0x6d2194, inline)]
 unsafe fn fullhop_initial_y_speed_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());

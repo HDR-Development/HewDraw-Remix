@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +31,6 @@ unsafe extern "C" fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ganon_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -55,7 +52,6 @@ unsafe extern "C" fn ganon_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn ganon_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -87,7 +83,6 @@ unsafe extern "C" fn ganon_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ganon_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -102,7 +97,6 @@ unsafe extern "C" fn ganon_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -116,7 +110,6 @@ unsafe extern "C" fn ganon_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 2.0, 17.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true, 0.8);
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -153,7 +146,6 @@ unsafe extern "C" fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -220,7 +212,6 @@ unsafe extern "C" fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -234,7 +225,6 @@ unsafe extern "C" fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ganon_swing_m"));
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -262,7 +252,6 @@ unsafe extern "C" fn ganon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -285,7 +274,6 @@ unsafe extern "C" fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -296,7 +284,6 @@ unsafe extern "C" fn ganon_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -306,7 +293,6 @@ unsafe extern "C" fn ganon_attack_lw3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ganon_swing_l"));
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -333,7 +319,6 @@ unsafe extern "C" fn ganon_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_lw32_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -347,7 +332,6 @@ unsafe extern "C" fn ganon_attack_lw32_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_lw32_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -358,7 +342,6 @@ unsafe extern "C" fn ganon_attack_lw32_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_lw32_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -368,7 +351,6 @@ unsafe extern "C" fn ganon_attack_lw32_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ganon_swing_l"));
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_lw32_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -394,9 +376,6 @@ unsafe extern "C" fn ganon_attack_lw32_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ganon")

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     frame(lua_state, 39.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -57,7 +55,6 @@ unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -82,7 +79,6 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
 }
-
 
 unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +105,6 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("miifighter")

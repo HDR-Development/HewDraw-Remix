@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 // Young Link Dash Attack Jump
 unsafe fn da_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
@@ -26,11 +25,9 @@ unsafe fn fire_arrow_drift(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
-
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
-
 
 // Bombchu Timer Count
 unsafe fn bombchu_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
@@ -69,7 +66,6 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 	let long_sword_scale = Vector3f{x: 1.0, y: 1.1, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &long_sword_scale);
 }
-
 
 unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     // young link dair hold
@@ -129,7 +125,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 extern "Rust" {
     fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
-
 
 pub extern "C" fn younglink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

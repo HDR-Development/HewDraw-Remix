@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn nana_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn nana_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -44,7 +42,6 @@ unsafe extern "C" fn nana_throw_lw_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_crown"), Hash40::new("sys_crown"), Hash40::new("top"), 9, 0, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn nana_throw_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -67,7 +64,6 @@ unsafe extern "C" fn nana_throw_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_kick_hit_m"));
     }
 }
-
 
 unsafe extern "C" fn nana_throw_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +89,6 @@ unsafe extern "C" fn nana_throw_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -116,7 +111,6 @@ unsafe extern "C" fn nana_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -134,7 +128,6 @@ unsafe extern "C" fn nana_throw_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -148,7 +141,6 @@ unsafe extern "C" fn nana_throw_f_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_popo_swing_l"));
     }
 }
-
 
 unsafe extern "C" fn nana_throw_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,7 +158,6 @@ unsafe extern "C" fn nana_throw_f_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn nana_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -196,7 +187,6 @@ unsafe extern "C" fn nana_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -214,7 +204,6 @@ unsafe extern "C" fn nana_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -228,7 +217,6 @@ unsafe extern "C" fn nana_throw_hi_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_popo_swing_ll"));
     }
 }
-
 
 unsafe extern "C" fn nana_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -255,7 +243,6 @@ unsafe extern "C" fn nana_throw_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -279,7 +266,6 @@ unsafe extern "C" fn nana_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -292,7 +278,6 @@ unsafe extern "C" fn nana_throw_b_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_crown"), Hash40::new("sys_crown"), Hash40::new("top"), 16.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn nana_throw_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -307,7 +292,6 @@ unsafe extern "C" fn nana_throw_b_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
     }
 }
-
 
 unsafe extern "C" fn nana_throw_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -328,9 +312,6 @@ unsafe extern "C" fn nana_throw_b_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("nana")

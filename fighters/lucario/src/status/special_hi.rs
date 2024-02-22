@@ -2,10 +2,7 @@ use super::*;
 use globals::*;
 // status script import
 
-
-
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND
-
 
 pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND)(fighter);
@@ -16,7 +13,6 @@ pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) ->
 }
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
-
 
 unsafe extern "C" fn lucario_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.set_int(-1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
@@ -119,7 +115,6 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
 }
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END
-
 
 unsafe extern "C" fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = fighter.global_table[SITUATION_KIND].get_i32();

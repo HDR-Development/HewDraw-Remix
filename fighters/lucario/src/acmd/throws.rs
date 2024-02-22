@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +27,6 @@ unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
 
 unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,7 +59,6 @@ unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,7 +90,6 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -118,9 +114,6 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("lucario")

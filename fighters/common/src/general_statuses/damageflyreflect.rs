@@ -3,7 +3,6 @@ use globals::*;
 
 // This file contains code for ceiling/wall/ground bounces
 
-
 pub fn install() {
     Agent::new("fighter")
         .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY, damage_fly_end)

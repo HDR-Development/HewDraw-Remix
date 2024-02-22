@@ -15,8 +15,6 @@ use globals::*;
 // ::utils::import!{common::djc::attack_air_main_status}
 // ::utils::import!{common::djc::attack_air_main_status_loop}
 
-
-
 // TAGS: DJC, Double Jump Cancel, Peach
 // Reimplemented to be similar to other djc characters because peach doesn't make the same function calls as in vanilla
 

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -17,7 +16,6 @@ unsafe extern "C" fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase)
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -69,7 +67,6 @@ unsafe extern "C" fn rosetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn rosetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -100,7 +97,6 @@ unsafe extern "C" fn rosetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn rosetta_tico_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -113,7 +109,6 @@ unsafe extern "C" fn rosetta_tico_attack_air_b_game(fighter: &mut L2CAgentBase) 
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn rosetta_tico_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +134,6 @@ unsafe extern "C" fn rosetta_tico_attack_air_b_effect(fighter: &mut L2CAgentBase
         WorkModule::on_flag(boma, *WEAPON_ROSETTA_TICO_INSTANCE_WORK_ID_FLAG_TOGGLE_TWINKLE_EFFECT);
     }
 }
-
 
 unsafe extern "C" fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -187,7 +181,6 @@ unsafe extern "C" fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn rosetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -213,7 +206,6 @@ unsafe extern "C" fn rosetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn rosetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -259,7 +251,6 @@ unsafe extern "C" fn rosetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn rosetta_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -295,7 +286,6 @@ unsafe extern "C" fn rosetta_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn rosetta_tico_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

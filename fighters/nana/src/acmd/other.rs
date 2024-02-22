@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -121,7 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -131,7 +125,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -151,7 +144,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -165,7 +157,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -182,7 +173,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -196,7 +186,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn blizzard_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -217,7 +206,6 @@ unsafe extern "C" fn blizzard_fly_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
     }
 }
-
 
 unsafe extern "C" fn nana_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -245,7 +233,6 @@ unsafe extern "C" fn nana_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_catch_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -258,7 +245,6 @@ unsafe extern "C" fn nana_catch_sound(fighter: &mut L2CAgentBase) {
         STOP_SE(fighter, Hash40::new("se_common_swing_02"));
     }
 }
-
 
 unsafe extern "C" fn nana_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -285,7 +271,6 @@ unsafe extern "C" fn nana_catch_dash_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.21);
 }
 
-
 unsafe extern "C" fn nana_catch_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -302,7 +287,6 @@ unsafe extern "C" fn nana_catch_dash_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_popo_landing01"));
     }
 }
-
 
 unsafe extern "C" fn nana_catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -328,7 +312,6 @@ unsafe extern "C" fn nana_catch_turn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_catch_turn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -341,7 +324,6 @@ unsafe extern "C" fn nana_catch_turn_sound(fighter: &mut L2CAgentBase) {
         STOP_SE(fighter, Hash40::new("se_common_swing_02"));
     }
 }
-
 
 unsafe extern "C" fn nana_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -357,7 +339,6 @@ unsafe extern "C" fn nana_catch_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_catch_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -367,7 +348,6 @@ unsafe extern "C" fn nana_catch_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_catch_attack_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -376,9 +356,6 @@ unsafe extern "C" fn nana_catch_attack_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("nana")

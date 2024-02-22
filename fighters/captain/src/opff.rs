@@ -70,7 +70,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub unsafe extern "C" fn captain_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     air_falcon_kick_jump_reset(fighter);

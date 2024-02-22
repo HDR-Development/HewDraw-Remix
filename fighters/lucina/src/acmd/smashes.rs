@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn lucina_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +31,6 @@ unsafe extern "C" fn lucina_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);  // f36 ingame
     FT_DESIRED_RATE(fighter, (49.0 - 26.0), 13.0);
 }
-
 
 unsafe extern "C" fn lucina_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,9 +73,6 @@ unsafe extern "C" fn lucina_attack_lw4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 43.0);
     FT_DESIRED_RATE(fighter, (70.0 - 43.0), 23.0);
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("lucina")

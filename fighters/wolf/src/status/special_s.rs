@@ -4,7 +4,6 @@ use globals::*;
 use vars::wolf::status::*;
 use consts::statuses::wolf::*;
 
-
 unsafe extern "C" fn special_s_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +33,6 @@ unsafe extern "C" fn special_s_start_pre(fighter: &mut L2CFighterCommon) -> L2CV
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.set_int(-1, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME);
@@ -107,11 +105,9 @@ unsafe extern "C" fn special_s_start_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-
 unsafe extern "C" fn special_s_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_start_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.set_int_from_param(*FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME, "param_special_s", "illusion_stop_y_frame");
@@ -135,7 +131,6 @@ unsafe extern "C" fn special_s_start_init(fighter: &mut L2CFighterCommon) -> L2C
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_start_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -420,8 +415,6 @@ unsafe extern "C" fn special_s_end_exec(fighter: &mut L2CFighterCommon) -> L2CVa
 
     0.into()
 }
-
-
 
 extern "C" fn wolf_init(fighter: &mut L2CFighterCommon) {
     unsafe {

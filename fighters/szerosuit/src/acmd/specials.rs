@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn szerosuit_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -9,14 +8,12 @@ unsafe extern "C" fn szerosuit_special_n_start_game(fighter: &mut L2CAgentBase) 
     FT_MOTION_RATE(fighter, 15.0/(21.0-1.0));
 }
 
-
 unsafe extern "C" fn szerosuit_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 15.0/(21.0-1.0));
 }
-
 
 unsafe extern "C" fn szerosuit_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -29,8 +26,6 @@ unsafe extern "C" fn szerosuit_special_n_shoot_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
-
 unsafe extern "C" fn szerosuit_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,15 +37,12 @@ unsafe extern "C" fn szerosuit_special_air_n_shoot_game(fighter: &mut L2CAgentBa
     }
 }
 
-
-
 unsafe extern "C" fn szerosuit_special_n_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 9.0/(14.0-1.0));
 }
-
 
 unsafe extern "C" fn szerosuit_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -82,7 +74,6 @@ unsafe extern "C" fn szerosuit_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn szerosuit_whip_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -99,7 +90,6 @@ unsafe extern "C" fn szerosuit_whip_special_s_game(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(boma, false);
     }
 }
-
 
 unsafe extern "C" fn szerosuit_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -151,7 +141,6 @@ unsafe extern "C" fn szerosuit_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn szerosuit_whip_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -164,7 +153,6 @@ unsafe extern "C" fn szerosuit_whip_special_air_s_game(fighter: &mut L2CAgentBas
         VisibilityModule::set_whole(boma, false);
     }
 }
-
 
 unsafe extern "C" fn szerosuit_special_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -179,7 +167,6 @@ unsafe extern "C" fn szerosuit_special_s_2_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn szerosuit_whip_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -197,7 +184,6 @@ unsafe extern "C" fn szerosuit_whip_special_s2_game(fighter: &mut L2CAgentBase) 
         VisibilityModule::set_whole(boma, false);
     }
 }
-
 
 unsafe extern "C" fn szerosuit_whip_special_s2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -228,7 +214,6 @@ unsafe extern "C" fn szerosuit_whip_special_s2_effect(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn szerosuit_special_air_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -243,7 +228,6 @@ unsafe extern "C" fn szerosuit_special_air_s_2_game(fighter: &mut L2CAgentBase) 
     }
     
 }
-
 
 unsafe extern "C" fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -309,7 +293,6 @@ unsafe extern "C" fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -374,7 +357,6 @@ unsafe extern "C" fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn szerosuit_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -411,7 +393,6 @@ unsafe extern "C" fn szerosuit_special_lw_start_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn szerosuit_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -446,7 +427,6 @@ unsafe extern "C" fn szerosuit_special_air_lw_start_game(fighter: &mut L2CAgentB
     }
 }
 
-
 unsafe extern "C" fn szerosuit_special_air_lw_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -473,7 +453,6 @@ unsafe extern "C" fn szerosuit_special_air_lw_kick_game(fighter: &mut L2CAgentBa
     
 }
 
-
 unsafe extern "C" fn szerosuit_special_air_lw_flip_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -489,9 +468,6 @@ unsafe extern "C" fn szerosuit_special_air_lw_flip_game(fighter: &mut L2CAgentBa
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("szerosuit")

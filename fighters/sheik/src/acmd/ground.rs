@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +20,6 @@ unsafe extern "C" fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("sheik_attack_cut"), -1);
     }
 }
-
 
 unsafe extern "C" fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,7 +58,6 @@ unsafe extern "C" fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -76,7 +72,6 @@ unsafe extern "C" fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_line_b"), true, true);
     }
 }
-
 
 unsafe extern "C" fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +88,6 @@ unsafe extern "C" fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -116,9 +110,6 @@ unsafe extern "C" fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("sheik")

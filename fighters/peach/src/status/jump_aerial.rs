@@ -1,7 +1,5 @@
 use super::*;
 
-
-
 // TAGS: DJC, Double Jump Cancel, Peach
 // Reimplements peach's double jump to use FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION instead of FIGHTER_KINETIC_TYPE_JUMP_AERIAL
 

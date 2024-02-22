@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn pikmin_special_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -13,7 +12,6 @@ unsafe extern "C" fn pikmin_special_s(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_SPECIAL_S_FLAG_THROW);
     }
 }
-
 
 unsafe extern "C" fn pikmin_special_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -31,13 +29,11 @@ unsafe extern "C" fn pikmin_special_n(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pikmin_special_n_failure(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
-
 
 unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -55,7 +51,6 @@ unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -69,9 +64,6 @@ unsafe extern "C" fn effect_speciallw(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pikmin")

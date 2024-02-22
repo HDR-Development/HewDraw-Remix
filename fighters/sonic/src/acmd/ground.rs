@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn sonic_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +26,6 @@ unsafe extern "C" fn sonic_attack_11_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn sonic_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -49,7 +47,6 @@ unsafe extern "C" fn sonic_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sonic_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -64,7 +61,6 @@ unsafe extern "C" fn sonic_attack_12_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_ALPHA(fighter, 0.7);
     }
 }
-
 
 unsafe extern "C" fn sonic_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,7 +77,6 @@ unsafe extern "C" fn sonic_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sonic_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -96,7 +91,6 @@ unsafe extern "C" fn sonic_attack_13_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_ALPHA(fighter, 0.7);
     }
 }
-
 
 unsafe extern "C" fn sonic_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -146,7 +140,6 @@ unsafe extern "C" fn sonic_attack_dash_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn sonic_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -172,7 +165,6 @@ unsafe extern "C" fn sonic_attack_dash_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sonic_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -190,9 +182,6 @@ unsafe extern "C" fn sonic_attack_dash_sound(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("sonic")

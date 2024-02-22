@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn sonic_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,8 +31,6 @@ unsafe extern "C" fn sonic_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn sonic_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -51,8 +48,6 @@ unsafe extern "C" fn sonic_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 13.2, 16.2, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 360, true);
     }
 }
-
-
 
 unsafe extern "C" fn sonic_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -84,7 +79,6 @@ unsafe extern "C" fn sonic_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sonic_attack_s3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -102,8 +96,6 @@ unsafe extern "C" fn sonic_attack_s3_effect(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 9, 19.5, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 360, true);
     }
 }
-
-
 
 unsafe extern "C" fn sonic_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,8 +128,6 @@ unsafe extern "C" fn sonic_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn sonic_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -155,8 +145,6 @@ unsafe extern "C" fn sonic_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 6, 19.5, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 360, true);
     }
 }
-
-
 
 unsafe extern "C" fn sonic_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,8 +166,6 @@ unsafe extern "C" fn sonic_attack_lw3_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, true);
     }
 }
-
-
 
 unsafe extern "C" fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -226,11 +212,6 @@ unsafe extern "C" fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     FT_MOTION_RATE(fighter, 2.0);
 }
-
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("sonic")

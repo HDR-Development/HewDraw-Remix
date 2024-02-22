@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +21,6 @@ unsafe extern "C" fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,7 +47,6 @@ unsafe extern "C" fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -70,7 +67,6 @@ unsafe extern "C" fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -96,7 +92,6 @@ unsafe extern "C" fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
-
 
 unsafe extern "C" fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -129,8 +124,6 @@ unsafe extern "C" fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("mario")

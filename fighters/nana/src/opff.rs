@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 // Ice Climbers Cheer Cancel (Techy)
 unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.kind() == *FIGHTER_KIND_NANA {
@@ -19,7 +18,6 @@ extern "Rust" {
     fn ice_climbers_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // nothing lol
 }
@@ -29,7 +27,6 @@ pub fn cheer_cancel_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         cheer_cancel(fighter);
     }
 }
-
 
 pub extern "C" fn nana_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

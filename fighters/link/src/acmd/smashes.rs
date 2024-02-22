@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn game_attacks4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -36,7 +35,6 @@ unsafe extern "C" fn game_attacks4 (fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn attack_s4_2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,7 +51,6 @@ unsafe extern "C" fn attack_s4_2(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -107,7 +104,6 @@ unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
 	} 
 }
 
-
 unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -142,9 +138,6 @@ unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 38.0);
 	FT_MOTION_RATE(fighter, 12.0/(56.0-38.0));
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("link")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_mariod_rnd_futtobi01"), Hash40::new("seq_mariod_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_mariod_rnd_futtobi01"), Hash40::new("seq_mariod_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +115,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_mariod_rnd_futtobi01"), Hash40::new("seq_mariod_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn mariod_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +142,6 @@ unsafe extern "C" fn mariod_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -162,7 +155,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_mariod_step_left_m"), Hash40::new("se_mariod_step_right_m"));
     }
 }
-
 
 unsafe extern "C" fn mariod_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -180,7 +172,6 @@ unsafe extern "C" fn mariod_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mariod_drcapsule_regular_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -193,7 +184,6 @@ unsafe extern "C" fn mariod_drcapsule_regular_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 65, 30, 0, 50, 1.7, 0.0, 1.7, 0.0, Some(0.0), Some(-1.7), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_NONE);
     }
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -210,7 +200,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -224,8 +213,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("mariod")

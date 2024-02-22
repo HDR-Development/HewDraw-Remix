@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn mario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +24,6 @@ unsafe extern "C" fn mario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn mario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -71,7 +69,6 @@ unsafe extern "C" fn mario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mario_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -104,7 +101,6 @@ unsafe extern "C" fn mario_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -133,7 +129,6 @@ unsafe extern "C" fn mario_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn mario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -148,7 +143,6 @@ unsafe extern "C" fn mario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
-
 
 unsafe extern "C" fn mario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -182,7 +176,6 @@ unsafe extern "C" fn mario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn mario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -225,7 +218,6 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -234,7 +226,6 @@ unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_mario_attackair_l01"));
     }
 }
-
 
 unsafe extern "C" fn expression_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -252,7 +243,6 @@ unsafe extern "C" fn expression_attackairlw(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn mario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn attack_air_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -35,7 +34,6 @@ unsafe extern "C" fn attack_air_n(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn attack_air_f(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,8 +79,6 @@ unsafe extern "C" fn attack_air_f(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -104,8 +100,6 @@ unsafe extern "C" fn attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -126,7 +120,6 @@ unsafe extern "C" fn attack_air_f_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn attack_air_b(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -167,7 +160,6 @@ unsafe extern "C" fn attack_air_b(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn attack_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -196,7 +188,6 @@ unsafe extern "C" fn attack_air_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attackairhi (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -212,7 +203,6 @@ unsafe extern "C" fn effect_attackairhi (fighter: &mut L2CAgentBase) {
 	}
 
 }
-
 
 unsafe extern "C" fn attack_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -246,7 +236,6 @@ unsafe extern "C" fn attack_air_lw(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attackairlw (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -267,9 +256,6 @@ unsafe extern "C" fn effect_attackairlw (fighter: &mut L2CAgentBase) {
 	}
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("link")

@@ -38,5 +38,4 @@ use utils::{
 };
 use smashline::*;
 
-
 pub fn install() {}

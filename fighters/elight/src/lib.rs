@@ -39,7 +39,6 @@ use utils::{
 };
 use smashline::*;
 
-
 pub fn install() {
     acmd::install();
     status::install();

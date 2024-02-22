@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
@@ -31,7 +30,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Motion Kind change depending on situation.
@@ -157,22 +155,17 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-
 unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 unsafe extern "C" fn special_n_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 unsafe extern "C" fn special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("ganon")

@@ -2,11 +2,7 @@ use super::*;
 use globals::*;
 // status script import
 
-
-
-
 // FIGHTER_STATUS_KIND_SPECIAL_HI //
-
 
 pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
@@ -47,7 +43,6 @@ pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CVal
     );
     0.into()
 }
-
 
 pub unsafe extern "C" fn specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD);
@@ -202,10 +197,7 @@ unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2
     return 0.into()
 }
 
-
 // FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD
-
-
 
 pub unsafe extern "C" fn special_hi_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_hold"), 0.0, 1.0, false, 0.0, false, false);
@@ -246,10 +238,7 @@ unsafe extern "C" fn special_hi_hold_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-
 // FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END //
-
-
 
 pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
@@ -280,7 +269,6 @@ pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-
 pub unsafe extern "C" fn specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
@@ -304,7 +292,6 @@ unsafe extern "C" fn specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L2CVa
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let frame = MotionModule::frame(fighter.module_accessor);
     let mut motion_value = 0.55;
-
 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into()
@@ -406,10 +393,7 @@ unsafe extern "C" fn sub_specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L
     return 0.into()
 }
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_N //
-
-
 
 pub unsafe extern "C" fn special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -43,7 +42,6 @@ unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -89,7 +87,6 @@ unsafe extern "C" fn game_attack12(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attack13(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -116,7 +113,6 @@ unsafe extern "C" fn game_attack13(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attack14(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -140,7 +136,6 @@ unsafe extern "C" fn game_attack14(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
     }
 }
-
 
 unsafe extern "C" fn game_attack15(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -167,7 +162,6 @@ unsafe extern "C" fn game_attack15(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
     }
 }
-
 
 unsafe extern "C" fn game_attack16(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -206,7 +200,6 @@ unsafe extern "C" fn game_attack16(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attack17(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -230,7 +223,6 @@ unsafe extern "C" fn game_attack17(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
     }
 }
-
 
 unsafe extern "C" fn game_attack18(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -258,7 +250,6 @@ unsafe extern "C" fn game_attack18(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attack19(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -282,7 +273,6 @@ unsafe extern "C" fn game_attack19(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attack110(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -301,7 +291,6 @@ unsafe extern "C" fn game_attack110(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn game_flashpunch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -344,7 +333,6 @@ unsafe extern "C" fn game_flashpunch(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("demon")

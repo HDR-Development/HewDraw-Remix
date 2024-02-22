@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_zelda_rnd_futtobi01"), Hash40::new("seq_zelda_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_zelda_rnd_futtobi01"), Hash40::new("seq_zelda_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -121,7 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -136,7 +130,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -150,7 +143,6 @@ unsafe extern "C" fn zelda_turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn zelda_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,7 +170,6 @@ unsafe extern "C" fn zelda_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -195,7 +186,6 @@ unsafe extern "C" fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
 		AreaModule::erase_wind(boma, 0);
 	}
 }
-
 
 unsafe extern "C" fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -255,7 +245,6 @@ unsafe extern "C" fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 		wait(lua_state, 1.0);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -327,7 +316,6 @@ unsafe extern "C" fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 	}   
 }
 
-
 unsafe extern "C" fn zelda_phantom_build_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -362,7 +350,6 @@ unsafe extern "C" fn zelda_phantom_build_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn zelda_phantom_attack_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -391,7 +378,6 @@ unsafe extern "C" fn zelda_phantom_attack_kick_game(fighter: &mut L2CAgentBase) 
 	}
 
 }
-
 
 unsafe extern "C" fn zelda_phantom_attack_kick_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -425,7 +411,6 @@ unsafe extern "C" fn zelda_phantom_attack_kick_effect(fighter: &mut L2CAgentBase
 		LAST_EFFECT_SET_RATE(fighter, 1.8);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -462,7 +447,6 @@ unsafe extern "C" fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase)
 
 }
 
-
 unsafe extern "C" fn zelda_phantom_attack_punch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -489,7 +473,6 @@ unsafe extern "C" fn zelda_phantom_attack_punch_effect(fighter: &mut L2CAgentBas
 		LAST_EFFECT_SET_RATE(fighter, 1.7);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -524,7 +507,6 @@ unsafe extern "C" fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(boma);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -588,7 +570,6 @@ unsafe extern "C" fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -629,7 +610,6 @@ unsafe extern "C" fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(boma);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -735,7 +715,6 @@ unsafe extern "C" fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -769,7 +748,6 @@ unsafe extern "C" fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(boma);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -829,7 +807,6 @@ unsafe extern "C" fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase)
 	}
 }
 
-
 unsafe extern "C" fn zelda_phantom_cancel_game(fighter: &mut L2CAgentBase) {
 	let owner_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
@@ -843,7 +820,6 @@ unsafe extern "C" fn zelda_phantom_cancel_game(fighter: &mut L2CAgentBase) {
 		VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
 	}
 }
-
 
 unsafe extern "C" fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -865,7 +841,6 @@ unsafe extern "C" fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -881,7 +856,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -895,9 +869,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("zelda_phantom")

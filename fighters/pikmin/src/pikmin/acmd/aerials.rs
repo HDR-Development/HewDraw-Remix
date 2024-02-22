@@ -3,7 +3,6 @@ use super::PikminInfo;
 use std::ops::Index;
 use globals::*;
 
-
 unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,7 +46,6 @@ unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -66,7 +64,6 @@ unsafe extern "C" fn effect_attackairn(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(fighter, p.color.x, p.color.y, p.color.z);
     }
 }
-
 
 unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -97,8 +94,6 @@ unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -119,8 +114,6 @@ unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
-
 
 unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -144,8 +137,6 @@ unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
-
 
 unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -175,8 +166,6 @@ unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("pikmin_pikmin")

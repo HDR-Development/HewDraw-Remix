@@ -1,7 +1,5 @@
 use super::*;
 
-
-
 unsafe extern "C" fn buddy_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -20,7 +18,6 @@ unsafe extern "C" fn buddy_attack_11_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,7 +46,6 @@ unsafe extern "C" fn buddy_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -71,7 +67,6 @@ unsafe extern "C" fn buddy_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -101,11 +96,9 @@ unsafe extern "C" fn buddy_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
 
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
@@ -128,7 +121,6 @@ unsafe extern "C" fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -175,7 +167,6 @@ unsafe extern "C" fn buddy_attack_dash_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("buddy")

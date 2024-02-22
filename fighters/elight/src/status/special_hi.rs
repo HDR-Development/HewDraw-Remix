@@ -24,7 +24,6 @@ pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommo
     }
 }
 
-
 unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -54,7 +53,6 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] fill out the kinetic energy from parameter data and also change the motion kind
@@ -89,7 +87,6 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] if you aren't going into jump then this is an interruption
     if fighter.global_table[globals::STATUS_KIND] != FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP {
@@ -99,14 +96,11 @@ unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] increment the frame counter so that the input leniency check works properly
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("elight")

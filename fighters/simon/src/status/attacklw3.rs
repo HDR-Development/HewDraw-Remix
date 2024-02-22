@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING
-
 
 unsafe extern "C" fn attack_lw32_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_lw32_landing_frame"));
@@ -38,7 +36,6 @@ unsafe extern "C" fn attack_lw32_landing_main_loop(fighter: &mut L2CFighterCommo
     // </HDR>
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("simon")

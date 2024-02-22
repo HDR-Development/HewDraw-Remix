@@ -19,7 +19,6 @@ extern "Rust" {
 
 // FIGHTER_DEMON_STATUS_KIND_DASH //
 
-
 pub unsafe extern "C" fn status_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Dash_Sub();
     fighter.sub_shift_status_main(L2CValue::Ptr(status_dash_main as *const () as _))
@@ -47,7 +46,6 @@ unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-
 pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     app::FighterSpecializer_Demon::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
     let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
@@ -66,11 +64,9 @@ pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_DEMON_STATUS_KIND_DASH_BACK //
 
-
 pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
-
 
 pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
@@ -79,7 +75,6 @@ pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_STATUS_KIND_ATTACK //
 // Here to force Kazuya to only use neutral attack to continue the combo.
-
 
 unsafe extern "C" fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
@@ -130,7 +125,6 @@ unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 // FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO //
 // Here to force Kazuya to only use neutral attack to continue the combo.
-
 
 unsafe extern "C" fn demon_attackcombo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     demon_attackcombo_main_mot_helper(fighter, 2.into());
@@ -287,7 +281,6 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
 
 // FIGHTER_STATUS_KIND_WAIT //
 
-
 pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
@@ -327,14 +320,12 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 // FIGHTER_STATUS_KIND_LANDING //
 
-
 pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 // For fixing momentum transfer
-
 
 pub unsafe extern "C" fn attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);

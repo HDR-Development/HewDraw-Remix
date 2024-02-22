@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -29,7 +27,6 @@ unsafe extern "C" fn catch(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn catch_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +47,6 @@ unsafe extern "C" fn catch_dash(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn catch_turn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -73,7 +69,6 @@ unsafe extern "C" fn catch_turn(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn game_throwff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,7 +88,6 @@ unsafe extern "C" fn game_throwff(fighter: &mut L2CAgentBase) {
 	}
 
 }
-
 
 unsafe extern "C" fn game_throwfb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -116,7 +110,6 @@ unsafe extern "C" fn game_throwfb(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_throwfhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -142,7 +135,6 @@ unsafe extern "C" fn game_throwfhi(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn game_throwflw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -162,7 +154,6 @@ unsafe extern "C" fn game_throwflw(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
@@ -197,7 +188,6 @@ unsafe extern "C" fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   }
 }
 
-
 unsafe extern "C" fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
@@ -225,7 +215,6 @@ unsafe extern "C" fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.75);
   }
 }
-
 
 unsafe extern "C" fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -267,7 +256,6 @@ unsafe extern "C" fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -276,9 +264,6 @@ unsafe extern "C" fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("donkey_attack_arc"), Hash40::new("top"), -2, 16, -1, -5, -33, -102, 1.2, true, *EF_FLIP_YZ);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("donkey")

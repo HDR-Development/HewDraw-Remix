@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn captain_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -19,7 +18,6 @@ unsafe extern "C" fn captain_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn captain_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -39,7 +37,6 @@ unsafe extern "C" fn captain_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn captain_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -58,8 +55,6 @@ unsafe extern "C" fn captain_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn captain_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -97,8 +92,6 @@ unsafe extern "C" fn captain_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn captain_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -116,8 +109,6 @@ unsafe extern "C" fn captain_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 11, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
 
 unsafe extern "C" fn captain_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -138,8 +129,6 @@ unsafe extern "C" fn captain_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn captain_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -153,10 +142,6 @@ unsafe extern "C" fn captain_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("captain")

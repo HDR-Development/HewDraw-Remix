@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -34,7 +32,6 @@ unsafe extern "C" fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_attack_11_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -43,7 +40,6 @@ unsafe extern "C" fn ganon_attack_11_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ganon_swing_s"));
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -60,7 +56,6 @@ unsafe extern "C" fn ganon_attack_11_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn ganon_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,9 +76,6 @@ unsafe extern "C" fn ganon_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ganon")

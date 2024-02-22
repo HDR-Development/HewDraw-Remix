@@ -3,12 +3,10 @@ utils::import!(common::djc::attack_air_main_status);
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-
 unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
-
 
 pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
@@ -80,7 +78,6 @@ pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CV
     let _ = fighter.sub_attack_air_uniq_process_init();
     0.into()
 }
-
 
 pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
@@ -154,7 +151,6 @@ unsafe extern "C" fn sub_attack_air_n(fighter: &mut L2CFighterCommon) {
     fighter.sub_attack_air_uniq_process_init();
     return;
 }
-
 
 pub unsafe extern "C" fn init_attack_air_n(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_n(fighter);
@@ -243,7 +239,6 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
     return;
 }
 
-
 pub unsafe extern "C" fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_f(fighter);
     // Momentum transfer stuff
@@ -261,8 +256,6 @@ pub unsafe extern "C" fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2
     }
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("trail")

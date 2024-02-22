@@ -41,8 +41,6 @@ use smashline::*;
 pub const KOOPA_MAX_COOLDOWN : i32 = 900;
 pub const LUCAS_CHARGE_TIME : i32 = 120;
 
-
-
 pub fn install() {
     acmd::install();
     status::install();

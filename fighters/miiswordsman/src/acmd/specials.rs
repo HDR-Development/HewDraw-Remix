@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -18,7 +17,6 @@ unsafe extern "C" fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -98,7 +96,6 @@ unsafe extern "C" fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -124,7 +121,6 @@ unsafe extern "C" fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -134,7 +130,6 @@ unsafe extern "C" fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_miiswordsman_special_l03"));
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -165,7 +160,6 @@ unsafe extern "C" fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBa
 // ================================================================================================
 // ======================================== BLURRING BLADE ========================================
 // ================================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -214,7 +208,6 @@ unsafe extern "C" fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase
     frame(lua_state, 80.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -281,11 +274,9 @@ unsafe extern "C" fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgent
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 // ==================================================================================================
 // ======================================== AIRBORNE ASSAULT ========================================
 // ==================================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -298,7 +289,6 @@ unsafe extern "C" fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBa
     
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -310,7 +300,6 @@ unsafe extern "C" fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAge
     
 }
 
-
 unsafe extern "C" fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -320,7 +309,6 @@ unsafe extern "C" fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -354,7 +342,6 @@ unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
 // ======================================== GALE STAB ==========================================
 // =============================================================================================
 
-
 unsafe extern "C" fn miiswordsman_special_s2_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
@@ -363,7 +350,6 @@ unsafe extern "C" fn miiswordsman_special_s2_dash_game(fighter: &mut L2CAgentBas
         MotionModule::set_rate(fighter.module_accessor, 0.5);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -383,7 +369,6 @@ unsafe extern "C" fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentB
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -442,7 +427,6 @@ unsafe extern "C" fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgen
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 10.0);
@@ -450,7 +434,6 @@ unsafe extern "C" fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgen
         MotionModule::set_rate(fighter.module_accessor, 0.5);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -470,7 +453,6 @@ unsafe extern "C" fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAg
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -529,11 +511,9 @@ unsafe extern "C" fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2C
     }
 }
 
-
 // =============================================================================================
 // ======================================== CHAKRAM ============================================
 // =============================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -568,7 +548,6 @@ unsafe extern "C" fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) 
     }  
 }
 
-
 unsafe extern "C" fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -601,7 +580,6 @@ unsafe extern "C" fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBas
         ArticleModule::shoot_exist(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_CHAKRAM, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }     
 }
-
 
 unsafe extern "C" fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -636,7 +614,6 @@ unsafe extern "C" fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBas
     }    
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -669,7 +646,6 @@ unsafe extern "C" fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBa
         ArticleModule::shoot_exist(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_CHAKRAM, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }     
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -704,7 +680,6 @@ unsafe extern "C" fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgen
     }    
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -738,11 +713,9 @@ unsafe extern "C" fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgen
     }     
 }
 
-
 // =============================================================================================
 // ======================================== STONE SCABBARD ========================================
 // =============================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -752,7 +725,6 @@ unsafe extern "C" fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentB
         FT_MOTION_RATE(fighter, 0.7);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -804,7 +776,6 @@ unsafe extern "C" fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -821,8 +792,6 @@ unsafe extern "C" fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBas
         FT_MOTION_RATE(fighter, 0.8);
     }
 }
-
-
 
 unsafe extern "C" fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -841,11 +810,9 @@ unsafe extern "C" fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgen
     } 
 }
 
-
 // ====================================================================================================
 // ======================================== SKYWARD SLASH DASH ========================================
 // ====================================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -880,7 +847,6 @@ unsafe extern "C" fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBa
     wait(lua_state, 1.0);
 }
 
-
 unsafe extern "C" fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -913,7 +879,6 @@ unsafe extern "C" fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAge
     }
     wait(lua_state, 1.0);
 }
-
 
 unsafe extern "C" fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -981,7 +946,6 @@ unsafe extern "C" fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1033,7 +997,6 @@ unsafe extern "C" fn miiswordsman_special_hi2_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1045,7 +1008,6 @@ unsafe extern "C" fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgen
         }
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1062,11 +1024,9 @@ unsafe extern "C" fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBa
     }
 }
 
-
 // =============================================================================================
 // ======================================== HERO'S SPIN ========================================
 // =============================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1109,7 +1069,6 @@ unsafe extern "C" fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1212,11 +1171,9 @@ unsafe extern "C" fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBas
     
 }
 
-
 // ===============================================================================================
 // ======================================== KINESIS BLADE ========================================
 // ===============================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1241,7 +1198,6 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBas
     frame(lua_state, 47.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1340,7 +1296,6 @@ unsafe extern "C" fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgen
 //     }
 // }
 
-
 // Kinesis Blade - 1 Charge
 
 unsafe extern "C" fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
@@ -1377,7 +1332,6 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgen
         //WorkModule::off_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_OFF);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1451,7 +1405,6 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_lv2_game(fighter: &mut L2CAgen
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1487,11 +1440,9 @@ unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2C
     }
 }
 
-
 // ================================================================================================================
 // ======================================== DEFLECTING DRAFT / SHOCK SPELL ========================================
 // ================================================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1529,7 +1480,6 @@ unsafe extern "C" fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1603,7 +1553,6 @@ unsafe extern "C" fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
 unsafe extern "C" fn miiswordsman_special_lw2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1623,11 +1572,9 @@ unsafe extern "C" fn miiswordsman_special_lw2_sound(fighter: &mut L2CAgentBase) 
 
 }
 
-
 // ================================================================================================================
 // ======================================== HURRICANE HEAVE =======================================================
 // ================================================================================================================
-
 
 unsafe extern "C" fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1658,7 +1605,6 @@ unsafe extern "C" fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1719,7 +1665,6 @@ unsafe extern "C" fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1755,7 +1700,6 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1778,7 +1722,6 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgen
         //WorkModule::off_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_SP_BRAKE);
     }
 }
-
 
 unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

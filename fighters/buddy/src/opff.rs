@@ -120,7 +120,6 @@ unsafe fn bonk_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-
 unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if StatusModule::is_changing(boma) {
         return;
@@ -536,8 +535,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-
-
 extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let lua_state = fighter.lua_state_agent;    
@@ -547,7 +544,6 @@ extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 pub unsafe extern "C" fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);

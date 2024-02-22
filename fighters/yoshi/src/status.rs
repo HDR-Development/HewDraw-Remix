@@ -3,10 +3,7 @@ use globals::*;
 utils::import!(common::djc::attack_air_main_status);
 // status script import
 
-
-
 // FIGHTER_STATUS_KIND_GUARD_ON
-
 
 pub unsafe extern "C" fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
@@ -50,7 +47,6 @@ unsafe extern "C" fn guard_on_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_GUARD_DAMAGE //
 
-
 pub unsafe extern "C" fn init_guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_ftStatusUniqProcessGuardDamage_initStatus_Inner();
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
@@ -73,12 +69,10 @@ unsafe extern "C" fn init_guard_damage_uniq(fighter: &mut L2CFighterCommon) {
     fighter.pop_lua_stack(0);
 }
 
-
 pub unsafe extern "C" fn exit_guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_ftStatusUniqProcessGuardDamage_exitStatus_common();
     smashline::original_status(Exit, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
 }
-
 
 pub unsafe extern "C" fn guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardDamage_common(L2CValue::Bool(false));
@@ -88,7 +82,6 @@ pub unsafe extern "C" fn guard_damage(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 // FIGHTER_STATUS_KIND_GUARD_OFF //
-
 
 pub unsafe extern "C" fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
@@ -195,7 +188,6 @@ unsafe extern "C" fn guard_off_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 // FIGHTER_STATUS_KIND_JUMP_AERIAL
 
-
 pub unsafe extern "C" fn pre_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_0 = fighter.status_pre_JumpAerial_sub().get_i32() == 0;
     let should_end = is_0 as i32 & 1 == 0;
@@ -227,7 +219,6 @@ pub unsafe extern "C" fn pre_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CV
     }
     return (should_end as i32).into();
 }
-
 
 pub unsafe extern "C" fn jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let aerial_damage_reaction = WorkModule::get_float(
@@ -279,23 +270,19 @@ pub unsafe extern "C" fn jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-
 pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_init();
     0.into()
 }
 
-
 pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
-
 
 pub unsafe extern "C" fn exec_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec();
     0.into()
 }
-
 
 pub unsafe extern "C" fn exit_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exit();

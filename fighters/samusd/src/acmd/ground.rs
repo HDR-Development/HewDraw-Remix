@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn samusd_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn samusd_attack_11_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -45,7 +43,6 @@ unsafe extern "C" fn samusd_attack_12_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -58,7 +55,6 @@ unsafe extern "C" fn samusd_attack_12_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
     }
 }
-
 
 unsafe extern "C" fn samusd_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,7 +71,6 @@ unsafe extern "C" fn samusd_attack_12_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn samusd_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -97,7 +92,6 @@ unsafe extern "C" fn samusd_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -108,9 +102,6 @@ unsafe extern "C" fn samusd_attack_dash_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("samusd")

@@ -3,14 +3,12 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 #[no_mangle]
 pub unsafe extern "Rust" fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     power_of_flight_cancel(boma, status_kind);
     upperdash_arm_whiff_freefall(fighter);
     fastfall_specials(fighter);
 }
-
 
 // Pits Power of Flight cancel
 unsafe fn power_of_flight_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -86,7 +84,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     upperdash_arm_jump_and_aerial_cancel(boma);
     pits_common(fighter, boma, status_kind);
 }
-
 
 pub extern "C" fn pit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

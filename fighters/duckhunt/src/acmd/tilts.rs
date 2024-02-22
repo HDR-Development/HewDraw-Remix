@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -19,7 +18,6 @@ unsafe extern "C" fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -52,7 +49,6 @@ unsafe extern "C" fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -79,7 +75,6 @@ unsafe extern "C" fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +104,6 @@ unsafe extern "C" fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) 
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -158,7 +152,6 @@ unsafe extern "C" fn duckhunt_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn duckhunt_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -173,7 +166,6 @@ unsafe extern "C" fn duckhunt_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 1, 0.941, 0.392);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -192,7 +184,6 @@ unsafe extern "C" fn duckhunt_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
         PLAY_STATUS(agent, Hash40::new("se_duckhunt_appeal_s04"));
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;

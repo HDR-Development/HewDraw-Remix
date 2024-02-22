@@ -1,7 +1,6 @@
 use super::*;
 use smash2;
 
-
 unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +20,6 @@ unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
         GrabModule::set_rebound(boma, false);
     }
 }
-
 
 unsafe extern "C" fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -45,7 +43,6 @@ unsafe extern "C" fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_80_beam"), 0, false, 0 as u32);
     }
 }
-
 
 unsafe extern "C" fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -102,7 +99,6 @@ unsafe extern "C" fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.375);
 }
 
-
 unsafe extern "C" fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -117,7 +113,6 @@ unsafe extern "C" fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 1, false);
     }
 }
-
 
 unsafe extern "C" fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,7 +161,6 @@ unsafe extern "C" fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.9);
     
 }
-
 
 unsafe extern "C" fn demon_throw_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

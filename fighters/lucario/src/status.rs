@@ -15,9 +15,6 @@ extern "C" {
     fn store_event_table(event: *const app::LinkEvent) -> L2CValue;
 }
 
-
-
-
 extern "C" fn lucario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_LUCARIO {
@@ -94,20 +91,17 @@ unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_WALK //
 
-
 pub unsafe extern "C" fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Walk()
 }
 
 // FIGHTER_STATUS_KIND_DASH //
 
-
 pub unsafe extern "C" fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Dash()
 }
 
 // FIGHTER_STATUS_KIND_RUN //
-
 
 pub unsafe extern "C" fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Run()

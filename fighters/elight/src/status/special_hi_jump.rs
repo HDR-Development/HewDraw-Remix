@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,7 +29,6 @@ unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CV
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
@@ -130,8 +128,6 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-
-
 unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] the only natural conclusion of this move is that you do spreadbullet or ray of punishment
     //      so if you are doing neither of those, then you were interrupted
@@ -151,7 +147,6 @@ unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CV
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] increment this flag, just like regular special hi for spreadbullet check

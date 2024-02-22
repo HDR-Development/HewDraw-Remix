@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn popo_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +19,6 @@ unsafe extern "C" fn popo_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn popo_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -39,9 +36,6 @@ unsafe extern "C" fn popo_special_air_n_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("popo")

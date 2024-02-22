@@ -44,7 +44,6 @@ unsafe extern "C" fn snake_side_smash_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_side_smash_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -61,7 +60,6 @@ unsafe extern "C" fn snake_side_smash_expr(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_side_smash_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -75,7 +73,6 @@ unsafe extern "C" fn snake_side_smash_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_squat_gear"));
     }
 }
-
 
 unsafe extern "C" fn snake_side_smash_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -159,7 +156,6 @@ unsafe extern "C" fn snake_side_smash_2_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_side_smash_2_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -176,7 +172,6 @@ unsafe extern "C" fn snake_side_smash_2_expr(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_side_smash_2_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -190,7 +185,6 @@ unsafe extern "C" fn snake_side_smash_2_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_squat_gear"));
     }
 }
-
 
 unsafe extern "C" fn snake_side_smash_2_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -240,7 +234,6 @@ unsafe extern "C" fn snake_side_smash_3_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_side_smash_3_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -257,7 +250,6 @@ unsafe extern "C" fn snake_side_smash_3_expr(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_side_smash_3_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -271,7 +263,6 @@ unsafe extern "C" fn snake_side_smash_3_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_squat_gear"));
     }
 }
-
 
 unsafe extern "C" fn snake_side_smash_3_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -330,7 +321,6 @@ unsafe extern "C" fn snake_down_smash_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_down_smash_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -351,7 +341,6 @@ unsafe extern "C" fn snake_down_smash_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_smash_l02"));
     }
 }
-
 
 unsafe extern "C" fn snake_down_smash_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -397,7 +386,6 @@ unsafe extern "C" fn snake_down_smash_charge_exp(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_down_smash_charge_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = fighter.boma();
@@ -412,7 +400,6 @@ unsafe extern "C" fn snake_down_smash_charge_eff(fighter : &mut L2CAgentBase) {
         }
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("snake")

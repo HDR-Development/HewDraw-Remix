@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_LW
-
 
 unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -28,7 +26,6 @@ unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue
 
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
 }
-
 
 pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING) {
@@ -108,7 +105,6 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ![*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
         WorkModule::set_flag(fighter.module_accessor, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING);
@@ -116,14 +112,12 @@ pub unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-
 pub unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ![*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
         WorkModule::set_flag(fighter.module_accessor, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING);
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("wolf")

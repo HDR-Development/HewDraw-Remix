@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -14,7 +13,6 @@ unsafe extern "C" fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pit_special_n_fire_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn pit_special_n_fire_hi_game(fighter: &mut L2CAgentBase) {
         ArticleModule::shoot(boma, *FIGHTER_PIT_GENERATE_ARTICLE_BOWARROW, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
 }
-
 
 unsafe extern "C" fn pit_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -50,7 +47,6 @@ unsafe extern "C" fn pit_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pit_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -72,7 +68,6 @@ unsafe extern "C" fn pit_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pit_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -85,7 +80,6 @@ unsafe extern "C" fn pit_special_air_s_start_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_GRAVITY_ONOFF);
     }
 }
-
 
 unsafe extern "C" fn pit_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -119,7 +113,6 @@ unsafe extern "C" fn pit_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pit_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -136,7 +129,6 @@ unsafe extern "C" fn pit_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pit_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -152,7 +144,6 @@ unsafe extern "C" fn pit_special_lw_end_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pit_guardian_shield"), false, false);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("pit")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_snake_rnd_futtobi01"), Hash40::new("seq_snake_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_snake_rnd_futtobi01"), Hash40::new("seq_snake_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +115,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_snake_rnd_futtobi01"), Hash40::new("seq_snake_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn snake_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +142,6 @@ unsafe extern "C" fn snake_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -158,7 +151,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,7 +170,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -193,7 +184,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn snake_side_taunt_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -202,7 +192,6 @@ unsafe extern "C" fn snake_side_taunt_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("vc_snake_win03"));
     }
 }
-
 
 unsafe extern "C" fn snake_up_taunt_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -217,7 +206,6 @@ unsafe extern "C" fn snake_up_taunt_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("vc_snake_appealhi"));
     }
 }
-
 
 unsafe extern "C" fn snake_down_taunt_explode_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -293,7 +281,6 @@ unsafe extern "C" fn snake_down_taunt_explode_eff(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_trenchmortar_bullet_impact_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -311,7 +298,6 @@ unsafe extern "C" fn snake_trenchmortar_bullet_impact_game(fighter: &mut L2CAgen
     }
 }
 
-
 unsafe extern "C" fn snake_c4_target_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -325,7 +311,6 @@ unsafe extern "C" fn snake_c4_target_game(fighter : &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn snake_c4_stick_other_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -385,7 +370,6 @@ unsafe extern "C" fn snake_c4_stick_other_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_c4_stick_target_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -393,7 +377,6 @@ unsafe extern "C" fn snake_c4_stick_target_game(fighter: &mut L2CAgentBase) {
         
     }
 }
-
 
 unsafe extern "C" fn snake_c4_stick_target_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -479,7 +462,6 @@ unsafe extern "C" fn snake_c4_stick_target_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_c4_stick_target_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -493,7 +475,6 @@ unsafe extern "C" fn snake_c4_stick_target_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_final02"));
     }
 }
-
 
 unsafe extern "C" fn snake_c4_explosion_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -526,7 +507,6 @@ unsafe extern "C" fn snake_c4_explosion_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -541,7 +521,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -562,7 +541,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn snake_tranq_gun_start_snd(fighter : &mut L2CAgentBase) {
 }
 
-
 unsafe extern "C" fn snake_tranq_gun_shoot_snd(fighter : &mut L2CAgentBase) {
 }
 
@@ -577,10 +555,8 @@ unsafe extern "C" fn snake_tranq_dart_fly_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_tranq_dart_fly_snd(fighter : &mut L2CAgentBase) {
 }
-
 
 unsafe extern "C" fn snake_tranq_dart_fly_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -604,7 +580,6 @@ unsafe extern "C" fn snake_tranq_dart_fly_eff(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_tranq_dart_fall_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -612,7 +587,6 @@ unsafe extern "C" fn snake_tranq_dart_fall_eff(fighter : &mut L2CAgentBase) {
         AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_item_killsword1"), Hash40::new("tex_item_killsword2"), 3, Hash40::new("top"), 0.0, 0.35, -1.5, Hash40::new("haver"), 0.0, -0.25, 1.45, true, Hash40::new("null"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
     }
 }
-
 
 unsafe extern "C" fn snake_tranq_dart_explode_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -622,10 +596,8 @@ unsafe extern "C" fn snake_tranq_dart_explode_game(fighter : &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn snake_tranq_dart_fall_explode_game(fighter : &mut L2CAgentBase) {
 }
-
 
 unsafe extern "C" fn snake_tranq_dart_explode_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -636,7 +608,6 @@ unsafe extern "C" fn snake_tranq_dart_explode_snd(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn snake_tranq_dart_explode_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -644,7 +615,6 @@ unsafe extern "C" fn snake_tranq_dart_explode_eff(fighter : &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_piyo"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn snake_tranq_dart_land_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -654,9 +624,6 @@ unsafe extern "C" fn snake_tranq_dart_land_eff(fighter : &mut L2CAgentBase) {
     }
 }
 ////
-
-
-
 
 pub fn install() {
     smashline::Agent::new("snake")

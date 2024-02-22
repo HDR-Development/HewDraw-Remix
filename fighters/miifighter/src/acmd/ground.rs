@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn miifighter_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -20,7 +19,6 @@ unsafe extern "C" fn miifighter_attack_11_game(fighter: &mut L2CAgentBase) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
 }
-
 
 unsafe extern "C" fn miifighter_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -44,7 +42,6 @@ unsafe extern "C" fn miifighter_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn miifighter_attack_100end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -63,7 +60,6 @@ unsafe extern "C" fn miifighter_attack_100end_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn miifighter_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +89,6 @@ unsafe extern "C" fn miifighter_attack_dash_game(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 4.0, 2.9, 7.2, 7.2);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("miifighter")

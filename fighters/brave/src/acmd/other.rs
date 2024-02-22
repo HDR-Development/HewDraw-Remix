@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_brave_rnd_futtobi01"), Hash40::new("seq_brave_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_brave_rnd_futtobi01"), Hash40::new("seq_brave_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +115,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_brave_rnd_futtobi01"), Hash40::new("seq_brave_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn brave_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +142,6 @@ unsafe extern "C" fn brave_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn brave_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -169,7 +162,6 @@ unsafe extern "C" fn brave_catch_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -184,7 +176,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -194,7 +185,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -212,7 +202,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -228,7 +217,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -243,7 +231,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -254,7 +241,6 @@ unsafe extern "C" fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.5, 90, 40, 0, 100, 6.0, 0.0, 22.0, 0.0, Some(0.0), Some(75.0), Some(0.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
     }
 }
-
 
 unsafe extern "C" fn brave_fireball_burst_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -280,7 +266,6 @@ unsafe extern "C" fn brave_fireball_burst_l_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_tornado_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -290,7 +275,6 @@ unsafe extern "C" fn brave_tornado_special_hi1_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn brave_tornado_special_hi1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -298,7 +282,6 @@ unsafe extern "C" fn brave_tornado_special_hi1_effect(fighter: &mut L2CAgentBase
         EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado1"), Hash40::new("tornado1"), 0, 0, 0, 0, 0, 0, 0.75, true);
     }
 }
-
 
 unsafe extern "C" fn brave_tornado_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -314,7 +297,6 @@ unsafe extern "C" fn brave_tornado_special_hi2_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn brave_tornado_special_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -322,7 +304,6 @@ unsafe extern "C" fn brave_tornado_special_hi2_effect(fighter: &mut L2CAgentBase
         EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado2"), Hash40::new("tornado1"), 0, 0, 0, 0, 0, 0, 0.75, true);
     }
 }
-
 
 unsafe extern "C" fn brave_tornado_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -352,7 +333,6 @@ unsafe extern "C" fn brave_tornado_special_hi3_game(fighter: &mut L2CAgentBase) 
     
 }
 
-
 unsafe extern "C" fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -361,7 +341,6 @@ unsafe extern "C" fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase
         EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado3"), Hash40::new("tornado2"), 0, 0, 0, 0, 180, 0, 0.75, true);
     }
 }
-
 
 unsafe extern "C" fn brave_special_lw8_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -392,7 +371,6 @@ unsafe extern "C" fn brave_special_lw8_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_special_air_lw8_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -417,7 +395,6 @@ unsafe extern "C" fn brave_special_air_lw8_effect(fighter: &mut L2CAgentBase) {
         BURN_COLOR_NORMAL(fighter);
     }
 }
-
 
 unsafe extern "C" fn brave_crash_crash1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -475,7 +452,6 @@ unsafe extern "C" fn brave_crash_crash1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_crash_crash1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -507,7 +483,6 @@ unsafe extern "C" fn brave_crash_crash1_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_crash_crash_end1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -519,7 +494,6 @@ unsafe extern "C" fn brave_crash_crash_end1_effect(fighter: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("brave_fullburst_end"), -1);
     }
 }
-
 
 unsafe extern "C" fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -560,7 +534,6 @@ unsafe extern "C" fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -577,7 +550,6 @@ unsafe extern "C" fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase)
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn brave_deathball_deathball2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

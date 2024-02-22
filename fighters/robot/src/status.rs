@@ -1,8 +1,6 @@
 use super::*;
 use globals::*;
 
-
-
 unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
@@ -311,7 +309,6 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_TRANSFORM_COMP);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -320,16 +317,13 @@ unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_keep_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_rise"), 0.0, 1.0, false, 0.0, false, false);
@@ -416,16 +410,13 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_keep_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_keep_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
@@ -435,7 +426,6 @@ unsafe extern "C" fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CV
     KineticModule::resume_energy_all(fighter.module_accessor);
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
@@ -583,37 +573,29 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
 }
 
-
 unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
-
 
 unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 unsafe extern "C" fn special_s_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 unsafe extern "C" fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 unsafe extern "C" fn special_s_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("robot")

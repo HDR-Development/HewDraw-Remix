@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,7 +29,6 @@ unsafe extern "C" fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -62,15 +60,12 @@ unsafe extern "C" fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_attack1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] special_hi_attack1 and special_hi_attack2 both use the same inner block they just start
     //      with different motions
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi1"), 0.0, 1.0, false, 0.0, false, false);
     fighter.main_shift(special_hi_attack_main_loop)
 }
-
-
 
 unsafe extern "C" fn special_hi_attack2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] special_hi_attack1 and special_hi_attack2 both use the same inner block they just start
@@ -93,12 +88,10 @@ unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-
 unsafe extern "C" fn special_hi_attack1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] empty status
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_attack2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] empty status

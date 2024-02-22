@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn game_attacks4hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -18,7 +16,6 @@ unsafe extern "C" fn game_attacks4hi(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn effect_attacks4hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -47,7 +44,6 @@ unsafe extern "C" fn effect_attacks4hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +63,6 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -96,7 +91,6 @@ unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attacks4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -113,7 +107,6 @@ unsafe extern "C" fn game_attacks4lw(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn effect_attacks4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -142,7 +135,6 @@ unsafe extern "C" fn effect_attacks4lw(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -164,7 +156,6 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -195,8 +186,6 @@ unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("luigi")

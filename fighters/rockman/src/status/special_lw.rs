@@ -1,7 +1,6 @@
 use super::*;
 use super::helper::*;
 
-
 unsafe extern "C" fn rockman_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(rockman_special_lw_main_loop as *const () as _))
 }
@@ -45,7 +44,6 @@ unsafe extern "C" fn rockman_special_lw_main_loop(fighter: &mut L2CFighterCommon
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

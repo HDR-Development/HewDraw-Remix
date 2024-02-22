@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn demon_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
@@ -32,7 +31,6 @@ unsafe extern "C" fn demon_attackairn(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn demon_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -68,7 +66,6 @@ unsafe extern "C" fn demon_attackairf(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn demon_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -119,7 +116,6 @@ unsafe extern "C" fn demon_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn demon_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
@@ -163,7 +159,6 @@ unsafe extern "C" fn demon_attackairhi(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("demon")

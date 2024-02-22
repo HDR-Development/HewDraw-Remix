@@ -3,9 +3,7 @@ use globals::*;
 // status script import
  
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_LW
-
 
 pub unsafe extern "C" fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
     if PostureModule::lr(fighter.module_accessor) != 1.0 {

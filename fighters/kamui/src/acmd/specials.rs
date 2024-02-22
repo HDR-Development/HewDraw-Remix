@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn kamui_special_n_end1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -18,7 +17,6 @@ unsafe extern "C" fn kamui_special_n_end1_game(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
 
 unsafe extern "C" fn kamui_dragonhand_special_n_end1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -52,7 +50,6 @@ unsafe extern "C" fn kamui_dragonhand_special_n_end1_game(fighter: &mut L2CAgent
     }
 }
 
-
 unsafe extern "C" fn kamui_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +64,6 @@ unsafe extern "C" fn kamui_special_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kamui_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -81,7 +77,6 @@ unsafe extern "C" fn kamui_special_air_s_attack_game(fighter: &mut L2CAgentBase)
         WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_AIR_CONTROL);
     }
 }
-
 
 unsafe extern "C" fn kamui_spearhand_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -117,7 +112,6 @@ unsafe extern "C" fn kamui_spearhand_special_s_attack_game(fighter: &mut L2CAgen
         WorkModule::off_flag(boma, *WEAPON_KAMUI_SPEARHAND_INSTANCE_WORK_ID_FLAG_PIERCE_GROUND);
     }
 }
-
 
 unsafe extern "C" fn kamui_spearhand_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -162,7 +156,6 @@ unsafe extern "C" fn kamui_spearhand_special_air_s_attack_game(fighter: &mut L2C
     }
 }
 
-
 unsafe extern "C" fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -195,7 +188,6 @@ unsafe extern "C" fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBa
         
 }
 
-
 unsafe extern "C" fn kamui_special_s_wall_attack_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -218,7 +210,6 @@ unsafe extern "C" fn kamui_special_s_wall_attack_f_effect(fighter: &mut L2CAgent
         EFFECT_OFF_KIND(fighter, Hash40::new("kamui_tyousoutotu_wind"), false, false);
     }
 }
-
 
 unsafe extern "C" fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -260,7 +251,6 @@ unsafe extern "C" fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBa
         
 }
 
-
 unsafe extern "C" fn kamui_special_s_wall_attack_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -290,7 +280,6 @@ unsafe extern "C" fn kamui_special_s_wall_attack_b_effect(fighter: &mut L2CAgent
         EFFECT_OFF_KIND(fighter, Hash40::new("kamui_tyousoutotu_wind"), false, false);
     }
 }
-
 
 unsafe extern "C" fn kamui_special_s_wall_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -322,7 +311,6 @@ unsafe extern "C" fn kamui_special_s_wall_jump_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn kamui_special_s_wall_jump_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -343,7 +331,6 @@ unsafe extern "C" fn kamui_special_s_wall_jump_effect(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -352,7 +339,6 @@ unsafe extern "C" fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
         ArticleModule::change_motion(boma, 0, Hash40::new("fall"), false, 0.0);
     }
 }
-
 
 unsafe extern "C" fn kamui_special_hi_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -409,7 +395,6 @@ unsafe extern "C" fn kamui_special_hi_game (fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 0.8);
 }
 
-
 unsafe extern "C" fn kamui_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -441,7 +426,6 @@ unsafe extern "C" fn kamui_special_lw_hit_game(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(boma, true);
     }
 }
-
 
 unsafe extern "C" fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -493,7 +477,6 @@ unsafe extern "C" fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -529,7 +512,6 @@ unsafe extern "C" fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgen
         AttackModule::clear_all(boma);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("kamui")

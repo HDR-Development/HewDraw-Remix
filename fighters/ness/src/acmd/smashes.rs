@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -41,7 +39,6 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +64,6 @@ unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
-
 
 unsafe extern "C" fn game_attackhi4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -95,7 +91,6 @@ unsafe extern "C" fn game_attackhi4 (fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn game_attacklw4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -118,8 +113,6 @@ unsafe extern "C" fn game_attacklw4 (fighter: &mut L2CAgentBase) {
 		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_YOYO_HEAD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 	}
 }
-
-
 
 unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,7 +159,6 @@ unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_yoyo_attackhi4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -187,7 +179,6 @@ unsafe extern "C" fn game_yoyo_attackhi4 (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 37.0);
 }
-
 
 unsafe extern "C" fn game_yoyo_attacklw4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -232,9 +223,6 @@ unsafe extern "C" fn game_yoyo_attacklw4 (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 40.0);
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ness_yoyohead")

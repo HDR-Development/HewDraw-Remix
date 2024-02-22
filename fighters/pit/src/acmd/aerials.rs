@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn pit_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -35,7 +34,6 @@ unsafe extern "C" fn pit_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn pit_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -64,7 +62,6 @@ unsafe extern "C" fn pit_attack_air_n_effect(fighter: &mut L2CAgentBase) {
         AFTER_IMAGE_OFF(fighter, 2);
     }
 }
-
 
 unsafe extern "C" fn pit_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +106,6 @@ unsafe extern "C" fn pit_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn pit_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -140,7 +136,6 @@ unsafe extern "C" fn pit_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn pit_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -158,7 +153,6 @@ unsafe extern "C" fn pit_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pit_sword"), false, false);
     }
 }
-
 
 unsafe extern "C" fn pit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -197,7 +191,6 @@ unsafe extern "C" fn pit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn pit_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -245,7 +238,6 @@ unsafe extern "C" fn pit_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn pit_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -261,7 +253,6 @@ unsafe extern "C" fn pit_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("pit")

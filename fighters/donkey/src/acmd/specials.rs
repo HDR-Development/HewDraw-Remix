@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +35,6 @@ unsafe extern "C" fn special_n(fighter: &mut L2CAgentBase) {
 	}
 
 }
-
 
 unsafe extern "C" fn special_n_max(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -78,7 +76,6 @@ unsafe extern "C" fn special_n_max(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn special_air_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -114,7 +111,6 @@ unsafe extern "C" fn special_air_n(fighter: &mut L2CAgentBase) {
 	}
 
 }
-
 
 unsafe extern "C" fn special_air_n_max(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,7 +152,6 @@ unsafe extern "C" fn special_air_n_max(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn special_s_common(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -184,7 +179,6 @@ unsafe extern "C" fn special_s_common(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -202,7 +196,6 @@ unsafe extern "C" fn special_s_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("donkey_headbat"), Hash40::new("top"), 0, 0, 6, 5, 0, 0, 0.70, true);
     }
 }
-
 
 unsafe extern "C" fn special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -263,7 +256,6 @@ unsafe extern "C" fn special_hi(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn special_lw_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -274,7 +266,6 @@ unsafe extern "C" fn special_lw_start(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn special_lw_loop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -330,7 +321,6 @@ unsafe extern "C" fn special_lw_loop(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn special_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -347,7 +337,6 @@ unsafe extern "C" fn special_air_lw(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sound_special_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -357,7 +346,6 @@ unsafe extern "C" fn sound_special_air_lw(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_donkey_attackdash"));
     }
 }
-
 
 unsafe extern "C" fn effect_special_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -372,7 +360,6 @@ unsafe extern "C" fn effect_special_air_lw(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("top"), -1, 10, 5, 27, 0, 0, 1.4, true);
     }
 }
-
 
 unsafe extern "C" fn game_special_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -421,7 +408,6 @@ unsafe extern "C" fn game_special_air_hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_special_lw_loop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -436,7 +422,6 @@ unsafe extern "C" fn effect_special_lw_loop(fighter: &mut L2CAgentBase) {
         //LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn effect_special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -468,8 +453,6 @@ unsafe extern "C" fn effect_special_hi(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_spin_wind_flash"), Hash40::new("donkey_spin_wind_flash"), Hash40::new("top"), -3.5, 17, 15.5, 0, 0, 60, 1.3, true, *EF_FLIP_YZ);
     }
 }
-
-
 
 unsafe extern "C" fn expression_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -524,9 +507,6 @@ unsafe extern "C" fn expression_specialhi(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("donkey")

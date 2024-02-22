@@ -2,10 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
-
-
 pub unsafe extern "C" fn pre_special_s_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let log_mask_flags;
     let power_up_bit;

@@ -1,6 +1,5 @@
 use super::*;
 
-
 const BACKGROUND_WHITE: [f32; 4] = [90.0 / 255.0, 90.0 / 255.0, 90.0 / 255.0, 1.0];
 const BACKGROUND_BLACK: [f32; 4] = [24.0 / 255.0, 24.0 / 255.0, 24.0 / 255.0, 1.0];
 

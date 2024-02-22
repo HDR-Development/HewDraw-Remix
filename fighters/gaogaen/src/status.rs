@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 mod attack_lw4;
 mod special_n;
 

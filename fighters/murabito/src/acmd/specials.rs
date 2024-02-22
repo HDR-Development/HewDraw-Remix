@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +24,6 @@ unsafe extern "C" fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +36,6 @@ unsafe extern "C" fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,10 +47,6 @@ unsafe extern "C" fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBas
     }
     
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("murabito")

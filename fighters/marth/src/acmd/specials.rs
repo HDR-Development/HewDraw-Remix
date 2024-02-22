@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn marth_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -30,7 +28,6 @@ unsafe extern "C" fn marth_special_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_s1_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,7 +44,6 @@ unsafe extern "C" fn marth_special_s1_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
-
 
 unsafe extern "C" fn marth_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -74,7 +70,6 @@ unsafe extern "C" fn marth_special_air_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -99,7 +94,6 @@ unsafe extern "C" fn marth_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -126,7 +120,6 @@ unsafe extern "C" fn marth_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -151,7 +144,6 @@ unsafe extern "C" fn marth_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,7 +170,6 @@ unsafe extern "C" fn marth_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -203,7 +194,6 @@ unsafe extern "C" fn marth_special_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -230,7 +220,6 @@ unsafe extern "C" fn marth_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -256,7 +245,6 @@ unsafe extern "C" fn marth_special_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -281,7 +269,6 @@ unsafe extern "C" fn marth_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -311,7 +298,6 @@ unsafe extern "C" fn marth_special_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -339,7 +325,6 @@ unsafe extern "C" fn marth_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -369,7 +354,6 @@ unsafe extern "C" fn marth_special_s1_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -398,7 +382,6 @@ unsafe extern "C" fn marth_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -424,7 +407,6 @@ unsafe extern "C" fn marth_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -449,7 +431,6 @@ unsafe extern "C" fn marth_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) 
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -479,7 +460,6 @@ unsafe extern "C" fn marth_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -507,7 +487,6 @@ unsafe extern "C" fn marth_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) 
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -537,7 +516,6 @@ unsafe extern "C" fn marth_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -566,7 +544,6 @@ unsafe extern "C" fn marth_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) 
     
 }
 
-
 unsafe extern "C" fn marth_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -592,7 +569,6 @@ unsafe extern "C" fn marth_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -617,7 +593,6 @@ unsafe extern "C" fn marth_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -647,7 +622,6 @@ unsafe extern "C" fn marth_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -675,7 +649,6 @@ unsafe extern "C" fn marth_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) 
     }
     
 }
-
 
 unsafe extern "C" fn marth_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -713,7 +686,6 @@ unsafe extern "C" fn marth_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -749,7 +721,6 @@ unsafe extern "C" fn marth_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn marth_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -777,7 +748,6 @@ unsafe extern "C" fn marth_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn marth_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -804,8 +774,6 @@ unsafe extern "C" fn marth_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("marth")

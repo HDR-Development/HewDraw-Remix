@@ -2,10 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
-
-
 pub unsafe extern "C" fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
 	StatusModule::init_settings(
         fighter.module_accessor,
@@ -40,7 +36,6 @@ pub unsafe extern "C" fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CVal
     );
     0.into()
 }
-
 
 pub unsafe extern "C" fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     // fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_s"), L2CValue::Hash40s("special_air_s"), false.into());

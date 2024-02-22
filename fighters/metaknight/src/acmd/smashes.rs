@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn metaknight_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +19,6 @@ unsafe extern "C" fn metaknight_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -45,7 +42,6 @@ unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
 
 unsafe extern "C" fn metaknight_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -87,7 +83,6 @@ unsafe extern "C" fn metaknight_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn metaknight_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -116,7 +111,6 @@ unsafe extern "C" fn metaknight_attack_hi4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn metaknight_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -144,7 +138,6 @@ unsafe extern "C" fn metaknight_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -164,9 +157,6 @@ unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("metaknight")

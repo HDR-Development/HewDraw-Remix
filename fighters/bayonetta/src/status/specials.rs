@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_S //
-
 
 unsafe extern "C" fn bayonetta_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
@@ -11,7 +9,6 @@ unsafe extern "C" fn bayonetta_special_s_main(fighter: &mut L2CFighterCommon) ->
     StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_main_loop as *const () as _))
 }
-
 
 unsafe extern "C" fn bayonetta_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT_BEFORE_GUARD);

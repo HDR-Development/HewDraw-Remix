@@ -66,7 +66,6 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     }
 }
 
-
 // This function calculates the coordinates of the passed bone relative to the Top bone (PostureModule::pos)
 // It stores these x/y/z coordinates in param_3's Vector3f
 

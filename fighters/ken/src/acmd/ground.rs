@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn game_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +30,6 @@ unsafe extern "C" fn game_attack11w(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,7 +40,6 @@ unsafe extern "C" fn effect_attack11w(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -52,7 +49,6 @@ unsafe extern "C" fn sound_attack11w(fighter: &mut L2CAgentBase) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_ken_rnd_attack_m"));
     }
 }
-
 
 unsafe extern "C" fn expression_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -69,7 +65,6 @@ unsafe extern "C" fn expression_attack11w(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
 
 unsafe extern "C" fn game_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -118,7 +113,6 @@ unsafe extern "C" fn game_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -131,7 +125,6 @@ unsafe extern "C" fn effect_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -141,7 +134,6 @@ unsafe extern "C" fn sound_attack11s(fighter: &mut L2CAgentBase) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_ken_rnd_attack_l"));
     }
 }
-
 
 unsafe extern "C" fn expression_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -158,7 +150,6 @@ unsafe extern "C" fn expression_attack11s(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -184,9 +175,6 @@ unsafe extern "C" fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ken")

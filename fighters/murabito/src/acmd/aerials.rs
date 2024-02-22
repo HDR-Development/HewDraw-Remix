@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -29,7 +27,6 @@ unsafe extern "C" fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -90,7 +87,6 @@ unsafe extern "C" fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -104,7 +100,6 @@ unsafe extern "C" fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +134,6 @@ unsafe extern "C" fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase
         ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -181,7 +175,6 @@ unsafe extern "C" fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -232,9 +225,6 @@ unsafe extern "C" fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("murabito")

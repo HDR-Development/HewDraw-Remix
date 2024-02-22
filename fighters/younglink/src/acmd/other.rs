@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +26,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -55,7 +53,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -82,7 +79,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -98,7 +94,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -126,7 +121,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn younglink_appeal_lw_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -146,7 +140,6 @@ unsafe extern "C" fn younglink_appeal_lw_r_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn younglink_appeal_lw_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -168,7 +161,6 @@ unsafe extern "C" fn younglink_appeal_lw_l_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -178,7 +170,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -199,7 +190,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -213,7 +203,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -231,7 +220,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -247,7 +235,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn younglink_boomerang_game_fly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -261,9 +248,6 @@ unsafe extern "C" fn younglink_boomerang_game_fly(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("younglink_boomerang")

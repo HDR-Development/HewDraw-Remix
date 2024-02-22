@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn gamewatch_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
@@ -48,12 +47,10 @@ unsafe fn gamewatch_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into()
 }
 
-
 unsafe extern "C" fn gamewatch_special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("gamewatch")

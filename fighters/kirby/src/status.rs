@@ -34,7 +34,6 @@ extern "C" fn kirby_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 extern "C" fn kirby_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_KIRBY {
@@ -88,7 +87,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 }
 
 // FIGHTER_STATUS_KIND_JUMP //
-
 
 pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_COPY) {
@@ -174,7 +172,6 @@ pub unsafe extern "C" fn shoto_check_special_command(fighter: &mut L2CFighterCom
 
 // FIGHTER_STATUS_KIND_THROW_KIRBY //
 
-
 pub unsafe extern "C" fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND);
     let frame = MotionModule::frame(fighter.module_accessor);
@@ -215,7 +212,6 @@ pub unsafe extern "C" fn throw_kirby_map_correction(fighter: &mut L2CFighterComm
     0.into()
 }
 
-
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn ganon_should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) {
@@ -226,7 +222,6 @@ unsafe extern "C" fn ganon_should_use_special_n_callback(fighter: &mut L2CFighte
 }
 
 // FIGHTER_STATUS_KIND_SPECIAL_N //
-
 
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let copy_chara = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA);

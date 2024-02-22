@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -19,7 +18,6 @@ unsafe extern "C" fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
         KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
-
 
 unsafe extern "C" fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -83,7 +81,6 @@ unsafe extern "C" fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -146,7 +143,6 @@ unsafe extern "C" fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase)
     
 }
 
-
 unsafe extern "C" fn peach_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -170,7 +166,6 @@ unsafe extern "C" fn peach_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn peach_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -184,7 +179,6 @@ unsafe extern "C" fn peach_special_lw_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn peach_special_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -202,8 +196,6 @@ unsafe extern "C" fn peach_special_lw_sound(fighter: &mut L2CAgentBase) {
         } 
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("peach")

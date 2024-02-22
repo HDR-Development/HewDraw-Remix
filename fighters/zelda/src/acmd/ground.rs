@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn zelda_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -60,7 +59,6 @@ unsafe extern "C" fn zelda_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -78,7 +76,6 @@ unsafe extern "C" fn zelda_attack_11_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 15, 11.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn zelda_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -102,7 +99,6 @@ unsafe extern "C" fn zelda_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -119,9 +115,6 @@ unsafe extern "C" fn zelda_attack_dash_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("zelda")

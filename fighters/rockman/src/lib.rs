@@ -42,7 +42,6 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
-
 pub fn install() {
     acmd::install();
     opff::install();

@@ -46,7 +46,6 @@ unsafe extern "C" fn diddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn diddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -81,7 +80,6 @@ unsafe extern "C" fn diddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn diddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -109,7 +107,6 @@ unsafe extern "C" fn diddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn diddy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -127,7 +124,6 @@ unsafe extern "C" fn diddy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc"), true, true);
     }
 }
-
 
 unsafe extern "C" fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -153,7 +149,6 @@ unsafe extern "C" fn diddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn diddy_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -168,7 +163,6 @@ unsafe extern "C" fn diddy_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn diddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -181,7 +175,6 @@ unsafe extern "C" fn diddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -196,7 +189,6 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_arc"), true, true);
     }
 }
-
 
 unsafe extern "C" fn diddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

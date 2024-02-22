@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn captain_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -30,7 +28,6 @@ unsafe extern "C" fn captain_special_n_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -60,7 +57,6 @@ unsafe extern "C" fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -104,7 +100,6 @@ unsafe extern "C" fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -144,7 +139,6 @@ unsafe extern "C" fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase)
     
 }
 
-
 unsafe extern "C" fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -175,7 +169,6 @@ unsafe extern "C" fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -198,7 +191,6 @@ unsafe extern "C" fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_special_s_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -215,7 +207,6 @@ unsafe extern "C" fn captain_special_s_end_expression(fighter: &mut L2CAgentBase
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
-
 
 unsafe extern "C" fn captain_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -247,7 +238,6 @@ unsafe extern "C" fn captain_special_air_s_end_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -275,7 +265,6 @@ unsafe extern "C" fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -290,7 +279,6 @@ unsafe extern "C" fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) 
 		EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
 	}
 }
-
 
 unsafe extern "C" fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -309,7 +297,6 @@ unsafe extern "C" fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase)
     }
     
 }
-
 
 unsafe extern "C" fn game_specialhithrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -344,7 +331,6 @@ unsafe extern "C" fn game_specialhithrow(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
-
 
 unsafe extern "C" fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -390,9 +376,6 @@ unsafe extern "C" fn game_specialairhi(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("captain")

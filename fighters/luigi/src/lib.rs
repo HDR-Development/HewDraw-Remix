@@ -40,7 +40,6 @@ use utils::{
 };
 use smashline::*;
 
-
 extern "C" fn luigi_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_LUIGI {

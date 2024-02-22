@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -35,7 +34,6 @@ unsafe extern "C" fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gamewatch_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -56,7 +54,6 @@ unsafe extern "C" fn gamewatch_special_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn gamewatch_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -75,7 +72,6 @@ unsafe extern "C" fn gamewatch_special_s2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn gamewatch_special_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,7 +89,6 @@ unsafe extern "C" fn gamewatch_special_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn gamewatch_special_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -110,7 +105,6 @@ unsafe extern "C" fn gamewatch_special_s4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn gamewatch_special_s5_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -135,7 +129,6 @@ unsafe extern "C" fn gamewatch_special_s5_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn gamewatch_special_s6_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -151,7 +144,6 @@ unsafe extern "C" fn gamewatch_special_s6_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn gamewatch_special_s7_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -171,7 +163,6 @@ unsafe extern "C" fn gamewatch_special_s7_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn gamewatch_special_s8_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -187,7 +178,6 @@ unsafe extern "C" fn gamewatch_special_s8_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn gamewatch_special_s9_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -205,7 +195,6 @@ unsafe extern "C" fn gamewatch_special_s9_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -260,7 +249,6 @@ unsafe extern "C" fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn gamewatch_special_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -293,7 +281,6 @@ unsafe extern "C" fn gamewatch_special_hi_expression(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn gamewatch_special_hi_open_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -322,7 +309,6 @@ unsafe extern "C" fn gamewatch_special_hi_open_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn gamewatch_special_hi_open_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -345,7 +331,6 @@ unsafe extern "C" fn gamewatch_special_hi_open_sound(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn gamewatch_special_hi_open_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -359,7 +344,6 @@ unsafe extern "C" fn gamewatch_special_hi_open_expression(fighter: &mut L2CAgent
     }
 }
 
-
 unsafe extern "C" fn gamewatch_parachute_special_hi_open_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -368,7 +352,6 @@ unsafe extern "C" fn gamewatch_parachute_special_hi_open_game(fighter: &mut L2CA
         VisibilityModule::set_int64(boma, hash40("para4") as i64, hash40("on") as i64);
     }
 }
-
 
 unsafe extern "C" fn gamewatch_rescue_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -389,7 +372,6 @@ unsafe extern "C" fn gamewatch_rescue_special_hi_game(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn gamewatch_rescue_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -408,7 +390,6 @@ unsafe extern "C" fn gamewatch_rescue_special_air_hi_game(fighter: &mut L2CAgent
         VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("off") as i64);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("gamewatch_rescue")

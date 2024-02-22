@@ -37,7 +37,6 @@ use utils::{
 };
 use smashline::*;
 
-
 extern "C" fn reflet_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
@@ -47,7 +46,6 @@ extern "C" fn reflet_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 extern "C" fn reflet_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.global_table[globals::FIGHTER_KIND] != FIGHTER_KIND_REFLET {
@@ -56,7 +54,6 @@ extern "C" fn reflet_init(fighter: &mut L2CFighterCommon) {
         WorkModule::set_int(&mut *fighter.module_accessor, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
     }
 }
-
 
 pub fn install() {
     acmd::install();

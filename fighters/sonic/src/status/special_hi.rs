@@ -2,9 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
-
 pub unsafe extern "C" fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
 	StatusModule::init_settings(
         fighter.module_accessor,
@@ -49,7 +46,6 @@ pub unsafe extern "C" fn exec_special_hi_jump(fighter: &mut L2CFighterCommon) ->
     }
     return 0.into();
 }
-
 
 unsafe extern "C" fn exit_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();

@@ -1,7 +1,6 @@
 use smash::app::sv_animcmd::get_value_float;
 use super::*;
 
-
 unsafe extern "C" fn littlemac_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +24,6 @@ unsafe extern "C" fn littlemac_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn littlemac_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -44,7 +42,6 @@ unsafe extern "C" fn littlemac_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("littlemac_attack_arc"), true, true);
     }
 }
-
 
 unsafe extern "C" fn littlemac_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -91,7 +88,6 @@ unsafe extern "C" fn littlemac_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn littlemac_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,7 +108,6 @@ unsafe extern "C" fn littlemac_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn littlemac_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -142,7 +137,6 @@ unsafe extern "C" fn littlemac_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn littlemac_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -163,7 +157,6 @@ unsafe extern "C" fn littlemac_attack_hi4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_SCALE_W(fighter, 0.8, 0.8, 0.7);
     }
 }
-
 
 unsafe extern "C" fn littlemac_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -215,7 +208,6 @@ unsafe extern "C" fn littlemac_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn littlemac_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -260,7 +252,6 @@ unsafe extern "C" fn littlemac_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 4, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("littlemac")

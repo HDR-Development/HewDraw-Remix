@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn szerosuit_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -20,7 +18,6 @@ unsafe extern "C" fn szerosuit_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn szerosuit_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -44,7 +41,6 @@ unsafe extern "C" fn szerosuit_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn szerosuit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -61,7 +57,6 @@ unsafe extern "C" fn szerosuit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn szerosuit_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -85,7 +80,6 @@ unsafe extern "C" fn szerosuit_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     } 
 }
 
-
 unsafe extern "C" fn szerosuit_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -103,7 +97,6 @@ unsafe extern "C" fn szerosuit_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn szerosuit_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -126,7 +119,6 @@ unsafe extern "C" fn szerosuit_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("szero_smash_fire"), false, false);
     }
 }
-
 
 unsafe extern "C" fn szerosuit_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -160,7 +152,6 @@ unsafe extern "C" fn szerosuit_attack_hi3_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn szerosuit_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -182,7 +173,6 @@ unsafe extern "C" fn szerosuit_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn szerosuit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -208,9 +198,6 @@ unsafe extern "C" fn szerosuit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("szerosuit")

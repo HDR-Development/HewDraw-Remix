@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_S //
-
 
 pub unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("monkey_flip_jump_start_spd_y"));

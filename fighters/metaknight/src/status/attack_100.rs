@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn metaknight_attack100_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_Attack100_common();
     fighter.sub_shift_status_main(L2CValue::Ptr(metaknight_attack100_main_loop as *const () as _))

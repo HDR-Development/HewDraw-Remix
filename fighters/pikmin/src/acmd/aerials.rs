@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 use std::ops::Index;
 
-
 unsafe extern "C" fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +35,6 @@ unsafe extern "C" fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn olimar_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -61,7 +59,6 @@ unsafe extern "C" fn olimar_attack_air_f_expression(fighter: &mut L2CAgentBase) 
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
-
 
 unsafe extern "C" fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +90,6 @@ unsafe extern "C" fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn olimar_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -119,8 +115,6 @@ unsafe extern "C" fn olimar_attack_air_hi_expression(fighter: &mut L2CAgentBase)
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
-
-
 
 unsafe extern "C" fn olimar_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,8 +150,6 @@ unsafe extern "C" fn olimar_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -190,7 +182,6 @@ unsafe extern "C" fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn olimar_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -225,7 +216,6 @@ unsafe extern "C" fn olimar_attack_air_b_expression(fighter: &mut L2CAgentBase) 
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
-
 
 unsafe extern "C" fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -280,9 +270,7 @@ unsafe extern "C" fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attackairn(fighter: &mut L2CAgentBase) { }
-
 
 unsafe extern "C" fn sound_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -300,7 +288,6 @@ unsafe extern "C" fn sound_attackairn(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_pikmin_attackair_n03"));
     }
 }
-
 
 unsafe extern "C" fn expression_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -321,8 +308,6 @@ unsafe extern "C" fn expression_attackairn(fighter: &mut L2CAgentBase) {
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("pikmin")

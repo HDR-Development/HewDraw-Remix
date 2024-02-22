@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn tantan_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn tantan_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn tantan_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -40,7 +37,6 @@ unsafe extern "C" fn tantan_attack_air_hi_expression(fighter: &mut L2CAgentBase)
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
 
 unsafe extern "C" fn tantan_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -95,7 +91,6 @@ unsafe extern "C" fn tantan_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -110,13 +105,11 @@ unsafe extern "C" fn tantan_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn tantan_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -133,8 +126,6 @@ unsafe extern "C" fn tantan_landing_air_lw_expression(fighter: &mut L2CAgentBase
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
-
-
 
 unsafe extern "C" fn tantan_attack_air_n_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -160,7 +151,6 @@ unsafe extern "C" fn tantan_attack_air_n_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
 
 unsafe extern "C" fn tantan_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
@@ -211,7 +201,6 @@ unsafe extern "C" fn tantan_attack_air_n_expression(fighter: &mut L2CAgentBase) 
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn tantan_landing_air_n_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -271,7 +260,6 @@ unsafe extern "C" fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if is_excute(fighter) {
@@ -305,7 +293,6 @@ unsafe extern "C" fn tantan_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
@@ -316,7 +303,6 @@ unsafe extern "C" fn tantan_attack_air_f_expression(fighter: &mut L2CAgentBase) 
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn tantan_landing_air_f_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -343,7 +329,6 @@ unsafe extern "C" fn tantan_landing_air_f_expression(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -363,7 +348,6 @@ unsafe extern "C" fn tantan_attack_air_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
 
 unsafe extern "C" fn tantan_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
@@ -404,7 +388,6 @@ unsafe extern "C" fn tantan_attack_air_b_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn tantan_landing_air_b_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -424,9 +407,6 @@ unsafe extern "C" fn tantan_landing_air_b_expression(fighter: &mut L2CAgentBase)
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("tantan")

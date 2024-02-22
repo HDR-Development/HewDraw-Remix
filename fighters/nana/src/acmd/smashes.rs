@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn nana_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +29,6 @@ unsafe extern "C" fn nana_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -56,7 +53,6 @@ unsafe extern "C" fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_crown"), Hash40::new("sys_crown"), Hash40::new("top"), 7, 0, 5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn nana_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -87,7 +83,6 @@ unsafe extern "C" fn nana_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn nana_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -107,7 +102,6 @@ unsafe extern "C" fn nana_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -125,7 +119,6 @@ unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
 }
-
 
 unsafe extern "C" fn nana_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -155,9 +148,6 @@ unsafe extern "C" fn nana_attack_lw4_expression(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_POPO_STATUS_ATTACK_LW4_FLAG_NANA_START_TURN);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("nana")

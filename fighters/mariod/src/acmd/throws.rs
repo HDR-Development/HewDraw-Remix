@@ -71,7 +71,6 @@ unsafe fn mariod_pivotgrab(fighter: &mut L2CAgentBase) {
     
 }*/
 
-
 unsafe extern "C" fn mariod_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,7 +92,6 @@ unsafe extern "C" fn mariod_throw_f_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
 }
-
 
 unsafe extern "C" fn mariod_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -123,7 +121,6 @@ unsafe extern "C" fn mariod_throw_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mariod_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -143,7 +140,6 @@ unsafe extern "C" fn mariod_throw_hi_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
 }
-
 
 unsafe extern "C" fn mariod_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_attackstep(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -19,7 +18,6 @@ unsafe extern "C" fn game_attackstep(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
 
 unsafe extern "C" fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -90,7 +88,6 @@ unsafe extern "C" fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -172,7 +169,6 @@ unsafe extern "C" fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBa
 
 }
 
-
 unsafe extern "C" fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -239,7 +235,6 @@ unsafe extern "C" fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAg
     }
     
 }
-
 
 unsafe extern "C" fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -326,7 +321,6 @@ unsafe extern "C" fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) 
     
 }
 
-
 unsafe extern "C" fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -402,7 +396,6 @@ unsafe extern "C" fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -446,7 +439,6 @@ unsafe extern "C" fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
     }
 }
-
 
 unsafe extern "C" fn game_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -497,7 +489,6 @@ unsafe extern "C" fn game_specialairs(fighter: &mut L2CAgentBase) {
     frame(lua_state, 62.0);
     FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
-
 
 unsafe extern "C" fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -550,7 +541,6 @@ unsafe extern "C" fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
         smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
     }
 }
-
 
 unsafe extern "C" fn kazuya_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -672,7 +662,6 @@ unsafe extern "C" fn kazuya_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn kazuya_special_hi_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -733,7 +722,6 @@ unsafe extern "C" fn kazuya_special_hi_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -771,13 +759,11 @@ unsafe extern "C" fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn game_attackstep2fhitshield(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         //macros::ATTACK_FP(fighter, 6, 1, Hash40::new("top"), 0, 361, 100, 65, 0, 12, 0, 10, 10, Hash40::new("collision_attr_normal"), 0, 0, 0, false, false, 0, *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SITUATION_MASK_G, true, *ATTACK_REGION_NONE, *COLLISION_CATEGORY_MASK_FIGHTER, false, *COLLISION_PART_MASK_ALL, false, false, false, false, 0, false, false, *ATTACK_LR_CHECK_POS, false, false, true, true, false, *COLLISION_SHAPE_TYPE_SPHERE);
     }
 }
-
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -847,7 +833,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
-
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -919,9 +904,6 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     FT_MOTION_RATE(agent, 0.75);
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("demon")

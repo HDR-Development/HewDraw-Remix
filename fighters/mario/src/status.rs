@@ -12,7 +12,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn mario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_MARIO {
@@ -21,12 +20,10 @@ extern "C" fn mario_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT);
     return 1.into()
 }
-
 
 unsafe extern "C" fn special_lw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(fighter.module_accessor,

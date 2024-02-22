@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +49,6 @@ unsafe extern "C" fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -101,7 +99,6 @@ unsafe extern "C" fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase)
     
 }
 
-
 unsafe extern "C" fn expression_specialairsreturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -126,7 +123,6 @@ unsafe extern "C" fn expression_specialairsreturn(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pacman_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -134,7 +130,6 @@ unsafe extern "C" fn pacman_special_air_hi_end_game(fighter: &mut L2CAgentBase) 
         boma.select_cliff_hangdata_from_name("special_hi");
     }
 }
-
 
 unsafe extern "C" fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -158,7 +153,6 @@ unsafe extern "C" fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) 
     }
     
 }
-
 
 unsafe extern "C" fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

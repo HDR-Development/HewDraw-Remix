@@ -2,10 +2,7 @@ use smash::lib::L2CAgent_clear_lua_stack;
 use super::*;
 use globals::*;
 
-
-
 // WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING
-
 
 pub unsafe extern "C" fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*WEAPON_PIKMIN_PIKMIN_STATUS_SPECIAL_S_WORK_FLAG_POKEMON_CHANGE_START);
@@ -84,7 +81,6 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 // WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE
-
 
 pub unsafe extern "C" fn special_s_cling_remove_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);

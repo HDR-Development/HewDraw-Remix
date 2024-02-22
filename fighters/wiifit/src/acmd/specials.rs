@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn wiifit_special_s_heading_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +32,6 @@ unsafe extern "C" fn wiifit_special_s_heading_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("wiifit")

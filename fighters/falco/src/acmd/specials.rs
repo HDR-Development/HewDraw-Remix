@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn falco_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -16,7 +14,6 @@ unsafe extern "C" fn falco_special_n_start_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn falco_special_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -42,7 +39,6 @@ unsafe extern "C" fn falco_special_n_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -56,7 +52,6 @@ unsafe extern "C" fn falco_special_air_n_start_game(fighter: &mut L2CAgentBase) 
         }
     }
 }
-
 
 unsafe extern "C" fn falco_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -87,7 +82,6 @@ unsafe extern "C" fn falco_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,7 +106,6 @@ unsafe extern "C" fn falco_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -125,7 +118,6 @@ unsafe extern "C" fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("neck"), 11.0, 80, 60, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
     }
 }
-
 
 unsafe extern "C" fn falco_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -143,7 +135,6 @@ unsafe extern "C" fn falco_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -159,7 +150,6 @@ unsafe extern "C" fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn falco_special_lw_effect(fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -188,8 +178,6 @@ unsafe extern "C" fn falco_special_lw_effect(fighter: &mut L2CAgentBase) {
 	// }
 }
 
-
-
 unsafe extern "C" fn falco_special_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -204,7 +192,6 @@ unsafe extern "C" fn falco_special_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_special_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -213,7 +200,6 @@ unsafe extern "C" fn falco_special_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_item_item_get"));
     }
 }
-
 
 unsafe extern "C" fn falco_special_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -224,7 +210,6 @@ unsafe extern "C" fn falco_special_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_speciallwloop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -233,13 +218,11 @@ unsafe extern "C" fn game_speciallwloop(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairlwloop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn effect_speciallwloop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -262,7 +245,6 @@ unsafe extern "C" fn effect_speciallwloop(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
 }
 
-
 unsafe extern "C" fn sound_speciallwloop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -272,7 +254,6 @@ unsafe extern "C" fn sound_speciallwloop(fighter: &mut L2CAgentBase) {
         //PLAY_STATUS(fighter, Hash40::new("se_falco_special_l02"));
     }
 }
-
 
 unsafe extern "C" fn expression_speciallwloop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -289,13 +270,11 @@ unsafe extern "C" fn expression_speciallwloop(fighter: &mut L2CAgentBase) {
     ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattacks"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
 }
 
-
 unsafe extern "C" fn game_speciallwend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn effect_speciallwend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -303,13 +282,11 @@ unsafe extern "C" fn effect_speciallwend(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn sound_speciallwend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn expression_speciallwend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -323,7 +300,6 @@ unsafe extern "C" fn expression_speciallwend(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_special_n_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -333,7 +309,6 @@ unsafe extern "C" fn falco_special_n_start_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn falco_special_air_n_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -368,9 +343,6 @@ unsafe extern "C" fn falco_special_air_n_start_sound(fighter: &mut L2CAgentBase)
 //     }
 
 // }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("falco")

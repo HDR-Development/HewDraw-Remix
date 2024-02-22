@@ -37,7 +37,6 @@ use utils::{
 };
 use smashline::*;
 
-
 pub fn install() {
     acmd::install();
     opff::install();

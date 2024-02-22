@@ -2,8 +2,6 @@ use super::*;
 use globals::*;
 // status script import
 
-
-
 // prevent steve from spawning the crafting table through vanilla circumstances
 
 unsafe extern "C" fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -25,7 +23,6 @@ unsafe extern "C" fn guarddamage_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
     smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
 }
-
 
 unsafe extern "C" fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_GuardDamage()
@@ -129,7 +126,6 @@ pub unsafe extern "C" fn entry(fighter: &mut L2CFighterCommon) -> L2CValue {
     
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
 }
-
 
 unsafe extern "C" fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if pickel_attack_que(fighter).get_bool() {
@@ -267,7 +263,6 @@ pub unsafe extern "C" fn attack_air_lw_fail_main_status_loop(fighter: &mut L2CFi
     }
 }
 
-
 pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
     let trolleyArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
@@ -319,7 +314,6 @@ unsafe extern "C" fn pickel_jump_status_check(fighter: &mut L2CFighterCommon) ->
     }
 }
 
-
 pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool()
     {
@@ -350,7 +344,6 @@ pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 0.into();
     }
 }
-
 
 extern "C" fn pickel_init(fighter: &mut L2CFighterCommon) {
     unsafe {

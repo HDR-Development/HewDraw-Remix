@@ -38,7 +38,6 @@ use utils::{
 };
 use smashline::*;
 
-
 extern "C" fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_DUCKHUNT {
@@ -47,7 +46,6 @@ extern "C" fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
         VarModule::set_int(fighter.battle_object, vars::duckhunt::instance::GUNMAN_TIMER, 0);
     }
 }
-
 
 pub fn install() {
     acmd::install();

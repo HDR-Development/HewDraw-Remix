@@ -12,7 +12,6 @@ mod special_s;
 
 mod special_n;
 
-
 pub fn install() {
     jump_aerial::install();
 

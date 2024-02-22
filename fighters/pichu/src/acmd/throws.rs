@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn pichu_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -142,7 +141,6 @@ unsafe extern "C" fn pichu_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -192,7 +190,6 @@ unsafe extern "C" fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pichu_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -218,8 +215,6 @@ unsafe extern "C" fn pichu_throw_lw_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("pichu")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -80,7 +79,6 @@ unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -103,7 +101,6 @@ unsafe extern "C" fn attack_dash_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -128,7 +125,6 @@ unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -145,7 +141,6 @@ unsafe extern "C" fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -161,9 +156,6 @@ unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("samus")

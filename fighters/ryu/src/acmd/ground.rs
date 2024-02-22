@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ryu_attack_11_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +48,6 @@ unsafe extern "C" fn ryu_attack_11_w_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ryu_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -96,7 +93,6 @@ unsafe extern "C" fn ryu_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ryu_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -125,7 +121,6 @@ unsafe extern "C" fn ryu_attack_13_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn ryu_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -177,7 +172,6 @@ unsafe extern "C" fn ryu_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ryu_attack_11_near_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -190,7 +184,6 @@ unsafe extern "C" fn ryu_attack_11_near_s_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("ryu_attack_arc2"), Hash40::new("ryu_attack_arc2"), Hash40::new("top"), 0, 12, 5.5, 7, -30, -100, 0.9, true, *EF_FLIP_YZ, 0.5);
     }
 }
-
 
 unsafe extern "C" fn ryu_attack_11_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -222,7 +215,6 @@ unsafe extern "C" fn ryu_attack_11_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn ryu_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -256,9 +248,6 @@ unsafe extern "C" fn ryu_attack_dash_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ryu")

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn kamui_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn kamui_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kamui_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -40,7 +38,6 @@ unsafe extern "C" fn kamui_attack_s3_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -80,7 +77,6 @@ unsafe extern "C" fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -97,7 +93,6 @@ unsafe extern "C" fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
         AFTER_IMAGE_OFF(fighter, 3);
     }
 }
-
 
 unsafe extern "C" fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -117,7 +112,6 @@ unsafe extern "C" fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("kamui")

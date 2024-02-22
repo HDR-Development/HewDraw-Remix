@@ -3,7 +3,6 @@ use globals::*;
  
 // FIGHTER_STATUS_KIND_WALK
 
-
 pub unsafe extern "C" fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
@@ -20,7 +19,6 @@ pub unsafe extern "C" fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_WALK)(fighter)
 }
-
 
 pub unsafe extern "C" fn walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP);
@@ -43,7 +41,6 @@ unsafe extern "C" fn walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Walk_Main();
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

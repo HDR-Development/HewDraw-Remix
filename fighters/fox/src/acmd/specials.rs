@@ -1,14 +1,11 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn game_specialsstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 20.0/25.0);
 }
-
 
 unsafe extern "C" fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -19,7 +16,6 @@ unsafe extern "C" fn game_specialairsend(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_specialhihold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -46,7 +42,6 @@ unsafe extern "C" fn game_specialhihold(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn game_specialhiholdair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -72,7 +67,6 @@ unsafe extern "C" fn game_specialhiholdair(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -89,7 +83,6 @@ unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let rng = app::sv_math::rand(smash::hash40("fighter"), 2);
@@ -101,7 +94,6 @@ unsafe extern "C" fn sound_specialhi(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_fox_special_h02"));
     }
 }
-
 
 unsafe extern "C" fn game_speciallwstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -125,7 +117,6 @@ unsafe extern "C" fn game_speciallwstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -147,7 +138,6 @@ unsafe extern "C" fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialairlwstart (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -160,7 +150,6 @@ unsafe extern "C" fn effect_specialairlwstart (fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn sound_speciallwstart (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -168,9 +157,6 @@ unsafe extern "C" fn sound_speciallwstart (fighter: &mut L2CAgentBase) {
 		PLAY_SE(fighter, Hash40::new("se_item_item_get"));
 	}
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("fox")

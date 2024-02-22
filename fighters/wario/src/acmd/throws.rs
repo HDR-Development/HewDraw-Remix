@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -34,7 +33,6 @@ unsafe extern "C" fn wario_catch_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -58,7 +56,6 @@ unsafe extern "C" fn wario_throw_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 55.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 pub const THROWHI_FRAME_FALL: f32 = 48.0;
 pub const THROWHI_FRAME_LAND: f32 = 55.0;
@@ -174,7 +171,6 @@ unsafe extern "C" fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -208,7 +204,6 @@ unsafe extern "C" fn wario_throw_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0.0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn wario_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -244,7 +239,6 @@ unsafe extern "C" fn wario_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -277,8 +271,6 @@ unsafe extern "C" fn wario_throw_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn wario_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -303,7 +295,6 @@ unsafe extern "C" fn wario_throw_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 55.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn wario_throw_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -356,9 +347,6 @@ unsafe extern "C" fn wario_throw_f_expression(fighter: &mut L2CAgentBase) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("wario")

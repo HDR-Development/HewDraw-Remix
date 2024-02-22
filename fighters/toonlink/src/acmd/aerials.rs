@@ -1,7 +1,6 @@
 use super::*;
 use crate::vars::*;
 
-
 unsafe extern "C" fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +37,6 @@ unsafe extern "C" fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -73,7 +71,6 @@ unsafe extern "C" fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -89,7 +86,6 @@ unsafe extern "C" fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,8 +116,6 @@ unsafe extern "C" fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -137,7 +131,6 @@ unsafe extern "C" fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -177,7 +170,6 @@ unsafe extern "C" fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -198,7 +190,6 @@ unsafe extern "C" fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -232,7 +223,6 @@ unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBas
         VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
     }
 }
-
 
 unsafe extern "C" fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -284,7 +274,6 @@ unsafe extern "C" fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
-
 
 unsafe extern "C" fn toonlink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

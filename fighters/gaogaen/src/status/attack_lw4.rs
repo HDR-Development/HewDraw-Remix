@@ -1,11 +1,7 @@
 use super::*;
 use globals::*;
 
-
-
-
 // FIGHTER_STATUS_KIND_ATTACK_LW4 //
-
 
 pub unsafe extern "C" fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
@@ -27,7 +23,6 @@ pub unsafe extern "C" fn gaogaen_attack_lw4_main_loop(fighter: &mut L2CFighterCo
     }
     fighter.status_AttackLw4_Main()
 }
-
 
 pub unsafe extern "C" fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);

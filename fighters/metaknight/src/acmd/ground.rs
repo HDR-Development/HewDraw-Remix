@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_attack100(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -60,7 +59,6 @@ unsafe extern "C" fn game_attack100(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE);
     }
 }
-
 
 unsafe extern "C" fn effect_attack100(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,7 +154,6 @@ unsafe extern "C" fn effect_attack100(fighter: &mut L2CAgentBase) {
 //     }
 // }
 
-
 unsafe extern "C" fn sound_attack100start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -170,7 +167,6 @@ unsafe extern "C" fn sound_attack100start(fighter: &mut L2CAgentBase) {
         // };
     }
 }
-
 
 unsafe extern "C" fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -197,9 +193,6 @@ unsafe extern "C" fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("metaknight")

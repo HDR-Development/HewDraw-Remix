@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn dedede_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -10,7 +9,6 @@ unsafe extern "C" fn dedede_special_n_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
         FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn dedede_special_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -43,7 +41,6 @@ unsafe extern "C" fn dedede_special_n_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,7 +50,6 @@ unsafe extern "C" fn dedede_special_air_n_start_game(fighter: &mut L2CAgentBase)
         FT_MOTION_RATE(fighter, 1.0);
 
 }
-
 
 unsafe extern "C" fn dedede_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -86,7 +82,6 @@ unsafe extern "C" fn dedede_special_air_n_loop_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn dedede_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,14 +89,12 @@ unsafe extern "C" fn dedede_special_n_end_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
 }
 
-
 unsafe extern "C" fn dedede_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 25.0 / (19.0-1.0));
 }
-
 
 unsafe extern "C" fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +113,6 @@ unsafe extern "C" fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     FT_MOTION_RATE(fighter, 35.0 / (65.0-26.0));    
 }
-
 
 unsafe extern "C" fn dedede_special_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -146,7 +138,6 @@ unsafe extern "C" fn dedede_special_s_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_s_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -155,7 +146,6 @@ unsafe extern "C" fn dedede_special_s_start_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_dedede_wad_throw"));
     }
 }
-
 
 unsafe extern "C" fn dedede_special_s_start_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -170,7 +160,6 @@ unsafe extern "C" fn dedede_special_s_start_expression(fighter: &mut L2CAgentBas
         ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn dedede_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -196,7 +185,6 @@ unsafe extern "C" fn dedede_special_air_s_start_effect(fighter: &mut L2CAgentBas
 
 }
 
-
 unsafe extern "C" fn dedede_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -216,7 +204,6 @@ unsafe extern "C" fn dedede_special_air_s_start_game(fighter: &mut L2CAgentBase)
 
 }
 
-
 unsafe extern "C" fn dedede_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -225,7 +212,6 @@ unsafe extern "C" fn dedede_special_air_s_start_sound(fighter: &mut L2CAgentBase
         PLAY_SE(fighter, Hash40::new("se_dedede_wad_throw"));
     }
 }
-
 
 unsafe extern "C" fn dedede_special_air_s_start_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -241,7 +227,6 @@ unsafe extern "C" fn dedede_special_air_s_start_expression(fighter: &mut L2CAgen
     }
 }
 
-
 unsafe extern "C" fn dedede_special_s_miss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -254,7 +239,6 @@ unsafe extern "C" fn dedede_special_s_miss_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_air_s_miss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -266,7 +250,6 @@ unsafe extern "C" fn dedede_special_air_s_miss_game(fighter: &mut L2CAgentBase) 
         WorkModule::off_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_MISS_SEARCH);
     }
 }
-
 
 unsafe extern "C" fn dedede_special_s_get_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -281,7 +264,6 @@ unsafe extern "C" fn dedede_special_s_get_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_air_s_get_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -294,7 +276,6 @@ unsafe extern "C" fn dedede_special_air_s_get_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 32.0 / (65.0 - 26.0));
     }
 }
-
 
 unsafe extern "C" fn dedede_special_s_get_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -311,7 +292,6 @@ unsafe extern "C" fn dedede_special_s_get_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_air_s_get_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -327,7 +307,6 @@ unsafe extern "C" fn dedede_special_air_s_get_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn dedede_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -338,7 +317,6 @@ unsafe extern "C" fn dedede_special_lw_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -348,7 +326,6 @@ unsafe extern "C" fn dedede_special_air_lw_start_game(fighter: &mut L2CAgentBase
         ArticleModule::generate_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER, false, -1);
     }
 }
-
 
 unsafe extern "C" fn dedede_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -381,7 +358,6 @@ unsafe extern "C" fn dedede_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_lw_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -411,7 +387,6 @@ unsafe extern "C" fn dedede_special_lw_max_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
 }
-
 
 unsafe extern "C" fn dedede_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -444,7 +419,6 @@ unsafe extern "C" fn dedede_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dedede_special_air_lw_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -475,13 +449,11 @@ unsafe extern "C" fn dedede_special_air_lw_max_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn dedede_special_lw_jump_squat_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 5.0 / (8.0-1.0));
 }
-
 
 unsafe extern "C" fn dedede_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -512,8 +484,6 @@ unsafe extern "C" fn dedede_special_hi_jump_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 11.0, 270, 56, 0, 60, 8.5, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
 }
-
-
 
 unsafe extern "C" fn dedede_special_hi_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -552,7 +522,6 @@ unsafe extern "C" fn dedede_special_hi_landing_game(fighter: &mut L2CAgentBase) 
 
 }
 
-
 unsafe extern "C" fn dedede_special_hi_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -577,10 +546,6 @@ unsafe extern "C" fn dedede_special_hi_turn_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("dedede")

@@ -2,8 +2,6 @@ use super::*;
 use globals::*;
  
 
-
-
 ////fixed unwanted buffered throws and walking
 
 unsafe extern "C" fn snake_grab_pull_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {

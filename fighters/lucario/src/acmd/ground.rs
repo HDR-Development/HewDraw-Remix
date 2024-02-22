@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -34,7 +32,6 @@ unsafe extern "C" fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -62,7 +59,6 @@ unsafe extern "C" fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -83,7 +79,6 @@ unsafe extern "C" fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -99,9 +94,6 @@ unsafe extern "C" fn lucario_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("lucario")

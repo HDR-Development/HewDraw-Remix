@@ -2,9 +2,6 @@ use super::*;
 use globals::*;
 // status script import
 
-
-
-
 pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if under USpecial penalty and next status would have been landing, use special landing instead
     let next_status = fighter.global_table[STATUS_KIND].get_i32();
@@ -19,7 +16,6 @@ pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
-
 
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();

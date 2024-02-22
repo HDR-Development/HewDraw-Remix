@@ -7,5 +7,4 @@ mod specials;
 mod throws;
 mod ground;
 
-
 pub fn install() {}

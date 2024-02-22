@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn trail_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(Hash40::new("special_s_start").into(), Hash40::new("special_air_s_start").into(), false.into());
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
@@ -96,7 +95,6 @@ unsafe extern "C" fn trail_special_s_get_guide_pos(fighter: &mut L2CFighterCommo
     Vector2f{x: x_pos, y: y_pos}
 }
 
-
 unsafe extern "C" fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let effect = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE) as u32;
     if effect != 0 {
@@ -108,13 +106,10 @@ unsafe extern "C" fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CV
 
 // FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END
 
-
 pub unsafe extern "C" fn trail_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::trail::status::STOP_SIDE_SPECIAL);
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("trail")

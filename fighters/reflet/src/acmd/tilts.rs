@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn reflet_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -37,7 +36,6 @@ unsafe extern "C" fn reflet_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn reflet_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -55,7 +53,6 @@ unsafe extern "C" fn reflet_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn reflet_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,7 +72,6 @@ unsafe extern "C" fn reflet_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn reflet_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -97,7 +93,6 @@ unsafe extern "C" fn reflet_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn reflet_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -130,7 +125,6 @@ unsafe extern "C" fn reflet_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn reflet_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -151,7 +145,6 @@ unsafe extern "C" fn reflet_attack_lw3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("reflet")

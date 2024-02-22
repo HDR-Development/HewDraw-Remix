@@ -95,7 +95,6 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
     }
 }
 
-
 // Need to consolidate the following bone manipulation functions later
 
 // boma: its a boma
@@ -397,7 +396,6 @@ unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -447,7 +445,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     quickdraw_attack_whiff_freefall(fighter);
     fastfall_specials(fighter);
 }
-
 
 pub extern "C" fn ike_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

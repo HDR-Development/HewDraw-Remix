@@ -29,9 +29,6 @@ unsafe extern "C" fn shoulder_landing_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into();
 }
 
-
-
-
 pub fn install() {
     smashline::Agent::new("donkey")
         .status(

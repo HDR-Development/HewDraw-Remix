@@ -2,10 +2,7 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
 // FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND //
-
 
 pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -15,7 +12,6 @@ pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) 
 }
 
 // FIGHTER_STATUS_KIND_SPECIAL_S //
-
 
 pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {

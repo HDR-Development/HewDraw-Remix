@@ -62,7 +62,6 @@ pub unsafe fn electric_rats_moveset(fighter: &mut L2CFighterCommon, boma: &mut B
     skull_bash_edge_cancel(fighter);
 }
 
-
 #[no_mangle]
 pub unsafe extern "Rust" fn electric_rats_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
@@ -114,7 +113,6 @@ unsafe fn skull_bash_edge_cancel(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     quick_attack_cancel(fighter, boma);
 }
-
 
 pub extern "C" fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

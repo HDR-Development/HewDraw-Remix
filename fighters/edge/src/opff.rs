@@ -91,7 +91,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-
 pub extern "C" fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
@@ -104,7 +103,6 @@ pub unsafe fn edge_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-
 
 pub extern "C" fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 

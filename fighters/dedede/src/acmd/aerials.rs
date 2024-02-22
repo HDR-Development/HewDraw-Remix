@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +35,6 @@ unsafe extern "C" fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +48,6 @@ unsafe extern "C" fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase)
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 7);
     }
 }
-
 
 unsafe extern "C" fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,7 +78,6 @@ unsafe extern "C" fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn dedede_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -117,7 +113,6 @@ unsafe extern "C" fn dedede_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dedede_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -130,8 +125,6 @@ unsafe extern "C" fn dedede_attack_air_f_expression(fighter: &mut L2CAgentBase) 
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -146,7 +139,6 @@ unsafe extern "C" fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase)
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
     }
 }
-
 
 unsafe extern "C" fn dedede_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -182,7 +174,6 @@ unsafe extern "C" fn dedede_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn dedede_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -194,7 +185,6 @@ unsafe extern "C" fn dedede_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -205,7 +195,6 @@ unsafe extern "C" fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_dedede_rnd_attack01"));
     }
 }
-
 
 unsafe extern "C" fn dedede_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -220,7 +209,6 @@ unsafe extern "C" fn dedede_attack_air_b_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn dedede_landing_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -234,7 +222,6 @@ unsafe extern "C" fn dedede_landing_air_b_expression(fighter: &mut L2CAgentBase)
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
-
 
 unsafe extern "C" fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -278,7 +265,6 @@ unsafe extern "C" fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn dedede_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -288,7 +274,6 @@ unsafe extern "C" fn dedede_landing_air_hi_expression(fighter: &mut L2CAgentBase
         ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
     }
 }
-
 
 unsafe extern "C" fn dedede_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -334,7 +319,6 @@ unsafe extern "C" fn dedede_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn dedede_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -344,8 +328,6 @@ unsafe extern "C" fn dedede_landing_air_lw_expression(fighter: &mut L2CAgentBase
         ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("dedede")

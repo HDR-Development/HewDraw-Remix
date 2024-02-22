@@ -35,13 +35,11 @@ unsafe extern "C" fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CV
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-
 pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
 // FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK //
-
 
 pub unsafe extern "C" fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);

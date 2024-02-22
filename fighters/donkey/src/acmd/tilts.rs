@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn attack_s3_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn attack_s3_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -43,8 +40,6 @@ unsafe extern "C" fn attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -69,7 +64,6 @@ unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -85,7 +79,6 @@ unsafe extern "C" fn attack_s3_s_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn attack_s3_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -111,7 +104,6 @@ unsafe extern "C" fn attack_s3_lw(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -124,7 +116,6 @@ unsafe extern "C" fn attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -141,8 +132,6 @@ unsafe extern "C" fn attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -162,7 +151,6 @@ unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -180,7 +168,6 @@ unsafe extern "C" fn attack_hi3_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 5.0);
     }
 }
-
 
 unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -205,9 +192,6 @@ unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("donkey")

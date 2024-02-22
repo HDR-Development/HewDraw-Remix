@@ -3,7 +3,6 @@ use crate::consts::*;
 use crate::consts::globals::*;
 use std::ops::{Deref, DerefMut};
 
-
 #[repr(C)]
 struct FlyData {
     pub turn_stick_x: f32,

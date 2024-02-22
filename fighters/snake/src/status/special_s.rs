@@ -2,8 +2,6 @@ use super::*;
 use globals::*;
  
 
-
-
 ////side-special tranq gun
 
 unsafe extern "C" fn snake_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {

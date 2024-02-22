@@ -55,7 +55,6 @@ use smashline::*;
     return false.into();
 }*/
 
-
 extern "C" fn packun_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
@@ -66,7 +65,6 @@ extern "C" fn packun_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 extern "C" fn packun_init(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[globals::FIGHTER_KIND] != FIGHTER_KIND_PACKUN {
         return;
@@ -74,7 +72,6 @@ extern "C" fn packun_init(fighter: &mut L2CFighterCommon) {
 
     VarModule::set_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE, 0);
 }
-
 
 pub fn install() {
     acmd::install();

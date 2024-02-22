@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn catch_pull_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         *SITUATION_KIND_NONE
@@ -38,7 +37,6 @@ unsafe extern "C" fn catch_pull_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-
 unsafe extern "C" fn catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         sv_kinetic_energy!(
@@ -73,8 +71,6 @@ unsafe extern "C" fn catch_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.status_CatchPull_Main()
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("donkey")

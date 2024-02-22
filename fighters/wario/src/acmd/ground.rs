@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn wario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn wario_attack_11_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn wario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -51,7 +48,6 @@ unsafe extern "C" fn wario_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn wario_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -69,7 +65,6 @@ unsafe extern "C" fn wario_attack_12_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,9 +115,6 @@ unsafe extern "C" fn wario_attack_dash_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 9, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("wario")

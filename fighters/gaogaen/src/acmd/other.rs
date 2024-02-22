@@ -3,7 +3,6 @@ use super::*;
 
 use smash::app::BattleObjectModuleAccessor;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +27,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_gaogaen_rnd_futtobi01"), Hash40::new("seq_gaogaen_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -55,7 +53,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -81,7 +78,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -96,7 +92,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_gaogaen_rnd_futtobi01"), Hash40::new("seq_gaogaen_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -122,7 +117,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_gaogaen_rnd_futtobi01"), Hash40::new("seq_gaogaen_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -163,7 +157,6 @@ unsafe extern "C" fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_catch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -178,8 +171,6 @@ unsafe extern "C" fn gaogaen_catch_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 10.5, 4, rot_left, -225, 0, 1.2, true, *EF_FLIP_YZ);
     }
 }
-
-
 
 unsafe extern "C" fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -220,7 +211,6 @@ unsafe extern "C" fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_catchturn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -235,8 +225,6 @@ unsafe extern "C" fn gaogaen_catchturn_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 10.5, -8, rot_left, -45, 0, 1.2, true, *EF_FLIP_YZ);
     }
 }
-
-
 
 unsafe extern "C" fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -277,7 +265,6 @@ unsafe extern "C" fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_catchdash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -293,7 +280,6 @@ unsafe extern "C" fn gaogaen_catchdash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -307,7 +293,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -323,7 +308,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -337,7 +321,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -354,7 +337,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -368,9 +350,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("gaogaen")

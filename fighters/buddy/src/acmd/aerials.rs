@@ -1,6 +1,5 @@
 use super::*;
 
-
 // Uses smash_script, if you prefer to use the built-in macros instead.
 
 unsafe extern "C" fn buddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
@@ -59,7 +58,6 @@ unsafe extern "C" fn buddy_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 7.0);
@@ -80,7 +78,6 @@ unsafe extern "C" fn buddy_attack_air_n_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_throw_01"));
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -113,7 +110,6 @@ unsafe extern "C" fn buddy_attack_air_n_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -158,7 +154,6 @@ unsafe extern "C" fn buddy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -171,7 +166,6 @@ unsafe extern "C" fn buddy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -215,7 +209,6 @@ unsafe extern "C" fn buddy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -240,7 +233,6 @@ unsafe extern "C" fn buddy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -284,7 +276,6 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -297,7 +288,6 @@ unsafe extern "C" fn buddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -405,7 +395,6 @@ unsafe extern "C" fn buddy_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn buddy_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -422,11 +411,8 @@ unsafe extern "C" fn buddy_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn buddy_landing_air_lw_game(agent: &mut L2CAgentBase) {
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("buddy")

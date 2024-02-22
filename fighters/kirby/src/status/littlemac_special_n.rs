@@ -4,7 +4,6 @@ use globals::*;
 #[skyline::from_offset(0xb96770)]
 fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
 
-
 unsafe extern "C" fn littlemac_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(fighter.module_accessor,
@@ -33,7 +32,6 @@ unsafe extern "C" fn littlemac_special_n_pre(fighter: &mut L2CFighterCommon) -> 
 
     0.into()
 }
-
 
 unsafe extern "C" fn littlemac_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_UNIQ, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
@@ -130,7 +128,6 @@ unsafe extern "C" fn littlemac_special_n_main_loop(fighter: &mut L2CFighterCommo
 
     return 0.into()
 }
-
 
 unsafe extern "C" fn littlemac_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);

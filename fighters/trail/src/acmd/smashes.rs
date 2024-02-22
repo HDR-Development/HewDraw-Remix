@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -44,7 +42,6 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -77,7 +74,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -126,7 +122,6 @@ unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);
     }
 }
-
 
 unsafe extern "C" fn effect_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

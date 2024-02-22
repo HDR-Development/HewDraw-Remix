@@ -22,7 +22,6 @@ use crate::{
   ext::*
 };
 
-
 #[repr(C)]
 pub struct FrameInfo {
   pub lua_state: u64,

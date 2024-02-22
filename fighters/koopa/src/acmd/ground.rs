@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -41,7 +39,6 @@ unsafe extern "C" fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 10, 22, 0, 0, 0, 1.7, 0, 0, 0, 0, 0, 360, true, 0.7);
     }
 }
-
 
 unsafe extern "C" fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,7 +58,6 @@ unsafe extern "C" fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -78,7 +74,6 @@ unsafe extern "C" fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 10, 25, 0, 0, 0, 1.7, 0, 0, 0, 0, 0, 360, true, 0.5);
     }
 }
-
 
 unsafe extern "C" fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,7 +95,6 @@ unsafe extern "C" fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,7 +130,6 @@ unsafe extern "C" fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -155,7 +148,6 @@ unsafe extern "C" fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -168,7 +160,6 @@ unsafe extern "C" fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("koopa")

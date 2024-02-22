@@ -27,7 +27,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 1.into();
 }
 
-
 unsafe extern "C" fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
@@ -104,7 +103,6 @@ unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
-
 unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n2"), L2CValue::Hash40s("special_air_n2"), false.into());
     let initial_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_SPECIAL_N2_HOP) {
@@ -160,8 +158,6 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.sub_set_ground_correct_by_situation(true.into());
     return fighter.main_shift(special_n2_main_loop);
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("trail")

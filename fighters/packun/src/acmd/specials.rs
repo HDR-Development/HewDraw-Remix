@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn packun_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +21,6 @@ unsafe extern "C" fn packun_special_n_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     FT_MOTION_RATE(fighter, 0.7);
 }
-
 
 unsafe extern "C" fn packun_special_s_shoot_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -81,7 +79,6 @@ unsafe extern "C" fn packun_special_s_shoot_game(agent: &mut L2CAgentBase) {
         FT_MOTION_RATE(agent, 0.55);
     }
 }
-
 
 unsafe extern "C" fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -155,7 +152,6 @@ unsafe extern "C" fn packun_special_s_shoot_s_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-
 unsafe extern "C" fn packun_special_s_end_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
@@ -181,7 +177,6 @@ unsafe extern "C" fn packun_special_s_end_effect(agent: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(agent, Hash40::new("packun_poison_max"), -1);
     }
 }
-
 
 unsafe extern "C" fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
@@ -226,7 +221,6 @@ unsafe extern "C" fn packun_special_s_shoot_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_special_s_shoot_s_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
@@ -248,7 +242,6 @@ unsafe extern "C" fn packun_special_s_shoot_s_effect(agent: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn packun_special_air_s_end_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -274,7 +267,6 @@ unsafe extern "C" fn packun_special_air_s_end_effect(agent: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(agent, Hash40::new("packun_poison_max"), -1);
     }
 }
-
 
 unsafe extern "C" fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -316,7 +308,6 @@ unsafe extern "C" fn packun_special_air_s_shoot_effect(agent: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -355,7 +346,6 @@ unsafe extern "C" fn packun_special_s_shoot_expression(fighter: &mut L2CAgentBas
     
 }
 
-
 unsafe extern "C" fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
@@ -374,7 +364,6 @@ unsafe extern "C" fn packun_special_air_s_shoot_s_effect(agent: &mut L2CAgentBas
         }
     }
 }
-
 
 unsafe extern "C" fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -407,7 +396,6 @@ unsafe extern "C" fn packun_special_s_shoot_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_special_s_shoot_s_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -423,7 +411,6 @@ unsafe extern "C" fn packun_special_s_shoot_s_sound(agent: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn packun_special_s_shoot_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -447,7 +434,6 @@ unsafe extern "C" fn packun_special_s_shoot_s_expression(fighter: &mut L2CAgentB
         }
     }
 }
-
 
 unsafe extern "C" fn packun_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -482,7 +468,6 @@ unsafe extern "C" fn packun_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn packun_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -522,7 +507,6 @@ unsafe extern "C" fn packun_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_special_lw_bite_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -556,7 +540,6 @@ unsafe extern "C" fn packun_special_lw_bite_attack_game(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -589,7 +572,6 @@ unsafe extern "C" fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentB
         search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
 }
-
 
 unsafe extern "C" fn packun_special_lw_bite_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -632,7 +614,6 @@ unsafe extern "C" fn packun_special_lw_bite_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_bite_line2"), Hash40::new("mouth"), 5, 0, 0, 0, 90, 0, size, true);
     }
 }
-
 
 unsafe extern "C" fn packun_special_air_lw_bite_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

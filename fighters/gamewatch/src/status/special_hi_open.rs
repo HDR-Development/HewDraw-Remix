@@ -63,5 +63,4 @@ unsafe extern "C" fn special_hi_open_exit(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-
 pub fn install() {}

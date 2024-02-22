@@ -1,7 +1,6 @@
 use super::*;
 use super::helper::*;
 
-
 unsafe extern "C" fn rockman_rockbuster_shoot_walk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     let keep_flag;
@@ -51,7 +50,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_pre(fighter: &mut L2CFighterC
     );
     0.into()
 }
-
 
 unsafe extern "C" fn rockman_rockbuster_shoot_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
@@ -181,7 +179,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_main_loop(fighter: &mut L2CFi
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

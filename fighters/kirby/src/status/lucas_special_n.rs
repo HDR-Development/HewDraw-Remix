@@ -1,9 +1,6 @@
 use super::*;
 
-
-
 // SPECIAL N //
-
 
 unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -17,7 +14,6 @@ unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 // SPECIAL N HOLD //
-
 
 unsafe extern "C" fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //

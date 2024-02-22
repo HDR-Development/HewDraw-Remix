@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn yoshi_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn yoshi_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn yoshi_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -59,8 +56,6 @@ unsafe extern "C" fn yoshi_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
-
 unsafe extern "C" fn yoshi_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -70,8 +65,6 @@ unsafe extern "C" fn yoshi_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.7);
     }
 }
-
-
 
 unsafe extern "C" fn yoshi_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +113,6 @@ unsafe extern "C" fn yoshi_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn yoshi_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -140,7 +132,6 @@ unsafe extern "C" fn yoshi_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 2.5);
     }
 }
-
 
 unsafe extern "C" fn yoshi_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -171,8 +162,6 @@ unsafe extern "C" fn yoshi_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn yoshi_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -200,8 +189,6 @@ unsafe extern "C" fn yoshi_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn yoshi_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -211,7 +198,6 @@ unsafe extern "C" fn yoshi_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 2.5);
     }
 }
-
 
 unsafe extern "C" fn yoshi_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -225,8 +211,6 @@ unsafe extern "C" fn yoshi_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn yoshi_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -279,9 +263,6 @@ unsafe extern "C" fn yoshi_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("yoshi")

@@ -3,7 +3,6 @@ use super::PikminInfo;
 use std::ops::Index;
 use globals::*;
 
-
 unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,7 +31,6 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -54,7 +52,6 @@ unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
 
 unsafe extern "C" fn game_attacks4sjump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -83,9 +80,6 @@ unsafe extern "C" fn game_attacks4sjump(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pikmin_pikmin")

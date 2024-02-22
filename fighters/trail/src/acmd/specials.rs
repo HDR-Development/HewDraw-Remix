@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_specialn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +27,6 @@ unsafe extern "C" fn game_specialn3(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     }
 }
-
 
 unsafe extern "C" fn game_specialairn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,7 +59,6 @@ unsafe extern "C" fn game_specialairn3(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
-
 
 unsafe extern "C" fn game_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -199,7 +196,6 @@ unsafe extern "C" fn game_specialn2(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -217,7 +213,6 @@ unsafe extern "C" fn effect_specialn2(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_specialn2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -234,7 +229,6 @@ unsafe extern "C" fn sound_specialn2(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_trail_special_n_b02"));
     }
 }
-
 
 unsafe extern "C" fn expression_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -276,7 +270,6 @@ unsafe extern "C" fn game_specials1(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn game_specialairs1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -345,7 +338,6 @@ unsafe extern "C" fn game_specials2(fighter: &mut L2CAgentBase) {
     WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
 }
 
-
 unsafe extern "C" fn game_specialairs2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -389,7 +381,6 @@ unsafe extern "C" fn game_specialairs2(fighter: &mut L2CAgentBase) {
     WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
 }
 
-
 unsafe extern "C" fn sound_specials2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
@@ -405,7 +396,6 @@ unsafe extern "C" fn sound_specials2(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_trail_special_s02"));
     }
 }
-
 
 unsafe extern "C" fn game_specials3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -460,7 +450,6 @@ unsafe extern "C" fn game_specials3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairs3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -514,7 +503,6 @@ unsafe extern "C" fn game_specialairs3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_specials3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -533,7 +521,6 @@ unsafe extern "C" fn sound_specials3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialsstart2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -541,7 +528,6 @@ unsafe extern "C" fn effect_specialsstart2(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("trail_sonic_turn"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn effect_specialsup(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -551,7 +537,6 @@ unsafe extern "C" fn effect_specialsup(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialsdown(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -559,7 +544,6 @@ unsafe extern "C" fn effect_specialsdown(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("trail_sonic_turn"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn effect_specialairsstart2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -569,7 +553,6 @@ unsafe extern "C" fn effect_specialairsstart2(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialairsup(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -578,7 +561,6 @@ unsafe extern "C" fn effect_specialairsup(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialairsdown(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -586,7 +568,6 @@ unsafe extern "C" fn effect_specialairsdown(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("trail_sonic_turn"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -763,7 +744,6 @@ unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -790,7 +770,6 @@ unsafe extern "C" fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_falllast(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -804,7 +783,6 @@ unsafe extern "C" fn game_falllast(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 10.0);
 }
-
 
 pub fn install() {
     smashline::Agent::new("trail")

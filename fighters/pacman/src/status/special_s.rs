@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH
-
 
 pub unsafe extern "C" fn special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)(fighter);
@@ -13,7 +11,6 @@ pub unsafe extern "C" fn special_s_dash_main(fighter: &mut L2CFighterCommon) -> 
 }
 
 // FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN
-
 
 pub unsafe extern "C" fn special_s_return_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)(fighter);
@@ -33,7 +30,6 @@ pub unsafe extern "C" fn special_s_return_main(fighter: &mut L2CFighterCommon) -
 }
 
 // FIGHTER_STATUS_KIND_FALL_SPECIAL
-
 
 pub unsafe extern "C" fn fall_special_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN {

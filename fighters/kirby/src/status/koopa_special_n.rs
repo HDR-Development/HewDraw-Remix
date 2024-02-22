@@ -1,7 +1,5 @@
 use super::*;
 
-
-
 unsafe extern "C" fn koopa_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if !can_fireball {
@@ -53,11 +51,8 @@ unsafe extern "C" fn koopa_specialnmax_main_loop(fighter: &mut L2CFighterCommon)
         ArticleModule::set_float(fighter.module_accessor,*FIGHTER_KOOPA_GENERATE_ARTICLE_BREATH, 361.0, *WEAPON_KOOPA_BREATH_INSTANCE_WORK_ID_FLOAT_ANGLE);
     }
 
-
     0.into()
 }
-
-
 
 unsafe extern "C" fn koopa_special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
@@ -76,7 +71,6 @@ unsafe extern "C" fn koopa_special_n_exec(fighter: &mut L2CFighterCommon) -> L2C
     }
 }
 
-
 unsafe extern "C" fn koopa_special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
@@ -86,9 +80,6 @@ unsafe extern "C" fn koopa_special_n_execstop(fighter: &mut L2CFighterCommon) ->
         return 0.into();
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("kirby")

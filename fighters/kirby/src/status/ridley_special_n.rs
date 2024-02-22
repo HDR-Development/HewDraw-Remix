@@ -132,8 +132,6 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
     }
 }
 
-
-
 pub fn install() {
     smashline::Agent::new("kirby")
         .status(

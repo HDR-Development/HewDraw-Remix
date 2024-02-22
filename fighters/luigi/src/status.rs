@@ -100,7 +100,6 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-
 unsafe extern "C" fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, -1); 
     VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, -1);
@@ -118,12 +117,10 @@ unsafe extern "C" fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2
     fighter.main_shift(special_s_charge_main_loop)
 }
 
-
 unsafe extern "C" fn special_s_charge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);

@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn packun_special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !(fighter.is_situation(*SITUATION_KIND_GROUND))  {
         macros::CORRECT(fighter, *GROUND_CORRECT_KIND_AIR);

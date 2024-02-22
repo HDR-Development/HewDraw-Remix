@@ -1,8 +1,5 @@
 use super::*;
 
-
-
-
 unsafe extern "C" fn game_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -203,7 +200,6 @@ unsafe extern "C" fn game_final(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_finalhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -319,7 +315,6 @@ unsafe extern "C" fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_final_com2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -333,7 +328,6 @@ unsafe extern "C" fn game_final_com2(fighter: &mut L2CAgentBase) {
         AttackModule::set_damage_shake_scale(boma, 0.18);
     }
 }
-
 
 unsafe extern "C" fn game_final_hit1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -349,7 +343,6 @@ unsafe extern "C" fn game_final_hit1(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_final_hit2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -362,7 +355,6 @@ unsafe extern "C" fn game_final_hit2(fighter: &mut L2CAgentBase) {
         AttackModule::set_optional_hit_effect(boma, 1, Hash40::new("ken_final_shippu_hit_rush"));
     }
 }
-
 
 unsafe extern "C" fn game_final_hit3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -377,7 +369,6 @@ unsafe extern "C" fn game_final_hit3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_final_hit4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -391,7 +382,6 @@ unsafe extern "C" fn game_final_hit4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -402,7 +392,6 @@ unsafe extern "C" fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
         AttackModule::set_no_dead_all(boma, true, false);
     }
 }
-
 
 unsafe extern "C" fn game_final2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -476,7 +465,6 @@ unsafe extern "C" fn game_final2(fighter: &mut L2CAgentBase) {
     frame(lua_state, 90.0);
 }
 
-
 unsafe extern "C" fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -501,7 +489,6 @@ unsafe extern "C" fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

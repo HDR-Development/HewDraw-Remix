@@ -83,7 +83,6 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
         }
     }
 
-
     /*
     if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
         println!("Up Special Interrupt flag active")
@@ -200,7 +199,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
     pkt2_edgeslipoff(fighter);
 }
-
 
 pub extern "C" fn ness_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

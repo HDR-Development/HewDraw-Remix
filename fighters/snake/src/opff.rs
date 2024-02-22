@@ -113,7 +113,6 @@ fn snake_c4_frame(weapon: &mut L2CFighterBase) {
     }
 }*/
 
-
 pub extern "C" fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

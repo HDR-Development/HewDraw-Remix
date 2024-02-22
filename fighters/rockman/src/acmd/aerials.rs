@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn rockman_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if is_excute(agent) {
@@ -29,7 +28,6 @@ unsafe extern "C" fn rockman_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if is_excute(agent) {
@@ -42,14 +40,12 @@ unsafe extern "C" fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
     }
 }
-
 
 unsafe extern "C" fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -66,7 +62,6 @@ unsafe extern "C" fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -97,7 +92,6 @@ unsafe extern "C" fn rockman_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -116,7 +110,6 @@ unsafe extern "C" fn rockman_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -133,7 +126,6 @@ unsafe extern "C" fn rockman_attack_air_f_expression(fighter: &mut L2CAgentBase)
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -179,7 +171,6 @@ unsafe extern "C" fn rockman_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn rockman_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -188,7 +179,6 @@ unsafe extern "C" fn rockman_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 3.0 / 2.0);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -216,7 +206,6 @@ unsafe extern "C" fn rockman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -240,9 +229,6 @@ unsafe extern "C" fn rockman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

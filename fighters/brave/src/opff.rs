@@ -159,7 +159,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     persist_rng(fighter);

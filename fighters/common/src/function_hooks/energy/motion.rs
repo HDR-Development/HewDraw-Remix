@@ -3,7 +3,6 @@ use crate::consts::*;
 use crate::consts::globals::*;
 use std::ops::{Deref, DerefMut};
 
-
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[repr(u32)]
 pub enum EnergyMotionResetType {

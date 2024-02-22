@@ -1,7 +1,6 @@
 use super::*;
 use smash::app::sv_module_access::sound;
 
-
 unsafe extern "C" fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -30,7 +29,6 @@ unsafe extern "C" fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -89,7 +87,6 @@ unsafe extern "C" fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -117,7 +114,6 @@ unsafe extern "C" fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -129,7 +125,6 @@ unsafe extern "C" fn miigunner_landing_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn miigunner_landing_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -138,7 +133,6 @@ unsafe extern "C" fn miigunner_landing_air_f_effect(fighter: &mut L2CAgentBase) 
 		LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -216,7 +210,6 @@ unsafe extern "C" fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -245,7 +238,6 @@ unsafe extern "C" fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn miigunner_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -256,7 +248,6 @@ unsafe extern "C" fn miigunner_landing_air_b_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -343,7 +334,6 @@ unsafe extern "C" fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn miigunner_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -377,7 +367,6 @@ unsafe extern "C" fn miigunner_attack_air_hi_effect(fighter: &mut L2CAgentBase) 
 	}
 }
 
-
 unsafe extern "C" fn miigunner_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -404,7 +393,6 @@ unsafe extern "C" fn miigunner_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
 		}
 	}
 }
-
 
 unsafe extern "C" fn miigunner_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -435,7 +423,6 @@ unsafe extern "C" fn miigunner_attack_air_hi_expression(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn miigunner_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -446,7 +433,6 @@ unsafe extern "C" fn miigunner_landing_air_hi_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -543,7 +529,6 @@ unsafe extern "C" fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 	}
 
 }
-
 
 unsafe extern "C" fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

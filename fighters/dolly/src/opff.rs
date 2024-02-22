@@ -857,7 +857,6 @@ pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-
 pub extern "C" fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

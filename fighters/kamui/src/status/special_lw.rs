@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
     special_lw_mot_helper(fighter);
@@ -90,7 +89,6 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-
 unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[globals::STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
@@ -100,8 +98,6 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     }
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("kamui")

@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn palutena_special_n_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -15,7 +13,6 @@ unsafe extern "C" fn palutena_special_n_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -38,7 +35,6 @@ unsafe extern "C" fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -51,7 +47,6 @@ unsafe extern "C" fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
         sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -69,7 +64,6 @@ unsafe extern "C" fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -100,7 +94,6 @@ unsafe extern "C" fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -137,7 +130,6 @@ unsafe extern "C" fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -152,7 +144,6 @@ unsafe extern "C" fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, sound_lvl);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -189,7 +180,6 @@ unsafe extern "C" fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_b_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -242,7 +232,6 @@ unsafe extern "C" fn palutena_special_n_b_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-
 unsafe extern "C" fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -287,7 +276,6 @@ unsafe extern "C" fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -302,7 +290,6 @@ unsafe extern "C" fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, sound_lvl);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_b_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -337,7 +324,6 @@ unsafe extern "C" fn palutena_special_n_b_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -367,7 +353,6 @@ unsafe extern "C" fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -386,7 +371,6 @@ unsafe extern "C" fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -411,7 +395,6 @@ unsafe extern "C" fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_y_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -432,7 +415,6 @@ unsafe extern "C" fn palutena_special_n_y_expression(agent: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_beamm"), 0);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_p_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -475,7 +457,6 @@ unsafe extern "C" fn palutena_special_n_p_game(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_p_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -517,7 +498,6 @@ unsafe extern "C" fn palutena_special_n_p_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -529,7 +509,6 @@ unsafe extern "C" fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_common_down_soil_l"));
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -580,7 +559,6 @@ unsafe extern "C" fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -597,7 +575,6 @@ unsafe extern "C" fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn palutena_special_n_o_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -627,7 +604,6 @@ unsafe extern "C" fn palutena_special_n_o_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_o_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -637,7 +613,6 @@ unsafe extern "C" fn palutena_special_n_o_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_o_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -646,7 +621,6 @@ unsafe extern "C" fn palutena_special_n_o_expression(agent: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -673,7 +647,6 @@ unsafe extern "C" fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_n_g_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -714,7 +687,6 @@ unsafe extern "C" fn palutena_special_n_g_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -737,7 +709,6 @@ unsafe extern "C" fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_n_g_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -754,7 +725,6 @@ unsafe extern "C" fn palutena_special_n_g_expression(agent: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 10);
     }
 }
-
 
 unsafe extern "C" fn palutena_special_lw_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -783,7 +753,6 @@ unsafe extern "C" fn palutena_special_lw_game(agent: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn palutena_special_air_lw_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -810,7 +779,6 @@ unsafe extern "C" fn palutena_special_air_lw_game(agent: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -846,7 +814,6 @@ unsafe extern "C" fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_lw_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -873,7 +840,6 @@ unsafe extern "C" fn palutena_special_lw_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn palutena_special_lw_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -894,10 +860,6 @@ unsafe extern "C" fn palutena_special_lw_sound(agent: &mut L2CAgentBase) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l01"));
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("palutena")

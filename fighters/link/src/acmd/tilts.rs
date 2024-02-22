@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +29,6 @@ unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -48,7 +45,6 @@ unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -77,8 +73,6 @@ unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn expression_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -100,9 +94,6 @@ unsafe extern "C" fn expression_attacklw3(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("link")

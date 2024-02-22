@@ -3,7 +3,6 @@ use super::*;
 
 // Note: Neutral air is handled in tilts.rs, as it shares a script with forward tilt/jab
 
-
 unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -170,7 +169,6 @@ unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     }   
 }
 
-
 unsafe extern "C" fn effect_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -263,7 +261,6 @@ unsafe extern "C" fn effect_attackairf(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -512,7 +509,6 @@ unsafe extern "C" fn effect_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -575,7 +571,6 @@ unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -605,7 +600,6 @@ unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     } 
 }
 
-
 unsafe extern "C" fn game_attackairlw2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -622,7 +616,6 @@ unsafe extern "C" fn game_attackairlw2(fighter: &mut L2CAgentBase) {
     }      
 }
 
-
 unsafe extern "C" fn forge_game_fall(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
@@ -635,7 +628,6 @@ unsafe extern "C" fn forge_game_fall(weapon: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *WEAPON_PICKEL_FORGE_INSTANCE_WORK_ID_FLAG_UPDATE_ATTACK);
     }
 }
-
 
 unsafe extern "C" fn forge_game_fallattack(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
@@ -665,7 +657,6 @@ unsafe extern "C" fn forge_game_fallattack(weapon: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn forge_game_fallattackride(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
@@ -679,9 +670,6 @@ unsafe extern "C" fn forge_game_fallattackride(weapon: &mut L2CAgentBase) {
         AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pickel_forge")

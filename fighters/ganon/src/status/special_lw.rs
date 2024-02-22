@@ -1,8 +1,6 @@
 use super::*;
 use globals::*;
 
-
-
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -33,7 +31,6 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-
 unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 
@@ -54,8 +51,6 @@ unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CV
 
     ret
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("ganon")

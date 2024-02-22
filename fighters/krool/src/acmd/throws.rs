@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn krool_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +30,6 @@ unsafe extern "C" fn krool_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,7 +51,6 @@ unsafe extern "C" fn krool_throw_b_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
 }
-
 
 unsafe extern "C" fn krool_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -82,7 +79,6 @@ unsafe extern "C" fn krool_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -105,7 +101,6 @@ unsafe extern "C" fn krool_throw_lw_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -150,7 +145,6 @@ unsafe extern "C" fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -192,8 +186,6 @@ unsafe extern "C" fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("krool")

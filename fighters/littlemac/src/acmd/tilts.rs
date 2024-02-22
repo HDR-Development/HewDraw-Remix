@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn littlemac_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +32,6 @@ unsafe extern "C" fn littlemac_attack_s3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn littlemac_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +48,6 @@ unsafe extern "C" fn littlemac_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn littlemac_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -82,7 +79,6 @@ unsafe extern "C" fn littlemac_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn littlemac_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -100,7 +96,6 @@ unsafe extern "C" fn littlemac_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_line"), true, true);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("littlemac")

@@ -65,8 +65,6 @@ extern "C" fn donkey_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
-
 pub fn install() {
     item_throw_heavy::install();
     special_hi::install();

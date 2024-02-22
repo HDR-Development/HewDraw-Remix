@@ -14,7 +14,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn koopa_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_KOOPA {
@@ -30,7 +29,6 @@ extern "C" fn koopa_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 unsafe extern "C" fn attack_s4_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_explosion_sign"), false, false);
@@ -124,7 +122,6 @@ unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-
 unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
@@ -141,7 +138,6 @@ unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
         return 0.into();
     }
 }
-
 
 unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;

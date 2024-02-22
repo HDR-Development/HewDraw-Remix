@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -66,7 +65,6 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
-
 unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -124,7 +122,6 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     frame(lua_state, 56.0);
     smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
-
 
 unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -223,9 +220,6 @@ unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     frame(lua_state, 53.0);
     smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("demon")

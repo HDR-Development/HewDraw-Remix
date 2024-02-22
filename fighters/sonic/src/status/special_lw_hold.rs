@@ -2,9 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
-
 unsafe extern "C" fn sonic_speciallwhold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);

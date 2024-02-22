@@ -98,7 +98,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     WorkModule::off_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_COMBO_ENABLE);
 }
 
-
 pub extern "C" fn tantan_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
@@ -111,7 +110,6 @@ pub unsafe fn tantan_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-
 
 /// prevents rocket from despawning in the blastzone
 unsafe extern "C" fn dragon_frame(weapon: &mut L2CFighterBase) {

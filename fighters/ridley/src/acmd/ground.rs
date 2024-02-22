@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn ridley_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +21,6 @@ unsafe extern "C" fn ridley_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ridley_attack11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -31,7 +29,6 @@ unsafe extern "C" fn ridley_attack11_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ridley_scratch"), Hash40::new("ridley_scratch"), Hash40::new("top"), 0, 12, 4, -24.6, -5, 209, 1.35, true, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn ridley_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -61,7 +58,6 @@ unsafe extern "C" fn ridley_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ridley_attack12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 5.0);
@@ -71,7 +67,6 @@ unsafe extern "C" fn ridley_attack12_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
 
 unsafe extern "C" fn ridley_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -86,8 +81,6 @@ unsafe extern "C" fn ridley_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn ridley_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -104,9 +97,6 @@ unsafe extern "C" fn ridley_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ridley")

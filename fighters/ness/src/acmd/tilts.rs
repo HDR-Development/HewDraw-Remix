@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn game_attacks3hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -17,7 +15,6 @@ unsafe extern "C" fn game_attacks3hi(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -34,7 +31,6 @@ unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn game_attacks3lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +46,6 @@ unsafe extern "C" fn game_attacks3lw(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -73,7 +68,6 @@ unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     }   
 }
 
-
 unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -88,7 +82,6 @@ unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

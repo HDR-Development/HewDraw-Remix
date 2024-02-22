@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn kirby_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -59,7 +58,6 @@ unsafe extern "C" fn kirby_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn kirby_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +118,6 @@ unsafe extern "C" fn kirby_attack_s4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -168,7 +165,6 @@ unsafe extern "C" fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kirby_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -196,7 +192,6 @@ unsafe extern "C" fn kirby_attack_s4_sound(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_kirby_landing01"));
     }
 }
-
 
 unsafe extern "C" fn kirby_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -279,7 +274,6 @@ unsafe extern "C" fn kirby_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn kirby_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -307,7 +301,6 @@ unsafe extern "C" fn kirby_attack_hi4_sound(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_kirby_landing01"));
     }
 }
-
 
 unsafe extern "C" fn kirby_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -388,7 +381,6 @@ unsafe extern "C" fn kirby_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kirby_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -420,7 +412,6 @@ unsafe extern "C" fn kirby_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -446,9 +437,6 @@ unsafe extern "C" fn kirby_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("kirby")

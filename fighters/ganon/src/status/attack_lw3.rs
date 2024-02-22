@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     fighter.main_shift(attack_lw3_main_loop)
@@ -67,7 +66,6 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-
 unsafe extern "C" fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         set_speed,
@@ -78,8 +76,6 @@ unsafe extern "C" fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     );
     fighter.status_end_AttackLw3()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("ganon")

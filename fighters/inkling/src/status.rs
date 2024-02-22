@@ -2,11 +2,9 @@ use super::*;
 
 mod special_s;
 
-
 unsafe extern "C" fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardOn()
 }
-
 
 unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Guard()
@@ -30,7 +28,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn inkling_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -40,8 +37,6 @@ extern "C" fn inkling_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
-
 
 pub fn install() {
     special_s::install();

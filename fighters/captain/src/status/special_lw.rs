@@ -1,8 +1,6 @@
 use super::*;
 use globals::*;
 
-
-
 unsafe extern "C" fn special_lw_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_situation = WorkModule::get_int(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_INT_FALCON_KICK_START_SITUATION);
     if start_situation == *SITUATION_KIND_AIR
@@ -11,7 +9,6 @@ unsafe extern "C" fn special_lw_end_init(fighter: &mut L2CFighterCommon) -> L2CV
     }
     smashline::original_status(Init, fighter, *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END)(fighter)
 }
-
 
 unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END)(fighter);

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn sheik_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn sheik_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn sheik_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -74,7 +72,6 @@ unsafe extern "C" fn sheik_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sheik_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -103,7 +100,6 @@ unsafe extern "C" fn sheik_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn sheik_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,7 +132,6 @@ unsafe extern "C" fn sheik_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -149,7 +144,6 @@ unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn sheik_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -185,7 +179,6 @@ unsafe extern "C" fn sheik_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sheik_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -203,7 +196,6 @@ unsafe extern "C" fn sheik_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sheik_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -212,7 +204,6 @@ unsafe extern "C" fn sheik_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_LANDING_SE(fighter, Hash40::new("se_sheik_landing02"));
     }
 }
-
 
 unsafe extern "C" fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -226,7 +217,6 @@ unsafe extern "C" fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase)
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
-
 
 unsafe extern "C" fn sheik_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

@@ -29,7 +29,6 @@ unsafe extern "C" fn kirby_special_n_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_n_eat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -45,7 +44,6 @@ unsafe extern "C" fn kirby_special_n_eat_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_n_drink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -58,7 +56,6 @@ unsafe extern "C" fn kirby_special_n_drink_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_KIRBY_STATUS_SPECIAL_N_FLAG_SPIT);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_n_large_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,7 +72,6 @@ unsafe extern "C" fn kirby_special_n_large_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -84,7 +80,6 @@ unsafe extern "C" fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, -1);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -110,7 +105,6 @@ unsafe extern "C" fn kirby_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_ss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -134,7 +128,6 @@ unsafe extern "C" fn kirby_special_ss_game(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
 
 unsafe extern "C" fn kirby_special_s_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -162,7 +155,6 @@ unsafe extern "C" fn kirby_special_s_max_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -172,7 +164,6 @@ unsafe extern "C" fn kirby_special_air_s_start_game(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn kirby_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -207,7 +198,6 @@ unsafe extern "C" fn kirby_special_air_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -240,7 +230,6 @@ unsafe extern "C" fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn kirby_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -281,7 +270,6 @@ unsafe extern "C" fn kirby_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_air_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -302,7 +290,6 @@ unsafe extern "C" fn kirby_special_air_hi2_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -4, 16, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_hi_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -334,7 +321,6 @@ unsafe extern "C" fn kirby_special_hi_h_game(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
 
 unsafe extern "C" fn kirby_special_hi_h_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -374,7 +360,6 @@ unsafe extern "C" fn kirby_special_hi_h_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -393,7 +378,6 @@ unsafe extern "C" fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -407,7 +391,6 @@ unsafe extern "C" fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -454,7 +437,6 @@ unsafe extern "C" fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_air_hi_h_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -476,7 +458,6 @@ unsafe extern "C" fn kirby_special_air_hi_h_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -495,7 +476,6 @@ unsafe extern "C" fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -509,7 +489,6 @@ unsafe extern "C" fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBas
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -534,7 +513,6 @@ unsafe extern "C" fn kirby_special_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -564,7 +542,6 @@ unsafe extern "C" fn kirby_special_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::init_attack_pos(boma, 0);
     }
 }
-
 
 unsafe extern "C" fn kirby_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

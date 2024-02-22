@@ -196,7 +196,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // nothing lol
 }
 
-
 #[no_mangle]
 pub unsafe extern "Rust" fn ice_climbers_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
@@ -214,7 +213,6 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     attacklw4_lr(fighter, boma, id);
     fastfall_specials(fighter);
 }
-
 
 pub extern "C" fn popo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

@@ -1,9 +1,6 @@
 use super::*;
 use globals::*;
 
-
-
-
 unsafe extern "C" fn peach_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,8 +28,6 @@ unsafe extern "C" fn peach_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2C
     );
     0.into()
 }
-
-
 
 unsafe extern "C" fn peach_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_ITEM_NO_COUNT);
@@ -64,7 +59,6 @@ unsafe extern "C" fn peach_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
     }
     0.into()
 }
-
 
 unsafe extern "C" fn peach_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ItemModule::is_have_item(fighter.module_accessor, 0) {

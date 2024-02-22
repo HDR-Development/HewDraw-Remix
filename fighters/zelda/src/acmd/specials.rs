@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn zelda_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -35,7 +34,6 @@ unsafe extern "C" fn zelda_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_special_n_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -65,7 +63,6 @@ unsafe extern "C" fn zelda_special_n_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -75,7 +72,6 @@ unsafe extern "C" fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
         //VarModule::on_flag(fighter.battle_object, vars::zelda::instance::DEIN_ACTIVE);
     }
 }
-
 
 unsafe extern "C" fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +89,6 @@ unsafe extern "C" fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("havel"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -114,7 +109,6 @@ unsafe extern "C" fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -134,7 +128,6 @@ unsafe extern "C" fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase)
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -164,7 +157,6 @@ unsafe extern "C" fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 29.0/(34.0 - 11.0));
     }
 }
-
 
 unsafe extern "C" fn zelda_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -197,7 +189,6 @@ unsafe extern "C" fn zelda_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -253,7 +244,6 @@ unsafe extern "C" fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_special_hi_land_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -262,9 +252,6 @@ unsafe extern "C" fn zelda_special_hi_land_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 0.5);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("zelda")

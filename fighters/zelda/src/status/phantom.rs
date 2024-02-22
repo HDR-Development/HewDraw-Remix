@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn build_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     /*let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
@@ -11,7 +10,6 @@ unsafe extern "C" fn build_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     GroundModule::set_passable_check(weapon.module_accessor, false);
     ret
 }
-
 
 pub fn install() {
     smashline::Agent::new("zelda_phantom")

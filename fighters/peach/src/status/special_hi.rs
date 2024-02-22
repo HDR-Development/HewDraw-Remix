@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn special_hi_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         special_hi_substatus(fighter, false.into());
@@ -17,8 +16,6 @@ unsafe extern "C" fn special_hi_substatus(fighter: &mut L2CFighterCommon, param_
     }
     0.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("peach")

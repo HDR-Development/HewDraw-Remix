@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +22,6 @@ unsafe extern "C" fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,7 +46,6 @@ unsafe extern "C" fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -59,7 +55,6 @@ unsafe extern "C" fn nana_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
 
 unsafe extern "C" fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,7 +76,6 @@ unsafe extern "C" fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_effect_attackairb_nana(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -91,7 +85,6 @@ unsafe extern "C" fn nana_effect_attackairb_nana(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
 }
-
 
 unsafe extern "C" fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -124,7 +117,6 @@ unsafe extern "C" fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -133,7 +125,6 @@ unsafe extern "C" fn nana_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 17.0, 0, 0, 0, 0, 1.2, true);
     }
 }
-
 
 unsafe extern "C" fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -167,7 +158,6 @@ unsafe extern "C" fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -176,7 +166,6 @@ unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
         //EFFECT_FOLLOW(fighter, Hash40::new("popo_air_lw"), Hash40::new("top"), 0, 0, 0, -5, 0, 0, 1, true);
     }
 }
-
 
 unsafe extern "C" fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -187,7 +176,6 @@ unsafe extern "C" fn effect_attackairlw_nana(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn nana_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -196,7 +184,6 @@ unsafe extern "C" fn nana_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("havel"), 0.0, 7.0, 0, 0, 0, 0, 1.2, true);
     }
 }
-
 
 unsafe extern "C" fn nana_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

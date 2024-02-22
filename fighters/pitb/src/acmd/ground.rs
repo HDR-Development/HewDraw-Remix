@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
     }
 }
-
 
 unsafe extern "C" fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -57,7 +55,6 @@ unsafe extern "C" fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pitb_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -80,7 +77,6 @@ unsafe extern "C" fn pitb_attack_13_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn pitb_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -95,8 +91,6 @@ unsafe extern "C" fn pitb_attack_dash_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("pitb")

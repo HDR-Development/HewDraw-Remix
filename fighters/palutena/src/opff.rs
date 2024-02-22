@@ -149,7 +149,6 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
-
 // Power Board Death Reset
 unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_DEAD,
@@ -328,7 +327,6 @@ pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommo
         );
     }
 }
-
 
 pub extern "C" fn palutena_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

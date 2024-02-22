@@ -8,7 +8,6 @@ mod specials;
 mod throws;
 mod ground;
 
-
 pub fn install() {
     aerials::install();
     tilts::install();

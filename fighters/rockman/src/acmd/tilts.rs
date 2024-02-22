@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn rockman_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if is_excute(agent) {
@@ -24,7 +23,6 @@ unsafe extern "C" fn rockman_attacks3(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-
 unsafe extern "C" fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if is_excute(agent) {
@@ -44,7 +42,6 @@ unsafe extern "C" fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if is_excute(agent) {
@@ -59,7 +56,6 @@ unsafe extern "C" fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_rockman_step_left_m"));
     }
 }
-
 
 unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -81,7 +77,6 @@ unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_lands_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +104,6 @@ unsafe extern "C" fn rockman_attack_hi3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -143,7 +137,6 @@ unsafe extern "C" fn rockman_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -166,7 +159,6 @@ unsafe extern "C" fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn fly_s_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_s"));
     WorkModule::set_int(fighter.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
@@ -28,7 +27,6 @@ unsafe extern "C" fn fly_s_main_loop(fighter: &mut L2CWeaponCommon) -> L2CValue 
     sub_fly(fighter, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_S.into());
     return 0.into()
 }
-
 
 unsafe extern "C" fn fly_m_main(fighter: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(fighter.module_accessor, hash40("param_fire"), hash40("life_m"));

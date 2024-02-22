@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn murabito_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -20,10 +18,6 @@ unsafe extern "C" fn murabito_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     FT_MOTION_RATE(fighter, 30.0/(44.0-10.0));
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("murabito")

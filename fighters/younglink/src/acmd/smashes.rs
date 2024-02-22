@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -34,7 +33,6 @@ unsafe extern "C" fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +48,6 @@ unsafe extern "C" fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -89,7 +86,6 @@ unsafe extern "C" fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -120,7 +116,6 @@ unsafe extern "C" fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -139,7 +134,6 @@ unsafe extern "C" fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_younglink_swing_ll"));
     }
 }
-
 
 unsafe extern "C" fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -172,7 +166,6 @@ unsafe extern "C" fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -204,7 +197,6 @@ unsafe extern "C" fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("younglink")

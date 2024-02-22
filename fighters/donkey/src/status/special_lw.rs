@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // if you are grounded, pick up heavy item/spawn barrel
@@ -112,8 +111,6 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     1.into()
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("donkey")

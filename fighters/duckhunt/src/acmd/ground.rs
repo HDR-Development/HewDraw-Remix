@@ -27,8 +27,6 @@ unsafe extern "C" fn duckhunt_attackdash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn duckhunt_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -54,8 +52,6 @@ unsafe extern "C" fn duckhunt_attack_11_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-
-
 unsafe extern "C" fn duckhunt_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +75,6 @@ unsafe extern "C" fn duckhunt_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn duckhunt_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +89,6 @@ unsafe extern "C" fn duckhunt_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_100_sub_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -113,7 +107,6 @@ unsafe extern "C" fn duckhunt_attack_100_sub_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma,  *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -134,9 +127,6 @@ unsafe extern "C" fn duckhunt_attack_100_end_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("duckhunt")

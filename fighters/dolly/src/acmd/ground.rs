@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -43,7 +41,6 @@ unsafe extern "C" fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -91,7 +88,6 @@ unsafe extern "C" fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -107,7 +103,6 @@ unsafe extern "C" fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
 
 unsafe extern "C" fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,7 +151,6 @@ unsafe extern "C" fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -252,7 +246,6 @@ unsafe extern "C" fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -398,7 +391,6 @@ unsafe extern "C" fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -426,9 +418,6 @@ unsafe extern "C" fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("dolly")

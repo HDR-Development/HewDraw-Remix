@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn miigunner_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -39,7 +38,6 @@ unsafe extern "C" fn miigunner_attack_s3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -52,7 +50,6 @@ unsafe extern "C" fn miigunner_attack_s3_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn miigunner_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -80,7 +77,6 @@ unsafe extern "C" fn miigunner_attack_hi3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -97,7 +93,6 @@ unsafe extern "C" fn miigunner_attack_lw3_game(fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(boma);
 	}
 }
-
 
 pub fn install() {
     smashline::Agent::new("miigunner")

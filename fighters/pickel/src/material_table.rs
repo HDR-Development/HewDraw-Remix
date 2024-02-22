@@ -100,7 +100,6 @@ pub unsafe extern "C" fn stub_stage_check() -> bool {
     return false;
 }
 
-
 pub fn install() {
     skyline::install_hooks!(
         material_table_hook,

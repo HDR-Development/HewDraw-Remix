@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -16,7 +15,6 @@ unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +24,6 @@ unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn game_turndash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,7 +46,6 @@ unsafe extern "C" fn game_turndash(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -65,7 +61,6 @@ unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +74,6 @@ unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -134,7 +128,6 @@ unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 2.0);
 }
 
-
 unsafe extern "C" fn game_catchdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -186,7 +179,6 @@ unsafe extern "C" fn game_catchdash(fighter: &mut L2CAgentBase) {
     frame(lua_state, 51.0);
     FT_MOTION_RATE(fighter, 2.0);
 }
-
 
 unsafe extern "C" fn game_catchturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -240,7 +232,6 @@ unsafe extern "C" fn game_catchturn(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 2.0);
 }
 
-
 unsafe extern "C" fn game_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -255,7 +246,6 @@ unsafe extern "C" fn game_appeals(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_guardon(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -264,7 +254,6 @@ unsafe extern "C" fn game_guardon(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, false, -1);
     }
 }
-
 
 unsafe extern "C" fn game_guarddamage(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -275,7 +264,6 @@ unsafe extern "C" fn game_guarddamage(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn sound_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -294,7 +282,6 @@ unsafe extern "C" fn sound_landingheavy(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_passive(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -309,7 +296,6 @@ unsafe extern "C" fn game_passive(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn melt_game_passive(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
@@ -317,7 +303,6 @@ unsafe extern "C" fn melt_game_passive(weapon: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 } 
-
 
 unsafe extern "C" fn melt_effect_passive(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
@@ -327,7 +312,6 @@ unsafe extern "C" fn melt_effect_passive(weapon: &mut L2CAgentBase) {
     }
 } 
 
-
 unsafe extern "C" fn melt_sound_passive(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
@@ -335,9 +319,6 @@ unsafe extern "C" fn melt_sound_passive(weapon: &mut L2CAgentBase) {
         PLAY_SE(weapon, Hash40::new("se_common_swim_middle_01"));
     }
 } 
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pickel")

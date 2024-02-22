@@ -8,7 +8,6 @@ import hashlib
 import glob
 import hash_package
 
-
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.argv) != 3:
   print("provide arguments for, in order, HewDraw-Remix version and romfs version")
   exit(0)
@@ -80,7 +79,6 @@ shutil.make_archive("switch-package", 'zip', 'switch-package')
 print("creating hash files")
 hash_package.hash_folder("switch-package", "content_hashes.txt")
 hash_package.hash_folder_json("switch-package", "content_hashes.json")
-
 
 # make a ryujinx package too
 print("making ryujinx-package.zip")

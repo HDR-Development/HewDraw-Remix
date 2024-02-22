@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn lucario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +24,6 @@ unsafe extern "C" fn lucario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn lucario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -56,7 +53,6 @@ unsafe extern "C" fn lucario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -75,7 +71,6 @@ unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn sound_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -90,7 +85,6 @@ unsafe extern "C" fn sound_attackhi4(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_lucario_smash_h01"));
     }
 }
-
 
 unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -122,7 +116,6 @@ unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -145,9 +138,6 @@ unsafe extern "C" fn lucario_attack_lw4_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("lucario")

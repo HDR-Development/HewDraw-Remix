@@ -36,7 +36,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn sonic_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -49,7 +48,6 @@ extern "C" fn sonic_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 pub fn install() {
     wait::install();

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn gaogaen_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -170,7 +169,6 @@ unsafe extern "C" fn gaogaen_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -284,7 +282,6 @@ unsafe extern "C" fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -369,7 +366,6 @@ unsafe extern "C" fn gaogaen_special_s_start_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -421,7 +417,6 @@ unsafe extern "C" fn gaogaen_special_air_s_start_game(fighter: &mut L2CAgentBase
     FT_MOTION_RATE(fighter, 1);
 }
 
-
 unsafe extern "C" fn gaogaen_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -441,7 +436,6 @@ unsafe extern "C" fn gaogaen_special_s_throw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1);
     frame(lua_state, 95.0);
 }
-
 
 unsafe extern "C" fn gaogaen_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -537,7 +531,6 @@ unsafe extern "C" fn gaogaen_special_s_throw_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -607,7 +600,6 @@ unsafe extern "C" fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_s_lariat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -643,7 +635,6 @@ unsafe extern "C" fn gaogaen_special_air_s_lariat_game(fighter: &mut L2CAgentBas
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
 }
-
 
 unsafe extern "C" fn gaogaen_special_s_shoulder_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -716,7 +707,6 @@ unsafe extern "C" fn gaogaen_special_s_shoulder_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_s_shoulder_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -760,7 +750,6 @@ unsafe extern "C" fn gaogaen_special_air_s_shoulder_game(fighter: &mut L2CAgentB
         WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
     }
 }
-
 
 unsafe extern "C" fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -841,7 +830,6 @@ unsafe extern "C" fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -916,7 +904,6 @@ unsafe extern "C" fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -956,7 +943,6 @@ unsafe extern "C" fn gaogaen_special_air_hi_start_effect(fighter: &mut L2CAgentB
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -991,7 +977,6 @@ unsafe extern "C" fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1023,7 +1008,6 @@ unsafe extern "C" fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBa
         }
     }
 }
-
 
 unsafe extern "C" fn gaogaen_special_air_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1058,7 +1042,6 @@ unsafe extern "C" fn gaogaen_special_air_hi_fall_game(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn gaogaen_special_hi_bound_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1077,7 +1060,6 @@ unsafe extern "C" fn gaogaen_special_hi_bound_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn gaogaen_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1104,7 +1086,6 @@ unsafe extern "C" fn gaogaen_special_lw_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 46.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 pub fn install() {
     smashline::Agent::new("gaogaen")

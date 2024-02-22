@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -23,7 +21,6 @@ unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn attack_12 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -40,7 +37,6 @@ unsafe extern "C" fn attack_12 (fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn attack_13 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -55,7 +51,6 @@ unsafe extern "C" fn attack_13 (fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(fighter.module_accessor);
 	}
 }
-
 
 unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,7 +71,6 @@ unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
         for node in nodes { HIT_NODE(fighter, Hash40::new(node), *HIT_STATUS_NORMAL); }
     }
 }
-
 
 unsafe extern "C" fn effect_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -105,7 +99,6 @@ unsafe extern "C" fn effect_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -123,7 +116,6 @@ unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
         PLAY_LANDING_SE(agent, Hash40::new("se_link_landing01"));
     }
 }
-
 
 unsafe extern "C" fn expression_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -154,9 +146,6 @@ unsafe extern "C" fn expression_attackdash(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_walk_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("link")

@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(Hash40::new("special_n_start").into(), Hash40::new("special_air_n_start").into(), false.into());
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_n").into());

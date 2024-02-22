@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn koopa_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -35,7 +34,6 @@ unsafe extern "C" fn koopa_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopa_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -55,7 +53,6 @@ unsafe extern "C" fn koopa_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopa_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -64,7 +61,6 @@ unsafe extern "C" fn koopa_attack_air_n_sound(fighter: &mut L2CAgentBase) {
         PLAY_STATUS(fighter, Hash40::new("se_koopa_attackair_l01"));
     }
 }
-
 
 unsafe extern "C" fn koopa_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -98,7 +94,6 @@ unsafe extern "C" fn koopa_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopa_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -128,7 +123,6 @@ unsafe extern "C" fn koopa_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn koopa_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -138,7 +132,6 @@ unsafe extern "C" fn koopa_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
 
 unsafe extern "C" fn koopa_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -168,7 +161,6 @@ unsafe extern "C" fn koopa_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn koopa_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -181,7 +173,6 @@ unsafe extern "C" fn koopa_attack_air_b_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
 }
-
 
 unsafe extern "C" fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -214,7 +205,6 @@ unsafe extern "C" fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn koopa_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -229,7 +219,6 @@ unsafe extern "C" fn koopa_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopa_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -239,7 +228,6 @@ unsafe extern "C" fn koopa_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -273,7 +261,6 @@ unsafe extern "C" fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn koopa_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -290,7 +277,6 @@ unsafe extern "C" fn koopa_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("koopa_atk_fall"), false, false);
     }
 }
-
 
 unsafe extern "C" fn koopa_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -320,7 +306,6 @@ unsafe extern "C" fn koopa_landing_air_lw_game(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("koopa")

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -14,7 +13,6 @@ unsafe extern "C" fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,13 +22,11 @@ unsafe extern "C" fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase)
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn littlemac_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn littlemac_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -38,13 +34,11 @@ unsafe extern "C" fn littlemac_special_n_cancel_sound(fighter: &mut L2CAgentBase
 
 }
 
-
 unsafe extern "C" fn littlemac_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -97,7 +91,6 @@ unsafe extern "C" fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -149,7 +142,6 @@ unsafe extern "C" fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -198,7 +190,6 @@ unsafe extern "C" fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn littlemac_special_n2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -227,7 +218,6 @@ unsafe extern "C" fn littlemac_special_n2_expression(fighter: &mut L2CAgentBase)
     }
 
 }
-
 
 unsafe extern "C" fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -265,7 +255,6 @@ unsafe extern "C" fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -293,7 +282,6 @@ unsafe extern "C" fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBas
     
 }
 
-
 unsafe extern "C" fn littlemac_special_air_s_blow_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -309,7 +297,6 @@ unsafe extern "C" fn littlemac_special_air_s_blow_effect(fighter: &mut L2CAgentB
     }
 }
 
-
 unsafe extern "C" fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -323,7 +310,6 @@ unsafe extern "C" fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase)
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn littlemac_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -340,7 +326,6 @@ unsafe extern "C" fn littlemac_special_air_hi_start_game(fighter: &mut L2CAgentB
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

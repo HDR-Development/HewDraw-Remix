@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn samusd_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -39,7 +38,6 @@ unsafe extern "C" fn samusd_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn samusd_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +137,6 @@ unsafe extern "C" fn samusd_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -168,7 +165,6 @@ unsafe extern "C" fn samusd_attack_air_n_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -190,7 +186,6 @@ unsafe extern "C" fn samusd_attack_air_n_expression(fighter: &mut L2CAgentBase) 
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn samusd_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -216,7 +211,6 @@ unsafe extern "C" fn samusd_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn samusd_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -227,7 +221,6 @@ unsafe extern "C" fn samusd_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn samusd_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -237,7 +230,6 @@ unsafe extern "C" fn samusd_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn samusd_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -252,7 +244,6 @@ unsafe extern "C" fn samusd_attack_air_f_expression(fighter: &mut L2CAgentBase) 
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn samusd_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -286,7 +277,6 @@ unsafe extern "C" fn samusd_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -301,7 +291,6 @@ unsafe extern "C" fn samusd_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 8, -15, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
     }
 }
-
 
 unsafe extern "C" fn samusd_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -330,7 +319,6 @@ unsafe extern "C" fn samusd_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -348,7 +336,6 @@ unsafe extern "C" fn samusd_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {  }
 }
 
-
 unsafe extern "C" fn samusd_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -358,7 +345,6 @@ unsafe extern "C" fn samusd_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn samusd_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -372,7 +358,6 @@ unsafe extern "C" fn samusd_attack_air_hi_expression(fighter: &mut L2CAgentBase)
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn samusd_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -412,7 +397,6 @@ unsafe extern "C" fn samusd_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn samusd_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -429,7 +413,6 @@ unsafe extern "C" fn samusd_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn samusd_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -457,7 +440,6 @@ unsafe extern "C" fn samusd_air_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn samusd_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -466,9 +448,6 @@ unsafe extern "C" fn samusd_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("samusd")

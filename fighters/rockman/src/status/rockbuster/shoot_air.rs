@@ -1,7 +1,6 @@
 use super::*;
 use super::helper::*;
 
-
 unsafe extern "C" fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_attr_add = if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_N {
         fighter.sub_status_pre_SpecialNCommon();
@@ -45,7 +44,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCo
     0.into()
 }
 
-
 unsafe extern "C" fn rockman_rockbuster_shoot_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
@@ -80,7 +78,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_air_main_loop(fighter: &mut L2CFig
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

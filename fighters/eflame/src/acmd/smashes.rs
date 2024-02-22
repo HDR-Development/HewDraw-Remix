@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn eflame_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -78,9 +77,6 @@ unsafe extern "C" fn eflame_attack_s4_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("eflame")

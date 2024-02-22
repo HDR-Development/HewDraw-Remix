@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn yoshi_special_s_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -11,8 +10,6 @@ unsafe extern "C" fn yoshi_special_s_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn yoshi_special_air_s_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,8 +18,6 @@ unsafe extern "C" fn yoshi_special_air_s_loop_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(fighter.module_accessor, false);
     }
 }
-
-
 
 unsafe extern "C" fn yoshi_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -38,8 +33,6 @@ unsafe extern "C" fn yoshi_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn yoshi_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,8 +46,6 @@ unsafe extern "C" fn yoshi_special_air_s_end_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_YOSHI_STATUS_SPECIAL_S_FLAG_HIDE_EGG);
     }
 }
-
-
 
 unsafe extern "C" fn yoshi_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -79,7 +70,6 @@ unsafe extern "C" fn yoshi_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn yoshi_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -99,9 +89,6 @@ unsafe extern "C" fn yoshi_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("yoshi")

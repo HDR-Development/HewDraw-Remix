@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,8 +31,6 @@ unsafe extern "C" fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -55,8 +52,6 @@ unsafe extern "C" fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -71,8 +66,6 @@ unsafe extern "C" fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -107,7 +100,6 @@ unsafe extern "C" fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -131,9 +123,6 @@ unsafe extern "C" fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase
         ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("szerosuit")

@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -56,7 +53,6 @@ unsafe extern "C" fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,7 +96,6 @@ unsafe extern "C" fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -123,7 +118,6 @@ unsafe extern "C" fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn metaknight_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -141,7 +135,6 @@ unsafe extern "C" fn metaknight_attack_air_f_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_metaknight_attackair_l01"));
     }
 }
-
 
 unsafe extern "C" fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,7 +159,6 @@ unsafe extern "C" fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
 
 unsafe extern "C" fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -201,7 +193,6 @@ unsafe extern "C" fn sound_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -226,7 +217,6 @@ unsafe extern "C" fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -244,7 +234,6 @@ unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
 
 unsafe extern "C" fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -267,7 +256,6 @@ unsafe extern "C" fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -285,9 +273,6 @@ unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("metaknight")

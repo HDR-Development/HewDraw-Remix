@@ -57,7 +57,6 @@ unsafe fn gunman_timer(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub extern "C" fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

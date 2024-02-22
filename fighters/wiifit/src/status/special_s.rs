@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_S
-
 
 unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
@@ -76,7 +74,6 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-
 unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP {
         VarModule::set_flag(fighter.battle_object, vars::wiifit::instance::SPECIAL_S_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
@@ -86,7 +83,6 @@ unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP
 
-
 unsafe extern "C" fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::wiifit::instance::SPECIAL_S_DISABLE_STALL) {
         return 0.into();
@@ -94,12 +90,10 @@ unsafe extern "C" fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CV
     smashline::original_status(Init, fighter, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP)(fighter)
 }
 
-
 unsafe extern "C" fn special_s_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_flag(fighter.battle_object, vars::wiifit::instance::SPECIAL_S_DISABLE_STALL, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("wiifit")

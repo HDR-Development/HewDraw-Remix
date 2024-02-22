@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn palutena_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +48,6 @@ unsafe extern "C" fn palutena_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn palutena_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -92,7 +89,6 @@ unsafe extern "C" fn palutena_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -116,7 +112,6 @@ unsafe extern "C" fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
-
 
 unsafe extern "C" fn palutena_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -151,7 +146,6 @@ unsafe extern "C" fn palutena_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -177,7 +171,6 @@ unsafe extern "C" fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
-
 
 unsafe extern "C" fn palutena_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -221,7 +214,6 @@ unsafe extern "C" fn palutena_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -243,7 +235,6 @@ unsafe extern "C" fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
-
 
 unsafe extern "C" fn palutena_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -297,7 +288,6 @@ unsafe extern "C" fn palutena_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn palutena_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -314,7 +304,6 @@ unsafe extern "C" fn palutena_attack_air_lw_expression(fighter: &mut L2CAgentBas
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -349,9 +338,6 @@ unsafe extern "C" fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("palutena")

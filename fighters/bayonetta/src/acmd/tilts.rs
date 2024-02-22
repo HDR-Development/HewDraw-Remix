@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn bayonetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn bayonetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -64,7 +61,6 @@ unsafe extern "C" fn bayonetta_attack_s3_s_expression(fighter: &mut L2CAgentBase
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -95,7 +91,6 @@ unsafe extern "C" fn bayonetta_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_s3_s2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -119,7 +114,6 @@ unsafe extern "C" fn bayonetta_attack_s3_s2_expression(fighter: &mut L2CAgentBas
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_s3_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -153,7 +147,6 @@ unsafe extern "C" fn bayonetta_attack_s3_s3_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -201,7 +194,6 @@ unsafe extern "C" fn bayonetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn bayonetta_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -234,7 +226,6 @@ unsafe extern "C" fn bayonetta_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -266,7 +257,6 @@ unsafe extern "C" fn bayonetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -279,7 +269,6 @@ unsafe extern "C" fn bayonetta_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 5.7, 0, 0, 0, 0, 0, 1.05, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

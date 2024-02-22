@@ -1,7 +1,5 @@
 use super::*;
 
-
-
 unsafe extern "C" fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -86,7 +84,6 @@ unsafe extern "C" fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairhifall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -95,7 +92,6 @@ unsafe extern "C" fn game_specialairhifall(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
 }
-
 
 unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -106,7 +102,6 @@ unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
@@ -115,7 +110,6 @@ unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn eflame_firepillar_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -142,7 +136,6 @@ unsafe extern "C" fn eflame_firepillar_special_hi_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn eflame_firepillar_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -154,9 +147,6 @@ unsafe extern "C" fn eflame_firepillar_special_hi_effect(fighter: &mut L2CAgentB
         LAST_EFFECT_SET_RATE(fighter, 1.4);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("eflame")

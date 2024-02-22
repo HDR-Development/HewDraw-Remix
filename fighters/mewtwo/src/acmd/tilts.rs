@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +29,6 @@ unsafe extern "C" fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -59,7 +56,6 @@ unsafe extern "C" fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -90,8 +86,6 @@ unsafe extern "C" fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn mewtwo_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -108,7 +102,6 @@ unsafe extern "C" fn mewtwo_attack_s3_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
 }
-
 
 unsafe extern "C" fn mewtwo_attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -127,7 +120,6 @@ unsafe extern "C" fn mewtwo_attack_s3_lw_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn mewtwo_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -144,8 +136,6 @@ unsafe extern "C" fn mewtwo_attack_s3_hi_expression(fighter: &mut L2CAgentBase) 
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -181,7 +171,6 @@ unsafe extern "C" fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -203,8 +192,6 @@ unsafe extern "C" fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
         
 }
 
-
-
 unsafe extern "C" fn mewtwo_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -220,9 +207,6 @@ unsafe extern "C" fn mewtwo_attack_lw3_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("mewtwo")

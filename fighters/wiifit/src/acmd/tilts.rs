@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn wiifit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +21,6 @@ unsafe extern "C" fn wiifit_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn wiifit_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,7 +30,6 @@ unsafe extern "C" fn wiifit_attack_s3_effect(fighter: &mut L2CAgentBase) {
     // }
 
 }
-
 
 unsafe extern "C" fn wiifit_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +50,6 @@ unsafe extern "C" fn wiifit_attack_s3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
     }
 }
-
 
 unsafe extern "C" fn wiifit_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -80,7 +76,6 @@ unsafe extern "C" fn wiifit_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn wiifit_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,7 +88,6 @@ unsafe extern "C" fn wiifit_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     //     crate::opff::start_ring(utils::util::get_fighter_common_from_accessor(boma), 14.0, 0.75, 1.5, Hash40::new("handr"), Vector3f::new(-0.25, -1.0, 0.0), Vector3f::new(3000.0, 0.7, 0.7), Vector3f::new(0.7, 1000.0, 0.7), false);
     // }
 }
-
 
 unsafe extern "C" fn wiifit_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -125,7 +119,6 @@ unsafe extern "C" fn wiifit_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn wiifit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -138,7 +131,6 @@ unsafe extern "C" fn wiifit_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 pub fn install() {
     smashline::Agent::new("wiifit")

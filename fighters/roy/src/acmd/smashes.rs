@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn roy_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +31,6 @@ unsafe extern "C" fn roy_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn roy_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -66,7 +63,6 @@ unsafe extern "C" fn roy_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn roy_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -93,9 +89,6 @@ unsafe extern "C" fn roy_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
-
-
-
 
 unsafe extern "C" fn roy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +132,6 @@ unsafe extern "C" fn roy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn roy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -185,7 +177,6 @@ unsafe extern "C" fn roy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn roy_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -244,11 +235,6 @@ unsafe extern "C" fn roy_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_fire"), false, true);
     }
 }
-
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("roy")

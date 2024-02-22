@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_duckhunt_rnd_futtobi01"), Hash40::new("seq_duckhunt_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_duckhunt_rnd_futtobi01"), Hash40::new("seq_duckhunt_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -121,7 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn duckhunt_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -146,7 +140,6 @@ unsafe extern "C" fn duckhunt_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -157,7 +150,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -167,7 +159,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -182,7 +173,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn duckhunt_can_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -203,7 +193,6 @@ unsafe extern "C" fn duckhunt_can_explode_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn duckhunt_clay_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -216,7 +205,6 @@ unsafe extern "C" fn duckhunt_clay_fly_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *WEAPON_DUCKHUNT_CLAY_INSTANCE_WORK_ID_FLAG_IS_ADD_ACCEL_Y);
     }
 }
-
 
 unsafe extern "C" fn duckhunt_clay_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -237,7 +225,6 @@ unsafe extern "C" fn duckhunt_clay_hit_game(fighter: &mut L2CAgentBase) {
         }
 }
 
-
 unsafe extern "C" fn duckhunt_gunman_ready_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -249,7 +236,6 @@ unsafe extern "C" fn duckhunt_gunman_ready_sound(fighter: &mut L2CAgentBase) {
         PLAY_STATUS(fighter, Hash40::new("se_duckhunt_special_l09"));
     } 
 }
-
 
 unsafe extern "C" fn duckhunt_gunman_ready_effectl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -284,7 +270,6 @@ unsafe extern "C" fn duckhunt_gunman_ready_effectl(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn duckhunt_gunman_ready_effectr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 275.0);
@@ -318,7 +303,6 @@ unsafe extern "C" fn duckhunt_gunman_ready_effectr(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn duckhunt_gunmanbullet_move_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -331,7 +315,6 @@ unsafe extern "C" fn duckhunt_gunmanbullet_move_game(agent: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -348,7 +331,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -363,12 +345,10 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
-
 
 unsafe extern "C" fn sound_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -379,7 +359,6 @@ unsafe extern "C" fn sound_appeals(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, handle as i32, 3.0, 0);
     }
 }
-
 
 unsafe extern "C" fn expression_appeals(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

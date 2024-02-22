@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -15,7 +14,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +23,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -41,7 +38,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -52,7 +48,6 @@ unsafe extern "C" fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
 	}
     
 }
-
 
 unsafe extern "C" fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,7 +70,6 @@ unsafe extern "C" fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -89,7 +83,6 @@ unsafe extern "C" fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
         AttackModule::enable_safe_pos(boma);
     }
 }
-
 
 unsafe extern "C" fn samusd_homing_missile_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +102,6 @@ unsafe extern "C" fn samusd_homing_missile_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn samusd_super_missile_ready_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -118,7 +110,6 @@ unsafe extern "C" fn samusd_super_missile_ready_game(fighter: &mut L2CAgentBase)
         AttackModule::enable_safe_pos(boma);
     }
 }
-
 
 unsafe extern "C" fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -143,7 +134,6 @@ unsafe extern "C" fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBa
 //     }
 // }
 
-
 unsafe extern "C" fn samusd_bomb_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -152,7 +142,6 @@ unsafe extern "C" fn samusd_bomb_fall_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 45, 0, 22, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -179,7 +168,6 @@ unsafe extern "C" fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -189,7 +177,6 @@ unsafe extern "C" fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase)
         LAST_EFFECT_SET_RATE(fighter, 77.0/12.0);
     }
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -206,7 +193,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -220,9 +206,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("samusd")

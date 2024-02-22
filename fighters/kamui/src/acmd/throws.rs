@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn kamui_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -30,7 +29,6 @@ unsafe extern "C" fn kamui_throw_b_game(fighter: &mut L2CAgentBase) {
         ArticleModule::set_visibility_whole(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
 
 unsafe extern "C" fn kamui_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -65,7 +63,6 @@ unsafe extern "C" fn kamui_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 pub fn install() {
     smashline::Agent::new("kamui")

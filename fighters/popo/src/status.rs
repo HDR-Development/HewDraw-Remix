@@ -3,7 +3,6 @@ use globals::*;
 // status script import
  
 
-
 #[utils::export(popo)]
 pub unsafe fn ics_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Dash_Sub();
@@ -22,13 +21,11 @@ unsafe extern "C" fn ics_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_DASH //
 
-
 pub unsafe extern "C" fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     ics_dash(fighter)
 }
 
 // FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP //
-
 
 pub unsafe extern "C" fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()

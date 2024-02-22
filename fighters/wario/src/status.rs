@@ -44,7 +44,6 @@ unsafe extern "C" fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValu
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_CATCH_ATTACK)(fighter)
 }
 
-
 unsafe extern "C" fn wario_throwk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
 
@@ -73,7 +72,6 @@ unsafe extern "C" fn wario_throwk_end(fighter: &mut L2CFighterCommon) -> L2CValu
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.status_end_ThrowKirby();
 }
-
 
 unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let FRAME_FALL = 48.0;
@@ -128,13 +126,10 @@ unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CVal
     return false.into();
 }
 
-
-
 unsafe extern "C" fn wario_landing_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return false.into();
 }
-
 
 unsafe extern "C" fn wario_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let dairAnim = Hash40::new("attack_air_lw");

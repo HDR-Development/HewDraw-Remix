@@ -40,7 +40,6 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     }
 }
 
-
 unsafe fn dash_attack_air_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if StatusModule::is_changing(boma) {
         return;
@@ -100,7 +99,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dash_attack_air_cancel(boma, status_kind, situation_kind);
     fastfall_specials(fighter);
 }
-
 
 pub extern "C" fn wario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

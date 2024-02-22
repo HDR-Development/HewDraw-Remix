@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn ike_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -24,7 +23,6 @@ unsafe extern "C" fn ike_special_n_end_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn ike_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -50,7 +48,6 @@ unsafe extern "C" fn ike_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ike_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -64,7 +61,6 @@ unsafe extern "C" fn ike_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -77,7 +73,6 @@ unsafe extern "C" fn ike_special_air_s_start_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_CHARGE);
     }
 }
-
 
 unsafe extern "C" fn ike_special_s_hold_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -103,7 +98,6 @@ unsafe extern "C" fn ike_special_s_hold_effect(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
 }
 
-
 unsafe extern "C" fn ike_special_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -113,7 +107,6 @@ unsafe extern "C" fn ike_special_s_dash_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn ike_special_s_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -143,7 +136,6 @@ unsafe extern "C" fn ike_special_s_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -161,13 +153,11 @@ unsafe extern "C" fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         fighter.select_cliff_hangdata_from_name("special_s");
     }
 }
-
 
 unsafe extern "C" fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -247,7 +237,6 @@ unsafe extern "C" fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -295,7 +284,6 @@ unsafe extern "C" fn ike_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -340,7 +328,6 @@ unsafe extern "C" fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_air_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -360,7 +347,6 @@ unsafe extern "C" fn ike_special_air_s_attack_effect(fighter: &mut L2CAgentBase)
         EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword"), true, true);
     }
 }
-
 
 unsafe extern "C" fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -390,7 +376,6 @@ unsafe extern "C" fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -418,7 +403,6 @@ unsafe extern "C" fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -432,14 +416,12 @@ unsafe extern "C" fn ike_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.82);
     
 }
-
 
 unsafe extern "C" fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -489,7 +471,6 @@ unsafe extern "C" fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -508,7 +489,6 @@ unsafe extern "C" fn ike_special_hi3_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("sword"), 3.0, 270, 100, 150, 0, 4.8, 0.0, 6.8, -1.0, None, None, None, 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
 }
-
 
 unsafe extern "C" fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -560,7 +540,6 @@ unsafe extern "C" fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ika_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -579,7 +558,6 @@ unsafe extern "C" fn ika_special_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_special_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -591,7 +569,6 @@ unsafe extern "C" fn ike_special_hi4_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("ike")

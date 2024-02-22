@@ -37,7 +37,6 @@ pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fig
     }
 }
 
-
 pub fn install() {
     skyline::install_hook!(ganon_status_transition);
 }

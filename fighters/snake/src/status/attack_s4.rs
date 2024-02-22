@@ -2,8 +2,6 @@ use super::*;
 use globals::*;
  
 
-
-
 ////changed rpg7 side-smash to multi-hit knife
 
 unsafe extern "C" fn snake_side_smash_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {

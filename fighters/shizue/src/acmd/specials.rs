@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn shizue_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -18,7 +17,6 @@ unsafe extern "C" fn shizue_special_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::inc_int(boma, *FIGHTER_MURABITO_STATUS_SPECIAL_N_INT_TAKEOUT_REQUEST);
     }
 }
-
 
 unsafe extern "C" fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -38,7 +36,6 @@ unsafe extern "C" fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,7 +44,6 @@ unsafe extern "C" fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase)
         EFFECT(fighter, Hash40::new("shizue_cracker"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -67,8 +63,6 @@ unsafe extern "C" fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBas
 
 }
 
-
-
 unsafe extern "C" fn shizue_special_n_failure_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -82,7 +76,6 @@ unsafe extern "C" fn shizue_special_n_failure_expression(fighter: &mut L2CAgentB
     }
 }
 
-
 unsafe extern "C" fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -95,7 +88,6 @@ unsafe extern "C" fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBas
         }
     }
 }
-
 
 unsafe extern "C" fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -112,7 +104,6 @@ unsafe extern "C" fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -165,7 +156,6 @@ unsafe extern "C" fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn shizue_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -207,7 +197,6 @@ unsafe extern "C" fn shizue_special_air_s_start_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -225,7 +214,6 @@ unsafe extern "C" fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
         REVERSE_LR(fighter);
     }
 }
-
 
 unsafe extern "C" fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -246,7 +234,6 @@ unsafe extern "C" fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn shizue_special_s_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -260,7 +247,6 @@ unsafe extern "C" fn shizue_special_s_throw_f_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 0.5);
     }
 }
-
 
 unsafe extern "C" fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -277,7 +263,6 @@ unsafe extern "C" fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -290,7 +275,6 @@ unsafe extern "C" fn shizue_special_s_throw_hi_game(fighter: &mut L2CAgentBase) 
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
 }
-
 
 unsafe extern "C" fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -306,7 +290,6 @@ unsafe extern "C" fn shizue_special_air_s_throw_hi_game(fighter: &mut L2CAgentBa
         KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0));
     }
 }
-
 
 unsafe extern "C" fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -343,7 +326,6 @@ unsafe extern "C" fn shizue_special_s_throw_lw_game(fighter: &mut L2CAgentBase) 
         FT_MOTION_RATE(fighter, 1.75);
     }
 }
-
 
 unsafe extern "C" fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -382,7 +364,6 @@ unsafe extern "C" fn shizue_special_air_s_throw_lw_game(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -393,7 +374,6 @@ unsafe extern "C" fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     }
     FT_MOTION_RATE(fighter, 0.1);
 }
-
 
 unsafe extern "C" fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -410,7 +390,6 @@ unsafe extern "C" fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn shizue_clayrocket_burst_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -422,9 +401,6 @@ unsafe extern "C" fn shizue_clayrocket_burst_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("shizue")

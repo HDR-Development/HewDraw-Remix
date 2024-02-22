@@ -3,7 +3,6 @@ use globals::*;
 // status script import
  
 
-
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::murabito::instance::DISABLE_SPECIAL_S) {
@@ -22,7 +21,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn murabito_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -35,14 +33,12 @@ extern "C" fn murabito_init(fighter: &mut L2CFighterCommon) {
 
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-
 pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::murabito::instance::DISABLE_SPECIAL_S);
     0.into()
 }
 
 // FIGHTER_STATUS_KIND_JUMP //
-
 
 pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE {
@@ -71,7 +67,6 @@ pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     return L2CValue::I32(0);
 }
 
-
 pub unsafe extern "C" fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE_LOOP {
         fighter.sub_jump_item_rocketbelt();
@@ -88,7 +83,6 @@ pub unsafe extern "C" fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR
-
 
 pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();

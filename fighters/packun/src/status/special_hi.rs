@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
@@ -91,7 +90,6 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 // FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING
-
 
 unsafe extern "C" fn special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("landing_frame"));

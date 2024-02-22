@@ -60,7 +60,6 @@ unsafe extern "C" fn jack_special_airn_down_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn jack_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -110,7 +109,6 @@ unsafe extern "C" fn jack_special_hi_game(fighter: &mut L2CAgentBase) {
         UNABLE_AREA(fighter, *FIGHTER_JACK_AREA_KIND_ITEM_CATCH);
     }
 }
-
 
 unsafe extern "C" fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -184,7 +182,6 @@ unsafe extern "C" fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -210,7 +207,6 @@ unsafe extern "C" fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -225,9 +221,6 @@ unsafe extern "C" fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_JACK_STATUS_SPECIAL_HI2_FLAG_APPEAR_DOYLE);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("jack")

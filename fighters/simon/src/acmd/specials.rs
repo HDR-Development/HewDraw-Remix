@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +48,6 @@ unsafe extern "C" fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,7 +97,6 @@ unsafe extern "C" fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn simon_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -113,9 +109,6 @@ unsafe extern "C" fn simon_special_n_game(fighter: &mut L2CAgentBase) {
         ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE,  app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("simon")

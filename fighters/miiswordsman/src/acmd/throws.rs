@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn throwf_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -30,7 +29,6 @@ unsafe extern "C" fn throwf_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 0.5);
     }
 }
-
 
 unsafe extern "C" fn throwb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -64,7 +62,6 @@ unsafe extern "C" fn throwb_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn throwhi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -91,7 +88,6 @@ unsafe extern "C" fn throwhi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn throwlw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -113,10 +109,6 @@ unsafe extern "C" fn throwlw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("miiswordsman")

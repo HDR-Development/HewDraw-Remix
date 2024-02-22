@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -44,7 +42,6 @@ unsafe extern "C" fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -85,8 +82,6 @@ unsafe extern "C" fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
-
 
 unsafe extern "C" fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +134,6 @@ unsafe extern "C" fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -182,7 +176,6 @@ unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase
 //     }
 // }
 
-
 unsafe extern "C" fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -199,7 +192,6 @@ unsafe extern "C" fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
     }
     FT_MOTION_RATE(fighter, 1.0);
 }
-
 
 unsafe extern "C" fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -229,9 +221,6 @@ unsafe extern "C" fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("wario")

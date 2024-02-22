@@ -3,14 +3,12 @@ use globals::*;
 // status script import
  
 
-
 pub fn set_gravity_delay_resume_frame(energy: *mut FighterKineticEnergyGravity, frames: i32) {
     unsafe {
       *(energy as *mut i32).add(0x50 / 4) = frames;
       *(energy as *mut bool).add(0x5C) = false;
     }
   }
-
 
 pub unsafe extern "C" fn init_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fighter_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);

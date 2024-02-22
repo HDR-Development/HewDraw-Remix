@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +36,6 @@ unsafe extern "C" fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -54,7 +51,6 @@ unsafe extern "C" fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -82,9 +78,6 @@ unsafe extern "C" fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("mewtwo")

@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -165,7 +163,6 @@ unsafe extern "C" fn pichu_special_hi_1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pichu_special_hi_1_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -186,7 +183,6 @@ unsafe extern "C" fn pichu_special_hi_1_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pichu_special_hi_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -202,7 +198,6 @@ unsafe extern "C" fn pichu_special_hi_2_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, false);
     }
 }
-
 
 unsafe extern "C" fn pichu_special_hi_2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -224,7 +219,6 @@ unsafe extern "C" fn pichu_special_hi_2_expression(fighter: &mut L2CAgentBase) {
         MotionModule::set_helper_calculation(boma, true);
     }
 }
-
 
 unsafe extern "C" fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -426,7 +420,6 @@ unsafe extern "C" fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pichu_special_air_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -540,9 +533,6 @@ unsafe extern "C" fn pichu_special_air_lw_hit_effect(fighter: &mut L2CAgentBase)
         EFFECT_OFF_KIND(fighter, Hash40::new("pichu_cheek"), false, true);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pichu")

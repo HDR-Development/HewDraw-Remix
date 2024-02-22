@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -10,7 +9,6 @@ unsafe extern "C" fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -36,7 +34,6 @@ unsafe extern "C" fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -46,7 +43,6 @@ unsafe extern "C" fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn luigi_special_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -60,7 +56,6 @@ unsafe extern "C" fn luigi_special_n_expression(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn luigi_special_n_thunder_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -77,7 +72,6 @@ unsafe extern "C" fn luigi_special_n_thunder_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn luigi_special_n_thunder_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -119,7 +113,6 @@ unsafe extern "C" fn luigi_special_n_thunder_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn luigi_special_n_thunder_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -129,7 +122,6 @@ unsafe extern "C" fn luigi_special_n_thunder_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_electric_hit_l"));
     }
 }
-
 
 unsafe extern "C" fn luigi_special_n_thunder_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -142,7 +134,6 @@ unsafe extern "C" fn luigi_special_n_thunder_expression(fighter: &mut L2CAgentBa
         ControlModule::set_rumble(boma, Hash40::new("rbkind_55_smash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn game_specialairsstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -159,7 +150,6 @@ unsafe extern "C" fn game_specialairsstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn luigi_special_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -171,7 +161,6 @@ unsafe extern "C" fn luigi_special_s_start_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn effect_specialshold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -197,7 +186,6 @@ unsafe extern "C" fn effect_specialshold(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialairshold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
@@ -210,7 +198,6 @@ unsafe extern "C" fn effect_specialairshold(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn game_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -250,7 +237,6 @@ unsafe extern "C" fn game_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let misfire_multiplier = VarModule::get_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER);
@@ -285,7 +271,6 @@ unsafe extern "C" fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
@@ -305,7 +290,6 @@ unsafe extern "C" fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -315,7 +299,6 @@ unsafe extern "C" fn game_specialairsend(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -349,7 +332,6 @@ unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -394,7 +376,6 @@ unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -427,7 +408,6 @@ unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

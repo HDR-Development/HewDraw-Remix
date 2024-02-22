@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn pacman_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -18,7 +16,6 @@ unsafe extern "C" fn pacman_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn pacman_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -36,7 +33,6 @@ unsafe extern "C" fn pacman_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn pacman_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,7 +49,6 @@ unsafe extern "C" fn pacman_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn pacman_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +88,6 @@ unsafe extern "C" fn pacman_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn pacman_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -114,7 +108,6 @@ unsafe extern "C" fn pacman_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
-
 
 unsafe extern "C" fn pacman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -137,7 +130,6 @@ unsafe extern "C" fn pacman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn pacman_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -192,9 +184,6 @@ unsafe extern "C" fn pacman_attack_lw3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pacman")

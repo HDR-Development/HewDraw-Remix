@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn special_hi_finish_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,7 +29,6 @@ unsafe extern "C" fn special_hi_finish_pre(fighter: &mut L2CFighterCommon) -> L2
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_finish_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] change motion and enable energy so that we can drift
@@ -154,7 +152,6 @@ unsafe extern "C" fn special_hi_finish_main_loop(fighter: &mut L2CFighterCommon)
     fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
     0.into()
 }
-
 
 unsafe extern "C" fn special_hi_finish_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()

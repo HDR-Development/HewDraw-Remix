@@ -3,9 +3,7 @@ use globals::*;
 
  
 
-
 // FIGHTER_STATUS_KIND_JUMP_AERIAL //
-
 
 unsafe extern "C" fn jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_JumpAerial();

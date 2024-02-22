@@ -1,6 +1,5 @@
 use super::*;
 
-
 pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -28,7 +27,6 @@ pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2
     );
     0.into()
 }
-
 
 pub unsafe extern "C" fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
@@ -84,7 +82,6 @@ unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> 
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("jack")

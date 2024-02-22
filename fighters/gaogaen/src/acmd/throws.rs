@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +37,6 @@ unsafe extern "C" fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
 }
-
 
 unsafe extern "C" fn gaogaen_throw_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -122,7 +120,6 @@ unsafe extern "C" fn gaogaen_throw_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -187,7 +184,6 @@ unsafe extern "C" fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -236,7 +232,6 @@ unsafe extern "C" fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn gaogaen_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -288,8 +283,6 @@ unsafe extern "C" fn gaogaen_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn gaogaen_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -339,7 +332,6 @@ unsafe extern "C" fn gaogaen_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -368,7 +360,6 @@ unsafe extern "C" fn gaogaen_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -394,7 +385,6 @@ unsafe extern "C" fn gaogaen_throw_lw_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
 }
-
 
 unsafe extern "C" fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -437,7 +427,6 @@ unsafe extern "C" fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FLIP_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -10, 21, 0, 90, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.5);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("gaogaen")

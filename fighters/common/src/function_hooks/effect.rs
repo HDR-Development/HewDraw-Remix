@@ -207,7 +207,6 @@ unsafe fn FOOT_EFFECT_FLIP_hook(lua_state: u64) {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
 
-
     l2c_agent.clear_lua_stack();
 
     for i in 0..18 {
@@ -273,7 +272,6 @@ unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
     for i in 0..18 {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
-
 
     l2c_agent.clear_lua_stack();
 

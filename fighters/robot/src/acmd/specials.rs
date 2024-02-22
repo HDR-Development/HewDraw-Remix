@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn robot_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -16,7 +15,6 @@ unsafe extern "C" fn robot_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +29,6 @@ unsafe extern "C" fn robot_special_air_lw_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 21.0/(37.0-10.0));
     }
 }
-
 
 unsafe extern "C" fn robot_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -59,7 +56,6 @@ unsafe extern "C" fn robot_special_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn robot_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -117,7 +113,6 @@ unsafe extern "C" fn robot_special_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn robot_special_s_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -144,7 +139,6 @@ unsafe extern "C" fn robot_special_s_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn robot_special_s_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -205,7 +199,6 @@ unsafe extern "C" fn robot_special_s_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn robot_special_s_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -232,7 +225,6 @@ unsafe extern "C" fn robot_special_s_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn robot_special_s_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -290,7 +282,6 @@ unsafe extern "C" fn robot_special_s_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -314,7 +305,6 @@ unsafe extern "C" fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -323,7 +313,6 @@ unsafe extern "C" fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
 
 unsafe extern "C" fn robot_special_hi_rise_game (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -380,7 +369,6 @@ unsafe extern "C" fn robot_special_hi_rise_game (fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn robot_special_hi_rise_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -427,7 +415,6 @@ unsafe extern "C" fn robot_special_hi_rise_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -437,7 +424,6 @@ unsafe extern "C" fn robot_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -446,7 +432,6 @@ unsafe extern "C" fn robot_special_air_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
     }
 }
-
 
 unsafe extern "C" fn robot_special_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -458,7 +443,6 @@ unsafe extern "C" fn robot_special_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -469,8 +453,6 @@ unsafe extern "C" fn robot_special_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn robot_special_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -479,7 +461,6 @@ unsafe extern "C" fn robot_special_hi_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold1"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn robot_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
 }
@@ -495,14 +476,11 @@ unsafe extern "C" fn robot_special_air_s_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_air_s_end_sound(fighter: &mut L2CAgentBase) {
 }
 
-
 unsafe extern "C" fn robot_special_s_start_sound(fighter: &mut L2CAgentBase) {
 }
-
 
 unsafe extern "C" fn robot_special_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -519,10 +497,8 @@ unsafe extern "C" fn robot_special_s_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn robot_special_s_end_sound(fighter: &mut L2CAgentBase) {
 }
-
 
 unsafe extern "C" fn robot_special_hi_rise_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -543,7 +519,6 @@ unsafe extern "C" fn robot_special_hi_rise_expression(fighter: &mut L2CAgentBase
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("robot")

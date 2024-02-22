@@ -61,7 +61,6 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
     1.into()
 }
 
-
 extern "C" fn jack_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_JACK {
@@ -73,7 +72,6 @@ extern "C" fn jack_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
     }
 }
-
 
 pub fn install() {
     dispatch::install();

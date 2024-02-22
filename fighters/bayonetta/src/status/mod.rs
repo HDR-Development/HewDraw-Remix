@@ -8,7 +8,6 @@ mod specialairs;
 mod specials;
 mod jumpaerial;
 
-
 pub fn install() {
     attack::install();
     batwithin::install();

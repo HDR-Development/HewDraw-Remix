@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn miifighter_attack_s3_hi_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -15,7 +14,6 @@ unsafe extern "C" fn miifighter_attack_s3_hi_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn miifighter_attack_s3_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -32,7 +30,6 @@ unsafe extern "C" fn miifighter_attack_s3_game(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn miifighter_attack_s3_lw_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -48,7 +45,6 @@ unsafe extern "C" fn miifighter_attack_s3_lw_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn miifighter_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,7 +72,6 @@ unsafe extern "C" fn miifighter_attack_hi3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -110,7 +105,6 @@ unsafe extern "C" fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -131,7 +125,6 @@ unsafe extern "C" fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("miifighter")

@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +37,6 @@ unsafe extern "C" fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn jack_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -78,7 +76,6 @@ unsafe extern "C" fn jack_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -117,7 +114,6 @@ unsafe extern "C" fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -146,7 +142,6 @@ unsafe extern "C" fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -182,7 +177,6 @@ unsafe extern "C" fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -208,7 +202,6 @@ unsafe extern "C" fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -229,7 +222,6 @@ unsafe extern "C" fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn jack_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -241,7 +233,6 @@ unsafe extern "C" fn jack_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn jack_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -255,7 +246,6 @@ unsafe extern "C" fn jack_attack_lw3_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_63_bullet"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn jack_attack_lw3_ex_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -312,7 +302,6 @@ unsafe extern "C" fn jack_attack_lw3_ex_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -332,7 +321,6 @@ unsafe extern "C" fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn jack_attack_lw3_ex_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -355,7 +343,6 @@ unsafe extern "C" fn jack_attack_lw3_ex_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -376,7 +363,6 @@ unsafe extern "C" fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("jack_doyle_magic_flash2"), Hash40::new("handl"), 2, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("jack")

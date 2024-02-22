@@ -2,10 +2,7 @@ use super::*;
 use globals::*;
 // status script import
 
-
-
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW //
-
 
 unsafe extern "C" fn special_s_throw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -51,7 +48,6 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
     let rot_start_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_start_interpolate_end_frame");
     let rot_end_interpolate_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_start_frame");
     let rot_end_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_end_frame");
-
 
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
@@ -153,7 +149,6 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
     }
     L2CValue::I32(0)
 }
-
 
 unsafe extern "C" fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);

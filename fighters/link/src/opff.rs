@@ -44,7 +44,6 @@ unsafe fn land_cancel_flags(boma: &mut BattleObjectModuleAccessor, fighter_kind:
     }
 }
 
-
 // Up special drift
 unsafe fn up_special_drift(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     let value_link = 0.55;
@@ -129,7 +128,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
     fastfall_specials(fighter);
 }
-
 
 pub extern "C" fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_HI
-
 
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter);
@@ -18,7 +16,6 @@ pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CV
 
 // FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_BOUND
 
-
 pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter);
 
@@ -27,7 +24,6 @@ pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) ->
     
     ret
 }
-
 
 pub fn install() {
     smashline::Agent::new("wolf")

@@ -2,7 +2,6 @@ use smash::app::sv_animcmd::QUAKE;
 
 use super::*;
 
-
 unsafe extern "C" fn mario_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -19,7 +18,6 @@ unsafe extern "C" fn mario_special_n_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 
 }
-
 
 unsafe extern "C" fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -58,7 +56,6 @@ unsafe extern "C" fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +64,6 @@ unsafe extern "C" fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_mario_special_n01"));
     }
 }
-
 
 unsafe extern "C" fn mario_special_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -80,7 +76,6 @@ unsafe extern "C" fn mario_special_n_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn mario_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -105,7 +100,6 @@ unsafe extern "C" fn mario_special_n_fire_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn mario_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -170,7 +164,6 @@ unsafe extern "C" fn mario_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mario_special_n_fire_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -181,7 +174,6 @@ unsafe extern "C" fn mario_special_n_fire_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("vc_mario_attack07"));
     }
 }
-
 
 unsafe extern "C" fn mario_special_n_fire_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -194,7 +186,6 @@ unsafe extern "C" fn mario_special_n_fire_expression(fighter: &mut L2CAgentBase)
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn mario_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -230,7 +221,6 @@ unsafe extern "C" fn mario_special_s_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
     }
 }
-
 
 unsafe extern "C" fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -269,7 +259,6 @@ unsafe extern "C" fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
     }
 }
-
 
 unsafe extern "C" fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -379,7 +368,6 @@ unsafe extern "C" fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn mario_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -409,7 +397,6 @@ unsafe extern "C" fn mario_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -434,7 +421,6 @@ unsafe extern "C" fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("mario_superjump_fnish"), -1);
     }
 }
-
 
 unsafe extern "C" fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -517,7 +503,6 @@ unsafe extern "C" fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -532,7 +517,6 @@ unsafe extern "C" fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

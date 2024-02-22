@@ -18,8 +18,6 @@ extern "Rust" {
     fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
-
-
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S) {
@@ -164,7 +162,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-
 extern "C" fn dolly_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -177,7 +174,6 @@ extern "C" fn dolly_init(fighter: &mut L2CFighterCommon) {
 
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-
 pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
@@ -186,7 +182,6 @@ pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND //
-
 
 pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -197,7 +192,6 @@ pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) 
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B //
 
-
 pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
@@ -206,7 +200,6 @@ pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND //
-
 
 pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -217,7 +210,6 @@ pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) 
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP
 
-
 pub unsafe extern "C" fn init_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.select_cliff_hangdata_from_name("special_hi");
     0.into()
@@ -225,12 +217,10 @@ pub unsafe extern "C" fn init_special_hi_jump(fighter: &mut L2CFighterCommon) ->
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL
 
-
 pub unsafe extern "C" fn init_special_hi_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.select_cliff_hangdata_from_name("special_hi");
     0.into()
 }
-
 
 pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
@@ -318,7 +308,6 @@ unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-
 pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     app::FighterSpecializer_Dolly::update_opponent_lr_1on1(
         fighter.module_accessor,
@@ -346,11 +335,9 @@ pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_DOLLY_STATUS_KIND_DASH_BACK //
 
-
 pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
-
 
 pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
@@ -358,7 +345,6 @@ pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 // FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL //
-
 
 pub unsafe extern "C" fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lua_state = fighter.lua_state_agent;
@@ -378,7 +364,6 @@ pub unsafe extern "C" fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2C
 
 // FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2 //
 
-
 pub unsafe extern "C" fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lua_state = fighter.lua_state_agent;
     let boma = app::sv_system::battle_object_module_accessor(lua_state);
@@ -396,7 +381,6 @@ pub unsafe extern "C" fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2
 }
 
 // FIGHTER_STATUS_KIND_WAIT //
-
 
 pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
@@ -451,7 +435,6 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 // FIGHTER_STATUS_KIND_LANDING //
-
 
 pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)

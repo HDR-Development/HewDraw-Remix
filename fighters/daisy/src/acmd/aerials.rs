@@ -36,7 +36,6 @@ unsafe extern "C" fn daisy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +78,6 @@ unsafe extern "C" fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,7 +110,6 @@ unsafe extern "C" fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -131,7 +128,6 @@ unsafe extern "C" fn daisy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("daisy_aire_back_atk_petals"), Hash40::new("top"), 0, 8, -10.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
-
 
 unsafe extern "C" fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -159,7 +155,6 @@ unsafe extern "C" fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 8.0);
@@ -168,7 +163,6 @@ unsafe extern "C" fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -184,7 +178,6 @@ unsafe extern "C" fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -198,7 +191,6 @@ unsafe extern "C" fn daisy_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
 
 unsafe extern "C" fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -240,7 +232,6 @@ unsafe extern "C" fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn daisy_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

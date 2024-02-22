@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn tantan_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -49,7 +47,6 @@ unsafe extern "C" fn tantan_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn tantan_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -80,7 +77,6 @@ unsafe extern "C" fn tantan_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -168,7 +164,6 @@ unsafe extern "C" fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -244,7 +239,6 @@ unsafe extern "C" fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn tantan_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -282,7 +276,6 @@ unsafe extern "C" fn tantan_attack_s4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn tantan_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -293,8 +286,6 @@ unsafe extern "C" fn tantan_attack_s4_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_76_dragonbeam2"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
 
 unsafe extern "C" fn tantan_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -345,9 +336,6 @@ unsafe extern "C" fn tantan_attack_s4_charge_expression(fighter: &mut L2CAgentBa
         ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold2"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("tantan")

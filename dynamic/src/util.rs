@@ -308,7 +308,6 @@ pub unsafe fn x_motion_vec(val: f32, stick_x: f32) -> smash::phx::Vector3f {
     smash::phx::Vector3f{x: val * stick_x.signum(), y: 0.0, z: 0.0}
 }
 
-
 extern "C"{
     /// gets whether we are in training mode
     #[link_name = "\u{1}_ZN3app9smashball16is_training_modeEv"]

@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn packun_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -44,7 +42,6 @@ unsafe extern "C" fn packun_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -83,7 +80,6 @@ unsafe extern "C" fn packun_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -97,7 +93,6 @@ unsafe extern "C" fn packun_attack_air_f_expression(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn packun_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -150,7 +145,6 @@ unsafe extern "C" fn packun_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn packun_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -212,7 +206,6 @@ unsafe extern "C" fn packun_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -236,7 +229,6 @@ unsafe extern "C" fn packun_attack_air_b_sound(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn packun_attack_air_b_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -271,7 +263,6 @@ unsafe extern "C" fn packun_attack_air_b_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_attack_air_b_s_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -292,7 +283,6 @@ unsafe extern "C" fn packun_attack_air_b_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_attack_air_b_s_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -301,7 +291,6 @@ unsafe extern "C" fn packun_attack_air_b_s_sound(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_packun_smash_s01"));
     }
 }
-
 
 unsafe extern "C" fn packun_attack_air_b_s_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -312,7 +301,6 @@ unsafe extern "C" fn packun_attack_air_b_s_expression(agent: &mut L2CAgentBase) 
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -358,7 +346,6 @@ unsafe extern "C" fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn packun_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -409,9 +396,6 @@ unsafe extern "C" fn packun_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("packun")

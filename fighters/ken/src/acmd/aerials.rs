@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ken_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +36,6 @@ unsafe extern "C" fn ken_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn ken_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,7 +73,6 @@ unsafe extern "C" fn ken_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +135,6 @@ unsafe extern "C" fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ken_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -154,7 +149,6 @@ unsafe extern "C" fn ken_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn ken_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -190,7 +184,6 @@ unsafe extern "C" fn ken_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -204,7 +197,6 @@ unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
         // EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 20, 8, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true, 0.5);
     }
 }
-
 
 unsafe extern "C" fn ken_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -241,9 +233,6 @@ unsafe extern "C" fn ken_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ken")

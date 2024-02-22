@@ -1,10 +1,8 @@
 use super::*;
 
-
 unsafe extern "C" fn rockman_attack_s3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_AttackS3()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

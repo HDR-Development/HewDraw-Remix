@@ -1,17 +1,14 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn special_lw_old_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START);
     return 1.into()
 }
 
-
 unsafe extern "C" fn special_lw_hit_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into()
 }
-
 
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
@@ -41,7 +38,6 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_AIR);

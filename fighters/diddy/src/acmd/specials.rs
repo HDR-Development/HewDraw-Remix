@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -12,7 +11,6 @@ unsafe extern "C" fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase)
         
     }
 }
-
 
 unsafe extern "C" fn game_specialsstickattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -31,7 +29,6 @@ unsafe extern "C" fn game_specialsstickattack(agent: &mut L2CAgentBase) {
         AttackModule::set_catch_only_all(boma, true, false);
     }
 }
-
 
 unsafe extern "C" fn game_specialsstickattack2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -54,7 +51,6 @@ unsafe extern "C" fn game_specialsstickattack2(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
-
 
 unsafe extern "C" fn game_specialsstick(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -84,14 +80,12 @@ unsafe extern "C" fn game_specialsstick(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn game_specialairsjump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.4);
 }
-
 
 unsafe extern "C" fn game_specialairskick(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -110,7 +104,6 @@ unsafe extern "C" fn game_specialairskick(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -125,13 +118,11 @@ unsafe extern "C" fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn diddy_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn diddy_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,13 +130,11 @@ unsafe extern "C" fn diddy_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn diddy_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -161,13 +150,11 @@ unsafe extern "C" fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn diddy_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn diddy_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -175,15 +162,11 @@ unsafe extern "C" fn diddy_special_air_n_cancel_sound(fighter: &mut L2CAgentBase
 
 }
 
-
 unsafe extern "C" fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("diddy")

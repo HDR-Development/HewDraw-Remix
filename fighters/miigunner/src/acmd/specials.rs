@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn miigunner_special_n1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -11,7 +10,6 @@ unsafe extern "C" fn miigunner_special_n1_start_game(fighter: &mut L2CAgentBase)
 	}
 
 }
-
 
 unsafe extern "C" fn miigunner_special_n1_fire_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -54,7 +52,6 @@ unsafe extern "C" fn miigunner_special_n1_fire_max_game(fighter: &mut L2CAgentBa
 		AttackModule::clear_all(boma);
 	} 
 }
-
 
 unsafe extern "C" fn miigunner_special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -108,7 +105,6 @@ unsafe extern "C" fn miigunner_special_n1_fire_max_effect(fighter: &mut L2CAgent
 
 }
 
-
 unsafe extern "C" fn miigunner_special_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -128,7 +124,6 @@ unsafe extern "C" fn miigunner_special_n1_fire_max_sound(fighter: &mut L2CAgentB
 	}
 
 }
-
 
 unsafe extern "C" fn miigunner_special_n2_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -151,7 +146,6 @@ unsafe extern "C" fn miigunner_special_n2_loop_game(fighter: &mut L2CAgentBase) 
 
 }
 
-
 unsafe extern "C" fn miigunner_special_n3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -165,7 +159,6 @@ unsafe extern "C" fn miigunner_special_n3_start_game(fighter: &mut L2CAgentBase)
 
 }
 
-
 unsafe extern "C" fn miigunner_special_n3_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -176,7 +169,6 @@ unsafe extern "C" fn miigunner_special_n3_start_effect(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn miigunner_special_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -186,7 +178,6 @@ unsafe extern "C" fn miigunner_special_n3_end_game(fighter: &mut L2CAgentBase) {
 		ArticleModule::generate_article_enable(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GRENADELAUNCHER, false, 0);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -200,7 +191,6 @@ unsafe extern "C" fn miigunner_special_s1_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_special_s3_super_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -209,7 +199,6 @@ unsafe extern "C" fn miigunner_special_s3_super_game(fighter: &mut L2CAgentBase)
 		WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_MIIMISSILE_FLAG_WEAPON);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -227,7 +216,6 @@ unsafe extern "C" fn miigunner_special_hi1_game(fighter: &mut L2CAgentBase) {
 		notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_special_hi1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -251,7 +239,6 @@ unsafe extern "C" fn miigunner_special_hi1_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_special_hi1_landing_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -260,7 +247,6 @@ unsafe extern "C" fn miigunner_special_hi1_landing_effect(fighter: &mut L2CAgent
 		EFFECT_OFF_KIND(fighter, Hash40::new("miigunner_bottom_shot"), false, false);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_special_hi2_squat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -279,7 +265,6 @@ unsafe extern "C" fn miigunner_special_hi2_squat_game(fighter: &mut L2CAgentBase
 		AttackModule::clear_all(boma);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_special_hi2_squat_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -301,7 +286,6 @@ unsafe extern "C" fn miigunner_special_hi2_squat_effect(fighter: &mut L2CAgentBa
 		}
     }
 }
-
 
 unsafe extern "C" fn miigunner_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -330,7 +314,6 @@ unsafe extern "C" fn miigunner_special_hi2_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
 unsafe extern "C" fn miigunner_special_hi3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -338,14 +321,12 @@ unsafe extern "C" fn miigunner_special_hi3_start_game(fighter: &mut L2CAgentBase
 	FT_MOTION_RATE(fighter, 1.5);
 }
 
-
 unsafe extern "C" fn miigunner_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	FT_MOTION_RATE(fighter, 0.85);
 }
-
 
 unsafe extern "C" fn miigunner_special_lw1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -362,14 +343,12 @@ unsafe extern "C" fn miigunner_special_lw1_start_game(fighter: &mut L2CAgentBase
 	}
 }
 
-
 unsafe extern "C" fn miigunner_special_lw3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	FT_MOTION_RATE_RANGE(fighter, 1.0, 7.0, 5.0);
 }
-
 
 unsafe extern "C" fn miigunner_special_lw3_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -387,7 +366,6 @@ unsafe extern "C" fn miigunner_special_lw3_hold_game(fighter: &mut L2CAgentBase)
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 366, 100, 25, 0, 22.0, 0.0, offset_y, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 10, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
 }
-
 
 unsafe extern "C" fn miigunner_special_lw3_hold_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -410,7 +388,6 @@ unsafe extern "C" fn miigunner_special_lw3_hold_effect(fighter: &mut L2CAgentBas
     wait(lua_state, 3.0);
 }
 
-
 unsafe extern "C" fn miigunner_special_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -426,7 +403,6 @@ unsafe extern "C" fn miigunner_special_lw3_end_game(fighter: &mut L2CAgentBase) 
 	}
 }
 
-
 unsafe extern "C" fn miigunner_special_lw3_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -435,7 +411,6 @@ unsafe extern "C" fn miigunner_special_lw3_end_effect(fighter: &mut L2CAgentBase
 		EFFECT(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
 	}
 }
-
 
 unsafe extern "C" fn miigunner_special_lw3_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

@@ -161,7 +161,6 @@ unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-
 pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         MeterModule::update(fighter.object(), false);
@@ -201,7 +200,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     jc_agility(boma);
     pichu_meter(fighter);
 }
-
 
 pub extern "C" fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

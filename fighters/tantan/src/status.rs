@@ -17,7 +17,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn tantan_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -26,8 +25,6 @@ extern "C" fn tantan_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
-
 
 // FIGHTER_STATUS_KIND_JUMP //
 
@@ -70,7 +67,6 @@ pub unsafe extern "C" fn pre_jump_squat(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     return smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_JUMP_SQUAT)(fighter);
 }
-
 
 unsafe extern "C" fn tantan_attack_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_s"), false, true);
@@ -138,7 +134,6 @@ unsafe extern "C" fn tantan_attack_s4_start_main(fighter: &mut L2CFighterCommon)
     return fighter.status_AttackS4Start();
 }
 
-
 unsafe extern "C" fn tantan_attack_s4_hold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     macros::PLAY_SE(fighter, Hash40::new("se_common_smash_start"));
     return fighter.status_pre_AttackS4Hold();
@@ -185,7 +180,6 @@ unsafe extern "C" fn tantan_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2
 unsafe extern "C" fn tantan_attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_end_AttackAir();
 }
-
 
 //Grab//
 
@@ -249,7 +243,6 @@ unsafe extern "C" fn tantan_special_n_exec(fighter: &mut L2CFighterCommon) -> L2
     return 0.into();
 }
 
-
 unsafe extern "C" fn tantan_landing_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_N
     {
@@ -261,7 +254,6 @@ unsafe extern "C" fn tantan_landing_air_main(fighter: &mut L2CFighterCommon) -> 
     }
 }
 
-
 unsafe extern "C" fn tantan_special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if (fighter.motion_frame() <= 30.0)
     && !fighter.is_button_on(Buttons::Special)
@@ -271,7 +263,6 @@ unsafe extern "C" fn tantan_special_hi_exec(fighter: &mut L2CFighterCommon) -> L
     }
     return smashline::original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter);
 }
-
 
 unsafe extern "C" fn tantan_special_hi_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_prev_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND){

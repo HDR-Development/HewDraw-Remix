@@ -2,8 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
 // Randomized Homing Attack Poses
 
 pub unsafe extern "C" fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {

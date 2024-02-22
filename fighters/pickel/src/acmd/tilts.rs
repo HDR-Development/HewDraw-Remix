@@ -102,7 +102,6 @@ unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -162,7 +161,6 @@ unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -216,7 +214,6 @@ unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn expression_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -259,7 +256,6 @@ unsafe extern "C" fn expression_attackhi3(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -308,7 +304,6 @@ unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -340,7 +335,6 @@ unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, false);
     }
 }
-
 
 unsafe extern "C" fn fire_game_attacklw3(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
@@ -384,7 +378,6 @@ unsafe extern "C" fn fire_game_attacklw3(weapon: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn fire_effect_attacklw3(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
@@ -410,7 +403,6 @@ unsafe extern "C" fn fire_effect_attacklw3(weapon: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(weapon, Hash40::new("pickel_fire"), -1);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("pickel_fire")

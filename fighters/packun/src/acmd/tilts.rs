@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn packun_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn packun_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_attack_s3_s_a_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -57,7 +54,6 @@ unsafe extern "C" fn packun_attack_s3_s_a_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("lipd3"), *HIT_STATUS_NORMAL);
     }
 }
-
 
 unsafe extern "C" fn packun_attack_s3_s_a_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -96,7 +92,6 @@ unsafe extern "C" fn packun_attack_s3_s_a_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_attack_s3_s_a_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -110,7 +105,6 @@ unsafe extern "C" fn packun_attack_s3_s_a_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_attack_s3_s_a_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -123,7 +117,6 @@ unsafe extern "C" fn packun_attack_s3_s_a_expression(fighter: &mut L2CAgentBase)
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
     }
 }
-
 
 unsafe extern "C" fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -188,7 +181,6 @@ unsafe extern "C" fn packun_attack_s3_s2_game(agent: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_attack_s3_s2_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -222,7 +214,6 @@ unsafe extern "C" fn packun_attack_s3_s2_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn packun_attack_s3_s2_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -238,7 +229,6 @@ unsafe extern "C" fn packun_attack_s3_s2_sound(agent: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn packun_attack_s3_s2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -257,7 +247,6 @@ unsafe extern "C" fn packun_attack_s3_s2_expression(fighter: &mut L2CAgentBase) 
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn packun_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -291,7 +280,6 @@ unsafe extern "C" fn packun_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -308,7 +296,6 @@ unsafe extern "C" fn packun_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm_l"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn packun_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -334,7 +321,6 @@ unsafe extern "C" fn packun_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn packun_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -354,7 +340,6 @@ unsafe extern "C" fn packun_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn packun_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -379,10 +364,6 @@ unsafe extern "C" fn packun_attack_lw3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 14);
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("packun")

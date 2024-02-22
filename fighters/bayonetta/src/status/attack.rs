@@ -3,9 +3,7 @@ use globals::*;
 
  
 
-
 // FIGHTER_STATUS_KIND_ATTACK //
-
 
 unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();

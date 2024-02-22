@@ -1,7 +1,5 @@
 use super::*;
 
-
-
 unsafe extern "C" fn pikmin_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -27,7 +25,6 @@ unsafe extern "C" fn pikmin_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,7 +39,6 @@ unsafe extern "C" fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 1.5);
     }
 }
-
 
 unsafe extern "C" fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -60,9 +56,6 @@ unsafe extern "C" fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pikmin")

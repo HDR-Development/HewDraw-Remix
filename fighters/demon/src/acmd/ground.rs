@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +49,6 @@ unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -115,7 +113,6 @@ unsafe extern "C" fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -164,7 +161,6 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase)
         }
     }
 }
-
 
 unsafe extern "C" fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -223,7 +219,6 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -260,7 +255,6 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -292,7 +286,6 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase)
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -342,7 +335,6 @@ unsafe extern "C" fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -370,7 +362,6 @@ unsafe extern "C" fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
         FT_DESIRED_RATE(fighter, 42.0-20.0, 15.0);
     }
 }
-
 
 unsafe extern "C" fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -414,7 +405,6 @@ unsafe extern "C" fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 
 }
-
 
 unsafe extern "C" fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -468,7 +458,6 @@ unsafe extern "C" fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -524,7 +513,6 @@ unsafe extern "C" fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -554,7 +542,6 @@ unsafe extern "C" fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_INPUT);
     }
 }
-
 
 unsafe extern "C" fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -589,7 +576,6 @@ unsafe extern "C" fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase)
     FT_MOTION_RATE(fighter, 1.0);
 
 }
-
 
 unsafe extern "C" fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -642,7 +628,6 @@ unsafe extern "C" fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("demon")

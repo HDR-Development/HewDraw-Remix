@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ike_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -90,7 +88,6 @@ unsafe extern "C" fn ike_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ike_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -167,7 +164,6 @@ unsafe extern "C" fn ike_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ike_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -207,7 +203,6 @@ unsafe extern "C" fn ike_attack_lw4_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
     }
 }
-
 
 unsafe extern "C" fn ike_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -265,9 +260,6 @@ unsafe extern "C" fn ike_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword2"), false, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ike")

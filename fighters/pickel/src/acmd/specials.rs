@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -11,7 +10,6 @@ unsafe extern "C" fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_result_coin_silver"));
     }
 }
-
 
 unsafe extern "C" fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
@@ -35,9 +33,6 @@ unsafe extern "C" fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgen
         WorkModule::off_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_NO_ATTACK_HIT_MOTION);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pickel")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn attack_s4_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -23,7 +22,6 @@ unsafe extern "C" fn attack_s4_hi(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn attack_s4_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -51,7 +49,6 @@ unsafe extern "C" fn attack_s4_s(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn attack_s4_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -73,7 +70,6 @@ unsafe extern "C" fn attack_s4_lw(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -112,7 +108,6 @@ unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub unsafe extern "C" fn attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -134,7 +129,6 @@ pub unsafe extern "C" fn attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub unsafe extern "C" fn attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -149,7 +143,6 @@ pub unsafe extern "C" fn attack_hi4_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_samus_smash_h02"));
     }
 }
-
 
 unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -178,9 +171,6 @@ unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("samus")

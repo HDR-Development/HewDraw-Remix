@@ -18,7 +18,6 @@ use globals::*;
 }
 */
 
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -55,8 +54,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //egg_roll_jc_waveland(boma, status_kind, situation_kind, cat[0], stick_x, facing);
     fastfall_specials(fighter);
 }
-
-
 
 pub extern "C" fn yoshi_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

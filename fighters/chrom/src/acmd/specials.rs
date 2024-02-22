@@ -30,7 +30,6 @@ unsafe extern "C" fn chrom_special_n_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -88,7 +87,6 @@ unsafe extern "C" fn chrom_special_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -117,7 +115,6 @@ unsafe extern "C" fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -145,7 +142,6 @@ unsafe extern "C" fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -172,7 +168,6 @@ unsafe extern "C" fn chrom_special_air_n_end_expression(fighter: &mut L2CAgentBa
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
-
 
 unsafe extern "C" fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -202,7 +197,6 @@ unsafe extern "C" fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -230,7 +224,6 @@ unsafe extern "C" fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -260,7 +253,6 @@ unsafe extern "C" fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -289,7 +281,6 @@ unsafe extern "C" fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -315,7 +306,6 @@ unsafe extern "C" fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -340,7 +330,6 @@ unsafe extern "C" fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -370,7 +359,6 @@ unsafe extern "C" fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -398,7 +386,6 @@ unsafe extern "C" fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -428,7 +415,6 @@ unsafe extern "C" fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -457,7 +443,6 @@ unsafe extern "C" fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) 
 
 }
 
-
 unsafe extern "C" fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -483,7 +468,6 @@ unsafe extern "C" fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -508,7 +492,6 @@ unsafe extern "C" fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -538,7 +521,6 @@ unsafe extern "C" fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -566,7 +548,6 @@ unsafe extern "C" fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -596,7 +577,6 @@ unsafe extern "C" fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -624,7 +604,6 @@ unsafe extern "C" fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -654,7 +633,6 @@ unsafe extern "C" fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -682,7 +660,6 @@ unsafe extern "C" fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -736,7 +713,6 @@ unsafe extern "C" fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -789,7 +765,6 @@ unsafe extern "C" fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) 
 
 }
 
-
 unsafe extern "C" fn game_specialhi2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -836,7 +811,6 @@ unsafe extern "C" fn game_specialhi2(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
-
 
 unsafe extern "C" fn game_specialairhi2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -885,7 +859,6 @@ unsafe extern "C" fn game_specialairhi2(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -909,9 +882,6 @@ unsafe extern "C" fn game_specialhi3(fighter: &mut L2CAgentBase) {
         ADD_SPEED_NO_LIMIT(fighter, 0, -1.5);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("chrom")

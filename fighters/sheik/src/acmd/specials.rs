@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -13,7 +11,6 @@ unsafe extern "C" fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -23,7 +20,6 @@ unsafe extern "C" fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn sheik_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -39,7 +35,6 @@ unsafe extern "C" fn sheik_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn sheik_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -54,7 +49,6 @@ unsafe extern "C" fn sheik_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn sheik_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -77,7 +71,6 @@ unsafe extern "C" fn sheik_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -99,7 +92,6 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sheik_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -120,7 +112,6 @@ unsafe extern "C" fn sheik_special_air_hi_start_effect(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn fusin_game_explosion(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -136,7 +127,6 @@ unsafe extern "C" fn fusin_game_explosion(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }
 }
-
 
 unsafe extern "C" fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -159,9 +149,6 @@ unsafe extern "C" fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("sheik_fusin")

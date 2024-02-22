@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,7 +115,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn inkling_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +142,6 @@ unsafe extern "C" fn inkling_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -158,7 +151,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
-
 
 unsafe extern "C" fn inkling_inkbullet_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -177,7 +169,6 @@ unsafe extern "C" fn inkling_inkbullet_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn inkling_roller_special_s_walk_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -188,7 +179,6 @@ unsafe extern "C" fn inkling_roller_special_s_walk_game(fighter: &mut L2CAgentBa
         AttackModule::set_ink_value(boma, 1, 60.0);
     }
 }
-
 
 unsafe extern "C" fn inkling_roller_special_air_s_walk_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -201,7 +191,6 @@ unsafe extern "C" fn inkling_roller_special_air_s_walk_game(fighter: &mut L2CAge
     }
 }
 
-
 unsafe extern "C" fn inkling_roller_special_s_walk_no_ink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -210,7 +199,6 @@ unsafe extern "C" fn inkling_roller_special_s_walk_no_ink_game(fighter: &mut L2C
         ATTACK(fighter, 1, 0, Hash40::new("neck"), 2.0, 50, 50, 0, 50, 3.8, 0.5, 3.8, 0.0, Some(0.5), Some(3.8), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 40, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn inkling_roller_special_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -231,7 +219,6 @@ unsafe extern "C" fn inkling_roller_special_s_dash_game(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn inkling_roller_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -244,7 +231,6 @@ unsafe extern "C" fn inkling_roller_special_air_s_dash_game(fighter: &mut L2CAge
     }
 }
 
-
 unsafe extern "C" fn inkling_roller_special_s_dash_no_ink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -254,7 +240,6 @@ unsafe extern "C" fn inkling_roller_special_s_dash_no_ink_game(fighter: &mut L2C
         ATTACK(fighter, 1, 0, Hash40::new("neck"), 5.0, 50, 80, 0, 60, 3.0, 0.5, 3.8, 5.0, Some(0.5), Some(3.8), Some(-5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 40, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn inkling_roller_special_s_run_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -274,7 +259,6 @@ unsafe extern "C" fn inkling_roller_special_s_run_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn inkling_roller_special_air_s_run_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -286,7 +270,6 @@ unsafe extern "C" fn inkling_roller_special_air_s_run_game(fighter: &mut L2CAgen
     }
 }
 
-
 unsafe extern "C" fn inkling_roller_special_s_run_no_ink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -295,7 +278,6 @@ unsafe extern "C" fn inkling_roller_special_s_run_no_ink_game(fighter: &mut L2CA
         ATTACK(fighter, 1, 0, Hash40::new("neck"), 8.0, 50, 80, 0, 60, 3.6, 0.5, 3.8, 5.0, Some(0.5), Some(3.8), Some(-5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 40, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn inkling_splash_normal_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -322,7 +304,6 @@ unsafe extern "C" fn inkling_splash_normal_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn inkling_splashbomb_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -344,7 +325,6 @@ unsafe extern "C" fn inkling_splashbomb_explode_game(fighter: &mut L2CAgentBase)
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -399,7 +379,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -451,9 +430,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("inkling_splash")

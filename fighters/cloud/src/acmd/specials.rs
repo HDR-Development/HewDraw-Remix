@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,7 +40,6 @@ unsafe extern "C" fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,7 +108,6 @@ unsafe extern "C" fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -150,7 +145,6 @@ unsafe extern "C" fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -178,7 +172,6 @@ unsafe extern "C" fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -208,7 +201,6 @@ unsafe extern "C" fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -234,7 +226,6 @@ unsafe extern "C" fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -259,7 +250,6 @@ unsafe extern "C" fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -323,7 +313,6 @@ unsafe extern "C" fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -381,7 +370,6 @@ unsafe extern "C" fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -452,7 +440,6 @@ unsafe extern "C" fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
@@ -493,7 +480,6 @@ unsafe extern "C" fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -519,7 +505,6 @@ unsafe extern "C" fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -597,7 +582,6 @@ unsafe extern "C" fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -674,7 +658,6 @@ unsafe extern "C" fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -730,7 +713,6 @@ unsafe extern "C" fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn cloud_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -785,9 +767,6 @@ unsafe extern "C" fn cloud_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("cloud")

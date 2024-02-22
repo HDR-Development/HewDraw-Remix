@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -23,7 +21,6 @@ unsafe extern "C" fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
 unsafe extern "C" fn murabito_bowlingball__game_fall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +33,6 @@ unsafe extern "C" fn murabito_bowlingball__game_fall(fighter: &mut L2CAgentBase)
         ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 45, 95, 0, 70, 3.7, 0.0, 0.0, 0.0, None, None, None, 1.15, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 11, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -65,8 +61,6 @@ unsafe extern "C" fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -92,7 +86,6 @@ unsafe extern "C" fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
     }
 }
-
 
 unsafe extern "C" fn murabito_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -188,7 +181,6 @@ unsafe extern "C" fn murabito_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -271,7 +263,6 @@ unsafe extern "C" fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn murabito_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -299,9 +290,6 @@ unsafe extern "C" fn murabito_attack_lw4_sound(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("murabito_bowlingball")

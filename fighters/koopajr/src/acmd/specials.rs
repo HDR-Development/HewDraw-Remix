@@ -28,7 +28,6 @@ unsafe fn koopajr_remainclown_special_air_hi_clownfall_game(weapon: &mut L2CAgen
 
 // ATTACK(weapon,0, 0, Hash40::new("top"), 13.0, 55, 70, 0, 85, 14.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB)
 
-
 unsafe extern "C" fn koopajr_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,7 +41,6 @@ unsafe extern "C" fn koopajr_special_n_shoot_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -65,7 +63,6 @@ unsafe extern "C" fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -78,7 +75,6 @@ unsafe extern "C" fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopajr_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -88,7 +84,6 @@ unsafe extern "C" fn koopajr_special_s_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("clownhip"), 4.0, 80, 95, 0, 60, 1.5, 0.0, 3.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn koopajr_special_s_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -112,7 +107,6 @@ unsafe extern "C" fn koopajr_special_s_spin_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn koopajr_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -123,7 +117,6 @@ unsafe extern "C" fn koopajr_special_air_s_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("clownhip"), 2.0, 55, 100, 0, 65, 1.5, 0.0, 3.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
-
 
 unsafe extern "C" fn koopajr_special_air_s_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -151,7 +144,6 @@ unsafe extern "C" fn koopajr_special_air_s_spin_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
@@ -172,7 +164,6 @@ unsafe extern "C" fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -189,7 +180,6 @@ unsafe extern "C" fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -198,9 +188,6 @@ unsafe extern "C" fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("koopajr_cannonball")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn zelda_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +27,6 @@ unsafe extern "C" fn zelda_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,7 +40,6 @@ unsafe extern "C" fn zelda_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn zelda_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -70,7 +67,6 @@ unsafe extern "C" fn zelda_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -84,7 +80,6 @@ unsafe extern "C" fn zelda_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn zelda_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -110,7 +105,6 @@ unsafe extern "C" fn zelda_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -135,7 +129,6 @@ unsafe extern "C" fn zelda_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -159,8 +152,6 @@ unsafe extern "C" fn zelda_attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
-
-
 
 unsafe extern "C" fn zelda_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -188,7 +179,6 @@ unsafe extern "C" fn zelda_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -202,7 +192,6 @@ unsafe extern "C" fn zelda_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn zelda_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -224,7 +213,6 @@ unsafe extern "C" fn zelda_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -242,7 +230,6 @@ unsafe extern "C" fn zelda_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -252,7 +239,6 @@ unsafe extern "C" fn zelda_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_hi_flash"), Hash40::new("armr"), 4.5, 0, 0, 0, 0, 0, 1, true);
     }
 }
-
 
 unsafe extern "C" fn zelda_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -271,7 +257,6 @@ unsafe extern "C" fn zelda_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn zelda_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -293,9 +278,6 @@ unsafe extern "C" fn zelda_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("zelda")

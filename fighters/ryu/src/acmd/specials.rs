@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -55,7 +53,6 @@ unsafe extern "C" fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -110,7 +107,6 @@ unsafe extern "C" fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -145,7 +141,6 @@ unsafe extern "C" fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -232,7 +227,6 @@ unsafe extern "C" fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -292,7 +286,6 @@ unsafe extern "C" fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -315,7 +308,6 @@ unsafe extern "C" fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -344,7 +336,6 @@ unsafe extern "C" fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -378,7 +369,6 @@ unsafe extern "C" fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -455,7 +445,6 @@ unsafe extern "C" fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -478,7 +467,6 @@ unsafe extern "C" fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -500,7 +488,6 @@ unsafe extern "C" fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -553,7 +540,6 @@ unsafe extern "C" fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -647,7 +633,6 @@ unsafe extern "C" fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
 
 unsafe extern "C" fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -793,7 +778,6 @@ unsafe extern "C" fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -886,7 +870,6 @@ unsafe extern "C" fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
 
 unsafe extern "C" fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1028,7 +1011,6 @@ unsafe extern "C" fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1129,7 +1111,6 @@ unsafe extern "C" fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
 
 unsafe extern "C" fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1293,7 +1274,6 @@ unsafe extern "C" fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1394,7 +1374,6 @@ unsafe extern "C" fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase)
         MeterModule::watch_damage(fighter.battle_object, false);
     }
 }
-
 
 unsafe extern "C" fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1556,8 +1535,6 @@ unsafe extern "C" fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBas
     }
 
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("ryu")

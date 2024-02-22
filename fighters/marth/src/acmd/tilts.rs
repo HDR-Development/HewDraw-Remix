@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +19,6 @@ unsafe extern "C" fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -54,9 +51,6 @@ unsafe extern "C" fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
-
 unsafe extern "C" fn marth_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -73,7 +67,6 @@ unsafe extern "C" fn marth_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
-
 
 unsafe extern "C" fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -92,8 +85,6 @@ unsafe extern "C" fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("marth")

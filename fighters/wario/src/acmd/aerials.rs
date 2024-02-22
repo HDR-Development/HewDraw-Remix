@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn wario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -43,7 +42,6 @@ unsafe extern "C" fn wario_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn wario_landing_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -64,7 +62,6 @@ unsafe extern "C" fn wario_landing_air_n_expression(fighter: &mut L2CAgentBase) 
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -93,7 +90,6 @@ unsafe extern "C" fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn wario_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -114,7 +110,6 @@ unsafe extern "C" fn wario_landing_air_f_expression(fighter: &mut L2CAgentBase) 
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -154,7 +149,6 @@ unsafe extern "C" fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn wario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -170,7 +164,6 @@ unsafe extern "C" fn wario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc"),false,false);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -190,7 +183,6 @@ unsafe extern "C" fn wario_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -204,7 +196,6 @@ unsafe extern "C" fn wario_attack_air_b_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -236,7 +227,6 @@ unsafe extern "C" fn wario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -252,7 +242,6 @@ unsafe extern "C" fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attacks"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn wario_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -274,7 +263,6 @@ unsafe extern "C" fn wario_landing_air_hi_expression(fighter: &mut L2CAgentBase)
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -322,7 +310,6 @@ unsafe extern "C" fn wario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -337,7 +324,6 @@ unsafe extern "C" fn wario_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_machstamp"),false,true);
     }
 }
-
 
 unsafe extern "C" fn wario_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -357,7 +343,6 @@ unsafe extern "C" fn wario_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -375,7 +360,6 @@ unsafe extern "C" fn wario_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn wario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -389,7 +373,6 @@ unsafe extern "C" fn wario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -398,7 +381,6 @@ unsafe extern "C" fn wario_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_wario_landing03"));
     }
 }
-
 
 unsafe extern "C" fn wario_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -414,7 +396,6 @@ unsafe extern "C" fn wario_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     }
 }
-
 
 unsafe extern "C" fn wario_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -474,7 +455,6 @@ unsafe extern "C" fn wario_attack_air_lw2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -485,7 +465,6 @@ unsafe extern "C" fn wario_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wario_attack_air_lw2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -494,7 +473,6 @@ unsafe extern "C" fn wario_attack_air_lw2_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_wario_jump02"));
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("wario")

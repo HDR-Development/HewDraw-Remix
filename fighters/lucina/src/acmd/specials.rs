@@ -1,7 +1,5 @@
 use super::*;
 
-
-
 unsafe extern "C" fn lucina_special_n_end_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +34,6 @@ unsafe extern "C" fn lucina_special_n_end_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn lucina_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -68,7 +65,6 @@ unsafe extern "C" fn lucina_special_n_end_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn lucina_special_n_end_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -104,7 +100,6 @@ unsafe extern "C" fn lucina_special_n_end_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn lucina_special_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -139,7 +134,6 @@ unsafe extern "C" fn lucina_special_n_end_max_hi_game(fighter: &mut L2CAgentBase
     
 }
 
-
 unsafe extern "C" fn lucina_special_n_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -171,7 +165,6 @@ unsafe extern "C" fn lucina_special_n_end_max_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn lucina_special_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -207,7 +200,6 @@ unsafe extern "C" fn lucina_special_n_end_max_lw_game(fighter: &mut L2CAgentBase
     
 }
 
-
 unsafe extern "C" fn lucina_special_air_n_end_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -242,7 +234,6 @@ unsafe extern "C" fn lucina_special_air_n_end_hi_game(fighter: &mut L2CAgentBase
     
 }
 
-
 unsafe extern "C" fn lucina_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -274,7 +265,6 @@ unsafe extern "C" fn lucina_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn lucina_special_air_n_end_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -310,7 +300,6 @@ unsafe extern "C" fn lucina_special_air_n_end_lw_game(fighter: &mut L2CAgentBase
     
 }
 
-
 unsafe extern "C" fn lucina_special_air_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -345,7 +334,6 @@ unsafe extern "C" fn lucina_special_air_n_end_max_hi_game(fighter: &mut L2CAgent
     
 }
 
-
 unsafe extern "C" fn lucina_special_air_n_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -377,7 +365,6 @@ unsafe extern "C" fn lucina_special_air_n_end_max_game(fighter: &mut L2CAgentBas
     }
     
 }
-
 
 unsafe extern "C" fn lucina_special_air_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -413,7 +400,6 @@ unsafe extern "C" fn lucina_special_air_n_end_max_lw_game(fighter: &mut L2CAgent
     
 }
 
-
 unsafe extern "C" fn lucina_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -441,8 +427,6 @@ unsafe extern "C" fn lucina_special_s1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
 
 unsafe extern "C" fn lucina_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -472,8 +456,6 @@ unsafe extern "C" fn lucina_special_s1_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -501,8 +483,6 @@ unsafe extern "C" fn lucina_special_air_s1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -532,7 +512,6 @@ unsafe extern "C" fn lucina_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn lucina_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -561,8 +540,6 @@ unsafe extern "C" fn lucina_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -588,8 +565,6 @@ unsafe extern "C" fn lucina_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_s2_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -598,8 +573,6 @@ unsafe extern "C" fn lucina_special_s2_hi_sound(fighter: &mut L2CAgentBase) {
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s02h"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -629,8 +602,6 @@ unsafe extern "C" fn lucina_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -656,8 +627,6 @@ unsafe extern "C" fn lucina_special_air_s2_hi_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s2_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -666,8 +635,6 @@ unsafe extern "C" fn lucina_special_air_s2_hi_sound(fighter: &mut L2CAgentBase) 
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s02h"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -697,8 +664,6 @@ unsafe extern "C" fn lucina_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -727,8 +692,6 @@ unsafe extern "C" fn lucina_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_s2_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -737,8 +700,6 @@ unsafe extern "C" fn lucina_special_s2_lw_sound(fighter: &mut L2CAgentBase) {
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s02l"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -768,8 +729,6 @@ unsafe extern "C" fn lucina_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -798,8 +757,6 @@ unsafe extern "C" fn lucina_special_air_s2_lw_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s2_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -808,8 +765,6 @@ unsafe extern "C" fn lucina_special_air_s2_lw_sound(fighter: &mut L2CAgentBase) 
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s02l"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -835,8 +790,6 @@ unsafe extern "C" fn lucina_special_s3_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -866,8 +819,6 @@ unsafe extern "C" fn lucina_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_s3_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -880,8 +831,6 @@ unsafe extern "C" fn lucina_special_s3_hi_sound(fighter: &mut L2CAgentBase) {
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s03h"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -907,8 +856,6 @@ unsafe extern "C" fn lucina_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -938,8 +885,6 @@ unsafe extern "C" fn lucina_special_air_s3_hi_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s3_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -952,8 +897,6 @@ unsafe extern "C" fn lucina_special_air_s3_hi_sound(fighter: &mut L2CAgentBase) 
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s03h"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -980,8 +923,6 @@ unsafe extern "C" fn lucina_special_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1007,8 +948,6 @@ unsafe extern "C" fn lucina_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_s3_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1021,8 +960,6 @@ unsafe extern "C" fn lucina_special_s3_s_sound(fighter: &mut L2CAgentBase) {
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s03s"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1049,8 +986,6 @@ unsafe extern "C" fn lucina_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1076,8 +1011,6 @@ unsafe extern "C" fn lucina_special_air_s3_s_effect(fighter: &mut L2CAgentBase) 
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s3_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1090,8 +1023,6 @@ unsafe extern "C" fn lucina_special_air_s3_s_sound(fighter: &mut L2CAgentBase) {
     PLAY_SE(fighter, Hash40::new("se_lucina_special_s03s"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1116,8 +1047,6 @@ unsafe extern "C" fn lucina_special_s3_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1147,8 +1076,6 @@ unsafe extern "C" fn lucina_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_s3_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1161,8 +1088,6 @@ unsafe extern "C" fn lucina_special_s3_lw_sound(fighter: &mut L2CAgentBase) {
     PLAY_SE(fighter, Hash40::new("vc_lucina_attack02"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1187,8 +1112,6 @@ unsafe extern "C" fn lucina_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1218,8 +1141,6 @@ unsafe extern "C" fn lucina_special_air_s3_lw_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s3_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1232,8 +1153,6 @@ unsafe extern "C" fn lucina_special_air_s3_lw_sound(fighter: &mut L2CAgentBase) 
     PLAY_SE(fighter, Hash40::new("vc_lucina_attack02"));
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1252,7 +1171,6 @@ unsafe extern "C" fn lucina_special_s4_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1282,8 +1200,6 @@ unsafe extern "C" fn lucina_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1301,7 +1217,6 @@ unsafe extern "C" fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1331,8 +1246,6 @@ unsafe extern "C" fn lucina_special_air_s4_hi_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1348,8 +1261,6 @@ unsafe extern "C" fn lucina_special_s4_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1379,8 +1290,6 @@ unsafe extern "C" fn lucina_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1396,8 +1305,6 @@ unsafe extern "C" fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1426,8 +1333,6 @@ unsafe extern "C" fn lucina_special_air_s4_s_effect(fighter: &mut L2CAgentBase) 
     }
     
 }
-
-
 
 unsafe extern "C" fn lucina_special_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1458,8 +1363,6 @@ unsafe extern "C" fn lucina_special_s4_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1514,8 +1417,6 @@ unsafe extern "C" fn lucina_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1545,8 +1446,6 @@ unsafe extern "C" fn lucina_special_air_s4_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
 
 unsafe extern "C" fn lucina_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1601,7 +1500,6 @@ unsafe extern "C" fn lucina_special_air_s4_lw_effect(fighter: &mut L2CAgentBase)
     
 }
 
-
 unsafe extern "C" fn lucina_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1639,7 +1537,6 @@ unsafe extern "C" fn lucina_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn lucina_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1676,7 +1573,6 @@ unsafe extern "C" fn lucina_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1701,8 +1597,6 @@ unsafe extern "C" fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1725,7 +1619,6 @@ unsafe extern "C" fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK)
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("lucina")

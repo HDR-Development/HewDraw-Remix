@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn game_spsremved(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,8 +27,6 @@ unsafe extern "C" fn game_spsremved(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -42,8 +39,6 @@ unsafe extern "C" fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 1.0);
     }
 }
-
-
 
 unsafe extern "C" fn game_spsthrown(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -67,7 +62,6 @@ unsafe extern "C" fn game_spsthrown(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_spsthrown_b(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -90,7 +84,6 @@ unsafe extern "C" fn game_spsthrown_b(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_spsthrown_v(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -110,7 +103,6 @@ unsafe extern "C" fn game_spsthrown_v(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn game_spsthrown_w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -134,7 +126,6 @@ unsafe extern "C" fn game_spsthrown_w(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_spsthrown_y(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -156,10 +147,6 @@ unsafe extern "C" fn game_spsthrown_y(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("pikmin_pikmin")

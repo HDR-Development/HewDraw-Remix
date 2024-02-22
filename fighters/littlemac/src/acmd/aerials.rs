@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn littlemac_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +35,6 @@ unsafe extern "C" fn littlemac_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn littlemac_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -61,7 +59,6 @@ unsafe extern "C" fn littlemac_attack_air_n_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 6.5, 3, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, false, 0.4);
     }
 }
-
 
 unsafe extern "C" fn littlemac_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -90,7 +87,6 @@ unsafe extern "C" fn littlemac_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn littlemac_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -103,7 +99,6 @@ unsafe extern "C" fn littlemac_attack_air_f_expression(fighter: &mut L2CAgentBas
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn littlemac_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,7 +131,6 @@ unsafe extern "C" fn littlemac_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn littlemac_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -172,7 +166,6 @@ unsafe extern "C" fn littlemac_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn littlemac_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -195,7 +188,6 @@ unsafe extern "C" fn littlemac_attack_air_hi_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn littlemac_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -208,7 +200,6 @@ unsafe extern "C" fn littlemac_attack_air_hi_expression(fighter: &mut L2CAgentBa
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn littlemac_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -248,7 +239,6 @@ unsafe extern "C" fn littlemac_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn littlemac_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -277,7 +267,6 @@ unsafe extern "C" fn littlemac_attack_air_lw_effect(fighter: &mut L2CAgentBase) 
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -4, -2, 0, 0, 0, 0, 0.9, true);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("littlemac")

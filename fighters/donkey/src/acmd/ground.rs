@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +24,6 @@ unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn attack_12_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,7 +44,6 @@ unsafe extern "C" fn attack_12_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -66,7 +62,6 @@ unsafe extern "C" fn dash(fighter: &mut L2CAgentBase) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
 }
-
 
 unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -116,7 +111,6 @@ unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn attack_dash_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -125,7 +119,6 @@ unsafe extern "C" fn attack_dash_eff(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 
 unsafe extern "C" fn attack_dash_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,7 +129,6 @@ unsafe extern "C" fn attack_dash_snd(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_donkey_attackdash"));
     }
 }
-
 
 unsafe extern "C" fn attack_dash_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -173,9 +165,6 @@ unsafe extern "C" fn attack_dash_exp(fighter: &mut L2CAgentBase) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 8);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("donkey")

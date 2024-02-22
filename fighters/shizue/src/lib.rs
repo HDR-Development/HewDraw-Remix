@@ -38,14 +38,12 @@ use utils::{
 };
 use smashline::*;
 
-
 extern "C" fn shizue_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         VarModule::off_flag(fighter.object(), vars::shizue::instance::LLOID_ASYNC);
         VarModule::set_int(fighter.object(), vars::shizue::instance::LLOID_TIMER, 0);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("shizue")

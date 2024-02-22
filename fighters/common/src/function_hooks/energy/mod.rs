@@ -3,7 +3,6 @@ mod control;
 mod motion;
 mod stop;
 
-
 #[repr(C)]
 pub struct KineticEnergyVTable {
     pub destructor: extern "C" fn(&mut KineticEnergy),
@@ -71,7 +70,6 @@ pub struct KineticEnergy {
     pub _x83: u8,
     pub energy_reset_type: u32,
 }
-
 
 #[repr(simd)]
 pub struct Vec2 {

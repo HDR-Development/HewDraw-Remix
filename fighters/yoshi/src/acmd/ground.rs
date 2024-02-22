@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn yoshi_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,8 +30,6 @@ unsafe extern "C" fn yoshi_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn yoshi_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -49,8 +45,6 @@ unsafe extern "C" fn yoshi_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -60,7 +54,6 @@ unsafe extern "C" fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1, 9, 3, -9.678, -9.226, 18.31, 0.9, true, *EF_FLIP_YZ, 1);
     }
 }
-
 
 unsafe extern "C" fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,8 +74,6 @@ unsafe extern "C" fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
-
-
 
 unsafe extern "C" fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -107,9 +98,6 @@ unsafe extern "C" fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("yoshi")

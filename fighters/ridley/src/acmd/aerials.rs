@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ridley_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -37,7 +35,6 @@ unsafe extern "C" fn ridley_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ridley_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,7 +44,6 @@ unsafe extern "C" fn ridley_attack_air_n_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.4);
     }
 }
-
 
 unsafe extern "C" fn ridley_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +105,6 @@ unsafe extern "C" fn ridley_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ridley_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -145,7 +140,6 @@ unsafe extern "C" fn ridley_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ridley_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -154,7 +148,6 @@ unsafe extern "C" fn ridley_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ridley_air_b"), Hash40::new("ridley_air_b"), Hash40::new("top"), 0, 8, -6, -183, 35, 18, 0.9, true, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn ridley_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -193,7 +186,6 @@ unsafe extern "C" fn ridley_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn ridley_attack_air_lw_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -240,7 +232,6 @@ unsafe extern "C" fn ridley_attack_air_lw_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ridley_attack_air_lw_effect(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -251,7 +242,6 @@ unsafe extern "C" fn ridley_attack_air_lw_effect(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ridley_attack_air_lw_sound(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -260,7 +250,6 @@ unsafe extern "C" fn ridley_attack_air_lw_sound(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ridley_attackair_n01"));
     }
 }
-
 
 unsafe extern "C" fn ridley_attack_air_lw_expression(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -275,7 +264,6 @@ unsafe extern "C" fn ridley_attack_air_lw_expression(fighter : &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn ridley_landing_air_lw_sound(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -285,7 +273,6 @@ unsafe extern "C" fn ridley_landing_air_lw_sound(fighter : &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ridley_landing_air_lw_expression(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -294,9 +281,6 @@ unsafe extern "C" fn ridley_landing_air_lw_expression(fighter : &mut L2CAgentBas
         ControlModule::set_rumble(boma, Hash40::new("rbkind_landl_hv"), 0, false, 0);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ridley")

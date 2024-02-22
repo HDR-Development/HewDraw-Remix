@@ -87,7 +87,6 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
     }
 }
 
-
 pub extern "C" fn plizardon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

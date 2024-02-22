@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +26,6 @@ unsafe extern "C" fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -67,7 +64,6 @@ unsafe extern "C" fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -100,7 +96,6 @@ unsafe extern "C" fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -122,8 +117,6 @@ unsafe extern "C" fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("wolf")

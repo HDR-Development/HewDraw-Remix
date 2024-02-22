@@ -57,7 +57,6 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
 
-
     wm_param_to_int(fighter.module_accessor, hash40("common"), hash40("turn_dash_frame"), *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
     wm_param_to_int(fighter.module_accessor, hash40("common"), hash40("retry_turn_dash_frame"), *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME);
     wm_param_to_int(fighter.module_accessor, hash40("common"), hash40("dash_enable_attack_frame"), *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME);
@@ -95,7 +94,6 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     }
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
 }
-
 
 #[skyline::hook(replace = L2CFighterCommon_status_Dash_Sub)]
 unsafe fn status_Dash_sub(fighter: &mut L2CFighterCommon) {
@@ -691,9 +689,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
-
 // FIGHTER_STATUS_KIND_TURN_DASH
-
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {

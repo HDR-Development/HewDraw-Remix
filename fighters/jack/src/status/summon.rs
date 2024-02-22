@@ -1,6 +1,5 @@
 use super::*;
 
-
 pub unsafe extern "C" fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -28,7 +27,6 @@ pub unsafe extern "C" fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CV
     );
     0.into()
 }
-
 
 pub unsafe extern "C" fn jack_summon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if FighterSpecializer_Jack::is_cut_in_effect(fighter.module_accessor) {
@@ -92,7 +90,6 @@ unsafe extern "C" fn jack_summon_main_loop(fighter: &mut L2CFighterCommon) -> L2
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("jack")

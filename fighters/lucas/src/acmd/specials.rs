@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn lucas_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -17,7 +16,6 @@ unsafe extern "C" fn lucas_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -31,7 +29,6 @@ unsafe extern "C" fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucas_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -40,7 +37,6 @@ unsafe extern "C" fn lucas_special_s_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_pkfi_start"), Hash40::new("lucas_pkfi_start"), Hash40::new("havel"), -0.5, 0, 0, 0, 0, 0, 1, true, *EF_FLIP_YZ);
     }
 }
-
 
 unsafe extern "C" fn lucas_special_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -64,7 +60,6 @@ unsafe extern "C" fn lucas_special_s_sound(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
 
 unsafe extern "C" fn lucas_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,7 +104,6 @@ unsafe extern "C" fn lucas_special_air_hi_game(fighter: &mut L2CAgentBase) {
         fighter.select_cliff_hangdata_from_name("special_air_hi_end");
     }
 }
-
 
 unsafe extern "C" fn lucas_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -158,7 +152,6 @@ unsafe extern "C" fn lucas_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucas_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -167,7 +160,6 @@ unsafe extern "C" fn lucas_special_lw_start_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 3.0/(6.0-1.0));
     }
 }
-
 
 unsafe extern "C" fn lucas_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -182,7 +174,6 @@ unsafe extern "C" fn lucas_special_air_lw_start_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn lucas_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -193,7 +184,6 @@ unsafe extern "C" fn lucas_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn lucas_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -222,7 +212,6 @@ unsafe extern "C" fn lucas_special_lw_hold_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn lucas_special_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -238,7 +227,6 @@ unsafe extern "C" fn lucas_special_lw_end_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -261,7 +249,6 @@ unsafe extern "C" fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn lucas_special_lw_hit_effect (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -286,7 +273,6 @@ unsafe extern "C" fn lucas_special_lw_hit_effect (fighter: &mut L2CAgentBase) {
 
 // SPECIAL N START //
 
-
 unsafe extern "C" fn lucas_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -301,7 +287,6 @@ unsafe extern "C" fn lucas_special_n_start_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn lucas_special_n_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -315,14 +300,12 @@ unsafe extern "C" fn lucas_special_n_start_sound(fighter: &mut L2CAgentBase) {
 
 // SPECIAL N HOLD //
 
-
 unsafe extern "C" fn lucas_special_n_hold_game(fighter: &mut L2CAgentBase) {
     // INTENTIONALLY LEFT BLANK
     /* if fighter.kind() == *FIGHTER_KIND_KIRBY {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE);
     } */
 }
-
 
 unsafe extern "C" fn lucas_special_n_hold_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -361,7 +344,6 @@ unsafe extern "C" fn lucas_special_n_hold_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucas_special_n_hold_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -372,7 +354,6 @@ unsafe extern "C" fn lucas_special_n_hold_sound(fighter: &mut L2CAgentBase) {
 }
 
 // SPECIAL N FIRE //
-
 
 unsafe extern "C" fn lucas_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -406,7 +387,6 @@ unsafe extern "C" fn lucas_special_n_fire_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
@@ -435,7 +415,6 @@ unsafe extern "C" fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn lucas_special_n_fire_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 2.0);
@@ -446,7 +425,6 @@ unsafe extern "C" fn lucas_special_n_fire_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialhiend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -455,16 +433,11 @@ unsafe extern "C" fn game_specialhiend(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_fallspecial(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         fighter.select_cliff_hangdata_from_name("special_air_hi_end");
     }
 }
-
-
-
-
 
 pub fn install() {
     smashline::Agent::new("lucas")

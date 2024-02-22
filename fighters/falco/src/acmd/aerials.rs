@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn falco_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -37,7 +35,6 @@ unsafe extern "C" fn falco_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -46,7 +43,6 @@ unsafe extern "C" fn falco_attack_air_n_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_falco_attackhard_l01"));
     }
 }
-
 
 unsafe extern "C" fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -63,7 +59,6 @@ unsafe extern "C" fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -76,7 +71,6 @@ unsafe extern "C" fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -137,7 +131,6 @@ unsafe extern "C" fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn falco_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -156,13 +149,11 @@ unsafe extern "C" fn falco_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn falco_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {  }
 }
-
 
 unsafe extern "C" fn falco_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -195,7 +186,6 @@ unsafe extern "C" fn falco_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn falco_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -222,7 +212,6 @@ unsafe extern "C" fn falco_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn falco_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -232,7 +221,6 @@ unsafe extern "C" fn falco_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn falco_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -270,7 +258,6 @@ unsafe extern "C" fn falco_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn falco_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -287,7 +274,6 @@ unsafe extern "C" fn falco_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn falco_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -300,7 +286,6 @@ unsafe extern "C" fn falco_attack_air_b_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn falco_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -387,9 +372,6 @@ unsafe extern "C" fn falco_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 55.0);
     FT_MOTION_RATE(fighter, 1.000);
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("falco")

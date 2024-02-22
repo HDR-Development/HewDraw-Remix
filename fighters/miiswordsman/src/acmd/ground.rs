@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +24,6 @@ unsafe extern "C" fn attack_11_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -56,7 +54,6 @@ unsafe extern "C" fn attack_12_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -72,9 +69,7 @@ unsafe extern "C" fn attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 
-
 }
-
 
 unsafe extern "C" fn attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -98,7 +93,6 @@ unsafe extern "C" fn attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -119,9 +113,6 @@ unsafe extern "C" fn attack_dash_expression(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 8);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("miiswordsman")

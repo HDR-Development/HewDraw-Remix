@@ -2,9 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
-
 pub unsafe extern "C" fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);

@@ -161,7 +161,6 @@ unsafe fn meter_control(boma: &mut BattleObjectModuleAccessor) {
         MeterModule::add(boma.object(), 0.75);
     }
 
-
     if MeterModule::meter(boma.object()) != WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) 
     && !boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         let diff = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - MeterModule::meter(boma.object());
@@ -214,7 +213,6 @@ unsafe extern "C" fn robot_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon)
         );
     }
 }
-
 
 pub extern "C" fn robot_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

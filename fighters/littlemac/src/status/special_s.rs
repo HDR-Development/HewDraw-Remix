@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP
-
 
 unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -12,7 +10,6 @@ unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END
-
 
 unsafe extern "C" fn special_s_jump_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_AIR);
@@ -48,7 +45,6 @@ unsafe extern "C" fn special_s_jump_end_main_loop(fighter: &mut L2CFighterCommon
 
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END
 
-
 unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -78,7 +74,6 @@ unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L
 
     0.into()
 }
-
 
 unsafe extern "C" fn special_s_blow_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_AIR);

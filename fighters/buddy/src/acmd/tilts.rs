@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn buddy_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -28,7 +27,6 @@ unsafe extern "C" fn buddy_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn buddy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -55,8 +53,6 @@ unsafe extern "C" fn buddy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn buddy_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -82,8 +78,6 @@ unsafe extern "C" fn buddy_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     ArticleModule::remove_exist(boma, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
-
-
 
 unsafe extern "C" fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -175,7 +169,6 @@ unsafe extern "C" fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("k_all"), 3, 0, 0, 0, 0, 0, 0.9, true);
     }
 
-
 }
 
 unsafe extern "C" fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
@@ -190,7 +183,6 @@ unsafe extern "C" fn buddy_attack_hi3_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_buddy_attack100_03"));
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -212,7 +204,6 @@ unsafe extern "C" fn buddy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
 }
-
 
 unsafe extern "C" fn buddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -259,7 +250,6 @@ unsafe extern "C" fn buddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("buddy")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn gaogaen_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -22,7 +21,6 @@ unsafe extern "C" fn gaogaen_attack_11_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
 }
-
 
 unsafe extern "C" fn gaogaen_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -55,7 +53,6 @@ unsafe extern "C" fn gaogaen_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -78,7 +75,6 @@ unsafe extern "C" fn gaogaen_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn gaogaen_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn gaogaen_attack_13_expression(fighter: &mut L2CAgentBase) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
 
 unsafe extern "C" fn gaogaen_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -122,9 +117,6 @@ unsafe extern "C" fn gaogaen_attack_dash_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("gaogaen")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -12,7 +11,6 @@ unsafe extern "C" fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) 
     }
 
 }
-
 
 unsafe extern "C" fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -26,7 +24,6 @@ unsafe extern "C" fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -42,7 +39,6 @@ unsafe extern "C" fn metaknight_special_n_end_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn metaknight_special_n_spin_ground_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -51,7 +47,6 @@ unsafe extern "C" fn metaknight_special_n_spin_ground_effect(fighter: &mut L2CAg
         WorkModule::set_float(boma, 500.0, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_N_SPIN_WORK_FLOAT_GROUND_EFFECT_COUNTER);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_n_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -65,7 +60,6 @@ unsafe extern "C" fn metaknight_special_n_start_effect(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn metaknight_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -74,7 +68,6 @@ unsafe extern "C" fn metaknight_special_air_n_end_effect(fighter: &mut L2CAgentB
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_tornado_end"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.4, false);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -154,7 +147,6 @@ unsafe extern "C" fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -230,7 +222,6 @@ unsafe extern "C" fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn metaknight_special_hi_loop_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter){
@@ -252,7 +243,6 @@ unsafe extern "C" fn metaknight_special_hi_loop_effect(fighter: &mut L2CAgentBas
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -276,7 +266,6 @@ unsafe extern "C" fn metaknight_special_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -306,7 +295,6 @@ unsafe extern "C" fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -321,7 +309,6 @@ unsafe extern "C" fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase
     }
 
 }
-
 
 unsafe extern "C" fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -354,8 +341,6 @@ unsafe extern "C" fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase
     }
 }
 
-
-
 unsafe extern "C" fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -369,7 +354,6 @@ unsafe extern "C" fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgent
         WorkModule::on_flag(boma, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_FLAG_SITUATION_CHANGE);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -403,7 +387,6 @@ unsafe extern "C" fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -417,7 +400,6 @@ unsafe extern "C" fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase
         WorkModule::on_flag(boma, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_FLAG_SITUATION_CHANGE);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -452,7 +434,6 @@ unsafe extern "C" fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase
 
 }
 
-
 unsafe extern "C" fn metaknight_special_lw_sub_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -466,8 +447,6 @@ unsafe extern "C" fn metaknight_special_lw_sub_air_b_game(fighter: &mut L2CAgent
         WorkModule::on_flag(boma, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_FLAG_SITUATION_CHANGE);
     }
 }
-
-
 
 unsafe extern "C" fn metaknight_special_s_finish(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -489,7 +468,6 @@ unsafe extern "C" fn metaknight_special_s_finish(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn metaknight_special_s_drill(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -505,7 +483,6 @@ unsafe extern "C" fn metaknight_special_s_drill(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), false);
     }
 }
-
 
 unsafe extern "C" fn metaknight_special_s_drill_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -540,8 +517,6 @@ unsafe extern "C" fn metaknight_special_s_drill_effect(fighter: &mut L2CAgentBas
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("metaknight_drilllush_end_wind"), Hash40::new("haver"), 0, 16, 0, 0, 0, 0, 1, false);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("metaknight")

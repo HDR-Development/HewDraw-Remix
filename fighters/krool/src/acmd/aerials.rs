@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,7 +31,6 @@ unsafe extern "C" fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn krool_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -66,7 +64,6 @@ unsafe extern "C" fn krool_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -108,8 +105,6 @@ unsafe extern "C" fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
-
 unsafe extern "C" fn krool_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -123,7 +118,6 @@ unsafe extern "C" fn krool_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -133,7 +127,6 @@ unsafe extern "C" fn krool_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,7 +159,6 @@ unsafe extern "C" fn krool_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
 
 unsafe extern "C" fn krool_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -209,7 +201,6 @@ unsafe extern "C" fn krool_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn krool_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -229,8 +220,6 @@ unsafe extern "C" fn krool_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, -6, 0, 0, 0, 0, 2.3, false, 1);
     }
 }
-
-
 
 pub fn install() {
     smashline::Agent::new("krool")

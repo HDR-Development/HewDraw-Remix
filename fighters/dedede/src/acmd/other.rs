@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -26,7 +25,6 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_dedede_rnd_futtobi01"), Hash40::new("seq_dedede_rnd_futtobi02"));}
     }
 }
-
 
 unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -53,7 +51,6 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -79,7 +76,6 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -94,7 +90,6 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_dedede_rnd_futtobi01"), Hash40::new("seq_dedede_rnd_futtobi02"));
     }
 }
-
 
 unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -121,7 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -133,7 +127,6 @@ unsafe extern "C" fn expression_landingheavy(fighter: &mut L2CAgentBase) {
         }
     } 
 }
-
 
 unsafe extern "C" fn dedede_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -165,7 +158,6 @@ unsafe extern "C" fn dedede_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -179,7 +171,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -195,7 +186,6 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -209,7 +199,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -255,7 +244,6 @@ unsafe extern "C" fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBas
 
 }
 
-
 unsafe extern "C" fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -263,7 +251,6 @@ unsafe extern "C" fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentB
         //Intentionally blank to kill vanilla effects
     }
 }
-
 
 unsafe extern "C" fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -284,13 +271,11 @@ unsafe extern "C" fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase
     }
 }
 
-
 unsafe extern "C" fn dedede_gordo_special_s_shot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
-
 
 unsafe extern "C" fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -369,14 +354,12 @@ unsafe extern "C" fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn dedede_gordo_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     //Intentionally blank to kill vanilla effects
 
 }
-
 
 unsafe extern "C" fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
@@ -385,7 +368,6 @@ unsafe extern "C" fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgen
         
     }
 }
-
 
 unsafe extern "C" fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
@@ -402,7 +384,6 @@ unsafe extern "C" fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBas
     }
 }
 
-
 unsafe extern "C" fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -418,7 +399,6 @@ unsafe extern "C" fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgen
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
     }
 }
-
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -438,7 +418,6 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -456,7 +435,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -465,7 +443,6 @@ unsafe extern "C" fn fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn landing_fall_special_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -473,9 +450,6 @@ unsafe extern "C" fn landing_fall_special_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE_REMAIN(fighter, Hash40::new("se_dedede_landing03"));
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("dedede_gordo")

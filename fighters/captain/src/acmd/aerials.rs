@@ -3,7 +3,6 @@ use super::*;
 
 // x = into screen, y = up down, z = forward back
 
-
 unsafe extern "C" fn captain_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 6.0);
@@ -22,7 +21,6 @@ unsafe extern "C" fn captain_attack_air_n_effect(fighter: &mut L2CAgentBase) {
         EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("kneel"), 6.0, -0.7, 0.0, 0.0, 0.0, 0.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0, 360.0, true, 0.65);
     }
 }
-
 
 unsafe extern "C" fn captain_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -45,7 +43,6 @@ unsafe extern "C" fn captain_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn captain_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 7.0);
@@ -54,7 +51,6 @@ unsafe extern "C" fn captain_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 	    LAST_EFFECT_SET_RATE(fighter, 0.8);
     }
 }
-
 
 unsafe extern "C" fn captain_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -66,7 +62,6 @@ unsafe extern "C" fn captain_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 	    LAST_EFFECT_SET_RATE(fighter, 1);
     }
 }
-
 
 unsafe extern "C" fn captain_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -113,7 +108,6 @@ unsafe extern "C" fn captain_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -146,7 +140,6 @@ unsafe extern "C" fn captain_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -157,7 +150,6 @@ unsafe extern "C" fn captain_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn captain_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -189,7 +181,6 @@ unsafe extern "C" fn captain_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -217,7 +208,6 @@ unsafe extern "C" fn captain_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn captain_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -230,8 +220,6 @@ unsafe extern "C" fn captain_attack_air_hi_expression(fighter: &mut L2CAgentBase
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
-
 
 unsafe extern "C" fn captain_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -263,9 +251,6 @@ unsafe extern "C" fn captain_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("captain")

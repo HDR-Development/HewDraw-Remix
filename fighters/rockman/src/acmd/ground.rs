@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn rockman_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if is_excute(agent) {
@@ -25,7 +24,6 @@ unsafe extern "C" fn rockman_attack11(agent: &mut L2CAgentBase) {
     // }
 }
 
-
 unsafe extern "C" fn rockman_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if is_excute(agent) {
@@ -38,14 +36,12 @@ unsafe extern "C" fn rockman_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
     }
 }
-
 
 unsafe extern "C" fn rockman_attack11_exp(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -63,7 +59,6 @@ unsafe extern "C" fn rockman_attack11_exp(agent: &mut L2CAgentBase) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
@@ -87,7 +82,6 @@ unsafe extern "C" fn rockman_attack12(agent: &mut L2CAgentBase) {
     // }
 }
 
-
 unsafe extern "C" fn rockman_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if is_excute(agent) {
@@ -96,14 +90,12 @@ unsafe extern "C" fn rockman_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack12_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
     }
 }
-
 
 unsafe extern "C" fn rockman_attack12_exp(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -129,7 +121,6 @@ unsafe extern "C" fn rockman_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if is_excute(agent) {
@@ -140,7 +131,6 @@ unsafe extern "C" fn rockman_attack13(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack13_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
@@ -162,7 +152,6 @@ unsafe extern "C" fn rockman_attack13_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack13_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if is_excute(agent) {
@@ -173,7 +162,6 @@ unsafe extern "C" fn rockman_attack13_snd(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_rockman_step_right_m"));
     }
 }
-
 
 unsafe extern "C" fn rockman_attack13_exp(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -194,7 +182,6 @@ unsafe extern "C" fn rockman_attack13_exp(agent: &mut L2CAgentBase) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -220,7 +207,6 @@ unsafe extern "C" fn rockman_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 6.0);
@@ -241,7 +227,6 @@ unsafe extern "C" fn rockman_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 5.0);
@@ -249,7 +234,6 @@ unsafe extern "C" fn rockman_attack_dash_sound(fighter: &mut L2CAgentBase) {
         PLAY_STATUS(fighter, Hash40::new("se_rockman_attackhard_l01"));
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -278,9 +262,6 @@ unsafe extern "C" fn rockman_attack_dash_expression(fighter: &mut L2CAgentBase) 
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 6);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn rockman_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -18,7 +17,6 @@ unsafe extern "C" fn rockman_attack_11_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
 
 unsafe extern "C" fn rockman_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -44,7 +42,6 @@ unsafe extern "C" fn rockman_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn rockman_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -62,7 +59,6 @@ unsafe extern "C" fn rockman_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     FT_MOTION_RATE(agent, 1.0 / 7.0);
@@ -73,7 +69,6 @@ unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
         VarModule::off_flag(agent.battle_object, vars::rockman::status::CHARGE_SHOT_KEEP_CHARGE);
     }
 }
-
 
 unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -93,14 +88,12 @@ unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_rockman_smash_s02"));
     }
 }
-
 
 unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
@@ -124,7 +117,6 @@ unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let is_charge_max = 1.0 <= WorkModule::get_float(agent.module_accessor, *WEAPON_ROCKMAN_CHARGESHOT_INSTANCE_WORK_ID_FLOAT_HOLD_RATE);
@@ -146,7 +138,6 @@ unsafe extern "C" fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
         AttackModule::enable_safe_pos(agent.module_accessor);
     }
 }
-
 
 unsafe extern "C" fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -171,7 +162,6 @@ unsafe extern "C" fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
     }
 }
-
 
 unsafe extern "C" fn rockman_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -211,7 +201,6 @@ unsafe extern "C" fn rockman_special_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -232,7 +221,6 @@ unsafe extern "C" fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn rockman_special_air_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -267,7 +255,6 @@ unsafe extern "C" fn rockman_special_air_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
@@ -277,7 +264,6 @@ unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-
 unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
@@ -286,7 +272,6 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
     }
     FT_MOTION_RATE(agent, 1.0);
 }
-
 
 unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 4.0 / 3.0);
@@ -306,7 +291,6 @@ unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 4.0 / 3.0);
     if is_excute(agent) {
@@ -325,7 +309,6 @@ unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 4.0 / 3.0);
     if is_excute(agent) {
@@ -343,9 +326,6 @@ unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
         }
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("rockman_leafshield")

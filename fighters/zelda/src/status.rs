@@ -35,7 +35,6 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
     }
 }
 
-
 extern "C" fn zelda_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -44,7 +43,6 @@ extern "C" fn zelda_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("zelda").on_init(zelda_init).install();

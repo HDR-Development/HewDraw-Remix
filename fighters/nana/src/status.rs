@@ -4,14 +4,11 @@ utils::import!(popo::{ics_dash});
 // status script import
  
 
-
 // FIGHTER_STATUS_KIND_DASH //
-
 
 pub unsafe extern "C" fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     popo::ics_dash(fighter)
 }
-
 
 pub unsafe extern "C" fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
 
@@ -53,7 +50,6 @@ pub unsafe extern "C" fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
     // shift into the L2CFighterCommon's throw impl (instead of nana's default, modified impl)
     return fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Throw_Main as *const () as _));
 }
-
 
 unsafe extern "C" fn catchwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(catchwait_main_loop as *const () as _))

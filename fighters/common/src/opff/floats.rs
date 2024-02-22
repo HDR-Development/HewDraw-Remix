@@ -3,7 +3,6 @@ use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
 use smash_script::macros::*;
 
-
 // Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     let mut motion_value = 0.0;

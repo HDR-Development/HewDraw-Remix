@@ -13,7 +13,6 @@ unsafe extern "C" fn jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValu
     original(fighter)
 }
 
-
 pub fn install() {
     smashline::Agent::new("trail")
         .status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_aerial_main)

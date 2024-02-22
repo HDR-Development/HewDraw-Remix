@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn zelda_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -54,7 +53,6 @@ unsafe extern "C" fn zelda_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -95,7 +93,6 @@ unsafe extern "C" fn zelda_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -112,8 +109,6 @@ unsafe extern "C" fn zelda_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
-
 
 unsafe extern "C" fn zelda_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +143,6 @@ unsafe extern "C" fn zelda_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn zelda_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -164,7 +158,6 @@ unsafe extern "C" fn zelda_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_flash"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, true);
     }
 }
-
 
 unsafe extern "C" fn zelda_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -195,7 +188,6 @@ unsafe extern "C" fn zelda_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn zelda_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -223,7 +215,6 @@ unsafe extern "C" fn zelda_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn zelda_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -262,7 +253,6 @@ unsafe extern "C" fn zelda_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0); 
 }
 
-
 unsafe extern "C" fn zelda_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -291,9 +281,6 @@ unsafe extern "C" fn zelda_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.4);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("zelda")

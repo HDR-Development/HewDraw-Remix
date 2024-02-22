@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn reflet_special_n_tron_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -11,9 +9,6 @@ unsafe extern "C" fn reflet_special_n_tron_start_game(fighter: &mut L2CAgentBase
     frame(lua_state, 19.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-
-
-
 
 unsafe extern "C" fn reflet_special_air_n_tron_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -24,24 +19,17 @@ unsafe extern "C" fn reflet_special_air_n_tron_start_game(fighter: &mut L2CAgent
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-
-
-
 unsafe extern "C" fn reflet_special_n_tron_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.7); //FAF is frame 61
 }
 
-
-
 unsafe extern "C" fn reflet_special_air_n_tron_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.35); //FAF is frame 63
 }
-
-
 
 unsafe extern "C" fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,8 +64,6 @@ unsafe extern "C" fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
 unsafe extern "C" fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -110,9 +96,6 @@ unsafe extern "C" fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("reflet")

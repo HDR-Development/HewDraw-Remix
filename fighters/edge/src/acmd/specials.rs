@@ -1,6 +1,5 @@
 use super::*;
 
-
 unsafe extern "C" fn edge_special_n_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -36,7 +35,6 @@ unsafe extern "C" fn edge_special_n_start(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -61,7 +59,6 @@ unsafe extern "C" fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -85,7 +82,6 @@ unsafe extern "C" fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     
 }
-
 
 unsafe extern "C" fn game_specialhistart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -114,7 +110,6 @@ unsafe extern "C" fn game_specialhistart(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn effect_specialhistart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -141,7 +136,6 @@ unsafe extern "C" fn effect_specialhistart(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairhistart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -154,8 +148,6 @@ unsafe extern "C" fn game_specialairhistart(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
     }
 }
-
-
 
 unsafe extern "C" fn edge_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -204,7 +196,6 @@ unsafe extern "C" fn edge_special_hi2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     FighterSpecializer_Edge::clear_special_hi_jostle_area(boma);
 }
-
 
 unsafe extern "C" fn edge_special_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -295,7 +286,6 @@ unsafe extern "C" fn edge_special_hi2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialhi1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -320,7 +310,6 @@ unsafe extern "C" fn game_specialhi1(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, true);
     }
 }
-
 
 unsafe extern "C" fn effect_specialhi1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -394,8 +383,6 @@ unsafe extern "C" fn effect_specialhi1(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
 unsafe extern "C" fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -410,7 +397,6 @@ unsafe extern "C" fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_specialairhi1end(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -422,7 +408,6 @@ unsafe extern "C" fn game_specialairhi1end(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_ENABLE_CONTROL);
     }
 }
-
 
 unsafe extern "C" fn edge_special_hi2_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -438,7 +423,6 @@ unsafe extern "C" fn edge_special_hi2_end_game(fighter: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 1.256);
     }
 }
-
 
 unsafe extern "C" fn edge_special_air_hi_2_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -474,7 +458,6 @@ unsafe extern "C" fn edge_special_air_hi_2_end_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn edge_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -495,7 +478,6 @@ unsafe extern "C" fn edge_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn edge_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -513,7 +495,6 @@ unsafe extern "C" fn edge_special_lw_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn edge_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -543,7 +524,6 @@ unsafe extern "C" fn edge_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 
 }
-
 
 unsafe extern "C" fn edge_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

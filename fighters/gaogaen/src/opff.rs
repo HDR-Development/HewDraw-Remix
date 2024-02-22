@@ -81,7 +81,6 @@ unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 // boma: its a boma
 // start_frame: frame to start interpolating the waist rotation
 // bend_frame: frame to interpolate to the intended angle amount until
@@ -235,7 +234,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 pub extern "C" fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {

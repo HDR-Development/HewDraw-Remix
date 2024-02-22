@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn attack_s3_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -38,7 +37,6 @@ unsafe extern "C" fn attack_s3_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attacks3hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -51,7 +49,6 @@ unsafe extern "C" fn effect_attacks3hi(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
 
 unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -88,7 +85,6 @@ unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attacks3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -101,7 +97,6 @@ unsafe extern "C" fn effect_attacks3s(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
 
 unsafe extern "C" fn attack_s3_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -139,7 +134,6 @@ unsafe extern "C" fn attack_s3_lw(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attacks3lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -152,7 +146,6 @@ unsafe extern "C" fn effect_attacks3lw(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
-
 
 unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -179,7 +172,6 @@ unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -197,7 +189,6 @@ unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -212,9 +203,6 @@ unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("samus")

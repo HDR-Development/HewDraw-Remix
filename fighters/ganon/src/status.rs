@@ -26,7 +26,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-
 extern "C" fn ganon_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -41,7 +40,6 @@ pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
     fighter.set_situation(SITUATION_KIND_AIR.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
 }
-
 
 pub fn install() {
     smashline::Agent::new("ganon").on_init(ganon_init).install();

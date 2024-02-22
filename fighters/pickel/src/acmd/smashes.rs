@@ -21,9 +21,6 @@ unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
-
 pub fn install() {
     smashline::Agent::new("pickel")
         .acmd("effect_attackhi4", effect_attackhi4)

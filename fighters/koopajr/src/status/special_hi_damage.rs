@@ -3,9 +3,7 @@ use globals::*;
 // status script import
  
 
-
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END
-
 
 pub unsafe extern "C" fn special_hi_damage_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     smashline::original_status(Main, fighter, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END)(fighter);

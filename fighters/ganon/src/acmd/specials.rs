@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -25,7 +24,6 @@ unsafe extern "C" fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
@@ -43,7 +41,6 @@ unsafe extern "C" fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_start_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -57,7 +54,6 @@ unsafe extern "C" fn ganon_float_start_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -65,7 +61,6 @@ unsafe extern "C" fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
     }
 }
-
 
 unsafe extern "C" fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -85,7 +80,6 @@ unsafe extern "C" fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
@@ -99,7 +93,6 @@ unsafe extern "C" fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_air_start_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -108,7 +101,6 @@ unsafe extern "C" fn ganon_float_air_start_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_air_start_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
@@ -116,7 +108,6 @@ unsafe extern "C" fn ganon_float_air_start_snd(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
     }
 }
-
 
 unsafe extern "C" fn ganon_float_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -131,7 +122,6 @@ unsafe extern "C" fn ganon_float_game(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
-
 
 unsafe extern "C" fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -150,7 +140,6 @@ unsafe extern "C" fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_float_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -158,7 +147,6 @@ unsafe extern "C" fn ganon_float_exp(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
-
 
 unsafe extern "C" fn ganon_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -189,7 +177,6 @@ unsafe extern "C" fn ganon_special_air_s_start_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn ganon_special_air_s_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -207,7 +194,6 @@ unsafe extern "C" fn ganon_special_air_s_catch_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn ganon_special_air_s_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -223,7 +209,6 @@ unsafe extern "C" fn ganon_special_air_s_fall_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -237,7 +222,6 @@ unsafe extern "C" fn ganon_special_air_s_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
 }
-
 
 unsafe extern "C" fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -282,7 +266,6 @@ unsafe extern "C" fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn ganon_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -311,7 +294,6 @@ unsafe extern "C" fn ganon_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -332,7 +314,6 @@ unsafe extern "C" fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 19.0);
     if is_excute(fighter) {  }
 }
-
 
 unsafe extern "C" fn ganon_special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -420,7 +401,6 @@ unsafe extern "C" fn ganon_special_hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -448,9 +428,6 @@ unsafe extern "C" fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_raijin_hold"), false, true);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ganon")

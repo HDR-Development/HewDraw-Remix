@@ -1,8 +1,6 @@
 use super::*;
 use globals::*;
 
-
-
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +32,6 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 // FIGHTER_STATUS_KIND_SPECIAL_LW
-
 
 unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -70,7 +67,6 @@ unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue
 
     0.into()
 }
-
 
 pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
@@ -118,7 +114,6 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
         return 0.into();
@@ -157,7 +152,6 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     }
     0.into()
 }
-
 
 unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != statuses::falco::SPECIAL_LW_LOOP {
@@ -454,7 +448,6 @@ unsafe extern "C" fn special_lw_end_exec(fighter: &mut L2CFighterCommon) -> L2CV
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("falco")

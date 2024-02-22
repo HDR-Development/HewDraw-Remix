@@ -2,7 +2,6 @@ use super::*;
 use super::helper::*;
 use super::super::vl;
 
-
 unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -47,7 +46,6 @@ unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2
     );
     0.into()
 }
-
 
 unsafe extern "C" fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::rockman::status::CHARGE_SHOT_KEEP_CHARGE);
@@ -100,11 +98,9 @@ unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-
 unsafe extern "C" fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

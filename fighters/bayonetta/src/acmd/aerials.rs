@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -52,7 +50,6 @@ unsafe extern "C" fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 unsafe extern "C" fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -90,7 +87,6 @@ unsafe extern "C" fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase
     }
 
 }
-
 
 unsafe extern "C" fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -136,7 +132,6 @@ unsafe extern "C" fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -185,7 +180,6 @@ unsafe extern "C" fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -229,7 +223,6 @@ unsafe extern "C" fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -266,7 +259,6 @@ unsafe extern "C" fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -279,7 +271,6 @@ unsafe extern "C" fn bayonetta_attack_air_b_expression(fighter: &mut L2CAgentBas
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -325,7 +316,6 @@ unsafe extern "C" fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if is_excute(fighter) {
@@ -337,8 +327,6 @@ unsafe extern "C" fn bayonetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) 
         EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_ATTACK_ARC1, false, true);
     }
 }
-
-
 
 unsafe extern "C" fn bayonetta_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -357,7 +345,6 @@ unsafe extern "C" fn bayonetta_attack_air_hi_expression(fighter: &mut L2CAgentBa
     }
 }
 
-
 unsafe extern "C" fn bayonetta_attack_air_hi_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -371,7 +358,6 @@ unsafe extern "C" fn bayonetta_attack_air_hi_hold_game(fighter: &mut L2CAgentBas
         ATTACK(fighter, 4, 0, Hash40::new("kneer"), 1.5, 48, 45, 0, 25, 3.5, 4.5, 1.0, 0.0, None, None, None, 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
 }
-
 
 unsafe extern "C" fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -432,7 +418,6 @@ unsafe extern "C" fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn bayonetta_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -451,7 +436,6 @@ unsafe extern "C" fn bayonetta_landing_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("bayonetta")

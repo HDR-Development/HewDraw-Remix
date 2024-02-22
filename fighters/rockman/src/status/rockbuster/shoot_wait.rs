@@ -1,7 +1,6 @@
 use super::*;
 use super::helper::*;
 
-
 unsafe extern "C" fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut status_data_arg = 0;
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
@@ -58,7 +57,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterC
     );
     0.into()
 }
-
 
 unsafe extern "C" fn rockman_rockbuster_shoot_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -145,7 +143,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFi
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

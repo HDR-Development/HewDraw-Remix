@@ -27,7 +27,6 @@ unsafe fn wavedash_turn_clear(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
             ControlModule::clear_command(boma, true);
         }
 
-
     }
 }
 

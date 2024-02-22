@@ -1,11 +1,7 @@
 use super::*;
 use globals::*;
 
-
-
-
 // FIGHTER_STATUS_KIND_SPECIAL_N
-
 
 pub unsafe extern "C" fn gaogaen_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
@@ -42,7 +38,6 @@ pub unsafe extern "C" fn gaogaen_special_n_pre(fighter: &mut L2CFighterCommon) -
     0.into()
     
 }
-
 
 pub unsafe extern "C" fn exec_special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && StatusModule::prev_situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
@@ -81,8 +76,6 @@ pub unsafe extern "C" fn exec_special_n(fighter: &mut L2CFighterCommon) -> L2CVa
 
     // set_fighter_status_data_impl(boma, false, FIGHTER_TREADED_KIND_NO_REAC, false, false,
     // false, array, FIGHTER_STATUS_ATTR_START_TURN, FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N)
-
-
 
     // if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && StatusModule::prev_situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
     //     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);

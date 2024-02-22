@@ -2,9 +2,6 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-
-
 pub unsafe extern "C" fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_wait_common();
     MotionModule::change_motion(

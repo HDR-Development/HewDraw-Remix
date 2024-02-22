@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn daisy_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -33,7 +31,6 @@ unsafe extern "C" fn daisy_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,7 +50,6 @@ unsafe extern "C" fn daisy_attack_12_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn daisy_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -114,7 +110,6 @@ unsafe extern "C" fn daisy_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn daisy_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -137,9 +132,6 @@ unsafe extern "C" fn daisy_attack_dash_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 9, 2, 140, 120, -50, 0.6, true, *EF_FLIP_YZ, 0.4);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("daisy")

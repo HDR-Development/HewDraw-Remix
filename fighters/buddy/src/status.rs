@@ -9,7 +9,6 @@ pub unsafe extern "C" fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
 pub unsafe extern "C" fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_GROUND) )
     {
@@ -69,7 +68,6 @@ pub unsafe extern "C" fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> 
     return smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter);
 }
 
-
 unsafe extern "C" fn buddy_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
     //Bypass if transitioning into Air Fail
@@ -121,7 +119,6 @@ unsafe extern "C" fn buddy_special_s_armor(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub unsafe extern "C" fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR))
     {
@@ -160,8 +157,6 @@ pub unsafe extern "C" fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon
     return smashline::original_status(Pre, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)(fighter);
 }
 
-
-
 unsafe extern "C" fn buddy_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         return smashline::original_status(Main, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)(fighter);
@@ -171,7 +166,6 @@ unsafe extern "C" fn buddy_special_s_dash_main(fighter: &mut L2CFighterCommon) -
 
     return smashline::original_status(Main, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)(fighter);
 }
-
 
 pub unsafe extern "C" fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR))
@@ -281,7 +275,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     return true.into();
 }
 
-
 extern "C" fn buddy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
@@ -290,7 +283,6 @@ extern "C" fn buddy_init(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
 
 pub fn install() {
     smashline::Agent::new("buddy")

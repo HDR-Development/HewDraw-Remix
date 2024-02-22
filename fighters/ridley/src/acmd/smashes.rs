@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn ridley_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -29,7 +27,6 @@ unsafe extern "C" fn ridley_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn ridley_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -53,7 +50,6 @@ unsafe extern "C" fn ridley_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
 
 unsafe extern "C" fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -86,9 +82,6 @@ unsafe extern "C" fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("ridley")

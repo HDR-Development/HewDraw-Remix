@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 unsafe extern "C" fn falco_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -49,7 +48,6 @@ unsafe extern "C" fn falco_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn falco_attack_s3hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -66,7 +64,6 @@ unsafe extern "C" fn falco_attack_s3hi_game(fighter: &mut L2CAgentBase) {
     }
 } 
 
-
 unsafe extern "C" fn falco_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -81,7 +78,6 @@ unsafe extern "C" fn falco_attack_s3_game(fighter: &mut L2CAgentBase) {
 	AttackModule::clear_all(boma);
     }
 } 
-
 
 unsafe extern "C" fn falco_attack_s3lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -98,7 +94,6 @@ unsafe extern "C" fn falco_attack_s3lw_game(fighter: &mut L2CAgentBase) {
 	AttackModule::clear_all(boma);
     }
 } 
-
 
 unsafe extern "C" fn falco_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -125,7 +120,6 @@ unsafe extern "C" fn falco_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
 unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -138,9 +132,6 @@ unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("falco")

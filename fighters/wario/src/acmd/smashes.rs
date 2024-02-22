@@ -1,8 +1,6 @@
 
 use super::*;
 
-
-
 unsafe extern "C" fn wario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -34,7 +32,6 @@ unsafe extern "C" fn wario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn wario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -75,7 +72,6 @@ unsafe extern "C" fn wario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 
 unsafe extern "C" fn wario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -166,9 +162,6 @@ unsafe extern "C" fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
     }
 }
-
-
-
 
 pub fn install() {
     smashline::Agent::new("wario")

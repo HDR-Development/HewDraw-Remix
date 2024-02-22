@@ -1,7 +1,6 @@
 use super::*;
 use std::convert::TryInto;
 
-
 unsafe extern "C" fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, false, -1);
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_START, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -58,12 +57,10 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
-
 unsafe extern "C" fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_krool_special_h02"), 0);
     return 0.into()
 }
-
 
 unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -113,7 +110,6 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
-
 unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_TOP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_air_end"), 0.0, 1.0, false, 0.0, false, false);
@@ -145,7 +141,6 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
 
     return 0.into()
 }
-
 
 unsafe extern "C" fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FALL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));

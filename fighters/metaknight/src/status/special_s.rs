@@ -1,11 +1,7 @@
 use super::*;
 use globals::*;
 
-
-
-
 // FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END
-
 
 pub unsafe extern "C" fn special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(End, fighter, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END)(fighter);

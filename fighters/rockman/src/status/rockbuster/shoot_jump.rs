@@ -1,7 +1,6 @@
 use super::*;
 use super::helper::*;
 
-
 unsafe extern "C" fn rockman_rockbuster_shoot_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,7 +36,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_pre(fighter: &mut L2CFighterC
     0.into()
 }
 
-
 unsafe extern "C" fn rockman_rockbuster_shoot_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     rockman_rockbuster_main_helper(fighter, true.into(), false.into(), L2CValue::Void(), L2CValue::Void());
     fighter.sub_shift_status_main(L2CValue::Ptr(rockman_rockbuster_shoot_jump_main_loop as *const () as _))
@@ -63,7 +61,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_main_loop(fighter: &mut L2CFi
     }
     0.into()
 }
-
 
 pub fn install() {
     smashline::Agent::new("rockman")

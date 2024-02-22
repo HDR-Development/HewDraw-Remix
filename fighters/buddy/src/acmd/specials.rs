@@ -2,10 +2,6 @@ use smash::app::sv_animcmd::EFFECT_WORK;
 
 use super::*;
 
-
-
-
-
 unsafe extern "C" fn buddy_special_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -50,7 +46,6 @@ unsafe extern "C" fn buddy_special_s_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe fn will_Bayonet(fighter: &mut L2CAgentBase) -> bool
 {
     let is_csticking = ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
@@ -59,7 +54,6 @@ unsafe fn will_Bayonet(fighter: &mut L2CAgentBase) -> bool
     }
     return false;
 }
-
 
 unsafe extern "C" fn buddy_attack_special_n_upperfire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -110,8 +104,6 @@ unsafe extern "C" fn buddy_attack_special_n_fire2_game(fighter: &mut L2CAgentBas
     }
 }
 
-
-
 unsafe extern "C" fn buddy_special_air_s_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
@@ -147,7 +139,6 @@ unsafe extern "C" fn buddy_special_air_s_dash_expression(fighter: &mut L2CAgentB
     wait(lua_state, 2.0);
 }
 
-
 unsafe extern "C" fn buddy_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
@@ -181,7 +172,6 @@ unsafe extern "C" fn buddy_special_air_s_start_effect(fighter: &mut L2CAgentBase
         FLASH(fighter, 1, 0.4, 0, 0.3);
     }
 }
-
 
 unsafe extern "C" fn buddy_special_air_s_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
@@ -227,7 +217,6 @@ unsafe extern "C" fn buddy_special_air_s_dash_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-
 unsafe extern "C" fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
@@ -248,7 +237,6 @@ unsafe extern "C" fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase)
         PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));
     }
 }
-
 
 unsafe extern "C" fn buddy_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
@@ -306,7 +294,6 @@ unsafe extern "C" fn buddy_special_air_s_wall_sound(fighter: &mut L2CAgentBase) 
     }
 }
 
-
 unsafe extern "C" fn buddy_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;  
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);  
@@ -316,7 +303,6 @@ unsafe extern "C" fn buddy_special_air_s_end_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY);
     }
 }
-
 
 unsafe extern "C" fn buddy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
@@ -407,7 +393,6 @@ unsafe extern "C" fn buddy_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 43, 57, 0, 66, 4.2, 0.0, 4.2, 2.8, None,None,None, 1.125, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
 }
-
 
 unsafe extern "C" fn buddy_special_air_s_wall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    

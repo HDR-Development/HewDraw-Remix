@@ -2,10 +2,7 @@ use super::*;
 use globals::*;
  
 
-
-
 // FIGHTER_STATUS_KIND_SPECIAL_HI //
-
 
 pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
@@ -64,7 +61,6 @@ unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2
     return 0.into()
 }
 
-
 pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
     StatusModule::init_settings(
@@ -94,7 +90,6 @@ pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-
 pub unsafe extern "C" fn specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
@@ -118,7 +113,6 @@ unsafe extern "C" fn specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L2CVa
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let frame = MotionModule::frame(fighter.module_accessor);
     let mut motion_value = 0.55;
-
 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into()
