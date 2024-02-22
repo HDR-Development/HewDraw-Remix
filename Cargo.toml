@@ -323,7 +323,6 @@ default = [
 ]
 dev = ["utils/no-offset-search"]
 main_nro = ["skyline-web", "common"]
-add_status = []
 runtime = []
 
 [patch.'https://github.com/jam1garner/smash-arc']

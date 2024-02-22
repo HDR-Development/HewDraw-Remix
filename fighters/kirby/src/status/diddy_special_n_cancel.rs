@@ -183,26 +183,6 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
     return 0.into()
 }
 
-
-pub fn install_custom() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_kirby"),
-        statuses::diddy::SPECIAL_N_CANCEL,
-        StatusInfo::new()
-            .with_pre(special_n_cancel_pre)
-            .with_main(special_n_cancel_main)
-            .with_end(special_n_cancel_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_kirby"),
-        statuses::diddy::SPECIAL_N_CANCEL_JUMP,
-        StatusInfo::new()
-            .with_pre(special_n_jump_cancel_pre)
-            .with_main(special_n_jump_cancel_main)
-            .with_end(special_n_jump_cancel_end)
-    );
-}
-
 pub fn install() {
     smashline::Agent::new("kirby")
         .status(
@@ -233,17 +213,17 @@ pub fn install() {
         .status(
             Pre,
             statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_cancel_pre,
+            special_n_jump_cancel_pre,
         )
         .status(
             Main,
             statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_cancel_main,
+            special_n_jump_cancel_main,
         )
         .status(
             End,
             statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_cancel_end,
+            special_n_jump_cancel_end,
         )
         .install();
 }

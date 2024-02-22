@@ -1504,13 +1504,13 @@ pub mod statuses {
     }
 
     pub mod littlemac {
-        pub const SPECIAL_LW_CANCEL: i32 = 1;
-        pub const SPECIAL_LW_CANCEL_JUMP: i32 = 2;
+        pub const SPECIAL_LW_CANCEL: i32 = 0x1F4;
+        pub const SPECIAL_LW_CANCEL_JUMP: i32 = 0x1F5;
     }
 
     pub mod wolf {
-        pub const SPECIAL_S_RUSH: i32 = 0;
-        pub const SPECIAL_S_END: i32 = 1;
+        pub const SPECIAL_S_RUSH: i32 = 0x1EA;
+        pub const SPECIAL_S_END: i32 = 0x1EB;
     }
 
     pub mod diddy {

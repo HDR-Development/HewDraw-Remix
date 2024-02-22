@@ -1,11 +1,14 @@
 use smash::app::lua_bind::*;
 use smash::app::*;
+use smash::phx::*;
 use smash::hash40;
 use smash::lib::lua_const::*;
 use smash::lua2cpp::*;
 use utils::consts::*;
 use utils::ext::*;
 use utils::*;
+use utils::game_modes::CustomMode;
+use smashline::*;
 
 use globals::*;
 
@@ -81,6 +84,9 @@ unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
 pub fn install() {
     smashline::Agent::new("fighter")
         .on_init(fighter_reset)
+        .on_line(Main, turbo_mode)
+        .on_line(Main, hitfall_mode)
+        .on_line(Main, airdash_mode)
         .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
     // skyline::patching::Patch::in_text(0x6285d0).nop();
@@ -173,6 +179,87 @@ pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
         }
     }
 
+}
+
+pub extern "C" fn turbo_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::TurboMode) {
+                    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                        // enable turbo behavior
+                        CancelModule::enable_cancel(fighter.boma());
+                        //println!("enabled cancelling!");
+                
+                        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                            fighter.sub_wait_ground_check_common(false.into());
+                        } else {
+                            fighter.sub_air_check_fall_common();
+                        }
+                    }
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+pub extern "C" fn hitfall_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::HitfallMode) {
+                    fighter.check_hitfall();
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+pub extern "C" fn airdash_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::AirdashMode) {
+                    check_airdash(fighter);
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+        if fighter.status_frame() < 1 {
+            let speed_x = KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            let speed_y = KineticModule::get_sum_speed_y(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            // lets make sure not to divide by zero
+            let speed_x_adjust = match speed_x {
+                0.0 => 0.01,
+                _ => 0.0
+            };
+            let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
+
+            let pos = Vector3f { x: 0., y: 3., z: 0.};
+            let mut rot = Vector3f { x:0., y:0., z: (90. + 180. * angle/3.14159)};
+
+            if speed_x > 0. {
+                EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }else{
+                rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
+                EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }
+        }
+
+        CancelModule::enable_cancel(fighter.boma());
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            fighter.sub_air_check_fall_common();
+        }
+    }
 }
 
 extern "C" {

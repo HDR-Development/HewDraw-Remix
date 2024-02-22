@@ -33,12 +33,11 @@ unsafe fn parachute(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
                 return;
             }
-            fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
+            fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
         }
     }
     if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
-        let parachute_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::gamewatch::SPECIAL_HI_OPEN);
-        if fighter.is_prev_status(parachute_status) && fighter.status_frame() > 10 {    // 11F landing lag
+        if fighter.is_prev_status(statuses::gamewatch::SPECIAL_HI_OPEN) && fighter.status_frame() > 10 {    // 11F landing lag
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }

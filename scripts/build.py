@@ -187,7 +187,7 @@ if (is_dev_build and not is_publish):
   plugin_args = " --no-default-features "
   if len(non_dev_characters) > 0:
     # add each non dev character
-    plugin_args += '--features="main_nro","add_status",'
+    plugin_args += '--features="main_nro",'
     no_comma = True
     for arg in iter(non_dev_characters):
       if no_comma:
@@ -220,7 +220,7 @@ if (is_dev_build and not is_publish):
 
 
 else:
-  feature_list = "--features=\"main_nro\",\"add_status\""
+  feature_list = "--features=\"main_nro\""
 
   is_only = False
 
