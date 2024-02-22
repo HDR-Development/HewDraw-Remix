@@ -70,17 +70,6 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &long_sword_scale);
 }
 
-
-unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    // young link dair hold
-    if motion_kind == hash40("attack_air_lw")
-        && frame > 21.0 && frame < 58.0 
-        && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
-    {
-        MotionModule::set_frame_sync_anim_cmd(boma, 60.0, true, true, false);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -120,7 +109,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bombchu_reset(fighter, id, status_kind);
     bombchu_training(fighter, id, status_kind);
 	sword_length(fighter, boma);
-    holdable_dair(boma, motion_kind,frame);
     da_jump(fighter, boma, status_kind, situation_kind);
     fastfall_specials(fighter);
 }
