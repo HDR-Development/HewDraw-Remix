@@ -65,7 +65,9 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
     false.into()
-}pub fn install() {
+}
+
+pub fn install() {
     smashline::Agent::new("bayonetta")
         .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
         .status(

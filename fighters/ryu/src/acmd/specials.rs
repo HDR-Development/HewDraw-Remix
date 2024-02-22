@@ -363,7 +363,8 @@ unsafe extern "C" fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
         }
     }
     wait(lua_state, 2.0);
-    if is_excute(fighter) {  }frame(lua_state, 16.0);
+    if is_excute(fighter) {  }
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }

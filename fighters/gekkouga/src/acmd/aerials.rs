@@ -230,7 +230,8 @@ unsafe extern "C" fn gekkouga_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 50.0);
-    if is_excute(fighter) {  }frame(lua_state, 53.0);
+    if is_excute(fighter) {  }
+    frame(lua_state, 53.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }

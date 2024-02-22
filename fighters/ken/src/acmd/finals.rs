@@ -263,12 +263,14 @@ unsafe extern "C" fn game_finalhit(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 80, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
         }
-    }else{
+    }
+    else{
         if(PostureModule::scale(boma) < 0.5){
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 40, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
             }
-        }else{
+        }
+        else{
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 4.3, 80, 100, 60, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
             }

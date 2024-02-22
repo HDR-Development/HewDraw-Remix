@@ -241,7 +241,8 @@ unsafe extern "C" fn ganon_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         //FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 4.5, 4.5, 12.5, 11);
-    }frame(lua_state, 29.0);
+    }
+    frame(lua_state, 29.0);
         if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }

@@ -110,7 +110,8 @@ unsafe extern "C" fn zelda_attack_dash_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 10, 10, 0, 0, 0, 1.2, true);
-    }frame(lua_state, 24.0);
+    }
+    frame(lua_state, 24.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }

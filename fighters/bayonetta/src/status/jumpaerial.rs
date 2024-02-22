@@ -19,7 +19,9 @@ unsafe extern "C" fn jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     0.into()
-}pub fn install() {
+}
+
+pub fn install() {
     smashline::Agent::new("bayonetta")
         .status(End, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_end)
         .install();

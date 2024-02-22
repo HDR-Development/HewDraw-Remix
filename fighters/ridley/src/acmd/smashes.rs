@@ -68,10 +68,12 @@ unsafe extern "C" fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
-    }frame(lua_state, 21.0);
+    }
+    frame(lua_state, 21.0);
     if is_excute(fighter) {
         slope!(fighter,*MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
-    }frame(lua_state, 24.0);
+    }
+    frame(lua_state, 24.0);
     if is_excute(fighter) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);

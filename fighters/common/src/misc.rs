@@ -248,7 +248,8 @@ unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
             if speed_x > 0. {
                 EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
                 &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
-            }else{
+            }
+            else{
                 rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
                 EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
                 &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);

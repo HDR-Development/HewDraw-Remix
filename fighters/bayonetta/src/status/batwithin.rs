@@ -22,7 +22,9 @@ unsafe extern "C" fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
     }
     0.into()
-}pub fn install() {
+}
+
+pub fn install() {
     smashline::Agent::new("bayonetta")
         .status(End, *FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN, batwithin_end)
         .install();

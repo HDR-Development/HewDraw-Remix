@@ -19,7 +19,9 @@ unsafe extern "C" fn escape_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.sub_status_end_EscaleFB();
     }
     0.into()
-}pub fn install() {
+}
+
+pub fn install() {
     smashline::Agent::new("bayonetta")
         .status(End, *FIGHTER_STATUS_KIND_ESCAPE_F, escape_f_end)
         .status(End, *FIGHTER_STATUS_KIND_ESCAPE_B, escape_b_end)

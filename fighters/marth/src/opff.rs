@@ -120,7 +120,9 @@ pub unsafe fn marth_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
-}pub fn install() {
+}
+
+pub fn install() {
     smashline::Agent::new("marth")
         .on_line(Main, marth_frame_wrapper)
         .install();

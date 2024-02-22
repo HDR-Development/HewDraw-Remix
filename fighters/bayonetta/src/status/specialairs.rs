@@ -238,7 +238,9 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
         rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
         ModelModule::set_joint_rotate(fighter.module_accessor, joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     }
-}pub fn install() {
+}
+
+pub fn install() {
     smashline::Agent::new("bayonetta")
         .status(
             Main,
