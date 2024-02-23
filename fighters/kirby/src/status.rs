@@ -254,9 +254,18 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 pub fn install() {
     special_hi_h::install();
+    gaogaen_special_n::install();
+    luigi_special_n::install();
+    mario_special_n::install();
+    mariod_special_n::install();
+    ridley_special_n::install();
+    ganon_special_n::install();
     ganon_special_n_float::install();
+    koopa_special_n::install();
     littlemac_special_n::install();
     diddy_special_n_cancel::install();
+    lucas_special_n::install();
+    sonic::install();
     edge_special_n::install();
 
     smashline::Agent::new("kirby")
