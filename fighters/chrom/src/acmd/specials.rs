@@ -918,7 +918,7 @@ unsafe fn game_specialhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", scripts = ["game_speciallw", "game_specialairlow"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "chrom", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
 unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
