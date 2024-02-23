@@ -2,7 +2,7 @@ use super::*;
 
 // disables art wheel during hitstun, and enables it during jab, da, tilts and aerials
 
-#[skyline::hook(offset = 0x116a3b0)]
+#[skyline::hook(offset = 0x116a3d0)]
 pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) -> u64 {
     let module_accessor = (fighter.battle_object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -28,7 +28,6 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) 
             *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
             *FIGHTER_STATUS_KIND_ATTACK, // new
             *FIGHTER_STATUS_KIND_ATTACK_100, // new
-            *FIGHTER_STATUS_KIND_ATTACK_DASH, // new
             *FIGHTER_STATUS_KIND_ATTACK_S3, // new
             *FIGHTER_STATUS_KIND_ATTACK_HI3, // new
             *FIGHTER_STATUS_KIND_ATTACK_LW3, // new

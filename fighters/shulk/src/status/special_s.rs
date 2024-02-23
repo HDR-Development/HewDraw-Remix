@@ -121,8 +121,7 @@ unsafe extern "C" fn shulk_special_s_main_loop(fighter: &mut L2CFighterCommon) -
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-                if VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 2
-                || VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 4 {
+                if VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 5 {
                     fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
                 }
                 else {
@@ -133,7 +132,8 @@ unsafe extern "C" fn shulk_special_s_main_loop(fighter: &mut L2CFighterCommon) -
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
                 if VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 2
-                || VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 4 {
+                || VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 4 
+                || VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 5 {
                     fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
                 }
                 else {
