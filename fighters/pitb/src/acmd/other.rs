@@ -229,6 +229,55 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pitb", script = "effect_appealsl" , category = ACMD_EFFECT , low_priority)]
+unsafe fn appeal_sl_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("pitb_atk_air_n"), Hash40::new("swordr2"), 0, -1, 0, -90, -90, 0, 1, true, 0.3);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, -90, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, -0.06, 0, 180, 90, 0, 1, true);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pitb_atk_air_n"), false, false);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pitb_sword"), false, false);
+    }
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -5, 5, 13, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "pitb", script = "effect_appealsr" , category = ACMD_EFFECT , low_priority)]
+unsafe fn appeal_sr_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("pitb_atk_air_n"), Hash40::new("swordr2"), 0, -1, 0, -90, -90, 0, 1, true, 0.3);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, -90, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, -0.06, 0, 180, 90, 0, 1, true);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pitb_atk_air_n"), false, false);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pitb_sword"), false, false);
+    }
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 5, 13, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -241,6 +290,8 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        appeal_sl_effect,
+        appeal_sr_effect
     );
 }

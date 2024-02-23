@@ -374,10 +374,10 @@ pub mod vars {
         pub mod instance {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
+            pub const SOARING_SLASH_HIT: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SOARING_SLASH_HIT: i32 = 0x1100;
             pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
@@ -525,7 +525,12 @@ pub mod vars {
     pub mod edge {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x1000;
+            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const FLASH_HOLD: i32 = 0x1101;
+            pub const SPECIAL_N_FIRE: i32 = 0x1102;
         }
     }
 
@@ -672,6 +677,8 @@ pub mod vars {
             pub use super::super::luigi::status::THUNDERHAND;
             pub use super::super::mariod::status::CHILL_PILL;
             pub const MINING_TIMER: i32 = 0x11F4;
+            pub const KO_PUNCH_GRAVITY: i32 = 0x11F5;
+            pub const KO_PUNCH_GRAVITY_END: i32 = 0x11F6;
         }
     }
 
@@ -903,6 +910,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
+            pub const SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE: i32 = 0x0101;
         }
         pub mod status {
             // flags

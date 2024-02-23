@@ -49,10 +49,10 @@ attack_s3_s:
     cancel_frame: 40
 special_n_end:
   extra:
-    cancel_frame: 38
+    cancel_frame: 28
 special_n_end2:
   extra:
-    cancel_frame: 38
+    cancel_frame: 30
 special_n_end3:
   extra:
     cancel_frame: 38

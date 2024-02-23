@@ -5,10 +5,6 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, fighter_kind
     if StatusModule::is_changing(boma) {
         return;
     }
-    // No reversal for Chrom
-    if fighter_kind == *FIGHTER_KIND_CHROM {
-        return;
-    }
 
     // Marth/Lucina frame 6
     // Roy frame 10

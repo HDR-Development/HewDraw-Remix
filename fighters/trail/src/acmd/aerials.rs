@@ -367,7 +367,7 @@ unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let attack_end_frame = 25.0;
     let attack_duration = 7.0;
     let attack_duration_rate = (attack_end_frame-attack_start_frame)/attack_duration;
-    let spike_start_frame = attack_start_frame + 4.0*attack_duration_rate;
+    let spike_start_frame = attack_start_frame + 5.0*attack_duration_rate;
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, (10.0-1.0)/3.0);

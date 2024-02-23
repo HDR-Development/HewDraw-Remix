@@ -363,6 +363,42 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "duckhunt", scripts = ["effect_appealsl", "effect_appealsr"], category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+}
+
+#[acmd_script( agent = "duckhunt", scripts = ["sound_appealsl", "sound_appealsr"], category = ACMD_SOUND , low_priority)]
+unsafe fn sound_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        let handle = SoundModule::play_se(boma, Hash40::new("se_duckhunt_appeal_s01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 3.0, 0);
+    }
+}
+
+#[acmd_script( agent = "duckhunt", scripts = ["expression_appealsl", "expression_appealsr"], category = ACMD_EXPRESSION , low_priority)]
+unsafe fn expression_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 10);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_superleaf"), 72, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 88.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -382,7 +418,10 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        effect_appeals,
+        sound_appeals,
+        expression_appeals
     );
 }
 

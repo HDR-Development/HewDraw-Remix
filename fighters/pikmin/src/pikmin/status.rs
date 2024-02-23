@@ -4,9 +4,12 @@ use globals::*;
 
 pub fn install() {
     install_status_scripts!(
-        special_s_cling_main
+        special_s_cling_main,
+        special_s_cling_remove_end,
     );
 }
+
+// WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING
 
 #[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -36,6 +39,7 @@ pub unsafe fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let p = PikminInfo::from(variation);
     VarModule::set_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER, 0);
     VarModule::off_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME);
+    VarModule::off_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
 
     fighter.fastshift(L2CValue::Ptr(special_s_cling_main_loop as *const () as _))
 }
@@ -47,15 +51,19 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
     let variation = fighter.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
 
-    let is_attack = AttackModule::is_attack(fighter.module_accessor, 0, false);
-    if is_attack && !VarModule::is_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME) {
-        VarModule::inc_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER);
-    }
-    VarModule::set_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME, is_attack);
-
-    if VarModule::get_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER) >= p.cling_frame{
-        fighter.change_status(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE.into(), false.into());
-        return 1.into();
+    if !fighter.global_table[IS_STOPPING].get_bool()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    {
+        let is_attack = AttackModule::is_attack(fighter.module_accessor, 0, false);
+        if is_attack && !VarModule::is_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME) {
+            VarModule::inc_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER);
+        }
+        VarModule::set_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME, is_attack);
+        if VarModule::get_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER) >= p.cling_frame{
+            VarModule::on_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
+            fighter.change_status(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE.into(), false.into());
+            return 1.into();
+        }
     }
 
     if fighter.is_flag(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_S_CLING_ENEMY)
@@ -78,4 +86,12 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
     }
 
     return 0.into();
+}
+
+// WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE
+
+#[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn special_s_cling_remove_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
+    original!(fighter)
 }
