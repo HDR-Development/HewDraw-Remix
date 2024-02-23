@@ -314,10 +314,10 @@ captain_special_air_n_turn:
     cancel_frame: 103
 chrom_special_n_end:
   extra:
-    cancel_frame: 38
+    cancel_frame: 28
 chrom_special_n_end2:
   extra:
-    cancel_frame: 38
+    cancel_frame: 30
 chrom_special_n_end3:
   extra:
     cancel_frame: 38
