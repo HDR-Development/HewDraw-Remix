@@ -39,6 +39,6 @@ pub fn install() {
     special_hi_escape::install();
     special_hi_damage::install();
     smashline::Agent::new("koopajr")
-        .on_init(koopajr_init)
+        .on_start(koopajr_init)
         .install();
 }

@@ -50,6 +50,6 @@ pub fn install() {
     special_hi::install();
     smashline::Agent::new("diddy")
         .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, end_jump_squat)
-        .on_init(diddy_init)
+        .on_start(diddy_init)
         .install();
 }

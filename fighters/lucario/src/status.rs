@@ -115,7 +115,7 @@ pub fn install() {
     special_n::install();
     special_s::install();
     smashline::Agent::new("lucario")
-        .on_init(lucario_init)
+        .on_start(lucario_init)
         .status(Main, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, shield_break_fly_main)
         .status(Main, *FIGHTER_STATUS_KIND_DEAD, dead_main)
         .status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry_main)

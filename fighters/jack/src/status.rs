@@ -76,7 +76,6 @@ extern "C" fn jack_init(fighter: &mut L2CFighterCommon) {
 pub fn install() {
     dispatch::install();
     doyle::install();
-    special_lw::install();
     summon::install();
-    smashline::Agent::new("jack").on_init(jack_init).install();
+    smashline::Agent::new("jack").on_start(jack_init).install();
 }

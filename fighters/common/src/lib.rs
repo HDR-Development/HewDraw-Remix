@@ -41,6 +41,6 @@ pub fn install() {
     opff::install();
 
     Agent::new("fighter")
-        .on_init(common_init)
+        .on_start(common_init)
         .install();
 }

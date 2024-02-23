@@ -43,6 +43,6 @@ pub fn install() {
     smashline::Agent::new("inkling")
         .status(Main, *FIGHTER_STATUS_KIND_GUARD_ON, guard_on)
         .status(Main, *FIGHTER_STATUS_KIND_GUARD, guard)
-        .on_init(inkling_init)
+        .on_start(inkling_init)
         .install();
 }

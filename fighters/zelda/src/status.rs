@@ -45,7 +45,7 @@ extern "C" fn zelda_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::Agent::new("zelda").on_init(zelda_init).install();
+    smashline::Agent::new("zelda").on_start(zelda_init).install();
     dein::install();
     phantom::install();
 }

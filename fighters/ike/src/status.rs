@@ -41,5 +41,5 @@ extern "C" fn ike_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ike").on_init(ike_init).install();
+    smashline::Agent::new("ike").on_start(ike_init).install();
 }

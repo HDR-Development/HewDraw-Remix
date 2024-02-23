@@ -63,5 +63,5 @@ extern "C" fn brave_init(fighter: &mut L2CFighterCommon) {
 pub fn install() {
     acmd::install();
     opff::install();
-    smashline::Agent::new("brave").on_init(brave_init).install();
+    smashline::Agent::new("brave").on_start(brave_init).install();
 }

@@ -111,6 +111,6 @@ extern "C" fn eflame_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::Agent::new("eflame")
-        .on_init(eflame_init)
+        .on_start(eflame_init)
         .install();
 }

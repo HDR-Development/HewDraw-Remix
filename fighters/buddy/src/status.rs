@@ -292,7 +292,7 @@ pub fn install() {
         .status(Pre, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, buddy_special_s_dash_pre)
         .status(Main, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, buddy_special_s_dash_main)
         .status(Pre, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, buddy_special_s_fail_pre)
-        .on_init(buddy_init)
+        .on_start(buddy_init)
         .install();
     smashline::Agent::new("buddy")
         .status(Pre, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_pre)

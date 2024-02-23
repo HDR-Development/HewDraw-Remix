@@ -59,5 +59,5 @@ pub fn install() {
     special_hi::install();
     special_n_hit::install();
 
-    smashline::Agent::new("sonic").on_init(sonic_init).install();
+    smashline::Agent::new("sonic").on_start(sonic_init).install();
 }

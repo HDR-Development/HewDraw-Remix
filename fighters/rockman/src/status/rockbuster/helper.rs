@@ -324,5 +324,3 @@ pub unsafe extern "C" fn rockman_rockbuster_walk_mot_helper(_fighter: &mut L2CFi
     }
     false.into()
 }
-
-pub fn install() {}

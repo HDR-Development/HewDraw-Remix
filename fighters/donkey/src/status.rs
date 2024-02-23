@@ -74,6 +74,6 @@ pub fn install() {
     super_lift::install();
 
     smashline::Agent::new("donkey")
-        .on_init(donkey_init)
+        .on_start(donkey_init)
         .install();
 }

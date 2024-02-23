@@ -79,6 +79,6 @@ pub fn install() {
     opff::install();
     smashline::Agent::new("packun")
         .on_start(packun_reset)
-        .on_init(packun_init)
+        .on_start(packun_init)
         .install();
 }

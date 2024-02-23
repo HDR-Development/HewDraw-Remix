@@ -22,6 +22,6 @@ extern "C" fn rosetta_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::Agent::new("rosetta")
-        .on_init(rosetta_init)
+        .on_start(rosetta_init)
         .install();
 }

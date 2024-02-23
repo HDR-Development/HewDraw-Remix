@@ -49,7 +49,7 @@ extern "C" fn peach_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::Agent::new("peach").on_init(peach_init).install();
+    smashline::Agent::new("peach").on_start(peach_init).install();
     attack_air::install();
     jump_aerial::install();
     special_hi::install();

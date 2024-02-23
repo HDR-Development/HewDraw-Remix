@@ -47,7 +47,7 @@ extern "C" fn shizue_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::Agent::new("shizue")
-        .on_init(shizue_init)
+        .on_start(shizue_init)
         .install();
 
     acmd::install();

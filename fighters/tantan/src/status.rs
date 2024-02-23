@@ -319,7 +319,7 @@ unsafe extern "C" fn tantan_special_hi_air_reach_exec(fighter: &mut L2CFighterCo
 }
 pub fn install() {
     smashline::Agent::new("tantan")
-        .on_init(tantan_init)
+        .on_start(tantan_init)
         .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
         .status(Pre, *FIGHTER_STATUS_KIND_JUMP_SQUAT, pre_jump_squat)
         .status(

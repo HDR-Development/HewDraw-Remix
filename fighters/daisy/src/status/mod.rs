@@ -46,7 +46,7 @@ extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::Agent::new("daisy").on_init(daisy_init).install();
+    smashline::Agent::new("daisy").on_start(daisy_init).install();
     special_s::install();
     special_lw::install();
 }

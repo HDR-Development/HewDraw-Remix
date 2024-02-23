@@ -151,7 +151,7 @@ pub fn install() {
     special_hi::install();
 
     smashline::Agent::new("wario")
-        .on_init(wario_init)
+        .on_start(wario_init)
         .status(Exec, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_exec)
         .status(End, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_end)
         .status(Pre, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_pre)

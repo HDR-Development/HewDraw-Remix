@@ -48,7 +48,7 @@ extern "C" fn dedede_init(fighter: &mut L2CFighterCommon){
 
 pub fn install() {
     smashline::Agent::new("dedede")
-        .on_init(dedede_init)
+        .on_start(dedede_init)
         .install();
     acmd::install();
     opff::install();

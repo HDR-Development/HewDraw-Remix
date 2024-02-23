@@ -18,31 +18,23 @@ mod edge_special_n;
 extern "C" fn kirby_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_KIRBY {
-            fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
-            fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(ganon_should_use_special_n_callback as *const () as _));
-            fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(shoto_check_special_command as *const () as _));
+        fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+        fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(ganon_should_use_special_n_callback as *const () as _));
+        fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(shoto_check_special_command as *const () as _));
 
-            if is_training_mode() {
-                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
-            }
-            else {
-                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
-            }
+        if is_training_mode() {
+            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
         }
-    }
-}
+        else {
+            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+        }
 
-extern "C" fn kirby_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() == *FIGHTER_KIND_KIRBY {
-            //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
-            VarModule::set_int(fighter.object(), LUCAS_CHARGE_TIME, vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL);
-            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
-            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
-            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-        }
+        //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
+        VarModule::set_int(fighter.object(), LUCAS_CHARGE_TIME, vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
     }
 }
 
@@ -252,6 +244,7 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         return smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
 }
+
 pub fn install() {
     special_hi_h::install();
     gaogaen_special_n::install();
@@ -269,8 +262,7 @@ pub fn install() {
     edge_special_n::install();
 
     smashline::Agent::new("kirby")
-        .on_init(kirby_init)
-        .on_start(kirby_reset)
+        .on_start(kirby_init)
         .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
         .status(
             MapCorrection,

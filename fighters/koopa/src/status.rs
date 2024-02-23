@@ -250,7 +250,7 @@ unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> 
 
 pub fn install() {
     smashline::Agent::new("koopa")
-        .on_init(koopa_init)
+        .on_start(koopa_init)
         .status(Exit, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_charge_exit)
         .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, exec_special_hi_a)
         .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)

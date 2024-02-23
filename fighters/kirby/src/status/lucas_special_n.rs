@@ -184,6 +184,7 @@ unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
     }
     fighter.on_flag(flag_work_id);
 }
+
 pub fn install() {
     smashline::Agent::new("kirby")
         .status(

@@ -442,7 +442,7 @@ pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 pub fn install() {
     smashline::Agent::new("dolly")
-        .on_init(dolly_init)
+        .on_start(dolly_init)
         .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
         .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, init_special_s_command)
         .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, init_special_b)

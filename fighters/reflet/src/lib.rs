@@ -61,6 +61,6 @@ pub fn install() {
     opff::install();
     smashline::Agent::new("reflet")
         .on_start(reflet_reset)
-        .on_init(reflet_init)
+        .on_start(reflet_init)
         .install();
 }

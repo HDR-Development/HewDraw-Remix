@@ -108,6 +108,6 @@ pub fn install() {
     special_hi_finish2::install();
     special_hi::install();
     smashline::Agent::new("elight")
-        .on_init(elight_init)
+        .on_start(elight_init)
         .install();
 }

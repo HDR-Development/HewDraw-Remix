@@ -637,7 +637,7 @@ pub fn install() {
     special_s::install();
 
     smashline::Agent::new("ken")
-        .on_init(ken_init)
+        .on_start(ken_init)
         .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
         .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
         .status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback)

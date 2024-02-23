@@ -1081,7 +1081,7 @@ pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 pub fn install() {
     smashline::Agent::new("ryu")
-        .on_init(ryu_init)
+        .on_start(ryu_init)
         .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
         .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
         .status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback)

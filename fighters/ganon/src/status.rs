@@ -42,7 +42,7 @@ pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ganon").on_init(ganon_init).install();
+    smashline::Agent::new("ganon").on_start(ganon_init).install();
     attack_lw3::install();
     special_n::install();
     special_n_float::install();

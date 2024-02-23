@@ -60,6 +60,6 @@ extern "C" fn gamewatch_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::Agent::new("gamewatch")
-        .on_init(gamewatch_init)
+        .on_start(gamewatch_init)
         .install();
 }

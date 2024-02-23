@@ -383,6 +383,6 @@ pub fn install() {
         )
         .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre)
         .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
-        .on_init(pickel_init)
+        .on_start(pickel_init)
         .install();
 }

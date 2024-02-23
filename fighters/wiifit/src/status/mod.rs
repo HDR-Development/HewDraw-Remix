@@ -21,6 +21,6 @@ extern "C" fn wiifit_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::Agent::new("wiifit")
-        .on_init(wiifit_init)
+        .on_start(wiifit_init)
         .install();
 }

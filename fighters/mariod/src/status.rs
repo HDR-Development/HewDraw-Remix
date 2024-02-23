@@ -23,6 +23,6 @@ extern "C" fn mariod_init(fighter: &mut L2CFighterCommon) {
 pub fn install() {
     special_n::install();
     smashline::Agent::new("mariod")
-        .on_init(mariod_init)
+        .on_start(mariod_init)
         .install();
 }

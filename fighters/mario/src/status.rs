@@ -56,7 +56,7 @@ unsafe extern "C" fn special_lw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2C
 pub fn install() {
     special_n::install();
     smashline::Agent::new("mario")
-        .on_init(mario_init)
+        .on_start(mario_init)
         .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
         .status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_shoot_pre)
         .install();

@@ -26,5 +26,5 @@ pub fn install() {
     special_s::install();
     special_hi::install();
     special_lw::install();
-    smashline::Agent::new("falco").on_init(falco_init).install();
+    smashline::Agent::new("falco").on_start(falco_init).install();
 }

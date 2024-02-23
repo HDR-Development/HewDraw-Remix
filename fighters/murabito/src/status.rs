@@ -119,7 +119,7 @@ pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 pub fn install() {
     smashline::Agent::new("murabito")
-        .on_init(murabito_init)
+        .on_start(murabito_init)
         .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
         .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
         .status(Main, *FIGHTER_STATUS_KIND_JUMP, jump)

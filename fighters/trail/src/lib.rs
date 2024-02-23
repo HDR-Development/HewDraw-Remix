@@ -65,5 +65,5 @@ pub fn install() {
     acmd::install();
     opff::install();
     status::install();
-    smashline::Agent::new("trail").on_init(trail_init).install();
+    smashline::Agent::new("trail").on_start(trail_init).install();
 }
