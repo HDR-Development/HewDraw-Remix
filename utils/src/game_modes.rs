@@ -40,9 +40,9 @@ pub extern "Rust" fn signal_new_game() {
     }
 }
 
-fn detect_new_game(game_state_ptr: u64) -> bool {
-    static mut PREVIOUS_GAME_STATE_PTR: u64 = 0;
+static mut PREVIOUS_GAME_STATE_PTR: u64 = 0;
 
+fn detect_new_game(game_state_ptr: u64) -> bool {
     unsafe {
         let prev = PREVIOUS_GAME_STATE_PTR;
         PREVIOUS_GAME_STATE_PTR = game_state_ptr;
@@ -161,7 +161,7 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
 pub fn install() {
     skyline::install_hooks!(
-        on_rule_select_hook,
-        once_per_game_frame
+        // on_rule_select_hook,
+        // once_per_game_frame
     );
 }
