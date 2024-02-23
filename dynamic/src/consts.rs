@@ -374,10 +374,10 @@ pub mod vars {
         pub mod instance {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
+            pub const SOARING_SLASH_HIT: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SOARING_SLASH_HIT: i32 = 0x1100;
             pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
