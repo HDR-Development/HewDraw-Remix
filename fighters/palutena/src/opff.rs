@@ -311,7 +311,6 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
 
 pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        println!("power board meter");
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         utils::ui::UiManager::set_power_board_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
