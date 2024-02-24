@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "duckhunt", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.1);
@@ -19,8 +18,7 @@ unsafe fn duckhunt_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -36,8 +34,7 @@ unsafe fn duckhunt_attack_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -53,8 +50,7 @@ unsafe fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -80,8 +76,7 @@ unsafe fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "duckhunt", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -98,7 +93,7 @@ unsafe fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -110,8 +105,7 @@ unsafe fn duckhunt_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -132,8 +126,7 @@ unsafe fn duckhunt_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 // Squat Attack
-#[acmd_script( agent = "duckhunt", script = "game_attacksquats3" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -159,8 +152,7 @@ unsafe fn duckhunt_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "effect_attacksquats3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn duckhunt_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -175,13 +167,11 @@ unsafe fn duckhunt_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "sound_attacksquats3" , category = ACMD_SOUND , low_priority)]
-unsafe fn duckhunt_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_duckhunt_appeal_s01"));
         PLAY_SE(agent, Hash40::new("se_duckhunt_appeal_s02"));
     }
     frame(lua_state, 4.0);
@@ -195,8 +185,7 @@ unsafe fn duckhunt_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "expression_attacksquats3" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn duckhunt_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -216,24 +205,19 @@ unsafe fn duckhunt_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
-    }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        duckhunt_attack_s3_hi_game,
-        duckhunt_attack_s3_game,
-        duckhunt_attack_s3_lw_game,
-        duckhunt_attack_squat_s3_game,
-        duckhunt_attack_squat_s3_effect,
-        duckhunt_attack_squat_s3_sound,
-        duckhunt_attack_squat_s3_expression,
-        duckhunt_attack_hi3_game,
-        duckhunt_attack_hi3_expression,
-        duckhunt_attack_lw3_game,
-    );
+    smashline::Agent::new("duckhunt")
+        .acmd("game_attacks3hi", duckhunt_attack_s3_hi_game)
+        .acmd("game_attacks3", duckhunt_attack_s3_game)
+        .acmd("game_attacks3lw", duckhunt_attack_s3_lw_game)
+        .acmd("game_attacksquats3", duckhunt_attack_squat_s3_game)
+        .acmd("effect_attacksquats3", duckhunt_attack_squat_s3_effect)
+        .acmd("sound_attacksquats3", duckhunt_attack_squat_s3_sound)
+        .acmd("expression_attacksquats3", duckhunt_attack_squat_s3_expression)
+        .acmd("game_attackhi3", duckhunt_attack_hi3_game)
+        .acmd("expression_attackhi3", duckhunt_attack_hi3_expression)
+        .acmd("game_attacklw3", duckhunt_attack_lw3_game)
+        .install();
 }
-

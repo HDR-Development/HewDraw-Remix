@@ -14,7 +14,6 @@ with open(paramlabelscsv, mode='r') as infile:
 crackedHashes = set()
 uncrackedHashes = set()
 
-
 for root, dirs, files in os.walk(os.pardir):
     if "build" in root:
         continue

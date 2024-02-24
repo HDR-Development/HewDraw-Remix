@@ -1,8 +1,7 @@
 use super::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn rockman_rockbuster_shoot_turn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_turn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -36,8 +35,7 @@ unsafe fn rockman_rockbuster_shoot_turn_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_rockbuster_shoot_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     rockman_rockbuster_main_helper(fighter, false.into(), false.into(), false.into(), true.into());
     PostureModule::reverse_lr(fighter.module_accessor);
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
@@ -119,7 +117,16 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_main_loop(fighter: &mut L2CFi
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_turn_pre, rockman_rockbuster_shoot_turn_main
-    );
+    smashline::Agent::new("rockman")
+        .status(
+            Pre,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN,
+            rockman_rockbuster_shoot_turn_pre,
+        )
+        .status(
+            Main,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN,
+            rockman_rockbuster_shoot_turn_main,
+        )
+        .install();
 }

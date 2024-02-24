@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "trail", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn trail_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -31,8 +30,7 @@ unsafe fn trail_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn trail_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -49,8 +47,7 @@ unsafe fn trail_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn trail_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -72,9 +69,9 @@ unsafe fn trail_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        trail_throw_b_game,
-        trail_throw_hi_game,
-        trail_throw_lw_game,
-    );
+    smashline::Agent::new("trail")
+        .acmd("game_throwb", trail_throw_b_game)
+        .acmd("game_throwhi", trail_throw_hi_game)
+        .acmd("game_throwlw", trail_throw_lw_game)
+        .install();
 }

@@ -425,6 +425,13 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
 
+    // check parry
+    if fighter.is_parry_input() {
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into();
+    }
+
     // check jump
     if
         fighter.sub_check_button_jump().get_bool() ||
@@ -449,13 +456,6 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
     } else if check_grab_oos(fighter).get_bool() {
-        return true.into();
-    }
-
-    // check parry
-    if fighter.is_parry_input() {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
         return true.into();
     }
 

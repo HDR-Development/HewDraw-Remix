@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "dolly", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -44,8 +42,7 @@ unsafe fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -91,8 +88,7 @@ unsafe fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "expression_attack12" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -104,12 +100,11 @@ unsafe fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -157,8 +152,7 @@ unsafe fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut ex_speed = -3.0;
@@ -253,8 +247,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -398,8 +391,7 @@ unsafe fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "expression_attackdash" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -412,9 +404,9 @@ unsafe fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
     frame(lua_state, 13.0);
@@ -428,14 +420,13 @@ unsafe fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        dolly_attack_11_game,
-        dolly_attack_12_game,
-        dolly_attack_12_expression,
-        dolly_attack_13_game,
-        dolly_attack_dash_game,
-        dolly_attack_dash_effect,
-        dolly_attack_dash_expression,
-    );
+    smashline::Agent::new("dolly")
+        .acmd("game_attack11", dolly_attack_11_game)
+        .acmd("game_attack12", dolly_attack_12_game)
+        .acmd("expression_attack12", dolly_attack_12_expression)
+        .acmd("game_attack13", dolly_attack_13_game)
+        .acmd("game_attackdash", dolly_attack_dash_game)
+        .acmd("effect_attackdash", dolly_attack_dash_effect)
+        .acmd("expression_attackdash", dolly_attack_dash_expression)
+        .install();
 }
-

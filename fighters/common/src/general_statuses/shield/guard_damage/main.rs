@@ -201,7 +201,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
                 app::EColorKind(team_color as i32),
                 Hash40::new("shield_effect_color")
             );
-            let color = smash::phx::Vector3f {
+            let color = Vector3f {
                 x: color.x,
                 y: color.y,
                 z: color.z,

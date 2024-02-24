@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "mewtwo", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -38,8 +36,7 @@ unsafe fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -55,8 +52,7 @@ unsafe fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
@@ -84,10 +80,9 @@ unsafe fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attack_11_game,
-        mewtwo_attack_100_end_game,
-        mewtwo_attack_dash_game,
-    );
+    smashline::Agent::new("mewtwo")
+        .acmd("game_attack11", mewtwo_attack_11_game)
+        .acmd("game_attack100end", mewtwo_attack_100_end_game)
+        .acmd("game_attackdash", mewtwo_attack_dash_game)
+        .install();
 }
-
