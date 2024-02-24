@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "yoshi", script = "game_specialsloop" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_special_s_loop_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_special_s_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -11,9 +10,7 @@ unsafe fn yoshi_special_s_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_specialairsloop" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_special_air_s_loop_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_special_air_s_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -22,9 +19,7 @@ unsafe fn yoshi_special_air_s_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_special_s_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -38,9 +33,7 @@ unsafe fn yoshi_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -54,9 +47,7 @@ unsafe fn yoshi_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -79,8 +70,7 @@ unsafe fn yoshi_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "yoshi", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -101,13 +91,12 @@ unsafe fn yoshi_special_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        yoshi_special_s_loop_game,
-        yoshi_special_air_s_loop_game,
-        yoshi_special_s_end_game,
-        yoshi_special_air_s_end_game,
-        yoshi_special_lw_game,
-        yoshi_special_air_lw_game,
-    );
+    smashline::Agent::new("yoshi")
+        .acmd("game_specialsloop", yoshi_special_s_loop_game)
+        .acmd("game_specialairsloop", yoshi_special_air_s_loop_game)
+        .acmd("game_specialsend", yoshi_special_s_end_game)
+        .acmd("game_specialairsend", yoshi_special_air_s_end_game)
+        .acmd("game_speciallw", yoshi_special_lw_game)
+        .acmd("game_specialairlw", yoshi_special_air_lw_game)
+        .install();
 }
-

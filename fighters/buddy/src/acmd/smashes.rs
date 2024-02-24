@@ -1,9 +1,6 @@
 use super::*;
 
-
-
-#[acmd_script( agent = "buddy", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -48,8 +45,8 @@ unsafe fn buddy_attack_s4_game(fighter: &mut L2CAgentBase) {
     }
 }
 // Uses smash_script, if you prefer to use the built-in macros instead.
-#[acmd_script( agent = "buddy", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
@@ -98,8 +95,8 @@ unsafe fn buddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
         HIT_NO(fighter, 17, *HIT_STATUS_OFF);
     }
 }
-#[acmd_script( agent = "buddy", script = "effect_attackhi4", category = ACMD_EFFECT )]
-unsafe fn buddy_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -124,8 +121,7 @@ unsafe fn buddy_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_attackhi4", category = ACMD_SOUND )]
-unsafe fn buddy_attack_hi4_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -141,8 +137,7 @@ unsafe fn buddy_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn buddy_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -158,7 +153,7 @@ unsafe fn buddy_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
@@ -170,8 +165,7 @@ unsafe fn buddy_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -195,17 +189,15 @@ unsafe fn buddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
     }
 
-
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        buddy_attack_s4_game,
-        buddy_attack_hi4_game,
-        buddy_attack_hi4_sound,
-        buddy_attack_hi4_effect,
-        buddy_attack_hi4_expression,
-        buddy_attack_lw4_game,
-    );
+    smashline::Agent::new("buddy")
+        .acmd("game_attacks4", buddy_attack_s4_game)
+        .acmd("game_attackhi4", buddy_attack_hi4_game)
+        .acmd("effect_attackhi4", buddy_attack_hi4_effect)
+        .acmd("sound_attackhi4", buddy_attack_hi4_sound)
+        .acmd("expression_attackhi4", buddy_attack_hi4_expression)
+        .acmd("game_attacklw4", buddy_attack_lw4_game)
+        .install();
 }

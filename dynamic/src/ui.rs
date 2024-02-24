@@ -54,6 +54,7 @@ extern "C" {
     fn ui_manager_set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
 }
 
+#[allow(non_snake_case)]
 pub mod UiManager {
     pub fn set_dk_barrel_enable(entry_id: u32, enable: bool) {
         unsafe {

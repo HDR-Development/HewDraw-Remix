@@ -1,7 +1,6 @@
 use super::*;
 
-#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_CATCH_PULL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn catch_pull_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn catch_pull_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         *SITUATION_KIND_NONE
     }
@@ -38,8 +37,7 @@ unsafe fn catch_pull_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_CATCH_PULL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         sv_kinetic_energy!(
             clear_speed,
@@ -75,7 +73,7 @@ unsafe extern "C" fn catch_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        catch_pull_main
-    );
+    smashline::Agent::new("donkey")
+        .status(Main, *FIGHTER_STATUS_KIND_CATCH_PULL, catch_pull_main)
+        .install();
 }

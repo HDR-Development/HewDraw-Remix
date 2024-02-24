@@ -10,5 +10,5 @@ utils = { package = "dynamic", path = "../../dynamic" }
 skyline = "0.2.1"
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 smash_script = { git = "https://github.com/blu-dev/smash-script", branch = "development" }
-smashline = { git = "https://github.com/blu-dev/smashline", branch = "development" }
+smashline = { git = "https://github.com/HDR-Development/smashline" }
 smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }

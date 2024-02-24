@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "krool", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -31,8 +30,7 @@ unsafe fn krool_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -54,8 +52,7 @@ unsafe fn krool_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -82,8 +79,7 @@ unsafe fn krool_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -106,8 +102,7 @@ unsafe fn krool_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", scripts = ["game_specialnspitf", "game_specialairnspitf"], category = ACMD_GAME, low_priority )]
-unsafe fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -150,8 +145,7 @@ unsafe fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", scripts = ["game_specialnspitb", "game_specialairnspitb"], category = ACMD_GAME, low_priority )]
-unsafe fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -194,12 +188,14 @@ unsafe fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        krool_throw_f_game,
-        krool_throw_b_game,
-        krool_throw_hi_game,
-        krool_throw_lw_game,
-        krool_special_n_spit_f_game,
-        krool_special_n_spit_b_game,
-    );
+    smashline::Agent::new("krool")
+        .acmd("game_throwf", krool_throw_f_game)
+        .acmd("game_throwb", krool_throw_b_game)
+        .acmd("game_throwhi", krool_throw_hi_game)
+        .acmd("game_throwlw", krool_throw_lw_game)
+        .acmd("game_specialnspitf", krool_special_n_spit_f_game)
+        .acmd("game_specialairnspitf", krool_special_n_spit_f_game)
+        .acmd("game_specialnspitb", krool_special_n_spit_b_game)
+        .acmd("game_specialairnspitb", krool_special_n_spit_b_game)
+        .install();
 }

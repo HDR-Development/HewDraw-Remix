@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "shulk", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -32,8 +30,7 @@ unsafe fn shulk_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -61,8 +58,7 @@ unsafe fn shulk_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -104,8 +100,7 @@ unsafe fn shulk_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -163,8 +158,7 @@ unsafe fn shulk_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -222,12 +216,11 @@ unsafe fn shulk_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        shulk_attack_air_n_game,
-        shulk_attack_air_f_game,
-        shulk_attack_air_b_game,
-        shulk_attack_air_hi_game,
-        shulk_attack_air_lw_game,
-    );
+    smashline::Agent::new("shulk")
+        .acmd("game_attackairn", shulk_attack_air_n_game)
+        .acmd("game_attackairf", shulk_attack_air_f_game)
+        .acmd("game_attackairb", shulk_attack_air_b_game)
+        .acmd("game_attackairhi", shulk_attack_air_hi_game)
+        .acmd("game_attackairlw", shulk_attack_air_lw_game)
+        .install();
 }
-

@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "sheik", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -27,8 +26,7 @@ unsafe fn sheik_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -63,8 +61,8 @@ unsafe fn sheik_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-#[acmd_script( agent = "sheik", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sheik_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sheik_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -74,8 +72,7 @@ unsafe fn sheik_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -104,8 +101,7 @@ unsafe fn sheik_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -136,8 +132,7 @@ unsafe fn sheik_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -150,8 +145,7 @@ unsafe fn expression_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -185,8 +179,7 @@ unsafe fn sheik_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sheik_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -203,8 +196,7 @@ unsafe fn sheik_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "sound_landingairlw" , category = ACMD_SOUND , low_priority)]
-unsafe fn sheik_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -213,8 +205,7 @@ unsafe fn sheik_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -227,8 +218,7 @@ unsafe fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn sheik_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -243,17 +233,17 @@ unsafe fn sheik_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sheik_attack_air_n_game,
-        sheik_attack_air_f_game,
-        sheik_attack_air_f_effect,
-        sheik_attack_air_b_game,
-        sheik_attack_air_hi_game,
-        expression_attackairhi,
-        sheik_attack_air_lw_game,
-        sheik_attack_air_lw_effect,
-        sheik_attack_air_lw_expression,
-        sheik_landing_air_lw_sound,
-        sheik_landing_air_lw_expression,
-    );
+    smashline::Agent::new("sheik")
+        .acmd("game_attackairn", sheik_attack_air_n_game)
+        .acmd("game_attackairf", sheik_attack_air_f_game)
+        .acmd("effect_attackairf", sheik_attack_air_f_effect)
+        .acmd("game_attackairb", sheik_attack_air_b_game)
+        .acmd("game_attackairhi", sheik_attack_air_hi_game)
+        .acmd("expression_attackairhi", expression_attackairhi)
+        .acmd("game_attackairlw", sheik_attack_air_lw_game)
+        .acmd("effect_attackairlw", sheik_attack_air_lw_effect)
+        .acmd("sound_landingairlw", sheik_landing_air_lw_sound)
+        .acmd("expression_landingairlw", sheik_landing_air_lw_expression)
+        .acmd("expression_attackairlw", sheik_attack_air_lw_expression)
+        .install();
 }

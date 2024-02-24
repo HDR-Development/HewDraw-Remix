@@ -1,23 +1,6 @@
 use super::*;
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_final,
-        game_finalhit,
-        game_final_com2,
-        game_final_hit1,
-        game_final_hit2,
-        game_final_hit3,
-        game_final_hit4,
-        game_final_hitfinal,
-        game_final2,
-        ken_shinryuken_game_final,
-        ken_shinryuken_effect_final
-    );
-}
-
-#[acmd_script( agent = "ken", scripts = ["game_final", "game_finalair"], category = ACMD_GAME, low_priority )]
-unsafe fn game_final(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.65);
@@ -217,8 +200,7 @@ unsafe fn game_final(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_finalhit", "game_finalhit_com"], category = ACMD_GAME, low_priority )]
-unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_finalhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.65);
@@ -281,12 +263,14 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 80, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
         }
-    }else{
+    }
+    else{
         if(PostureModule::scale(boma) < 0.5){
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 40, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
             }
-        }else{
+        }
+        else{
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 4.3, 80, 100, 60, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
             }
@@ -333,8 +317,7 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_com2", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_com2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_com2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -348,8 +331,7 @@ unsafe fn game_final_com2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit1", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit1(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 25.0);
@@ -363,8 +345,7 @@ unsafe fn game_final_hit1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit2", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 40.0);
@@ -377,8 +358,7 @@ unsafe fn game_final_hit2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit3", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 55.0);
@@ -391,8 +371,7 @@ unsafe fn game_final_hit3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit4", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 64.0);
@@ -405,8 +384,7 @@ unsafe fn game_final_hit4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hitfinal", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 76.0);
@@ -417,8 +395,7 @@ unsafe fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_final2", "game_finalair2"], category = ACMD_GAME, low_priority )]
-unsafe fn game_final2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -490,8 +467,7 @@ unsafe fn game_final2(fighter: &mut L2CAgentBase) {
     frame(lua_state, 90.0);
 }
 
-#[acmd_script( agent = "ken_shinryuken", script = "game_final", category = ACMD_GAME, low_priority )]
-unsafe fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -516,8 +492,7 @@ unsafe fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_shinryuken", script = "effect_final", category = ACMD_EFFECT, low_priority )]
-unsafe fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 51.0);
@@ -529,4 +504,24 @@ unsafe fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("ken_final_shinryuken_beam"), -1);
     }
+}
+pub fn install() {
+    smashline::Agent::new("ken_shinryuken")
+        .acmd("game_final", ken_shinryuken_game_final)
+        .acmd("effect_final", ken_shinryuken_effect_final)
+        .install();
+    smashline::Agent::new("ken")
+        .acmd("game_final", game_final)
+        .acmd("game_finalair", game_final)
+        .acmd("game_finalhit", game_finalhit)
+        .acmd("game_finalhit_com", game_finalhit)
+        .acmd("game_final_com2", game_final_com2)
+        .acmd("game_final_hit1", game_final_hit1)
+        .acmd("game_final_hit2", game_final_hit2)
+        .acmd("game_final_hit3", game_final_hit3)
+        .acmd("game_final_hit4", game_final_hit4)
+        .acmd("game_final_hitfinal", game_final_hitfinal)
+        .acmd("game_final2", game_final2)
+        .acmd("game_finalair2", game_final2)
+        .install();
 }

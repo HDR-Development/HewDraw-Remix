@@ -3,8 +3,8 @@ use globals::*;
 // status script import
 
 /// heavy item carry
-#[status_script(agent = "donkey", status = FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn super_lift_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn super_lift_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.boma(), Hash40::new("super_lift_landing"), 0.0, 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(super_lift_landing_main_loop as *const () as _))
 }
@@ -112,8 +112,8 @@ pub unsafe fn super_lift_jump_squat_b(fighter: &mut smash::lua2cpp::L2CFighterCo
 }
 
 /// opff specifically against the super lift mains
-#[utils::macros::opff(FIGHTER_KIND_DONKEY )]
-pub unsafe fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub unsafe extern "C" fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // call the super lift subroutines
     let status = fighter.status();
     if status == *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_WAIT { super_lift_wait(fighter) } 
@@ -127,9 +127,13 @@ pub unsafe fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommo
     if status == *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_JUMP_SQUAT_B { super_lift_jump_squat_b(fighter) } 
 }
 
-/// standard status script changes
-pub fn install_statuses() {
-    install_status_scripts!(
-        super_lift_landing_main,
-    );
+pub fn install() {
+    smashline::Agent::new("donkey")
+        .status(
+            Main,
+            *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_LANDING,
+            super_lift_landing_main,
+        )
+        .on_line(Main, donkey_frame_wrapper)
+        .install();
 }
