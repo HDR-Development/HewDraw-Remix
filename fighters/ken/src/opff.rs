@@ -64,6 +64,9 @@ extern "Rust" {
 
 unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.battle_object, false);
         MeterModule::set_meter_cap(fighter.object(), 10);
         MeterModule::set_meter_per_level(fighter.object(), 30.0);
@@ -401,6 +404,6 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
 pub fn install() {
     smashline::Agent::new("ken")
         .on_line(Main, ken_frame_wrapper)
-        .on_line(Exec, ken_meter)
+        .on_line(Main, ken_meter)
         .install();
 }

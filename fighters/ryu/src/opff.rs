@@ -63,6 +63,9 @@ extern "Rust" {
 
 unsafe extern "C" fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.battle_object, false);
         utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_ex_meter_info(
@@ -537,6 +540,6 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 pub fn install() {
     smashline::Agent::new("ryu")
         .on_line(Main, ryu_frame_wrapper)
-        .on_line(Exec, ryu_meter)
+        .on_line(Main, ryu_meter)
         .install();
 }

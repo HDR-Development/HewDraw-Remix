@@ -203,6 +203,9 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
 
 unsafe extern "C" fn robot_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         utils::ui::UiManager::set_robot_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_robot_meter_info(
@@ -229,6 +232,6 @@ pub unsafe fn robot_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn install() {
     smashline::Agent::new("robot")
         .on_line(Main, robot_frame_wrapper)
-        .on_line(Exec, robot_meter)
+        .on_line(Main, robot_meter)
         .install();
 }

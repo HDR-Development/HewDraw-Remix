@@ -841,6 +841,9 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         // if fighter.is_button_on(Buttons::AppealAll) {
         //     MeterModule::show(fighter.object());
@@ -873,6 +876,6 @@ pub unsafe fn dolly_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn install() {
     smashline::Agent::new("dolly")
         .on_line(Main, dolly_frame_wrapper)
-        .on_line(Exec, dolly_meter)
+        .on_line(Main, dolly_meter)
         .install();
 }

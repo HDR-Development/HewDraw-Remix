@@ -5,6 +5,9 @@ use globals::*;
 
 pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         MeterModule::set_meter_per_level(fighter.object(), 100.0);
@@ -367,6 +370,6 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 pub fn install() {
     smashline::Agent::new("lucario")
         .on_line(Main, lucario_frame_wrapper)
-        .on_line(Exec, lucario_meter)
+        .on_line(Main, lucario_meter)
         .install();
 }

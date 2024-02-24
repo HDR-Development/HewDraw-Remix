@@ -311,6 +311,9 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
 
 pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         utils::ui::UiManager::set_power_board_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
@@ -339,10 +342,7 @@ pub unsafe fn palutena_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub extern "C" fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_PALUTENA_REFLECTIONBOARD {
-            return
-        }
+    unsafe {
         if weapon.is_status(*WEAPON_PALUTENA_REFLECTIONBOARD_STATUS_KIND_SHOOT) {
             let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let palutena = utils::util::get_battle_object_from_id(owner_id);
@@ -357,7 +357,7 @@ pub extern "C" fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFigh
 pub fn install() {
     smashline::Agent::new("palutena")
         .on_line(Main, palutena_frame_wrapper)
-        .on_line(Exec, palu_power_board)
+        .on_line(Main, palu_power_board)
         .install();
     smashline::Agent::new("palutena_reflectionboard")
         .on_line(Main, reflection_board_callback)
