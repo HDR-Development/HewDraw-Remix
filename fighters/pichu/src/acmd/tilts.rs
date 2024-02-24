@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn pichu_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "pichu", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -36,7 +38,8 @@ unsafe extern "C" fn pichu_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -52,7 +55,8 @@ unsafe extern "C" fn pichu_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -69,7 +73,8 @@ unsafe extern "C" fn pichu_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pichu_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -86,10 +91,11 @@ unsafe extern "C" fn pichu_attack_lw3_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pichu")
-        .acmd("game_attacks3", pichu_attack_s3_s_game)
-        .acmd("game_attackhi3", pichu_attack_hi3_game)
-        .acmd("game_attacklw3", pichu_attack_lw3_game)
-        .acmd("expression_attacklw3", pichu_attack_lw3_expression)
-        .install();
+    install_acmd_scripts!(
+        pichu_attack_s3_s_game,
+        pichu_attack_hi3_game,
+        pichu_attack_lw3_game,
+        pichu_attack_lw3_expression
+    );
 }
+

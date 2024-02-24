@@ -1,5 +1,5 @@
 use parking_lot::RwLock;
-use smash::app::{self, BattleObject, lua_bind::*};
+use smash::app::{self, BattleObject, BattleObjectModuleAccessor, lua_bind::*};
 use smash::lib::lua_const::*;
 use smash::phx::{Hash40, Vector4f};
 use smash::hash40;

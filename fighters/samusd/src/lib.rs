@@ -4,6 +4,7 @@
 
 pub mod acmd;
 
+//pub mod status;
 pub mod opff;
 
 use smash::{
@@ -37,7 +38,8 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
-    opff::install();
+    //status::install();
+    opff::install(is_runtime);
 }

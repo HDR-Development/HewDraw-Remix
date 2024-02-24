@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn gekkouga_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "gekkouga", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -20,7 +22,8 @@ unsafe extern "C" fn gekkouga_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gekkouga_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -36,7 +39,8 @@ unsafe extern "C" fn gekkouga_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -55,7 +59,8 @@ unsafe extern "C" fn gekkouga_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gekkouga_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -71,7 +76,8 @@ unsafe extern "C" fn gekkouga_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -91,7 +97,8 @@ unsafe extern "C" fn gekkouga_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gekkouga_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -107,7 +114,8 @@ unsafe extern "C" fn gekkouga_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -123,7 +131,8 @@ unsafe extern "C" fn gekkouga_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gekkouga_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -159,7 +168,8 @@ unsafe extern "C" fn gekkouga_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn gekkouga_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -175,7 +185,8 @@ unsafe extern "C" fn gekkouga_attack_hi3_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn gekkouga_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -196,7 +207,8 @@ unsafe extern "C" fn gekkouga_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gekkouga_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -212,17 +224,18 @@ unsafe extern "C" fn gekkouga_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("gekkouga")
-        .acmd("game_attacks3hi", gekkouga_attack_s3_hi_game)
-        .acmd("effect_attacks3hi", gekkouga_attack_s3_hi_effect)
-        .acmd("game_attacks3", gekkouga_attack_s3_s_game)
-        .acmd("effect_attacks3", gekkouga_attack_s3_s_effect)
-        .acmd("game_attacks3lw", gekkouga_attack_s3_lw_game)
-        .acmd("effect_attacks3lw", gekkouga_attack_s3_lw_effect)
-        .acmd("game_attackhi3", gekkouga_attack_hi3_game)
-        .acmd("effect_attackhi3", gekkouga_attack_hi3_effect)
-        .acmd("expression_attackhi3", gekkouga_attack_hi3_expression)
-        .acmd("game_attacklw3", gekkouga_attack_lw3_game)
-        .acmd("effect_attacklw3", gekkouga_attack_lw3_effect)
-        .install();
+    install_acmd_scripts!(
+        gekkouga_attack_s3_hi_game,
+        gekkouga_attack_s3_hi_effect,
+        gekkouga_attack_s3_s_game,
+        gekkouga_attack_s3_s_effect,
+        gekkouga_attack_s3_lw_game,
+        gekkouga_attack_s3_lw_effect,
+        gekkouga_attack_hi3_game,
+        gekkouga_attack_hi3_effect,
+        gekkouga_attack_hi3_expression,
+        gekkouga_attack_lw3_game,
+        gekkouga_attack_lw3_effect,
+    );
 }
+

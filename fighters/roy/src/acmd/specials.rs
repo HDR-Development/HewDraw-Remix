@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "roy", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +28,8 @@ unsafe extern "C" fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialnend" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,7 +70,8 @@ unsafe extern "C" fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "sound_specialnend" , category = ACMD_SOUND , low_priority)]
+unsafe fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -79,7 +83,8 @@ unsafe extern "C" fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "expression_specialnend" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -106,7 +111,8 @@ unsafe extern "C" fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialnend2" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -131,7 +137,8 @@ unsafe extern "C" fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialnend3" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -156,7 +163,8 @@ unsafe extern "C" fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -181,7 +189,8 @@ unsafe extern "C" fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairnend" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -222,7 +231,8 @@ unsafe extern "C" fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "sound_specialairnend" , category = ACMD_SOUND , low_priority)]
+unsafe fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -234,7 +244,8 @@ unsafe extern "C" fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "expression_specialairnend" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -261,7 +272,8 @@ unsafe extern "C" fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairnend2" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -286,7 +298,8 @@ unsafe extern "C" fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairnend3" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -311,7 +324,8 @@ unsafe extern "C" fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specials1" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -358,7 +372,8 @@ unsafe extern "C" fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -390,7 +405,8 @@ unsafe extern "C" fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -437,7 +453,8 @@ unsafe extern "C" fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -469,7 +486,8 @@ unsafe extern "C" fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -494,7 +512,8 @@ unsafe extern "C" fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -519,7 +538,8 @@ unsafe extern "C" fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specials2lw" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -571,7 +591,8 @@ unsafe extern "C" fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -603,7 +624,8 @@ unsafe extern "C" fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairs2lw" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -655,7 +677,8 @@ unsafe extern "C" fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -687,7 +710,8 @@ unsafe extern "C" fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -715,7 +739,8 @@ unsafe extern "C" fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -743,7 +768,8 @@ unsafe extern "C" fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specials3s" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -803,7 +829,8 @@ unsafe extern "C" fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -832,7 +859,8 @@ unsafe extern "C" fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairs3s" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -893,7 +921,8 @@ unsafe extern "C" fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -922,7 +951,8 @@ unsafe extern "C" fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -950,7 +980,8 @@ unsafe extern "C" fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -978,7 +1009,8 @@ unsafe extern "C" fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1006,7 +1038,8 @@ unsafe extern "C" fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1034,7 +1067,8 @@ unsafe extern "C" fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1062,7 +1096,8 @@ unsafe extern "C" fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1090,7 +1125,8 @@ unsafe extern "C" fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1143,7 +1179,8 @@ unsafe extern "C" fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1196,7 +1233,8 @@ unsafe extern "C" fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1250,7 +1288,8 @@ unsafe extern "C" fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -1302,7 +1341,8 @@ unsafe extern "C" fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -1323,7 +1363,8 @@ unsafe extern "C" fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_specialairlwhit" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -1341,49 +1382,47 @@ unsafe extern "C" fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("roy")
-        .acmd("game_specialnend", roy_special_n_end_game)
-        .acmd("effect_specialnend", roy_special_n_end_effect)
-        .acmd("sound_specialnend", roy_special_n_end_sound)
-        .acmd("expression_specialnend", roy_special_n_end_expression)
-        .acmd("game_specialnend2", roy_special_n_end2_game)
-        .acmd("game_specialnend3", roy_special_n_end3_game)
-        .acmd("game_specialairnend", roy_special_air_n_end_game)
-        .acmd("effect_specialairnend", roy_special_air_n_end_effect)
-        .acmd("sound_specialairnend", roy_special_air_n_end_sound)
-        .acmd(
-            "expression_specialairnend",
-            roy_special_air_n_end_expression,
-        )
-        .acmd("game_specialairnend2", roy_special_air_n_end2_game)
-        .acmd("game_specialairnend3", roy_special_air_n_end3_game)
-        .acmd("game_specials1", roy_special_s1_game)
-        .acmd("effect_specials1", roy_special_s1_effect)
-        .acmd("game_specialairs1", roy_special_air_s1_game)
-        .acmd("effect_specialairs1", roy_special_air_s1_effect)
-        .acmd("effect_specials2hi", roy_special_s2_hi_effect)
-        .acmd("effect_specialairs2hi", roy_special_air_s2_hi_effect)
-        .acmd("game_specials2lw", roy_special_s2_lw_game)
-        .acmd("effect_specials2lw", roy_special_s2_lw_effect)
-        .acmd("game_specialairs2lw", roy_special_air_s2_lw_game)
-        .acmd("effect_specialairs2lw", roy_special_air_s2_lw_effect)
-        .acmd("effect_specials3hi", roy_special_s3_hi_effect)
-        .acmd("effect_specialairs3hi", roy_special_air_s3_hi_effect)
-        .acmd("game_specials3s", roy_special_s3_s_game)
-        .acmd("effect_specials3s", roy_special_s3_s_effect)
-        .acmd("game_specialairs3s", roy_special_air_s3_s_game)
-        .acmd("effect_specialairs3s", roy_special_air_s3_s_effect)
-        .acmd("effect_specials3lw", roy_special_s3_lw_effect)
-        .acmd("effect_specialairs3lw", roy_special_air_s3_lw_effect)
-        .acmd("effect_specials4hi", roy_special_s4_hi_effect)
-        .acmd("effect_specialairs4hi", roy_special_air_s4_hi_effect)
-        .acmd("effect_specials4s", roy_special_s4_s_effect)
-        .acmd("effect_specialairs4s", roy_special_air_s4_s_effect)
-        .acmd("effect_specials4lw", roy_special_s4_lw_effect)
-        .acmd("effect_specialairs4lw", roy_special_air_s4_lw_effect)
-        .acmd("game_specialhi", roy_special_hi_game)
-        .acmd("game_specialairhi", roy_special_air_hi_game)
-        .acmd("game_speciallwhit", roy_special_lw_hit_game)
-        .acmd("game_specialairlwhit", roy_special_air_lw_hit_game)
-        .install();
+    install_acmd_scripts!(
+        roy_special_n_end_game,
+        roy_special_n_end_effect,
+        roy_special_n_end_sound,
+        roy_special_n_end_expression,
+        roy_special_n_end2_game,
+        roy_special_n_end3_game,
+        roy_special_air_n_end_game,
+        roy_special_air_n_end_effect,
+        roy_special_air_n_end_sound,
+        roy_special_air_n_end_expression,
+        roy_special_air_n_end2_game,
+        roy_special_air_n_end3_game,
+        //roy_special_s1_game,
+        roy_special_s1_effect,
+        //roy_special_air_s1_game,
+        roy_special_air_s1_effect,
+        roy_special_s2_hi_effect,
+        roy_special_air_s2_hi_effect,
+        //roy_special_s2_lw_game,
+        roy_special_s2_lw_effect,
+        //roy_special_air_s2_lw_game,
+        roy_special_air_s2_lw_effect,
+        roy_special_s3_hi_effect,
+        roy_special_air_s3_hi_effect,
+        //roy_special_s3_s_game,
+        roy_special_s3_s_effect,
+        //roy_special_air_s3_s_game,
+        roy_special_air_s3_s_effect,
+        roy_special_s3_lw_effect,
+        roy_special_air_s3_lw_effect,
+        roy_special_s4_hi_effect,
+        roy_special_air_s4_hi_effect,
+        roy_special_s4_s_effect,
+        roy_special_air_s4_s_effect,
+        roy_special_s4_lw_effect,
+        roy_special_air_s4_lw_effect,
+        roy_special_hi_game,
+        roy_special_air_hi_game,
+        roy_special_lw_hit_game,
+        roy_special_air_lw_hit_game,
+    );
 }
+

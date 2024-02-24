@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "murabito", script = "game_speciallw1" , category = ACMD_GAME , low_priority)]
+unsafe fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -24,7 +25,8 @@ unsafe extern "C" fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "murabito", script = "game_speciallw3hit" , category = ACMD_GAME , low_priority)]
+unsafe fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -36,7 +38,8 @@ unsafe extern "C" fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "murabito", script = "game_specialairlw3hit" , category = ACMD_GAME , low_priority)]
+unsafe fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -47,11 +50,13 @@ unsafe extern "C" fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBas
     }
     
 }
+
 
 pub fn install() {
-    smashline::Agent::new("murabito")
-        .acmd("game_speciallw1", murabito_special_lw1_game)
-        .acmd("game_speciallw3hit", murabito_special_lw3_hit_game)
-        .acmd("game_specialairlw3hit", murabito_special_air_lw3_hit_game)
-        .install();
+    install_acmd_scripts!(
+        murabito_special_lw1_game,
+        murabito_special_lw3_hit_game,
+        murabito_special_air_lw3_hit_game,
+    );
 }
+

@@ -38,12 +38,12 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    opff::install();
+    opff::install(is_runtime);
     unsafe {
         // Disables the sword catch animation unless you are completely idle.
-        skyline::patching::Patch::in_text(0xa0caf4).data(0x7100001F);
+        skyline::patching::Patch::in_text(0xa0cad4).data(0x7100001F);
     }
 }

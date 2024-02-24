@@ -2,6 +2,15 @@ macro_rules! install_fighters {
     ($func:ident; $($name:ident = $feature:expr),*) => {{
         $(
             #[cfg(feature = $feature)]
+            { $name::$func(cfg!(feature = "runtime")) }
+        )*
+    }}
+}
+
+macro_rules! delayed_install_fighters {
+    ($func:ident; $($name:ident = $feature:expr),*) => {{
+        $(
+            #[cfg(feature = $feature)]
             { $name::$func() }
         )*
     }}
@@ -44,6 +53,7 @@ pub fn install() {
         ken = "ken",
         kirby = "kirby",
         koopa = "koopa",
+        koopag = "koopag",
         koopajr = "koopajr",
         krool = "krool",
         link = "link",
@@ -105,5 +115,17 @@ pub fn install() {
         yoshi = "yoshi",
         younglink = "younglink",
         zelda = "zelda"
+    }
+}
+
+pub fn delayed_install() {
+    delayed_install_fighters! {
+        delayed_install;
+        diddy = "diddy",
+        elight = "elight",
+        falco = "falco",
+        ganon = "ganon",
+        littlemac = "littlemac",
+        wolf = "wolf"
     }
 }

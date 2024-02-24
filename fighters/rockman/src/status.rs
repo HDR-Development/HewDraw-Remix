@@ -31,13 +31,8 @@ unsafe extern "C" fn rockman_special_lw_uniq(fighter: &mut L2CFighterCommon) -> 
     (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)).into()
 }
 
-unsafe extern "C" fn rockman_check_turn_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let leafshield = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
-    WorkModule::set_flag(fighter.module_accessor, leafshield, *FIGHTER_STATUS_TURN_FLAG_NO_TURN_TO_ESCAPE);
-    false.into()
-}
-
-extern "C" fn agent_reset(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_ROCKMAN {
@@ -49,16 +44,16 @@ extern "C" fn agent_reset(fighter: &mut L2CFighterCommon) {
         fighter.global_table[0x2A].assign(&false.into());
         fighter.global_table[0x2B].assign(&false.into());
         fighter.global_table[0x34].assign(&false.into());
-        fighter.global_table[0x35].assign(&L2CValue::Ptr(rockman_check_turn_uniq as *const () as _));
+        fighter.global_table[0x35].assign(&false.into());
         fighter.global_table[0x4E].assign(&false.into());
         fighter.global_table[USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(rockman_special_lw_uniq as *const () as _));
     }
 }
 
 pub fn install() {
-    smashline::Agent::new("rockman")
-        .on_start(agent_reset)
-        .install();
+    install_agent_resets!(
+        agent_reset
+    );
 
     walk::install();
 

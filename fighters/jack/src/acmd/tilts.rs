@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -38,7 +39,8 @@ unsafe extern "C" fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn jack_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -76,7 +78,8 @@ unsafe extern "C" fn jack_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -114,7 +117,8 @@ unsafe extern "C" fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -143,7 +147,8 @@ unsafe extern "C" fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -177,7 +182,8 @@ unsafe extern "C" fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "expression_attackhi3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -190,11 +196,11 @@ unsafe extern "C" fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
@@ -202,7 +208,8 @@ unsafe extern "C" fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.0);
@@ -222,7 +229,8 @@ unsafe extern "C" fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -234,7 +242,8 @@ unsafe extern "C" fn jack_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "expression_attacklw3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn jack_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -247,7 +256,8 @@ unsafe extern "C" fn jack_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_attack_lw3_ex_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "game_attacklw3_ex" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_attack_lw3_ex_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -302,7 +312,8 @@ unsafe extern "C" fn jack_attack_lw3_ex_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "effect_attacklw3_ex", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -322,7 +333,8 @@ unsafe extern "C" fn jack_attack_lw3_ex_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn jack_attack_lw3_ex_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack", script = "expression_attacklw3_ex", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn jack_attack_lw3_ex_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -343,7 +355,8 @@ unsafe extern "C" fn jack_attack_lw3_ex_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "jack_doyle", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -365,21 +378,19 @@ unsafe extern "C" fn jack_doyle_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("jack")
-        .acmd("game_attacks3hi", jack_attack_s3_hi_game)
-        .acmd("game_attacks3", jack_attack_s3_s_game)
-        .acmd("game_attacks3lw", jack_attack_s3_lw_game)
-        .acmd("game_attackhi3", jack_attack_hi3_game)
-        .acmd("effect_attackhi3", jack_attack_hi3_effect)
-        .acmd("expression_attackhi3", jack_attack_hi3_expression)
-        .acmd("game_attacklw3", jack_attack_lw3_game)
-        .acmd("effect_attacklw3", jack_attack_lw3_effect)
-        .acmd("expression_attacklw3", jack_attack_lw3_expression)
-        .acmd("game_attacklw3_ex", jack_attack_lw3_ex_game)
-        .acmd("effect_attacklw3_ex", jack_attack_lw3_ex_effect)
-        .acmd("expression_attacklw3_ex", jack_attack_lw3_ex_expression)
-        .install();
-    smashline::Agent::new("jack_doyle")
-        .acmd("effect_attacklw3", jack_doyle_attack_lw3_effect)
-        .install();
+    install_acmd_scripts!(
+        jack_attack_s3_hi_game,
+        jack_attack_s3_s_game,
+        jack_attack_s3_lw_game,
+        jack_attack_hi3_game,
+        jack_attack_hi3_effect,
+        jack_attack_hi3_expression,
+        jack_attack_lw3_game,
+        jack_attack_lw3_effect,
+        jack_attack_lw3_expression,
+        jack_attack_lw3_ex_game,
+        jack_attack_lw3_ex_effect,
+        jack_attack_lw3_ex_expression,
+        jack_doyle_attack_lw3_effect,
+    );
 }

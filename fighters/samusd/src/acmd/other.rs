@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd", script = "game_dash" , category = ACMD_GAME , low_priority)]
+unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -14,7 +15,8 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -24,7 +26,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -38,7 +41,8 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_cshot", script = "game_shoot" , category = ACMD_GAME , low_priority)]
+unsafe fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -49,7 +53,8 @@ unsafe extern "C" fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_cshot", script = "sound_shoot", category = ACMD_SOUND, low_priority)]
+unsafe fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -70,7 +75,8 @@ unsafe extern "C" fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME, low_priority)]
+unsafe fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -84,7 +90,8 @@ unsafe extern "C" fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_homing_missile_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_missile", script = "effect_homing", category = ACMD_EFFECT, low_priority)]
+unsafe fn samusd_homing_missile_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -102,7 +109,8 @@ unsafe extern "C" fn samusd_homing_missile_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_super_missile_ready_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME, low_priority)]
+unsafe fn samusd_super_missile_ready_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,7 +119,8 @@ unsafe extern "C" fn samusd_super_missile_ready_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_supermissile", script = "game_straight", category = ACMD_GAME, low_priority)]
+unsafe fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -134,7 +143,8 @@ unsafe extern "C" fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBa
 //     }
 // }
 
-unsafe extern "C" fn samusd_bomb_fall_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_bomb", script = "game_fall", category = ACMD_GAME, low_priority)]
+unsafe fn samusd_bomb_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 22.0);
@@ -143,7 +153,8 @@ unsafe extern "C" fn samusd_bomb_fall_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_bomb", script = "game_burstattack", category = ACMD_GAME, low_priority)]
+unsafe fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -168,7 +179,8 @@ unsafe extern "C" fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_bomb", script = "effect_burstattack", category = ACMD_EFFECT, low_priority)]
+unsafe fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -178,7 +190,8 @@ unsafe extern "C" fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -193,7 +206,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -208,28 +222,19 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("samusd")
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
-    smashline::Agent::new("samusd_cshot")
-        .acmd("game_shoot", samusd_cshot_shoot_game)
-        .acmd("sound_shoot", samusd_cshot_shoot_sound)
-        .install();
-    smashline::Agent::new("samusd_missile")
-        .acmd("game_homing", samusd_homing_missile_game)
-        .acmd("effect_homing", samusd_homing_missile_effect)
-        .install();
-    smashline::Agent::new("samusd_bomb")
-        .acmd("game_fall", samusd_bomb_fall_game)
-        .acmd("game_burstattack", samusd_bomb_burst_attack_game)
-        .acmd("effect_burstattack", samusd_bomb_burst_attack_effect)
-        .install();
-    smashline::Agent::new("samusd_supermissile")
-        .acmd("game_ready", samusd_super_missile_ready_game)
-        .acmd("game_straight", samusd_super_missile_straight_game)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        dash_game,
+        dash_sound,
+        turn_dash_game,
+        samusd_cshot_shoot_game,
+        samusd_cshot_shoot_sound,
+        samusd_homing_missile_game,
+        samusd_homing_missile_effect,
+        samusd_bomb_fall_game,
+        samusd_bomb_burst_attack_game,
+        samusd_bomb_burst_attack_effect,
+    );
 }
+

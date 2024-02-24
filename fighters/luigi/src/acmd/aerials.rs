@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "luigi", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -26,7 +28,8 @@ unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -56,7 +59,8 @@ unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -88,7 +92,8 @@ unsafe extern "C" fn game_attackairb(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -102,7 +107,8 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -125,7 +131,8 @@ unsafe extern "C" fn game_attackairhi(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -134,7 +141,8 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attackairhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -147,7 +155,9 @@ unsafe extern "C" fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "luigi", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -185,14 +195,15 @@ unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("luigi")
-        .acmd("game_attackairn", game_attackairn)
-        .acmd("game_attackairf", game_attackairf)
-        .acmd("game_attackairb", game_attackairb)
-        .acmd("effect_attackairb", effect_attackairb)
-        .acmd("game_attackairhi", game_attackairhi)
-        .acmd("effect_attackairhi", effect_attackairhi)
-        .acmd("expression_attackairhi", expression_attackairhi)
-        .acmd("game_attackairlw", game_attackairlw)
-        .install();
+    install_acmd_scripts!(
+        game_attackairn,
+        game_attackairf,
+        game_attackairb,
+        effect_attackairb,
+        game_attackairhi,
+        effect_attackairhi,
+        expression_attackairhi,
+        game_attackairlw,
+    );
 }
+

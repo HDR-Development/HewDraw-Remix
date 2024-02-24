@@ -3,23 +3,19 @@ use super::*;
 use globals::*;
 // This file contains code for DACUS, DACDS, and gatling attacks
 
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hooks!(
-            sub_attack_dash_uniq,
-            status_AttackDash_Main,
-            status_AttackDash,
-        );
-    }
-}
 pub fn install() {
-    skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, status_AttackDash)
-        .install();
+    install_status_scripts!(
+        //status_pre_AttackDash,
+        status_AttackDash
+    );
+    install_hooks!(
+        sub_attack_dash_uniq,
+        status_AttackDash_Main
+    );
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackDash)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon21status_pre_AttackDashEv")]
 unsafe fn status_pre_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_correct_kind = if ParamModule::is_flag(fighter.object(), ParamType::Shared, "attack_dash_cliff_stop") {
         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP
@@ -53,7 +49,8 @@ unsafe fn status_pre_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     L2CValue::I32(0)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_AttackDash)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon17status_AttackDashEv")]
 unsafe fn status_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_dash"), 0.0, 1.0, false, 0.0, false, false);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
@@ -85,7 +82,7 @@ unsafe fn status_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(status_AttackDash_Main as *const () as _))
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_attack_dash_uniq)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon20sub_attack_dash_uniqEN3lib8L2CValueE")]
 unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
         let catch_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_CATCH_FRAME);
@@ -138,7 +135,7 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
     L2CValue::I32(0)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_AttackDash_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon22status_AttackDash_MainEv")]
 unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool()

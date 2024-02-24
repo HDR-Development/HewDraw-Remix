@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -25,7 +26,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,7 +52,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -75,7 +78,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -90,7 +94,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -115,7 +120,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -136,7 +142,8 @@ unsafe extern "C" fn kamui_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn kamui_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_dash" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -151,7 +158,8 @@ unsafe extern "C" fn kamui_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -161,7 +169,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -180,7 +189,8 @@ unsafe extern "C" fn kamui_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -195,7 +205,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -209,7 +220,8 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_ryusensya_regular_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui_ryusensya", script = "game_regular" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_ryusensya_regular_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -223,20 +235,18 @@ unsafe extern "C" fn kamui_ryusensya_regular_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("kamui_ryusensya")
-        .acmd("game_regular", kamui_ryusensya_regular_game)
-        .install();
-    smashline::Agent::new("kamui")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", kamui_catch_game)
-        .acmd("game_dash", kamui_dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", kamui_turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        kamui_catch_game,
+        kamui_dash_game,
+        dash_sound,
+        kamui_turn_dash_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound,
+        kamui_ryusensya_regular_game,
+    );
 }

@@ -55,7 +55,8 @@ use smashline::*;
     return false.into();
 }*/
 
-extern "C" fn packun_reset(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn packun_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_PACKUN {
@@ -65,7 +66,8 @@ extern "C" fn packun_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-extern "C" fn packun_init(fighter: &mut L2CFighterCommon) {
+#[fighter_init]
+fn packun_init(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[globals::FIGHTER_KIND] != FIGHTER_KIND_PACKUN {
         return;
     }
@@ -73,12 +75,22 @@ extern "C" fn packun_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE, 0);
 }
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
+    if is_runtime {
+        utils::singletons::init();
+    }
+
+    smashline::install_agent_resets!(packun_reset);
+    smashline::install_agent_init_callbacks!(packun_init);
     acmd::install();
     status::install();
-    opff::install();
-    smashline::Agent::new("packun")
-        .on_start(packun_reset)
-        .on_start(packun_init)
-        .install();
+    opff::install(is_runtime);
+    use opff::*;
+    smashline::install_agent_frames!(
+        poisonbreath_frame,
+        spikeball_frame
+    );
+
+    //smashline::install_status_script!(guard_cont_pre);
+
 }

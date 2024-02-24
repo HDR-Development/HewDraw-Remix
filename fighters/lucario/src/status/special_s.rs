@@ -2,9 +2,17 @@ use super::*;
 use globals::*;
 // status script import
 
+pub fn install() {
+    install_status_scripts!(
+        special_s_throw_pre,
+        special_s_throw_main,
+    );
+}
+
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW //
 
-unsafe extern "C" fn special_s_throw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_s_throw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -48,6 +56,7 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
     let rot_start_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_start_interpolate_end_frame");
     let rot_end_interpolate_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_start_frame");
     let rot_end_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_end_frame");
+
 
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
@@ -150,7 +159,8 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
     L2CValue::I32(0)
 }
 
-unsafe extern "C" fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
@@ -184,11 +194,4 @@ unsafe extern "C" fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2C
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_s_throw_main_side as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_throw_main_loop as *const () as _))
-}
-
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, special_s_throw_pre)
-        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, special_s_throw_main)
-        .install();
 }

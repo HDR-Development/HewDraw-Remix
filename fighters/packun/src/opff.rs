@@ -297,7 +297,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     monch(fighter);
 }
 
-pub extern "C" fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_PACKUN )]
+pub fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		packun_frame(fighter);
@@ -310,7 +311,8 @@ pub unsafe fn packun_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
+#[weapon_frame( agent = WEAPON_KIND_PACKUN_POISONBREATH )]
+pub fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -345,7 +347,8 @@ pub extern "C" fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
     }
 }
 
-pub extern "C" fn spikeball_frame(weapon: &mut L2CFighterBase) {
+#[weapon_frame( agent = WEAPON_KIND_PACKUN_SPIKEBALL )]
+pub fn spikeball_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -372,16 +375,4 @@ pub extern "C" fn spikeball_frame(weapon: &mut L2CFighterBase) {
             }
         }
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("packun")
-        .on_line(Main, packun_frame_wrapper)
-        .install();
-    smashline::Agent::new("packun_spikeball")
-        .on_line(Main, spikeball_frame)
-        .install();
-    smashline::Agent::new("packun_poisonbreath")
-        .on_line(Main, poisonbreath_frame)
-        .install();
 }

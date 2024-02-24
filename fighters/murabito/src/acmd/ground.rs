@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn murabito_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "murabito", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn murabito_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -19,8 +21,10 @@ unsafe extern "C" fn murabito_attack_dash_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 30.0/(44.0-10.0));
 }
 
+
 pub fn install() {
-    smashline::Agent::new("murabito")
-        .acmd("game_attackdash", murabito_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        murabito_attack_dash_game,
+    );
 }
+

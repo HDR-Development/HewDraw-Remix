@@ -150,7 +150,8 @@ pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_frame_callback()]
+pub fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             if fighter.is_status(*FIGHTER_STATUS_KIND_DOWN) {
@@ -306,7 +307,8 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_frame_callback()]
+pub fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.left_stick_x() == 0.0 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);

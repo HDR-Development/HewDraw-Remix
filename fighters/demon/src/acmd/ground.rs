@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,7 +51,8 @@ unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand1" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -113,7 +115,8 @@ unsafe extern "C" fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand21" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -162,7 +165,8 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand22" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -219,7 +223,8 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand23" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -255,7 +260,8 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand24" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -287,7 +293,8 @@ unsafe extern "C" fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand31" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -335,7 +342,8 @@ unsafe extern "C" fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand32" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -363,7 +371,8 @@ unsafe extern "C" fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand4" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -406,7 +415,8 @@ unsafe extern "C" fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand5" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -459,7 +469,8 @@ unsafe extern "C" fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackstand6" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -513,7 +524,8 @@ unsafe extern "C" fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attacksquat2", category = ACMD_GAME, low_priority )]
+unsafe fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -543,7 +555,8 @@ unsafe extern "C" fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attacksquat3" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -577,7 +590,8 @@ unsafe extern "C" fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase)
 
 }
 
-unsafe extern "C" fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attacksquat4" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -630,20 +644,20 @@ unsafe extern "C" fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("demon")
-        .acmd("game_attackdash", game_attackdash)
-        .acmd("game_attackstand1", kazuya_left_splits_kick_game)
-        .acmd("game_attackstand21", kazuya_triple_spin_kicks_1_game)
-        .acmd("game_attackstand22", kazuya_triple_spin_kicks_2_game)
-        .acmd("game_attackstand23", kazuya_triple_spin_kicks_3_game)
-        .acmd("game_attackstand24", kazuya_triple_spin_kicks_4_game)
-        .acmd("game_attackstand31", kazuya_tsunami_kick_1_game)
-        .acmd("game_attackstand32", kazuya_tsunami_kick_2_game)
-        .acmd("game_attackstand4", kazuya_stature_smash_game)
-        .acmd("game_attackstand5", kazuya_flash_tornado_game)
-        .acmd("game_attackstand6", kazuya_jump_side_kick_game)
-        .acmd("game_attacksquat2", kazuya_crouch_jab_game)
-        .acmd("game_attacksquat3", kazuya_crouching_spin_kick_game)
-        .acmd("game_attacksquat4", kazuya_demon_god_fist_game)
-        .install();
+    install_acmd_scripts!(
+        game_attackdash,
+        kazuya_left_splits_kick_game,
+        kazuya_triple_spin_kicks_1_game,
+        kazuya_triple_spin_kicks_2_game,
+        kazuya_triple_spin_kicks_3_game,
+        kazuya_triple_spin_kicks_4_game,
+        kazuya_tsunami_kick_1_game,
+        kazuya_tsunami_kick_2_game,
+        kazuya_stature_smash_game,
+        kazuya_flash_tornado_game,
+        kazuya_jump_side_kick_game,
+        kazuya_crouch_jab_game,
+        kazuya_crouching_spin_kick_game,
+        kazuya_demon_god_fist_game,
+    );
 }

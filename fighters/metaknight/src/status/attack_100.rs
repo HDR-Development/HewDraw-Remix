@@ -1,7 +1,8 @@
 use super::*;
 use globals::*;
 
-unsafe extern "C" fn metaknight_attack100_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "metaknight", status = FIGHTER_STATUS_KIND_ATTACK_100, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn metaknight_attack100_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_Attack100_common();
     fighter.sub_shift_status_main(L2CValue::Ptr(metaknight_attack100_main_loop as *const () as _))
 }
@@ -87,7 +88,7 @@ unsafe extern "C" fn metaknight_attack100_main_loop(fighter: &mut L2CFighterComm
 }
 
 pub fn install() {
-    smashline::Agent::new("metaknight")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, metaknight_attack100_main)
-        .install();
+    install_status_scripts!(
+        metaknight_attack100_main,
+    );
 }

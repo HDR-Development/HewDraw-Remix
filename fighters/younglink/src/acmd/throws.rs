@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn younglink_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_throwf" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_throw_f_game(fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -22,7 +23,8 @@ unsafe extern "C" fn younglink_throw_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn younglink_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -46,7 +48,8 @@ unsafe extern "C" fn younglink_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn younglink_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -73,7 +76,8 @@ unsafe extern "C" fn younglink_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn younglink_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -107,10 +111,10 @@ unsafe extern "C" fn younglink_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("younglink")
-        .acmd("game_throwf", younglink_throw_f_game)
-        .acmd("game_throwb", younglink_throw_b_game)
-        .acmd("game_throwhi", younglink_throw_hi_game)
-        .acmd("game_throwlw", younglink_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+        younglink_throw_f_game,
+        younglink_throw_b_game,
+        younglink_throw_hi_game,
+        younglink_throw_lw_game,
+    );
 }

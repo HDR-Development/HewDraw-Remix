@@ -40,7 +40,8 @@ use utils::{
 };
 use smashline::*;
 
-extern "C" fn luigi_reset(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_reset]
+fn luigi_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_LUIGI {
             return;
@@ -67,12 +68,9 @@ pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    status::install();
+pub fn install(is_runtime: bool) {
     acmd::install();
-    opff::install();
-
-    smashline::Agent::new("luigi")
-        .on_start(luigi_reset)
-        .install();
+    status::install();
+    opff::install(is_runtime);
+    smashline::install_agent_resets!(luigi_reset);
 }

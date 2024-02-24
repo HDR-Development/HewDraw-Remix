@@ -61,7 +61,8 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
     1.into()
 }
 
-extern "C" fn jack_init(fighter: &mut L2CFighterCommon) {
+#[fighter_init]
+fn jack_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_JACK {
             return;
@@ -74,8 +75,8 @@ extern "C" fn jack_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    dispatch::install();
+    smashline::install_agent_init_callbacks!(jack_init);
     doyle::install();
     summon::install();
-    smashline::Agent::new("jack").on_start(jack_init).install();
+    dispatch::install();
 }

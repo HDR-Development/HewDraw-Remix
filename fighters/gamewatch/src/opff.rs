@@ -33,11 +33,12 @@ unsafe fn parachute(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
                 return;
             }
-            fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
+            fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
         }
     }
     if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
-        if fighter.is_prev_status(statuses::gamewatch::SPECIAL_HI_OPEN) && fighter.status_frame() > 10 {    // 11F landing lag
+        let parachute_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::gamewatch::SPECIAL_HI_OPEN);
+        if fighter.is_prev_status(parachute_status) && fighter.status_frame() > 10 {    // 11F landing lag
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
@@ -114,7 +115,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-pub extern "C" fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_GAMEWATCH )]
+pub fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		gamewatch_frame(fighter)
@@ -127,7 +129,8 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+#[smashline::weapon_frame_callback(main)]
+pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
             return
@@ -147,14 +150,4 @@ unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             }
         }
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .on_line(Main, gamewatch_frame_wrapper)
-        .install();
-
-    smashline::Agent::new("gamewatch_box")
-        .on_line(Main, box_callback)
-        .install();
 }

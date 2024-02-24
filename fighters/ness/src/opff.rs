@@ -83,6 +83,7 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
         }
     }
 
+
     /*
     if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
         println!("Up Special Interrupt flag active")
@@ -200,7 +201,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pkt2_edgeslipoff(fighter);
 }
 
-pub extern "C" fn ness_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_NESS )]
+pub fn ness_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		ness_frame(fighter)
@@ -213,20 +215,12 @@ pub unsafe fn ness_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub unsafe extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+#[smashline::weapon_frame_callback]
+pub fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_NESS_PK_THUNDER {
             return
         }
         WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("ness")
-        .on_line(Main, ness_frame_wrapper)
-        .install();
-    smashline::Agent::new("ness_pkthunder")
-        .on_line(Main, pkthunder_callback)
-        .install();
 }

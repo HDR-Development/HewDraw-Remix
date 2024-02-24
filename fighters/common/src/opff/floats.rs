@@ -3,6 +3,7 @@ use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
 use smash_script::macros::*;
 
+
 // Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     let mut motion_value = 0.0;
@@ -109,7 +110,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     MotionModule::change_motion(boma, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP {
                     if StatusModule::is_changing(boma) { //peach ground-float mechanic
-                        let pos = Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 3.5, z: PostureModule::pos_z(boma) };
+                        let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 3.5, z: PostureModule::pos_z(boma) };
                         PostureModule::set_pos(boma, &pos);
                     }
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);

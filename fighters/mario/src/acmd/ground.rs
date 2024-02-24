@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -22,7 +23,8 @@ unsafe extern "C" fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -47,7 +49,8 @@ unsafe extern "C" fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -68,7 +71,8 @@ unsafe extern "C" fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "expression_attack13" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -85,7 +89,7 @@ unsafe extern "C" fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.5);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -93,7 +97,8 @@ unsafe extern "C" fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.09);
@@ -126,11 +131,12 @@ unsafe extern "C" fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("mario")
-        .game_acmd("game_attack11", mario_attack_11_game)
-        .game_acmd("game_attack12", mario_attack_12_game)
-        .game_acmd("game_attack13", mario_attack_13_game)
-        .expression_acmd("expression_attack13", mario_attack_13_expression)
-        .game_acmd("game_attackdash", mario_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        mario_attack_11_game,
+        mario_attack_12_game,
+        mario_attack_13_game,
+        mario_attack_13_expression,
+        mario_attack_dash_game,
+    );
 }
+

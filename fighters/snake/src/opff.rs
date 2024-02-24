@@ -113,7 +113,8 @@ fn snake_c4_frame(weapon: &mut L2CFighterBase) {
     }
 }*/
 
-pub extern "C" fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_SNAKE )]
+pub fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		snake_frame(fighter)
@@ -126,24 +127,21 @@ pub unsafe fn snake_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn c4_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    if weapon.kind() != WEAPON_KIND_SNAKE_C4 {
-        return
-    }
-    if weapon.is_status(*WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET) {
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let snake = utils::util::get_battle_object_from_id(owner_id);
-        let snake_boma = &mut *(*snake).module_accessor;
-        let snake_status_kind = StatusModule::status_kind(snake_boma);
-        // Despawn sticky when snake dies
-        if snake_status_kind == *FIGHTER_STATUS_KIND_DEAD {
-            ArticleModule::remove_exist(snake_boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+#[smashline::weapon_frame_callback(main)]
+pub fn c4_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_SNAKE_C4 {
+            return
+        }
+        if weapon.is_status(*WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET) {
+            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let snake = utils::util::get_battle_object_from_id(owner_id);
+            let snake_boma = &mut *(*snake).module_accessor;
+            let snake_status_kind = StatusModule::status_kind(snake_boma);
+            // Despawn sticky when snake dies
+            if snake_status_kind == *FIGHTER_STATUS_KIND_DEAD {
+                ArticleModule::remove_exist(snake_boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            }
         }
     }
-}
-pub fn install() {
-    smashline::Agent::new("snake")
-        .on_line(Main, snake_frame_wrapper)
-        .on_line(Main, c4_callback)
-        .install();
 }

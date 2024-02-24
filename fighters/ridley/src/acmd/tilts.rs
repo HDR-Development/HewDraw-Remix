@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn ridley_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -25,7 +26,8 @@ unsafe extern "C" fn ridley_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ridley_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,7 +52,8 @@ unsafe extern "C" fn ridley_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ridley_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -75,7 +78,8 @@ unsafe extern "C" fn ridley_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ridley_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -106,7 +110,8 @@ unsafe extern "C" fn ridley_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ridley_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "expression_attackhi3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ridley_attack_hi3_expression(fighter: &mut L2CAgentBase) {
    let lua_state = fighter.lua_state_agent;
    let boma = fighter.boma();
    if is_excute(fighter) {
@@ -119,12 +124,13 @@ unsafe extern "C" fn ridley_attack_hi3_expression(fighter: &mut L2CAgentBase) {
    }
    frame(lua_state, 6.0);
    if is_excute(fighter) {
-       RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+       macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
    }
 
 }
 
-unsafe extern "C" fn ridley_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -140,7 +146,8 @@ unsafe extern "C" fn ridley_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ridley_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn ridley_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -155,13 +162,13 @@ unsafe extern "C" fn ridley_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ridley")
-        .acmd("game_attacks3hi", ridley_attack_s3_hi_game)
-        .acmd("game_attacks3", ridley_attack_s3_s_game)
-        .acmd("game_attacks3lw", ridley_attack_s3_lw_game)
-        .acmd("game_attackhi3", ridley_attack_hi3_game)
-        .acmd("expression_attackhi3", ridley_attack_hi3_expression)
-        .acmd("game_attacklw3", ridley_attack_lw3_game)
-        .acmd("effect_attacklw3", ridley_attack_lw3_effect)
-        .install();
+    install_acmd_scripts!(
+        ridley_attack_s3_hi_game,
+        ridley_attack_s3_s_game,
+        ridley_attack_s3_lw_game,
+        ridley_attack_hi3_game,
+        ridley_attack_hi3_expression,
+        ridley_attack_lw3_game,
+        ridley_attack_lw3_effect,
+    );
 }

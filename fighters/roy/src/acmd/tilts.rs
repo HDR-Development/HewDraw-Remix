@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn roy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "roy", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -36,7 +38,8 @@ unsafe extern "C" fn roy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn roy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -53,7 +56,9 @@ unsafe extern "C" fn roy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "roy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -86,7 +91,8 @@ unsafe extern "C" fn roy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn roy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn roy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -103,7 +109,8 @@ unsafe extern "C" fn roy_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "roy", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn roy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -127,11 +134,12 @@ unsafe extern "C" fn roy_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("roy")
-        .acmd("game_attacks3", roy_attack_s3_s_game)
-        .acmd("expression_attacks3", roy_attack_s3_s_expression)
-        .acmd("game_attackhi3", roy_attack_hi3_game)
-        .acmd("expression_attackhi3", roy_attack_hi3_expression)
-        .acmd("game_attacklw3", roy_attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+        roy_attack_s3_s_game,
+        roy_attack_s3_s_expression,
+        roy_attack_hi3_game,
+        roy_attack_hi3_expression,
+        roy_attack_lw3_game,
+    );
 }
+

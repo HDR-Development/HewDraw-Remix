@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn gamewatch_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gamewatch", script = "game_attack11", category = ACMD_GAME, low_priority)]
+unsafe fn gamewatch_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -27,7 +28,8 @@ unsafe extern "C" fn gamewatch_attack_11_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn gamewatch_attack_100_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gamewatch", script = "game_attack100end", category = ACMD_GAME, low_priority )]
+unsafe fn gamewatch_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -45,7 +47,8 @@ unsafe extern "C" fn gamewatch_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gamewatch", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn gamewatch_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.6);
@@ -75,9 +78,9 @@ unsafe extern "C" fn gamewatch_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .acmd("game_attack11", gamewatch_attack_11_game)
-        .acmd("game_attack100end", gamewatch_attack_100_end_game)
-        .acmd("game_attackdash", gamewatch_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        gamewatch_attack_11_game,
+        gamewatch_attack_100_end_game,
+        gamewatch_attack_dash_game,
+    );
 }

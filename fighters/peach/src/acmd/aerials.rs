@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn peach_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -33,7 +34,8 @@ unsafe extern "C" fn peach_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn peach_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -56,7 +58,8 @@ unsafe extern "C" fn peach_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn peach_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -82,7 +85,8 @@ unsafe extern "C" fn peach_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn peach_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -152,7 +156,8 @@ unsafe extern "C" fn peach_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn peach_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn peach_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -169,7 +174,8 @@ unsafe extern "C" fn peach_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn peach_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -203,12 +209,12 @@ unsafe extern "C" fn peach_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("peach")
-        .acmd("game_attackairn", peach_attack_air_n_game)
-        .acmd("game_attackairf", peach_attack_air_f_game)
-        .acmd("game_attackairb", peach_attack_air_b_game)
-        .acmd("game_attackairhi", peach_attack_air_hi_game)
-        .acmd("expression_attackairhi", peach_attack_air_hi_expression)
-        .acmd("game_attackairlw", peach_attack_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        peach_attack_air_n_game,
+        peach_attack_air_f_game,
+        peach_attack_air_b_game,
+        peach_attack_air_hi_game,
+        peach_attack_air_hi_expression,
+        peach_attack_air_lw_game,
+    );
 }

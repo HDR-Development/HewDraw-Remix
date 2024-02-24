@@ -1,7 +1,7 @@
 use super::*;
 use std::arch::asm;
 
-#[skyline::hook(offset = 0x993ee0)]
+#[skyline::hook(offset = 0x993ec0)]
 pub unsafe extern "C" fn donkey_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash2::app::LinkEvent) -> u64 {
     // param_3 + 0x10
     if event.link_event_kind.0 == hash40("capture") {

@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn ryu_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ryu", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -54,7 +56,8 @@ unsafe extern "C" fn ryu_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ryu_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ryu", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -121,7 +124,8 @@ unsafe extern "C" fn ryu_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ryu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ryu", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ryu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.5);
@@ -130,11 +134,12 @@ unsafe extern "C" fn ryu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.5);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn ryu_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ryu", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -220,7 +225,8 @@ unsafe extern "C" fn ryu_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ryu_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ryu", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn ryu_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -235,7 +241,8 @@ unsafe extern "C" fn ryu_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ryu", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -290,6 +297,7 @@ unsafe extern "C" fn ryu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 5.0, 75, 110, 0, 35, 3.0, 0.0, 0.0, 0.0, None, None, None, 2.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         }
 
+
      }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -309,7 +317,8 @@ unsafe extern "C" fn ryu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ryu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ryu", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -391,13 +400,14 @@ unsafe extern "C" fn ryu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ryu")
-        .acmd("game_attackairn", ryu_attack_air_n_game)
-        .acmd("game_attackairf", ryu_attack_air_f_game)
-        .acmd("expression_attackairf", ryu_attack_air_f_expression)
-        .acmd("game_attackairb", ryu_attack_air_b_game)
-        .acmd("effect_attackairb", ryu_attack_air_b_effect)
-        .acmd("game_attackairhi", ryu_attack_air_hi_game)
-        .acmd("game_attackairlw", ryu_attack_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        ryu_attack_air_n_game,
+        ryu_attack_air_f_game,
+        ryu_attack_air_f_expression,
+        ryu_attack_air_b_game,
+        ryu_attack_air_b_effect,
+        ryu_attack_air_hi_game,
+        ryu_attack_air_lw_game,
+    );
 }
+

@@ -81,6 +81,7 @@ unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
     }
 }
 
+
 // boma: its a boma
 // start_frame: frame to start interpolating the waist rotation
 // bend_frame: frame to interpolate to the intended angle amount until
@@ -235,7 +236,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
+pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		gaogaen_frame(fighter)
@@ -261,10 +263,4 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         fighter.check_hitfall();
         fastfall_specials(fighter);
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("gaogaen")
-        .on_line(Main, gaogaen_frame_wrapper)
-        .install();
 }

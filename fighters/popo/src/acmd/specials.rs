@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn popo_special_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "popo", script = "game_specialn" , category = ACMD_GAME , low_priority)]
+unsafe fn popo_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -19,7 +21,8 @@ unsafe extern "C" fn popo_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn popo_special_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "popo", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
+unsafe fn popo_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -38,8 +41,9 @@ unsafe extern "C" fn popo_special_air_n_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("popo")
-        .acmd("game_specialn", popo_special_n_game)
-        .acmd("game_specialairn", popo_special_air_n_game)
-        .install();
+    install_acmd_scripts!(
+        popo_special_n_game,
+        popo_special_air_n_game,
+    );
 }
+

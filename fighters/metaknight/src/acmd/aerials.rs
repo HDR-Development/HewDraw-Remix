@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "metaknight", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -34,7 +36,8 @@ unsafe extern "C" fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -54,7 +57,8 @@ unsafe extern "C" fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -96,7 +100,8 @@ unsafe extern "C" fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -118,7 +123,8 @@ unsafe extern "C" fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn metaknight_attack_air_f_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "sound_attackairf" , category = ACMD_SOUND , low_priority)]
+unsafe fn metaknight_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -136,7 +142,8 @@ unsafe extern "C" fn metaknight_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -160,7 +167,8 @@ unsafe extern "C" fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attackairb(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut handle: u64 = std::u64::MAX;
@@ -179,8 +187,8 @@ unsafe extern "C" fn effect_attackairb(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
     }
 }
-
-unsafe extern "C" fn sound_attackairb(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "sound_attackairb", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -193,7 +201,8 @@ unsafe extern "C" fn sound_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.0/4.0);
@@ -217,7 +226,8 @@ unsafe extern "C" fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -235,7 +245,8 @@ unsafe extern "C" fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -256,7 +267,8 @@ unsafe extern "C" fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -275,18 +287,19 @@ unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("metaknight")
-        .acmd("game_attackairn", metaknight_attack_air_n_game)
-        .acmd("expression_attackairn", metaknight_attack_air_n_expression)
-        .acmd("game_attackairf", metaknight_attack_air_f_game)
-        .acmd("effect_attackairf", metaknight_attack_air_f_effect)
-        .acmd("sound_attackairf", metaknight_attack_air_f_sound)
-        .acmd("game_attackairb", metaknight_attack_air_b_game)
-        .acmd("effect_attackairb", effect_attackairb)
-        .acmd("sound_attackairb", sound_attackairb)
-        .acmd("game_attackairhi", metaknight_attack_air_hi_game)
-        .acmd("effect_attackairhi", effect_attackairhi)
-        .acmd("game_attackairlw", metaknight_attack_air_lw_game)
-        .acmd("effect_attackairlw", effect_attackairlw)
-        .install();
+    install_acmd_scripts!(
+        metaknight_attack_air_n_game,
+        metaknight_attack_air_n_expression,
+        metaknight_attack_air_f_game,
+        metaknight_attack_air_f_effect,
+        metaknight_attack_air_f_sound,
+        metaknight_attack_air_b_game,
+        effect_attackairb,
+        sound_attackairb,
+        metaknight_attack_air_hi_game,
+        effect_attackairhi,
+        metaknight_attack_air_lw_game,
+        effect_attackairlw
+    );
 }
+

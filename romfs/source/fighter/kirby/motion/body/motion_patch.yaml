@@ -202,8 +202,17 @@ koopa_special_air_n_max:
 mewtwo_special_n_shoot:
   extra:
     cancel_frame: 28
-littlemac_special_n:
-  game_script: game_littlemacspecialn
+littlemac_special_n_dash:
+  extra:
+    cancel_frame: 45
+littlemac_special_n_dash_turn:
+  extra:
+    cancel_frame: 54
+littlemac_special_air_n_dash_turn:
+  extra:
+    cancel_frame: 60
+littlemac_special_n_cancel:
+  game_script: game_littlemacspecialncancel
   flags:
     turn: false
     loop: false
@@ -221,18 +230,18 @@ littlemac_special_n:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: littlemacd00specialn.nuanmb
+  - name: littlemacd00specialncancel.nuanmb
   scripts:
-  - expression_littlemacspecialn
-  - sound_littlemacspecialn
-  - effect_littlemacspecialn
+  - expression_littlemacspecialncancel
+  - sound_littlemacspecialncancel
+  - effect_littlemacspecialncancel
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 60
+    cancel_frame: 39
     freeze_during_hitstop: false
-littlemac_special_air_n:
-  game_script: game_littlemacspecialairn
+littlemac_special_air_n_cancel:
+  game_script: game_littlemacspecialairncancel
   flags:
     turn: false
     loop: false
@@ -250,15 +259,15 @@ littlemac_special_air_n:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: littlemacd00specialn.nuanmb
+  - name: littlemacd00specialairncancel.nuanmb
   scripts:
-  - expression_littlemacspecialairn
-  - sound_littlemacspecialairn
-  - effect_littlemacspecialairn
+  - expression_littlemacspecialairncancel
+  - sound_littlemacspecialairncancel
+  - effect_littlemacspecialairncancel
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 60
+    cancel_frame: 39
     freeze_during_hitstop: false
 lucas_special_n_end:
   extra:
@@ -314,10 +323,10 @@ captain_special_air_n_turn:
     cancel_frame: 103
 chrom_special_n_end:
   extra:
-    cancel_frame: 28
+    cancel_frame: 38
 chrom_special_n_end2:
   extra:
-    cancel_frame: 30
+    cancel_frame: 38
 chrom_special_n_end3:
   extra:
     cancel_frame: 38
@@ -403,18 +412,6 @@ donkey_special_n_cancel:
 donkey_special_air_n_cancel:
   extra:
     cancel_frame: 9
-edge_special_n1:
-  extra:
-    cancel_frame: 46
-edge_special_air_n1:
-  extra:
-    cancel_frame: 46
-edge_special_n2:
-  extra:
-    cancel_frame: 60
-edge_special_air_n2:
-  extra:
-    cancel_frame: 60
 falco_special_n_end:
   extra:
     cancel_frame: 19

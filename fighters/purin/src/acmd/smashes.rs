@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn purin_attack_lw4_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "purin", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn purin_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -27,7 +29,8 @@ unsafe extern "C" fn purin_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("purin")
-        .acmd("game_attacklw4", purin_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        purin_attack_lw4_game,
+    );
 }
+

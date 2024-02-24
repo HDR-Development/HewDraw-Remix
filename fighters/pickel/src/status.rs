@@ -2,9 +2,25 @@ use super::*;
 use globals::*;
 // status script import
 
-// prevent steve from spawning the crafting table through vanilla circumstances
+pub fn install() {
+    install_status_scripts!(
+        recreate_table,
+        guarddamage_pre,
+        guarddamage_end,
+        guard,
+        rebirth,
+        entry,
+        attack_air_lw_start_main,
+        special_s_pre,
+        pre_jump
+    );
+    smashline::install_agent_init_callbacks!(pickel_init);
+    skyline::install_hooks!(stuff_hook);
+}
 
-unsafe extern "C" fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue {
+// prevent steve from spawning the crafting table through vanilla circumstances
+#[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_prev_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT)
     || !VarModule::is_flag(fighter.object(), vars::pickel::instance::CAN_RESPAWN_TABLE) {
         VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
@@ -13,23 +29,24 @@ unsafe extern "C" fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue 
         return 1.into();
     }
 
-    smashline::original_status(Main, fighter, *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE)(fighter)
+    return original!(fighter);
 }
 
 // prevent steve's shield from being locked in place after it is damaged (vanilla bug) 
-
-unsafe extern "C" fn guarddamage_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_GUARD_DAMAGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn guarddamage_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.boma(), *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
 
-    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
+    return original!(fighter);
 }
 
-unsafe extern "C" fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_GUARD_DAMAGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_GuardDamage()
 }
 
 // lets the "stuff" article generate in new statuses
-#[skyline::hook(offset = 0xf13d5c, inline)]
+#[skyline::hook(offset = 0xf13d3c, inline)]
 unsafe fn stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let new_shield_statuses = &[
         0x1B, // GUARD_ON
@@ -42,19 +59,19 @@ unsafe fn stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 // keep shield article visible while shielding
-
-pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_GUARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !ArticleModule::is_exist(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF){
         ArticleModule::generate_article(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, false, -1);
         ArticleModule::set_rate(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, 0.0);
     }
 
-    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_GUARD)(fighter)
+    return original!(fighter);
 }
 
 // handles the removal of steves resources when respawning
-
-pub unsafe extern "C" fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue {
     let dirt = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
     let wood = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
     let stone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
@@ -84,12 +101,12 @@ pub unsafe extern "C" fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue {
         FighterSpecializer_Pickel::sub_material_num(fighter.boma(), *FIGHTER_PICKEL_MATERIAL_KIND_RED_STONE, (redstone - init_rstn));
     }
     
-    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_REBIRTH)(fighter)
+    return original!(fighter);
 }
 
 // handles materials when steve is entering the match, to account for salty runbacks
-
-pub unsafe extern "C" fn entry(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_ENTRY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn entry(fighter: &mut L2CFighterCommon) -> L2CValue {
     let dirt = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
     let wood = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
     let stone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
@@ -124,10 +141,11 @@ pub unsafe extern "C" fn entry(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     
-    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
+    return original!(fighter);
 }
 
-unsafe extern "C" fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if pickel_attack_que(fighter).get_bool() {
         return 0.into();
     }
@@ -263,7 +281,8 @@ pub unsafe extern "C" fn attack_air_lw_fail_main_status_loop(fighter: &mut L2CFi
     }
 }
 
-pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
     let trolleyArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
     let canCart = hasIron && !trolleyArticle;
@@ -271,7 +290,7 @@ pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
     }
 
-    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
+    return original!(fighter);
 }
 
 // Prevents side special from being used again if it has already been used once in the current airtime
@@ -314,7 +333,8 @@ unsafe extern "C" fn pickel_jump_status_check(fighter: &mut L2CFighterCommon) ->
     }
 }
 
-pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool()
     {
         return 1.into();
@@ -345,7 +365,8 @@ pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 }
 
-extern "C" fn pickel_init(fighter: &mut L2CFighterCommon) {
+#[fighter_init]
+fn pickel_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != FIGHTER_KIND_PICKEL {
             return;
@@ -363,26 +384,4 @@ extern "C" fn pickel_init(fighter: &mut L2CFighterCommon) {
         VarModule::set_float(fighter.battle_object, vars::pickel::instance::TABLE_HP_TRACKER, 20.0);
         
     }
-}
-pub fn install() {
-    smashline::Agent::new("pickel")
-        .status(
-            Main,
-            *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE,
-            recreate_table,
-        )
-        .status(Pre, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guarddamage_pre)
-        .status(End, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guarddamage_end)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD, guard)
-        .status(Main, *FIGHTER_STATUS_KIND_REBIRTH, rebirth)
-        .status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry)
-        .status(
-            Main,
-            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START,
-            attack_air_lw_start_main,
-        )
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre)
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
-        .on_start(pickel_init)
-        .install();
 }

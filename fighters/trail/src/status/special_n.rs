@@ -1,8 +1,8 @@
 use super::*;
 
 // swapping the cycle order of thundaga and blizzaga
-
-unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[0x10].get_i32();
     WorkModule::set_int(fighter.module_accessor, prev_status, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_STATUS_KIND_ATTACK_PREV);
     let mut magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
@@ -27,7 +27,8 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 1.into();
 }
 
-unsafe extern "C" fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -103,7 +104,8 @@ unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
-unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n2"), L2CValue::Hash40s("special_air_n2"), false.into());
     let initial_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_SPECIAL_N2_HOP) {
         fighter.clear_lua_stack();
@@ -127,19 +129,19 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
         // let mut y_string = aerial_y_speed.to_string();
         // println!("Pre X: {}" , x_string);
         // println!("Pre Y: {}" , y_string);
-        let mut reset_speed_2f = Vector2f { x: aerial_x_speed, y: 0.0 };
-        let mut reset_speed_gravity_2f = Vector2f { x: 0.0, y: 0.0 };
-        let mut reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-        let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
-        let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::KineticEnergy;
-        lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
-        lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
-        lua_bind::KineticEnergy::enable(stop_energy);
-        lua_bind::KineticEnergy::enable(gravity_energy);
+        let mut reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: 0.0 };
+        let mut reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: 0.0 };
+        let mut reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut KineticEnergy;
+        let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut KineticEnergy;
+        smash::app::lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
+        smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
+        smash::app::lua_bind::KineticEnergy::enable(stop_energy);
+        smash::app::lua_bind::KineticEnergy::enable(gravity_energy);
         // Don't allow drift during the move and set accelleration to slow descent
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
-        lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
+        smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
+        smash::app::lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
         // Keep accelleration
         sv_kinetic_energy!(controller_set_accel_x_mul, fighter, aerial_x_speed);
         // Bounds here were made based off testing, may need tweaking if not getting float effect
@@ -160,9 +162,9 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install() {
-    smashline::Agent::new("trail")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre)
-        .status(Pre, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_pre)
-        .status(Main, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_main)
-        .install();
+    install_status_scripts!(
+        special_n_pre,
+        special_n2_pre,
+        special_n2_main
+    );
 }

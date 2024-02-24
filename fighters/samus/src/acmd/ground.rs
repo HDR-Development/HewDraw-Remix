@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
@@ -79,7 +80,8 @@ unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn attack_dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
+unsafe fn attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -102,7 +104,8 @@ unsafe extern "C" fn attack_dash_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -125,7 +128,8 @@ unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
+unsafe fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,7 +145,8 @@ unsafe extern "C" fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -153,16 +158,17 @@ unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
 pub fn install() {
-    smashline::Agent::new("samus")
-        .acmd("game_attackdash", attack_dash)
-        .acmd("sound_attackdash", attack_dash_sound)
-        .acmd("game_attack11", attack_11)
-        .acmd("effect_attack11", samus_attack_11_effect)
-        .acmd("expression_attack12", samus_attack_12_expression)
-        .install();
+    install_acmd_scripts!(
+        attack_dash,
+        attack_dash_sound,
+        attack_11,
+        samus_attack_11_effect,
+        samus_attack_12_expression
+    );
 }
+

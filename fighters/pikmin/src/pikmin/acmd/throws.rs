@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_throwb", "game_throwb_b", "game_throwb_v", "game_throwb_w", "game_throwb_y"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -24,7 +25,8 @@ unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_throwf", "game_throwf_b", "game_throwf_v", "game_throwf_w", "game_throwf_y"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -46,7 +48,8 @@ unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_throwhi", "game_throwhi_b", "game_throwhi_v", "game_throwhi_w", "game_throwhi_y"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -75,7 +78,8 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_throwlw", "game_throwlw_b", "game_throwlw_v", "game_throwlw_w", "game_throwlw_y"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
@@ -103,26 +107,11 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pikmin_pikmin")
-        .acmd("game_throwb", game_throwb)
-        .acmd("game_throwb_b", game_throwb)
-        .acmd("game_throwb_v", game_throwb)
-        .acmd("game_throwb_w", game_throwb)
-        .acmd("game_throwb_y", game_throwb)
-        .acmd("game_throwf", game_throwf)
-        .acmd("game_throwf_b", game_throwf)
-        .acmd("game_throwf_v", game_throwf)
-        .acmd("game_throwf_w", game_throwf)
-        .acmd("game_throwf_y", game_throwf)
-        .acmd("game_throwhi", game_throwhi)
-        .acmd("game_throwhi_b", game_throwhi)
-        .acmd("game_throwhi_v", game_throwhi)
-        .acmd("game_throwhi_w", game_throwhi)
-        .acmd("game_throwhi_y", game_throwhi)
-        .acmd("game_throwlw", game_throwlw)
-        .acmd("game_throwlw_b", game_throwlw)
-        .acmd("game_throwlw_v", game_throwlw)
-        .acmd("game_throwlw_w", game_throwlw)
-        .acmd("game_throwlw_y", game_throwlw)
-        .install();
+    install_acmd_scripts!(
+        game_throwb,
+        game_throwf,
+        game_throwhi,
+        game_throwlw,
+    );
 }
+

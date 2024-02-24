@@ -14,6 +14,7 @@ use smash::app::{self, lua_bind::*, sv_kinetic_energy, sv_animcmd};
 use smash::lua2cpp::L2CFighterCommon;
 use smash::hash40;
 
+
 //===================================================================
 //== MOMENTUM TRANSFER HELPER
 //== Performs some extra calculations to help with momentum handling
@@ -48,6 +49,7 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 		VarModule::set_float(boma.object(), vars::common::instance::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 	}
 }
+
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     let curr_frame = MotionModule::frame(boma);

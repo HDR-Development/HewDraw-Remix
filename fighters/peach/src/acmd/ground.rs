@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn peach_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -29,7 +30,8 @@ unsafe extern "C" fn peach_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn peach_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "peach", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn peach_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -58,7 +60,8 @@ unsafe extern "C" fn peach_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn peach_attack_dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+unsafe fn peach_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -78,9 +81,9 @@ unsafe extern "C" fn peach_attack_dash_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("peach")
-        .acmd("game_attack11", peach_attack_11_game)
-        .acmd("game_attackdash", peach_attack_dash_game)
-        .acmd("effect_attackdash", peach_attack_dash_effect)
-        .install();
+    install_acmd_scripts!(
+        peach_attack_11_game,
+        peach_attack_dash_game,
+        peach_attack_dash_effect
+    );
 }

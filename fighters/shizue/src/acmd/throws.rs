@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn shizue_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue", script = "game_throwf" , category = ACMD_GAME, low_priority)]
+unsafe fn shizue_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -20,7 +21,8 @@ unsafe extern "C" fn shizue_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue", script = "game_throwb" , category = ACMD_GAME, low_priority)]
+unsafe fn shizue_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -44,7 +46,8 @@ unsafe extern "C" fn shizue_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue", script = "game_throwhi" , category = ACMD_GAME, low_priority)]
+unsafe fn shizue_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma(); 
     if is_excute(fighter) {
@@ -58,7 +61,8 @@ unsafe extern "C" fn shizue_throw_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.5);
 }
 
-unsafe extern "C" fn shizue_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue", script = "game_throwlw" , category = ACMD_GAME, low_priority)]
+unsafe fn shizue_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma(); 
     if is_excute(fighter) {
@@ -72,10 +76,10 @@ unsafe extern "C" fn shizue_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("shizue")
-        .acmd("game_throwf", shizue_throw_f_game)
-        .acmd("game_throwb", shizue_throw_b_game)
-        .acmd("game_throwhi", shizue_throw_hi_game)
-        .acmd("game_throwlw", shizue_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+        shizue_throw_f_game,
+        shizue_throw_b_game,
+        shizue_throw_hi_game,
+        shizue_throw_lw_game,
+    );
 }

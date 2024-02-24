@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ganon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -31,7 +33,8 @@ unsafe extern "C" fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ganon_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -53,7 +56,8 @@ unsafe extern "C" fn ganon_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ganon_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -83,7 +87,8 @@ unsafe extern "C" fn ganon_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ganon_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
+unsafe fn ganon_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -97,7 +102,8 @@ unsafe extern "C" fn ganon_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
+unsafe fn ganon_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -111,7 +117,8 @@ unsafe extern "C" fn ganon_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -147,7 +154,8 @@ unsafe extern "C" fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -212,7 +220,8 @@ unsafe extern "C" fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "sound_attackhi3" , category = ACMD_SOUND , low_priority)]
+unsafe fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -226,7 +235,8 @@ unsafe extern "C" fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "expression_attackhi3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -252,7 +262,8 @@ unsafe extern "C" fn ganon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -274,7 +285,8 @@ unsafe extern "C" fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn ganon_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -284,7 +296,8 @@ unsafe extern "C" fn ganon_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw3_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
+unsafe fn ganon_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -294,7 +307,8 @@ unsafe extern "C" fn ganon_attack_lw3_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ganon_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -319,7 +333,8 @@ unsafe extern "C" fn ganon_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw32_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attacklw32" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_lw32_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -332,7 +347,8 @@ unsafe extern "C" fn ganon_attack_lw32_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw32_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_attacklw32", category = ACMD_EFFECT, low_priority )]
+unsafe fn ganon_attack_lw32_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -342,7 +358,8 @@ unsafe extern "C" fn ganon_attack_lw32_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw32_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "sound_attacklw32", category = ACMD_SOUND, low_priority )]
+unsafe fn ganon_attack_lw32_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -352,7 +369,8 @@ unsafe extern "C" fn ganon_attack_lw32_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack_lw32_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "expression_attacklw32", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ganon_attack_lw32_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -378,23 +396,25 @@ unsafe extern "C" fn ganon_attack_lw32_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ganon")
-        .acmd("game_attacks3", ganon_attack_s3_s_game)
-        .acmd("game_attacks3hi", ganon_attack_s3_hi_game)
-        .acmd("game_attacks3lw", ganon_attack_s3_lw_game)
-        .acmd("effect_attacks3hi", ganon_attack_s3_hi_effect)
-        .acmd("effect_attacks3lw", ganon_attack_s3_lw_effect)
-        .acmd("game_attackhi3", ganon_attack_hi3_game)
-        .acmd("effect_attackhi3", ganon_attack_hi3_effect)
-        .acmd("sound_attackhi3", ganon_attack_hi3_sound)
-        .acmd("expression_attackhi3", ganon_attack_hi3_expression)
-        .acmd("game_attacklw3", ganon_attack_lw3_game)
-        .acmd("effect_attacklw3", ganon_attack_lw3_effect)
-        .acmd("sound_attacklw3", ganon_attack_lw3_sound)
-        .acmd("expression_attacklw3", ganon_attack_lw3_expression)
-        .acmd("game_attacklw32", ganon_attack_lw32_game)
-        .acmd("effect_attacklw32", ganon_attack_lw32_effect)
-        .acmd("sound_attacklw32", ganon_attack_lw32_sound)
-        .acmd("expression_attacklw32", ganon_attack_lw32_expression)
-        .install();
+    install_acmd_scripts!(
+        ganon_attack_s3_s_game,
+        ganon_attack_s3_hi_game,
+        ganon_attack_s3_lw_game,
+        ganon_attack_s3_hi_effect,
+        ganon_attack_s3_lw_effect,
+        ganon_attack_hi3_game,
+        ganon_attack_hi3_effect,
+        ganon_attack_hi3_expression,
+        ganon_attack_hi3_sound,
+        ganon_attack_lw3_game,
+        ganon_attack_lw3_effect,
+        ganon_attack_lw3_sound,
+        ganon_attack_lw3_expression,
+
+        ganon_attack_lw32_game,
+        ganon_attack_lw32_effect,
+        ganon_attack_lw32_sound,
+        ganon_attack_lw32_expression,
+    );
 }
+

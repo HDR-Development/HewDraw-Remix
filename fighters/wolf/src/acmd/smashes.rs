@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "wolf", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,7 +29,8 @@ unsafe extern "C" fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -64,7 +67,8 @@ unsafe extern "C" fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+unsafe fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -96,7 +100,8 @@ unsafe extern "C" fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
+unsafe fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -117,12 +122,12 @@ unsafe extern "C" fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
-
 pub fn install() {
-    smashline::Agent::new("wolf")
-        .acmd("game_attacks4", wolf_attack_s4_s_game)
-        .acmd("game_attackhi4", wolf_attack_hi4_game)
-        .acmd("game_attacklw4", wolf_attack_lw4_game)
-        .acmd("effect_attacklw4", wolf_attack_lw4_effect)
-        .install();
+    install_acmd_scripts!(
+        wolf_attack_s4_s_game,
+        wolf_attack_hi4_game,
+        wolf_attack_lw4_game,
+        wolf_attack_lw4_effect,
+    );
 }
+

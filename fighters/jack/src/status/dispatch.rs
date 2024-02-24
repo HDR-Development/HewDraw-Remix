@@ -1,5 +1,6 @@
 use super::*;
 
+#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_DISPATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -28,6 +29,7 @@ pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
+#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_DISPATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe extern "C" fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -84,8 +86,8 @@ unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install() {
-    smashline::Agent::new("jack")
-        .status(Pre, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_pre)
-        .status(Main, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_main)
-        .install();
+    install_status_scripts!(
+        jack_dispatch_pre,
+        jack_dispatch_main
+    );
 }

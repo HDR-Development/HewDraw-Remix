@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn rockman_ladder_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_LADDER_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn rockman_ladder_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_LadderAttack_common();
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if [
@@ -11,21 +12,13 @@ unsafe extern "C" fn rockman_ladder_attack_main(fighter: &mut L2CFighterCommon) 
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_LadderAttack_Main as *const () as _))
 }
 
-unsafe extern "C" fn rockman_ladder_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_LADDER_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn rockman_ladder_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_LadderAttack()
 }
 
 pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_LADDER_ATTACK,
-            rockman_ladder_attack_main,
-        )
-        .status(
-            End,
-            *FIGHTER_STATUS_KIND_LADDER_ATTACK,
-            rockman_ladder_attack_end,
-        )
-        .install();
+    install_status_scripts!(
+        rockman_ladder_attack_main, rockman_ladder_attack_end
+    );
 }

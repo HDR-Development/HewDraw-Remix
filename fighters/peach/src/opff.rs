@@ -26,8 +26,7 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
                 VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
-    }
-    else if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END {
+    }else if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END {
         if VarModule::is_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE) {
             MotionModule::set_rate(boma, 0.6);
         }
@@ -79,7 +78,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-pub extern "C" fn peach_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[::utils::macros::opff(FIGHTER_KIND_PEACH )]
+pub fn peach_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		peach_frame(fighter)
@@ -90,9 +90,4 @@ pub unsafe fn peach_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
-}
-pub fn install() {
-    smashline::Agent::new("peach")
-        .on_line(Main, peach_frame_wrapper)
-        .install();
 }

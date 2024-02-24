@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 use utils::game_modes::CustomMode;
 
+
 #[skyline::hook(replace=StatusModule::change_status_request)]
 unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, status_kind: i32, arg3: bool) -> u64 {
     let mut next_status = status_kind;

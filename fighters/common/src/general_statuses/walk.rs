@@ -7,7 +7,8 @@ macro_rules! interrupt {
     ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_pre_Walk)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_WalkEv")]
 unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
@@ -25,7 +26,7 @@ unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Walk_Common)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon18status_Walk_CommonEv")]
 unsafe fn status_walk_common(fighter: &mut L2CFighterCommon) {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
@@ -43,7 +44,7 @@ unsafe fn status_walk_common(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_walk_uniq_check)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_walk_uniq_checkEv")]
 unsafe extern "C" fn sub_walk_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
@@ -55,7 +56,8 @@ unsafe extern "C" fn sub_walk_uniq_check(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Walk)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon11status_WalkEv")]
 unsafe fn status_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     status_walk_common(fighter);
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -65,7 +67,7 @@ unsafe fn status_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(status_walk_main as *const () as _))
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Walk_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon16status_Walk_MainEv")]
 unsafe extern "C" fn status_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let arg1 = *FIGHTER_STATUS_KIND_WALK_BRAKE;
     let arg2 = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor);
@@ -75,7 +77,7 @@ unsafe extern "C" fn status_walk_main(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Walk_Main_common)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon23status_Walk_Main_commonEN3lib8L2CValueES2_S2_S2_")]
 unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg1: L2CValue, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue) -> L2CValue {
     let walk_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_mul"), 0);
     let walk_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_add"), 0);
@@ -123,24 +125,16 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
     call_original!(fighter, arg1, arg2, arg3, arg4)
 }
 
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hooks!(
-            status_walk_common,
-            sub_walk_uniq_check,
-            status_walk_main,
-            status_walk_main_common,
-            status_pre_walk,
-            status_walk
-        );
-    }
-}
-
 pub fn install() {
-    skyline::nro::add_hook(nro_hook);
+    install_hooks!(
+        status_walk_common,
+        sub_walk_uniq_check,
+        status_walk_main,
+        status_walk_main_common
+    );
 
-    Agent::new("fighter")
-        .status(Pre, *FIGHTER_STATUS_KIND_WALK, status_pre_walk)
-        .status(Main, *FIGHTER_STATUS_KIND_WALK, status_walk)
-        .install();
+    install_status_scripts!(
+        status_pre_walk,
+        status_walk
+    );
 }

@@ -2,7 +2,14 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-unsafe extern "C" fn sonic_speciallwhold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub fn install() {
+    install_status_scripts!(
+        sonic_speciallwhold_pre
+    );
+}
+
+#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn sonic_speciallwhold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);
     if stick_x * lr <= -0.35 {
@@ -35,14 +42,4 @@ unsafe extern "C" fn sonic_speciallwhold_pre(fighter: &mut L2CFighterCommon) -> 
         0
     );
     0.into()
-}
-
-pub fn install() {
-    smashline::Agent::new("sonic")
-        .status(
-            Pre,
-            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD,
-            sonic_speciallwhold_pre,
-        )
-        .install();
 }

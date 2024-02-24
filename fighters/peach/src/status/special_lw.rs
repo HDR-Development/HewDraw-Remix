@@ -1,7 +1,16 @@
 use super::*;
 use globals::*;
 
-unsafe extern "C" fn peach_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub fn install() {
+    smashline::install_status_scripts!(
+        peach_special_lw_pre,
+        peach_special_lw_main,
+        peach_special_lw_end
+    );
+}
+
+#[status_script(agent = "peach", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn peach_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -29,7 +38,9 @@ unsafe extern "C" fn peach_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-unsafe extern "C" fn peach_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+#[status_script(agent = "peach", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn peach_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_ITEM_NO_COUNT);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_04 as i32 - 1 );
@@ -60,7 +71,8 @@ unsafe extern "C" fn peach_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-unsafe extern "C" fn peach_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "peach", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn peach_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ItemModule::is_have_item(fighter.module_accessor, 0) {
         if fighter.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND) == *ITEM_KIND_NONE {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2508b59a2b), FIGHTER_ITEM_HOLD_KIND_HAVE);
@@ -70,11 +82,4 @@ unsafe extern "C" fn peach_special_lw_end(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
     0.into()
-}
-pub fn install() {
-    smashline::Agent::new("peach")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_end)
-        .install();
 }

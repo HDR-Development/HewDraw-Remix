@@ -1,7 +1,9 @@
 use super::*;
 use crate::globals::*;
 
-unsafe extern "C" fn clayrocket_ready_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+
+#[status_script(agent = "shizue_clayrocket", status = WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn clayrocket_ready_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("ready"), 0.0, 1.0, false, 0.0, false, false);
     VisibilityModule::set_int64(weapon.module_accessor, hash40("body") as i64, hash40("body_off") as i64);
     HitModule::set_status(weapon.module_accessor, 0, app::HitStatus(*HIT_STATUS_NORMAL), 0);
@@ -44,11 +46,7 @@ unsafe extern "C" fn clayrocket_ready_main_loop(weapon: &mut L2CWeaponCommon) ->
 }
 
 pub fn install() {
-    smashline::Agent::new("shizue_clayrocket")
-        .status(
-            Main,
-            *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY,
-            clayrocket_ready_main,
-        )
-        .install();
+    smashline::install_status_scripts!(
+        //clayrocket_ready_main
+    );
 }

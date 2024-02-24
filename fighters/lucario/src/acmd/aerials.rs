@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn lucario_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "lucario", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -45,7 +47,8 @@ unsafe extern "C" fn lucario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,7 +82,8 @@ unsafe extern "C" fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucario_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -88,11 +92,12 @@ unsafe extern "C" fn lucario_attack_air_f_expression(fighter: &mut L2CAgentBase)
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -105,7 +110,8 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -137,7 +143,8 @@ unsafe extern "C" fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -168,7 +175,8 @@ unsafe extern "C" fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -177,11 +185,13 @@ unsafe extern "C" fn lucario_attack_air_hi_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "lucario", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -231,14 +241,14 @@ unsafe extern "C" fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_attackairn", lucario_attack_air_n_game)
-        .acmd("game_attackairf", lucario_attack_air_f_game)
-        .acmd("expression_attackairf", lucario_attack_air_f_expression)
-        .acmd("expression_attackairf", expression_attackairf)
-        .acmd("game_attackairb", lucario_attack_air_b_game)
-        .acmd("game_attackairhi", lucario_attack_air_hi_game)
-        .acmd("expression_attackairhi", lucario_attack_air_hi_expression)
-        .acmd("game_attackairlw", lucario_attack_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        lucario_attack_air_n_game,
+        lucario_attack_air_f_game,
+        lucario_attack_air_f_expression,
+        lucario_attack_air_b_game,
+        lucario_attack_air_hi_game,
+        lucario_attack_air_hi_expression,
+        lucario_attack_air_lw_game,
+    );
 }
+

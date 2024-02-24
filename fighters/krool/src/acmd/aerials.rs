@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -32,7 +33,8 @@ unsafe extern "C" fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn krool_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -65,7 +67,8 @@ unsafe extern "C" fn krool_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -105,7 +108,9 @@ unsafe extern "C" fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn krool_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "krool", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn krool_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -118,7 +123,8 @@ unsafe extern "C" fn krool_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -128,7 +134,8 @@ unsafe extern "C" fn krool_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+unsafe fn krool_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -160,7 +167,8 @@ unsafe extern "C" fn krool_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -201,7 +209,8 @@ unsafe extern "C" fn krool_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -222,14 +231,14 @@ unsafe extern "C" fn krool_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("krool")
-        .acmd("game_attackairn", krool_attack_air_n_game)
-        .acmd("game_attackairf", krool_attack_air_f_game)
-        .acmd("game_attackairb", krool_attack_air_b_game)
-        .acmd("expression_attackairb", krool_attack_air_b_expression)
-        .acmd("effect_attackairb", krool_attack_air_b_effect)
-        .acmd("game_attackairhi", krool_attack_air_hi_game)
-        .acmd("game_attackairlw", krool_attack_air_lw_game)
-        .acmd("effect_attackairlw", krool_attack_air_lw_effect)
-        .install();
+    install_acmd_scripts!(
+        krool_attack_air_n_game,
+        krool_attack_air_f_game,
+        krool_attack_air_b_game,
+        krool_attack_air_b_effect,
+        krool_attack_air_b_expression,
+        krool_attack_air_hi_game,
+        krool_attack_air_lw_game,
+        krool_attack_air_lw_effect,
+    );
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/python3.9
 import shutil, os, sys, glob, characters
 
+
 def inplace_change(filename, old_string, new_string):
     # Safely read the input filename using 'with'
     with open(filename) as f:

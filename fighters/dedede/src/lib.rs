@@ -38,7 +38,8 @@ use utils::{
 };
 use smashline::*;
 
-extern "C" fn dedede_init(fighter: &mut L2CFighterCommon){
+#[fighter_init]
+fn dedede_init(fighter: &mut L2CFighterCommon){
     if fighter.global_table[globals::FIGHTER_KIND] != FIGHTER_KIND_DEDEDE{
         return;
     }
@@ -46,11 +47,9 @@ extern "C" fn dedede_init(fighter: &mut L2CFighterCommon){
     VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
 }
 
-pub fn install() {
-    smashline::Agent::new("dedede")
-        .on_start(dedede_init)
-        .install();
+pub fn install(is_runtime: bool) {
+    smashline::install_agent_init_callbacks!(dedede_init);
     acmd::install();
-    opff::install();
     status::install();
+    opff::install(is_runtime);
 }

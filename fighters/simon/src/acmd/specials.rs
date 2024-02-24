@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "simon", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -49,7 +51,8 @@ unsafe extern "C" fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -97,7 +100,8 @@ unsafe extern "C" fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_special_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", scripts = [ "game_specialn" , "game_specialairn" ] , category = ACMD_GAME , low_priority)]
+unsafe fn simon_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.8);
@@ -111,10 +115,10 @@ unsafe extern "C" fn simon_special_n_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("simon")
-        .acmd("game_specialhi", simon_special_hi_game)
-        .acmd("game_specialairhi", simon_special_air_hi_game)
-        .acmd("game_specialn", simon_special_n_game)
-        .acmd("game_specialairn", simon_special_n_game)
-        .install();
+    install_acmd_scripts!(
+        simon_special_hi_game,
+        simon_special_air_hi_game,
+        simon_special_n_game,
+    );
 }
+

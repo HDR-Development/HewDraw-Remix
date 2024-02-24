@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn koopajr_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -22,7 +23,8 @@ unsafe extern "C" fn koopajr_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopajr_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_throw_lw_game(fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -51,8 +53,8 @@ unsafe extern "C" fn koopajr_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("koopajr")
-        .acmd("game_throwb", koopajr_throw_b_game)
-        .acmd("game_throwlw", koopajr_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+		koopajr_throw_b_game,
+        koopajr_throw_lw_game,
+	);
 }

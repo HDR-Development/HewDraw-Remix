@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "koopajr", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,7 +37,8 @@ unsafe extern "C" fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopajr_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -69,7 +72,8 @@ unsafe extern "C" fn koopajr_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopajr_landing_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -78,7 +82,8 @@ unsafe extern "C" fn koopajr_landing_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -109,7 +114,8 @@ unsafe extern "C" fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopajr_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -140,7 +146,9 @@ unsafe extern "C" fn koopajr_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopajr_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "koopajr", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopajr_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -152,11 +160,12 @@ unsafe extern "C" fn koopajr_attack_air_hi_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn koopajr_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -191,7 +200,8 @@ unsafe extern "C" fn koopajr_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopajr_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopajr", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -203,14 +213,15 @@ unsafe extern "C" fn koopajr_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("koopajr")
-        .acmd("game_attackairn", koopajr_attack_air_n_game)
-        .acmd("game_attackairf", koopajr_attack_air_f_game)
-        .acmd("game_landingairf", koopajr_landing_air_f_game)
-        .acmd("game_attackairb", koopajr_attack_air_b_game)
-        .acmd("game_attackairhi", koopajr_attack_air_hi_game)
-        .acmd("expression_attackairhi", koopajr_attack_air_hi_expression)
-        .acmd("game_attackairlw", koopajr_attack_air_lw_game)
-        .acmd("game_landingairlw", koopajr_landing_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        koopajr_attack_air_n_game,
+        koopajr_attack_air_f_game,
+        koopajr_landing_air_f_game,
+        koopajr_attack_air_b_game,
+        koopajr_attack_air_hi_game,
+        koopajr_attack_air_hi_expression,
+        koopajr_attack_air_lw_game,
+        koopajr_landing_air_lw_game,
+    );
 }
+

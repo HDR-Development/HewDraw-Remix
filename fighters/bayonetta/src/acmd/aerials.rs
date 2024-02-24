@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "bayonetta", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,7 +52,8 @@ unsafe extern "C" fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairnhold" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.0);
@@ -88,7 +91,8 @@ unsafe extern "C" fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase
 
 }
 
-unsafe extern "C" fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -133,7 +137,8 @@ unsafe extern "C" fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairf2" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -180,7 +185,8 @@ unsafe extern "C" fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairf3" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -223,7 +229,8 @@ unsafe extern "C" fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -259,7 +266,8 @@ unsafe extern "C" fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn bayonetta_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -268,11 +276,12 @@ unsafe extern "C" fn bayonetta_attack_air_b_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -316,7 +325,8 @@ unsafe extern "C" fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn bayonetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_ATTACK_ARC1, Hash40::new("top"), 0, 14.6, -0.1, 0, -55, -90, 1.14, true);
@@ -328,7 +338,9 @@ unsafe extern "C" fn bayonetta_attack_air_hi_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "bayonetta", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn bayonetta_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -337,7 +349,7 @@ unsafe extern "C" fn bayonetta_attack_air_hi_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
@@ -345,7 +357,8 @@ unsafe extern "C" fn bayonetta_attack_air_hi_expression(fighter: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_hi_hold_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairhihold" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_hi_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -359,7 +372,8 @@ unsafe extern "C" fn bayonetta_attack_air_hi_hold_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -418,7 +432,8 @@ unsafe extern "C" fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "bayonetta", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -437,20 +452,21 @@ unsafe extern "C" fn bayonetta_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .acmd("game_attackairn", bayonetta_attack_air_n_game)
-        .acmd("game_attackairnhold", bayonetta_attack_air_n_hold_game)
-        .acmd("game_attackairf", bayonetta_attack_air_f_game)
-        .acmd("game_attackairf2", bayonetta_attack_air_f2_game)
-        .acmd("game_attackairf3", bayonetta_attack_air_f3_game)
-        .acmd("game_attackairb", bayonetta_attack_air_b_game)
-        .acmd("expression_attackairb", bayonetta_attack_air_b_expression)
-        .acmd("game_attackairhi", bayonetta_attack_air_hi_game)
-        .acmd("effect_attackairhi", bayonetta_attack_air_hi_effect)
-        .acmd("expression_attackairhi", bayonetta_attack_air_hi_expression)
-        .acmd("game_attackairhihold", bayonetta_attack_air_hi_hold_game)
-        .acmd("game_attackairlw", bayonetta_attack_air_lw_game)
-        .acmd("game_landingairlw", bayonetta_landing_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        bayonetta_attack_air_n_game,
+        bayonetta_attack_air_n_hold_game,
+        bayonetta_attack_air_f_game,
+        bayonetta_attack_air_f2_game,
+        bayonetta_attack_air_f3_game,
+        bayonetta_attack_air_b_game,
+        bayonetta_attack_air_b_expression,
+        bayonetta_attack_air_hi_game,
+        bayonetta_attack_air_hi_effect,
+        bayonetta_attack_air_hi_expression,
+        bayonetta_attack_air_hi_hold_game,
+        bayonetta_attack_air_lw_game,
+        bayonetta_landing_air_lw_game
+    );
 }

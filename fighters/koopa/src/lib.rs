@@ -40,8 +40,8 @@ use smashline::*;
 
 pub const MAX_COOLDOWN : i32 = 900;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    opff::install();
+    opff::install(is_runtime);
 }

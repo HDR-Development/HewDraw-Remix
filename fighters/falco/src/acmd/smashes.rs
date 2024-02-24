@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn falco_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "falco", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,7 +37,9 @@ unsafe extern "C" fn falco_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn falco_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "falco", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn falco_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,7 +60,9 @@ unsafe extern "C" fn falco_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn falco_attack_hi4_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "falco", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -104,9 +110,10 @@ unsafe extern "C" fn falco_attack_hi4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("falco")
-        .acmd("game_attacks4", falco_attack_s4_s_game)
-        .acmd("expression_attacks4", falco_attack_s4_s_expression)
-        .acmd("game_attackhi4", falco_attack_hi4_game)
-        .install();
+    install_acmd_scripts!(
+        falco_attack_s4_s_game,
+        falco_attack_s4_s_expression,
+        falco_attack_hi4_game,
+    );
 }
+

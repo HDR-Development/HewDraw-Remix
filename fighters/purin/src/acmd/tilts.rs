@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn purin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "purin", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn purin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -18,7 +20,8 @@ unsafe extern "C" fn purin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn purin_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "purin", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn purin_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -35,7 +38,8 @@ unsafe extern "C" fn purin_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn purin_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "purin", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn purin_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -52,7 +56,8 @@ unsafe extern "C" fn purin_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn purin_game_attackhi3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "purin", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+unsafe fn purin_game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -71,7 +76,8 @@ unsafe extern "C" fn purin_game_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn purin_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "purin", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn purin_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -95,11 +101,12 @@ unsafe extern "C" fn purin_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("purin")
-        .acmd("game_attacks3", purin_attack_s3_s_game)
-        .acmd("game_attacks3hi", purin_attack_s3_hi_game)
-        .acmd("game_attacks3lw", purin_attack_s3_lw_game)
-        .acmd("game_attackhi3", purin_game_attackhi3)
-        .acmd("game_attacklw3", purin_attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+        purin_attack_s3_s_game,
+        purin_attack_s3_hi_game,
+        purin_attack_s3_lw_game,
+        purin_game_attackhi3,
+        purin_attack_lw3_game,
+    );
 }
+

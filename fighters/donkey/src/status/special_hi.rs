@@ -2,7 +2,8 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
-pub unsafe extern "C" fn exec_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn exec_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && StatusModule::prev_situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
@@ -16,7 +17,7 @@ pub unsafe extern "C" fn exec_special_hi(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install() {
-    smashline::Agent::new("donkey")
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, exec_special_hi)
-        .install();
+    install_status_scripts!(
+        exec_special_hi
+    );
 }

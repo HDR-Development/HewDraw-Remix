@@ -3,9 +3,26 @@ use globals::*;
 utils::import!(common::djc::attack_air_main_status);
 // status script import
 
+pub fn install() {
+    install_status_scripts!(
+        guard_on,
+        init_guard_damage,
+        guard_damage,
+        exit_guard_damage,
+        guard_off,
+        pre_jump_aerial,
+        jump_aerial,
+        init_attack_air,
+        attack_air,
+        exec_attack_air,
+        exit_attack_air
+    );
+}
+
 // FIGHTER_STATUS_KIND_GUARD_ON
 
-pub unsafe extern "C" fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_GUARD_ON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
     fighter.sub_status_guard_on_common();
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
@@ -47,9 +64,10 @@ unsafe extern "C" fn guard_on_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_GUARD_DAMAGE //
 
-pub unsafe extern "C" fn init_guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_GUARD_DAMAGE, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_ftStatusUniqProcessGuardDamage_initStatus_Inner();
-    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
+    original!(fighter)
 }
 
 unsafe extern "C" fn init_guard_damage_uniq(fighter: &mut L2CFighterCommon) {
@@ -69,12 +87,14 @@ unsafe extern "C" fn init_guard_damage_uniq(fighter: &mut L2CFighterCommon) {
     fighter.pop_lua_stack(0);
 }
 
-pub unsafe extern "C" fn exit_guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_GUARD_DAMAGE, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+pub unsafe fn exit_guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_ftStatusUniqProcessGuardDamage_exitStatus_common();
-    smashline::original_status(Exit, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
+    original!(fighter)
 }
 
-pub unsafe extern "C" fn guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_GUARD_DAMAGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardDamage_common(L2CValue::Bool(false));
     fighter.sub_shift_status_main(L2CValue::Ptr(
         L2CFighterCommon_status_GuardDamage_Main as *const () as _,
@@ -83,7 +103,8 @@ pub unsafe extern "C" fn guard_damage(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_STATUS_KIND_GUARD_OFF //
 
-pub unsafe extern "C" fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     if VarModule::is_flag(
         fighter.object(),
@@ -188,7 +209,8 @@ unsafe extern "C" fn guard_off_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 // FIGHTER_STATUS_KIND_JUMP_AERIAL
 
-pub unsafe extern "C" fn pre_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_0 = fighter.status_pre_JumpAerial_sub().get_i32() == 0;
     let should_end = is_0 as i32 & 1 == 0;
     if !should_end {
@@ -220,7 +242,8 @@ pub unsafe extern "C" fn pre_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CV
     return (should_end as i32).into();
 }
 
-pub unsafe extern "C" fn jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let aerial_damage_reaction = WorkModule::get_float(
         fighter.module_accessor,
         *FIGHTER_YOSHI_INSTANCE_WORK_ID_FLOAT_AERIAL_DAMAGE_REACTION,
@@ -270,37 +293,25 @@ pub unsafe extern "C" fn jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_init();
     0.into()
 }
 
-pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
-pub unsafe extern "C" fn exec_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn exec_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec();
     0.into()
 }
 
-pub unsafe extern "C" fn exit_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+pub unsafe fn exit_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exit();
     0.into()
-}
-
-pub fn install() {
-    smashline::Agent::new("yoshi")
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_ON, guard_on)
-        .status(Init, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, init_guard_damage)
-        .status(Exit, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, exit_guard_damage)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guard_damage)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard_off)
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP_AERIAL, pre_jump_aerial)
-        .status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_aerial)
-        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, init_attack_air)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
-        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, exec_attack_air)
-        .status(Exit, *FIGHTER_STATUS_KIND_ATTACK_AIR, exit_attack_air)
-        .install();
 }

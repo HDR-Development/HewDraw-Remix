@@ -1,9 +1,11 @@
 use super::*;
 use globals::*;
 
+
 // FIGHTER_STATUS_KIND_SPECIAL_S
 
-pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "duckhunt", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
@@ -94,20 +96,19 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub unsafe extern "C" fn clay_fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
+#[status_script(agent = "duckhunt_clay", status = WEAPON_DUCKHUNT_CLAY_STATUS_KIND_FLY, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn clay_fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let duckhunt = utils::util::get_battle_object_from_id(owner_id);
     if VarModule::is_flag(duckhunt, vars::duckhunt::status::CLAY_SMASH_INPUT) {
         WorkModule::on_flag(weapon.module_accessor, *WEAPON_DUCKHUNT_CLAY_INSTANCE_WORK_ID_FLAG_BY_SMASH);
     }
-    smashline::original_status(Init, weapon, *WEAPON_DUCKHUNT_CLAY_STATUS_KIND_FLY)(weapon)
+    original!(weapon)
 }
 
 pub fn install() {
-    smashline::Agent::new("duckhunt")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main)
-        .install();
-    smashline::Agent::new("duckhunt_clay")
-        .status(Init, *WEAPON_DUCKHUNT_CLAY_STATUS_KIND_FLY, clay_fly_init)
-        .install();
+    install_status_scripts!(
+        special_s_main,
+        clay_fly_init
+    );
 }

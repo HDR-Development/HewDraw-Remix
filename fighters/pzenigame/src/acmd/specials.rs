@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "pzenigame", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -42,7 +44,8 @@ unsafe extern "C" fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pzenigame_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pzenigame", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -84,8 +87,9 @@ unsafe extern "C" fn pzenigame_special_air_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pzenigame")
-        .acmd("game_specialhi", pzenigame_special_hi_game)
-        .acmd("game_specialairhi", pzenigame_special_air_hi_game)
-        .install();
+    install_acmd_scripts!(
+        pzenigame_special_hi_game,
+        pzenigame_special_air_hi_game,
+    );
 }
+

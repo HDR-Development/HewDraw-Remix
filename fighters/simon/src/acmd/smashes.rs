@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn simon_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "simon", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -23,7 +25,8 @@ unsafe extern "C" fn simon_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -45,7 +48,8 @@ unsafe extern "C" fn simon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -67,7 +71,8 @@ unsafe extern "C" fn simon_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -102,7 +107,8 @@ unsafe extern "C" fn simon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_whip_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon_whip", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_whip_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -134,7 +140,8 @@ unsafe extern "C" fn simon_whip_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -170,7 +177,8 @@ unsafe extern "C" fn simon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_whip_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon_whip", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_whip_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -184,15 +192,14 @@ unsafe extern "C" fn simon_whip_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("simon")
-        .acmd("game_attacks4hi", simon_attack_s4_hi_game)
-        .acmd("game_attacks4", simon_attack_s4_s_game)
-        .acmd("game_attacks4lw", simon_attack_s4_lw_game)
-        .acmd("game_attackhi4", simon_attack_hi4_game)
-        .acmd("game_attacklw4", simon_attack_lw4_game)
-        .install();
-    smashline::Agent::new("simon_whip")
-        .acmd("game_attackhi4", simon_whip_attack_hi4_game)
-        .acmd("game_attacklw4", simon_whip_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        simon_attack_s4_hi_game,
+        simon_attack_s4_s_game,
+        simon_attack_s4_lw_game,
+        simon_attack_hi4_game,
+        simon_whip_attack_hi4_game,
+        simon_attack_lw4_game,
+        simon_whip_attack_lw4_game,
+    );
 }
+

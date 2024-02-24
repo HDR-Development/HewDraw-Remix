@@ -38,8 +38,13 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    opff::install();
+    opff::install(is_runtime);
+    use opff::*;
+    /*smashline::install_agent_frames!(
+        snake_c4_frame
+    );*/
+    smashline::install_agent_frame_callback!(c4_callback);
 }

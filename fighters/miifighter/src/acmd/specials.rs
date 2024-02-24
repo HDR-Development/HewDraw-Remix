@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn miifighter_special_n2_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["game_specialn2start", "game_specialairn2start"], category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_n2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -66,7 +67,8 @@ unsafe extern "C" fn miifighter_special_n2_start_game(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn miifighter_special_n2_finish_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["game_specialn2finish"], category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_n2_finish_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -98,7 +100,8 @@ unsafe extern "C" fn miifighter_special_n2_finish_game(fighter: &mut L2CAgentBas
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn miifighter_special_air_n2_finish_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["game_specialairn2finish"], category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_n2_finish_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -130,7 +133,8 @@ unsafe extern "C" fn miifighter_special_air_n2_finish_game(fighter: &mut L2CAgen
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn miifighter_special_s1_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specials1end", category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_s1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -189,7 +193,8 @@ unsafe extern "C" fn miifighter_special_s1_end_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_s1_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairs1end", category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_s1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -263,7 +268,8 @@ unsafe extern "C" fn miifighter_special_air_s1_end_game(fighter: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_s2_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairs2start", category = ACMD_GAME, low_priority )]
+unsafe fn miifighter_special_air_s2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -271,13 +277,15 @@ unsafe extern "C" fn miifighter_special_air_s2_start_game(fighter: &mut L2CAgent
     }
 }
 
-unsafe extern "C" fn miifighter_special_hi11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialhi1", category = ACMD_GAME, low_priority )]
+unsafe fn miifighter_special_hi11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-unsafe extern "C" fn miifighter_special_hi1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["effect_specialhi1", "effect_specialairhi1"], category = ACMD_EFFECT, low_priority )]
+unsafe fn miifighter_special_hi1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -291,7 +299,8 @@ unsafe extern "C" fn miifighter_special_hi1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn miifighter_special_hi12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["game_specialhi12", "game_specialairhi12"], category = ACMD_GAME, low_priority )]
+unsafe fn miifighter_special_hi12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -345,7 +354,8 @@ unsafe extern "C" fn miifighter_special_hi12_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn miifighter_special_hi12_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["effect_specialhi12", "effect_specialairhi12"], category = ACMD_EFFECT, low_priority )]
+unsafe fn miifighter_special_hi12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -362,7 +372,8 @@ unsafe extern "C" fn miifighter_special_hi12_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn miifighter_special_hi12_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["sound_specialhi12", "sound_specialairhi12"], category = ACMD_SOUND, low_priority )]
+unsafe fn miifighter_special_hi12_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -372,7 +383,8 @@ unsafe extern "C" fn miifighter_special_hi12_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_special_hi12_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["expression_specialhi12", "expression_specialairhi12"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn miifighter_special_hi12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -386,7 +398,8 @@ unsafe extern "C" fn miifighter_special_hi12_expression(fighter: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn miifighter_special_hi2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -469,7 +482,8 @@ unsafe extern "C" fn miifighter_special_hi2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn miifighter_special_air_hi2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairhi2" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -554,186 +568,15 @@ unsafe extern "C" fn miifighter_special_air_hi2_game(fighter: &mut L2CAgentBase)
     
 }
 
-unsafe extern "C" fn miifighter_special_lw1_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 13.0);
-    let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 90, 28, 0, 75, 5.0, 0.0, 4.5, 8.0 + charge_distance, Some(0.0), Some(4.5), Some(16.0 + charge_distance), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 90, 28, 0, 75, 5.0, 0.0, 4.5, 12.0 + charge_distance, Some(0.0), Some(13.0), Some(12.0 + charge_distance), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0, 45, 60, 0, 60, 3.0, 0.0, 3.0, 7.0, Some(0.0), Some(3.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_lw1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["game_specialhi3", "game_specialairhi3"] , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 12.0, 5.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        let eff_handle = EffectModule::req_follow(boma, Hash40::new("sys_windwave"), Hash40::new("top"), &Vector3f::new(0.0, 0.0, 10.0), &Vector3f::zero(), 0.4, false, 0, 0, 0, 0, 0, false, false);
-        EffectModule::set_rate(boma, eff_handle as u32, 0.4);
-        VarModule::set_int64(fighter.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER, eff_handle as u64);
-        EFFECT_FOLLOW(fighter, Hash40::new("miifighter_sidekick_flash"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.6, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("miifighter_sidekick_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.8, true);
-        LAST_EFFECT_SET_RATE(fighter, 0.4);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 8.0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("miifighter_sidekick_hold"), true, true);
-    }
-    frame(lua_state, 13.0);
-    let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("miifighter_sidekick_flash"), true, true);
-        LANDING_EFFECT(fighter, Hash40::new("miifighter_headbut_v_smoke"), Hash40::new("top"), 8.0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LANDING_EFFECT(fighter, Hash40::new("miifighter_headbut_v_smoke"), Hash40::new("top"), 12.0 + charge_distance, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_SCALE_W(fighter, 0.6, 1.1, 0.6);
-        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 12.0 + charge_distance, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 12.0 + charge_distance, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 12.0 + charge_distance, 3.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_lw1_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_miifighter_rnd_attack03"));
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_miifighter_smash_s03"));
-        PLAY_SE(fighter, Hash40::new("se_miifighter_special_l03"));
-        PLAY_SE(fighter, Hash40::new("se_miifighter_special_s03"));
-        PLAY_SE_REMAIN(fighter, Hash40::new("se_miifighter_special_c2_s02"));
-    }
-}
-
-unsafe extern "C" fn miifighter_special_lw1_expression(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ItemModule::set_have_item_visibility(boma, false, 0);
-    };
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
-        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
-        AREA_WIND_2ND_arg10(fighter, 0, 2, 80, 300, 0.8, 4, 8, 44, 16, 50);
-    }
-    wait(lua_state, 18.0);
-    if is_excute(fighter) {
-        AreaModule::erase_wind(boma, 0);
-    }
-    wait(lua_state, 18.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        ItemModule::set_have_item_visibility(boma, true, 0);
-    }
-    frame(lua_state, 52.0);
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_air_lw1_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 12.0, 5.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_air_lw1_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_miifighter_special_l02"));
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_miifighter_rnd_special_c1_l01"));
-        PLAY_SE(fighter, Hash40::new("se_miifighter_final06"));
-        PLAY_SE(fighter, Hash40::new("se_miifighter_final06"));
-    }
-}
-
-unsafe extern "C" fn miifighter_special_lw1_loop_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
-        KineticModule::clear_speed_all(boma);
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-        SET_SPEED_EX(fighter, 3.0, -2.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 15.0, 361, 57, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_lw1_loop_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    for _ in 0..24 {
-        if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, 0, 220, 0, 0, 1, true);
-        }
-        wait(lua_state, 2.0);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_lw1_landing_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        SET_SPEED_EX(fighter, 1.5, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 4.0, 0.0, 4.0, 5.0, Some(0.0), Some(4.0), Some(-6.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 4.5, 0.0, 6.5, -0.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 6.5, 0.0, 6.5, -0.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 4.0, 0.0, 4.0, 5.0, Some(0.0), Some(4.0), Some(-6.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
-        AttackModule::clear(boma, 0, false);
-        AttackModule::clear(boma, 2, false);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-}
-
-unsafe extern "C" fn miifighter_special_hi3_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 4.0, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
-    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 4.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
@@ -797,7 +640,8 @@ unsafe extern "C" fn miifighter_special_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn miifighter_special_hi3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "effect_specialhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn miifighter_special_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -832,7 +676,8 @@ unsafe extern "C" fn miifighter_special_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_hi3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "effect_specialairhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn miifighter_special_air_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -863,7 +708,190 @@ unsafe extern "C" fn miifighter_special_air_hi3_effect(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miifighter_special_lw2_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_speciallw1" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 90, 28, 0, 75, 5.0, 0.0, 4.5, 8.0 + charge_distance, Some(0.0), Some(4.5), Some(16.0 + charge_distance), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 90, 28, 0, 75, 5.0, 0.0, 4.5, 12.0 + charge_distance, Some(0.0), Some(13.0), Some(12.0 + charge_distance), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0, 45, 60, 0, 60, 3.0, 0.0, 3.0, 7.0, Some(0.0), Some(3.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "effect_speciallw1" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miifighter_special_lw1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 12.0, 5.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        let eff_handle = EffectModule::req_follow(boma, Hash40::new("sys_windwave"), Hash40::new("top"), &Vector3f::new(0.0, 0.0, 10.0), &Vector3f::zero(), 0.4, false, 0, 0, 0, 0, 0, false, false);
+        EffectModule::set_rate(boma, eff_handle as u32, 0.4);
+        VarModule::set_int64(fighter.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER, eff_handle as u64);
+        EFFECT_FOLLOW(fighter, Hash40::new("miifighter_sidekick_flash"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.6, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("miifighter_sidekick_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.4);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 8.0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("miifighter_sidekick_hold"), true, true);
+    }
+    frame(lua_state, 13.0);
+    let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("miifighter_sidekick_flash"), true, true);
+        LANDING_EFFECT(fighter, Hash40::new("miifighter_headbut_v_smoke"), Hash40::new("top"), 8.0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("miifighter_headbut_v_smoke"), Hash40::new("top"), 12.0 + charge_distance, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_SCALE_W(fighter, 0.6, 1.1, 0.6);
+        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 12.0 + charge_distance, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 12.0 + charge_distance, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 12.0 + charge_distance, 3.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "sound_speciallw1" , category = ACMD_SOUND , low_priority)]
+unsafe fn miifighter_special_lw1_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_miifighter_rnd_attack03"));
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_miifighter_smash_s03"));
+        PLAY_SE(fighter, Hash40::new("se_miifighter_special_l03"));
+        PLAY_SE(fighter, Hash40::new("se_miifighter_special_s03"));
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_miifighter_special_c2_s02"));
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "expression_speciallw1" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn miifighter_special_lw1_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    };
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        AREA_WIND_2ND_arg10(fighter, 0, 2, 80, 300, 0.8, 4, 8, 44, 16, 50);
+    }
+    wait(lua_state, 18.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
+    }
+    wait(lua_state, 18.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "effect_specialairlw1", category = ACMD_EFFECT, low_priority )]
+unsafe fn miifighter_special_air_lw1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 12.0, 5.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "sound_specialairlw1" , category = ACMD_SOUND , low_priority)]
+unsafe fn miifighter_special_air_lw1_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_miifighter_special_l02"));
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_miifighter_rnd_special_c1_l01"));
+        PLAY_SE(fighter, Hash40::new("se_miifighter_final06"));
+        PLAY_SE(fighter, Hash40::new("se_miifighter_final06"));
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "game_speciallw1loop" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw1_loop_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+        KineticModule::clear_speed_all(boma);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+        SET_SPEED_EX(fighter, 3.0, -2.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 15.0, 361, 57, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "effect_speciallw1loop" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miifighter_special_lw1_loop_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    for _ in 0..24 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, 0, 220, 0, 0, 1, true);
+        }
+        wait(lua_state, 2.0);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "game_speciallw1landing" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw1_landing_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        SET_SPEED_EX(fighter, 1.5, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 4.0, 0.0, 4.0, 5.0, Some(0.0), Some(4.0), Some(-6.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 4.5, 0.0, 6.5, -0.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 6.5, 0.0, 6.5, -0.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 60, 48, 0, 120, 4.0, 0.0, 4.0, 5.0, Some(0.0), Some(4.0), Some(-6.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        AttackModule::clear(boma, 0, false);
+        AttackModule::clear(boma, 2, false);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "miifighter", script = "game_speciallw2start" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -902,7 +930,8 @@ unsafe extern "C" fn miifighter_special_lw2_start_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_lw2_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairlw2start" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_lw2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -941,7 +970,8 @@ unsafe extern "C" fn miifighter_special_air_lw2_start_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_lw2_kick_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairlw2kick" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_lw2_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -973,7 +1003,8 @@ unsafe extern "C" fn miifighter_special_air_lw2_kick_game(fighter: &mut L2CAgent
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_lw2_auto_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairlw2autoattack" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_lw2_auto_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -986,7 +1017,8 @@ unsafe extern "C" fn miifighter_special_air_lw2_auto_attack_game(fighter: &mut L
     }
 }
 
-unsafe extern "C" fn miifighter_special_lw3_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", scripts = ["game_speciallw3catch", "game_specialairlw3catch"] , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw3_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1010,7 +1042,8 @@ unsafe extern "C" fn miifighter_special_lw3_catch_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miifighter_special_lw3_throw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_speciallw3throw", category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw3_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1054,7 +1087,8 @@ unsafe extern "C" fn miifighter_special_lw3_throw_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_lw3_throw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_specialairlw3throw", category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_lw3_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1097,7 +1131,8 @@ unsafe extern "C" fn miifighter_special_air_lw3_throw_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miifighter_special_air_lw3_throw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "effect_specialairlw3throw", category = ACMD_EFFECT , low_priority)]
+unsafe fn miifighter_special_air_lw3_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1127,48 +1162,40 @@ unsafe extern "C" fn miifighter_special_air_lw3_throw_effect(fighter: &mut L2CAg
 }
 
 pub fn install() {
-    smashline::Agent::new("miifighter")
-        .acmd("game_specialn2start", miifighter_special_n2_start_game)
-        .acmd("game_specialairn2start", miifighter_special_n2_start_game)
-        .acmd("game_specialn2finish", miifighter_special_n2_finish_game)
-        .acmd("game_specialairn2finish", miifighter_special_air_n2_finish_game)
-        .acmd("game_specials1end", miifighter_special_s1_end_game)
-        .acmd("game_specialairs1end", miifighter_special_air_s1_end_game)
-        .acmd("game_specialairs2start", miifighter_special_air_s2_start_game)
-        .acmd("game_specialhi1", miifighter_special_hi11_game)
-        .acmd("effect_specialhi1", miifighter_special_hi1_effect)
-        .acmd("effect_specialairhi1", miifighter_special_hi1_effect)
-        .acmd("game_specialhi12", miifighter_special_hi12_game)
-        .acmd("game_specialairhi12", miifighter_special_hi12_game)
-        .acmd("effect_specialhi12", miifighter_special_hi12_effect)
-        .acmd("effect_specialairhi12", miifighter_special_hi12_effect)
-        .acmd("sound_specialhi12", miifighter_special_hi12_sound)
-        .acmd("sound_specialairhi12", miifighter_special_hi12_sound)
-        .acmd("expression_specialhi12", miifighter_special_hi12_expression)
-        .acmd("expression_specialairhi12", miifighter_special_hi12_expression)
-        .acmd("game_specialhi2", miifighter_special_hi2_game)
-        .acmd("game_specialairhi2", miifighter_special_air_hi2_game)
-        .acmd("game_speciallw1", miifighter_special_lw1_game)
-        .acmd("effect_speciallw1", miifighter_special_lw1_effect)
-        .acmd("sound_speciallw1", miifighter_special_lw1_sound)
-        .acmd("expression_speciallw1", miifighter_special_lw1_expression)
-        .acmd("effect_specialairlw1", miifighter_special_air_lw1_effect)
-        .acmd("sound_specialairlw1", miifighter_special_air_lw1_sound)
-        .acmd("game_speciallw1loop", miifighter_special_lw1_loop_game)
-        .acmd("effect_speciallw1loop", miifighter_special_lw1_loop_effect)
-        .acmd("game_speciallw1landing", miifighter_special_lw1_landing_game)
-        .acmd("game_specialhi3", miifighter_special_hi3_game)
-        .acmd("game_specialairhi3", miifighter_special_hi3_game)
-        .acmd("effect_specialhi3", miifighter_special_hi3_effect)
-        .acmd("effect_specialairhi3", miifighter_special_air_hi3_effect)
-        .acmd("game_speciallw2start", miifighter_special_lw2_start_game)
-        .acmd("game_specialairlw2start", miifighter_special_air_lw2_start_game)
-        .acmd("game_specialairlw2kick", miifighter_special_air_lw2_kick_game)
-        .acmd("game_specialairlw2autoattack", miifighter_special_air_lw2_auto_attack_game)
-        .acmd("game_speciallw3catch", miifighter_special_lw3_catch_game)
-        .acmd("game_specialairlw3catch", miifighter_special_lw3_catch_game)
-        .acmd("game_speciallw3throw", miifighter_special_lw3_throw_game)
-        .acmd("game_specialairlw3throw", miifighter_special_air_lw3_throw_game)
-        .acmd("effect_specialairlw3throw", miifighter_special_air_lw3_throw_effect)
-        .install();
+    install_acmd_scripts!(
+        miifighter_special_n2_start_game,
+        miifighter_special_air_n2_finish_game,
+        miifighter_special_n2_finish_game,
+        miifighter_special_s1_end_game,
+        miifighter_special_air_s1_end_game,
+        miifighter_special_air_s2_start_game,
+        miifighter_special_hi11_game,
+        miifighter_special_hi1_effect,
+        miifighter_special_hi12_game,
+        miifighter_special_hi12_effect,
+        miifighter_special_hi12_sound,
+        miifighter_special_hi12_expression,
+        miifighter_special_hi2_game,
+        miifighter_special_air_hi2_game,
+        miifighter_special_hi3_game,
+        miifighter_special_hi3_effect,
+        miifighter_special_air_hi3_effect,
+        miifighter_special_lw1_game,
+        miifighter_special_lw1_effect,
+        miifighter_special_lw1_expression,
+        miifighter_special_lw1_sound,
+        miifighter_special_air_lw1_effect,
+        miifighter_special_air_lw1_sound,
+        miifighter_special_lw1_loop_game,
+        miifighter_special_lw1_loop_effect,
+        miifighter_special_lw1_landing_game,
+        miifighter_special_lw2_start_game,
+        miifighter_special_air_lw2_start_game,
+        miifighter_special_air_lw2_kick_game,
+        miifighter_special_air_lw2_auto_attack_game,
+        miifighter_special_lw3_catch_game,
+        miifighter_special_lw3_throw_game,
+        miifighter_special_air_lw3_throw_game,
+        miifighter_special_air_lw3_throw_effect
+    );
 }

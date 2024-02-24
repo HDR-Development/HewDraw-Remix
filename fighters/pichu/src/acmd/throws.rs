@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn pichu_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_throwf" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -34,8 +35,8 @@ unsafe extern "C" fn pichu_throw_f_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
 }
-
-unsafe extern "C" fn pichu_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -67,8 +68,8 @@ unsafe extern "C" fn pichu_throw_b_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
 }
-
-unsafe extern "C" fn pichu_throw_b_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "effect_throwb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn pichu_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -111,8 +112,8 @@ unsafe extern "C" fn pichu_throw_b_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
-unsafe extern "C" fn pichu_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -141,7 +142,8 @@ unsafe extern "C" fn pichu_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+unsafe fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -190,7 +192,8 @@ unsafe extern "C" fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pichu_throw_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "effect_throwlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn pichu_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -215,14 +218,14 @@ unsafe extern "C" fn pichu_throw_lw_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
 pub fn install() {
-    smashline::Agent::new("pichu")
-        .acmd("game_throwf", pichu_throw_f_game)
-        .acmd("game_throwb", pichu_throw_b_game)
-        .acmd("effect_throwb", pichu_throw_b_effect)
-        .acmd("game_throwhi", pichu_throw_hi_game)
-        .acmd("game_throwlw", pichu_throw_lw_game)
-        .acmd("effect_throwlw", pichu_throw_lw_effect)
-        .install();
+    install_acmd_scripts!(
+        pichu_throw_f_game,
+        pichu_throw_b_game,
+        pichu_throw_b_effect,
+        pichu_throw_hi_game,
+        pichu_throw_lw_game,
+        pichu_throw_lw_effect,
+    );
 }
+

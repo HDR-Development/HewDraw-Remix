@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -34,7 +35,8 @@ unsafe extern "C" fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -81,7 +83,8 @@ unsafe extern "C" fn zelda_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn zelda_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,7 +119,8 @@ unsafe extern "C" fn zelda_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -147,10 +151,11 @@ unsafe extern "C" fn zelda_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("zelda")
-        .acmd("game_attacks4", zelda_attack_s4_s_game)
-        .acmd("game_attackhi4", zelda_attack_hi4_game)
-        .acmd("effect_attackhi4", zelda_attack_hi4_effect)
-        .acmd("game_attacklw4", zelda_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        zelda_attack_s4_s_game,
+        zelda_attack_hi4_game,
+        zelda_attack_hi4_effect,
+        zelda_attack_lw4_game,
+    );
 }
+

@@ -43,6 +43,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                           || (fighter_kind == *FIGHTER_KIND_RICHTER && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
                           || (fighter_kind == *FIGHTER_KIND_MASTER  && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
 
+
     // Ledgehog code
     let cliff_id = GroundModule::get_cliff_id_uint32(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
@@ -458,6 +459,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         }
     }
 
+
     if fighter_kind == *FIGHTER_KIND_IKE {
         if status_kind == *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH {
             return 0;
@@ -719,6 +721,8 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         }
     }
 
+
+
     if fighter_kind == *FIGHTER_KIND_KAMUI {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
             if frame < 45.0 {
@@ -773,6 +777,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
             }
         }
     }
+
 
     if fighter_kind == *FIGHTER_KIND_SHIZUE {
         if status_kind == *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP {
@@ -954,6 +959,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR{
         return -1;
     }
+
 
     1
 }

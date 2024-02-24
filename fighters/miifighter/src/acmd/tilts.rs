@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn miifighter_attack_s3_hi_game(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+unsafe fn miifighter_attack_s3_hi_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -15,7 +16,8 @@ unsafe extern "C" fn miifighter_attack_s3_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_attack_s3_game(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+unsafe fn miifighter_attack_s3_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -30,7 +32,8 @@ unsafe extern "C" fn miifighter_attack_s3_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_attack_s3_lw_game(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+unsafe fn miifighter_attack_s3_lw_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -46,7 +49,8 @@ unsafe extern "C" fn miifighter_attack_s3_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -73,7 +77,8 @@ unsafe extern "C" fn miifighter_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -105,7 +110,8 @@ unsafe extern "C" fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miifighter", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -118,7 +124,7 @@ unsafe extern "C" fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -127,12 +133,12 @@ unsafe extern "C" fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase
 }
 
 pub fn install() {
-    smashline::Agent::new("miifighter")
-        .acmd("game_attacks3hi", miifighter_attack_s3_hi_game)
-        .acmd("game_attacks3", miifighter_attack_s3_game)
-        .acmd("game_attacks3lw", miifighter_attack_s3_lw_game)
-        .acmd("game_attackhi3", miifighter_attack_hi3_game)
-        .acmd("game_attacklw3", miifighter_attack_lw3_game)
-        .acmd("expression_attacklw3", miifighter_attack_lw3_expression)
-        .install();
+    install_acmd_scripts!(
+        miifighter_attack_s3_game,
+        miifighter_attack_s3_hi_game,
+        miifighter_attack_s3_lw_game,
+        miifighter_attack_hi3_game,
+        miifighter_attack_lw3_game,
+        miifighter_attack_lw3_expression
+    );
 }

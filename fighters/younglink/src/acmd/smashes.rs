@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -33,7 +34,8 @@ unsafe extern "C" fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_attacks4s2" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -49,7 +51,8 @@ unsafe extern "C" fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 6.0);
@@ -86,7 +89,8 @@ unsafe extern "C" fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
+unsafe fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +120,8 @@ unsafe extern "C" fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
+unsafe fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -135,7 +140,8 @@ unsafe extern "C" fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -166,7 +172,8 @@ unsafe extern "C" fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -199,13 +206,13 @@ unsafe extern "C" fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("younglink")
-        .acmd("game_attacks4", younglink_attack_s4_s_game)
-        .acmd("game_attacks4s2", younglink_attack_s4_s2_game)
-        .acmd("game_attackhi4", younglink_attack_hi4_game)
-        .acmd("effect_attackhi4", younglink_attack_hi4_effect)
-        .acmd("sound_attackhi4", younglink_attack_hi4_sound)
-        .acmd("expression_attackhi4", younglink_attack_hi4_expression)
-        .acmd("game_attacklw4", younglink_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        younglink_attack_s4_s_game,
+        younglink_attack_s4_s2_game,
+        younglink_attack_hi4_game,
+        younglink_attack_hi4_effect,
+        younglink_attack_hi4_sound,
+        younglink_attack_hi4_expression,
+        younglink_attack_lw4_game,
+    );
 }

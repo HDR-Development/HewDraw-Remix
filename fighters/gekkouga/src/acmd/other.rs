@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +79,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +121,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gekkouga_jump_aerial_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_jumpaerialback" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_jump_aerial_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -132,7 +138,8 @@ unsafe extern "C" fn gekkouga_jump_aerial_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -159,7 +166,8 @@ unsafe extern "C" fn gekkouga_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_dash" , category = ACMD_GAME , low_priority)]
+unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -173,7 +181,8 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -191,7 +200,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -205,7 +215,8 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gekkouga_shuriken_shot_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga_shuriken", script = "game_shot" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_shuriken_shot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -216,7 +227,8 @@ unsafe extern "C" fn gekkouga_shuriken_shot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -231,7 +243,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gekkouga", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -246,21 +259,20 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("gekkouga_shuriken")
-        .acmd("game_shot", gekkouga_shuriken_shot_game)
-        .install();
-    smashline::Agent::new("gekkouga")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_jumpaerialback", gekkouga_jump_aerial_b_game)
-        .acmd("game_catch", gekkouga_catch_game)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        gekkouga_jump_aerial_b_game,
+        gekkouga_catch_game,
+        dash_game,
+        dash_sound,
+        turn_dash_game,
+        gekkouga_shuriken_shot_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
+    );
 }
+

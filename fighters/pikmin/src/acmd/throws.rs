@@ -1,3 +1,7 @@
 use super::*;
 
-pub fn install() {}
+pub fn install() {
+    install_acmd_scripts!(
+    );
+}
+

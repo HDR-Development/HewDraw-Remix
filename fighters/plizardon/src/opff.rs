@@ -87,7 +87,8 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
     }
 }
 
-pub extern "C" fn plizardon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_PLIZARDON )]
+pub fn plizardon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		plizardon_frame(fighter)
@@ -98,9 +99,4 @@ pub unsafe fn plizardon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
-}
-pub fn install() {
-    smashline::Agent::new("plizardon")
-        .on_line(Main, plizardon_frame_wrapper)
-        .install();
 }

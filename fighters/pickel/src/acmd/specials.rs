@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pickel", script = "sound_specialn1getgold", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -11,7 +12,8 @@ unsafe extern "C" fn sound_specialn1getgold(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgentBase) {
+#[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
+unsafe fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     if is_excute(weapon) {
@@ -35,13 +37,9 @@ unsafe extern "C" fn trolley_game_specialsdriveemptypartial(weapon: &mut L2CAgen
 }
 
 pub fn install() {
-    smashline::Agent::new("pickel")
-        .acmd("sound_specialn1getgold", sound_specialn1getgold)
-        .install();
-    smashline::Agent::new("pickel_trolley")
-        .acmd(
-            "game_specialsdriveemptypartial",
-            trolley_game_specialsdriveemptypartial,
-        )
-        .install();
+    install_acmd_scripts!(
+        sound_specialn1getgold,
+        trolley_game_specialsdriveemptypartial
+    );
 }
+

@@ -3,7 +3,8 @@ use globals::*;
  
 // FIGHTER_STATUS_KIND_WALK
 
-pub unsafe extern "C" fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
 	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
@@ -17,10 +18,11 @@ pub unsafe extern "C" fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
-    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_WALK)(fighter)
+    original!(fighter)
 }
 
-pub unsafe extern "C" fn walk(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM);
@@ -43,8 +45,8 @@ unsafe extern "C" fn walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(Pre, *FIGHTER_STATUS_KIND_WALK, pre_walk)
-        .status(Main, *FIGHTER_STATUS_KIND_WALK, walk)
-        .install();
+    install_status_scripts!(
+        pre_walk,
+        walk
+    );
 }

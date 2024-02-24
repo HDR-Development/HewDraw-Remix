@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn kamui_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -28,7 +29,8 @@ unsafe extern "C" fn kamui_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -52,7 +54,8 @@ unsafe extern "C" fn kamui_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -68,7 +71,8 @@ unsafe extern "C" fn kamui_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -97,10 +101,10 @@ unsafe extern "C" fn kamui_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("kamui")
-        .acmd("game_attack11", kamui_attack_11_game)
-        .acmd("game_attack12", kamui_attack_12_game)
-        .acmd("game_attack13", kamui_attack_13_game)
-        .acmd("game_attackdash", kamui_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        kamui_attack_11_game,
+        kamui_attack_12_game,
+        kamui_attack_13_game,
+        kamui_attack_dash_game,
+    );
 }

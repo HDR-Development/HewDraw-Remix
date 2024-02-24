@@ -13,6 +13,7 @@ patch_terms = {"(balance)", "(bugfix)", "(refactor)"}
 minor_terms = {"(char-rework)", "(feature)"}
 major_terms = {"(major)"}
 
+
 merge_lines = []
 for line in reversed(pkgutil.run_command("git log --oneline").split("\n")):
     if "Merge pull request #" in line:

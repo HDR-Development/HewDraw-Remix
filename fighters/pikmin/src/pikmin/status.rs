@@ -2,9 +2,14 @@ use smash::lib::L2CAgent_clear_lua_stack;
 use super::*;
 use globals::*;
 
-// WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING
+pub fn install() {
+    install_status_scripts!(
+        special_s_cling_main
+    );
+}
 
-pub unsafe extern "C" fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*WEAPON_PIKMIN_PIKMIN_STATUS_SPECIAL_S_WORK_FLAG_POKEMON_CHANGE_START);
     AttackModule::set_ignore_just_shield(fighter.module_accessor, true);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("sp_s_grab_attack"), 0.0, 1.0, false, 0.0, false, false);
@@ -31,7 +36,6 @@ pub unsafe extern "C" fn special_s_cling_main(fighter: &mut L2CFighterCommon) ->
     let p = PikminInfo::from(variation);
     VarModule::set_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER, 0);
     VarModule::off_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME);
-    VarModule::off_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
 
     fighter.fastshift(L2CValue::Ptr(special_s_cling_main_loop as *const () as _))
 }
@@ -43,19 +47,15 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
     let variation = fighter.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
 
-    if !fighter.global_table[IS_STOPPING].get_bool()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    {
-        let is_attack = AttackModule::is_attack(fighter.module_accessor, 0, false);
-        if is_attack && !VarModule::is_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME) {
-            VarModule::inc_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER);
-        }
-        VarModule::set_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME, is_attack);
-        if VarModule::get_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER) >= p.cling_frame{
-            VarModule::on_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
-            fighter.change_status(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE.into(), false.into());
-            return 1.into();
-        }
+    let is_attack = AttackModule::is_attack(fighter.module_accessor, 0, false);
+    if is_attack && !VarModule::is_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME) {
+        VarModule::inc_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER);
+    }
+    VarModule::set_flag(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME, is_attack);
+
+    if VarModule::get_int(fighter.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER) >= p.cling_frame{
+        fighter.change_status(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE.into(), false.into());
+        return 1.into();
     }
 
     if fighter.is_flag(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_S_CLING_ENEMY)
@@ -78,26 +78,4 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
     }
 
     return 0.into();
-}
-
-// WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE
-
-pub unsafe extern "C" fn special_s_cling_remove_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
-    smashline::original_status(End, fighter, *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE)(fighter)
-}
-
-pub fn install() {
-    smashline::Agent::new("pikmin_pikmin")
-        .status(
-            Main,
-            *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING,
-            special_s_cling_main,
-        )
-        .status(
-            End,
-            *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE,
-            special_s_cling_remove_end,
-        )
-        .install();
 }

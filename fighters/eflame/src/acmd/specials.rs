@@ -1,6 +1,8 @@
 use super::*;
 
-unsafe extern "C" fn game_specialairhijump(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "eflame", script = "game_specialairhijump", category = ACMD_GAME )]
+unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -84,7 +86,8 @@ unsafe extern "C" fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialairhifall(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame", script = "game_specialairhifall", category = ACMD_GAME )]
+unsafe fn game_specialairhifall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -93,7 +96,8 @@ unsafe extern "C" fn game_specialairhifall(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "eflame", script = "game_speciallw", category = ACMD_GAME)]
+unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 5.0/(12.0-1.0));
@@ -102,7 +106,8 @@ unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "eflame", script = "game_specialairlw", category = ACMD_GAME)]
+unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 5.0/(12.0-1.0));
@@ -111,7 +116,8 @@ unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn eflame_firepillar_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame_firepillar", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn eflame_firepillar_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -136,7 +142,8 @@ unsafe extern "C" fn eflame_firepillar_special_hi_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn eflame_firepillar_special_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame_firepillar", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn eflame_firepillar_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -149,14 +156,14 @@ unsafe extern "C" fn eflame_firepillar_special_hi_effect(fighter: &mut L2CAgentB
 }
 
 pub fn install() {
-    smashline::Agent::new("eflame")
-        .acmd("game_specialairhijump", game_specialairhijump)
-        .acmd("game_specialairhifall", game_specialairhifall)
-        .acmd("game_speciallw", game_speciallw)
-        .acmd("game_specialairlw", game_specialairlw)
-        .install();
-    smashline::Agent::new("eflame_firepillar")
-        .acmd("game_specialhi", eflame_firepillar_special_hi_game)
-        .acmd("effect_specialhi", eflame_firepillar_special_hi_effect)
-        .install();
+    install_acmd_scripts!(
+        game_specialairhijump,
+        game_specialairhifall,
+        game_speciallw,
+        game_specialairlw,
+
+        eflame_firepillar_special_hi_game,
+        eflame_firepillar_special_hi_effect,
+    );
 }
+

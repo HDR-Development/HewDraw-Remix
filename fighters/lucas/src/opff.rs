@@ -3,6 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+
 unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if [*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if boma.status_frame() > 0 {
@@ -347,17 +348,15 @@ unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
         }
         // Down Tilted Side Smash
         else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
         }
     }
 }
@@ -436,7 +435,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     pkt2_edgeslipoff(fighter);
 }
 
-pub extern "C" fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_LUCAS)]
+pub fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		lucas_frame(fighter)
@@ -449,20 +449,12 @@ pub unsafe fn lucas_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+#[smashline::weapon_frame_callback]
+pub fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_LUCAS_PK_THUNDER {
             return
         }
         WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("lucas")
-        .on_line(Main, lucas_frame_wrapper)
-        .install();
-    smashline::Agent::new("lucas_pkthunder")
-        .on_line(Main, pkthunder_callback)
-        .install();
 }

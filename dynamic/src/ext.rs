@@ -376,6 +376,7 @@ pub trait FastShift {
         &mut self,
         new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue,
     ) -> L2CValue;
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool);
 }
 
 impl MainShift for L2CFighterCommon {
@@ -393,6 +394,18 @@ impl FastShift for L2CFighterBase {
         new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue,
     ) -> L2CValue {
         unsafe { self.fastshift(L2CValue::Ptr(new_main as *const () as _)) }
+    }
+
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool) {
+        use crate::CustomStatusModule;
+
+        let kind = if common {
+            CustomStatusModule::get_common_status_kind(self.battle_object, id)
+        } else {
+            CustomStatusModule::get_agent_status_kind(self.battle_object, id)
+        };
+
+        unsafe { self.change_status(kind.into(), clear_cat.into()) }
     }
 }
 
@@ -909,7 +922,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]) {
+        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])) {
             return false;
         }
 
@@ -1128,8 +1141,8 @@ impl BomaExt for BattleObjectModuleAccessor {
         //let p2_x = -9.6;
         //let p2_y = 9.0;
 
-        self.set_front_cliff_hangdata(p1_x, p1_y - p2_y);
-        self.set_back_cliff_hangdata(p2_x * -1.0, p1_y - p2_y);
+        self.set_front_cliff_hangdata(p1_x, (p1_y - p2_y));
+        self.set_back_cliff_hangdata((p2_x * -1.0), (p1_y - p2_y));
         self.set_center_cliff_hangdata(0.0, p2_y);
     }
 
@@ -1406,7 +1419,6 @@ pub struct ControllerMapping {
 }
 
 /// Controller class used internally by the game
-#[allow(non_snake_case)]
 #[repr(C)]
 pub struct Controller {
     pub vtable: *const u64,

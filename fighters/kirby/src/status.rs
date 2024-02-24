@@ -9,32 +9,70 @@ mod ridley_special_n;
 mod ganon_special_n;
 mod ganon_special_n_float;
 mod koopa_special_n;
-mod littlemac_special_n;
+mod littlemac_special_n_cancel;
 mod diddy_special_n_cancel;
 mod lucas_special_n;
 mod sonic;
-mod edge_special_n;
+ 
+pub fn install() {
+    smashline::install_agent_init_callbacks!(kirby_init);
+    smashline::install_agent_resets!(kirby_reset);
+    install_status_scripts!(
+        pre_jump,
+        throw_kirby_map_correction,
+        special_n_pre
+    );
 
-extern "C" fn kirby_init(fighter: &mut L2CFighterCommon) {
+    special_hi_h::install();
+    gaogaen_special_n::install();
+    ridley_special_n::install();
+    ganon_special_n::install();
+    diddy_special_n_cancel::install();
+    koopa_special_n::install();
+    luigi_special_n::install();
+    mario_special_n::install();
+    mariod_special_n::install();
+    lucas_special_n::install();
+    sonic::install();
+}
+
+pub fn add_statuses() {
+    special_hi_h::install();
+    ganon_special_n_float::install();
+    littlemac_special_n_cancel::install();
+    diddy_special_n_cancel::install_custom();
+}
+
+#[smashline::fighter_init]
+fn kirby_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
-        fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
-        fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(ganon_should_use_special_n_callback as *const () as _));
-        fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(shoto_check_special_command as *const () as _));
+        if fighter.kind() == *FIGHTER_KIND_KIRBY {
+            fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _));
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+            fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(ganon_should_use_special_n_callback as *const () as _));
+            fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(shoto_check_special_command as *const () as _));
 
-        if is_training_mode() {
-            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+            if is_training_mode() {
+                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+            }
+            else {
+                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+            }
         }
-        else {
-            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
-        }
+    }
+}
 
-        //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
-        VarModule::set_int(fighter.object(), LUCAS_CHARGE_TIME, vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL);
-        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
-        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
-        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+#[fighter_reset]
+fn kirby_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.kind() == *FIGHTER_KIND_KIRBY {
+            //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
+            VarModule::set_int(fighter.object(), LUCAS_CHARGE_TIME, vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+        }
     }
 }
 
@@ -80,7 +118,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
 // FIGHTER_STATUS_KIND_JUMP //
 
-pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_COPY) {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_PICKEL {
             if fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool() {
@@ -164,7 +203,8 @@ pub unsafe extern "C" fn shoto_check_special_command(fighter: &mut L2CFighterCom
 
 // FIGHTER_STATUS_KIND_THROW_KIRBY //
 
-pub unsafe extern "C" fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_MAP_CORRECTION)]
+pub unsafe fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND);
     let frame = MotionModule::frame(fighter.module_accessor);
     let prev_frame = MotionModule::prev_frame(fighter.module_accessor);
@@ -204,6 +244,7 @@ pub unsafe extern "C" fn throw_kirby_map_correction(fighter: &mut L2CFighterComm
     0.into()
 }
 
+
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn ganon_should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) {
@@ -215,7 +256,8 @@ unsafe extern "C" fn ganon_should_use_special_n_callback(fighter: &mut L2CFighte
 
 // FIGHTER_STATUS_KIND_SPECIAL_N //
 
-unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let copy_chara = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA);
     if copy_chara == *FIGHTER_KIND_TRAIL { // swaps the cycle order of thundaga and blizzaga when copying sora
         let prev_status = fighter.global_table[0x10].get_i32();
@@ -241,34 +283,7 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     
         return 1.into();
     } else {
-        return smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
+
+    return original!(fighter);
     }
-}
-
-pub fn install() {
-    special_hi_h::install();
-    gaogaen_special_n::install();
-    luigi_special_n::install();
-    mario_special_n::install();
-    mariod_special_n::install();
-    ridley_special_n::install();
-    ganon_special_n::install();
-    ganon_special_n_float::install();
-    koopa_special_n::install();
-    littlemac_special_n::install();
-    diddy_special_n_cancel::install();
-    lucas_special_n::install();
-    sonic::install();
-    edge_special_n::install();
-
-    smashline::Agent::new("kirby")
-        .on_start(kirby_init)
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
-        .status(
-            MapCorrection,
-            *FIGHTER_STATUS_KIND_THROW_KIRBY,
-            throw_kirby_map_correction,
-        )
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre)
-        .install();
 }

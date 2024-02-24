@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn brave_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn brave_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -40,7 +41,8 @@ unsafe extern "C" fn brave_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn brave_attack_s4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -96,7 +98,8 @@ unsafe extern "C" fn brave_attack_s4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn brave_attack_s4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
+unsafe fn brave_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -125,7 +128,8 @@ unsafe extern "C" fn brave_attack_s4_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn brave_attack_s4_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn brave_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -151,7 +155,8 @@ unsafe extern "C" fn brave_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -186,7 +191,8 @@ unsafe extern "C" fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn brave_attack_hi4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
+unsafe fn brave_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -214,7 +220,8 @@ unsafe extern "C" fn brave_attack_hi4_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn brave_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -260,7 +267,8 @@ unsafe extern "C" fn brave_attack_hi4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn brave_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn brave_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -315,7 +323,8 @@ unsafe extern "C" fn brave_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn brave_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -379,7 +388,8 @@ unsafe extern "C" fn brave_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn brave_attack_lw4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_attacklw4", category = ACMD_SOUND, low_priority )]
+unsafe fn brave_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -410,16 +420,17 @@ unsafe extern "C" fn brave_attack_lw4_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("brave")
-        .acmd("game_attacks4", brave_attack_s4_s_game)
-        .acmd("effect_attacks4", brave_attack_s4_effect)
-        .acmd("sound_attacks4", brave_attack_s4_sound)
-        .acmd("expression_attacks4", brave_attack_s4_expression)
-        .acmd("game_attackhi4", brave_attack_hi4_game)
-        .acmd("sound_attackhi4", brave_attack_hi4_sound)
-        .acmd("effect_attackhi4", brave_attack_hi4_effect)
-        .acmd("game_attacklw4", brave_attack_lw4_game)
-        .acmd("effect_attacklw4", brave_attack_lw4_effect)
-        .acmd("sound_attacklw4", brave_attack_lw4_sound)
-        .install();
+    install_acmd_scripts!(
+        brave_attack_s4_s_game,
+        brave_attack_s4_effect,
+        brave_attack_s4_sound,
+        brave_attack_s4_expression,
+        brave_attack_hi4_game,
+        brave_attack_hi4_effect,
+        brave_attack_hi4_sound,
+        brave_attack_lw4_game,
+        brave_attack_lw4_effect,
+        brave_attack_lw4_sound,
+    );
 }
+

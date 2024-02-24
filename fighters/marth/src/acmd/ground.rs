@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn marth_attack_11_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "marth", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn marth_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -31,7 +33,8 @@ unsafe extern "C" fn marth_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn marth_attack_11_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "marth", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn marth_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -48,7 +51,8 @@ unsafe extern "C" fn marth_attack_11_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "marth", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn marth_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -65,7 +69,8 @@ unsafe extern "C" fn marth_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn marth_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "marth", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn marth_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -89,10 +94,11 @@ unsafe extern "C" fn marth_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("marth")
-        .acmd("game_attack11", marth_attack_11_game)
-        .acmd("expression_attack11", marth_attack_11_expression)
-        .acmd("game_attack12", marth_attack_12_game)
-        .acmd("game_attackdash", marth_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        marth_attack_11_game,
+        marth_attack_11_expression,
+        marth_attack_12_game,
+        marth_attack_dash_game,
+    );
 }
+

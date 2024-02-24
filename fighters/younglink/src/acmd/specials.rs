@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_specials1" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -21,7 +22,8 @@ unsafe extern "C" fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -40,7 +42,8 @@ unsafe extern "C" fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -72,7 +75,8 @@ unsafe extern "C" fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn younglink_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -169,7 +173,8 @@ unsafe extern "C" fn younglink_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn younglink_special_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -190,7 +195,8 @@ unsafe extern "C" fn younglink_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn younglink_special_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "younglink", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -212,12 +218,13 @@ unsafe extern "C" fn younglink_special_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("younglink")
-        .acmd("game_specials1", younglink_special_s1_game)
-        .acmd("game_specialairs1", younglink_special_air_s1_game)
-        .acmd("game_specialhi", younglink_special_hi_game)
-        .acmd("game_specialairhi", younglink_special_air_hi_game)
-        .acmd("game_speciallw", younglink_special_lw_game)
-        .acmd("game_specialairlw", younglink_special_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        younglink_special_s1_game,
+        younglink_special_air_s1_game,
+        younglink_special_hi_game,
+        younglink_special_air_hi_game,
+        younglink_special_lw_game,
+        younglink_special_air_lw_game,
+    );
 }
+

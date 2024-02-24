@@ -3,10 +3,19 @@ use globals::*;
 mod special_hi;
 mod special_lw;
  
+pub fn install() {
+    special_hi::install();
+    special_lw::install();
+    install_status_scripts!(
+        attack_lw4_main,
+        attack_lw4_map_correction
+    );
+}
 
 // FIGHTER_STATUS_KIND_ATTACK_LW4 //
 
-pub unsafe extern "C" fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "krool", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
     fighter.attack_lw4_mtrans();
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_THROW_KIRBY_GROUND);
@@ -27,7 +36,8 @@ pub unsafe extern "C" fn krool_attack_lw4_main_loop(fighter: &mut L2CFighterComm
     fighter.status_AttackLw4_Main()
 }
 
-pub unsafe extern "C" fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "krool", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_MAP_CORRECTION)]
+pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);
     let prev_frame = MotionModule::prev_frame(fighter.module_accessor);
     let start_air_frame = 2.0;
@@ -113,12 +123,3 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
 //     *ctx.registers[0].x.as_mut() = 0;    // bool for toggle
 //     // ...as_mut() &= logic
 // }
-
-pub fn install() {
-    special_hi::install();
-    special_lw::install();
-    smashline::Agent::new("krool")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_main)
-        .status(MapCorrection, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_map_correction)
-        .install();
-}

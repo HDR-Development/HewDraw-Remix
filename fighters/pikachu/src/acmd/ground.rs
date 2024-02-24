@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -22,7 +23,7 @@ unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pikachu")
-        .acmd("game_attackdash", game_attackdash)
-        .install();
+    install_acmd_scripts!(
+        game_attackdash,
+    );
 }

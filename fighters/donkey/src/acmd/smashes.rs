@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn attack_s4_s(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "donkey", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_s4_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -30,7 +32,8 @@ unsafe extern "C" fn attack_s4_s(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -56,7 +59,8 @@ unsafe extern "C" fn attack_hi4(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_lw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -89,9 +93,10 @@ unsafe extern "C" fn attack_lw4(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("donkey")
-        .acmd("game_attacks4", attack_s4_s)
-        .acmd("game_attackhi4", attack_hi4)
-        .acmd("game_attacklw4", attack_lw4)
-        .install();
+    install_acmd_scripts!(
+        attack_s4_s,
+        attack_hi4,
+        attack_lw4,
+    );
 }
+

@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn lucario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "lucario", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -25,7 +27,8 @@ unsafe extern "C" fn lucario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn lucario_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -53,7 +56,8 @@ unsafe extern "C" fn lucario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -71,7 +75,8 @@ unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn sound_attackhi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -86,7 +91,8 @@ unsafe extern "C" fn sound_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,7 +122,8 @@ unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn lucario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -140,12 +147,13 @@ unsafe extern "C" fn lucario_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_attacks4", lucario_attack_s4_s_game)
-        .acmd("game_attackhi4", lucario_attack_hi4_game)
-        .acmd("effect_attackhi4", effect_attackhi4)
-        .acmd("sound_attackhi4", sound_attackhi4)
-        .acmd("expression_attackhi4", expression_attackhi4)
-        .acmd("game_attacklw4", lucario_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        lucario_attack_s4_s_game,
+        lucario_attack_hi4_game,
+        effect_attackhi4,
+        sound_attackhi4,
+        expression_attackhi4,
+        lucario_attack_lw4_game,
+    );
 }
+

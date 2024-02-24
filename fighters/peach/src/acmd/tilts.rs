@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -22,7 +23,8 @@ unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -47,7 +49,8 @@ unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
@@ -60,7 +63,8 @@ unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -92,10 +96,10 @@ unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("peach")
-        .acmd("game_attacks3", game_attacks3)
-        .acmd("game_attackhi3", game_attackhi3)
-        .acmd("effect_attackhi3", effect_attackhi3)
-        .acmd("game_attacklw3", game_attacklw3)
-        .install();
+    install_acmd_scripts!(
+        game_attacks3,
+        game_attackhi3,
+        effect_attackhi3,
+        game_attacklw3,
+    );
 }

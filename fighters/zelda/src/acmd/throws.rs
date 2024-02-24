@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn zelda_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_throwf", category = ACMD_GAME, low_priority )]
+unsafe fn zelda_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -20,7 +21,8 @@ unsafe extern "C" fn zelda_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_throw_f_effect(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "effect_throwf", category = ACMD_EFFECT, low_priority )]
+unsafe fn zelda_throw_f_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -40,7 +42,8 @@ unsafe extern "C" fn zelda_throw_f_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_throwb", category = ACMD_GAME, low_priority )]
+unsafe fn zelda_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 26.0, 29.0);
@@ -64,7 +67,8 @@ unsafe extern "C" fn zelda_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_throwhi", category = ACMD_GAME, low_priority )]
+unsafe fn zelda_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -86,10 +90,10 @@ unsafe extern "C" fn zelda_throw_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("zelda")
-        .acmd("game_throwf", zelda_throw_f_game)
-        .acmd("effect_throwf", zelda_throw_f_effect)
-        .acmd("game_throwb", zelda_throw_b_game)
-        .acmd("game_throwhi", zelda_throw_hi_game)
-        .install();
+    install_acmd_scripts!(
+        zelda_throw_f_game,
+        zelda_throw_f_effect,
+        zelda_throw_b_game,
+        zelda_throw_hi_game,
+    );
 }

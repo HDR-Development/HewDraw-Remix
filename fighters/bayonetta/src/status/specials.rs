@@ -1,18 +1,46 @@
 use super::*;
 use globals::*;
 
+ 
+pub fn install() {
+    install_status_scripts!(
+        bayonetta_special_s_main,
+        bayonetta_special_s_end
+    );
+}
+pub fn install_custom() {
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_bayonetta"),
+        statuses::bayonetta::SPECIAL_S_KICK,
+        StatusInfo::new()
+            .with_pre(bayonetta_special_s_kick_pre)
+            .with_main(bayonetta_special_s_kick_main)
+            .with_end(bayonetta_special_s_kick_end)
+    );
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_bayonetta"),
+        statuses::bayonetta::SPECIAL_S_EDGE,
+        StatusInfo::new()
+            .with_pre(bayonetta_special_s_edge_pre)
+            .with_main(bayonetta_special_s_edge_main)
+            .with_end(bayonetta_special_s_edge_end)
+    );
+}
+
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-unsafe extern "C" fn bayonetta_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn bayonetta_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
     StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn bayonetta_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT_BEFORE_GUARD);
-    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
+    original!(fighter)
 }
 
 unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -26,7 +54,7 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
         if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && !fighter.is_in_hitlag() {
             if fighter.is_cat_flag(Cat1::SpecialAny | Cat1::AttackN) && frame >= 20 && frame <= 35 {
                 GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-                fighter.change_status(statuses::bayonetta::SPECIAL_S_KICK.into(), true.into());
+                fighter.change_to_custom_status(statuses::bayonetta::SPECIAL_S_KICK, true, false);
             }
         }
         if MotionModule::is_end(fighter.module_accessor) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());}
@@ -45,7 +73,7 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             fighter.set_situation(SITUATION_KIND_AIR.into());
             GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            if frame < 45 {fighter.change_status(statuses::bayonetta::SPECIAL_S_EDGE.into(), false.into());}
+            if frame < 45 {fighter.change_to_custom_status(statuses::bayonetta::SPECIAL_S_EDGE, false, false);}
         }
     }
     0.into()
@@ -163,21 +191,4 @@ unsafe extern "C" fn bayonetta_special_s_slow_hit(fighter: &mut L2CFighterCommon
         }
     }
     0.into()
-}
-
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_end)
-        .install();
-    smashline::Agent::new("bayonetta")
-        .status(Pre, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_main)
-        .status(End, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_end)
-        .install();
-    smashline::Agent::new("bayonetta")
-        .status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_main)
-        .status(End, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_end)
-        .install();
 }

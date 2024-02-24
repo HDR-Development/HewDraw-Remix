@@ -5,6 +5,10 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, fighter_kind
     if StatusModule::is_changing(boma) {
         return;
     }
+    // No reversal for Chrom
+    if fighter_kind == *FIGHTER_KIND_CHROM {
+        return;
+    }
 
     // Marth/Lucina frame 6
     // Roy frame 10
@@ -29,6 +33,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
+
 
 #[no_mangle]
 pub unsafe extern "Rust" fn fe_common(fighter: &mut L2CFighterCommon) {

@@ -1,6 +1,8 @@
 use super::*;
 
-unsafe extern "C" fn pikmin_attack_11_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script(agent = "pikmin", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn pikmin_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -25,7 +27,8 @@ unsafe extern "C" fn pikmin_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "pikmin", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -40,7 +43,8 @@ unsafe extern "C" fn pikmin_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -58,9 +62,10 @@ unsafe extern "C" fn pikmin_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pikmin")
-        .acmd("game_attack11", pikmin_attack_11_game)
-        .acmd("game_attack12", pikmin_attack_12_game)
-        .acmd("game_attackdash", pikmin_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        pikmin_attack_11_game,
+        pikmin_attack_12_game,
+        pikmin_attack_dash_game,
+    );
 }
+

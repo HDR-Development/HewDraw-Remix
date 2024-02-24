@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn krool_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -24,7 +25,8 @@ unsafe extern "C" fn krool_attack_11_game(fighter: &mut L2CAgentBase) {
     //WorkModule::on_flag(FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART)
 }
 
-unsafe extern "C" fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -55,7 +57,8 @@ unsafe extern "C" fn krool_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
+unsafe fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -65,7 +68,8 @@ unsafe extern "C" fn krool_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -84,7 +88,8 @@ unsafe extern "C" fn krool_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_13_effect(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "effect_attack13" , category = ACMD_EFFECT , low_priority)]
+unsafe fn krool_attack_13_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -104,7 +109,8 @@ unsafe extern "C" fn krool_attack_13_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "krool", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.88);
@@ -155,12 +161,12 @@ unsafe extern "C" fn krool_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("krool")
-        .acmd("game_attack11", krool_attack_11_game)
-        .acmd("game_attack12", krool_attack_12_game)
-        .acmd("effect_attack12", krool_attack_12_effect)
-        .acmd("game_attack13", krool_attack_13_game)
-        .acmd("effect_attack13", krool_attack_13_effect)
-        .acmd("game_attackdash", krool_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        krool_attack_11_game,
+        krool_attack_12_game,
+        krool_attack_12_effect,
+        krool_attack_13_game,
+        krool_attack_13_effect,
+        krool_attack_dash_game,
+    );
 }

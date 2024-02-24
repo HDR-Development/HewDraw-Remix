@@ -6,26 +6,29 @@ use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Exec, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_exec_JumpSquat)
-        .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_end_JumpSquat)
-        .status(Main, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_JumpSquat)
-        .install();
+    install_status_scripts!(
+        //status_pre_JumpSquat,
+        status_JumpSquat,
+        status_end_JumpSquat,
+        status_exec_JumpSquat
+    );
+
+    install_hooks!(
+        //status_pre_JumpSquat_param,
+        status_JumpSquat_Main,
+        status_JumpSquat_common,
+        uniq_process_JumpSquat_exec_status,
+        uniq_process_JumpSquat_exec_status_param,
+        sub_jump_squat_uniq_check_sub,
+        sub_jump_squat_uniq_check_sub_mini_attack,
+        sub_status_JumpSquat_check_stick_lr_update
+    );
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_jump_squat_uniq_process_init_param,
-            status_JumpSquat_Main,
-            status_JumpSquat_common,
-            uniq_process_JumpSquat_exec_status,
-            uniq_process_JumpSquat_exec_status_param,
-            sub_jump_squat_uniq_check_sub,
-            sub_jump_squat_uniq_check_sub_mini_attack,
-            sub_status_JumpSquat_check_stick_lr_update,
-            status_JumpSquat,
-            status_end_JumpSquat,
+            sub_jump_squat_uniq_process_init_param
         );
     }
 }
@@ -82,7 +85,8 @@ unsafe extern "C" fn status_pre_JumpSquat_param(fighter: &mut L2CFighterCommon, 
 
 // main status stuff
 
-#[skyline::hook(replace = L2CFighterCommon_status_JumpSquat)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon16status_JumpSquatEv")]
 unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
@@ -99,7 +103,7 @@ unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_JumpSquat_MainEv")]
 unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("main");
     // Check if a character (like greninja) has a custom subroutine for status checks
@@ -183,8 +187,10 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // end status stuff
 // no symbol since you can't call `fighter.status_end_JumpSquat()`, and replacing `bind_call_...` makes no sense here
-#[skyline::hook(replace = L2CFighterCommon_status_end_JumpSquat)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_JumpSquatEv" )]
 unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
+    //println!("end");
     InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
@@ -197,19 +203,20 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // exec status stuff
-unsafe extern "C" fn status_exec_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[common_status_script(status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn status_exec_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     uniq_process_JumpSquat_exec_status_param(fighter, L2CValue::Ptr(0 as _));
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_uniq_process_JumpSquat_exec_status)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon34uniq_process_JumpSquat_exec_statusEv")]
 unsafe fn uniq_process_JumpSquat_exec_status(fighter: &mut L2CFighterCommon) -> L2CValue {
     uniq_process_JumpSquat_exec_status_param(fighter, L2CValue::Ptr(0 as _));
     0.into()
 }
 
 // common jumpsquat subroutine -- to be called by each fighter before transitioning to a custom main status
-#[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_common)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon23status_JumpSquat_commonEN3lib8L2CValueE")]
 unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2CValue) {
     let is_button_jump = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE) == 0
                                 || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0;
@@ -276,7 +283,7 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
 }
 
 // The main exec block, for some reason it's not found in the exec status
-#[skyline::hook(replace = L2CFighterCommon_uniq_process_JumpSquat_exec_status_param)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon40uniq_process_JumpSquat_exec_status_paramEN3lib8L2CValueE")]
 unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommon, arg: L2CValue) {
     let should_check = if fighter.global_table[CUSTOM_ROUTINE].get_bool() {
         let custom_routine: *const extern "C" fn(&mut L2CFighterCommon) -> L2CValue = fighter.global_table[CUSTOM_ROUTINE].get_ptr() as _;
@@ -344,7 +351,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
 }
 
 // subroutine for checking for aerial macro
-#[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_check_sub)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon29sub_jump_squat_uniq_check_subEN3lib8L2CValueE")]
 unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2CValue) {
     VarModule::inc_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
 
@@ -402,7 +409,7 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2
     }
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_check_sub_mini_attack)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon41sub_jump_squat_uniq_check_sub_mini_attackEv")]
 unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP) { return; }
     let current_frame = fighter.global_table[CURRENT_FRAME].get_f32();
@@ -433,7 +440,7 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
     }
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_status_JumpSquat_check_stick_lr_update)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon42sub_status_JumpSquat_check_stick_lr_updateEv")]
 unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     // only allow jumpsquat to flip you around if your previous status was Dash and your directional input was caused by cstick (cstick input 2 frames within jumpsquat)

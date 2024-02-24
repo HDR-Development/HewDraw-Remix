@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "szerosuit", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -31,7 +32,9 @@ unsafe extern "C" fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "szerosuit", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -52,7 +55,9 @@ unsafe extern "C" fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "szerosuit", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -67,7 +72,9 @@ unsafe extern "C" fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "szerosuit", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let attack_motion_rate = 11.0/(20.0-6.0);
@@ -100,7 +107,8 @@ unsafe extern "C" fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "szerosuit", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -125,11 +133,12 @@ unsafe extern "C" fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase
 }
 
 pub fn install() {
-    smashline::Agent::new("szerosuit")
-        .acmd("game_attack11", szerosuit_attack_11_game)
-        .acmd("game_attack12", szerosuit_attack_12_game)
-        .acmd("game_attack13", szerosuit_attack_13_game)
-        .acmd("game_attackdash", szerosuit_attack_dash_game)
-        .acmd("expression_attackdash", szerosuit_attack_dash_expression)
-        .install();
+    install_acmd_scripts!(
+        szerosuit_attack_11_game,
+        szerosuit_attack_12_game,
+        szerosuit_attack_13_game,
+        szerosuit_attack_dash_game,
+        szerosuit_attack_dash_expression,
+    );
 }
+

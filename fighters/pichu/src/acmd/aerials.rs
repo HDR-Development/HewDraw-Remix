@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn pichu_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -23,7 +24,8 @@ unsafe extern "C" fn pichu_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -67,7 +69,8 @@ unsafe extern "C" fn pichu_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pichu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -80,7 +83,8 @@ unsafe extern "C" fn pichu_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pichu_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -159,7 +163,8 @@ unsafe extern "C" fn pichu_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -188,7 +193,8 @@ unsafe extern "C" fn pichu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pichu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
@@ -236,12 +242,12 @@ unsafe extern "C" fn pichu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pichu")
-        .acmd("game_attackairn", pichu_attack_air_n_game)
-        .acmd("game_attackairf", pichu_attack_air_f_game)
-        .acmd("expression_attackairf", pichu_attack_air_f_expression)
-        .acmd("game_attackairb", pichu_attack_air_b_game)
-        .acmd("game_attackairhi", pichu_attack_air_hi_game)
-        .acmd("game_attackairlw", pichu_attack_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        pichu_attack_air_n_game,
+        pichu_attack_air_f_game,
+        pichu_attack_air_f_expression,
+        pichu_attack_air_b_game,
+        pichu_attack_air_hi_game,
+        pichu_attack_air_lw_game,
+    );
 }

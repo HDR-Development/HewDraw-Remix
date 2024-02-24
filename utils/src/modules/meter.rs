@@ -360,7 +360,7 @@ impl MeterModule {
     }
 }
 
-#[skyline::hook(offset = 0x46ae84, inline)]
+#[skyline::hook(offset = 0x46ae64, inline)]
 unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
     let data = *ctx.registers[1].x.as_ref() as *mut u32;
     let attacker_id = *data;
@@ -379,7 +379,7 @@ unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
     VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
 }
 
-#[skyline::hook(offset = 0x4c7080)]
+#[skyline::hook(offset = 0x4c7060)]
 unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u64, opp_attack_module: *mut u64, collision: *mut u8, group_index: i32, raw_power: f32, real_power: f32, pos_x: f32, lr: f32) {
     call_original!(shield_module, opp_attack_module, collision, group_index, raw_power, real_power, pos_x, lr);
     let attacker_id = *(collision.add(0x24) as *const u32);
@@ -435,7 +435,7 @@ unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u
 #[skyline::hook(offset = offsets::fighter_handle_damage())]
 unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg: *const u8) {
     let module_accessor = (*fighter).module_accessor;
-    let _entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
     call_original!(fighter, arg);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
@@ -455,7 +455,7 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
     }
 }
 
-#[skyline::hook(offset = 0x970ff0)]
+#[skyline::hook(offset = 0x970fd0)]
 pub unsafe extern "C" fn dolly_super_special_check(module_accessor: *mut smash::app::BattleObjectModuleAccessor, param_2: u8) {
     original!()(module_accessor, param_2)
 }
@@ -467,7 +467,7 @@ pub struct TempModule {
   // ...
 }
 
-#[skyline::hook(offset = 0x971250)]
+#[skyline::hook(offset = 0x971230)]
 pub unsafe extern "C" fn dolly_super_special_check_param(work: &mut TempModule, _damage: &mut TempModule) -> u64 {
     let module_accessor = work.owner;
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {

@@ -32,7 +32,7 @@ unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn special_hi_h_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_h"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -68,9 +68,12 @@ unsafe extern "C" fn special_hi_h_end(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 pub fn install() {
-    Agent::new("kirby")
-        .status(Pre, statuses::kirby::SPECIAL_HI_H, special_hi_h_pre)
-        .status(Main, statuses::kirby::SPECIAL_HI_H, special_hi_h_main)
-        .status(End, statuses::kirby::SPECIAL_HI_H, special_hi_h_end)
-        .install();
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_kirby"),
+        statuses::kirby::SPECIAL_HI_H,
+        StatusInfo::new()
+            .with_pre(special_hi_h_pre)
+            .with_main(special_hi_h_main)
+            .with_end(special_hi_h_end)
+    );
 }

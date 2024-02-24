@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn pitb_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -29,7 +30,8 @@ unsafe extern "C" fn pitb_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -45,7 +47,7 @@ unsafe extern "C" fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 4, 0, Hash40::new("top"), 3.0, 105, 100, 33, 40, 5.5, 0.0, 24.0, 7.0, Some(0.0), Some(24.0), Some(-6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
         ATTACK(fighter, 5, 0, Hash40::new("top"), 3.0, 115, 100, 35, 40, 5.5, 0.0, 18.0, -5.5, Some(0.0), Some(18.0), Some(-4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
         ATTACK(fighter, 6, 0, Hash40::new("top"), 3.0, 115, 100, 25, 40, 5.5, 0.0, 18.0, -5.5, Some(0.0), Some(18.0), Some(-4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        let hitVec = Vector2f { x: 0.0, y: 24.5 };
+        let hitVec = smash::phx::Vector2f { x: 0.0, y: 24.5 };
         AttackModule::set_vec_target_pos(boma, 3, Hash40::new("top"), &hitVec, 10, false);
     }
     frame(lua_state, 7.0);
@@ -84,7 +86,8 @@ unsafe extern "C" fn pitb_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -115,9 +118,9 @@ unsafe extern "C" fn pitb_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pitb")
-        .acmd("game_attacks4", pitb_attack_s4_s_game)
-        .acmd("game_attackhi4", pitb_attack_hi4_game)
-        .acmd("game_attacklw4", pitb_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        pitb_attack_s4_s_game,
+        pitb_attack_hi4_game,
+        pitb_attack_lw4_game,
+    );
 }

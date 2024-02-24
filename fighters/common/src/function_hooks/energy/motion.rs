@@ -3,6 +3,7 @@ use crate::consts::*;
 use crate::consts::globals::*;
 use std::ops::{Deref, DerefMut};
 
+
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[repr(u32)]
 pub enum EnergyMotionResetType {
@@ -180,10 +181,10 @@ impl FighterKineticEnergyMotion {
 }
 
 // This function references BattleObjectWorld, which is defo for the ledge positions
-#[skyline::from_offset(0x6941e0)]
+#[skyline::from_offset(0x6941c0)]
 extern "C" fn handle_cliff(boma: &mut BattleObjectModuleAccessor, vec: &Vector4f) -> energy::Vec4;
 
-#[skyline::hook(offset = 0x6d5cb0)]
+#[skyline::hook(offset = 0x6d5c90)]
 unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut BattleObjectModuleAccessor) {
     use EnergyMotionResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);
@@ -280,8 +281,8 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     {
         let mut stop_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
         let prev_speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        let reset_speed_2f = Vector2f { x: prev_speed.x, y: prev_speed.y };
-        let reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        let reset_speed_2f = smash::phx::Vector2f { x: prev_speed.x, y: prev_speed.y };
+        let reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
         lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_GROUND, &reset_speed_2f, &reset_speed_3f, boma);
         lua_bind::KineticEnergy::enable(stop_energy);
     }

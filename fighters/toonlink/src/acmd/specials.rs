@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn toonlink_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "toonlink", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -101,7 +103,8 @@ unsafe extern "C" fn toonlink_special_air_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("toonlink")
-        .acmd("game_specialairhi", toonlink_special_air_hi_game)
-        .install();
+    install_acmd_scripts!(
+        toonlink_special_air_hi_game,
+    );
 }
+

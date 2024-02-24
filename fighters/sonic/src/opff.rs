@@ -79,7 +79,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     
 }
 
-pub extern "C" fn sonic_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_SONIC )]
+pub fn sonic_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		sonic_frame(fighter)
@@ -92,8 +93,3 @@ pub unsafe fn sonic_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("sonic")
-        .on_line(Main, sonic_frame_wrapper)
-        .install();
-}

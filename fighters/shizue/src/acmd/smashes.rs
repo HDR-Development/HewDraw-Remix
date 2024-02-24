@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn shizue_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "shizue", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn shizue_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -40,7 +42,8 @@ unsafe extern "C" fn shizue_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn shizue_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn shizue_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -85,7 +88,8 @@ unsafe extern "C" fn shizue_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn shizue_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn shizue_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -132,7 +136,8 @@ unsafe extern "C" fn shizue_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shizue_trafficsign", script = "attack" , category = ACMD_GAME , low_priority)]
+unsafe fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -160,14 +165,13 @@ unsafe extern "C" fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) 
     }
 }
 
- 
 pub fn install() {
-    smashline::Agent::new("shizue")
-        .acmd("game_attacks4", shizue_attack_s4_s_game)
-        .acmd("game_attacklw4", shizue_attack_lw4_game)
-        .acmd("game_attackhi4", shizue_attack_hi4_game)
-        .install();
-    smashline::Agent::new("shizue_trafficsign")
-        .acmd("game_attack", shizue_trafficsign_attack_game)
-        .install();
+    install_acmd_scripts!(
+        shizue_attack_s4_s_game,
+        shizue_attack_lw4_game,
+        shizue_attack_hi4_game,
+        shizue_trafficsign_attack_game,
+    );
 }
+
+ 

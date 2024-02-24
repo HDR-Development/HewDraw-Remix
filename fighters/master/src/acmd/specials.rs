@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn master_special_n_start_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "master", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -32,7 +34,8 @@ unsafe extern "C" fn master_special_n_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn master_special_air_n_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialairnstart" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -63,7 +66,8 @@ unsafe extern "C" fn master_special_air_n_start_game(fighter: &mut L2CAgentBase)
     
 }
 
-unsafe extern "C" fn master_special_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialn" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -76,7 +80,8 @@ unsafe extern "C" fn master_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -89,7 +94,8 @@ unsafe extern "C" fn master_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_s_front_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialsf" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_s_front_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -164,7 +170,8 @@ unsafe extern "C" fn master_special_s_front_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn master_special_s_front_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "effect_specialsf" , category = ACMD_EFFECT , low_priority)]
+unsafe fn master_special_s_front_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -207,7 +214,8 @@ unsafe extern "C" fn master_special_s_front_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn master_special_s_front_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialsfdash" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_s_front_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -263,7 +271,8 @@ unsafe extern "C" fn master_special_s_front_dash_game(fighter: &mut L2CAgentBase
     
 }
 
-unsafe extern "C" fn master_special_air_s_front_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialairsf" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_s_front_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -321,7 +330,8 @@ unsafe extern "C" fn master_special_air_s_front_game(fighter: &mut L2CAgentBase)
     
 }
 
-unsafe extern "C" fn master_special_air_s_front_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialairsfdash" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_s_front_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -372,7 +382,9 @@ unsafe extern "C" fn master_special_air_s_front_dash_game(fighter: &mut L2CAgent
     
 }
 
-unsafe extern "C" fn master_special_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "master", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -429,7 +441,9 @@ unsafe extern "C" fn master_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_air_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "master", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -508,7 +522,9 @@ unsafe extern "C" fn master_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_air_hi_overtake_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "master", script = "game_specialairhiovertake" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_hi_overtake_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -564,7 +580,8 @@ unsafe extern "C" fn master_special_air_hi_overtake_game(fighter: &mut L2CAgentB
     
 }
 
-unsafe extern "C" fn master_special_air_hi_overtake_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "effect_specialairhiovertake" , category = ACMD_EFFECT , low_priority)]
+unsafe fn master_special_air_hi_overtake_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -591,7 +608,8 @@ unsafe extern "C" fn master_special_air_hi_overtake_effect(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn master_special_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -677,7 +695,8 @@ unsafe extern "C" fn master_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "effect_speciallw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn master_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -750,7 +769,8 @@ unsafe extern "C" fn master_special_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -836,7 +856,8 @@ unsafe extern "C" fn master_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_air_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn master_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -908,7 +929,8 @@ unsafe extern "C" fn master_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     // frame(lua_state, 1.0);
@@ -980,7 +1002,8 @@ unsafe extern "C" fn master_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "effect_speciallwhit" , category = ACMD_EFFECT , low_priority)]
+unsafe fn master_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1008,7 +1031,8 @@ unsafe extern "C" fn master_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "master", script = "game_specialairlwhit" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     // frame(lua_state, 1.0);
@@ -1120,26 +1144,27 @@ unsafe extern "C" fn master_special_air_lw_hit_game(fighter: &mut L2CAgentBase) 
 // }
 
 pub fn install() {
-    smashline::Agent::new("master")
-        .acmd("game_specialnstart", master_special_n_start_game)
-        .acmd("game_specialairnstart", master_special_air_n_start_game)
-        .acmd("game_specialn", master_special_n_game)
-        .acmd("game_specialairn", master_special_air_n_game)
-        .acmd("game_specialsf", master_special_s_front_game)
-        .acmd("effect_specialsf", master_special_s_front_effect)
-        .acmd("game_specialsfdash", master_special_s_front_dash_game)
-        .acmd("game_specialairsf", master_special_air_s_front_game)
-        .acmd("game_specialairsfdash", master_special_air_s_front_dash_game)
-        .acmd("game_specialhi", master_special_hi_game)
-        .acmd("game_specialairhi", master_special_air_hi_game)
-        .acmd("game_specialairhiovertake", master_special_air_hi_overtake_game)
-        .acmd("effect_specialairhiovertake", master_special_air_hi_overtake_effect)
-        .acmd("game_speciallw", master_special_lw_game)
-        .acmd("effect_speciallw", master_special_lw_effect)
-        .acmd("game_specialairlw", master_special_air_lw_game)
-        .acmd("effect_specialairlw", master_special_air_lw_effect)
-        .acmd("game_speciallwhit", master_special_lw_hit_game)
-        .acmd("effect_speciallwhit", master_special_lw_hit_effect)
-        .acmd("game_specialairlwhit", master_special_air_lw_hit_game)
-        .install();
+    install_acmd_scripts!(
+        master_special_n_start_game,
+        master_special_air_n_start_game,
+        master_special_n_game,
+        master_special_air_n_game,
+        master_special_s_front_game,
+        master_special_s_front_effect,
+        master_special_s_front_dash_game,
+        master_special_air_s_front_game,
+        master_special_air_s_front_dash_game,
+        master_special_air_hi_overtake_game,
+        master_special_air_hi_overtake_effect,
+        master_special_lw_game,
+        master_special_lw_hit_game,
+        master_special_lw_hit_effect,
+        master_special_air_lw_game,
+        master_special_lw_effect,
+        master_special_air_lw_hit_game,
+        master_special_hi_game,
+        master_special_air_hi_game,
+        // master_axe_special_lw_hit_game,
+    );
 }
+

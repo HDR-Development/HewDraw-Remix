@@ -64,9 +64,12 @@ unsafe extern "C" fn special_hi_open_exit(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .status(Pre, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_pre)
-        .status(Main, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_main)
-        .status(End, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_exit)
-        .install();
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_gamewatch"),
+        statuses::gamewatch::SPECIAL_HI_OPEN,
+        StatusInfo::new()
+            .with_pre(special_hi_open_pre)
+            .with_main(special_hi_open_main)
+            .with_exit(special_hi_open_exit)
+    );
 }

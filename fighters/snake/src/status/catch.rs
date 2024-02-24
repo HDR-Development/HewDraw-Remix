@@ -2,16 +2,26 @@ use super::*;
 use globals::*;
  
 
-////fixed unwanted buffered throws and walking
+pub fn install() {
+    install_status_scripts!(
+        snake_grab_pull_status_main,
+        snake_grab_dash_pull_status_main,
+        snake_grab_attack_status_main,
+        snake_grab_wait_status_main,
+        snake_grab_wait_status_end,
+    );
+}
 
-unsafe extern "C" fn snake_grab_pull_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+////fixed unwanted buffered throws and walking
+#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_PULL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn snake_grab_pull_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_pull"), 0.0, 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(snake_grab_pull_main_loop as *const () as _))
     // 0.into()
 }
-
-unsafe extern "C" fn snake_grab_dash_pull_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_DASH_PULL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn snake_grab_dash_pull_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_pull"), 0.0, 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(snake_grab_pull_main_loop as *const () as _))
@@ -64,8 +74,8 @@ pub unsafe fn snake_grab_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     return false.into()
 }
-
-unsafe extern "C" fn snake_grab_attack_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn snake_grab_attack_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_attack"), 0.0, 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(snake_grab_attack_main_loop as *const () as _))
     // 0.into()
@@ -127,8 +137,8 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 ////added grab walk
-
-unsafe extern "C" fn snake_grab_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn snake_grab_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     ControlModule::reset_trigger(fighter.module_accessor);
     if VarModule::is_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK) {
@@ -203,39 +213,9 @@ pub unsafe fn snake_grab_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     return false.into()
 }
-
-unsafe extern "C" fn snake_grab_wait_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn snake_grab_wait_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     VarModule::off_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
-    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_CATCH_WAIT)(fighter)
-}
-
-pub fn install() {
-    smashline::Agent::new("snake")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_PULL,
-            snake_grab_pull_status_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_DASH_PULL,
-            snake_grab_dash_pull_status_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_ATTACK,
-            snake_grab_attack_status_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_WAIT,
-            snake_grab_wait_status_main,
-        )
-        .status(
-            End,
-            *FIGHTER_STATUS_KIND_CATCH_WAIT,
-            snake_grab_wait_status_end,
-        )
-        .install();
+    original!(fighter)
 }

@@ -164,14 +164,20 @@ unsafe extern "C" fn special_lw_jump_cancel_end(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install() {
-    smashline::Agent::new("littlemac")
-        .status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_pre)
-        .status(Main, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_main)
-        .status(End, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_end)
-        .install();
-    smashline::Agent::new("littlemac")
-        .status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_pre)
-        .status(Main, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_main)
-        .status(End, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_end)
-        .install();
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_littlemac"),
+        statuses::littlemac::SPECIAL_LW_CANCEL,
+        StatusInfo::new()
+            .with_pre(special_lw_cancel_pre)
+            .with_main(special_lw_cancel_main)
+            .with_end(special_lw_cancel_end)
+    );
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_littlemac"),
+        statuses::littlemac::SPECIAL_LW_CANCEL_JUMP,
+        StatusInfo::new()
+            .with_pre(special_lw_jump_cancel_pre)
+            .with_main(special_lw_jump_cancel_main)
+            .with_end(special_lw_jump_cancel_end)
+    );
 }

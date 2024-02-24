@@ -5,32 +5,32 @@ use globals::*;
 // This file contains code for aerial glide tosses, wavelanding
 
 pub fn install() {
+    install_status_scripts!(
+        status_pre_EscapeAir,
+        status_EscapeAir,
+        status_end_EscapeAir
+    );
+    install_hooks!(
+        sub_escape_air_common,
+        sub_escape_air_uniq,
+        sub_escape_air_common_main,
+        sub_escape_air_common_strans_main
+    );
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Pre, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_pre_EscapeAir)
-        .status(Main, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_EscapeAir)
-        .status(End, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_end_EscapeAir)
-        .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             setup_escape_air_slide_common,
-            exec_escape_air_slide,
-            sub_escape_air_common,
-            sub_escape_air_uniq,
-            sub_escape_air_common_main,
-            sub_escape_air_common_strans_main,
-            status_pre_EscapeAir,
-            status_EscapeAir,
-            status_end_EscapeAir
+            exec_escape_air_slide
         );
     }
 }
 
 // pre status
-#[skyline::hook(replace = L2CFighterCommon_status_pre_EscapeAir)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon20status_pre_EscapeAirEv")]
 pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     // handles instant wavedashes/wavelands
     // we make sure to include this before change_motion so we check for proximity to the ground using our jumpsquat animation's ECB, rather than airdodge anim's ECB
@@ -76,7 +76,8 @@ pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_EscapeAir)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon16status_EscapeAirEv")]
 unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_escape_air_common();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
@@ -115,7 +116,8 @@ unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 // end status
-#[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_EscapeAirEv")]
 pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     if [*FIGHTER_STATUS_KIND_FALL,*FIGHTER_STATUS_KIND_LANDING].contains(&status_kind)
@@ -160,7 +162,7 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // common air dodge init code
-#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21sub_escape_air_commonEv")]
 unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
     ControlModule::reset_trigger(fighter.module_accessor);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
@@ -186,7 +188,7 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
 }
 
 // custom substatus for airdodges
-#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_uniq)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_escape_air_uniqEN3lib8L2CValueE")]
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
@@ -274,7 +276,7 @@ unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon26sub_escape_air_common_mainEv")]
 unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
     let curr_frame = fighter.global_table[CURRENT_FRAME].get_i32();
@@ -347,7 +349,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
     L2CValue::Bool(true)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_strans_main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon33sub_escape_air_common_strans_mainEv")]
 unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame")) as f32;
     let curr_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);

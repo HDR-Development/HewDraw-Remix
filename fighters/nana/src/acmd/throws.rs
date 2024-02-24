@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn nana_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "game_throwlw_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,7 +26,8 @@ unsafe extern "C" fn nana_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "effect_throwlw_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -43,7 +45,8 @@ unsafe extern "C" fn nana_throw_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_lw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "sound_throwlw_nana" , category = ACMD_SOUND , low_priority)]
+unsafe fn nana_throw_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -65,7 +68,8 @@ unsafe extern "C" fn nana_throw_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_lw_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "expression_throwlw_nana" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn nana_throw_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -89,7 +93,8 @@ unsafe extern "C" fn nana_throw_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "game_throwf_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,7 +116,8 @@ unsafe extern "C" fn nana_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_f_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "effect_throwf_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_throw_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 22.0);
@@ -128,7 +134,8 @@ unsafe extern "C" fn nana_throw_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_f_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "sound_throwf_nana" , category = ACMD_SOUND , low_priority)]
+unsafe fn nana_throw_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -142,7 +149,8 @@ unsafe extern "C" fn nana_throw_f_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "expression_throwf_nana" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn nana_throw_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -159,7 +167,8 @@ unsafe extern "C" fn nana_throw_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "game_throwhi_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -187,7 +196,8 @@ unsafe extern "C" fn nana_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "effect_throwhi_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 24.0);
@@ -204,7 +214,8 @@ unsafe extern "C" fn nana_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_hi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "sound_throwhi_nana" , category = ACMD_SOUND , low_priority)]
+unsafe fn nana_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -218,7 +229,8 @@ unsafe extern "C" fn nana_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "expression_throwhi_nana" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn nana_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -243,7 +255,8 @@ unsafe extern "C" fn nana_throw_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "game_throwb_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -266,7 +279,8 @@ unsafe extern "C" fn nana_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_b_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "effect_throwb_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -279,7 +293,8 @@ unsafe extern "C" fn nana_throw_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_b_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "sound_throwb_nana" , category = ACMD_SOUND , low_priority)]
+unsafe fn nana_throw_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -293,7 +308,8 @@ unsafe extern "C" fn nana_throw_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn nana_throw_b_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "nana", script = "expression_throwb_nana" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn nana_throw_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -314,22 +330,23 @@ unsafe extern "C" fn nana_throw_b_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("nana")
-        .acmd("game_throwlw_nana", nana_throw_lw_game)
-        .acmd("effect_throwlw_nana", nana_throw_lw_effect)
-        .acmd("sound_throwlw_nana", nana_throw_lw_sound)
-        .acmd("expression_throwlw_nana", nana_throw_lw_expression)
-        .acmd("game_throwf_nana", nana_throw_f_game)
-        .acmd("effect_throwf_nana", nana_throw_f_effect)
-        .acmd("sound_throwf_nana", nana_throw_f_sound)
-        .acmd("expression_throwf_nana", nana_throw_f_expression)
-        .acmd("game_throwhi_nana", nana_throw_hi_game)
-        .acmd("effect_throwhi_nana", nana_throw_hi_effect)
-        .acmd("sound_throwhi_nana", nana_throw_hi_sound)
-        .acmd("expression_throwhi_nana", nana_throw_hi_expression)
-        .acmd("game_throwb_nana", nana_throw_b_game)
-        .acmd("effect_throwb_nana", nana_throw_b_effect)
-        .acmd("sound_throwb_nana", nana_throw_b_sound)
-        .acmd("expression_throwb_nana", nana_throw_b_expression)
-        .install();
+    install_acmd_scripts!(
+        nana_throw_lw_game,
+        nana_throw_lw_effect,
+        nana_throw_lw_sound,
+        nana_throw_lw_expression,
+        nana_throw_f_game,
+        nana_throw_f_effect,
+        nana_throw_f_sound,
+        nana_throw_f_expression,
+        nana_throw_hi_game,
+        nana_throw_hi_effect,
+        nana_throw_hi_sound,
+        nana_throw_hi_expression,
+        nana_throw_b_game,
+        nana_throw_b_effect,
+        nana_throw_b_sound,
+        nana_throw_b_expression
+    );
 }
+

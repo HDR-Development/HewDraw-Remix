@@ -5,6 +5,7 @@ def help():
   print("usage: ./array_var_replace <old variable name> <new variable name>\nex:")
   print("\t./array_var_replace double_fireball common::DOUBLE_FIREBALL")
 
+
 def inplace_change(filename, old_string, new_string) -> bool:
     # Safely read the input filename using 'with'
     with open(filename) as f:
@@ -117,6 +118,7 @@ float_patterns = [
 
 ]
 
+
 def replace_patterns(old_var, new_var, var_type) -> int:
 
   if var_type == "flag":
@@ -173,6 +175,7 @@ if __name__ == "__main__":
   if not "::" in sys.argv[2]:
     print("No package given for new VarModule const! Please specify (for example: ./array_var_replace.py noknok_shell common::NOKNOK_SHELL)")
     exit(1)
+
 
   variable_type = input("what is the variable's type? (flag, int, float): ")
 

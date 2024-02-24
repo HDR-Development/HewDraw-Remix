@@ -3,14 +3,24 @@ use globals::*;
 utils::import!(popo::{ics_dash});
 // status script import
  
+pub fn install() {
+    install_status_scripts!(
+        dash,
+        throw,
+        catchwait_main,
+        // catchattack_main
+    );
+}
 
 // FIGHTER_STATUS_KIND_DASH //
 
-pub unsafe extern "C" fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     popo::ics_dash(fighter)
 }
 
-pub unsafe extern "C" fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // TODO: this check has issues.
     // - if we grab on a platform far off stage (like smashville) this check fails
@@ -51,7 +61,8 @@ pub unsafe extern "C" fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Throw_Main as *const () as _));
 }
 
-unsafe extern "C" fn catchwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_CATCH_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn catchwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(catchwait_main_loop as *const () as _))
 }
 
@@ -77,11 +88,3 @@ unsafe extern "C" fn catchwait_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 //     fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
 //     0.into()
 // }
-
-pub fn install() {
-    smashline::Agent::new("nana")
-        .status(Main, *FIGHTER_STATUS_KIND_DASH, dash)
-        .status(Main, *FIGHTER_STATUS_KIND_THROW, throw)
-        .status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, catchwait_main)
-        .install();
-}

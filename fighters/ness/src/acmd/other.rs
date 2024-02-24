@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +79,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +121,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -134,7 +140,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ness_turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn ness_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -148,7 +155,8 @@ unsafe extern "C" fn ness_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn ness_pkfire_pillar_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_pkfire", script = "game_pillar" , category = ACMD_GAME , low_priority)]
+unsafe fn ness_pkfire_pillar_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -159,7 +167,8 @@ unsafe extern "C" fn ness_pkfire_pillar_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ness_pkfire_pillar_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_pkfire", script = "game_pillarair" , category = ACMD_GAME , low_priority)]
+unsafe fn ness_pkfire_pillar_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -170,7 +179,8 @@ unsafe extern "C" fn ness_pkfire_pillar_air_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_pkflash", script = "game_bang" , category = ACMD_GAME , low_priority)]
+unsafe fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -183,7 +193,8 @@ unsafe extern "C" fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ness_pkthunder_move(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_pkthunder", script = "game_move", category = ACMD_GAME, low_priority )]
+unsafe fn ness_pkthunder_move(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -197,7 +208,8 @@ unsafe extern "C" fn ness_pkthunder_move(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ness_pkthunder_move_child(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_pkthunder", script = "game_movechild", category = ACMD_GAME, low_priority )]
+unsafe fn ness_pkthunder_move_child(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -211,7 +223,8 @@ unsafe extern "C" fn ness_pkthunder_move_child(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -226,7 +239,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -240,7 +254,8 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_jumpaerialfront(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "effect_jumpaerialfront", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_jumpaerialfront(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -252,7 +267,8 @@ unsafe extern "C" fn effect_jumpaerialfront(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_jumpaerialback(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "effect_jumpaerialback", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_jumpaerialback(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -265,28 +281,23 @@ unsafe extern "C" fn effect_jumpaerialback(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ness_pkfire")
-        .acmd("game_pillar", ness_pkfire_pillar_game)
-        .acmd("game_pillarair", ness_pkfire_pillar_air_game)
-        .install();
-    smashline::Agent::new("ness_pkflash")
-        .acmd("game_bang", ness_pkflash_bang_game)
-        .install();
-    smashline::Agent::new("ness_pkthunder")
-        .acmd("game_move", ness_pkthunder_move)
-        .acmd("game_movechild", ness_pkthunder_move_child)
-        .install();
-    smashline::Agent::new("ness")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", ness_turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("effect_jumpaerialfront", effect_jumpaerialfront)
-        .acmd("effect_jumpaerialback", effect_jumpaerialback)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        effect_jumpaerialfront,
+        effect_jumpaerialback,
+        dash_sound,
+		ness_turn_dash_game,
+        ness_pkfire_pillar_game,
+        ness_pkfire_pillar_air_game,
+        ness_pkflash_bang_game,
+        ness_pkthunder_move,
+        ness_pkthunder_move_child,
+	    damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
+    );
 }
+

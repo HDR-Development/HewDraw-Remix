@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn simon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -23,7 +24,8 @@ unsafe extern "C" fn simon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon_whip", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -44,7 +46,8 @@ unsafe extern "C" fn simon_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacksquats3" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -63,7 +66,8 @@ unsafe extern "C" fn simon_attack_squat_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "effect_attacksquats3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn simon_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -76,7 +80,8 @@ unsafe extern "C" fn simon_attack_squat_s3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "sound_attacksquats3" , category = ACMD_SOUND , low_priority)]
+unsafe fn simon_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -92,7 +97,8 @@ unsafe extern "C" fn simon_attack_squat_s3_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "expression_attacksquats3" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn simon_attack_squat_s3_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -108,7 +114,8 @@ unsafe extern "C" fn simon_attack_squat_s3_expression(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn simon_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -129,7 +136,8 @@ unsafe extern "C" fn simon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn simon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,7 +149,7 @@ unsafe extern "C" fn simon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
@@ -149,7 +157,8 @@ unsafe extern "C" fn simon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -173,7 +182,8 @@ unsafe extern "C" fn simon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attack_lw32_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "simon", script = "game_attacklw32" , category = ACMD_GAME , low_priority)]
+unsafe fn simon_attack_lw32_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -202,18 +212,16 @@ unsafe extern "C" fn simon_attack_lw32_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("simon_whip")
-        .acmd("game_attacks3", simon_whip_attack_s3_s_game)
-        .install();
-    smashline::Agent::new("simon")
-        .acmd("game_attacks3", simon_attack_s3_s_game)
-        .acmd("game_attacksquats3", simon_attack_squat_s3_game)
-        .acmd("effect_attacksquats3", simon_attack_squat_s3_effect)
-        .acmd("sound_attacksquats3", simon_attack_squat_s3_sound)
-        .acmd("expression_attacksquats3", simon_attack_squat_s3_expression)
-        .acmd("game_attackhi3", simon_attack_hi3_game)
-        .acmd("expression_attackhi3", simon_attack_hi3_expression)
-        .acmd("game_attacklw3", simon_attack_lw3_game)
-        .acmd("game_attacklw32", simon_attack_lw32_game)
-        .install();
+    install_acmd_scripts!(
+        simon_attack_s3_s_game,
+        simon_whip_attack_s3_s_game,
+        simon_attack_squat_s3_game,
+        simon_attack_squat_s3_effect,
+        simon_attack_squat_s3_sound,
+        simon_attack_squat_s3_expression,
+        simon_attack_hi3_game,
+        simon_attack_hi3_expression,
+        simon_attack_lw3_game,
+        simon_attack_lw32_game,
+    );
 }

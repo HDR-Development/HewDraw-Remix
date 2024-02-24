@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "link", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_s3_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -29,7 +31,8 @@ unsafe extern "C" fn attack_s3_s(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "link", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_hi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -46,7 +49,8 @@ unsafe extern "C" fn attack_hi3(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "link", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -73,7 +77,9 @@ unsafe extern "C" fn attack_lw3(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn expression_attacklw3(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "link", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -96,10 +102,11 @@ unsafe extern "C" fn expression_attacklw3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("link")
-        .acmd("game_attacks3", attack_s3_s)
-        .acmd("game_attackhi3", attack_hi3)
-        .acmd("game_attacklw3", attack_lw3)
-        .acmd("expression_attacklw3", expression_attacklw3)
-        .install();
+    install_acmd_scripts!(
+        attack_s3_s,
+        attack_hi3,
+        attack_lw3,
+        expression_attacklw3,
+    );
 }
+

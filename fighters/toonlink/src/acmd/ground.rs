@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn toonlink_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "toonlink", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -29,7 +30,8 @@ unsafe extern "C" fn toonlink_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "toonlink", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -50,7 +52,8 @@ unsafe extern "C" fn toonlink_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "toonlink", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -64,7 +67,8 @@ unsafe extern "C" fn toonlink_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -84,10 +88,10 @@ unsafe extern "C" fn toonlink_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("toonlink")
-        .acmd("game_attack11", toonlink_attack_11_game)
-        .acmd("game_attack12", toonlink_attack_12_game)
-        .acmd("game_attack13", toonlink_attack_13_game)
-        .acmd("game_attackdash", toonlink_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        toonlink_attack_11_game,
+        toonlink_attack_12_game,
+        toonlink_attack_13_game,
+        toonlink_attack_dash_game,
+    );
 }

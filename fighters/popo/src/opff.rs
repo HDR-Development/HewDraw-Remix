@@ -90,32 +90,32 @@ unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-pub static mut NANA_BOMA: [u64; 8] = [0; 8];
+pub static mut nana_boma: [u64; 8] = [0; 8];
 
 unsafe fn get_nana_boma(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     if boma.kind() == *FIGHTER_KIND_NANA {
         let mut nana_boma_deez = boma;
-        NANA_BOMA[id] = (&mut *nana_boma_deez as *mut BattleObjectModuleAccessor) as u64;
+        nana_boma[id] = (&mut *nana_boma_deez as *mut BattleObjectModuleAccessor) as u64;
     }
 }
 
-static mut EFFECT_ON: bool = false;
-static mut NANA_POS_X: f32 = 0.0;
-static mut NANA_POS_Y: f32 = 0.0;
+static mut effect_on: bool = false;
+static mut nana_pos_x: f32 = 0.0;
+static mut nana_pos_y: f32 = 0.0;
 
 unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 
     if boma.kind() == *FIGHTER_KIND_POPO {
         if status_kind == *FIGHTER_STATUS_KIND_STANDBY {
-            EFFECT_ON = true;
-            NANA_POS_X = PostureModule::pos_x(NANA_BOMA[id] as *mut BattleObjectModuleAccessor);
-            NANA_POS_Y = PostureModule::pos_y(NANA_BOMA[id] as *mut BattleObjectModuleAccessor);
+            effect_on = true;
+            nana_pos_x = PostureModule::pos_x(nana_boma[id] as *mut BattleObjectModuleAccessor);
+            nana_pos_y = PostureModule::pos_y(nana_boma[id] as *mut BattleObjectModuleAccessor);
         }
-        if status_kind == *FIGHTER_STATUS_KIND_REBIRTH && fighter.status_frame() <= 1 && EFFECT_ON {
-            let pos =  Vector3f {x: NANA_POS_X, y: NANA_POS_Y, z: 0.0};
+        if status_kind == *FIGHTER_STATUS_KIND_REBIRTH && fighter.status_frame() <= 1 && effect_on {
+            let pos =  Vector3f {x: nana_pos_x, y: nana_pos_y, z: 0.0};
             let rot =  Vector3f {x: 0.0, y: 0.0, z: 0.0};
             EffectModule::req(boma, Hash40::new("sys_recovery"), &pos, &rot, 1.0, *EFFECT_SUB_ATTRIBUTE_NO_JOINT_SCALE as u32, 0, true, 0);
-            EFFECT_ON = false;
+            effect_on = false;
         }
     }
 }
@@ -125,7 +125,7 @@ unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         return;
     }
 
-    let nana = NANA_BOMA[id] as *mut BattleObjectModuleAccessor;
+    let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
     if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO) {
         if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH]) {
             StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_STANDBY, false);
@@ -139,23 +139,6 @@ unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     && fighter.is_button_on(Buttons::AppealLw) {
         VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO);
         StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_DEAD, false);
-    }
-}
-
-// make nana face the same direction as popo during down smash
-unsafe fn attacklw4_lr(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    if fighter.kind() != *FIGHTER_KIND_POPO {
-        return;
-    }
-
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD]) {
-        let nana = NANA_BOMA[id] as *mut BattleObjectModuleAccessor;
-        let popo_lr = PostureModule::lr(boma);
-        let nana_lr = PostureModule::lr(nana);
-        if nana_lr != popo_lr {
-            PostureModule::reverse_lr(nana);
-            PostureModule::update_rot_y_lr(nana);
-        }
     }
 }
 
@@ -196,6 +179,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // nothing lol
 }
 
+
 #[no_mangle]
 pub unsafe extern "Rust" fn ice_climbers_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
@@ -210,11 +194,11 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
     nana_couple_indicator(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
-    attacklw4_lr(fighter, boma, id);
     fastfall_specials(fighter);
 }
 
-pub extern "C" fn popo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_POPO )]
+pub fn popo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		popo_frame(fighter);
@@ -226,9 +210,4 @@ pub unsafe fn popo_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
-}
-pub fn install() {
-    smashline::Agent::new("popo")
-        .on_line(Main, popo_frame_wrapper)
-        .install();
 }

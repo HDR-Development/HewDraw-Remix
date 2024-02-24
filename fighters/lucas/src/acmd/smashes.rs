@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -62,12 +63,9 @@ unsafe extern "C" fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
-        }
-        frame(lua_state, 25.0);
-        if is_excute(fighter) {
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
+            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
         }
     } 
     else {
@@ -119,17 +117,15 @@ unsafe extern "C" fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
-        }
-        frame(lua_state, 25.0);
-        if is_excute(fighter) {
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
             VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
+            WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
         }
     }
 }
 
-unsafe extern "C" fn lucas_attack_s4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "sound_attacks4", category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 9.0);
     if is_excute(fighter){
@@ -150,7 +146,8 @@ unsafe extern "C" fn lucas_attack_s4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_s4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -193,7 +190,8 @@ unsafe extern "C" fn lucas_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -278,7 +276,8 @@ unsafe extern "C" fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -350,7 +349,8 @@ unsafe extern "C" fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_hi4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "sound_attackhi4", category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -378,7 +378,8 @@ unsafe extern "C" fn lucas_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
@@ -434,7 +435,8 @@ unsafe extern "C" fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "sound_attacklw4", category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -458,7 +460,8 @@ unsafe extern "C" fn lucas_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -495,7 +498,8 @@ unsafe extern "C" fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "expression_attacklw4" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn lucas_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -527,7 +531,8 @@ unsafe extern "C" fn lucas_attack_lw4_expression(fighter: &mut L2CAgentBase) {
 
 // LW4PT2
 
-unsafe extern "C" fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "game_attacklw42" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -561,7 +566,8 @@ unsafe extern "C" fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "sound_attacklw42", category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -569,7 +575,8 @@ unsafe extern "C" fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "effect_attacklw42" , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -594,7 +601,8 @@ unsafe extern "C" fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_attack_lw4_pt2_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucas", script = "expression_attacklw42" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn lucas_attack_lw4_pt2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -621,20 +629,21 @@ unsafe extern "C" fn lucas_attack_lw4_pt2_expression(fighter: &mut L2CAgentBase)
 }
 
 pub fn install() {
-    smashline::Agent::new("lucas")
-        .acmd("game_attacks4", lucas_attack_s4_s_game)
-        .acmd("sound_attacks4", lucas_attack_s4_sound)
-        .acmd("effect_attacks4", lucas_attack_s4_effect)
-        .acmd("game_attackhi4", lucas_attack_hi4_game)
-        .acmd("effect_attackhi4", lucas_attack_hi4_effect)
-        .acmd("sound_attackhi4", lucas_attack_hi4_sound)
-        .acmd("game_attacklw4", lucas_attack_lw4_game)
-        .acmd("sound_attacklw4", lucas_attack_lw4_sound)
-        .acmd("effect_attacklw4", lucas_attack_lw4_effect)
-        .acmd("expression_attacklw4", lucas_attack_lw4_expression)
-        .acmd("game_attacklw42", lucas_attack_lw4_pt2_game)
-        .acmd("sound_attacklw42", lucas_attack_lw4_pt2_sound)
-        .acmd("effect_attacklw42", lucas_attack_lw4_pt2_effect)
-        .acmd("expression_attacklw42", lucas_attack_lw4_pt2_expression)
-        .install();
+    install_acmd_scripts!(
+        lucas_attack_s4_effect,
+        lucas_attack_s4_sound,
+        lucas_attack_s4_s_game,
+        lucas_attack_hi4_game,
+        lucas_attack_hi4_sound,
+        lucas_attack_hi4_effect,
+        lucas_attack_lw4_game,
+        lucas_attack_lw4_sound,
+        lucas_attack_lw4_effect,
+        lucas_attack_lw4_expression,
+        lucas_attack_lw4_pt2_game,
+        lucas_attack_lw4_pt2_sound,
+        lucas_attack_lw4_pt2_effect,
+        lucas_attack_lw4_pt2_expression,
+    );
 }
+

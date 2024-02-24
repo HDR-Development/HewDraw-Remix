@@ -28,7 +28,6 @@
       <float hash="y_spd_add">2.61</float>
       <float hash="y_up_spd_max">2.2</float>
       <float hash="hop_max">1</float>
-      <float hash="egg_angle_max">110</float>
       <float hash="egg_angle_min">45</float>	
     </struct>
     <hash40 index="1">dummy</hash40>

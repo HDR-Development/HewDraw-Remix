@@ -45,7 +45,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn gamewatch_init(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_init]
+fn gamewatch_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_GAMEWATCH {
@@ -59,7 +60,7 @@ extern "C" fn gamewatch_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .on_start(gamewatch_init)
-        .install();
+    smashline::install_agent_init_callbacks!(gamewatch_init);
+    special_hi::install();
+    special_hi_open::install();
 }

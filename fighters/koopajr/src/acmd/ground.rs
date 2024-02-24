@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn koopajr_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "koopajr", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,9 @@ unsafe extern "C" fn koopajr_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopajr_attack_12_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script(agent = "koopajr", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,7 +53,9 @@ unsafe extern "C" fn koopajr_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "koopajr", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -82,9 +87,10 @@ unsafe extern "C" fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("koopajr")
-        .acmd("game_attack11", koopajr_attack_11_game)
-        .acmd("game_attack12", koopajr_attack_12_game)
-        .acmd("game_attackdash", koopajr_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        koopajr_attack_11_game,
+        koopajr_attack_12_game,
+        koopajr_attack_dash_game,
+    );
 }
+

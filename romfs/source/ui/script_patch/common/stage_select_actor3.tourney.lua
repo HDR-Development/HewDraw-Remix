@@ -607,6 +607,8 @@ local set_alt_panel_textures = function(is_forward)
     texture_pane:replace_texture(texture_idx)
 end
 
+
+
 -- Enables/disables the stage form/music buttons for the specified preview
 -- CLOSURE_25, R85
 local set_stage_preview_buttons_enable = function(preview_index, enable)
@@ -1554,6 +1556,7 @@ local strike_stage = function(panel_id, is_strike)
     end
 end
 
+
 local check_for_strike_cancel = function()
     strike_cancel.is_canceling_ = virtual_input:is_pressing(INPUT_STRIKE)
 
@@ -2208,6 +2211,7 @@ local update_panel_scalings = function()
     end
 end
 
+
 local handle_change_page = function(dir)
     if dir == 0 then
         return
@@ -2532,6 +2536,8 @@ local change_selected_alt = function(is_forward)
     local texture_pane = parts:get_pane(pane_name)
     texture_pane:replace_texture(texture_idx)
 end
+
+
 
 -- CLOSURE_80, R139
 local regular_main_update = function()

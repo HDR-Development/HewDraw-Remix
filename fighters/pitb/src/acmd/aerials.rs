@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -33,7 +34,8 @@ unsafe extern "C" fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+unsafe fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -67,7 +69,8 @@ unsafe extern "C" fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+unsafe fn pitb_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -85,7 +88,8 @@ unsafe extern "C" fn pitb_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -116,7 +120,8 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -146,7 +151,8 @@ unsafe extern "C" fn pitb_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -176,7 +182,8 @@ unsafe extern "C" fn pitb_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
+unsafe fn pitb_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -194,7 +201,8 @@ unsafe extern "C" fn pitb_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -228,7 +236,8 @@ unsafe extern "C" fn pitb_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -274,7 +283,8 @@ unsafe extern "C" fn pitb_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pitb_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -291,16 +301,16 @@ unsafe extern "C" fn pitb_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pitb")
-        .acmd("game_attackairn", pitb_attack_air_n_game)
-        .acmd("effect_attackairn", pitb_attack_air_n_effect)
-        .acmd("sound_attackairn", pitb_attack_air_n_sound)
-        .acmd("expression_attackairn", expression_attackairn)
-        .acmd("game_attackairf", pitb_attack_air_f_game)
-        .acmd("game_attackairb", pitb_attack_air_b_game)
-        .acmd("effect_attackairb", pitb_attack_air_b_effect)
-        .acmd("game_attackairhi", pitb_attack_air_hi_game)
-        .acmd("game_attackairlw", pitb_attack_air_lw_game)
-        .acmd("expression_attackairlw", pitb_attack_air_lw_expression)
-        .install();
+    install_acmd_scripts!(
+        pitb_attack_air_n_game,
+        pitb_attack_air_n_effect,
+        pitb_attack_air_n_sound,
+        expression_attackairn,
+        pitb_attack_air_f_game,
+        pitb_attack_air_b_game,
+        pitb_attack_air_b_effect,
+        pitb_attack_air_hi_game,
+        pitb_attack_air_lw_game,
+        pitb_attack_air_lw_expression
+    );
 }

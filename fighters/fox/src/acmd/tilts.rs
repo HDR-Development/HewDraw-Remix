@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attacks3hi(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "fox", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks3hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -18,7 +20,8 @@ unsafe extern "C" fn game_attacks3hi(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "fox", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -34,7 +37,8 @@ unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_attacks3lw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "fox", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks3lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -51,7 +55,8 @@ unsafe extern "C" fn game_attacks3lw(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn expression_attacks3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "fox", scripts = ["expression_attacks3hi", "expression_attacks3", "expression_attacks3lw"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -63,7 +68,7 @@ unsafe extern "C" fn expression_attacks3(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
@@ -71,7 +76,8 @@ unsafe extern "C" fn expression_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "fox", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -102,7 +108,8 @@ unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn expression_attackhi3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "fox", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -122,7 +129,8 @@ unsafe extern "C" fn expression_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "fox", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -148,15 +156,14 @@ unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("fox")
-        .acmd("game_attacks3hi", game_attacks3hi)
-        .acmd("game_attacks3", game_attacks3)
-        .acmd("game_attacks3lw", game_attacks3lw)
-        .acmd("expression_attacks3hi", expression_attacks3)
-        .acmd("expression_attacks3", expression_attacks3)
-        .acmd("expression_attacks3lw", expression_attacks3)
-        .acmd("game_attackhi3", game_attackhi3)
-        .acmd("expression_attackhi3", expression_attackhi3)
-        .acmd("game_attacklw3", game_attacklw3)
-        .install();
+    install_acmd_scripts!(
+        game_attacks3hi,
+        game_attacks3,
+        game_attacks3lw,
+        expression_attacks3,
+        game_attackhi3,
+        expression_attackhi3,
+        game_attacklw3,
+    );
 }
+

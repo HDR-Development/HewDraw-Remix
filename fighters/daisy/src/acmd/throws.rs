@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn daisy_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn daisy_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -33,7 +34,8 @@ unsafe extern "C" fn daisy_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
+unsafe fn daisy_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 34.0, 23.0);
@@ -73,8 +75,8 @@ unsafe extern "C" fn daisy_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("daisy")
-        .acmd("game_throwhi", daisy_throw_hi_game)
-        .acmd("game_throwlw", daisy_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+        daisy_throw_hi_game,
+        daisy_throw_lw_game,
+    );
 }

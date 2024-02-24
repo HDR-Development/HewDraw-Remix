@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn dedede_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dedede", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -34,7 +35,8 @@ unsafe extern "C" fn dedede_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dedede", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -60,7 +62,8 @@ unsafe extern "C" fn dedede_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_attack_hi3_effect(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "dedede", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn dedede_attack_hi3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -72,7 +75,8 @@ unsafe extern "C" fn dedede_attack_hi3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dedede", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn dedede_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -94,7 +98,8 @@ unsafe extern "C" fn dedede_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dedede", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn dedede_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -105,7 +110,8 @@ unsafe extern "C" fn dedede_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn dedede_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dedede", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dedede_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -121,14 +127,14 @@ unsafe extern "C" fn dedede_attack_lw3_expression(fighter: &mut L2CAgentBase) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
-
 pub fn install() {
-    smashline::Agent::new("dedede")
-        .acmd("game_attacks3", dedede_attack_s3_s_game)
-        .acmd("game_attackhi3", dedede_attack_hi3_game)
-        .acmd("effect_attackhi3", dedede_attack_hi3_effect)
-        .acmd("game_attacklw3", dedede_attack_lw3_game)
-        .acmd("effect_attacklw3", dedede_attack_lw3_effect)
-        .acmd("expression_attacklw3", dedede_attack_lw3_expression)
-        .install();
+    install_acmd_scripts!(
+        dedede_attack_s3_s_game,
+        dedede_attack_hi3_game,
+        dedede_attack_hi3_effect,
+        dedede_attack_lw3_game,
+        dedede_attack_lw3_effect,
+        dedede_attack_lw3_expression,
+    );
 }
+

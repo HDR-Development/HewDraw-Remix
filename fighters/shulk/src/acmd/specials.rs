@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "shulk", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
+unsafe fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -61,9 +62,9 @@ unsafe extern "C" fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    smashline::Agent::new("shulk")
-        .acmd("game_specialhi", shulk_special_hi_game)
-        .acmd("game_specialairhi", shulk_special_hi_game)
-        .install();
+    install_acmd_scripts!(
+        shulk_special_hi_game,
+    );
 }

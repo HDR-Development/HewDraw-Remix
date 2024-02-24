@@ -4,6 +4,7 @@ import sys
 import glob
 import shutil
 
+
 def run_example_exe(executable_path, input_directory, output_directory):
     # List all files in the directory
     files = glob.glob(input_directory + "**/normal*/param/*.lvd", recursive=True)
@@ -42,6 +43,7 @@ def run_example_exe(executable_path, input_directory, output_directory):
     print(f"Zipping lvd files into lvd.zip at {output_directory}")
     shutil.make_archive(output_directory + "lvd", "zip", output_directory + "yml\\")
     print("Done!")
+
 
 if __name__ == "__main__":
     # Check if both directory and executable paths are provided as command-line arguments

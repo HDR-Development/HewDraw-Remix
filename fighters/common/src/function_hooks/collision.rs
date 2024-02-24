@@ -12,7 +12,7 @@ use globals::*;
 // Not sure what param_6 is, but when 0, it skips calculations for your ECB's bottom point and just sets it to 0.0, which "locks" your ECB's bottom point to your Top bone
 // when 1, it calculates your bottom ECB point normally, like the other 3 points
 // Vanilla passes 0 by default, so we have to forcibly pass in 1
-#[skyline::hook(offset = 0x45f440)]
+#[skyline::hook(offset = 0x45f420)]
 unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *mut Hash40, param_2: *mut f32, param_3: *mut f32, param_4: *mut f32, param_5: *mut f32, param_6: u32) {
     // The original function calls model_module_joint_global_position_with_offset_hook
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
@@ -66,6 +66,7 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     }
 }
 
+
 // This function calculates the coordinates of the passed bone relative to the Top bone (PostureModule::pos)
 // It stores these x/y/z coordinates in param_3's Vector3f
 
@@ -75,7 +76,7 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
 // This is why your ECB bottom point is always "locked" to your Top bone
 
 // By returning once the Trans bone is passed into this func, we can ignore it and thus use your map_coll_data bones to calculate your bottom ECB point, like the other 3 points
-#[skyline::hook(offset = 0x48fc60)]
+#[skyline::hook(offset = 0x48fc40)]
 unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64, bone: Hash40, param_3: *mut Vector3f, param_4: *mut Vector3f, param_5: bool) {
     let boma = *(model_module as *mut *mut BattleObjectModuleAccessor).add(1);
     if (*boma).is_fighter()
@@ -88,13 +89,13 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
 }
 
 // Unused for now
-#[skyline::hook(offset = 0x523a80)]
+#[skyline::hook(offset = 0x523a60)]
 unsafe fn groundcollision__processgroundcollisioninfo(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
     call_original!(groundcollisioninfo, groundcollision)
 }
 
 // Performs ground correct/sets situation kind
-#[skyline::hook(offset = 0x53fe50)]
+#[skyline::hook(offset = 0x53fe30)]
 unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollisioninfo: *mut f32, groundcollision: u64) {
     let groundcollisionline = *((groundcollision + 0x320) as *mut u64) as *mut GroundCollisionLine;
     let groundcollisionline_next = *(groundcollisionline as *mut *mut GroundCollisionLine);
@@ -144,8 +145,8 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
     }
 }
 // Sets GroundCollisionLine
-#[skyline::hook(offset = 0x52d920)]
-unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut Vector2f, ecb_bottom_translation: *mut Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
+#[skyline::hook(offset = 0x52d900)]
+unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut smash::phx::Vector2f, ecb_bottom_translation: *mut smash::phx::Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
     if *((groundcollision + 0x39f) as *mut bool) {
         // Ignore ground collision
         return 0 as *mut GroundCollisionLine;
@@ -157,8 +158,8 @@ pub fn install() {
     unsafe {
         // Removes 0.3 unit leniency above ECB bottom when deciding whether to land
         // which reduces frequency of platform cancels
-        skyline::patching::Patch::in_text(0x540df8).data(0x529ae148);
-        skyline::patching::Patch::in_text(0x540dfc).data(0x72a78468);
+        skyline::patching::Patch::in_text(0x540dd8).data(0x529ae148);
+        skyline::patching::Patch::in_text(0x540ddc).data(0x72a78468);
     }
     skyline::install_hooks!(
         groundcollision__processgroundcollisioninfo_check_landing,

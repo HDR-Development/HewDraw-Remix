@@ -22,7 +22,25 @@ extern "Rust" {
     fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
-extern "C" fn ken_init(fighter: &mut L2CFighterCommon) {
+pub fn install() {
+    finals::install();
+    special_cmd4::install();
+    special_lw::install();
+    special_s::install();
+    install_status_scripts!(
+        pre_turndash,
+        main_dashback,
+        end_dashback,
+        main_attack,
+        wait_pre,
+        landing_main,
+        guard,
+    );
+    smashline::install_agent_init_callbacks!(ken_init);
+}
+
+#[smashline::fighter_init]
+fn ken_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_KEN {
             return;
@@ -298,7 +316,8 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        fighter.change_status(statuses::ken::ATTACK_COMMAND_4.into(), true.into());
+        let attack_command_4_status_kind = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ryu::AIR_DASH);
+        fighter.change_status(attack_command_4_status_kind.into(), true.into());
         return true.into();
     }
 
@@ -314,7 +333,8 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     false.into()
 }
 
-pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     if VarModule::is_flag(
         fighter.object(),
@@ -395,7 +415,8 @@ unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_TURN_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr = WorkModule::get_float(
         fighter.module_accessor,
         *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1,
@@ -418,18 +439,21 @@ pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_RYU_STATUS_KIND_DASH_BACK //
 
-pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
-pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
-    smashline::original_status(End, fighter, *FIGHTER_RYU_STATUS_KIND_DASH_BACK)(fighter)
+    original!(fighter)
 }
 
 // FIGHTER_STATUS_KIND_ATTACK //
 
-unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if WorkModule::is_flag(
         fighter.module_accessor,
@@ -620,30 +644,14 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 // FIGHTER_STATUS_KIND_WAIT //
 
-pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
 
 // FIGHTER_STATUS_KIND_LANDING //
 
-pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
-}
-
-pub fn install() {
-    finals::install();
-    special_cmd4::install();
-    special_lw::install();
-    special_s::install();
-
-    smashline::Agent::new("ken")
-        .on_start(ken_init)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
-        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
-        .status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback)
-        .status(End, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, end_dashback)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack)
-        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
-        .install();
 }

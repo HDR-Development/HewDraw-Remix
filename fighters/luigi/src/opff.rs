@@ -96,7 +96,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     luigi_missile_edge_cancel(fighter);
 }
 
-pub extern "C" fn luigi_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_LUIGI )]
+pub fn luigi_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		luigi_frame(fighter);
@@ -113,10 +114,4 @@ unsafe fn special_s_charge_init(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
     if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind)  || !sv_information::is_ready_go() {
         VarModule::off_flag(fighter.object(), vars::luigi::instance::IS_MISFIRE_STORED);
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("luigi")
-        .on_line(Main, luigi_frame_wrapper)
-        .install();
 }

@@ -24,7 +24,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn koopajr_init(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_init]
+fn koopajr_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_KOOPAJR {
@@ -35,10 +36,9 @@ extern "C" fn koopajr_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
+    smashline::install_agent_init_callbacks!(koopajr_init);
     special_s_jump::install();
+
     special_hi_escape::install();
     special_hi_damage::install();
-    smashline::Agent::new("koopajr")
-        .on_start(koopajr_init)
-        .install();
 }

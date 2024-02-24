@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn richter_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "richter", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -29,7 +31,8 @@ unsafe extern "C" fn richter_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "richter", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -57,7 +60,8 @@ unsafe extern "C" fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "richter", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -85,7 +89,8 @@ unsafe extern "C" fn richter_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "richter", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -125,7 +130,8 @@ unsafe extern "C" fn richter_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_whip_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "richter_whip", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -157,7 +163,8 @@ unsafe extern "C" fn richter_whip_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "richter", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -203,7 +210,8 @@ unsafe extern "C" fn richter_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_whip_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "richter_whip", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn richter_whip_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -217,15 +225,14 @@ unsafe extern "C" fn richter_whip_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("richter")
-        .acmd("game_attacks4hi", richter_attack_s4_hi_game)
-        .acmd("game_attacks4", richter_attack_s4_s_game)
-        .acmd("game_attacks4lw", richter_attack_s4_lw_game)
-        .acmd("game_attackhi4", richter_attack_hi4_game)
-        .acmd("game_attacklw4", richter_attack_lw4_game)
-        .install();
-    smashline::Agent::new("richter_whip")
-        .acmd("game_attackhi4", richter_whip_attack_hi4_game)
-        .acmd("game_attacklw4", richter_whip_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        richter_attack_s4_hi_game,
+        richter_attack_s4_s_game,
+        richter_attack_s4_lw_game,
+        richter_attack_hi4_game,
+        richter_whip_attack_hi4_game,
+        richter_attack_lw4_game,
+        richter_whip_attack_lw4_game,
+    );
 }
+

@@ -1,6 +1,7 @@
 #!/usr/bin/python3.9
 import shutil, os, sys, glob, characters
 
+
 def inplace_change(filename, old_string, new_string):
     # Safely read the input filename using 'with'
     with open(filename) as f:
@@ -21,6 +22,7 @@ def insert_text(filename, text:str):
     f.seek(0, 0)
     f.write(text.rstrip('\r\n') + '\n' + content)
 
+
 os.chdir("../fighters")
 
 def replace(fighter):
@@ -37,6 +39,7 @@ def replace(fighter):
           insert_text(file, "use common::opff_import::*;")
       else:
         print("no opff: " + file)
+
 
 for fighter in characters.characters:
   replace(fighter)

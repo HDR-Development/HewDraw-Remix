@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn pfushigisou_special_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "pfushigisou", script = "game_specials" , category = ACMD_GAME , low_priority)]
+unsafe fn pfushigisou_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 22.0);
@@ -19,7 +21,8 @@ unsafe extern "C" fn pfushigisou_special_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pfushigisou_special_air_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pfushigisou", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
+unsafe fn pfushigisou_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 22.0);
@@ -37,7 +40,8 @@ unsafe extern "C" fn pfushigisou_special_air_s_game(fighter: &mut L2CAgentBase) 
     
 }
 
-unsafe extern "C" fn pfushigisou_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pfushigisou", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pfushigisou_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -56,7 +60,8 @@ unsafe extern "C" fn pfushigisou_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pfushigisou_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pfushigisou", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pfushigisou_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -93,10 +98,11 @@ unsafe extern "C" fn pfushigisou_special_air_hi_game(fighter: &mut L2CAgentBase)
 }
 
 pub fn install() {
-    smashline::Agent::new("pfushigisou")
-        .acmd("game_specials", pfushigisou_special_s_game)
-        .acmd("game_specialairs", pfushigisou_special_air_s_game)
-        .acmd("game_specialhi", pfushigisou_special_hi_game)
-        .acmd("game_specialairhi", pfushigisou_special_air_hi_game)
-        .install();
+    install_acmd_scripts!(
+        pfushigisou_special_s_game,
+        pfushigisou_special_air_s_game,
+        pfushigisou_special_hi_game,
+        pfushigisou_special_air_hi_game,
+    );
 }
+

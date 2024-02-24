@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "mario", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -17,27 +19,8 @@ unsafe extern "C" fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 14.0, 361, 95, 0, 25, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 14.0, 361, 95, 0, 25, 3.5, -2.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 18.0, 361, 95, 0, 25, 5.7, 6.3, 0.0, -1.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    
-}
-
-unsafe extern "C" fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -57,7 +40,29 @@ unsafe extern "C" fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 14.0, 361, 95, 0, 25, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("arml"), 14.0, 361, 95, 0, 25, 3.5, -2.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("arml"), 18.0, 361, 95, 0, 25, 5.7, 6.3, 0.0, -1.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    
+}
+
+#[acmd_script( agent = "mario", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let attack_start_frame = 9.0;
@@ -92,7 +97,8 @@ unsafe extern "C" fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -110,7 +116,8 @@ unsafe extern "C" fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -141,12 +148,13 @@ unsafe extern "C" fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("mario")
-        .game_acmd("game_attacks4hi", mario_attack_s4_hi_game)
-        .game_acmd("game_attacks4", mario_attack_s4_s_game)
-        .game_acmd("game_attacks4lw", mario_attack_s4_lw_game)
-        .game_acmd("game_attackhi4", mario_attack_hi4_game)
-        .effect_acmd("effect_attackhi4", mario_attack_hi4_effect)
-        .game_acmd("game_attacklw4", mario_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        mario_attack_s4_hi_game,
+        mario_attack_s4_s_game,
+        mario_attack_s4_lw_game,
+        mario_attack_hi4_game,
+        mario_attack_hi4_effect,
+        mario_attack_lw4_game,
+    );
 }
+

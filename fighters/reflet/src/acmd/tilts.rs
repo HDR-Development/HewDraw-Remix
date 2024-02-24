@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn reflet_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "reflet", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -36,7 +37,8 @@ unsafe extern "C" fn reflet_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn reflet_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "reflet", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn reflet_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -50,11 +52,12 @@ unsafe extern "C" fn reflet_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
-unsafe extern "C" fn reflet_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "reflet", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -73,7 +76,8 @@ unsafe extern "C" fn reflet_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn reflet_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "reflet", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn reflet_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -86,7 +90,7 @@ unsafe extern "C" fn reflet_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
@@ -94,7 +98,8 @@ unsafe extern "C" fn reflet_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn reflet_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "reflet", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -125,7 +130,8 @@ unsafe extern "C" fn reflet_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn reflet_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "reflet", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn reflet_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -138,7 +144,7 @@ unsafe extern "C" fn reflet_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.5);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
@@ -147,12 +153,12 @@ unsafe extern "C" fn reflet_attack_lw3_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("reflet")
-        .acmd("game_attacks3", reflet_attack_s3_s_game)
-        .acmd("expression_attacks3", reflet_attack_s3_s_expression)
-        .acmd("game_attackhi3", reflet_attack_hi3_game)
-        .acmd("expression_attackhi3", reflet_attack_hi3_expression)
-        .acmd("game_attacklw3", reflet_attack_lw3_game)
-        .acmd("expression_attacklw3", reflet_attack_lw3_expression)
-        .install();
+    install_acmd_scripts!(
+        reflet_attack_s3_s_game,
+        reflet_attack_s3_s_expression,
+        reflet_attack_hi3_game,
+        reflet_attack_hi3_expression,
+        reflet_attack_lw3_game,
+        reflet_attack_lw3_expression,
+    );
 }

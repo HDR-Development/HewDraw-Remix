@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
@@ -65,7 +66,8 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
-unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
@@ -123,7 +125,8 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     smash::app::FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
-unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     smash::app::FighterSpecializer_Demon::set_devil(boma, true, 10.0);
@@ -222,9 +225,10 @@ unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("demon")
-        .acmd("game_attacks4", game_attacks4)
-        .acmd("game_attackhi4", game_attackhi4)
-        .acmd("game_attacklw4", game_attacklw4)
-        .install();
+    install_acmd_scripts!(
+        game_attacks4,
+        game_attackhi4,
+        game_attacklw4,
+);
 }
+

@@ -38,7 +38,8 @@ use utils::{
 };
 use smashline::*;
 
-extern "C" fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_reset]
+fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() != *FIGHTER_KIND_DUCKHUNT {
             return;
@@ -47,11 +48,11 @@ extern "C" fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
-    opff::install();
     status::install();
-    smashline::Agent::new("duckhunt")
-        .on_start(duckhunt_reset)
-        .install();
+    opff::install(is_runtime);
+    use opff::*;
+    smashline::install_agent_resets!(duckhunt_reset);
+    smashline::install_agent_frame_callback!(gunman_callback);
 }

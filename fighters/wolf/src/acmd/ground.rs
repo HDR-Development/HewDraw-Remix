@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn wolf_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "wolf", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -31,7 +32,8 @@ unsafe extern "C" fn wolf_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -40,7 +42,8 @@ unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wolf_attack_11_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wolf_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -52,11 +55,12 @@ unsafe extern "C" fn wolf_attack_11_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 
-unsafe extern "C" fn wolf_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "wolf", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 4.0);
     let boma = fighter.boma();
@@ -76,7 +80,9 @@ unsafe extern "C" fn wolf_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wolf_attack_13_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script(agent = "wolf", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -97,7 +103,8 @@ unsafe extern "C" fn wolf_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wolf_attack_13_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "expression_attack13", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wolf_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -110,11 +117,12 @@ unsafe extern "C" fn wolf_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 
-unsafe extern "C" fn wolf_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "wolf", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -136,14 +144,16 @@ unsafe extern "C" fn wolf_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    smashline::Agent::new("wolf")
-        .acmd("game_attack11", wolf_attack_11_game)
-        .acmd("effect_attack11", effect_attack11)
-        .acmd("expression_attack11", wolf_attack_11_expression)
-        .acmd("game_attack12", wolf_attack_12_game)
-        .acmd("game_attack13", wolf_attack_13_game)
-        .acmd("expression_attack13", wolf_attack_13_expression)
-        .acmd("game_attackdash", wolf_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        wolf_attack_11_game,
+        effect_attack11,
+        wolf_attack_11_expression,
+        wolf_attack_12_game,
+        wolf_attack_13_game,
+        wolf_attack_13_expression,
+        wolf_attack_dash_game,
+    );
 }
+

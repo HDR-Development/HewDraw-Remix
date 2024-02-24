@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn elight_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -22,7 +23,8 @@ unsafe extern "C" fn elight_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,7 +81,8 @@ unsafe extern "C" fn elight_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.78);
@@ -131,9 +134,10 @@ unsafe extern "C" fn elight_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("elight")
-        .acmd("game_attack11", elight_attack_11_game)
-        .acmd("game_attack12", elight_attack_12_game)
-        .acmd("game_attackdash", elight_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        elight_attack_11_game,
+        elight_attack_12_game,
+        elight_attack_dash_game,
+    );
 }
+

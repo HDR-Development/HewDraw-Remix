@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
+#[status_script(agent = "rockman_chargeshot", status = WEAPON_ROCKMAN_CHARGESHOT_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     // Original Implementation
     // let life_min = WorkModule::get_param_int(weapon.module_accessor, hash40("param_chargeshot"), hash40("life_min"));
     // let life_max = WorkModule::get_param_int(weapon.module_accessor, hash40("param_chargeshot"), hash40("life_max"));
@@ -94,11 +95,7 @@ unsafe extern "C" fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommo
 }
 
 pub fn install() {
-    smashline::Agent::new("rockman_chargeshot")
-        .status(
-            Init,
-            *WEAPON_ROCKMAN_CHARGESHOT_STATUS_KIND_REGULAR,
-            rockman_chargeshot_regular_init,
-        )
-        .install();
+    install_status_scripts!(
+        rockman_chargeshot_regular_init
+    );
 }

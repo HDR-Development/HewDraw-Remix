@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn yoshi_attack_11_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "yoshi", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -30,7 +32,9 @@ unsafe extern "C" fn yoshi_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_attack_12_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "yoshi", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -45,7 +49,9 @@ unsafe extern "C" fn yoshi_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "yoshi", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
+unsafe fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -55,7 +61,8 @@ unsafe extern "C" fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "yoshi", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,7 +74,7 @@ unsafe extern "C" fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -75,7 +82,9 @@ unsafe extern "C" fn yoshi_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "yoshi", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.79);
@@ -100,11 +109,12 @@ unsafe extern "C" fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("yoshi")
-        .acmd("game_attack11", yoshi_attack_11_game)
-        .acmd("game_attack12", yoshi_attack_12_game)
-        .acmd("effect_attack12", yoshi_attack_12_effect)
-        .acmd("expression_attack12", yoshi_attack_12_expression)
-        .acmd("game_attackdash", yoshi_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        yoshi_attack_11_game,
+        yoshi_attack_12_game,
+        yoshi_attack_12_expression,
+        yoshi_attack_dash_game,
+        yoshi_attack_12_effect,
+    );
 }
+

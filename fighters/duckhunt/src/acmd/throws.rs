@@ -1,5 +1,6 @@
 use super::*;
 
+#[acmd_script( agent = "duckhunt", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
 unsafe extern "C" fn duckhunt_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -21,7 +22,8 @@ unsafe extern "C" fn duckhunt_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn duckhunt_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "duckhunt", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
+unsafe fn duckhunt_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -46,8 +48,8 @@ unsafe extern "C" fn duckhunt_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("duckhunt")
-        .acmd("game_throwhi", duckhunt_throw_hi_game)
-        .acmd("game_throwlw", duckhunt_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+        duckhunt_throw_hi_game,
+        duckhunt_throw_lw_game,
+    );
 }

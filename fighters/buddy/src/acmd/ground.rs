@@ -1,6 +1,8 @@
 use super::*;
 
-unsafe extern "C" fn buddy_attack_11_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "buddy", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -19,7 +21,8 @@ unsafe extern "C" fn buddy_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -46,7 +49,8 @@ unsafe extern "C" fn buddy_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -68,7 +72,8 @@ unsafe extern "C" fn buddy_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack_13_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "expression_attack13", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn buddy_attack_13_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -80,7 +85,7 @@ unsafe extern "C" fn buddy_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -96,9 +101,11 @@ unsafe extern "C" fn buddy_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+
 
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
@@ -122,7 +129,8 @@ unsafe extern "C" fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack_dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+unsafe fn buddy_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -169,12 +177,12 @@ unsafe extern "C" fn buddy_attack_dash_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("buddy")
-        .acmd("game_attack11", buddy_attack_11_game)
-        .acmd("game_attack12", buddy_attack_12_game)
-        .acmd("game_attack13", buddy_attack_13_game)
-        .acmd("expression_attack13", buddy_attack_13_expression)
-        .acmd("game_attackdash", buddy_attack_dash_game)
-        .acmd("effect_attackdash", buddy_attack_dash_effect)
-        .install();
+    install_acmd_scripts!(
+        buddy_attack_11_game,
+        buddy_attack_12_game,
+        buddy_attack_13_game,
+        buddy_attack_13_expression,
+        buddy_attack_dash_game,
+        buddy_attack_dash_effect,
+    );
 }

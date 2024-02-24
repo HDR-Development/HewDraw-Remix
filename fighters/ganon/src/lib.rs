@@ -39,9 +39,17 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    opff::install();
     vtable_hook::install();
+    opff::install(is_runtime);
+
+    if !is_runtime || is_hdr_available() {
+        status::add_statuses();
+    }
+}
+
+pub fn delayed_install() {
+    status::add_statuses();
 }

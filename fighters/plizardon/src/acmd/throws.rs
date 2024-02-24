@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn plizardon_throw_hi_game(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "plizardon", script = "game_throwhi", category = ACMD_GAME, low_priority )]
+unsafe fn plizardon_throw_hi_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -36,7 +37,7 @@ unsafe extern "C" fn plizardon_throw_hi_game(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("plizardon")
-        .acmd("game_throwhi", plizardon_throw_hi_game)
-        .install();
+    install_acmd_scripts!(
+        plizardon_throw_hi_game,
+    );
 }

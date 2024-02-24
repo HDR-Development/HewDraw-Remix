@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn elight_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "elight", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -70,9 +72,11 @@ unsafe extern "C" fn elight_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_landingairn(fighter: &mut L2CAgentBase) {}
+#[acmd_script( agent = "elight", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
+unsafe fn game_landingairn(fighter: &mut L2CAgentBase) {}
 
-unsafe extern "C" fn elight_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -114,7 +118,8 @@ unsafe extern "C" fn elight_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn elight_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -168,7 +173,8 @@ unsafe extern "C" fn elight_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn elight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -238,7 +244,8 @@ unsafe extern "C" fn elight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "elight", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn elight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -297,12 +304,13 @@ unsafe extern "C" fn elight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("elight")
-        .acmd("game_attackairn", elight_attack_air_n_game)
-        .acmd("game_landingairn", game_landingairn)
-        .acmd("game_attackairf", elight_attack_air_f_game)
-        .acmd("game_attackairb", elight_attack_air_b_game)
-        .acmd("game_attackairhi", elight_attack_air_hi_game)
-        .acmd("game_attackairlw", elight_attack_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        elight_attack_air_n_game,
+        game_landingairn,
+        elight_attack_air_f_game,
+        elight_attack_air_b_game,
+        elight_attack_air_hi_game,
+        elight_attack_air_lw_game,
+    );
 }
+

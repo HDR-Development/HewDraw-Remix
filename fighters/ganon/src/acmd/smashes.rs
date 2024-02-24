@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn ganon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ganon", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -39,7 +41,8 @@ unsafe extern "C" fn ganon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn ganon_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -75,7 +78,8 @@ unsafe extern "C" fn ganon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn ganon_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -132,9 +136,10 @@ unsafe extern "C" fn ganon_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ganon")
-        .acmd("game_attacks4", ganon_attack_s4_s_game)
-        .acmd("game_attackhi4", ganon_attack_hi4_game)
-        .acmd("game_attacklw4", ganon_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        ganon_attack_s4_s_game,
+        ganon_attack_hi4_game,
+        ganon_attack_lw4_game,
+    );
 }
+

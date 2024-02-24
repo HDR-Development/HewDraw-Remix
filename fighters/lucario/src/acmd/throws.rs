@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_throwb", category = ACMD_GAME, low_priority )]
+unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -28,7 +29,8 @@ unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_throwf", category = ACMD_GAME, low_priority )]
+unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -59,7 +61,8 @@ unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_throwhi", category = ACMD_GAME, low_priority )]
+unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -90,7 +93,8 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,10 +120,11 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_throwb", game_throwb)
-        .acmd("game_throwf", game_throwf)
-        .acmd("game_throwhi", game_throwhi)
-        .acmd("game_throwlw", game_throwlw)
-        .install();
+    install_acmd_scripts!(
+        game_throwb,
+        game_throwf,
+        game_throwhi,
+        game_throwlw
+    );
 }
+

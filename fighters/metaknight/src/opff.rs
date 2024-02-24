@@ -167,7 +167,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
 }
 
-pub extern "C" fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_METAKNIGHT )]
+pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		metaknight_frame(fighter);
@@ -181,10 +182,4 @@ pub unsafe fn metaknight_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         drill_rush_on_hit_cancel(fighter);
         fspecial_once_per_airtime(fighter);
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("metaknight")
-        .on_line(Main, metaknight_frame_wrapper)
-        .install();
 }

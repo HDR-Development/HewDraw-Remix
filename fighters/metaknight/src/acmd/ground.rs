@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn game_attack100(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_attack100", category = ACMD_GAME, low_priority )]
+unsafe fn game_attack100(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -60,7 +61,8 @@ unsafe extern "C" fn game_attack100(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attack100(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_attack100", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack100(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -154,7 +156,8 @@ unsafe extern "C" fn effect_attack100(fighter: &mut L2CAgentBase) {
 //     }
 // }
 
-unsafe extern "C" fn sound_attack100start(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "sound_attack100start", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack100start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -168,7 +171,8 @@ unsafe extern "C" fn sound_attack100start(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.78);
@@ -195,10 +199,11 @@ unsafe extern "C" fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("metaknight")
-        .acmd("game_attack100", game_attack100)
-        .acmd("effect_attack100", effect_attack100)
-        .acmd("sound_attack100start", sound_attack100start)
-        .acmd("game_attackdash", metaknight_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        game_attack100,
+        effect_attack100,
+        sound_attack100start,
+        metaknight_attack_dash_game,
+    );
 }
+

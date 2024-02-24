@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +79,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +121,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -142,7 +148,8 @@ unsafe extern "C" fn inkling_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -152,7 +159,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_inkbullet_fly_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_inkbullet", script = "game_fly", category = ACMD_GAME, low_priority )]
+unsafe fn inkling_inkbullet_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -169,7 +177,8 @@ unsafe extern "C" fn inkling_inkbullet_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_s_walk_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialswalk" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_s_walk_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -180,7 +189,8 @@ unsafe extern "C" fn inkling_roller_special_s_walk_game(fighter: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_air_s_walk_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialairswalk" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_air_s_walk_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -191,7 +201,8 @@ unsafe extern "C" fn inkling_roller_special_air_s_walk_game(fighter: &mut L2CAge
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_s_walk_no_ink_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialswalknoink" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_s_walk_no_ink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -200,7 +211,8 @@ unsafe extern "C" fn inkling_roller_special_s_walk_no_ink_game(fighter: &mut L2C
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_s_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialsdash" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -219,7 +231,8 @@ unsafe extern "C" fn inkling_roller_special_s_dash_game(fighter: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialairsdash" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -231,7 +244,8 @@ unsafe extern "C" fn inkling_roller_special_air_s_dash_game(fighter: &mut L2CAge
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_s_dash_no_ink_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialsdashnoink" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_s_dash_no_ink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -241,7 +255,8 @@ unsafe extern "C" fn inkling_roller_special_s_dash_no_ink_game(fighter: &mut L2C
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_s_run_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialsrun" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_s_run_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -259,7 +274,8 @@ unsafe extern "C" fn inkling_roller_special_s_run_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_air_s_run_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialairsrun" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_air_s_run_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -270,7 +286,8 @@ unsafe extern "C" fn inkling_roller_special_air_s_run_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn inkling_roller_special_s_run_no_ink_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_roller", script = "game_specialsrunnoink" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_roller_special_s_run_no_ink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -279,7 +296,8 @@ unsafe extern "C" fn inkling_roller_special_s_run_no_ink_game(fighter: &mut L2CA
     }
 }
 
-unsafe extern "C" fn inkling_splash_normal_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_splash", script = "game_normal" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_splash_normal_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -304,7 +322,8 @@ unsafe extern "C" fn inkling_splash_normal_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_splashbomb_explode_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling_splashbomb", script = "game_explode" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_splashbomb_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -326,7 +345,8 @@ unsafe extern "C" fn inkling_splashbomb_explode_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -379,7 +399,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -432,50 +453,28 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("inkling_splash")
-        .acmd("game_normal", inkling_splash_normal_game)
-        .install();
-    smashline::Agent::new("inkling_splashbomb")
-        .acmd("game_explode", inkling_splashbomb_explode_game)
-        .install();
-    smashline::Agent::new("inkling")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", inkling_catch_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
-    smashline::Agent::new("inkling_inkbullet")
-        .acmd("game_fly", inkling_inkbullet_fly_game)
-        .install();
-    smashline::Agent::new("inkling_roller")
-        .acmd("game_specialswalk", inkling_roller_special_s_walk_game)
-        .acmd(
-            "game_specialairswalk",
-            inkling_roller_special_air_s_walk_game,
-        )
-        .acmd(
-            "game_specialswalknoink",
-            inkling_roller_special_s_walk_no_ink_game,
-        )
-        .acmd("game_specialsdash", inkling_roller_special_s_dash_game)
-        .acmd(
-            "game_specialairsdash",
-            inkling_roller_special_air_s_dash_game,
-        )
-        .acmd(
-            "game_specialsdashnoink",
-            inkling_roller_special_s_dash_no_ink_game,
-        )
-        .acmd("game_specialsrun", inkling_roller_special_s_run_game)
-        .acmd("game_specialairsrun", inkling_roller_special_air_s_run_game)
-        .acmd(
-            "game_specialsrunnoink",
-            inkling_roller_special_s_run_no_ink_game,
-        )
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        inkling_catch_game,
+        dash_sound,
+        inkling_inkbullet_fly_game,
+        inkling_roller_special_s_walk_game,
+        inkling_roller_special_s_walk_no_ink_game,
+        inkling_roller_special_air_s_walk_game,
+        inkling_roller_special_s_dash_game,
+        inkling_roller_special_s_dash_no_ink_game,
+        inkling_roller_special_air_s_dash_game,
+        inkling_roller_special_s_run_game,
+        inkling_roller_special_s_run_no_ink_game,
+        inkling_roller_special_air_s_run_game,
+        inkling_splash_normal_game,
+        inkling_splashbomb_explode_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
+    );
 }
+

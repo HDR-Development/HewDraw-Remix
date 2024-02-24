@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn special_hi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,7 +57,8 @@ unsafe extern "C" fn special_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn special_air_hi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samus", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn special_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -101,8 +103,9 @@ unsafe extern "C" fn special_air_hi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("samus")
-        .acmd("game_specialhi", special_hi)
-        .acmd("game_specialairhi", special_air_hi)
-        .install();
+    install_acmd_scripts!(
+        special_hi,
+        special_air_hi,
+    );
 }
+

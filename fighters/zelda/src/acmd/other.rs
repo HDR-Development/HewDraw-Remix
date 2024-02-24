@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +79,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +121,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -130,7 +136,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -144,7 +151,8 @@ unsafe extern "C" fn zelda_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn zelda_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -170,7 +178,8 @@ unsafe extern "C" fn zelda_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_dein_s", script = "game_move" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -187,7 +196,8 @@ unsafe extern "C" fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_dein", script = "effect_tame" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -246,7 +256,8 @@ unsafe extern "C" fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_build" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 0.0);
@@ -256,7 +267,7 @@ unsafe extern "C" fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 		if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
 			let pos_x = PostureModule::pos_x(boma);
 			let pos_y = PostureModule::pos_y(boma);
-			let pos = Vector3f { x: pos_x + 35.2 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
+			let pos = smash::phx::Vector3f { x: pos_x + 35.2 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
 			PostureModule::set_pos(boma, &pos);
 			VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
 		}
@@ -316,7 +327,8 @@ unsafe extern "C" fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 	}   
 }
 
-unsafe extern "C" fn zelda_phantom_build_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_build" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_phantom_build_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -350,7 +362,8 @@ unsafe extern "C" fn zelda_phantom_build_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_kick_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_attackkick" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_attack_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let rush_speed = 4.5;
@@ -379,7 +392,8 @@ unsafe extern "C" fn zelda_phantom_attack_kick_game(fighter: &mut L2CAgentBase) 
 
 }
 
-unsafe extern "C" fn zelda_phantom_attack_kick_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_attackkick" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_phantom_attack_kick_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -412,7 +426,8 @@ unsafe extern "C" fn zelda_phantom_attack_kick_effect(fighter: &mut L2CAgentBase
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_attackpunch" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let rush_speed = 5.0;
@@ -447,7 +462,8 @@ unsafe extern "C" fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase)
 
 }
 
-unsafe extern "C" fn zelda_phantom_attack_punch_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_attackpunch" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_phantom_attack_punch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -474,7 +490,8 @@ unsafe extern "C" fn zelda_phantom_attack_punch_effect(fighter: &mut L2CAgentBas
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_attacks" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let rush_speed = 5.5;
@@ -508,7 +525,8 @@ unsafe extern "C" fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_attacks" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -570,7 +588,8 @@ unsafe extern "C" fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_attackl" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let rush_speed = 6.0;
@@ -611,7 +630,8 @@ unsafe extern "C" fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_attackl" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -715,7 +735,8 @@ unsafe extern "C" fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_attackmax" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let rush_speed = 7.0;
@@ -749,7 +770,8 @@ unsafe extern "C" fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_attackmax" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -807,7 +829,8 @@ unsafe extern "C" fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase)
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_cancel_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "game_cancel" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_phantom_cancel_game(fighter: &mut L2CAgentBase) {
 	let owner_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
 	frame(fighter.lua_state_agent, 1.0);
@@ -821,7 +844,8 @@ unsafe extern "C" fn zelda_phantom_cancel_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda_phantom", script = "effect_cancel", category = ACMD_EFFECT, low_priority )]
+unsafe fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -841,7 +865,8 @@ unsafe extern "C" fn zelda_phantom_cancel_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -856,7 +881,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "zelda", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -871,38 +897,33 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("zelda_phantom")
-        .acmd("game_build", zelda_phantom_build_game)
-        .acmd("effect_build", zelda_phantom_build_effect)
-        .acmd("game_attackkick", zelda_phantom_attack_kick_game)
-        .acmd("effect_attackkick", zelda_phantom_attack_kick_effect)
-        .acmd("game_attackpunch", zelda_phantom_attack_punch_game)
-        .acmd("effect_attackpunch", zelda_phantom_attack_punch_effect)
-        .acmd("game_attacks", zelda_phantom_attack_s_game)
-        .acmd("effect_attacks", zelda_phantom_attack_s_effect)
-        .acmd("game_attackl", zelda_phantom_attack_l_game)
-        .acmd("effect_attackl", zelda_phantom_attack_l_effect)
-        .acmd("game_attackmax", zelda_phantom_attack_max_game)
-        .acmd("effect_attackmax", zelda_phantom_attack_max_effect)
-        .acmd("game_cancel", zelda_phantom_cancel_game)
-        .acmd("effect_cancel", zelda_phantom_cancel_effect)
-        .install();
-    smashline::Agent::new("zelda_dein_s")
-        .acmd("game_move", zelda_dein_move_game)
-        .install();
-    smashline::Agent::new("zelda_dein")
-        .acmd("effect_tame", zelda_dein_tame_effect)
-        .install();
-    smashline::Agent::new("zelda")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", zelda_turn_dash_game)
-        .acmd("game_catch", zelda_catch_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+		dash_sound,
+        zelda_turn_dash_game,
+		zelda_catch_game,
+		zelda_dein_move_game,
+		zelda_dein_tame_effect,
+		zelda_phantom_build_game,
+		zelda_phantom_build_effect,
+		zelda_phantom_attack_kick_game,
+		zelda_phantom_attack_kick_effect,
+		zelda_phantom_attack_punch_game,
+		zelda_phantom_attack_punch_effect,
+		zelda_phantom_attack_s_game,
+		zelda_phantom_attack_s_effect,
+		zelda_phantom_attack_l_game,
+		zelda_phantom_attack_l_effect,
+		zelda_phantom_attack_max_game,
+		zelda_phantom_attack_max_effect,
+		zelda_phantom_cancel_game,
+		zelda_phantom_cancel_effect,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
+    );
 }
+

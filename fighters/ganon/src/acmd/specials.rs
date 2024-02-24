@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_floatstart" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -24,7 +25,8 @@ unsafe extern "C" fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_floatstart", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
@@ -41,7 +43,8 @@ unsafe extern "C" fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_start_exp(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "expression_floatstart", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_start_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -54,7 +57,8 @@ unsafe extern "C" fn ganon_float_start_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "sound_floatstart", category = ACMD_SOUND , low_priority)]
+unsafe fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -62,7 +66,8 @@ unsafe extern "C" fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_floatairstart" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.0 / 10.0);
@@ -80,7 +85,8 @@ unsafe extern "C" fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_floatairstart", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
@@ -93,7 +99,8 @@ unsafe extern "C" fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_air_start_exp(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "expression_floatairstart", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_air_start_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -101,7 +108,8 @@ unsafe extern "C" fn ganon_float_air_start_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_air_start_snd(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "sound_floatairstart", category = ACMD_SOUND , low_priority)]
+unsafe fn ganon_float_air_start_snd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -109,7 +117,8 @@ unsafe extern "C" fn ganon_float_air_start_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_float" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_float_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 20.0);
@@ -123,7 +132,8 @@ unsafe extern "C" fn ganon_float_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_eff(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "effect_float", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
@@ -140,7 +150,8 @@ unsafe extern "C" fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_float_exp(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "expression_float", category = ACMD_EXPRESSION , low_priority)]
+unsafe fn ganon_float_exp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -148,7 +159,8 @@ unsafe extern "C" fn ganon_float_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+unsafe fn ganon_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -177,7 +189,8 @@ unsafe extern "C" fn ganon_special_air_s_start_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn ganon_special_air_s_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_specialairscatch" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_air_s_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -194,7 +207,8 @@ unsafe extern "C" fn ganon_special_air_s_catch_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn ganon_special_air_s_fall_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_specialairsfall" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_air_s_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -209,7 +223,8 @@ unsafe extern "C" fn ganon_special_air_s_fall_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_special_air_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -223,7 +238,8 @@ unsafe extern "C" fn ganon_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -266,7 +282,8 @@ unsafe extern "C" fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn ganon_special_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -294,7 +311,8 @@ unsafe extern "C" fn ganon_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -315,7 +333,8 @@ unsafe extern "C" fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {  }
 }
 
-unsafe extern "C" fn ganon_special_hi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -401,7 +420,8 @@ unsafe extern "C" fn ganon_special_hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", scripts = ["effect_specialhi", "effect_specialairhi"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(fighter.lua_state_agent, 12.0);
@@ -430,28 +450,19 @@ unsafe extern "C" fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ganon")
-        .acmd("game_floatstart", ganon_float_start_game)
-        .acmd("effect_floatstart", ganon_float_start_eff)
-        .acmd("expression_floatstart", ganon_float_start_exp)
-        .acmd("sound_floatstart", ganon_float_start_snd)
-        .acmd("game_floatairstart", ganon_float_air_start_game)
-        .acmd("effect_floatairstart", ganon_float_air_start_eff)
-        .acmd("expression_floatairstart", ganon_float_air_start_exp)
-        .acmd("sound_floatairstart", ganon_float_air_start_snd)
-        .acmd("game_float", ganon_float_game)
-        .acmd("effect_float", ganon_float_eff)
-        .acmd("expression_float", ganon_float_exp)
-        .acmd("game_specialairsstart", ganon_special_air_s_start_game)
-        .acmd("game_specialairscatch", ganon_special_air_s_catch_game)
-        .acmd("game_specialairsfall", ganon_special_air_s_fall_game)
-        .acmd("game_specialairs", ganon_special_air_s_game)
-        .acmd("game_speciallw", ganon_special_lw_game)
-        .acmd("game_specialairlw", ganon_special_air_lw_game)
-        .acmd("game_specialairlwend", ganon_special_air_lw_end_game)
-        .acmd("game_specialhi", ganon_special_hi)
-        .acmd("game_specialairhi", ganon_special_hi)
-        .acmd("effect_specialhi", ganon_special_hi_effect)
-        .acmd("effect_specialairhi", ganon_special_hi_effect)
-        .install();
+    install_acmd_scripts!(
+        ganon_float_start_game, ganon_float_start_eff, ganon_float_start_snd,
+        ganon_float_air_start_game, ganon_float_air_start_eff, ganon_float_air_start_snd,
+        ganon_float_game, ganon_float_eff,
+        ganon_special_air_s_start_game,
+        ganon_special_air_s_catch_game,
+        ganon_special_air_s_fall_game,
+        ganon_special_air_s_game,
+        ganon_special_hi,
+        ganon_special_hi_effect,
+        ganon_special_lw_game,
+        ganon_special_air_lw_game,
+        ganon_special_air_lw_end_game,
+    );
 }
+

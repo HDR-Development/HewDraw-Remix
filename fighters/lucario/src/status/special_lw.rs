@@ -2,7 +2,16 @@ use super::*;
 use globals::*;
 // status script import
 
-unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub fn install() {
+    install_status_scripts!(
+        lucario_special_lw_pre,
+        lucario_special_lw_init,
+        lucario_special_lw_main,
+    );
+}
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,7 +40,8 @@ unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L
     return 0.into();
 }
 
-unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
@@ -42,7 +52,8 @@ unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> 
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_lw_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
@@ -133,12 +144,4 @@ unsafe extern "C" fn special_lw_set_kinetic(fighter: &mut L2CFighterCommon) {
         }
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_main)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_init)
-        .install();
 }

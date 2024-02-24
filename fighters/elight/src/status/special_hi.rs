@@ -24,7 +24,8 @@ pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommo
     }
 }
 
-unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "elight", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -54,7 +55,8 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "elight", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] fill out the kinetic energy from parameter data and also change the motion kind
     //      depending on whether you are grounded or not.
     fighter.sub_set_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_hi"));
@@ -87,7 +89,8 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "elight", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] if you aren't going into jump then this is an interruption
     if fighter.global_table[globals::STATUS_KIND] != FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP {
         MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_specialhiinterrupt"), -1);
@@ -96,17 +99,18 @@ unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "elight", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [v] increment the frame counter so that the input leniency check works properly
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
     0.into()
 }
 
 pub fn install() {
-    smashline::Agent::new("elight")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec)
-        .install();
+    smashline::install_status_scripts!(
+        special_hi_pre,
+        special_hi_main,
+        special_hi_end,
+        special_hi_exec
+    );
 }

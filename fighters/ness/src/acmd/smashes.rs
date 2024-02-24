@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ness", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -39,7 +41,8 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -65,7 +68,8 @@ unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackhi4 (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackhi4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn game_attackhi4 (fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn game_attacklw4 (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacklw4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 3.0);
@@ -114,7 +119,9 @@ unsafe extern "C" fn game_attacklw4 (fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ness", script = "expression_attacklw4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -127,7 +134,7 @@ unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
             ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
-            RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
         }
     }
     if is_excute(fighter) {
@@ -135,7 +142,7 @@ unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -143,11 +150,11 @@ unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
     }
     /*frame(lua_state, 23.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }*/
     frame(lua_state, 23.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
@@ -159,7 +166,8 @@ unsafe extern "C" fn expression_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_yoyo_attackhi4 (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_yoyohead", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_yoyo_attackhi4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -180,7 +188,8 @@ unsafe extern "C" fn game_yoyo_attackhi4 (fighter: &mut L2CAgentBase) {
 	frame(lua_state, 37.0);
 }
 
-unsafe extern "C" fn game_yoyo_attacklw4 (fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ness_yoyohead", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_yoyo_attacklw4 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 11.0);
@@ -225,15 +234,14 @@ unsafe extern "C" fn game_yoyo_attacklw4 (fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ness_yoyohead")
-        .acmd("game_attackhi4", game_yoyo_attackhi4)
-        .acmd("game_attacklw4", game_yoyo_attacklw4)
-        .install();
-    smashline::Agent::new("ness")
-        .acmd("game_attacks4", game_attacks4)
-        .acmd("expression_attackhi4", expression_attackhi4)
-        .acmd("game_attackhi4", game_attackhi4)
-        .acmd("game_attacklw4", game_attacklw4)
-        .acmd("expression_attacklw4", expression_attacklw4)
-        .install();
+    install_acmd_scripts!(
+        game_attacks4,
+        game_attackhi4,
+        expression_attackhi4,
+        game_attacklw4,
+		expression_attacklw4,
+        game_yoyo_attackhi4,
+        game_yoyo_attacklw4
+    );
 }
+

@@ -3,6 +3,7 @@ use globals::*;
 
 // This file contains code related to knockdown states
 
+
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
 }
@@ -53,6 +54,7 @@ unsafe fn status_Down_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_down_common();
     0.into()
 }
+
 
 // This runs at the end of getup rolls
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_DownStandFb)]

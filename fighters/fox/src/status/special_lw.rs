@@ -1,9 +1,11 @@
 use super::*;
 use globals::*;
 
+
 // FIGHTER_STATUS_KIND_SPECIAL_LW
 
-unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "fox", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         // Returning here allows for running shine
         return 0.into();
@@ -22,10 +24,11 @@ unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue
             0.0
         );
     }
-    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+    original!(fighter)
 }
 
-pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "fox", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING) {
         let stop_y_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), hash40("reflector_air_stop_y_frame"));
         WorkModule::set_int(fighter.module_accessor, stop_y_frame, *FIGHTER_FOX_REFLECTOR_STATUS_WORK_ID_INT_STOP_Y_FRAME);
@@ -103,14 +106,16 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "fox", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ![*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP, *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
         WorkModule::set_flag(fighter.module_accessor, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING);
     }
     0.into()
 }
 
-pub unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "fox", status = FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ![*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
         WorkModule::set_flag(fighter.module_accessor, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR, *FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING);
     }
@@ -118,14 +123,10 @@ pub unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install() {
-    smashline::Agent::new("fox")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end)
-        .status(
-            End,
-            *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-            special_lw_loop_end,
-        )
-        .install();
+    install_status_scripts!(
+        special_lw_init,
+        special_lw_main,
+        special_lw_end,
+        special_lw_loop_end,
+    );
 }

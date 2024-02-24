@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -20,7 +21,8 @@ unsafe extern "C" fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,7 +37,8 @@ unsafe extern "C" fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -58,7 +61,8 @@ unsafe extern "C" fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -73,7 +77,8 @@ unsafe extern "C" fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -89,7 +94,8 @@ unsafe extern "C" fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -112,12 +118,13 @@ unsafe extern "C" fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("sheik")
-        .acmd("game_attack11", sheik_attack_11_game)
-        .acmd("effect_attack11", sheik_attack_11_effect)
-        .acmd("game_attack12", sheik_attack_12_game)
-        .acmd("effect_attack12", sheik_attack_12_effect)
-        .acmd("game_attack100end", sheik_attack_100_end_game)
-        .acmd("game_attackdash", sheik_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        sheik_attack_11_game,
+        sheik_attack_11_effect,
+        sheik_attack_12_game,
+        sheik_attack_12_effect,
+        sheik_attack_100_end_game,
+        sheik_attack_dash_game,
+    );
 }
+

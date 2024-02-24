@@ -1,15 +1,27 @@
 use smash::{
-  app::lua_bind::*,
+  app::{
+      self,
+      sv_animcmd::{
+          frame,
+          wait
+      },
+      lua_bind::*
+  },
   lib::lua_const::*,
   lib::L2CAgent,
   lua2cpp::*,
   phx::*
+};
+use smash_script::{
+  *,
+  macros::*
 };
 use crate::{
   *,
   consts::*,
   ext::*
 };
+
 
 #[repr(C)]
 pub struct FrameInfo {

@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "captain", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,7 +27,8 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("captain")
-        .acmd("game_throwhi", game_throwhi)
-        .install();
+    install_acmd_scripts!(
+        game_throwhi,
+    );
 }
+

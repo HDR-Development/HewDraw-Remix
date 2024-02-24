@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -25,7 +26,8 @@ unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_catchdash(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
+unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -46,7 +48,8 @@ unsafe extern "C" fn game_catchdash(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_catchturn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
+unsafe fn game_catchturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -67,7 +70,8 @@ unsafe extern "C" fn game_catchturn(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -90,7 +94,8 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikachu", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,11 +121,11 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pikachu")
-        .acmd("game_catch", game_catch)
-        .acmd("game_catchdash", game_catchdash)
-        .acmd("game_catchturn", game_catchturn)
-        .acmd("game_throwhi", game_throwhi)
-        .acmd("game_throwlw", game_throwlw)
-        .install();
+    install_acmd_scripts!(
+        game_catch,
+        game_catchdash,
+        game_catchturn,
+        game_throwhi,
+        game_throwlw,
+    );
 }

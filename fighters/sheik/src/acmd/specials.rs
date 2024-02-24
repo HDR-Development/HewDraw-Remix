@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "sheik", script = "game_specials" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -11,7 +13,8 @@ unsafe extern "C" fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -21,7 +24,8 @@ unsafe extern "C" fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -35,7 +39,8 @@ unsafe extern "C" fn sheik_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -50,7 +55,8 @@ unsafe extern "C" fn sheik_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sheik_special_hi_start_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "effect_specialhistart", category = ACMD_EFFECT, low_priority )]
+unsafe fn sheik_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 27.0);
@@ -71,7 +77,8 @@ unsafe extern "C" fn sheik_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "effect_specialhistart", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 27.0);
@@ -92,7 +99,8 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sheik_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "effect_specialairhistart", category = ACMD_EFFECT, low_priority )]
+unsafe fn sheik_special_air_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 27.0);
@@ -112,7 +120,8 @@ unsafe extern "C" fn sheik_special_air_hi_start_effect(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn fusin_game_explosion(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik_fusin", script = "game_explosion", category = ACMD_GAME, low_priority )]
+unsafe fn fusin_game_explosion(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -128,7 +137,8 @@ unsafe extern "C" fn fusin_game_explosion(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "sheik", script = "game_speciallwattack" , category = ACMD_GAME , low_priority)]
+unsafe fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -151,20 +161,15 @@ unsafe extern "C" fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("sheik_fusin")
-        .acmd("game_explosion", fusin_game_explosion)
-        .install();
-    smashline::Agent::new("sheik")
-        .acmd("game_specials", sheik_special_s_game)
-        .acmd("game_specialairs", sheik_special_air_s_game)
-        .acmd("game_specialhi", sheik_special_hi_game)
-        .acmd("game_specialairhi", sheik_special_air_hi_game)
-        .acmd("effect_specialhistart", sheik_special_hi_start_effect)
-        .acmd("effect_specialhistart", effect_specialhistart)
-        .acmd(
-            "effect_specialairhistart",
-            sheik_special_air_hi_start_effect,
-        )
-        .acmd("game_speciallwattack", sheik_special_lw_attack_game)
-        .install();
+    install_acmd_scripts!(
+        sheik_special_s_game,
+        sheik_special_air_s_game,
+        sheik_special_hi_game,
+        sheik_special_air_hi_game,
+        sheik_special_hi_start_effect,
+        sheik_special_air_hi_start_effect,
+        fusin_game_explosion,
+        sheik_special_lw_attack_game,
+    );
 }
+

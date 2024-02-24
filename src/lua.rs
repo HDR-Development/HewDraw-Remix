@@ -25,7 +25,7 @@ macro_rules! lua_settop {
     }};
 }
 
-#[skyline::from_offset(0x38f82a0)]
+#[skyline::from_offset(0x38f7620)]
 unsafe extern "C" fn luaL_tolstring(lua_state: u64, index: i32, size: *mut usize) -> *const u8;
 
 unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
@@ -44,7 +44,7 @@ unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
     return 0;
 }
 
-#[skyline::hook(offset = 0x38f5630)]
+#[skyline::hook(offset = 0x38f49b0)]
 unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -> u32 {
     let result = call_original!(arg, arg2, arg3, arg4, "bt\0".as_ptr());
     if result == 3 {
@@ -59,10 +59,10 @@ unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -
     result
 }
 
-#[skyline::from_offset(0x3770e20)]
+#[skyline::from_offset(0x37701a0)]
 unsafe fn register_button(arg: u64, id: i32, string: *const u8);
 
-#[skyline::hook(offset = 0x1d33440, inline)]
+#[skyline::hook(offset = 0x1d32960, inline)]
 unsafe fn add_buttons_to_subwindow(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = *ctx.registers[0].x.as_ref();
     register_button(ptr, 4, "set_parts_category_04\0".as_ptr());
@@ -74,13 +74,13 @@ unsafe fn add_buttons_to_subwindow(ctx: &mut skyline::hooks::InlineCtx) {
     IS_IN_UI = true;
 }
 
-#[skyline::from_offset(0x37713b0)]
+#[skyline::from_offset(0x3770730)]
 unsafe fn layout_get(arg: u64, arg2: u64, id: u64);
 
-#[skyline::from_offset(0x37710d0)]
+#[skyline::from_offset(0x3770450)]
 unsafe fn set_something(arg: u64, val: u64, val2: u64);
 
-#[skyline::hook(offset = 0x1d33664, inline)]
+#[skyline::hook(offset = 0x1d32b84, inline)]
 unsafe fn setup_buttons(ctx: &skyline::hooks::InlineCtx) {
     let ptr = *ctx.registers[0].x.as_ref();
     let ptr2 = *ctx.registers[1].x.as_ref();
@@ -142,7 +142,7 @@ unsafe fn setup_buttons(ctx: &skyline::hooks::InlineCtx) {
     *(ptr as *mut u64).add(1) = 0;
 }
 
-#[skyline::hook(offset = 0x1d33e7c, inline)]
+#[skyline::hook(offset = 0x1d3339c, inline)]
 unsafe fn hijack_animation_get(ctx: &skyline::hooks::InlineCtx) {
     // this memleaks but I DON'T GIVE A FUCK (Askew: doesn't actually memleak you schmuck)
     let ptr = *ctx.registers[0].x.as_ref();
@@ -238,7 +238,7 @@ unsafe fn hijack_animation_get(ctx: &skyline::hooks::InlineCtx) {
 static mut SHARED_PTR1: [u64; 2] = [0, 0];
 static mut SHARED_PTR2: [u64; 2] = [0, 0];
 
-#[skyline::hook(offset = 0x1d338c4, inline)]
+#[skyline::hook(offset = 0x1d32de4, inline)]
 unsafe fn frank_talk_think_tankk(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
         SHARED_PTR1[0] = 0;
@@ -256,7 +256,7 @@ unsafe fn frank_talk_think_tankk(ctx: &mut skyline::hooks::InlineCtx) {
 static mut CURRENT_UI_PARRY_TOGGLE: bool = false;
 static mut CURRENT_UI_RIVALS_JUMP: bool = false;
 
-#[skyline::hook(offset = 0x1d309f8, inline)]
+#[skyline::hook(offset = 0x1d2ff18, inline)]
 unsafe fn get_on_value_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[1].x.as_ref() == 4 {
         *ctx.registers[19].x.as_mut() = CURRENT_UI_PARRY_TOGGLE as u64;
@@ -265,7 +265,7 @@ unsafe fn get_on_value_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d30a14, inline)]
+#[skyline::hook(offset = 0x1d2ff34, inline)]
 unsafe fn get_shared_ptr_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[8].x.as_ref() == 4 {
         *ctx.registers[20].x.as_mut() = SHARED_PTR1.as_ptr() as u64;
@@ -274,7 +274,7 @@ unsafe fn get_shared_ptr_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d2fd9c, inline)]
+#[skyline::hook(offset = 0x1d2f2cc, inline)]
 unsafe fn init_buttons_in_main_loop(ctx: &skyline::hooks::InlineCtx) {
     let flag = *ctx.registers[1].x.as_ref() != 0;
     let ptr = SHARED_PTR1[0];
@@ -290,12 +290,12 @@ unsafe fn init_buttons_in_main_loop(ctx: &skyline::hooks::InlineCtx) {
     func(ptr, flag);
 }
 
-#[skyline::hook(offset = 0x1d2fe38, inline)]
+#[skyline::hook(offset = 0x1d2f358, inline)]
 unsafe fn init_buttons_in_main_loop_again(ctx: &skyline::hooks::InlineCtx) {
     init_buttons_in_main_loop(ctx);
 }
 
-#[skyline::hook(offset = 0x1d30038, inline)]
+#[skyline::hook(offset = 0x1d2f558, inline)]
 unsafe fn get_index_for_a_press(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
         *ctx.registers[10].x.as_mut() = CURRENT_UI_PARRY_TOGGLE as u64;
@@ -304,7 +304,7 @@ unsafe fn get_index_for_a_press(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d30114, inline)]
+#[skyline::hook(offset = 0x1d2f634, inline)]
 unsafe fn update_index_for_a_press(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
         CURRENT_UI_PARRY_TOGGLE = *ctx.registers[11].x.as_ref() != 0;
@@ -315,7 +315,7 @@ unsafe fn update_index_for_a_press(ctx: &mut skyline::hooks::InlineCtx) {
 
 static mut IS_IN_UI: bool = false;
 
-#[skyline::hook(offset = 0x376cfe0)]
+#[skyline::hook(offset = 0x376c360)]
 unsafe fn set_next_button(arg: u64, button: i32, other: u64) {
     if !IS_IN_UI {
         call_original!(arg, button, other);
@@ -333,14 +333,14 @@ unsafe fn set_next_button(arg: u64, button: i32, other: u64) {
     }
 }
 
-#[skyline::hook(offset = 0x1d309a4, inline)]
+#[skyline::hook(offset = 0x1d2fec4, inline)]
 unsafe fn skip_set_setting_for_ok(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[1].x.as_ref() == 5 {
         *ctx.registers[1].x.as_mut() = 300;
     }
 }
 
-#[skyline::hook(offset = 0x1d311e0, inline)]
+#[skyline::hook(offset = 0x1d30700, inline)]
 unsafe fn init_ui_state(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (*ctx.registers[8].x.as_ref() as *mut u8).add(1);
     CURRENT_UI_PARRY_TOGGLE = (*ptr >> 1) & 1 != 0;
@@ -348,7 +348,7 @@ unsafe fn init_ui_state(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr &= 1;
 }
 
-#[skyline::hook(offset = 0x1d2f3c4, inline)]
+#[skyline::hook(offset = 0x1d2e8e4, inline)]
 unsafe fn exit_gc(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (*ctx.registers[20].x.as_ref() as *mut u8).add(0xC4);
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
@@ -356,7 +356,7 @@ unsafe fn exit_gc(ctx: &mut skyline::hooks::InlineCtx) {
     IS_IN_UI = false;
 }
 
-#[skyline::hook(offset = 0x1d2f390, inline)]
+#[skyline::hook(offset = 0x1d2e8b0, inline)]
 unsafe fn exit_fk(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (*ctx.registers[20].x.as_ref() as *mut u8).add(0xE0);
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
@@ -364,7 +364,7 @@ unsafe fn exit_fk(ctx: &mut skyline::hooks::InlineCtx) {
     IS_IN_UI = false;
 }
 
-#[skyline::hook(offset = 0x1d2f344, inline)]
+#[skyline::hook(offset = 0x1d2e864, inline)]
 unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (*ctx.registers[20].x.as_ref() as *mut u8).add(0xD4);
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
@@ -374,12 +374,12 @@ unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
 
 unsafe fn get_parts(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775C90);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775010);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
-#[skyline::hook(offset = 0x1d33254, inline)]
+#[skyline::hook(offset = 0x1d32774, inline)]
 unsafe fn set_pane_text_values(ctx: &skyline::hooks::InlineCtx) {
     let layout_view = *ctx.registers[0].x.as_ref();
 
@@ -405,7 +405,7 @@ unsafe fn set_pane_text_values(ctx: &skyline::hooks::InlineCtx) {
     );
 }
 
-#[skyline::hook(offset = 0x1d33b40, inline)]
+#[skyline::hook(offset = 0x1d33060, inline)]
 unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
     let sp = (ctx as *const _ as *const u8).add(0x100);
     let ptr = *(sp.add(0xa8) as *const u64);
@@ -418,7 +418,7 @@ unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1d33c80, inline)]
+#[skyline::hook(offset = 0x1d331a0, inline)]
 unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
     let sp = (ctx as *const _ as *const u8).add(0x100);
     let ptr = *(sp.add(0xa8) as *const u64);
@@ -433,12 +433,12 @@ unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
 
 pub fn install() {
     unsafe {
-        skyline::patching::Patch::in_text(0x5293c70).data((lua_print_impl as *const ()));
-        skyline::patching::Patch::in_text(0x372c130).data(0xD503201Fu32);
-        skyline::patching::Patch::in_text(0x1d33cfc).data(0xF1001ADFu32);
-        skyline::patching::Patch::in_text(0x1d309a4).data(0x7100183Fu32);
+        skyline::patching::Patch::in_text(0x5291c70).data((lua_print_impl as *const ()));
+        skyline::patching::Patch::in_text(0x372b4b0).data(0xD503201Fu32);
+        skyline::patching::Patch::in_text(0x1d3321c).data(0xF1001ADFu32);
+        skyline::patching::Patch::in_text(0x1d2fec4).data(0x7100183Fu32);
         // skyline::patching::Patch::in_text(0x1d2fec8).nop();
-        skyline::patching::Patch::in_text(0x1d30a28).data(0xAA1403F8u32);
+        skyline::patching::Patch::in_text(0x1d2ff48).data(0xAA1403F8u32);
     }
     skyline::install_hooks!(
         lua_load,

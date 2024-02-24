@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn eflame_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame", script = "game_throwlw", category = ACMD_GAME )]
+unsafe fn eflame_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -47,7 +48,7 @@ unsafe extern "C" fn eflame_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("eflame")
-        .acmd("game_throwlw", eflame_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+        eflame_throw_lw_game,
+    );
 }

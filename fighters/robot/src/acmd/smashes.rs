@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn robot_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "robot", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn robot_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -21,7 +23,8 @@ unsafe extern "C" fn robot_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn robot_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "robot", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn robot_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -41,7 +44,8 @@ unsafe extern "C" fn robot_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn robot_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "robot", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn robot_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -61,7 +65,8 @@ unsafe extern "C" fn robot_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn robot_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "robot", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn robot_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -90,7 +95,8 @@ unsafe extern "C" fn robot_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn robot_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "robot", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn robot_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -127,11 +133,12 @@ unsafe extern "C" fn robot_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("robot")
-        .acmd("game_attacks4hi", robot_attack_s4_hi_game)
-        .acmd("game_attacks4", robot_attack_s4_s_game)
-        .acmd("game_attacks4lw", robot_attack_s4_lw_game)
-        .acmd("game_attackhi4", robot_attack_hi4_game)
-        .acmd("game_attacklw4", robot_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        robot_attack_s4_hi_game,
+        robot_attack_s4_s_game,
+        robot_attack_s4_lw_game,
+        robot_attack_hi4_game,
+        robot_attack_lw4_game,
+    );
 }
+

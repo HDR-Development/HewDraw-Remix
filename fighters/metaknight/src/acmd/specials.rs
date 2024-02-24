@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_specialnspin" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -12,7 +13,8 @@ unsafe extern "C" fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) 
 
 }
 
-unsafe extern "C" fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", scripts = ["game_specialairnend", "game_specialnend"] , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,7 +27,8 @@ unsafe extern "C" fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_special_n_end_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialnend" , category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -39,7 +42,8 @@ unsafe extern "C" fn metaknight_special_n_end_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn metaknight_special_n_spin_ground_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialnspingroundeffect", category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_n_spin_ground_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -48,7 +52,8 @@ unsafe extern "C" fn metaknight_special_n_spin_ground_effect(fighter: &mut L2CAg
     }
 }
 
-unsafe extern "C" fn metaknight_special_n_start_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialnstart", category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_n_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -60,7 +65,8 @@ unsafe extern "C" fn metaknight_special_n_start_effect(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn metaknight_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialairnend", category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -69,7 +75,8 @@ unsafe extern "C" fn metaknight_special_air_n_end_effect(fighter: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -147,7 +154,8 @@ unsafe extern "C" fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_specialhiloop" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -222,7 +230,8 @@ unsafe extern "C" fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn metaknight_special_hi_loop_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialhiloop" , category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_hi_loop_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter){
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -244,7 +253,8 @@ unsafe extern "C" fn metaknight_special_hi_loop_effect(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn metaknight_special_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 5.0);
     if is_excute(fighter){
@@ -267,7 +277,8 @@ unsafe extern "C" fn metaknight_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_speciallwf" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -295,7 +306,8 @@ unsafe extern "C" fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_speciallwsubf" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -310,7 +322,8 @@ unsafe extern "C" fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase
 
 }
 
-unsafe extern "C" fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_specialairlwf" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -341,7 +354,9 @@ unsafe extern "C" fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "metaknight", script = "game_speciallwsubairf" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -355,7 +370,8 @@ unsafe extern "C" fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgent
     }
 }
 
-unsafe extern "C" fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_speciallwb" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -387,7 +403,8 @@ unsafe extern "C" fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_speciallwsubb" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -401,7 +418,8 @@ unsafe extern "C" fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_specialairlwb" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -434,7 +452,8 @@ unsafe extern "C" fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase
 
 }
 
-unsafe extern "C" fn metaknight_special_lw_sub_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_speciallwsubairb" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_lw_sub_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -448,7 +467,9 @@ unsafe extern "C" fn metaknight_special_lw_sub_air_b_game(fighter: &mut L2CAgent
     }
 }
 
-unsafe extern "C" fn metaknight_special_s_finish(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "metaknight", scripts = ["game_specialairsfinish", "game_specialsend"] , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_s_finish(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -468,7 +489,8 @@ unsafe extern "C" fn metaknight_special_s_finish(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_special_s_drill(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "game_specialsdrill" , category = ACMD_GAME , low_priority)]
+unsafe fn metaknight_special_s_drill(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -484,7 +506,8 @@ unsafe extern "C" fn metaknight_special_s_drill(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_special_s_drill_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "metaknight", script = "effect_specialsdrill" , category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_s_drill_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -519,29 +542,27 @@ unsafe extern "C" fn metaknight_special_s_drill_effect(fighter: &mut L2CAgentBas
 }
 
 pub fn install() {
-    smashline::Agent::new("metaknight")
-        .acmd("game_specialnspin", metaknight_special_n_spin_game)
-        .acmd("game_specialairnend", metaknight_special_n_end_game)
-        .acmd("game_specialnend", metaknight_special_n_end_game)
-        .acmd("effect_specialnend", metaknight_special_n_end_effect)
-        .acmd("effect_specialnspingroundeffect", metaknight_special_n_spin_ground_effect)
-        .acmd("effect_specialnstart", metaknight_special_n_start_effect)
-        .acmd("effect_specialairnend", metaknight_special_air_n_end_effect)
-        .acmd("game_specialhi", metaknight_special_hi_game)
-        .acmd("game_specialhiloop", metaknight_special_hi_loop_game)
-        .acmd("effect_specialhiloop", metaknight_special_hi_loop_effect)
-        .acmd("effect_specialhi", metaknight_special_hi_effect)
-        .acmd("game_speciallwf", metaknight_special_lw_f_game)
-        .acmd("game_speciallwsubf", metaknight_special_lw_sub_f_game)
-        .acmd("game_specialairlwf", metaknight_special_air_lw_f_game)
-        .acmd("game_speciallwsubairf", metaknight_special_lw_sub_air_f_game)
-        .acmd("game_speciallwb", metaknight_special_lw_b_game)
-        .acmd("game_speciallwsubb", metaknight_special_lw_sub_b_game)
-        .acmd("game_specialairlwb", metaknight_special_air_lw_b_game)
-        .acmd("game_speciallwsubairb", metaknight_special_lw_sub_air_b_game)
-        .acmd("game_specialairsfinish", metaknight_special_s_finish)
-        .acmd("game_specialsend", metaknight_special_s_finish)
-        .acmd("game_specialsdrill", metaknight_special_s_drill)
-        .acmd("effect_specialsdrill", metaknight_special_s_drill_effect)
-        .install();
+    install_acmd_scripts!(
+        metaknight_special_n_spin_game,
+        metaknight_special_n_end_game,
+        metaknight_special_hi_game,
+        metaknight_special_hi_loop_game,
+        metaknight_special_lw_f_game,
+        metaknight_special_lw_sub_f_game,
+        metaknight_special_lw_b_game,
+        metaknight_special_lw_sub_b_game,
+        metaknight_special_air_lw_f_game,
+        metaknight_special_lw_sub_air_f_game,
+        metaknight_special_air_lw_b_game,
+        metaknight_special_lw_sub_air_b_game,
+        metaknight_special_hi_loop_effect,
+        metaknight_special_hi_effect,
+        metaknight_special_s_finish,
+        metaknight_special_s_drill,
+        metaknight_special_s_drill_effect,
+        metaknight_special_n_end_effect,
+        metaknight_special_n_spin_ground_effect,
+        metaknight_special_n_start_effect,
+        metaknight_special_air_n_end_effect,
+    );
 }

@@ -1,16 +1,19 @@
 use super::*;
 use globals::*;
 
+
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP
 
+#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
-    smashline::original_status(Main, fighter, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP)(fighter)
+    original!(fighter)
 }
 
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END
 
+#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_s_jump_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_AIR);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_GROUND);
@@ -45,6 +48,7 @@ unsafe extern "C" fn special_s_jump_end_main_loop(fighter: &mut L2CFighterCommon
 
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END
 
+#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -75,6 +79,7 @@ unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
+#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_s_blow_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_AIR);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_GROUND);
@@ -161,10 +166,10 @@ unsafe extern "C" fn special_s_blow_end_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install() {
-    smashline::Agent::new("littlemac")
-        .status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main)
-        .status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END, special_s_jump_end_main)
-        .status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END, special_s_blow_end_pre)
-        .status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END, special_s_blow_end_main)
-        .install();
+    install_status_scripts!(
+        special_s_jump_main,
+        special_s_jump_end_main,
+        special_s_blow_end_pre,
+        special_s_blow_end_main
+    );
 }

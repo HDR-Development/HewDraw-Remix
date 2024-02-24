@@ -85,7 +85,7 @@ pub enum EnergyStopResetType {
     DamageAirOrbit,
 }
 
-#[skyline::hook(offset = 0x6d6650)]
+#[skyline::hook(offset = 0x6d6630)]
 unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleObjectModuleAccessor) {
     use EnergyStopResetType::*;
 
@@ -123,7 +123,7 @@ unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleOb
     energy.speed_brake = backup_brake;
 }
 
-#[skyline::hook(offset = 0x6d8560)]
+#[skyline::hook(offset = 0x6d8540)]
 pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, reset_type: EnergyStopResetType, initial_speed: &PaddedVec2, unk: u64, boma: &mut BattleObjectModuleAccessor) {
     if ( boma.is_fighter()
     &&     (boma.kind() == *FIGHTER_KIND_MEWTWO && boma.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2))

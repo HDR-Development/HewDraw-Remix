@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -45,7 +46,8 @@ unsafe extern "C" fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -63,7 +65,7 @@ unsafe extern "C" fn kamui_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         VisibilityModule::set_int64(boma, hash40("hair") as i64, hash40("hair_hide") as i64);
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -83,7 +85,9 @@ unsafe extern "C" fn kamui_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack_air_f_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "kamui", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -116,7 +120,8 @@ unsafe extern "C" fn kamui_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -129,7 +134,8 @@ unsafe extern "C" fn kamui_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.85);
@@ -138,11 +144,12 @@ unsafe extern "C" fn kamui_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.85);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
-unsafe extern "C" fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -188,7 +195,8 @@ unsafe extern "C" fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -216,7 +224,8 @@ unsafe extern "C" fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -247,7 +256,8 @@ unsafe extern "C" fn kamui_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state =fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -260,7 +270,8 @@ unsafe extern "C" fn kamui_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -269,11 +280,12 @@ unsafe extern "C" fn kamui_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
-unsafe extern "C" fn kamui_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -310,7 +322,8 @@ unsafe extern "C" fn kamui_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -339,12 +352,14 @@ unsafe extern "C" fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn kamui_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-unsafe extern "C" fn kamui_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "kamui", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -360,20 +375,20 @@ unsafe extern "C" fn kamui_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("kamui")
-        .acmd("game_attackairn", kamui_attack_air_n_game)
-        .acmd("expression_attackairn", kamui_attack_air_n_expression)
-        .acmd("game_attackairf", kamui_attack_air_f_game)
-        .acmd("effect_attackairf", kamui_attack_air_f_effect)
-        .acmd("expression_attackairf", kamui_attack_air_f_expression)
-        .acmd("game_attackairb", kamui_attack_air_b_game)
-        .acmd("effect_attackairb", kamui_attack_air_b_effect)
-        .acmd("game_attackairhi", kamui_attack_air_hi_game)
-        .acmd("effect_attackairhi", kamui_attack_air_hi_effect)
-        .acmd("expression_attackairhi", kamui_attack_air_hi_expression)
-        .acmd("game_attackairlw", kamui_attack_air_lw_game)
-        .acmd("effect_attackairlw", kamui_attack_air_lw_effect)
-        .acmd("game_landingairlw", kamui_landing_air_lw_game)
-        .acmd("effect_landingairlw", kamui_landing_air_lw_effect)
-        .install();
+    install_acmd_scripts!(
+        kamui_attack_air_n_game,
+        kamui_attack_air_n_expression,
+        kamui_attack_air_f_game,
+        kamui_attack_air_f_effect,
+        kamui_attack_air_f_expression,
+        kamui_attack_air_b_game,
+        kamui_attack_air_b_effect,
+        kamui_attack_air_hi_game,
+        kamui_attack_air_hi_effect,
+        kamui_attack_air_hi_expression,
+        kamui_attack_air_lw_game,
+        kamui_attack_air_lw_effect,
+        kamui_landing_air_lw_game,
+        kamui_landing_air_lw_effect,
+    );
 }

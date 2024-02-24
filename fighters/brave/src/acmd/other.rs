@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +79,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +121,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn brave_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -142,7 +148,8 @@ unsafe extern "C" fn brave_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn brave_catch_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_catchdash", category = ACMD_GAME, low_priority )]
+unsafe fn brave_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -162,7 +169,8 @@ unsafe extern "C" fn brave_catch_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_dash" , category = ACMD_GAME , low_priority)]
+unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -176,7 +184,8 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -186,7 +195,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -202,7 +212,8 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -217,7 +228,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -231,7 +243,8 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_spark", script = "game_specials1" , category = ACMD_GAME , low_priority)]
+unsafe fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -242,7 +255,8 @@ unsafe extern "C" fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_fireball_burst_l_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_fireball", script = "game_burstl" , category = ACMD_GAME , low_priority)]
+unsafe fn brave_fireball_burst_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -266,7 +280,8 @@ unsafe extern "C" fn brave_fireball_burst_l_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_tornado_special_hi1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_tornado", script = "game_specialhi1", category = ACMD_GAME, low_priority )]
+unsafe fn brave_tornado_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -275,7 +290,8 @@ unsafe extern "C" fn brave_tornado_special_hi1_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn brave_tornado_special_hi1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_tornado", script = "effect_specialhi1", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_tornado_special_hi1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -283,7 +299,8 @@ unsafe extern "C" fn brave_tornado_special_hi1_effect(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn brave_tornado_special_hi2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_tornado", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_tornado_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -297,7 +314,8 @@ unsafe extern "C" fn brave_tornado_special_hi2_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn brave_tornado_special_hi2_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_tornado", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_tornado_special_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -305,7 +323,8 @@ unsafe extern "C" fn brave_tornado_special_hi2_effect(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn brave_tornado_special_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_tornado", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
+unsafe fn brave_tornado_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     for _ in 0..i32::MAX {
@@ -333,7 +352,8 @@ unsafe extern "C" fn brave_tornado_special_hi3_game(fighter: &mut L2CAgentBase) 
     
 }
 
-unsafe extern "C" fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_tornado", script = "effect_specialhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -342,7 +362,8 @@ unsafe extern "C" fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn brave_special_lw8_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_speciallw8", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_special_lw8_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -371,7 +392,8 @@ unsafe extern "C" fn brave_special_lw8_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_special_air_lw8_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_specialairlw8", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_special_air_lw8_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -396,7 +418,8 @@ unsafe extern "C" fn brave_special_air_lw8_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_crash_crash1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_crash", script = "game_crash1", category = ACMD_GAME, low_priority )]
+unsafe fn brave_crash_crash1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -452,7 +475,8 @@ unsafe extern "C" fn brave_crash_crash1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_crash_crash1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_crash", script = "effect_crash1", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_crash_crash1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -483,7 +507,8 @@ unsafe extern "C" fn brave_crash_crash1_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_crash_crash_end1_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_crash", script = "effect_crashend1", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_crash_crash_end1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -495,7 +520,8 @@ unsafe extern "C" fn brave_crash_crash_end1_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_explosion", script = "game_explode2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -534,7 +560,8 @@ unsafe extern "C" fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_deathball", script = "game_deathball2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -551,7 +578,8 @@ unsafe extern "C" fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn brave_deathball_deathball2_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave_deathball", script = "effect_deathball2", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_deathball_deathball2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -560,46 +588,34 @@ unsafe extern "C" fn brave_deathball_deathball2_effect(fighter: &mut L2CAgentBas
 }
 
 pub fn install() {
-    smashline::Agent::new("brave_tornado")
-        .acmd("game_specialhi1", brave_tornado_special_hi1_game)
-        .acmd("effect_specialhi1", brave_tornado_special_hi1_effect)
-        .acmd("game_specialhi2", brave_tornado_special_hi2_game)
-        .acmd("effect_specialhi2", brave_tornado_special_hi2_effect)
-        .acmd("game_specialhi3", brave_tornado_special_hi3_game)
-        .acmd("effect_specialhi3", brave_tornado_special_hi3_effect)
-        .install();
-    smashline::Agent::new("brave")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", brave_catch_game)
-        .acmd("game_catchdash", brave_catch_dash_game)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("effect_speciallw8", brave_special_lw8_effect)
-        .acmd("effect_specialairlw8", brave_special_air_lw8_effect)
-        .install();
-    smashline::Agent::new("brave_spark")
-        .acmd("game_specials1", brave_spark_special_s1_game)
-        .install();
-    smashline::Agent::new("brave_crash")
-        .acmd("game_crash1", brave_crash_crash1_game)
-        .acmd("effect_crash1", brave_crash_crash1_effect)
-        .acmd("effect_crashend1", brave_crash_crash_end1_effect)
-        .install();
-    smashline::Agent::new("brave_fireball")
-        .acmd("game_burstl", brave_fireball_burst_l_game)
-        .install();
-    smashline::Agent::new("brave_explosion")
-        .acmd("game_explode2", brave_explosion_explode2_game)
-        .install();
-    smashline::Agent::new("brave_deathball")
-        .acmd("game_deathball2", brave_deathball_deathball2_game)
-        .acmd("effect_deathball2", brave_deathball_deathball2_effect)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        brave_catch_game,
+        brave_catch_dash_game,
+        dash_game,
+        dash_sound,
+        turn_dash_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound,
+        brave_spark_special_s1_game,
+        brave_fireball_burst_l_game,
+        brave_tornado_special_hi1_game,
+        brave_tornado_special_hi1_effect,
+        brave_tornado_special_hi2_game,
+        brave_tornado_special_hi2_effect,
+        brave_tornado_special_hi3_game,
+        brave_tornado_special_hi3_effect,
+        brave_special_lw8_effect,
+        brave_special_air_lw8_effect,
+        brave_crash_crash1_game,
+        brave_crash_crash1_effect,
+        brave_crash_crash_end1_effect,
+        brave_explosion_explode2_game,
+        brave_deathball_deathball2_game,
+        brave_deathball_deathball2_effect,
+    );
 }

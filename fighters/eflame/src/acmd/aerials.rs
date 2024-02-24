@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn eflame_attack_air_n_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "eflame", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn eflame_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -62,7 +64,8 @@ unsafe extern "C" fn eflame_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn eflame_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn eflame_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -116,7 +119,8 @@ unsafe extern "C" fn eflame_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn eflame_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn eflame_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -169,7 +173,8 @@ unsafe extern "C" fn eflame_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn eflame_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn eflame_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -230,7 +235,8 @@ unsafe extern "C" fn eflame_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn eflame_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "eflame", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn eflame_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -300,11 +306,11 @@ unsafe extern "C" fn eflame_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("eflame")
-        .acmd("game_attackairn", eflame_attack_air_n_game)
-        .acmd("game_attackairf", eflame_attack_air_f_game)
-        .acmd("game_attackairb", eflame_attack_air_b_game)
-        .acmd("game_attackairhi", eflame_attack_air_hi_game)
-        .acmd("game_attackairlw", eflame_attack_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        eflame_attack_air_n_game,
+        eflame_attack_air_f_game,
+        eflame_attack_air_b_game,
+        eflame_attack_air_hi_game,
+        eflame_attack_air_lw_game,
+    );
 }

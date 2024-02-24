@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn pichu_attack_11_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "pichu", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 3.0);
@@ -18,7 +20,8 @@ unsafe extern "C" fn pichu_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pichu", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.95);
@@ -41,8 +44,9 @@ unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pichu")
-        .acmd("game_attack11", pichu_attack_11_game)
-        .acmd("game_attackdash", game_attackdash)
-        .install();
+    install_acmd_scripts!(
+        pichu_attack_11_game,
+        game_attackdash
+    );
 }
+

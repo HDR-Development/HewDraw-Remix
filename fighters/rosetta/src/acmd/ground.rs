@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn rosetta_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -34,7 +35,8 @@ unsafe extern "C" fn rosetta_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("game_attackdash", rosetta_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        rosetta_attack_dash_game,
+    );
 }
+

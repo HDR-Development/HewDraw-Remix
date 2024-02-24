@@ -20,7 +20,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn plizardon_init(fighter: &mut L2CFighterCommon) {
+#[smashline::fighter_init]
+fn plizardon_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_PLIZARDON {
@@ -30,17 +31,19 @@ extern "C" fn plizardon_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "plizardon", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let parent_id = LinkModule::get_parent_id(fighter.module_accessor, *FIGHTER_POKEMON_LINK_NO_PTRAINER, true) as u32;
     let object = utils::util::get_battle_object_from_id(parent_id);
     VarModule::on_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS); // we will turn this off in opff
-    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+    original!(fighter)
 }
 
 pub fn install() {
-    smashline::Agent::new("plizardon")
-        .on_start(plizardon_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .install();
+    smashline::install_agent_init_callbacks!(plizardon_init);
     special_s::install();
+    install_status_scripts!(
+        special_lw_main
+    );
+
 }

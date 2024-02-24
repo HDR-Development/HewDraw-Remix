@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn inkling_attack_11_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "inkling", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -22,7 +24,8 @@ unsafe extern "C" fn inkling_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -47,7 +50,8 @@ unsafe extern "C" fn inkling_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -62,7 +66,8 @@ unsafe extern "C" fn inkling_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_100_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -84,7 +89,8 @@ unsafe extern "C" fn inkling_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn inkling_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     // base 0.84
@@ -135,11 +141,12 @@ unsafe extern "C" fn inkling_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_attack11", inkling_attack_11_game)
-        .acmd("game_attack12", inkling_attack_12_game)
-        .acmd("game_attack13", inkling_attack_13_game)
-        .acmd("game_attack100end", inkling_attack_100_end_game)
-        .acmd("game_attackdash", inkling_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        inkling_attack_11_game,
+        inkling_attack_12_game,
+        inkling_attack_13_game,
+        inkling_attack_100_end_game,
+        inkling_attack_dash_game,
+    );
 }
+

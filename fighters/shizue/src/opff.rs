@@ -19,6 +19,8 @@ unsafe fn fishing_rod_shield_cancel(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
+
+
 unsafe fn fair_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("attack_air_f"))  {
         if fighter.motion_frame() > 13.0 || fighter.motion_frame() < 17.0 {
@@ -56,7 +58,8 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 //Lloid explode on hit
-unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
+#[smashline::weapon_frame_callback(main)]
+pub fn lloid_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         if weapon.kind() != *WEAPON_KIND_SHIZUE_CLAYROCKET {
             return
@@ -87,7 +90,7 @@ unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
                 *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
                 VarModule::on_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
                 VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 10);
-                EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+                macros::EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
             }
         }
         if VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC) {
@@ -150,7 +153,8 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
 }
  
 //Disable grab on fishingrod when pullingback
-unsafe extern "C" fn fishingrod_callback(weapon : &mut L2CFighterBase) {
+#[smashline::weapon_frame_callback(main)]
+pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         let object_id = (*weapon.battle_object).battle_object_id;
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
@@ -278,7 +282,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fair_scale(fighter);
 }
 
-pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_SHIZUE )]
+pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
@@ -289,17 +294,4 @@ pub unsafe fn shizue_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
-}
-pub fn install() {
-    smashline::Agent::new("shizue")
-        .on_line(Main, shizue_frame_wrapper)
-        .install();
-
-    smashline::Agent::new("shizue_fishingrod")
-        .on_line(Main, fishingrod_callback)
-        .install();
-
-    smashline::Agent::new("shizue_clayrocket")
-        .on_line(Main, lloid_callback)
-        .install();
 }

@@ -1,6 +1,8 @@
 use super::*;
 
-unsafe extern "C" fn pikmin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "pikmin", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn pikmin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,7 +29,8 @@ unsafe extern "C" fn pikmin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pikmin_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn pikmin_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -43,7 +46,8 @@ unsafe extern "C" fn pikmin_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pikmin_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pikmin", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn pikmin_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -70,9 +74,10 @@ unsafe extern "C" fn pikmin_attack_hi3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pikmin")
-        .acmd("game_attacks3", pikmin_attack_s3_s_game)
-        .acmd("game_attacklw3", pikmin_attack_lw3_game)
-        .acmd("game_attackhi3", pikmin_attack_hi3_game)
-        .install();
+    install_acmd_scripts!(
+        pikmin_attack_s3_s_game,
+        pikmin_attack_lw3_game,
+        pikmin_attack_hi3_game,
+    );
 }
+

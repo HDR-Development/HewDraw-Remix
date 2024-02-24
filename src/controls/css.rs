@@ -43,21 +43,19 @@ impl ControllerInfo {
 
 pub unsafe fn get_ptr_to_controls(entry: usize) -> ControllerInfo {
     let one = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x5314510) as *const u64);
+        .add(0x5312510) as *const u64);
     let two = *(one as *const u64);
     let three = ***((two + 0x58) as *const *const *const u64);
 
     ControllerInfo((three as *mut u8).add(entry * 0xf7d8))
 }
 
-#[derive(Debug, Copy, Clone, Default)]
+#[derive(Debug, Copy, Clone)]
 pub struct ExtraInputDetection {
     pub pressing_down: bool,
     pub pressing_up: bool,
     pub pressing_y: bool,
     pub pressing_x: bool,
-    pub pressed_y: bool,
-    pub pressed_x: bool,
 }
 
 #[derive(Default)]
@@ -72,23 +70,23 @@ static VIRTUAL_INPUT_MAPS: Lazy<Mutex<HashMap<u64, ExtraInputDetection>>> =
 static SUBMENU_STATES: Lazy<Mutex<HashMap<u64, WithCancel>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));
 
-#[skyline::from_offset(0x19fa710)]
+#[skyline::from_offset(0x19f9c30)]
 fn init_layout(ptr: u64);
 
-#[skyline::from_offset(0x3777950)]
+#[skyline::from_offset(0x3776cd0)]
 fn play_animation(layout_ptr: u64, name: *const u8, speed: f32);
 
-#[skyline::from_offset(0x37a18c0)]
+#[skyline::from_offset(0x37a0c40)]
 fn create_text_pane(out_pane: u64, text: *const u16, color: u32, value: i32);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F60);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37752e0);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
-#[skyline::hook(offset = 0x19fba98, inline)]
+#[skyline::hook(offset = 0x19fafb8, inline)]
 unsafe fn set_layout_position(ctx: &mut InlineCtx) {
     let ptr = *ctx.registers[19].x.as_ref();
 
@@ -105,7 +103,7 @@ unsafe fn set_layout_position(ctx: &mut InlineCtx) {
         .unwrap_or_default() as u64;
 }
 
-#[skyline::hook(offset = 0x19fba0c, inline)]
+#[skyline::hook(offset = 0x19faf2c, inline)]
 unsafe fn create_layout(ctx: &mut InlineCtx) {
     let ptr = *ctx.registers[19].x.as_ref();
 
@@ -119,10 +117,10 @@ unsafe fn create_layout(ctx: &mut InlineCtx) {
     *ctx.registers[1].x.as_mut() = state.get_button_count() as u64 + 1;
 }
 
-#[skyline::from_offset(0x37a1ef0)]
+#[skyline::from_offset(0x37a1270)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
-#[skyline::hook(offset = 0x19f6790)]
+#[skyline::hook(offset = 0x19f5cb0)]
 unsafe fn create_layout_button(root: u64, index: i32, button: u64) {
     // In the degenerate case that we haven't set a state yet, let's just call original
     // This will likely happen the very first time we call this function
@@ -184,7 +182,7 @@ unsafe fn get_controls_id_from_button_id(root_layout: u64, button_id: i32) -> Op
     Some(index as usize)
 }
 
-#[skyline::hook(offset = 0x19f9b98, inline)]
+#[skyline::hook(offset = 0x19f90b8, inline)]
 unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
     let ptr = *ctx.registers[8].x.as_ref();
     let virt = VIRTUAL_INPUT_MAPS.lock().get(&ptr).copied();
@@ -210,15 +208,15 @@ unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
             if let Some(controls_id) =
                 get_controls_id_from_button_id(root_layout, currently_pressing)
             {
-                if virt.pressed_y {
+                if virt.pressing_y {
                     *submenu = Some(Box::new(TopLevel { controls_id }));
                     true
-                // } else if virt.pressed_x {
-                //     let mut controls = get_ptr_to_controls(controls_id as usize);
-                //     let new_name = swkbd::prompt_change_text(controls.tag_slice());
-                //     controls.set_tag(&new_name);
-                //     *(ptr as *mut i32).add(0xd0 / 4) = controls_id as i32;
-                //     true
+                } else if virt.pressing_x {
+                    let mut controls = get_ptr_to_controls(controls_id as usize);
+                    let new_name = swkbd::prompt_change_text(controls.tag_slice());
+                    controls.set_tag(&new_name);
+                    *(ptr as *mut i32).add(0xd0 / 4) = controls_id as i32;
+                    true
                 } else {
                     false
                 }
@@ -268,21 +266,18 @@ unsafe fn check_for_input(mask: u32, ptr: u64) -> bool {
     false
 }
 
-#[skyline::hook(offset = 0x377ce90, inline)]
+#[skyline::hook(offset = 0x377c210, inline)]
 unsafe fn handle_virtual_inputs(ctx: &InlineCtx) {
     let ptr = *ctx.registers[0].x.as_ref();
     let virtual_input = *(*ctx.registers[1].x.as_ref() as *const u64).add(1);
-    let mut maps = VIRTUAL_INPUT_MAPS.lock();
-    let last_frame = maps.get(&virtual_input).cloned().unwrap_or_default();
     let extra = ExtraInputDetection {
         pressing_down: check_for_input(0x00400004, virtual_input),
         pressing_up: check_for_input(0x00100001, virtual_input),
         pressing_y: check_for_input(0x00000080, virtual_input),
         pressing_x: check_for_input(0x00000010, virtual_input),
-        pressed_y: !last_frame.pressing_y && check_for_input(0x00000080, virtual_input),
-        pressed_x: !last_frame.pressing_x && check_for_input(0x00000010, virtual_input),
     };
-    maps.insert(ptr, extra);
+
+    VIRTUAL_INPUT_MAPS.lock().insert(ptr, extra);
 }
 
 /* 0x19f5cb0 -> Called where x1 is the index of the pane to render

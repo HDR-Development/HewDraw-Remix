@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn mewtwo_special_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mewtwo", script = "game_specials", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -40,7 +41,8 @@ unsafe extern "C" fn mewtwo_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mewtwo_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mewtwo", script = "game_specialairhistart", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -49,7 +51,8 @@ unsafe extern "C" fn mewtwo_special_air_hi_start_game(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn mewtwo_special_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mewtwo", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -62,7 +65,8 @@ unsafe extern "C" fn mewtwo_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mewtwo_special_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mewtwo", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -75,7 +79,9 @@ unsafe extern "C" fn mewtwo_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mewtwo_special_air_lw_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "mewtwo", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -88,7 +94,9 @@ unsafe extern "C" fn mewtwo_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bindball_shoot_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "mewtwo_bindball", script = "game_shoot" , category = ACMD_GAME , low_priority)]
+unsafe fn bindball_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -97,15 +105,15 @@ unsafe extern "C" fn bindball_shoot_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    smashline::Agent::new("mewtwo")
-        .acmd("game_specials", mewtwo_special_s_game)
-        .acmd("game_specialairhistart", mewtwo_special_air_hi_start_game)
-        .acmd("game_specialairhi", mewtwo_special_air_hi_game)
-        .acmd("game_speciallw", mewtwo_special_lw_game)
-        .acmd("game_specialairlw", mewtwo_special_air_lw_game)
-        .install();
-    smashline::Agent::new("mewtwo_bindball")
-        .acmd("game_shoot", bindball_shoot_game)
-        .install();
+    install_acmd_scripts!(
+        mewtwo_special_air_hi_start_game,
+        mewtwo_special_air_hi_game,
+        mewtwo_special_s_game,
+        mewtwo_special_lw_game,
+        mewtwo_special_air_lw_game,
+        bindball_shoot_game, 
+    );
 }
+

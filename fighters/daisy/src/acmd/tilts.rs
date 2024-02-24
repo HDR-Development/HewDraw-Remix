@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn daisy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "daisy", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn daisy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -29,7 +31,8 @@ unsafe extern "C" fn daisy_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn daisy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn daisy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -49,7 +52,8 @@ unsafe extern "C" fn daisy_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn daisy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -75,7 +79,8 @@ unsafe extern "C" fn daisy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn daisy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn daisy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -89,7 +94,8 @@ unsafe extern "C" fn daisy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn daisy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -139,7 +145,8 @@ unsafe extern "C" fn daisy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn daisy_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "daisy", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn daisy_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -156,12 +163,13 @@ unsafe extern "C" fn daisy_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("daisy")
-        .acmd("game_attacks3", daisy_attack_s3_s_game)
-        .acmd("expression_attacks3", daisy_attack_s3_s_expression)
-        .acmd("game_attackhi3", daisy_attack_hi3_game)
-        .acmd("effect_attackhi3", daisy_attack_hi3_effect)
-        .acmd("game_attacklw3", daisy_attack_lw3_game)
-        .acmd("effect_attacklw3", daisy_attack_lw3_effect)
-        .install();
+    install_acmd_scripts!(
+        daisy_attack_s3_s_game,
+        daisy_attack_s3_s_expression,
+        daisy_attack_hi3_game,
+        daisy_attack_hi3_effect,
+        daisy_attack_lw3_game,
+        daisy_attack_lw3_effect,
+    );
 }
+

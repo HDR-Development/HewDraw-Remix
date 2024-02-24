@@ -348,6 +348,7 @@ pub unsafe extern "Rust" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCom
     0.into()
 }
 
+
 #[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommon, mot1: L2CValue, mot2: L2CValue) {
     ryu_attack_main_uniq_chk3(fighter);
@@ -389,6 +390,7 @@ unsafe extern "C" fn ryu_attack_main_uniq_chk3(fighter: &mut L2CFighterCommon) {
 extern "Rust" {
     fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
 }
+
 
 #[no_mangle]
 pub unsafe extern "Rust" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {

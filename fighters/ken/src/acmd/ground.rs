@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attack11w(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "game_attack11w" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -30,7 +31,8 @@ unsafe extern "C" fn game_attack11w(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attack11w(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "effect_attack11w", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -40,7 +42,8 @@ unsafe extern "C" fn effect_attack11w(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_attack11w(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "sound_attack11w", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -50,7 +53,8 @@ unsafe extern "C" fn sound_attack11w(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attack11w(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "expression_attack11w", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attack11w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -66,7 +70,8 @@ unsafe extern "C" fn expression_attack11w(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack11s(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", scripts = ["game_attack11s", "game_attack11nears", "game_attack12"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -113,7 +118,8 @@ unsafe extern "C" fn game_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attack11s(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", scripts = ["effect_attack11s", "effect_attack11nears", "effect_attack12"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -125,7 +131,8 @@ unsafe extern "C" fn effect_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_attack11s(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", scripts = ["sound_attack11s", "sound_attack11nears", "sound_attack12"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -135,7 +142,8 @@ unsafe extern "C" fn sound_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attack11s(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", scripts = ["expression_attack11s", "expression_attack11nears", "expression_attack12"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attack11s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -151,7 +159,8 @@ unsafe extern "C" fn expression_attack11s(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ken", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.95);
@@ -177,23 +186,16 @@ unsafe extern "C" fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ken")
-        .acmd("game_attack11w", game_attack11w)
-        .acmd("effect_attack11w", effect_attack11w)
-        .acmd("sound_attack11w", sound_attack11w)
-        .acmd("expression_attack11w", expression_attack11w)
-        .acmd("game_attack11s", game_attack11s)
-        .acmd("game_attack11nears", game_attack11s)
-        .acmd("game_attack12", game_attack11s)
-        .acmd("effect_attack11s", effect_attack11s)
-        .acmd("effect_attack11nears", effect_attack11s)
-        .acmd("effect_attack12", effect_attack11s)
-        .acmd("sound_attack11s", sound_attack11s)
-        .acmd("sound_attack11nears", sound_attack11s)
-        .acmd("sound_attack12", sound_attack11s)
-        .acmd("expression_attack11s", expression_attack11s)
-        .acmd("expression_attack11nears", expression_attack11s)
-        .acmd("expression_attack12", expression_attack11s)
-        .acmd("game_attackdash", ken_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        game_attack11w,
+        effect_attack11w,
+        sound_attack11w,
+        expression_attack11w,
+        game_attack11s,
+        effect_attack11s,
+        sound_attack11s,
+        expression_attack11s,
+        ken_attack_dash_game,
+    );
 }
+

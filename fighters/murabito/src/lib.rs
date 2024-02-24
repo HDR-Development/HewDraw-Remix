@@ -38,8 +38,12 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    opff::install();
+    opff::install(is_runtime);
+    use opff::*;
+    smashline::install_agent_frame_callbacks!(
+        article_frame_callback,
+    );
 }

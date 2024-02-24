@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn koopa_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+unsafe fn koopa_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -34,7 +35,8 @@ unsafe extern "C" fn koopa_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopa_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -53,7 +55,8 @@ unsafe extern "C" fn koopa_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+unsafe fn koopa_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -62,7 +65,8 @@ unsafe extern "C" fn koopa_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -94,7 +98,8 @@ unsafe extern "C" fn koopa_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -123,7 +128,8 @@ unsafe extern "C" fn koopa_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopa_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopa_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -133,7 +139,8 @@ unsafe extern "C" fn koopa_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -161,7 +168,8 @@ unsafe extern "C" fn koopa_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopa_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -170,11 +178,12 @@ unsafe extern "C" fn koopa_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -205,7 +214,8 @@ unsafe extern "C" fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopa_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopa_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -219,7 +229,8 @@ unsafe extern "C" fn koopa_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -229,7 +240,8 @@ unsafe extern "C" fn koopa_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -261,7 +273,8 @@ unsafe extern "C" fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn koopa_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopa_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -278,7 +291,8 @@ unsafe extern "C" fn koopa_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+unsafe fn koopa_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -308,20 +322,21 @@ unsafe extern "C" fn koopa_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("koopa")
-        .acmd("game_attackairn", koopa_attack_air_n_game)
-        .acmd("effect_attackairn", koopa_attack_air_n_effect)
-        .acmd("sound_attackairn", koopa_attack_air_n_sound)
-        .acmd("expression_attackairn", koopa_attack_air_n_expression)
-        .acmd("game_attackairf", koopa_attack_air_f_game)
-        .acmd("effect_attackairf", koopa_attack_air_f_effect)
-        .acmd("game_attackairb", koopa_attack_air_b_game)
-        .acmd("expression_attackairb", koopa_attack_air_b_expression)
-        .acmd("game_attackairhi", koopa_attack_air_hi_game)
-        .acmd("effect_attackairhi", koopa_attack_air_hi_effect)
-        .acmd("expression_attackairhi", koopa_attack_air_hi_expression)
-        .acmd("game_attackairlw", koopa_attack_air_lw_game)
-        .acmd("effect_attackairlw", koopa_attack_air_lw_effect)
-        .acmd("game_landingairlw", koopa_landing_air_lw_game)
-        .install();
+    install_acmd_scripts!(
+        koopa_attack_air_n_game,
+        koopa_attack_air_n_effect,
+        koopa_attack_air_n_sound,
+        koopa_attack_air_n_expression,
+        koopa_attack_air_f_game,
+        koopa_attack_air_f_effect,
+        koopa_attack_air_b_game,
+        koopa_attack_air_b_expression,
+
+        koopa_attack_air_hi_game,
+        koopa_attack_air_hi_effect,
+        koopa_attack_air_hi_expression,
+        koopa_attack_air_lw_game,
+        koopa_attack_air_lw_effect,
+        koopa_landing_air_lw_game,
+    );
 }

@@ -1,8 +1,8 @@
 use super::*;
 
 // New animation
-
-unsafe extern "C" fn attack_s3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -26,7 +26,8 @@ unsafe extern "C" fn attack_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn attack_s3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -38,7 +39,7 @@ unsafe extern "C" fn attack_s3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
@@ -46,7 +47,8 @@ unsafe extern "C" fn attack_s3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -62,7 +64,8 @@ unsafe extern "C" fn attack_hi3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -85,10 +88,10 @@ unsafe extern "C" fn attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("miiswordsman")
-        .acmd("game_attacks3", attack_s3_game)
-        .acmd("expression_attacks3", attack_s3_expression)
-        .acmd("game_attackhi3", attack_hi3_game)
-        .acmd("game_attacklw3", attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+		attack_s3_game,
+        attack_s3_expression,
+		attack_hi3_game,
+		attack_lw3_game,
+	);
 }

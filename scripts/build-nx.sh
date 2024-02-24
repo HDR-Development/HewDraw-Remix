@@ -4,6 +4,7 @@ repo_root=$(dirname "$script_dir")
 nx_plugin_path="/atmosphere/contents/01006A800016E000/romfs/skyline/plugins"
 nx_mod_path="/ultimate/mods/HDR-Base"
 
+
 # do this before getting the rom files because this will update them
 cd "$repo_root/plugin"
 cargo skyline build --release

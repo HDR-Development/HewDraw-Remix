@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "pitb", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "pitb", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -55,7 +57,8 @@ unsafe extern "C" fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "pitb", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -77,7 +80,8 @@ unsafe extern "C" fn pitb_attack_13_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn pitb_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
@@ -92,11 +96,12 @@ unsafe extern "C" fn pitb_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 pub fn install() {
-    smashline::Agent::new("pitb")
-        .acmd("game_attack11", pitb_attack_11_game)
-        .acmd("game_attack12", pitb_attack_12_game)
-        .acmd("game_attack13", pitb_attack_13_game)
-        .acmd("game_attackdash", pitb_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        pitb_attack_11_game,
+        pitb_attack_12_game,
+        pitb_attack_13_game,
+		pitb_attack_dash_game,
+    );
 }

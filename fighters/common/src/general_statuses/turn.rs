@@ -7,13 +7,14 @@ macro_rules! interrupt {
     ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Turn)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon11status_TurnEv")]
 unsafe fn status_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
     status_pre_turncommon(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(status_turn_main as *const () as _))
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_pre_TurnCommon)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_pre_TurnCommonEv")]
 unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM);
@@ -40,7 +41,7 @@ unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("turn"), frame, 1.0, false, 0.0, false, false);
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Turn_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon16status_Turn_MainEv")]
 unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let should_end = if fighter.global_table[0x35].get_bool() {
         let custom_routine: *const extern "C" fn(&mut L2CFighterCommon) -> L2CValue = fighter.global_table[0x35].get_ptr() as _;
@@ -102,7 +103,7 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
     L2CValue::I32(1)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_TurnCommon)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon17status_TurnCommonEv")]
 unsafe extern "C" fn status_turncommon(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -168,7 +169,8 @@ unsafe extern "C" fn status_turncommon(fighter: &mut L2CFighterCommon) -> L2CVal
     return L2CValue::Bool(true)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_end_Turn)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_end_TurnEv")]
 unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT);
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_DASH {
@@ -181,7 +183,7 @@ unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_exit_Turn)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon13sub_exit_TurnEv")]
 unsafe extern "C" fn sub_exit_Turn(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ESCAPE_F
     || StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ESCAPE_B {
@@ -190,23 +192,16 @@ unsafe extern "C" fn sub_exit_Turn(fighter: &mut L2CFighterCommon) {
     }
 }
 
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hooks!(
-            status_pre_turncommon,
-            status_turn_main,
-            status_turncommon,
-            sub_exit_Turn,
-            status_turn,
-            status_end_turn
-        );
-    }
-}
-
 pub fn install() {
-    skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Main, *FIGHTER_STATUS_KIND_TURN, status_turn)
-        .status(End, *FIGHTER_STATUS_KIND_TURN, status_end_turn)
-        .install();
+    install_hooks!(
+        status_pre_turncommon,
+        status_turn_main,
+        status_turncommon,
+        sub_exit_Turn
+    );
+
+    install_status_scripts!(
+        status_turn,
+        status_end_turn
+    );
 }

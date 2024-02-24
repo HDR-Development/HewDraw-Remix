@@ -132,9 +132,12 @@ unsafe extern "C" fn special_n_float_end(_fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    Agent::new("ganon")
-        .status(Pre, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_pre)
-        .status(Main, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_main)
-        .status(End, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_end)
-        .install();
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_ganon"),
+        statuses::ganon::SPECIAL_N_FLOAT,
+        StatusInfo::new()
+            .with_pre(special_n_float_pre)
+            .with_main(special_n_float_main)
+            .with_end(special_n_float_end)    
+    );
 }

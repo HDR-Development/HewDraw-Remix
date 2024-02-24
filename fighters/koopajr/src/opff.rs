@@ -126,7 +126,9 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     mechakoopa_cooldown(fighter, boma);
 }
 
-pub extern "C" fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+#[utils::macros::opff(FIGHTER_KIND_KOOPAJR)]
+pub fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		koopajr_frame(fighter)
@@ -139,7 +141,8 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN, main)]
+pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         if StatusModule::status_kind(boma) == *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_FALL
@@ -149,7 +152,12 @@ pub extern "C" fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::
     }
 }
 
-pub extern "C" fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub fn install_remainclown() {
+    smashline::install_agent_frame!(koopajr_weapon_remainclown_frame);
+}
+
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL, main )]
+pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         koopajr_weapon_frame(weapon)
     }
@@ -159,16 +167,4 @@ pub unsafe fn koopajr_weapon_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) 
     //if let Some(info) = WeaponFrameInfo::weapon_update_and_get(weapon) {
     //    
     //}
-}
-
-pub fn install() {
-    smashline::Agent::new("koopajr")
-        .on_line(Main, koopajr_frame_wrapper)
-        .install();
-    smashline::Agent::new("koopajr_remainclown")
-        .on_line(Main, koopajr_weapon_remainclown_frame)
-        .install();
-    smashline::Agent::new("koopajr_cannonball")
-        .on_line(Main, koopajr_weapon_frame_wrapper)
-        .install();
 }

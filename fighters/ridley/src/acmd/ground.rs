@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn ridley_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "ridley", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -21,7 +22,8 @@ unsafe extern "C" fn ridley_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_attack11_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "effect_attack11", category = ACMD_EFFECT, low_priority)]
+unsafe fn ridley_attack11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -30,7 +32,8 @@ unsafe extern "C" fn ridley_attack11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "ridley", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -58,7 +61,8 @@ unsafe extern "C" fn ridley_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_attack12_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ridley", script = "effect_attack12", category = ACMD_EFFECT, low_priority)]
+unsafe fn ridley_attack12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -68,7 +72,8 @@ unsafe extern "C" fn ridley_attack12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "ridley", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -82,7 +87,9 @@ unsafe extern "C" fn ridley_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_attack_dash_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "ridley", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn ridley_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     // base 0.9
@@ -99,12 +106,13 @@ unsafe extern "C" fn ridley_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("ridley")
-        .acmd("game_attack11", ridley_attack_11_game)
-        .acmd("effect_attack11", ridley_attack11_effect)
-        .acmd("game_attack12", ridley_attack_12_game)
-        .acmd("effect_attack12", ridley_attack12_effect)
-        .acmd("game_attack13", ridley_attack_13_game)
-        .acmd("game_attackdash", ridley_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        ridley_attack_11_game,
+        ridley_attack11_effect,
+        ridley_attack_12_game,
+        ridley_attack12_effect,
+        ridley_attack_13_game,
+        ridley_attack_dash_game,
+    );
 }
+

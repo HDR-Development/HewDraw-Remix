@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attacks4hi(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "luigi", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks4hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -17,7 +19,8 @@ unsafe extern "C" fn game_attacks4hi(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attacks4hi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "effect_attacks4hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attacks4hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -44,7 +47,8 @@ unsafe extern "C" fn effect_attacks4hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -64,7 +68,8 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -91,7 +96,8 @@ unsafe extern "C" fn effect_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attacks4lw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -108,7 +114,8 @@ unsafe extern "C" fn game_attacks4lw(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attacks4lw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "effect_attacks4lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attacks4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -135,7 +142,8 @@ unsafe extern "C" fn effect_attacks4lw(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -157,7 +165,8 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -188,14 +197,15 @@ unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("luigi")
-        .acmd("game_attacks4hi", game_attacks4hi)
-        .acmd("effect_attacks4hi", effect_attacks4hi)
-        .acmd("game_attacks4", game_attacks4)
-        .acmd("effect_attacks4", effect_attacks4)
-        .acmd("game_attacks4lw", game_attacks4lw)
-        .acmd("effect_attacks4lw", effect_attacks4lw)
-        .acmd("game_attackhi4", game_attackhi4)
-        .acmd("game_attacklw4", game_attacklw4)
-        .install();
+    install_acmd_scripts!(
+        game_attacks4hi,
+        effect_attacks4hi,
+        game_attacks4,
+        effect_attacks4,
+        game_attacks4lw,
+        effect_attacks4lw,
+        game_attackhi4,
+        game_attacklw4,
+    );
 }
+

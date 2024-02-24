@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn littlemac_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -35,7 +36,8 @@ unsafe extern "C" fn littlemac_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn littlemac_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
+unsafe fn littlemac_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -60,7 +62,8 @@ unsafe extern "C" fn littlemac_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn littlemac_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -87,7 +90,8 @@ unsafe extern "C" fn littlemac_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn littlemac_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn littlemac_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -96,11 +100,12 @@ unsafe extern "C" fn littlemac_attack_air_f_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn littlemac_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -132,7 +137,8 @@ unsafe extern "C" fn littlemac_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn littlemac_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -166,7 +172,8 @@ unsafe extern "C" fn littlemac_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn littlemac_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn littlemac_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.25);
@@ -188,7 +195,8 @@ unsafe extern "C" fn littlemac_attack_air_hi_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn littlemac_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn littlemac_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -197,11 +205,12 @@ unsafe extern "C" fn littlemac_attack_air_hi_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 4.25);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-unsafe extern "C" fn littlemac_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -239,7 +248,8 @@ unsafe extern "C" fn littlemac_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn littlemac_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn littlemac_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -269,16 +279,16 @@ unsafe extern "C" fn littlemac_attack_air_lw_effect(fighter: &mut L2CAgentBase) 
 }
 
 pub fn install() {
-    smashline::Agent::new("littlemac")
-        .acmd("game_attackairn", littlemac_attack_air_n_game)
-        .acmd("effect_attackairn", littlemac_attack_air_n_effect)
-        .acmd("game_attackairf", littlemac_attack_air_f_game)
-        .acmd("expression_attackairf", littlemac_attack_air_f_expression)
-        .acmd("game_attackairb", littlemac_attack_air_b_game)
-        .acmd("game_attackairhi", littlemac_attack_air_hi_game)
-        .acmd("effect_attackairhi", littlemac_attack_air_hi_effect)
-        .acmd("expression_attackairhi", littlemac_attack_air_hi_expression)
-        .acmd("game_attackairlw", littlemac_attack_air_lw_game)
-        .acmd("effect_attackairlw", littlemac_attack_air_lw_effect)
-        .install();
+    install_acmd_scripts!(
+        littlemac_attack_air_n_game,
+        littlemac_attack_air_n_effect,
+        littlemac_attack_air_f_game,
+        littlemac_attack_air_f_expression,
+        littlemac_attack_air_b_game,
+        littlemac_attack_air_hi_game,
+        littlemac_attack_air_hi_effect,
+        littlemac_attack_air_hi_expression,
+        littlemac_attack_air_lw_game,
+        littlemac_attack_air_lw_effect,
+    );
 }

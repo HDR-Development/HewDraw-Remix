@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn rosetta_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -19,7 +20,8 @@ unsafe extern "C" fn rosetta_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rosetta_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -37,7 +39,8 @@ unsafe extern "C" fn rosetta_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rosetta_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -55,7 +58,8 @@ unsafe extern "C" fn rosetta_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rosetta_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -79,7 +83,8 @@ unsafe extern "C" fn rosetta_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rosetta_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -108,11 +113,12 @@ unsafe extern "C" fn rosetta_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("game_attacks4hi", rosetta_attack_s4_hi_game)
-        .acmd("game_attacks4", rosetta_attack_s4_s_game)
-        .acmd("game_attacks4lw", rosetta_attack_s4_lw_game)
-        .acmd("game_attackhi4", rosetta_attack_hi4_game)
-        .acmd("game_attacklw4", rosetta_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        rosetta_attack_s4_hi_game,
+        rosetta_attack_s4_s_game,
+        rosetta_attack_s4_lw_game,
+        rosetta_attack_hi4_game,
+        rosetta_attack_lw4_game,
+    );
 }
+

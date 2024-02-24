@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn rosetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -17,7 +18,8 @@ unsafe extern "C" fn rosetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rosetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -44,7 +46,8 @@ unsafe extern "C" fn rosetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rosetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rosetta", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn rosetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -63,9 +66,10 @@ unsafe extern "C" fn rosetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("game_attacks3", rosetta_attack_s3_s_game)
-        .acmd("game_attackhi3", rosetta_attack_hi3_game)
-        .acmd("game_attacklw3", rosetta_attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+        rosetta_attack_s3_s_game,
+        rosetta_attack_hi3_game,
+        rosetta_attack_lw3_game,
+    );
 }
+

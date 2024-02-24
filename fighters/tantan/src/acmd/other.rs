@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +27,8 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +79,8 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +95,8 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,7 +121,8 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_dash" , category = ACMD_GAME , low_priority)]
+unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -130,7 +136,8 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -140,7 +147,8 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_turndash" , category = ACMD_GAME , low_priority)]
+unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -156,7 +164,8 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -171,7 +180,8 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -185,10 +195,12 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attacklegsjumpaerial(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", scripts = ["effect_attacklegsjumpaerialf","effect_attacklegsjumpaerialb"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attacklegsjumpaerial(fighter: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -217,7 +229,9 @@ unsafe extern "C" fn catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn catch_sound(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "tantan", script = "sound_catch" , category = ACMD_SOUND , low_priority)]
+unsafe fn catch_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -231,7 +245,8 @@ unsafe extern "C" fn catch_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn catch_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "expression_catch" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn catch_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -243,9 +258,10 @@ unsafe extern "C" fn catch_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-//Ram Ram attacks//
 
-unsafe extern "C" fn ramram_game_attackshort(fighter: &mut L2CAgentBase) {
+//Ram Ram attacks//
+#[acmd_script( agent = "tantan_punch3", script = "game_attackshort", category = ACMD_GAME, low_priority )]
+unsafe fn ramram_game_attackshort(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -276,7 +292,8 @@ unsafe extern "C" fn ramram_game_attackshort(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ramram_game_attacklong(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch3", script = "game_attacklong", category = ACMD_GAME, low_priority )]
+unsafe fn ramram_game_attacklong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -311,7 +328,8 @@ unsafe extern "C" fn ramram_game_attacklong(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ramram_game_attacklonghold(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch3", script = "game_attacklonghold", category = ACMD_GAME, low_priority )]
+unsafe fn ramram_game_attacklonghold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -361,8 +379,8 @@ unsafe extern "C" fn ramram_game_attacklonghold(fighter: &mut L2CAgentBase) {
 }
 
 //Fly controls when RamRam gets sent outwards
-
-unsafe extern "C" fn ramram_game_attackfly(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_ring", script = "game_attackfly", category = ACMD_GAME, low_priority )]
+unsafe fn ramram_game_attackfly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -386,8 +404,8 @@ unsafe extern "C" fn ramram_game_attackfly(fighter: &mut L2CAgentBase) {
     }
 }
 //Fire ramram
-
-unsafe extern "C" fn ramram_game_attacks4fly(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_ring", script = "game_attacks4fly", category = ACMD_GAME, low_priority )]
+unsafe fn ramram_game_attacks4fly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     //Scoop for the first few frames, then send back and down
@@ -411,7 +429,9 @@ unsafe extern "C" fn ramram_game_attacks4fly(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn megawatt_game_attackshort(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "tantan_punch2", script = "game_attackshort", category = ACMD_GAME, low_priority )]
+unsafe fn megawatt_game_attackshort(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -433,7 +453,8 @@ unsafe extern "C" fn megawatt_game_attackshort(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn megawatt_game_attacklong(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch2", script = "game_attacklong", category = ACMD_GAME, low_priority )]
+unsafe fn megawatt_game_attacklong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -472,8 +493,8 @@ unsafe extern "C" fn megawatt_game_attacklong(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-
-unsafe extern "C" fn megawatt_game_attacklonghold(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch2", script = "game_attacklonghold", category = ACMD_GAME, low_priority )]
+unsafe fn megawatt_game_attacklonghold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -513,7 +534,12 @@ unsafe extern "C" fn megawatt_game_attacklonghold(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn arm_attack_end(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "tantan", scripts = [
+    "game_attackshortendr1","game_attackshortendrb1","game_attackshortendrb3",
+    "game_attacklongendr1","game_attacklongendrb1","game_attacklongendrb3",
+], category = ACMD_GAME, low_priority )]
+unsafe fn arm_attack_end(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -526,7 +552,8 @@ unsafe extern "C" fn arm_attack_end(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_game_attackshort(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch1", script = "game_attackshort", category = ACMD_GAME, low_priority )]
+unsafe fn dragon_game_attackshort(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -548,7 +575,8 @@ unsafe extern "C" fn dragon_game_attackshort(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_game_attacklong(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch1", script = "game_attacklong", category = ACMD_GAME, low_priority )]
+unsafe fn dragon_game_attacklong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -597,7 +625,8 @@ unsafe extern "C" fn dragon_game_attacklong(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_game_attackdragonshootlong(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch1", script = "game_attackdragonshootlong", category = ACMD_GAME, low_priority )]
+unsafe fn dragon_game_attackdragonshootlong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -655,7 +684,8 @@ unsafe extern "C" fn dragon_game_attackdragonshootlong(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn dragon_effect_attackdragonshootlong(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch1", script = "effect_attackdragonshootlong", category = ACMD_EFFECT, low_priority )]
+unsafe fn dragon_effect_attackdragonshootlong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -675,8 +705,8 @@ unsafe extern "C" fn dragon_effect_attackdragonshootlong(fighter: &mut L2CAgentB
         EffectModule::enable_sync_init_pos_last(boma);
     }
 }
-
-unsafe extern "C" fn dragon_special_hi_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch1", scripts = ["game_specialairhiattack","game_specialairhiattackdragon"], category = ACMD_GAME, low_priority )]
+unsafe fn dragon_special_hi_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let angle = (75.0+WorkModule::get_float(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLOAT_ATTACK_SHIFT_ANGLE_L)) as u64;
@@ -693,7 +723,8 @@ unsafe extern "C" fn dragon_special_hi_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_sound_attackbeamloop(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_punch1", script = "sound_attackbeamloop", category = ACMD_SOUND, low_priority )]
+unsafe fn dragon_sound_attackbeamloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -707,7 +738,8 @@ unsafe extern "C" fn dragon_sound_attackbeamloop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragonbeam_game_shoot(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_beam", scripts = ["game_shoot","game_bigshoot"], category = ACMD_GAME, low_priority )]
+unsafe fn dragonbeam_game_shoot(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -727,8 +759,8 @@ unsafe extern "C" fn dragonbeam_game_shoot(fighter: &mut L2CAgentBase) {
         AttackModule::disable_tip(boma);
     }
 }
-
-unsafe extern "C" fn dragonbeam_effect_beam(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan_beam", scripts = ["effect_beam","effect_bigbeam"], category = ACMD_EFFECT, low_priority )]
+unsafe fn dragonbeam_effect_beam(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -746,65 +778,43 @@ unsafe extern "C" fn dragonbeam_effect_beam(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("tantan_punch2")
-        .acmd("game_attackshort", megawatt_game_attackshort)
-        .acmd("game_attacklong", megawatt_game_attacklong)
-        .acmd("game_attacklonghold", megawatt_game_attacklonghold)
-        .install();
-    smashline::Agent::new("tantan_beam")
-        .acmd("game_shoot", dragonbeam_game_shoot)
-        .acmd("game_bigshoot", dragonbeam_game_shoot)
-        .acmd("effect_beam", dragonbeam_effect_beam)
-        .acmd("effect_bigbeam", dragonbeam_effect_beam)
-        .install();
-    smashline::Agent::new("tantan_punch3")
-        .acmd("game_attackshort", ramram_game_attackshort)
-        .acmd("game_attacklong", ramram_game_attacklong)
-        .acmd("game_attacklonghold", ramram_game_attacklonghold)
-        .install();
-    smashline::Agent::new("tantan_punch1")
-        .acmd("game_attackshort", dragon_game_attackshort)
-        .acmd("game_attacklong", dragon_game_attacklong)
-        .acmd(
-            "game_attackdragonshootlong",
-            dragon_game_attackdragonshootlong,
-        )
-        .acmd(
-            "effect_attackdragonshootlong",
-            dragon_effect_attackdragonshootlong,
-        )
-        .acmd("game_specialairhiattack", dragon_special_hi_attack_game)
-        .acmd(
-            "game_specialairhiattackdragon",
-            dragon_special_hi_attack_game,
-        )
-        .acmd("sound_attackbeamloop", dragon_sound_attackbeamloop)
-        .install();
-    smashline::Agent::new("tantan_ring")
-        .acmd("game_attackfly", ramram_game_attackfly)
-        .acmd("game_attacks4fly", ramram_game_attacks4fly)
-        .install();
-    smashline::Agent::new("tantan")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("effect_attacklegsjumpaerialf", effect_attacklegsjumpaerial)
-        .acmd("effect_attacklegsjumpaerialb", effect_attacklegsjumpaerial)
-        .acmd("game_catch", catch_game)
-        .acmd("sound_catch", catch_sound)
-        .acmd("expression_catch", catch_expression)
-        .acmd("game_attackshortendr1", arm_attack_end)
-        .acmd("game_attackshortendrb1", arm_attack_end)
-        .acmd("game_attackshortendrb3", arm_attack_end)
-        .acmd("game_attacklongendr1", arm_attack_end)
-        .acmd("game_attacklongendrb1", arm_attack_end)
-        .acmd("game_attacklongendrb3", arm_attack_end)
-        .install();
+    install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
+        dash_game,
+        dash_sound,
+        turn_dash_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound,
+        catch_game,
+        catch_sound,
+        catch_expression,
+        effect_attacklegsjumpaerial,
+
+        ramram_game_attackshort,
+        ramram_game_attacklong,
+        ramram_game_attacklonghold,
+        ramram_game_attackfly,
+        ramram_game_attacks4fly,
+
+        megawatt_game_attackshort,
+        megawatt_game_attacklong,
+        megawatt_game_attacklonghold,
+
+        dragon_game_attackshort,
+        dragon_game_attacklong,
+        dragon_game_attackdragonshootlong,
+        dragon_effect_attackdragonshootlong,
+        dragon_special_hi_attack_game,
+
+        dragonbeam_game_shoot,
+        dragonbeam_effect_beam,
+        dragon_sound_attackbeamloop,
+
+        arm_attack_end,
+    );
 }
+

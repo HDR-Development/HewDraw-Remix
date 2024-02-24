@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "wario", script = "game_specialnbite" , category = ACMD_GAME , low_priority)]
+unsafe fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 21.0);
@@ -42,7 +44,8 @@ unsafe extern "C" fn wario_special_n_bite_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wario", script = "game_specialairnbite" , category = ACMD_GAME , low_priority)]
+unsafe fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 21.0);
@@ -83,7 +86,9 @@ unsafe extern "C" fn wario_special_air_n_bite_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "wario", script = "game_specialhijump" , category = ACMD_GAME , low_priority)]
+unsafe fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -134,12 +139,13 @@ unsafe extern "C" fn wario_special_hi_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wario", script = "expression_specialhijump", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 5, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 7.0);
@@ -156,7 +162,7 @@ unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
@@ -176,7 +182,8 @@ unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase
 //     }
 // }
 
-unsafe extern "C" fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME, low_priority )]
+unsafe fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -193,7 +200,8 @@ unsafe extern "C" fn wario_special_lw_lr_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME, low_priority )]
+unsafe fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -223,14 +231,13 @@ unsafe extern "C" fn wario_special_lw_flyr_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("wario")
-        .acmd("game_specialnbite", wario_special_n_bite_game)
-        .acmd("game_specialairnbite", wario_special_air_n_bite_game)
-        .acmd("game_specialhijump", wario_special_hi_jump_game)
-        .acmd("expression_specialhijump", wario_special_hi_jump_expression)
-        .acmd("game_speciallwlr", wario_special_lw_lr_game)
-        .acmd("game_specialairlwlr", wario_special_lw_lr_game)
-        .acmd("game_speciallwflyr", wario_special_lw_flyr_game)
-        .acmd("game_specialairlwflyr", wario_special_lw_flyr_game)
-        .install();
+    install_acmd_scripts!(
+        wario_special_n_bite_game,
+        wario_special_air_n_bite_game,
+        wario_special_hi_jump_game,
+        wario_special_hi_jump_expression,
+        wario_special_lw_lr_game,
+        wario_special_lw_flyr_game,
+    );
 }
+

@@ -24,8 +24,9 @@ use smash_script::{macros::*, *};
 use smashline::*;
 use utils::{consts::*, ext::*, util::*, *};
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
-    opff::install();
     status::install();
+    opff::install(is_runtime);
+    skyline::install_hook!(opff::get_ink_colors);
 }

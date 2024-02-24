@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn wolf_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "wolf", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -18,7 +20,8 @@ unsafe extern "C" fn wolf_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn wolf_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -34,7 +37,8 @@ unsafe extern "C" fn wolf_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn wolf_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -51,7 +55,8 @@ unsafe extern "C" fn wolf_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn wolf_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -72,7 +77,8 @@ unsafe extern "C" fn wolf_attack_hi3_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn wolf_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn wolf_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -88,7 +94,7 @@ unsafe extern "C" fn wolf_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -96,7 +102,8 @@ unsafe extern "C" fn wolf_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn wolf_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "wolf", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn wolf_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -113,12 +120,13 @@ unsafe extern "C" fn wolf_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("wolf")
-        .acmd("game_attacks3hi", wolf_attack_s3_hi_game)
-        .acmd("game_attacks3", wolf_attack_s3_s_game)
-        .acmd("game_attacks3lw", wolf_attack_s3_lw_game)
-        .acmd("game_attackhi3", wolf_attack_hi3_game)
-        .acmd("expression_attackhi3", wolf_attack_hi3_expression)
-        .acmd("game_attacklw3", wolf_attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+        wolf_attack_s3_hi_game,
+        wolf_attack_s3_s_game,
+        wolf_attack_s3_lw_game,
+        wolf_attack_hi3_game,
+        wolf_attack_hi3_expression,
+        wolf_attack_lw3_game,
+    );
 }
+

@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["game_specialn1", "game_specialairn1"] , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -18,7 +19,8 @@ unsafe extern "C" fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["game_specialn2", "game_specialairn2"] , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -96,7 +98,8 @@ unsafe extern "C" fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["effect_specialn2", "effect_specialairn2"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -121,7 +124,8 @@ unsafe extern "C" fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["sound_specialn2", "sound_specialairn2"] , category = ACMD_SOUND , low_priority)]
+unsafe fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -131,7 +135,8 @@ unsafe extern "C" fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["expression_specialn2", "expression_specialairn2"] , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -149,7 +154,7 @@ unsafe extern "C" fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
@@ -161,7 +166,8 @@ unsafe extern "C" fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBa
 // ======================================== BLURRING BLADE ========================================
 // ================================================================================================
 
-unsafe extern "C" fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["game_specialn3end", "game_specialn3endturn", "game_specialn3endmax", "game_specialn3endmaxturn"] , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let turn = fighter.is_motion_one_of(&[Hash40::new("special_n3_end_turn"), Hash40::new("special_n3_end_max_turn")]);
@@ -209,7 +215,8 @@ unsafe extern "C" fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["game_specialairn3end", "game_specialairn3endturn", "game_specialairn3endmax", "game_specialairn3endmaxturn"] , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let turn = fighter.is_motion_one_of(&[Hash40::new("special_air_n3_end_turn"), Hash40::new("special_air_n3_end_max_turn")]);
@@ -274,11 +281,13 @@ unsafe extern "C" fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgent
     FT_MOTION_RATE(fighter, 1.0);
 }
 
+
 // ==================================================================================================
 // ======================================== AIRBORNE ASSAULT ========================================
 // ==================================================================================================
 
-unsafe extern "C" fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials1start" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -289,7 +298,8 @@ unsafe extern "C" fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBa
     
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs1start" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -300,7 +310,8 @@ unsafe extern "C" fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAge
     
 }
 
-unsafe extern "C" fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -310,7 +321,8 @@ unsafe extern "C" fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -342,7 +354,8 @@ unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
 // ======================================== GALE STAB ==========================================
 // =============================================================================================
 
-unsafe extern "C" fn miiswordsman_special_s2_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials2dash" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s2_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 10.0);
@@ -351,7 +364,8 @@ unsafe extern "C" fn miiswordsman_special_s2_dash_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials2attack" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -370,7 +384,8 @@ unsafe extern "C" fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "effect_specials2attack" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -427,7 +442,8 @@ unsafe extern "C" fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs2dash" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -435,7 +451,8 @@ unsafe extern "C" fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs2attack" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -454,7 +471,8 @@ unsafe extern "C" fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAg
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "effect_specialairs2attack" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -511,11 +529,13 @@ unsafe extern "C" fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2C
     }
 }
 
+
 // =============================================================================================
 // ======================================== CHAKRAM ============================================
 // =============================================================================================
 
-unsafe extern "C" fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials3_1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -548,7 +568,8 @@ unsafe extern "C" fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) 
     }  
 }
 
-unsafe extern "C" fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials3_1hi" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -581,7 +602,8 @@ unsafe extern "C" fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBas
     }     
 }
 
-unsafe extern "C" fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specials3_1lw" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -614,7 +636,8 @@ unsafe extern "C" fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBas
     }    
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs3_1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -647,7 +670,8 @@ unsafe extern "C" fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBa
     }     
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs3_1hi" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -680,7 +704,8 @@ unsafe extern "C" fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgen
     }    
 }
 
-unsafe extern "C" fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairs3_1lw" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
@@ -712,12 +737,14 @@ unsafe extern "C" fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgen
         ArticleModule::shoot_exist(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_CHAKRAM, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }     
 }
+
 
 // =============================================================================================
 // ======================================== STONE SCABBARD ========================================
 // =============================================================================================
 
-unsafe extern "C" fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi1start" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -726,12 +753,13 @@ unsafe extern "C" fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairhi1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        let addSpeed = Vector3f { x: 0.0, y: 0.5, z: 0.0 };
+        let addSpeed = smash::phx::Vector3f { x: 0.0, y: 0.5, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 4.0, 0.0, 7.0, 6.0, Some(0.0), Some(4.0), Some(6.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 3.5, 0.0, 7.0, 10.0, Some(0.0), Some(4.0), Some(10.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -776,7 +804,8 @@ unsafe extern "C" fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi1end" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -793,7 +822,9 @@ unsafe extern "C" fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "miiswordsman", script = "game_specialairhi1end" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -810,11 +841,13 @@ unsafe extern "C" fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgen
     } 
 }
 
+
 // ====================================================================================================
 // ======================================== SKYWARD SLASH DASH ========================================
 // ====================================================================================================
 
-unsafe extern "C" fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi2hold" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -847,7 +880,8 @@ unsafe extern "C" fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBa
     wait(lua_state, 1.0);
 }
 
-unsafe extern "C" fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi2holdair" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -880,7 +914,8 @@ unsafe extern "C" fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAge
     wait(lua_state, 1.0);
 }
 
-unsafe extern "C" fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     for _ in 0..5 {
@@ -946,7 +981,8 @@ unsafe extern "C" fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_hi2_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
+unsafe fn miiswordsman_special_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -997,7 +1033,8 @@ unsafe extern "C" fn miiswordsman_special_hi2_effect(fighter: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi2landing" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1009,7 +1046,8 @@ unsafe extern "C" fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi2fall" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1024,11 +1062,13 @@ unsafe extern "C" fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBa
     }
 }
 
+
 // =============================================================================================
 // ======================================== HERO'S SPIN ========================================
 // =============================================================================================
 
-unsafe extern "C" fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1070,7 +1110,8 @@ unsafe extern "C" fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -1171,11 +1212,13 @@ unsafe extern "C" fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBas
     
 }
 
+
 // ===============================================================================================
 // ======================================== KINESIS BLADE ========================================
 // ===============================================================================================
 
-unsafe extern "C" fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_speciallw1hit", category = ACMD_GAME, low_priority )]
+unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1199,7 +1242,8 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBas
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hit", category = ACMD_GAME, low_priority )]
+unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1296,9 +1340,10 @@ unsafe extern "C" fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgen
 //     }
 // }
 
-// Kinesis Blade - 1 Charge
 
-unsafe extern "C" fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
+// Kinesis Blade - 1 Charge
+#[acmd_script( agent = "miiswordsman", script = "game_speciallw1hitlv1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1333,7 +1378,8 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hitlv1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1369,8 +1415,8 @@ unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2C
 }
 
 // Kinesis Blade - 2 Charges
-
-unsafe extern "C" fn miiswordsman_special_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_speciallw1hitlv2" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1405,7 +1451,8 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_lv2_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hitlv2" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -1439,12 +1486,14 @@ unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2C
         AttackModule::clear_all(boma);
     }
 }
+
 
 // ================================================================================================================
 // ======================================== DEFLECTING DRAFT / SHOCK SPELL ========================================
 // ================================================================================================================
 
-unsafe extern "C" fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["game_speciallw2", "game_specialairlw2"] , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1481,7 +1530,8 @@ unsafe extern "C" fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["effect_speciallw2", "effect_specialairlw2"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -1553,7 +1603,8 @@ unsafe extern "C" fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase)
     
 }
 
-unsafe extern "C" fn miiswordsman_special_lw2_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", scripts = ["sound_speciallw2", "sound_specialairlw2"], category = ACMD_SOUND, low_priority )]
+unsafe fn miiswordsman_special_lw2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -1572,11 +1623,13 @@ unsafe extern "C" fn miiswordsman_special_lw2_sound(fighter: &mut L2CAgentBase) 
 
 }
 
+
 // ================================================================================================================
 // ======================================== HURRICANE HEAVE =======================================================
 // ================================================================================================================
 
-unsafe extern "C" fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_speciallw3" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -1606,7 +1659,8 @@ unsafe extern "C" fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_speciallw3end" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1665,7 +1719,8 @@ unsafe extern "C" fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairlw3" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -1700,7 +1755,8 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairlw3end" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1723,7 +1779,8 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgen
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miiswordsman", script = "game_specialairlw3endair" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -1784,69 +1841,59 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2C
 }
 
 pub fn install() {
-    smashline::Agent::new("miiswordsman")
-        .acmd("game_specialn1", miiswordsman_special_n1_game)
-        .acmd("game_specialairn1", miiswordsman_special_n1_game)
-        .acmd("game_specialn2", miiswordsman_special_n2_game)
-        .acmd("game_specialairn2", miiswordsman_special_n2_game)
-        .acmd("effect_specialn2", miiswordsman_special_n2_effect)
-        .acmd("effect_specialairn2", miiswordsman_special_n2_effect)
-        .acmd("sound_specialn2", miiswordsman_special_n2_sound)
-        .acmd("sound_specialairn2", miiswordsman_special_n2_sound)
-        .acmd("expression_specialn2", miiswordsman_special_n2_expression)
-        .acmd("expression_specialairn2", miiswordsman_special_n2_expression)
-        .acmd("game_specialn3end", miiswordsman_special_n3_end_game)
-        .acmd("game_specialn3endturn", miiswordsman_special_n3_end_game)
-        .acmd("game_specialn3endmax", miiswordsman_special_n3_end_game)
-        .acmd("game_specialn3endmaxturn", miiswordsman_special_n3_end_game)
-        .acmd("game_specialairn3end", miiswordsman_special_air_n3_end_game)
-        .acmd("game_specialairn3endturn", miiswordsman_special_air_n3_end_game)
-        .acmd("game_specialairn3endmax", miiswordsman_special_air_n3_end_game)
-        .acmd("game_specialairn3endmaxturn", miiswordsman_special_air_n3_end_game)
-        .acmd("game_specials1start", miiswordsman_special_s1_start_game)
-        .acmd("game_specialairs1start", miiswordsman_special_air_s1_start_game)
-        .acmd("game_specials1", miiswordsman_special_s1_game)
-        .acmd("game_specialairs1", miiswordsman_special_air_s1_game)
-        .acmd("game_specials2dash", miiswordsman_special_s2_dash_game)
-        .acmd("game_specials2attack", miiswordsman_special_s2_attack_game)
-        .acmd("effect_specials2attack", miiswordsman_special_s2_attack_effect)
-        .acmd("game_specialairs2dash", miiswordsman_special_air_s2_dash_game)
-        .acmd("game_specialairs2attack", miiswordsman_special_air_s2_attack_game)
-        .acmd("effect_specialairs2attack", miiswordsman_special_air_s2_attack_effect)
-        .acmd("game_specials3_1", miiswordsman_special_s3_1_game)
-        .acmd("game_specials3_1hi", miiswordsman_special_s3_1_hi_game)
-        .acmd("game_specials3_1lw", miiswordsman_special_s3_1_lw_game)
-        .acmd("game_specialairs3_1", miiswordsman_special_air_s3_1_game)
-        .acmd("game_specialairs3_1hi", miiswordsman_special_air_s3_1_hi_game)
-        .acmd("game_specialairs3_1lw", miiswordsman_special_air_s3_1_lw_game)
-        .acmd("game_specialhi1start", miiswordsman_special_hi1_start_game)
-        .acmd("game_specialairhi1", miiswordsman_special_air_hi1_game)
-        .acmd("game_specialhi1end", miiswordsman_special_hi1_end_game)
-        .acmd("game_specialairhi1end", miiswordsman_special_air_hi1_end_game)
-        .acmd("game_specialhi2hold", miiswordsman_special_hi2_hold_game)
-        .acmd("game_specialhi2holdair", miiswordsman_special_hi2_hold_air_game)
-        .acmd("game_specialhi2", miiswordsman_special_hi2_game)
-        .acmd("effect_specialhi2", miiswordsman_special_hi2_effect)
-        .acmd("game_specialhi2landing", miiswordsman_special_hi2_landing_game)
-        .acmd("game_specialhi2fall", miiswordsman_special_hi2_fall_game)
-        .acmd("game_specialhi3", miiswordsman_special_hi3_game)
-        .acmd("game_specialairhi3", miiswordsman_special_air_hi3_game)
-        .acmd("game_speciallw1hit", miiswordsman_special_lw1_hit_game)
-        .acmd("game_specialairlw1hit", miiswordsman_special_air_lw1_hit_game)
-        //.acmd("game_speciallw1hitlv1", miiswordsman_special_lw1_hit_lv1_game)
-        //.acmd("game_specialairlw1hitlv1", miiswordsman_special_air_lw1_hit_lv1_game)
-        //.acmd("game_speciallw1hitlv2", miiswordsman_special_lw1_hit_lv2_game)
-        //.acmd("game_specialairlw1hitlv2", miiswordsman_special_air_lw1_hit_lv2_game)
-        .acmd("game_speciallw2", miiswordsman_special_lw2_game)
-        .acmd("game_specialairlw2", miiswordsman_special_lw2_game)
-        .acmd("effect_speciallw2", miiswordsman_special_lw2_effect)
-        .acmd("effect_specialairlw2", miiswordsman_special_lw2_effect)
-        .acmd("sound_speciallw2", miiswordsman_special_lw2_sound)
-        .acmd("sound_specialairlw2", miiswordsman_special_lw2_sound)
-        .acmd("game_speciallw3", miiswordsman_special_lw3_game)
-        //.acmd("game_speciallw3end", miiswordsman_special_lw3_end_game)
-        .acmd("game_specialairlw3", miiswordsman_special_air_lw3_game)
-        .acmd("game_specialairlw3end", miiswordsman_special_air_lw3_end_game)
-        //.acmd("game_specialairlw3endair", miiswordsman_special_air_lw3_end_air_game)
-        .install();
+    install_acmd_scripts!(
+        miiswordsman_special_n1_game,
+        miiswordsman_special_n2_game,
+        miiswordsman_special_n2_effect,
+        miiswordsman_special_n2_sound,
+        miiswordsman_special_n2_expression,
+        miiswordsman_special_n3_end_game,
+        miiswordsman_special_air_n3_end_game,
+
+        miiswordsman_special_s1_start_game,
+        miiswordsman_special_air_s1_start_game,
+        miiswordsman_special_s1_game,
+        miiswordsman_special_air_s1_game,
+        //miiswordsman_special_s1_hit_game,
+        miiswordsman_special_s2_dash_game,
+        miiswordsman_special_s2_attack_game,
+        miiswordsman_special_s2_attack_effect,
+        miiswordsman_special_air_s2_dash_game,
+        miiswordsman_special_air_s2_attack_game,
+        miiswordsman_special_air_s2_attack_effect,
+        miiswordsman_special_s3_1_game,
+        miiswordsman_special_s3_1_hi_game,
+        miiswordsman_special_s3_1_lw_game,
+        miiswordsman_special_air_s3_1_game,
+        miiswordsman_special_air_s3_1_hi_game,
+        miiswordsman_special_air_s3_1_lw_game,
+
+        miiswordsman_special_hi1_start_game,
+        miiswordsman_special_air_hi1_game,
+        miiswordsman_special_hi1_end_game,
+        miiswordsman_special_air_hi1_end_game,
+        miiswordsman_special_hi2_hold_game,
+        miiswordsman_special_hi2_hold_air_game,
+        miiswordsman_special_hi2_landing_game,
+        miiswordsman_special_hi2_fall_game,
+        miiswordsman_special_hi2_game,
+        miiswordsman_special_hi2_effect,
+        miiswordsman_special_hi3_game,
+        miiswordsman_special_air_hi3_game,
+
+        miiswordsman_special_lw1_hit_game,
+        miiswordsman_special_air_lw1_hit_game,
+        //miiswordsman_special_lw1_hit_lv1_game,
+        //miiswordsman_special_air_lw1_hit_lv1_game,
+        //miiswordsman_special_lw1_hit_lv2_game,
+        //miiswordsman_special_air_lw1_hit_lv2_game,
+        miiswordsman_special_lw2_game,
+        miiswordsman_special_lw2_effect,
+        miiswordsman_special_lw2_sound,
+        miiswordsman_special_lw3_game,
+        //miiswordsman_special_lw3_end_game,
+        miiswordsman_special_air_lw3_game,
+        miiswordsman_special_air_lw3_end_game,
+        //miiswordsman_special_air_lw3_end_air_game,
+    );
 }

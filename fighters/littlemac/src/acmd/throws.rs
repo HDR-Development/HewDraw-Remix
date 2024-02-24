@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn littlemac_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_throwf", category = ACMD_GAME, low_priority )]
+unsafe fn littlemac_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -23,7 +24,8 @@ unsafe extern "C" fn littlemac_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn littlemac_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_throwb", category = ACMD_GAME, low_priority )]
+unsafe fn littlemac_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 14.0, 10.0);
@@ -51,7 +53,8 @@ unsafe extern "C" fn littlemac_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn littlemac_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_throwhi", category = ACMD_GAME, low_priority )]
+unsafe fn littlemac_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -74,7 +77,8 @@ unsafe extern "C" fn littlemac_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn littlemac_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "littlemac", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+unsafe fn littlemac_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -100,10 +104,10 @@ unsafe extern "C" fn littlemac_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("littlemac")
-        .acmd("game_throwf", littlemac_throw_f_game)
-        .acmd("game_throwb", littlemac_throw_b_game)
-        .acmd("game_throwhi", littlemac_throw_hi_game)
-        .acmd("game_throwlw", littlemac_throw_lw_game)
-        .install();
+    install_acmd_scripts!(
+        littlemac_throw_f_game,
+        littlemac_throw_b_game,
+        littlemac_throw_hi_game,
+        littlemac_throw_lw_game,
+    );
 }

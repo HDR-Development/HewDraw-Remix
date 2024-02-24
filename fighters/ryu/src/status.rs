@@ -29,7 +29,34 @@ extern "C" {
 
 // status script import
 
-extern "C" fn ryu_init(fighter: &mut L2CFighterCommon) {
+pub fn install() {
+    finals::install();
+    special_s::install();
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_ryu"),
+        statuses::ryu::AIR_DASH,
+        StatusInfo::new()
+            .with_init(air_dash_init)
+            .with_pre(air_dash_pre)
+            .with_main(air_dash_main)
+            .with_end(status_end_EscapeAir),
+    );
+    install_status_scripts!(
+        pre_turndash,
+        main_dashback,
+        end_dashback,
+        main_attack,
+        escape_air_pre,
+        wait_pre,
+        //wait_main,
+        landing_main,
+        guard,
+    );
+    smashline::install_agent_init_callbacks!(ryu_init);
+}
+
+#[smashline::fighter_init]
+fn ryu_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_RYU {
@@ -260,7 +287,8 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
     false.into()
 }
 
-pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     if VarModule::is_flag(
         fighter.object(),
@@ -342,7 +370,8 @@ unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_TURN_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr = WorkModule::get_float(
         fighter.module_accessor,
         *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1,
@@ -365,18 +394,21 @@ pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_RYU_STATUS_KIND_DASH_BACK //
 
-pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
-pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
-    smashline::original_status(End, fighter, *FIGHTER_RYU_STATUS_KIND_DASH_BACK)(fighter)
+    original!(fighter)
 }
 
 // FIGHTER_STATUS_KIND_ATTACK //
 
-unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if WorkModule::is_flag(
         fighter.module_accessor,
@@ -567,7 +599,8 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 // FIGHTER_STATUS_KIND_ESCAPE_AIR
 
-unsafe extern "C" fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FALL
         && (VarModule::is_flag(
             fighter.battle_object,
@@ -641,7 +674,11 @@ unsafe extern "C" fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
             // 1. Initial airdodge energy to be applied
             // 2. change_motion to run so we change into airdodge animation
             // 3. Certain flags/transition terms to be set, such as FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::ryu::AIR_DASH);
+            let air_dash_status_kind = CustomStatusModule::get_agent_status_kind(
+                fighter.battle_object,
+                statuses::ryu::AIR_DASH,
+            );
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, air_dash_status_kind);
             return 1.into();
         }
     }
@@ -906,12 +943,12 @@ unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-unsafe extern "C" fn air_dash_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn air_dash_exec(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(
         fighter.module_accessor,
         *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL,
     ) {
-        return 0.into();
+        return;
     }
     if !WorkModule::is_enable_transition_term(
         fighter.module_accessor,
@@ -1015,19 +1052,18 @@ unsafe extern "C" fn air_dash_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY,
         );
     }
-    
-    0.into()
 }
 
 // FIGHTER_STATUS_KIND_WAIT //
 
-pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
 
 // vanilla script
-
-pub unsafe extern "C" fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_wait_common();
     fighter.sub_wait_motion_mtrans();
     fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
@@ -1075,25 +1111,7 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 // FIGHTER_STATUS_KIND_LANDING //
 
-pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
-}
-
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .on_start(ryu_init)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
-        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
-        .status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback)
-        .status(End, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, end_dashback)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack)
-        .status(Pre, *FIGHTER_STATUS_KIND_ESCAPE_AIR, escape_air_pre)
-        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
-        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
-        .status(Pre, statuses::ryu::AIR_DASH, air_dash_pre)
-        .status(Main, statuses::ryu::AIR_DASH, air_dash_main)
-        .status(Init, statuses::ryu::AIR_DASH, air_dash_init)
-        .status(Exec, statuses::ryu::AIR_DASH, air_dash_exec)
-        .install();
 }

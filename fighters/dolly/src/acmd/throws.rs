@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn dolly_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dolly", script = "game_throwf" , category = ACMD_GAME , low_priority)]
+unsafe fn dolly_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -20,7 +21,8 @@ unsafe extern "C" fn dolly_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "dolly", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+unsafe fn dolly_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -42,8 +44,8 @@ unsafe extern "C" fn dolly_throw_b_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("dolly")
-        .acmd("game_throwf", dolly_throw_f_game)
-        .acmd("game_throwb", dolly_throw_b_game)
-        .install();
+    install_acmd_scripts!(
+        dolly_throw_f_game,
+        dolly_throw_b_game,
+    );
 }

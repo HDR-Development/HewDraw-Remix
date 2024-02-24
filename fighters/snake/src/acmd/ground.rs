@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn snake_attack_11_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "snake", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -24,7 +25,8 @@ unsafe extern "C" fn snake_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_attack_12_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "snake", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -48,7 +50,8 @@ unsafe extern "C" fn snake_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "snake", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -63,7 +66,8 @@ unsafe extern "C" fn snake_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_attack_dash_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "snake", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -91,10 +95,11 @@ unsafe extern "C" fn snake_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("snake")
-        .acmd("game_attack11", snake_attack_11_game)
-        .acmd("game_attack12", snake_attack_12_game)
-        .acmd("game_attack13", snake_attack_13_game)
-        .acmd("game_attackdash", snake_attack_dash_game)
-        .install();
+    install_acmd_scripts!(
+        snake_attack_11_game,
+        snake_attack_12_game,
+        snake_attack_13_game,
+        snake_attack_dash_game,
+    );
 }
+

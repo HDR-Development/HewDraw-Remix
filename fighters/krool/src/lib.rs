@@ -39,12 +39,15 @@ pub mod opff;
 pub mod vtable_hook;
 pub use status::krool_belly_damage_hook_impl;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
-    opff::install();
+    opff::install(is_runtime);
     use opff::*;
-
+    // smashline::install_agent_frames!(
+    //     krool_backpack_frame
+    // );
+    
     // prevents shield break on belly
-    skyline::patching::Patch::in_text(0xc04f00).data(0x1400001Eu32);
+    skyline::patching::Patch::in_text(0xc04ee0).data(0x1400001Eu32);
 }

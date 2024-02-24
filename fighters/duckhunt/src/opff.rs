@@ -57,7 +57,8 @@ unsafe fn gunman_timer(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[utils::macros::opff(FIGHTER_KIND_DUCKHUNT )]
+pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
         duck_jump_cancel(fighter);
@@ -66,7 +67,8 @@ pub extern "C" fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighte
     }
 }
 
-pub extern "C" fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+#[smashline::weapon_frame_callback(main)]
+pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_DUCKHUNT_GUNMAN {
             return
@@ -114,13 +116,4 @@ pub extern "C" fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             VarModule::set_int(duckhunt, vars::duckhunt::instance::GUNMAN_TIMER, 300);
         }
     }
-}
-
-pub fn install() {
-    smashline::Agent::new("duckhunt")
-        .on_line(Main, duckhunt_frame_wrapper)
-        .install();
-    smashline::Agent::new("duckhunt_gunman")
-        .on_line(Main, gunman_callback)
-        .install();
 }

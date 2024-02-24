@@ -1,7 +1,8 @@
 use super::*;
 use crate::vars::*;
 
-unsafe extern "C" fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -37,7 +38,8 @@ unsafe extern "C" fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -71,7 +73,8 @@ unsafe extern "C" fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -87,7 +90,8 @@ unsafe extern "C" fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,7 +120,9 @@ unsafe extern "C" fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "toonlink", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -132,7 +138,8 @@ unsafe extern "C" fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -170,7 +177,8 @@ unsafe extern "C" fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -191,7 +199,8 @@ unsafe extern "C" fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "expression_attackairhi" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -224,7 +233,8 @@ unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -275,23 +285,24 @@ unsafe extern "C" fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "toonlink", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
+unsafe fn toonlink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
 pub fn install() {
-    smashline::Agent::new("toonlink")
-        .acmd("game_attackairn", toonlink_attack_air_n_game)
-        .acmd("game_attackairf", toonlink_attack_air_f_game)
-        .acmd("expression_attackairf", toonlink_attack_air_f_expression)
-        .acmd("game_attackairb", toonlink_attack_air_b_game)
-        .acmd("expression_attackairb", toonlink_attack_air_b_expression)
-        .acmd("game_attackairhi", toonlink_attack_air_hi_game)
-        .acmd("effect_attackairhi", toonlink_attack_air_hi_effect)
-        .acmd("expression_attackairhi", toonlink_attack_air_hi_expression)
-        .acmd("game_attackairlw", toonlink_attack_air_lw_game)
-        .acmd("game_aircatchlanding", toonlink_landing_air_catch_game)
-        .install();
+    install_acmd_scripts!(
+        toonlink_attack_air_n_game,
+        toonlink_attack_air_f_game,
+        toonlink_attack_air_f_expression,
+        toonlink_attack_air_b_game,
+        toonlink_attack_air_b_expression,
+        toonlink_attack_air_hi_game,
+        toonlink_attack_air_hi_effect,
+        toonlink_attack_air_hi_expression,
+        toonlink_attack_air_lw_game,
+        toonlink_landing_air_catch_game,
+    );
 }

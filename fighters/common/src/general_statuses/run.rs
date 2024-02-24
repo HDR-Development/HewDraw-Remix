@@ -2,7 +2,8 @@
 use super::*;
 use globals::*;
 
-#[skyline::hook(replace = L2CFighterCommon_status_pre_Run)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon14status_pre_RunEv")]
 unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
@@ -20,7 +21,7 @@ unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Run_Sub)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon14status_Run_SubEv")]
 unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     let value: f32 = if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DASH || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_TURN {
         WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_START_FRAME)
@@ -58,13 +59,14 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Run)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon10status_RunEv")]
 unsafe fn status_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     status_run_sub(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(status_run_main as *const () as _))
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Run_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon15status_Run_MainEv")]
 unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let run_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_add"), 0);
     let run_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_mul"), 0);
@@ -120,7 +122,8 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
     ret
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_RunBrake)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_RunBrakeEv")]
 unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_RunBrake();
 
@@ -134,7 +137,7 @@ unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(status_runbrake_main as *const () as _))
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_RunBrake_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon20status_RunBrake_MainEv")]
 unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
         && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0)
@@ -160,7 +163,8 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 	call_original!(fighter)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon19status_TurnRunBrakeEv")]
 unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_TurnRunBrake_Sub();
     let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
@@ -173,7 +177,7 @@ unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.main_shift(status_turnrunbrake_main)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake_Main)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon24status_TurnRunBrake_MainEv")]
 unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_parry_input() {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
@@ -184,7 +188,8 @@ unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_TurnRun)]
+#[common_status_script(status = FIGHTER_STATUS_KIND_TURN_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon14status_TurnRunEv")]
 unsafe fn status_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_TurnRun_Sub(L2CValue::Hash40s("turn_run"), L2CValue::Bool(true));
 
@@ -200,29 +205,19 @@ unsafe fn status_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TurnRun_Main as *const () as _))
 }
 
-fn nro_info(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hooks!(
-            status_run_sub,
-            status_run_main,
-            status_runbrake_main,
-            status_turnrunbrake_main,
-            status_pre_run,
-            status_run,
-            status_runbrake,
-            status_turnrunbrake,
-            status_turnrun,
-        );
-    }
-}
-
 pub fn install() {
-    skyline::nro::add_hook(nro_info);
-    Agent::new("fighter")
-        .status(Pre, *FIGHTER_STATUS_KIND_RUN, status_pre_run)
-        .status(Main, *FIGHTER_STATUS_KIND_RUN, status_run)
-        .status(Main, *FIGHTER_STATUS_KIND_RUN_BRAKE, status_runbrake)
-        .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_turnrunbrake)
-        .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_turnrun)
-        .install();
+    install_hooks!(
+        status_run_sub,
+        status_run_main,
+        status_runbrake_main,
+        status_turnrunbrake_main,
+    );
+
+    install_status_scripts!(
+        status_pre_run,
+        status_run,
+        status_runbrake,
+        status_turnrunbrake,
+        status_turnrun,
+    );
 }

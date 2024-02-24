@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn popo_throw_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "popo", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
+unsafe fn popo_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,7 +26,8 @@ unsafe extern "C" fn popo_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn popo_throw_f_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "popo", script = "game_throwf" , category = ACMD_GAME , low_priority)]
+unsafe fn popo_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -48,7 +50,8 @@ unsafe extern "C" fn popo_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn popo_throw_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "popo", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn popo_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -76,7 +79,8 @@ unsafe extern "C" fn popo_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn popo_throw_b_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "popo", script = "game_throwb" , category = ACMD_GAME , low_priority)]
+unsafe fn popo_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -100,10 +104,11 @@ unsafe extern "C" fn popo_throw_b_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("popo")
-        .acmd("game_throwlw", popo_throw_lw_game)
-        .acmd("game_throwf", popo_throw_f_game)
-        .acmd("game_throwhi", popo_throw_hi_game)
-        .acmd("game_throwb", popo_throw_b_game)
-        .install();
+    install_acmd_scripts!(
+        popo_throw_lw_game,
+        popo_throw_f_game,
+        popo_throw_hi_game,
+        popo_throw_b_game
+    );
 }
+

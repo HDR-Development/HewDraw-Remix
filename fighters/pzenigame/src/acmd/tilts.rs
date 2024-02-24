@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn pzenigame_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "pzenigame", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -24,7 +26,8 @@ unsafe extern "C" fn pzenigame_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pzenigame_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pzenigame", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -47,7 +50,8 @@ unsafe extern "C" fn pzenigame_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pzenigame_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pzenigame", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -71,7 +75,8 @@ unsafe extern "C" fn pzenigame_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pzenigame_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pzenigame", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -91,7 +96,8 @@ unsafe extern "C" fn pzenigame_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pzenigame_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pzenigame", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn pzenigame_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -114,11 +120,12 @@ unsafe extern "C" fn pzenigame_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pzenigame")
-        .acmd("game_attacks3hi", pzenigame_attack_s3_hi_game)
-        .acmd("game_attacks3", pzenigame_attack_s3_s_game)
-        .acmd("game_attacks3lw", pzenigame_attack_s3_lw_game)
-        .acmd("game_attackhi3", pzenigame_attack_hi3_game)
-        .acmd("game_attacklw3", pzenigame_attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+        pzenigame_attack_s3_hi_game,
+        pzenigame_attack_s3_s_game,
+        pzenigame_attack_s3_lw_game,
+        pzenigame_attack_hi3_game,
+        pzenigame_attack_lw3_game,
+    );
 }
+

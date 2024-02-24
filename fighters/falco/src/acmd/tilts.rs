@@ -1,7 +1,8 @@
 
 use super::*;
 
-unsafe extern "C" fn falco_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "falco", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -48,7 +49,8 @@ unsafe extern "C" fn falco_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn falco_attack_s3hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "falco", script = "game_attacks3hi" , category =ACMD_GAME , low_priority)]
+unsafe fn falco_attack_s3hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -64,7 +66,8 @@ unsafe extern "C" fn falco_attack_s3hi_game(fighter: &mut L2CAgentBase) {
     }
 } 
 
-unsafe extern "C" fn falco_attack_s3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "falco", script = "game_attacks3" , category =ACMD_GAME , low_priority)]
+unsafe fn falco_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -79,7 +82,8 @@ unsafe extern "C" fn falco_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 } 
 
-unsafe extern "C" fn falco_attack_s3lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "falco", script = "game_attacks3lw" , category =ACMD_GAME , low_priority)]
+unsafe fn falco_attack_s3lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -95,7 +99,8 @@ unsafe extern "C" fn falco_attack_s3lw_game(fighter: &mut L2CAgentBase) {
     }
 } 
 
-unsafe extern "C" fn falco_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "falco", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -120,7 +125,8 @@ unsafe extern "C" fn falco_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "falco", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -134,12 +140,13 @@ unsafe extern "C" fn effect_attacklw3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("falco")
-        .acmd("game_attackhi3", falco_attack_hi3_game)
-        .acmd("game_attacks3hi", falco_attack_s3hi_game)
-        .acmd("game_attacks3", falco_attack_s3_game)
-        .acmd("game_attacks3lw", falco_attack_s3lw_game)
-        .acmd("game_attacklw3", falco_attack_lw3_game)
-        .acmd("effect_attacklw3", effect_attacklw3)
-        .install();
+    install_acmd_scripts!(
+        falco_attack_hi3_game,
+        falco_attack_s3hi_game,
+        falco_attack_s3_game,
+        falco_attack_s3lw_game,
+        falco_attack_lw3_game,
+        effect_attacklw3
+    );
 }
+

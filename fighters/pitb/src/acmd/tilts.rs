@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn pitb_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -19,14 +20,15 @@ unsafe extern "C" fn pitb_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 270, 100, 40, 0, 4.0, 0.0, 24.0, 2.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 365, 100, 85, 0, 4.0, 0.0, 24.0, 2.4, Some(0.0), Some(10.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        let hitVec = Vector2f { x: 4.5, y: 21.5 };
+        let hitVec = smash::phx::Vector2f { x: 4.5, y: 21.5 };
         AttackModule::set_vec_target_pos(boma, 1, Hash40::new("top"), &hitVec, 10, false);
     }
     frame(lua_state, 9.0);
@@ -47,7 +49,8 @@ unsafe extern "C" fn pitb_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -65,7 +68,8 @@ unsafe extern "C" fn pitb_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority)]
+unsafe fn pitb_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -86,10 +90,10 @@ unsafe extern "C" fn pitb_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pitb")
-        .acmd("game_attacks3", pitb_attack_s3_s_game)
-        .acmd("game_attackhi3", pitb_attack_hi3_game)
-        .acmd("game_attacklw3", pitb_attack_lw3_game)
-        .acmd("effect_attacklw3", pitb_attack_lw3_effect)
-        .install();
+    install_acmd_scripts!(
+        pitb_attack_s3_s_game,
+        pitb_attack_lw3_game,
+        pitb_attack_hi3_game,
+        pitb_attack_lw3_effect,
+    );
 }

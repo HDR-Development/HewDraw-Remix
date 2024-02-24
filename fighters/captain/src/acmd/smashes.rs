@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn captain_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "captain", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
+unsafe fn captain_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 19.0);
@@ -27,7 +29,8 @@ unsafe extern "C" fn captain_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "captain", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
+unsafe fn captain_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -57,7 +60,8 @@ unsafe extern "C" fn captain_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "captain", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
+unsafe fn captain_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 19.0);
@@ -83,7 +87,8 @@ unsafe extern "C" fn captain_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "captain", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn captain_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -123,7 +128,8 @@ unsafe extern "C" fn captain_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn captain_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "captain", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn captain_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -154,11 +160,12 @@ unsafe extern "C" fn captain_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("captain")
-        .acmd("game_attacks4hi", captain_attack_s4_hi_game)
-        .acmd("game_attacks4", captain_attack_s4_s_game)
-        .acmd("game_attacks4lw", captain_attack_s4_lw_game)
-        .acmd("game_attackhi4", captain_attack_hi4_game)
-        .acmd("game_attacklw4", captain_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        captain_attack_s4_hi_game,
+        captain_attack_s4_s_game,
+        captain_attack_s4_lw_game,
+        captain_attack_hi4_game,
+        captain_attack_lw4_game,
+    );
 }
+

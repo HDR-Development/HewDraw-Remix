@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn catch(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "donkey", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,7 +29,8 @@ unsafe extern "C" fn catch(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn catch_dash(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
+unsafe fn catch_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -48,7 +51,8 @@ unsafe extern "C" fn catch_dash(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn catch_turn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
+unsafe fn catch_turn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -69,7 +73,8 @@ unsafe extern "C" fn catch_turn(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_throwff(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_throwff" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -89,7 +94,8 @@ unsafe extern "C" fn game_throwff(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_throwfb(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_throwfb" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwfb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,7 +117,8 @@ unsafe extern "C" fn game_throwfb(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_throwfhi(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_throwfhi" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwfhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -135,7 +142,8 @@ unsafe extern "C" fn game_throwfhi(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn game_throwflw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_throwflw" , category = ACMD_GAME , low_priority)]
+unsafe fn game_throwflw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -155,7 +163,8 @@ unsafe extern "C" fn game_throwflw(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_itemheavythrowf" , category = ACMD_GAME , low_priority)]
+unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
   
@@ -188,7 +197,8 @@ unsafe extern "C" fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   }
 }
 
-unsafe extern "C" fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "game_itemheavythrowb" , category = ACMD_GAME , low_priority)]
+unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
   frame(lua_state, 2.0);
@@ -216,7 +226,8 @@ unsafe extern "C" fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
   }
 }
 
-unsafe extern "C" fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", scripts = ["game_itemheavythrowlw", "game_itemheavythrowlw4"], category = ACMD_GAME, low_priority )]
+unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -256,7 +267,8 @@ unsafe extern "C" fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", scripts = ["effect_itemheavythrowlw", "effect_itemheavythrowlw4"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -266,19 +278,18 @@ unsafe extern "C" fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("donkey")
-        .acmd("game_catch", catch)
-        .acmd("game_catchdash", catch_dash)
-        .acmd("game_catchturn", catch_turn)
-        .acmd("game_throwff", game_throwff)
-        .acmd("game_throwfb", game_throwfb)
-        .acmd("game_throwfhi", game_throwfhi)
-        .acmd("game_throwflw", game_throwflw)
-        .acmd("game_itemheavythrowf", heavy_item_throw_f)
-        .acmd("game_itemheavythrowb", heavy_item_throw_b)
-        .acmd("game_itemheavythrowlw", game_itemheavythrowlw)
-        .acmd("game_itemheavythrowlw4", game_itemheavythrowlw)
-        .acmd("effect_itemheavythrowlw", effect_heavyitemthrowlw)
-        .acmd("effect_itemheavythrowlw4", effect_heavyitemthrowlw)
-        .install();
+    install_acmd_scripts!(
+        catch,
+        catch_dash,
+        catch_turn,
+        game_throwff,
+        game_throwfb,
+        game_throwfhi,
+        game_throwflw,
+        heavy_item_throw_f,
+        heavy_item_throw_b,
+        game_itemheavythrowlw,
+        effect_heavyitemthrowlw,
+    );
 }
+

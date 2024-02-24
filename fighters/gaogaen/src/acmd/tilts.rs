@@ -1,7 +1,9 @@
 
 use super::*;
 
-unsafe extern "C" fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+
+#[acmd_script( agent = "gaogaen", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
+unsafe fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -17,7 +19,8 @@ unsafe extern "C" fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -30,7 +33,8 @@ unsafe extern "C" fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
+unsafe fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -46,7 +50,8 @@ unsafe extern "C" fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -59,7 +64,8 @@ unsafe extern "C" fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
+unsafe fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -75,7 +81,8 @@ unsafe extern "C" fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -88,7 +95,8 @@ unsafe extern "C" fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_attack_hi3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn gaogaen_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -123,7 +131,8 @@ unsafe extern "C" fn gaogaen_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "gaogaen", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn gaogaen_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -159,14 +168,15 @@ unsafe extern "C" fn gaogaen_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("gaogaen")
-        .acmd("game_attacks3hi", gaogaen_attack_s3_hi_game)
-        .acmd("effect_attacks3hi", gaogaen_attack_s3_hi_effect)
-        .acmd("game_attacks3", gaogaen_attack_s3_s_game)
-        .acmd("effect_attacks3", gaogaen_attack_s3_s_effect)
-        .acmd("game_attacks3lw", gaogaen_attack_s3_lw_game)
-        .acmd("effect_attacks3lw", gaogaen_attack_s3_lw_effect)
-        .acmd("game_attackhi3", gaogaen_attack_hi3_game)
-        .acmd("game_attacklw3", gaogaen_attack_lw3_game)
-        .install();
+    install_acmd_scripts!(
+        gaogaen_attack_s3_hi_game,
+        gaogaen_attack_s3_hi_effect,
+        gaogaen_attack_s3_s_game,
+        gaogaen_attack_s3_s_effect,
+        gaogaen_attack_s3_lw_game,
+        gaogaen_attack_s3_lw_effect,
+        gaogaen_attack_hi3_game,
+        gaogaen_attack_lw3_game,
+    );
 }
+

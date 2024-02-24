@@ -1,18 +1,21 @@
 use super::*;
 use globals::*;
 
+
+#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N)(fighter)
+    original!(fighter)
 }
 
+#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE)(fighter)
+    original!(fighter)
 }
 
 unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -181,46 +184,26 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
 }
 
 pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N,
-            special_n_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE,
-            special_n_charge_main,
-        )
-        .status(
-            Pre,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
-            special_n_cancel_pre,
-        )
-        .status(
-            Main,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
-            special_n_cancel_main,
-        )
-        .status(
-            End,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
-            special_n_cancel_end,
-        )
-        .status(
-            Pre,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_jump_cancel_pre,
-        )
-        .status(
-            Main,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_jump_cancel_main,
-        )
-        .status(
-            End,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_jump_cancel_end,
-        )
-        .install();
+    install_status_scripts!(
+        special_n_main,
+        special_n_charge_main
+    );
+}
+pub fn install_custom() {
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_kirby"),
+        statuses::diddy::SPECIAL_N_CANCEL,
+        StatusInfo::new()
+            .with_pre(special_n_cancel_pre)
+            .with_main(special_n_cancel_main)
+            .with_end(special_n_cancel_end)
+    );
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_kirby"),
+        statuses::diddy::SPECIAL_N_CANCEL_JUMP,
+        StatusInfo::new()
+            .with_pre(special_n_jump_cancel_pre)
+            .with_main(special_n_jump_cancel_main)
+            .with_end(special_n_jump_cancel_end)
+    );
 }

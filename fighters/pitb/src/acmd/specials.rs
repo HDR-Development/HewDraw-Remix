@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn pitb_special_s_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_specialsstart", category = ACMD_GAME, low_priority)]
+unsafe fn pitb_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -36,7 +37,8 @@ unsafe extern "C" fn pitb_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_special_s_end_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_specialsend", category = ACMD_GAME, low_priority)]
+unsafe fn pitb_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -53,7 +55,8 @@ unsafe extern "C" fn pitb_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_specialairsstart", category = ACMD_GAME, low_priority)]
+unsafe fn pitb_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -78,7 +81,8 @@ unsafe extern "C" fn pitb_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -108,7 +112,8 @@ unsafe extern "C" fn pitb_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn pitb_special_lw_start_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", scripts = ["game_speciallwstartl", "game_speciallwstartr", "game_specialairlwstartl", "game_specialairlwstartr"] , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -126,7 +131,8 @@ unsafe extern "C" fn pitb_special_lw_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_special_lw_start_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", scripts = ["effect_speciallwstartl", "effect_speciallwstartr", "effect_specialairlwstartl", "effect_specialairlwstartr"], category = ACMD_EFFECT, low_priority)]
+unsafe fn pitb_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -142,7 +148,8 @@ unsafe extern "C" fn pitb_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_special_lw_hold_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", scripts = ["game_speciallwhold", "game_specialairlwhold"] , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -153,20 +160,14 @@ unsafe extern "C" fn pitb_special_lw_hold_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("pitb")
-        .acmd("game_specialsstart", pitb_special_s_start_game)
-        .acmd("game_specialsend", pitb_special_s_end_game)
-        .acmd("game_specialairsstart", pitb_special_air_s_start_game)
-        .acmd("game_specialhi", pitb_special_hi_game)
-        .acmd("game_speciallwstartl", pitb_special_lw_start_game)
-        .acmd("game_speciallwstartr", pitb_special_lw_start_game)
-        .acmd("game_specialairlwstartl", pitb_special_lw_start_game)
-        .acmd("game_specialairlwstartr", pitb_special_lw_start_game)
-        .acmd("effect_speciallwstartl", pitb_special_lw_start_effect)
-        .acmd("effect_speciallwstartr", pitb_special_lw_start_effect)
-        .acmd("effect_specialairlwstartl", pitb_special_lw_start_effect)
-        .acmd("effect_specialairlwstartr", pitb_special_lw_start_effect)
-        .acmd("game_speciallwhold", pitb_special_lw_hold_game)
-        .acmd("game_specialairlwhold", pitb_special_lw_hold_game)
-        .install();
+    install_acmd_scripts!(
+        pitb_special_s_start_game,
+        pitb_special_s_end_game,
+        pitb_special_air_s_start_game,
+        pitb_special_hi_game,
+        pitb_special_lw_start_game,
+        pitb_special_lw_start_effect,
+        pitb_special_lw_start_effect,
+        pitb_special_lw_hold_game,
+    );
 }

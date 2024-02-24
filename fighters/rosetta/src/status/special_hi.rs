@@ -1,9 +1,11 @@
 use super::*;
 use globals::*;
 
+
 // FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END
 
-pub unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "rosetta", status = FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
 
     StatusModule::init_settings(
@@ -35,8 +37,9 @@ pub unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = smashline::original_status(Main, fighter, *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END)(fighter);
+#[status_script(agent = "rosetta", status = FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!(fighter);
 
     let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
     let end_accel_y_mul = WorkModule::get_param_float(
@@ -67,16 +70,8 @@ pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install() {
-    smashline::Agent::new("rosetta")
-        .status(
-            Pre,
-            *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END,
-            special_hi_end_pre,
-        )
-        .status(
-            Main,
-            *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END,
-            special_hi_end_main,
-        )
-        .install();
+    install_status_scripts!(
+        special_hi_end_pre,
+        special_hi_end_main
+    );
 }

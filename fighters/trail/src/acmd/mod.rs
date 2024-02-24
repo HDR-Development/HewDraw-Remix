@@ -10,9 +10,9 @@ mod throws;
 pub fn install() {
     aerials::install();
     tilts::install();
-    other::install();
-    smashes::install();
-    specials::install();
-    throws::install();
     ground::install();
+    other::install();
+    specials::install();
+    smashes::install();
+    throws::install();
 }

@@ -1,6 +1,7 @@
 use super::*;
 
-unsafe extern "C" fn koopa_attack_s4_hold_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "effect_attacks4charge", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopa_attack_s4_hold_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -20,7 +21,8 @@ unsafe extern "C" fn koopa_attack_s4_hold_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_s4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "koopa", script =  "game_attacks4", category = ACMD_GAME, low_priority)]
+unsafe fn koopa_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
     frame(lua_state, 1.0);
@@ -55,7 +57,8 @@ unsafe extern "C" fn koopa_attack_s4_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-unsafe extern "C" fn koopa_attack_s4_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "koopa", script =  "effect_attacks4", category = ACMD_EFFECT, low_priority)]
+unsafe fn koopa_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
     frame(lua_state, 2.0);
@@ -92,7 +95,8 @@ unsafe extern "C" fn koopa_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
 }	
 
-unsafe extern "C" fn koopa_attack_s4_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "koopa", script =  "sound_attacks4", category = ACMD_SOUND, low_priority)]
+unsafe fn koopa_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 20.0);
@@ -106,7 +110,8 @@ unsafe extern "C" fn koopa_attack_s4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_s4_expression(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -137,12 +142,12 @@ unsafe extern "C" fn koopa_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         let excellent = VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
         if excellent {
-            RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_finish"), 0);
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_finish"), 0);
         } else {
-            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
+            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
         }
     }
     frame(lua_state, 48.0);
@@ -151,7 +156,8 @@ unsafe extern "C" fn koopa_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack_hi4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -185,7 +191,8 @@ unsafe extern "C" fn koopa_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn koopa_attack_lw4_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -229,13 +236,13 @@ unsafe extern "C" fn koopa_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::Agent::new("koopa")
-        .acmd("effect_attacks4charge", koopa_attack_s4_hold_effect)
-        .acmd("game_attacks4", koopa_attack_s4_game)
-        .acmd("effect_attacks4", koopa_attack_s4_effect)
-        .acmd("sound_attacks4", koopa_attack_s4_sound)
-        .acmd("expression_attacks4", koopa_attack_s4_expression)
-        .acmd("game_attackhi4", koopa_attack_hi4_game)
-        .acmd("game_attacklw4", koopa_attack_lw4_game)
-        .install();
+    install_acmd_scripts!(
+        koopa_attack_s4_game,
+        koopa_attack_s4_effect,
+        koopa_attack_s4_sound,
+        koopa_attack_s4_expression,
+        koopa_attack_s4_hold_effect,
+        koopa_attack_hi4_game,
+        koopa_attack_lw4_game,
+    );
 }

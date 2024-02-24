@@ -2,9 +2,9 @@ use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
 use crate::ext::*;
-// use std::arch::asm;
+use std::arch::asm;
 use smash::phx::Vector2f;
-// use crate::se;
+use crate::se;
 
 #[macro_export]
 macro_rules! dump_trace {
@@ -168,7 +168,7 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
 pub unsafe fn get_all_active_battle_object_ids() -> Vec<u32> {
     use smash::lib::lua_const::*;
     use smash::app::lua_bind::*;
-    // use super::ext::*;
+    use super::ext::*;
     let mut vec: Vec<u32> = Vec::new();
     for entry_id in 0..8 {
         // get the active battle object id and add it to the list
@@ -234,13 +234,13 @@ pub fn get_game_state() -> *const u64 {
 
 pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c50f0) as *const u64);
+        .add(0x52c30f0) as *const u64);
     &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
 }
 
 pub unsafe fn get_controller_mapping_from_id(player: usize) -> &'static ControllerMapping {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c50f0) as *const u64);
+        .add(0x52c30f0) as *const u64);
     &*((base + 0x18) as *const ControllerMapping).add(player as usize)
 }
 
@@ -252,9 +252,9 @@ struct SomeControllerStruct {
 
 pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x5339860) as *const u64);
-    let uvar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
-    let controller_struct = (base + (0x8 * (uvar3 as i32)) as u64) as *mut SomeControllerStruct;
+        .add(0x5337860) as *const u64);
+    let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
+    let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
     (*controller_struct).controller
 }
 
@@ -307,6 +307,7 @@ pub fn compare_mask(mask1: i32, mask2: i32) -> bool {
 pub unsafe fn x_motion_vec(val: f32, stick_x: f32) -> smash::phx::Vector3f {
     smash::phx::Vector3f{x: val * stick_x.signum(), y: 0.0, z: 0.0}
 }
+
 
 extern "C"{
     /// gets whether we are in training mode

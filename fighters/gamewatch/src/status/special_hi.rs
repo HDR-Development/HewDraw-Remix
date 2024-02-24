@@ -1,7 +1,8 @@
 use super::*;
 use globals::*;
 
-unsafe extern "C" fn gamewatch_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "gamewatch", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn gamewatch_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
@@ -34,7 +35,7 @@ unsafe fn gamewatch_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
     if fighter.status_frame() > 31 && fighter.is_cat_flag(Cat1::SpecialAny) {
         VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
-        fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
+        fighter.change_to_custom_status(statuses::gamewatch::SPECIAL_HI_OPEN, true, false);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_FLAG_LANDING_ENABLE) {
@@ -47,22 +48,15 @@ unsafe fn gamewatch_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into()
 }
 
-unsafe extern "C" fn gamewatch_special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "gamewatch", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+unsafe fn gamewatch_special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
     0.into()
 }
 
 pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            gamewatch_special_hi_main,
-        )
-        .status(
-            Exit,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            gamewatch_special_hi_exit,
-        )
-        .install();
+    install_status_scripts!(
+        gamewatch_special_hi_main,
+        gamewatch_special_hi_exit,
+    );
 }
