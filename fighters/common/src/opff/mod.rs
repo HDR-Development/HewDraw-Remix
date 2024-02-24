@@ -29,7 +29,6 @@ pub fn install() {
 }
 */
 
-
 /*
 This function runs exactly once per every fighter loaded into a match, every frame. I.E.  5 players in a match = 5 times per frame
 Use this instead of get_command_flag_cat
@@ -128,8 +127,9 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 pub fn install() {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
-    smashline::install_agent_frame_callbacks!(
-        decrease_knockdown_bounce_heights,
-        left_stick_flick_counter,
-    );
+    Agent::new("fighter")
+        .on_line(Main, decrease_knockdown_bounce_heights)
+        .on_line(Main, left_stick_flick_counter)
+        .install();
+
 }

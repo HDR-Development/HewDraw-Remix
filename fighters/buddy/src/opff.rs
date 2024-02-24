@@ -120,7 +120,6 @@ unsafe fn bonk_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-
 unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if StatusModule::is_changing(boma) {
         return;
@@ -276,7 +275,7 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             let can_cancel = fighter.motion_frame() >= transition_frame;
             if (!can_cancel) {return;}
 
-            fighter.change_to_custom_status(statuses::buddy::BUDDY_BAYONET_END, false, false);
+            fighter.change_status(statuses::buddy::BUDDY_BAYONET_END.into(), false.into());
 
             let currentEggs=
             //VarModule::get_int(boma.object(), vars::buddy::instance::BAYONET_EGGS);
@@ -536,20 +535,15 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-
-#[fighter_reset]
-fn buddy_reset(fighter: &mut L2CFighterCommon) {
+extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let lua_state = fighter.lua_state_agent;    
         let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-        if fighter.kind() == *FIGHTER_KIND_BUDDY {
-            on_rebirth(fighter,boma);
-        }
+        on_rebirth(fighter, boma);
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_BUDDY)]
-pub unsafe fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     buddy_frame(fighter);
 }
@@ -558,4 +552,11 @@ pub unsafe fn buddy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("buddy")
+        .on_start(buddy_reset)
+        .on_line(Main, buddy_frame_wrapper)
+        .install();
 }

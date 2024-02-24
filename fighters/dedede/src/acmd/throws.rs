@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "dedede", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -30,8 +29,7 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -59,8 +57,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -77,7 +74,8 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, 2, 32);
         //FighterCutInManager::set_throw_finish_zoom_rate(boma, 1.7);
         //FighterCutInManager::set_throw_finish_offset(boma, 0, 12, 0);
-    }frame(lua_state, 19.0);
+    }
+    frame(lua_state, 19.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
@@ -86,10 +84,9 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwf,
-        game_throwhi,
-        game_throwlw,
-    );
+    smashline::Agent::new("dedede")
+        .acmd("game_throwf", game_throwf)
+        .acmd("game_throwlw", game_throwlw)
+        .acmd("game_throwhi", game_throwhi)
+        .install();
 }
-

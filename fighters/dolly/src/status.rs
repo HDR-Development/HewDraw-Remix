@@ -18,27 +18,6 @@ extern "Rust" {
     fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pre_turndash,
-        main_dashback,
-        end_dashback,
-        pre_superspecial,
-        pre_superspecial2,
-        wait_pre,
-        //wait_main,
-        landing_main,
-        guard,
-        init_special_s,
-        init_special_s_command,
-        init_special_b,
-        init_special_b_command,
-        init_special_hi_jump,
-        init_special_hi_fall
-    );
-    smashline::install_agent_init_callbacks!(dolly_init);
-}
-
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S) {
@@ -183,8 +162,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[smashline::fighter_init]
-fn dolly_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn dolly_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_DOLLY {
@@ -196,8 +174,7 @@ fn dolly_init(fighter: &mut L2CFighterCommon) {
 
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -206,8 +183,7 @@ pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND //
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -216,8 +192,7 @@ pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B //
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -226,8 +201,7 @@ pub unsafe fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND //
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -236,22 +210,19 @@ pub unsafe fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.select_cliff_hangdata_from_name("special_hi");
     0.into()
 }
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_hi_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_hi_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.select_cliff_hangdata_from_name("special_hi");
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     WorkModule::enable_transition_term(
         fighter.module_accessor,
@@ -337,8 +308,7 @@ unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_TURN_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     app::FighterSpecializer_Dolly::update_opponent_lr_1on1(
         fighter.module_accessor,
         *FIGHTER_STATUS_KIND_TURN_DASH,
@@ -365,21 +335,18 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_DOLLY_STATUS_KIND_DASH_BACK //
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
-    original!(fighter)
+    smashline::original_status(End, fighter, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK)(fighter)
 }
 
 // FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL //
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lua_state = fighter.lua_state_agent;
     let boma = app::sv_system::battle_object_module_accessor(lua_state);
     let mut agent_base = fighter.fighter_base.agent_base;
@@ -392,13 +359,12 @@ pub unsafe fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
         MeterModule::drain(boma.object(), 4);
     }
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL)(fighter)
 }
 
 // FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2 //
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lua_state = fighter.lua_state_agent;
     let boma = app::sv_system::battle_object_module_accessor(lua_state);
     let mut agent_base = fighter.fighter_base.agent_base;
@@ -411,19 +377,18 @@ pub unsafe fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
         MeterModule::drain(boma.object(), 4);
     }
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2)(fighter)
 }
 
 // FIGHTER_STATUS_KIND_WAIT //
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
 
 // vanilla script
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_wait_common();
     fighter.sub_wait_motion_mtrans();
     fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
@@ -471,7 +436,27 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 // FIGHTER_STATUS_KIND_LANDING //
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
+}
+
+pub fn install() {
+    smashline::Agent::new("dolly")
+        .on_start(dolly_init)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
+        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, init_special_s_command)
+        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, init_special_b)
+        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, init_special_b_command)
+        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, init_special_hi_jump)
+        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL, init_special_hi_fall)
+        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
+        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
+        .status(Main, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, main_dashback)
+        .status(End, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, end_dashback)
+        .status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, pre_superspecial)
+        .status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, pre_superspecial2)
+        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
+        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
+        .install();
 }

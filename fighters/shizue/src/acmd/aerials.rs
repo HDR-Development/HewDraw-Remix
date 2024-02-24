@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "shizue", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -53,8 +51,7 @@ unsafe fn shizue_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "shizue", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -82,8 +79,7 @@ unsafe fn shizue_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "shizue", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn shizue_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -98,8 +94,7 @@ unsafe fn shizue_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "sound_attackairf" , category = ACMD_SOUND , low_priority)]
-unsafe fn shizue_attack_air_f_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -108,8 +103,7 @@ unsafe fn shizue_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn shizue_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -118,12 +112,11 @@ unsafe fn shizue_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 1.1);
@@ -140,8 +133,7 @@ unsafe fn shizue_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -167,8 +159,7 @@ unsafe fn shizue_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "shizue", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shizue_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -207,15 +198,14 @@ unsafe fn shizue_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        shizue_attack_air_n_game,
-        shizue_attack_air_f_game,
-        shizue_attack_air_f_sound,
-        shizue_attack_air_f_effect,
-        shizue_attack_air_f_expression,
-        shizue_attack_air_b_game,
-        shizue_attack_air_hi_game,
-        shizue_attack_air_lw_game,
-    );
+    smashline::Agent::new("shizue")
+        .acmd("game_attackairn", shizue_attack_air_n_game)
+        .acmd("game_attackairf", shizue_attack_air_f_game)
+        .acmd("effect_attackairf", shizue_attack_air_f_effect)
+        .acmd("sound_attackairf", shizue_attack_air_f_sound)
+        .acmd("expression_attackairf", shizue_attack_air_f_expression)
+        .acmd("game_attackairb", shizue_attack_air_b_game)
+        .acmd("game_attackairhi", shizue_attack_air_hi_game)
+        .acmd("game_attackairlw", shizue_attack_air_lw_game)
+        .install();
 }
-

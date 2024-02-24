@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 //=================================================================
 //== WorkModule::is_enable_transition_term
 //== Note: Disable transition terms

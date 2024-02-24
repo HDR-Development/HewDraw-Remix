@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "wario", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -35,8 +33,7 @@ unsafe fn wario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -76,8 +73,7 @@ unsafe fn wario_attack_hi4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -104,8 +100,8 @@ unsafe fn wario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 33.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-#[acmd_script( agent = "wario", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wario_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -122,8 +118,8 @@ unsafe fn wario_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
-#[acmd_script( agent = "wario", script = "sound_attacklw4" , category = ACMD_SOUND , low_priority)]
-unsafe fn wario_attack_lw4_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(fighter.lua_state_agent, 5.0);
@@ -140,8 +136,8 @@ unsafe fn wario_attack_lw4_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
     }
 }
-#[acmd_script( agent = "wario", script = "expression_attacklw4" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -168,14 +164,12 @@ unsafe fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wario_attack_s4_s_game,
-        wario_attack_hi4_game,
-
-        wario_attack_lw4_game,
-        wario_attack_lw4_sound,
-        wario_attack_lw4_effect,
-        wario_attack_lw4_expression,
-    );
+    smashline::Agent::new("wario")
+        .acmd("game_attacks4", wario_attack_s4_s_game)
+        .acmd("game_attackhi4", wario_attack_hi4_game)
+        .acmd("game_attacklw4", wario_attack_lw4_game)
+        .acmd("effect_attacklw4", wario_attack_lw4_effect)
+        .acmd("sound_attacklw4", wario_attack_lw4_sound)
+        .acmd("expression_attacklw4", wario_attack_lw4_expression)
+        .install();
 }
-

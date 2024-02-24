@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LUIGI_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         GroundModule::correct(fighter.module_accessor, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
@@ -58,7 +57,11 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_n_main
-    );
+    smashline::Agent::new("kirby")
+        .status(
+            Main,
+            *FIGHTER_KIRBY_STATUS_KIND_LUIGI_SPECIAL_N,
+            special_n_main,
+        )
+        .install();
 }

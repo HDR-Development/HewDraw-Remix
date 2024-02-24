@@ -5,33 +5,32 @@ use globals::*;
 // This file contains code for wavelanding
 
 pub fn install() {
-    install_status_scripts!(
-        status_pre_Jump,
-        status_Jump,
-        //status_end_Jump
-    );
-    install_hooks!(
-        status_pre_Jump_Common,
-        status_pre_Jump_Common_param,
-        status_pre_Jump_sub,
-        status_pre_Jump_sub_param,
-        //status_Jump_Main,
-        status_Jump_sub,
-        //status_pre_JumpAerial_sub
-    );
     skyline::nro::add_hook(nro_hook);
+    Agent::new("fighter")
+        .status(Main, *FIGHTER_STATUS_KIND_JUMP, status_Jump)
+        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, status_pre_Jump)
+        .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            status_Jump_Main
+            status_Jump_Main,
+            status_pre_Jump,
+            status_Jump,
+            //status_end_Jump,
+            status_pre_Jump_Common,
+            status_pre_Jump_Common_param,
+            status_pre_Jump_sub,
+            status_pre_Jump_sub_param,
+            //status_Jump_Main,
+            // status_Jump_sub,
+            //status_pre_JumpAerial_sub
         );
     }
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_JumpEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Jump)]
 unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let interrupted = fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool();
     if !interrupted {
@@ -40,12 +39,12 @@ unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     L2CValue::Bool(interrupted)
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon22status_pre_Jump_CommonEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_Common)]
 unsafe extern "C" fn status_pre_Jump_Common(fighter: &mut L2CFighterCommon) {
     fighter.status_pre_Jump_Common_param(L2CValue::Bool(true));
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon28status_pre_Jump_Common_paramEN3lib8L2CValueE")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_Common_param)]
 unsafe extern "C" fn status_pre_Jump_Common_param(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     //println!("status_pre_Jump_Common_param");
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) {
@@ -71,7 +70,7 @@ unsafe extern "C" fn status_pre_Jump_Common_param(fighter: &mut L2CFighterCommon
     }
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19status_pre_Jump_subEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_sub)]
 unsafe extern "C" fn status_pre_Jump_sub(fighter: &mut L2CFighterCommon) {
     fighter.status_pre_Jump_sub_param(
         L2CValue::I32(*FIGHTER_STATUS_WORK_KEEP_FLAG_JUMP_FLAG),
@@ -82,7 +81,7 @@ unsafe extern "C" fn status_pre_Jump_sub(fighter: &mut L2CFighterCommon) {
     );
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_Jump_sub_paramEN3lib8L2CValueES2_S2_S2_S2_")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_sub_param)]
 unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, flag_keep: L2CValue, int_keep: L2CValue, float_keep: L2CValue, kinetic_type: L2CValue, arg: L2CValue) {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     let flag_keep = flag_keep.get_i32();
@@ -118,8 +117,7 @@ unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, f
     );
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon11status_JumpEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_Jump)]
 unsafe fn status_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_jump_item_rocketbelt();
     fighter.status_Jump_sub(L2CValue::Hash40s("invalid"), L2CValue::F32(0.0));
@@ -155,7 +153,7 @@ unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValu
     ret
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon15status_Jump_subEN3lib8L2CValueES2_")]
+#[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CValue, arg2: L2CValue) -> L2CValue {
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
@@ -211,8 +209,7 @@ unsafe extern "C" fn bind_call_sub_fall_common_uniq(fighter: &mut L2CFighterComm
     fighter.sub_fall_common_uniq(arg)
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_end_JumpEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_end_Jump)]
 unsafe fn status_end_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE || fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_ESCAPE_AIR {
         // super::sub_air_check_escape_air_snap(fighter, true);
@@ -223,7 +220,6 @@ unsafe fn status_end_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     // println!("{:#x}", vtable);
     L2CValue::I32(0)
 }
-
 
 // #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_JumpAerial_subEv")]
 // unsafe extern "C" fn status_pre_JumpAerial_sub(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -868,7 +868,6 @@ unsafe fn map_controls_hook(
         (*out).buttons |= Buttons::RivalsWallJump;
     }
 
-
     let (parry, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
     } else {

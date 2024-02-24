@@ -16,7 +16,6 @@ pub fn install() {
     //skyline::nro::add_hook(item_nro_hook);
 }
 
-
 // #[skyline::hook(offset=0x720540)]
 // unsafe fn get_offset(arg0: u64, arg1: u64) {
 //     static mut ONCE: bool = true;
@@ -44,8 +43,6 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if boma_reference.is_fighter() {
-
-
 
         match utils::game_modes::get_custom_mode() {
             Some(modes) => {

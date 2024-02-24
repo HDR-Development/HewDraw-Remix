@@ -30,7 +30,6 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
-
 #[no_mangle]
 pub unsafe extern "Rust" fn fe_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {

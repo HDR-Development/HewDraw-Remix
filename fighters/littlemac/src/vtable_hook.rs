@@ -1,5 +1,6 @@
 use super::*;
 
+#[repr(C)]
 pub struct CollisionLog {
     next: *mut CollisionLog,
     end: *mut CollisionLog,
@@ -111,12 +112,10 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
     call_original!(vtable, battle_object, collisionLog, meter_gain)
 }
 
-
 //#[skyline::from_offset(0xc45550)]
 //pub unsafe fn update_ko_ui(arg1: f32, arg2: f32, arg3: *mut Fighter);
 
 // static mut num: u32 = 0;
-
 
 // pub fn offset_to_addr(offset: usize) -> *const () {
 //     unsafe { (getRegionAddress(Region::Text) as *const u8).add(offset) as _ }
@@ -124,7 +123,6 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
 
 // #[skyline::from_offset(0x68cda0)]
 // pub fn update_battle_ui(x: *const u64, y: u32);
-
 
 // pub fn update_little_mac_meter(player_id: u8, val: u32){
 //     unsafe {
@@ -153,7 +151,6 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
 //         mac_frame
 //     );
 // }
-
 
 pub unsafe extern "C" fn update_littlemac_ui(entry_id: i32, total_gauge: f32) {
     let manager = singletons::FighterManager() as *mut u64;

@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "captain", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -25,8 +23,7 @@ unsafe fn captain_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -51,9 +48,7 @@ unsafe fn captain_attack_12_game(fighter: &mut L2CAgentBase) {
     }   
 }
 
-
-#[acmd_script( agent = "captain", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn captain_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -67,9 +62,7 @@ unsafe fn captain_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -83,9 +76,7 @@ unsafe fn captain_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "game_attack100end", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     wait(lua_state, 6.0);
@@ -99,9 +90,7 @@ unsafe fn captain_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -120,9 +109,7 @@ unsafe fn captain_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn captain_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -140,16 +127,14 @@ unsafe fn captain_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        captain_attack_11_game,
-        captain_attack_12_game,
-        captain_attack_13_game,
-        captain_attack_100_end_game,
-        captain_attack_dash_game,
-        captain_attack_12_effect,
-        captain_attack_dash_effect,
-    );
+    smashline::Agent::new("captain")
+        .acmd("game_attack11", captain_attack_11_game)
+        .acmd("game_attack12", captain_attack_12_game)
+        .acmd("effect_attack12", captain_attack_12_effect)
+        .acmd("game_attack13", captain_attack_13_game)
+        .acmd("game_attack100end", captain_attack_100_end_game)
+        .acmd("game_attackdash", captain_attack_dash_game)
+        .acmd("effect_attackdash", captain_attack_dash_effect)
+        .install();
 }
-

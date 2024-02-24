@@ -1,7 +1,6 @@
 use super::*;
 
-#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // if you are grounded, pick up heavy item/spawn barrel
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -114,7 +113,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_lw_main
-    );
+    smashline::Agent::new("donkey")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
+        .install();
 }

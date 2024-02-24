@@ -36,7 +36,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
     *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
-
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
     || fighter.is_status_one_of(damage_statuses) || fighter.is_status(*FIGHTER_STATUS_KIND_LANDING){ 
         //Re-enable Mythra UpB 
@@ -91,8 +90,7 @@ unsafe extern "C" fn Set_Pyra_Up_Special_Cancel(fighter: &mut L2CFighterCommon, 
     }
 }
 
-#[smashline::fighter_init]
-fn elight_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn elight_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_ELIGHT {
@@ -103,15 +101,13 @@ fn elight_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(elight_init);
     special_hi_attack::install();
     special_hi_jump::install();
     special_hi_finish::install();
-    special_hi::install();
-}
-
-pub fn add_statuses() {
     special_hi_finish2::install();
+    special_hi::install();
+    smashline::Agent::new("elight")
+        .on_start(elight_init)
+        .install();
 }

@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "elight", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -49,10 +48,8 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwlw,
-    );
+    smashline::Agent::new("elight")
+        .acmd("game_throwlw", game_throwlw)
+        .install();
 }
-

@@ -1,8 +1,7 @@
 use super::*;
 use smash2;
 
-#[acmd_script( agent = "demon", script = "game_catch", category = ACMD_GAME, low_priority )]
-unsafe fn game_catch(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -22,8 +21,7 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_throwhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -46,8 +44,7 @@ unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -102,8 +99,7 @@ unsafe fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.375);
 }
 
-#[acmd_script( agent = "demon_blaster", script = "game_flythrow", category = ACMD_GAME, low_priority )]
-unsafe fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -118,8 +114,7 @@ unsafe fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -167,8 +162,7 @@ unsafe fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_throwcommand" , category = ACMD_GAME , low_priority)]
-unsafe fn demon_throw_command_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -234,12 +228,14 @@ unsafe fn demon_throw_command_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_catch,
-        demon_throw_b_game,
-        demon_blaster_fly_throw_game,
-        demon_throw_hi_expression,
-        demon_throw_lw_game,
-        demon_throw_command_game,
-    );
+    smashline::Agent::new("demon_blaster")
+        .acmd("game_flythrow", demon_blaster_fly_throw_game)
+        .install();
+    smashline::Agent::new("demon")
+        .acmd("game_catch", game_catch)
+        .acmd("expression_throwhi", demon_throw_hi_expression)
+        .acmd("game_throwb", demon_throw_b_game)
+        .acmd("game_throwlw", demon_throw_lw_game)
+        .acmd("game_throwcommand", demon_throw_command_game)
+        .install();
 }

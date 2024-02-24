@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script(agent = "peach", script = "game_specialshitend" , category = ACMD_GAME , low_priority)]
-unsafe fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -20,8 +19,7 @@ unsafe fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "peach", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -83,8 +81,7 @@ unsafe fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script(agent = "peach", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -146,8 +143,7 @@ unsafe fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "peach", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn peach_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn peach_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -170,8 +166,7 @@ unsafe fn peach_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "peach", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn peach_special_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn peach_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -185,8 +180,7 @@ unsafe fn peach_special_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "peach", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
-unsafe fn peach_special_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn peach_special_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -204,12 +198,12 @@ unsafe fn peach_special_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        peach_special_s_hit_end_game,
-        peach_special_hi_start_game,
-        peach_special_air_hi_start_game,
-        peach_special_lw_game,
-        peach_special_lw_effect,
-        peach_special_lw_sound
-    );
+    smashline::Agent::new("peach")
+        .acmd("game_specialshitend", peach_special_s_hit_end_game)
+        .acmd("game_specialhistart", peach_special_hi_start_game)
+        .acmd("game_specialairhistart", peach_special_air_hi_start_game)
+        .acmd("game_speciallw", peach_special_lw_game)
+        .acmd("effect_speciallw", peach_special_lw_effect)
+        .acmd("sound_speciallw", peach_special_lw_sound)
+        .install();
 }
