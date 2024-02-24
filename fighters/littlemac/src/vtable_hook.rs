@@ -1,5 +1,6 @@
 use super::*;
 
+#[repr(C)]
 pub struct CollisionLog {
     next: *mut CollisionLog,
     end: *mut CollisionLog,
@@ -16,7 +17,7 @@ pub struct CollisionLog {
     padding_3: [u8;10]
 }
 
-#[skyline::hook(offset = 0xc45680)]
+#[skyline::hook(offset = 0xc456a0)]
 pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut BattleObject, collisionLog: CollisionLog, damage: f32) -> u64 {
     let boma = (&mut *(battle_object)).boma();
     let opponent_boma = &mut *(sv_battle_object::module_accessor(collisionLog.opponent_battle_object_id));
@@ -98,27 +99,30 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         meter_gain *= 2.0;
     }
 
-    //println!("Current Meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));
-    //println!("Gained Meter: {}", meter_gain);
-    //println!();
+    // Example on how to call update_littlemac_ui
+
+    // let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
+    // println!("Current Meter: {}", meter);
+    // println!("Gained Meter: {}", meter_gain);
+    // println!();
+
+    // let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    // update_littlemac_ui(entry_id, meter + meter_gain);
 
     call_original!(vtable, battle_object, collisionLog, meter_gain)
 }
 
-
-//#[skyline::from_offset(0xc45530)]
+//#[skyline::from_offset(0xc45550)]
 //pub unsafe fn update_ko_ui(arg1: f32, arg2: f32, arg3: *mut Fighter);
 
 // static mut num: u32 = 0;
-
 
 // pub fn offset_to_addr(offset: usize) -> *const () {
 //     unsafe { (getRegionAddress(Region::Text) as *const u8).add(offset) as _ }
 // }
 
-// #[skyline::from_offset(0x68cd80)]
+// #[skyline::from_offset(0x68cda0)]
 // pub fn update_battle_ui(x: *const u64, y: u32);
-
 
 // pub fn update_little_mac_meter(player_id: u8, val: u32){
 //     unsafe {
@@ -147,6 +151,15 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
 //         mac_frame
 //     );
 // }
+
+pub unsafe extern "C" fn update_littlemac_ui(entry_id: i32, total_gauge: f32) {
+    let manager = singletons::FighterManager() as *mut u64;
+    let offset = (*manager + (entry_id as u64 * 8) + 0x20) as *mut u64;
+    update_littlemac_ui_internal((*offset + 0x41e4) as *mut u32, total_gauge as i32);
+}
+
+#[skyline::from_offset(0x68cda0)]
+fn update_littlemac_ui_internal(manager_offset: *mut u32, total_gauge: i32);
 
 pub fn install() {
     skyline::install_hooks!(

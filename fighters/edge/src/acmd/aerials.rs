@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "edge", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,8 +49,7 @@ unsafe fn sephiroth_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -92,8 +89,7 @@ unsafe fn sephiroth_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -145,8 +141,7 @@ unsafe fn sephiroth_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -186,8 +181,7 @@ unsafe fn sephiroth_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -224,8 +218,7 @@ unsafe fn sephiroth_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -265,6 +258,10 @@ unsafe fn sephiroth_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
         EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
     }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_slash_arc"), false, false);
+    }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);
@@ -272,8 +269,7 @@ unsafe fn sephiroth_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -313,8 +309,7 @@ unsafe fn sephiroth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }   
 }
 
-#[acmd_script( agent = "edge", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -374,8 +369,7 @@ unsafe fn sephiroth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -438,8 +432,7 @@ unsafe fn sephiroth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sephiroth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -492,17 +485,16 @@ unsafe fn sephiroth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sephiroth_attack_air_n_game,
-        sephiroth_attack_air_n_effect,
-        sephiroth_attack_air_f_game,
-        sephiroth_attack_air_f_effect,
-        sephiroth_attack_air_b_game,
-        sephiroth_attack_air_b_effect,
-        sephiroth_attack_air_hi_game,
-        sephiroth_attack_air_hi_effect,
-        sephiroth_attack_air_lw_game,
-        sephiroth_attack_air_lw_effect,
-    );
+    smashline::Agent::new("edge")
+        .acmd("game_attackairn", sephiroth_attack_air_n_game)
+        .acmd("effect_attackairn", sephiroth_attack_air_n_effect)
+        .acmd("game_attackairf", sephiroth_attack_air_f_game)
+        .acmd("effect_attackairf", sephiroth_attack_air_f_effect)
+        .acmd("game_attackairb", sephiroth_attack_air_b_game)
+        .acmd("effect_attackairb", sephiroth_attack_air_b_effect)
+        .acmd("game_attackairhi", sephiroth_attack_air_hi_game)
+        .acmd("effect_attackairhi", sephiroth_attack_air_hi_effect)
+        .acmd("game_attackairlw", sephiroth_attack_air_lw_game)
+        .acmd("effect_attackairlw", sephiroth_attack_air_lw_effect)
+        .install();
 }
-

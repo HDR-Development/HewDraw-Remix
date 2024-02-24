@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "demon", script = "game_attackstep", category = ACMD_GAME, low_priority )]
-unsafe fn game_attackstep(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackstep(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.8);
@@ -20,8 +19,7 @@ unsafe fn game_attackstep(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstep2" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -91,8 +89,7 @@ unsafe fn kazuya_wind_god_fist_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstep2f" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -172,8 +169,7 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstep2s" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -240,8 +236,7 @@ unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstep2l" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -326,8 +321,7 @@ unsafe fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -402,8 +396,7 @@ unsafe fn kazuya_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -447,8 +440,7 @@ unsafe fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_specialairs", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -498,8 +490,7 @@ unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -551,8 +542,7 @@ unsafe fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_SPECIAL_HI_FLAG_AIR){
@@ -672,8 +662,7 @@ unsafe fn kazuya_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_specialhiair" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_special_hi_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_special_hi_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -733,8 +722,7 @@ unsafe fn kazuya_special_hi_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", scripts = ["effect_specialhistart", "effect_specialairhistart"], category = ACMD_EFFECT, low_priority )]
-unsafe fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -771,15 +759,13 @@ unsafe fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstep2fhitshield", category = ACMD_GAME, low_priority )]
-unsafe fn game_attackstep2fhitshield(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        //macros::ATTACK_FP(fighter, 6, 1, Hash40::new("top"), 0, 361, 100, 65, 0, 12, 0, 10, 10, Hash40::new("collision_attr_normal"), 0, 0, 0, false, false, 0, *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SITUATION_MASK_G, true, *ATTACK_REGION_NONE, *COLLISION_CATEGORY_MASK_FIGHTER, false, *COLLISION_PART_MASK_ALL, false, false, false, false, 0, false, false, *ATTACK_LR_CHECK_POS, false, false, true, true, false, *COLLISION_SHAPE_TYPE_SPHERE);
+unsafe extern "C" fn game_attackstep2fhitshield(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        //ATTACK_FP(fighter, 6, 1, Hash40::new("top"), 0, 361, 100, 65, 0, 12, 0, 10, 10, Hash40::new("collision_attr_normal"), 0, 0, 0, false, false, 0, *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SITUATION_MASK_G, true, *ATTACK_REGION_NONE, *COLLISION_CATEGORY_MASK_FIGHTER, false, *COLLISION_PART_MASK_ALL, false, false, false, false, 0, false, false, *ATTACK_LR_CHECK_POS, false, false, true, true, false, *COLLISION_SHAPE_TYPE_SPHERE);
     }
 }
 
-#[acmd_script( agent = "demon", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FighterSpecializer_Demon::set_devil(boma, true, 10.0);
@@ -848,8 +834,7 @@ unsafe fn game_speciallw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(boma, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", scripts = ["game_specialairlw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FighterSpecializer_Demon::set_devil(boma, true, 10.0);
@@ -921,22 +906,24 @@ unsafe fn game_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attackstep,
-        kazuya_wind_god_fist_game,
-        kazuya_electric_wind_god_fist_game,
-        kazuya_spinning_demon_to_left_hook_game,
-        kazuya_lightning_uppercut_game,
-        kazuya_special_s_game,
-        kazuya_special_s_end_game,
-        game_specialairs,
-        kazuya_special_air_s_end_game,
-        kazuya_special_hi_game,
-        kazuya_special_hi_air_game,
-        kazuya_special_hi_start_effect,
-        game_attackstep2fhitshield,
-        game_speciallw,
-        game_specialairlw,
-    );
+    smashline::Agent::new("demon")
+        .acmd("game_attackstep", game_attackstep)
+        .acmd("game_attackstep2", kazuya_wind_god_fist_game)
+        .acmd("game_attackstep2f", kazuya_electric_wind_god_fist_game)
+        .acmd("game_attackstep2s", kazuya_spinning_demon_to_left_hook_game)
+        .acmd("game_attackstep2l", kazuya_lightning_uppercut_game)
+        .acmd("game_specials", kazuya_special_s_game)
+        .acmd("game_specialsend", kazuya_special_s_end_game)
+        .acmd("game_specialairs", game_specialairs)
+        .acmd("game_specialairsend", kazuya_special_air_s_end_game)
+        .acmd("game_specialhi", kazuya_special_hi_game)
+        .acmd("game_specialhiair", kazuya_special_hi_air_game)
+        .acmd("effect_specialhistart", kazuya_special_hi_start_effect)
+        .acmd("effect_specialairhistart", kazuya_special_hi_start_effect)
+        .acmd("game_attackstep2fhitshield", game_attackstep2fhitshield)
+        .acmd("game_speciallw", game_speciallw)
+        .acmd("game_specialairlw", game_speciallw)
+        .acmd("game_specialairlw", game_specialairlw)
+        .acmd("game_specialairlw", game_specialairlw)
+        .install();
 }
-

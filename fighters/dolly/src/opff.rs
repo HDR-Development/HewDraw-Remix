@@ -839,9 +839,11 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
-pub fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         // if fighter.is_button_on(Buttons::AppealAll) {
         //     MeterModule::show(fighter.object());
@@ -858,8 +860,7 @@ pub fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_DOLLY )]
-pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		dolly_frame(fighter)
@@ -870,4 +871,11 @@ pub unsafe fn dolly_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("dolly")
+        .on_line(Main, dolly_frame_wrapper)
+        .on_line(Main, dolly_meter)
+        .install();
 }

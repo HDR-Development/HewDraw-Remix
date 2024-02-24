@@ -35,8 +35,7 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
     }
 }
 
-#[smashline::fighter_init]
-fn zelda_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn zelda_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_ZELDA {
@@ -46,8 +45,7 @@ fn zelda_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_status_scripts!();
-    smashline::install_agent_init_callbacks!(zelda_init);
+    smashline::Agent::new("zelda").on_start(zelda_init).install();
     dein::install();
     phantom::install();
 }

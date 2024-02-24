@@ -53,11 +53,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_N_SHOOT,
-        *FIGHTER_EDGE_STATUS_KIND_SPECIAL_N_CANCEL,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_S_CHARGE,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_S_SHOOT,
         *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END,
@@ -93,8 +91,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_EDGE )]
-pub fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		edge_frame(fighter)
@@ -107,9 +104,7 @@ pub unsafe fn edge_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-
-#[smashline::weapon_frame_callback(main)]
-pub fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_EDGE_FLAREDUMMY {
             return
@@ -123,11 +118,20 @@ pub fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 // Explode if Sephiroth hits the target marked with this set of orbs with Blade Dash
                 let x_distance = PostureModule::pos_x(weapon.module_accessor) - PostureModule::pos_x(sephiroth_boma);
                 let y_distance = PostureModule::pos_y(weapon.module_accessor) - PostureModule::pos_y(sephiroth_boma);
-                let tolerance = 10.0;
+                let tolerance = 20.0;
                 if x_distance.abs() <= tolerance && y_distance.abs() <= tolerance{
                     StatusModule::change_status_force(weapon.module_accessor, *WEAPON_EDGE_FLAREDUMMY_STATUS_KIND_TRY, false);
                 }
             }
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("edge")
+        .on_line(Main, edge_frame_wrapper)
+        .install();
+    smashline::Agent::new("edge_flaredummy")
+        .on_line(Main, shadowflare_orb_callback)
+        .install();
 }

@@ -26,8 +26,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn ganon_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn ganon_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_GANON {
@@ -43,14 +42,11 @@ pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(ganon_init);
+    smashline::Agent::new("ganon").on_start(ganon_init).install();
     attack_lw3::install();
     special_n::install();
+    special_n_float::install();
     special_lw::install();
     special_s::install();
     special_air_s_catch::install();
-}
-
-pub fn add_statuses() {
-    special_n_float::install();
 }

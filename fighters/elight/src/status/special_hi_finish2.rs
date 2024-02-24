@@ -78,12 +78,9 @@ unsafe extern "C" fn special_hi_finish2_end(fighter: &mut L2CFighterCommon) -> L
 }
 
 pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_elight"),
-        statuses::elight::SPECIAL_HI_FINISH2,
-        StatusInfo::new()
-            .with_pre(special_hi_finish2_pre)
-            .with_main(special_hi_finish2_main)
-            .with_end(special_hi_finish2_end)    
-    );
+    smashline::Agent::new("elight")
+        .status(Pre, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_pre)
+        .status(Main, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_main)
+        .status(End, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_end)
+        .install();
 }
