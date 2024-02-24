@@ -556,7 +556,7 @@ unsafe extern "C" fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -568,7 +568,7 @@ unsafe extern "C" fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

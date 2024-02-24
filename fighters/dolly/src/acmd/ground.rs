@@ -100,7 +100,7 @@ unsafe extern "C" fn dolly_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
 
@@ -404,9 +404,9 @@ unsafe extern "C" fn dolly_attack_dash_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
     frame(lua_state, 13.0);

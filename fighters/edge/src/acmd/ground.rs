@@ -41,7 +41,7 @@ unsafe extern "C" fn sephiroth_attack_11_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 6.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {

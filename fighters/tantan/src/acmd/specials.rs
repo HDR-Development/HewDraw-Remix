@@ -207,7 +207,7 @@ unsafe extern "C" fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("tantan_jump_air"), Hash40::new("pl1_have"), 0, 0, 0, 0, 180.0+angle, 0, 1, 0, 0, 0, 0, 0, 0, true);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 1.3, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 1.3, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         }
     }
     if !WorkModule::is_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_IS_SPECIAL_HI_AIR_PHYSICS) {

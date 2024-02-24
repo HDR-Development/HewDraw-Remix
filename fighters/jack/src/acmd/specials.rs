@@ -197,7 +197,7 @@ unsafe extern "C" fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 21.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 26.0);

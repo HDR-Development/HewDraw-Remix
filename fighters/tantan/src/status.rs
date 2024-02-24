@@ -69,9 +69,9 @@ pub unsafe extern "C" fn pre_jump_squat(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 unsafe extern "C" fn tantan_attack_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_s"), false, true);
-    macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_l"), false, true);
-    macros::EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_s"), false, true);
+    EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_l"), false, true);
+    EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     
     return smashline::original_status(Main, fighter, *FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_AERIAL)(fighter);
 }
@@ -135,7 +135,7 @@ unsafe extern "C" fn tantan_attack_s4_start_main(fighter: &mut L2CFighterCommon)
 }
 
 unsafe extern "C" fn tantan_attack_s4_hold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    macros::PLAY_SE(fighter, Hash40::new("se_common_smash_start"));
+    PLAY_SE(fighter, Hash40::new("se_common_smash_start"));
     return fighter.status_pre_AttackS4Hold();
 }
 

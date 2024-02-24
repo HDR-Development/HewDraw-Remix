@@ -133,7 +133,7 @@ unsafe extern "C" fn nana_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {

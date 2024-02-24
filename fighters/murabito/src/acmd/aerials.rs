@@ -110,11 +110,11 @@ unsafe extern "C" fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 21.0);

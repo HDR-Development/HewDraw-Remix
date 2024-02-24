@@ -377,11 +377,11 @@ unsafe extern "C" fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 41.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_snake_special_s02"));
     }
     wait(lua_state, 11.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_snake_special_s03"));
     }
     frame(lua_state, 80.0);

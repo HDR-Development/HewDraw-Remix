@@ -91,7 +91,7 @@ unsafe extern "C" fn jack_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 10);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 10);
     }
 }
 
@@ -258,7 +258,7 @@ unsafe extern "C" fn jack_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -423,12 +423,12 @@ unsafe extern "C" fn jack_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 6);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 6);
     }
     frame(lua_state, 15.0);
     if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
         if is_excute(fighter) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
         }
     }
 }

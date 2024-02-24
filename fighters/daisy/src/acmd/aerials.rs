@@ -242,7 +242,7 @@ unsafe extern "C" fn daisy_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 16);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 16);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -258,7 +258,7 @@ unsafe extern "C" fn daisy_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

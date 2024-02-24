@@ -242,7 +242,7 @@ unsafe extern "C" fn pichu_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 6);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 6);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {

@@ -52,7 +52,7 @@ unsafe extern "C" fn wolf_attack_11_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 
@@ -110,7 +110,7 @@ unsafe extern "C" fn wolf_attack_13_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 

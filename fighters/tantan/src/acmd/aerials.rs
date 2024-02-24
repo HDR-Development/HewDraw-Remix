@@ -34,7 +34,7 @@ unsafe extern "C" fn tantan_attack_air_hi_expression(fighter: &mut L2CAgentBase)
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
 
@@ -133,20 +133,20 @@ unsafe extern "C" fn tantan_attack_air_n_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 9.5, 361, 67, 0, 32, 3.7, 5.0, -0.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 9.5, 361, 67, 0, 32, 3.25, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("hip"), 9.5, 361, 67, 0, 32, 3.25, -1.5, -1.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("kneel"), 9.5, 361, 67, 0, 32, 3.7, 5.0, -0.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneel"), 9.5, 361, 67, 0, 32, 3.25, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("hip"), 9.5, 361, 67, 0, 32, 3.25, -1.5, -1.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 8.25, 361, 67, 0, 32, 3.4, 5.0, -0.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 8.25, 361, 67, 0, 32, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("hip"), 8.25, 361, 67, 0, 37, 2.75, -1.5, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("kneel"), 8.25, 361, 67, 0, 32, 3.4, 5.0, -0.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneel"), 8.25, 361, 67, 0, 32, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("hip"), 8.25, 361, 67, 0, 37, 2.75, -1.5, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(fighter.lua_state_agent, 16.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -154,81 +154,81 @@ unsafe extern "C" fn tantan_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 unsafe extern "C" fn tantan_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8.5, -5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-        //macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 5.7, -8, -10, 0, 0, 1.1, false);
-        //macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8.5, -5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 5.7, -8, -10, 0, 0, 1.1, false);
+        //LAST_EFFECT_SET_RATE(fighter, 1.5);
 
         let lr = PostureModule::lr(fighter.module_accessor);
-        if macros::is_excute(fighter) {
+        if is_excute(fighter) {
             if(lr>=0.0){
-                macros::EFFECT_FLW_POS(fighter, Hash40::new("tantan_attack_dash"), Hash40::new("kneel"), 1, -1.75, 0, 13, 0, 0, 0.9, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 3, 1.2, 0.5);
+                EFFECT_FLW_POS(fighter, Hash40::new("tantan_attack_dash"), Hash40::new("kneel"), 1, -1.75, 0, 13, 0, 0, 0.9, true);
+                LAST_EFFECT_SET_COLOR(fighter, 3, 1.2, 0.5);
             }
             else{
-                macros::EFFECT_FLW_POS(fighter, Hash40::new("tantan_attack_dash"), Hash40::new("kneel"), -1, 1.75, 0, 13, 0, 0, 0.9, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 3, 1.2, 0.5);
+                EFFECT_FLW_POS(fighter, Hash40::new("tantan_attack_dash"), Hash40::new("kneel"), -1, 1.75, 0, 13, 0, 0, 0.9, true);
+                LAST_EFFECT_SET_COLOR(fighter, 3, 1.2, 0.5);
             }
         }
     }
     wait(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 7.5, 8.0, 0, 0, 0, 0.9, true, 0.6);
-        macros::LAST_EFFECT_SET_RATE(fighter, 1.3);
-        //macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_speedline"), true, true);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 7.5, 8.0, 0, 0, 0, 0.9, true, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+        //EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_speedline"), true, true);
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
     }
     frame(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
-        //macros::PLAY_SE(fighter, Hash40::new("vc_tantan_attack02"));
-        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_tantan_rnd_attack03"));
+    if is_excute(fighter) {
+        //PLAY_SE(fighter, Hash40::new("vc_tantan_attack02"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_tantan_rnd_attack03"));
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_n_effect(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_n_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
+    if is_excute(fighter) {
+        PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_n_expression(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
     }
     frame(fighter.lua_state_agent, 17.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(fighter.lua_state_agent, 10.0);
@@ -236,13 +236,13 @@ unsafe extern "C" fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 13.75, 361, 100, 0, 25, 5.0, 0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
 
         ATTACK(fighter, 1, 0, Hash40::new("kneel"), 13.75, 361, 100, 0, 25, 4.375, 0.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(fighter.lua_state_agent, 16.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         //Sweetspot ground spike//
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 15.0, 274, 63, 0, 25, 5.0, 1.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         //Sweetspot semispike//
@@ -251,11 +251,11 @@ unsafe extern "C" fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("kneel"), 13.75, 361, 100, 0, 25, 4.375, -1.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 45.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
@@ -275,101 +275,101 @@ unsafe extern "C" fn tantan_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 
 unsafe extern "C" fn tantan_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        //macros::PLAY_SE(fighter, Hash40::new("se_tantan_swing_s01"));
-        macros::PLAY_SE(fighter, Hash40::new("se_common_swing_09"));
+    if is_excute(fighter) {
+        //PLAY_SE(fighter, Hash40::new("se_tantan_swing_s01"));
+        PLAY_SE(fighter, Hash40::new("se_common_swing_09"));
     }
     frame(fighter.lua_state_agent, 13.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
         if (app::sv_math::rand(hash40("fighter"), 3) == 0)
         {
             PLAY_SE(fighter, Hash40::new("vc_tantan_punch_03"));
         }
     }
     frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_f_effect(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        //macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    if is_excute(fighter) {
+        //LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_f_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
+    if is_excute(fighter) {
+        PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_f_expression(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 17.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 10.5, 42, 98, 0, 42, 3.75, -1.25, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 12.5, 42, 98, 0, 42, 4.0, 5.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("kneer"), 10.5, 42, 98, 0, 42, 3.75, -1.25, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 12.5, 42, 98, 0, 42, 4.0, 5.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 31.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1.5, 8.1, -6, -151, 47, 2.9, 0.9, true);
-        macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1.5, 8.1, -6, -151, 47, 2.9, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
         //EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 11.5, -14, 0, 0, 0, 0.9, false, 0.5);
-        macros::LAST_EFFECT_SET_RATE(fighter, 1.3);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 11.5, -14, 0, 0, 0, 0.9, false, 0.5);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
 }
 
 unsafe extern "C" fn tantan_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_tantan_attackair_h01"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_tantan_attackair_h01"));
     }
     frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         if (app::sv_math::rand(hash40("fighter"), 3) == 0)
         {
             PLAY_SE(fighter, Hash40::new("vc_tantan_punch_04"));
@@ -379,30 +379,30 @@ unsafe extern "C" fn tantan_attack_air_b_sound(fighter: &mut L2CAgentBase) {
 
 unsafe extern "C" fn tantan_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_b_effect(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_b_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
+    if is_excute(fighter) {
+        PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
 
 unsafe extern "C" fn tantan_landing_air_b_expression(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }

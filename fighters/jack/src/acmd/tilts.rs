@@ -190,11 +190,11 @@ unsafe extern "C" fn jack_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {

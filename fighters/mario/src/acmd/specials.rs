@@ -509,9 +509,9 @@ unsafe extern "C" fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter){
         if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
         }
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }

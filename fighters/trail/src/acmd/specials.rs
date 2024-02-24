@@ -510,13 +510,13 @@ unsafe extern "C" fn sound_specials3(fighter: &mut L2CAgentBase) {
     let attack_num = WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num"));
     // New check since this ACMD script gets used for both the second and third Sonic Blades now.
     if WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) < attack_num - 1 {
-        if macros::is_excute(fighter) {
-            macros::PLAY_SE(fighter, Hash40::new("se_trail_special_s03"));
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_trail_special_s03"));
         }
     }
     else {
-        if macros::is_excute(fighter) {
-            macros::PLAY_SE(fighter, Hash40::new("se_trail_special_s04"));
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_trail_special_s04"));
         }
     }
 }

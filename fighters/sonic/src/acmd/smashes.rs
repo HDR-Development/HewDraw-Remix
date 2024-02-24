@@ -99,7 +99,7 @@ unsafe extern "C" fn sonic_attack_hi4_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
     frame(lua_state, 8.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(
             boma,
             Hash40::new("rbkind_nohitm"),
@@ -219,7 +219,7 @@ unsafe extern "C" fn sonic_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {

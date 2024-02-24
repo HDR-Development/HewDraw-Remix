@@ -127,7 +127,7 @@ unsafe extern "C" fn yoshi_attack_air_b_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 2.5);
     }
     frame(fighter.lua_state_agent, 17.5);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1.5, 4, -4.5, -175.777, 8.688, 80.371, 0.95, true);
         LAST_EFFECT_SET_RATE(fighter, 2.5);
     }
@@ -142,7 +142,7 @@ unsafe extern "C" fn yoshi_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
     }
     frame(lua_state, 11.5);
     if is_excute(fighter) {
@@ -150,7 +150,7 @@ unsafe extern "C" fn yoshi_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
     }
     frame(lua_state, 15.5);
     if is_excute(fighter) {
@@ -158,7 +158,7 @@ unsafe extern "C" fn yoshi_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -208,7 +208,7 @@ unsafe extern "C" fn yoshi_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 4.2);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

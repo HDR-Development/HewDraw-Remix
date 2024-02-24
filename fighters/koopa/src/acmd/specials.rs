@@ -125,11 +125,11 @@ unsafe extern "C" fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) 
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 25.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
@@ -213,7 +213,7 @@ unsafe extern "C" fn koopa_special_hi_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 7);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 7);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {

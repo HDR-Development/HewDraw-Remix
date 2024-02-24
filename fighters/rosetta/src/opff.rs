@@ -43,7 +43,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 		if !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
 			let frame = MotionModule::frame(boma);
 			if frame == 13.0 {	// set teleport startup effects
-				macros::EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+				EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 				VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 1);
 			}
 			if !VarModule::is_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT) {
@@ -57,7 +57,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					}
 				}
 				if frame == 26.0 {	// perform the actual swap
-					macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+					EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_X, PostureModule::pos_x(boma) as i32);
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y, PostureModule::pos_y(boma) as i32);
 					VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 3);
@@ -188,7 +188,7 @@ unsafe extern "C" fn tico_frame(weapon: &mut L2CFighterBase) {
 		}
 		if VarModule::get_int(rosetta, vars::rosetta::status::LUMA_STATE) > 0 {
 			if VarModule::get_int(rosetta, vars::rosetta::status::LUMA_STATE) == 1 {	// set startup effects
-				macros::EFFECT(weapon, Hash40::new("rosetta_escape"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+				EFFECT(weapon, Hash40::new("rosetta_escape"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
 			}
 			if VarModule::get_int(rosetta, vars::rosetta::status::LUMA_STATE) == 2 {	// prepare for teleport
 				HitModule::set_whole(weapon.module_accessor, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
@@ -196,7 +196,7 @@ unsafe extern "C" fn tico_frame(weapon: &mut L2CFighterBase) {
 				JostleModule::set_status(weapon.module_accessor, false);
 			}
 			if VarModule::get_int(rosetta, vars::rosetta::status::LUMA_STATE) == 3 {	// perform swap
-				macros::EFFECT(weapon, Hash40::new("rosetta_escape_end"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+				EFFECT(weapon, Hash40::new("rosetta_escape_end"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 				let new_x = VarModule::get_int(rosetta, vars::rosetta::instance::ROSA_X) as f32;
 				let new_y = VarModule::get_int(rosetta, vars::rosetta::instance::ROSA_Y) as f32;
 				let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };

@@ -72,7 +72,7 @@ unsafe extern "C" fn shizue_special_n_failure_expression(fighter: &mut L2CAgentB
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
     }
 }
 

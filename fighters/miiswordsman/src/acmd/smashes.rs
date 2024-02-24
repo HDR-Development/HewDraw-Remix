@@ -142,7 +142,7 @@ unsafe extern "C" fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -154,7 +154,7 @@ unsafe extern "C" fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {

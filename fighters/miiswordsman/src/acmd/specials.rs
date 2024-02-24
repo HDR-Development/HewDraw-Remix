@@ -149,7 +149,7 @@ unsafe extern "C" fn miiswordsman_special_n2_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {

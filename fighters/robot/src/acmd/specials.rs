@@ -293,7 +293,7 @@ unsafe extern "C" fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -301,7 +301,7 @@ unsafe extern "C" fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -515,7 +515,7 @@ unsafe extern "C" fn robot_special_hi_rise_expression(fighter: &mut L2CAgentBase
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         }
         
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }

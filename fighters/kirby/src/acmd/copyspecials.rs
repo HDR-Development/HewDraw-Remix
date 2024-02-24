@@ -283,17 +283,17 @@ unsafe extern "C" fn ganon_float_expression(fighter: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn koopa_special_n_start_effect(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::FLASH(fighter, 0.961, 0.569, 0.569, 0.392);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.961, 0.569, 0.569, 0.392);
     }
     wait(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        macros::FLASH(fighter, 1, 0.537, 0.537, 0.588);
-        macros::FLASH_FRM(fighter, 20, 0, 0, 0, 0);
+    if is_excute(fighter) {
+        FLASH(fighter, 1, 0.537, 0.537, 0.588);
+        FLASH_FRM(fighter, 20, 0, 0, 0, 0);
     }
     wait(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
-        macros::COL_NORMAL(fighter);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
     }
 }
 
@@ -302,11 +302,11 @@ unsafe extern "C" fn koopa_special_n_start_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_koopa_special_n01"));
+        PLAY_SE(fighter, Hash40::new("se_koopa_special_n01"));
     }
     wait(lua_state, 19.0);
     if is_excute(fighter) {
-        macros::PLAY_SE_REMAIN(fighter, Hash40::new("vc_kirby_copy_koopa_01"));
+        PLAY_SE_REMAIN(fighter, Hash40::new("vc_kirby_copy_koopa_01"));
     }
 }
 
@@ -317,86 +317,86 @@ unsafe extern "C" fn koopa_special_n_end_game(fighter: &mut L2CAgentBase) {
 
 unsafe extern "C" fn koopa_special_n_max_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
     }
     frame(fighter.lua_state_agent, 24.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_START);
     }
 }
 
 unsafe extern "C" fn koopa_special_n_max_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_explosion_sign"), Hash40::new("jaw"), 0, 1.0, 0, 0, 0, 0, 0.75, true);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_explosion_sign"), Hash40::new("jaw"), 0, 1.0, 0, 0, 0, 0, 0.75, true);
         LAST_EFFECT_SET_RATE(fighter,1.5);
 
         if fighter.is_motion(Hash40::new("koopa_special_n_max")){
-            macros::LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            macros::EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         }
-        macros::FLASH(fighter, 0.961, 0.569, 0.569, 0.392);
+        FLASH(fighter, 0.961, 0.569, 0.569, 0.392);
     }
     wait(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        macros::FLASH(fighter, 1, 0.537, 0.537, 0.588);
-        macros::FLASH_FRM(fighter, 20, 0, 0, 0, 0);
+    if is_excute(fighter) {
+        FLASH(fighter, 1, 0.537, 0.537, 0.588);
+        FLASH_FRM(fighter, 20, 0, 0, 0, 0);
     }
     frame(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter,Hash40::new("sys_explosion_sign"),false,false);
     }
     frame(fighter.lua_state_agent, 24.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter,Hash40::new("koopa_breath_m_fire"),false,false);
 
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire_fly"), Hash40::new("jaw"), 0, 0, 0, 180, 0, 50, 0.5, true);
-        macros::FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire_fly"), Hash40::new("jaw"), 0, 0, 0, 180, 0, 50, 0.5, true);
+        FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
     frame(fighter.lua_state_agent, 42.0);
-    if macros::is_excute(fighter) {
-        macros::COL_NORMAL(fighter);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
     }
     frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("koopa_appeal_s"), Hash40::new("mouth2"), 0, -1.3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("koopa_appeal_s"), Hash40::new("mouth2"), 0, -1.3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(fighter,2.0,0.5,0);
     }
 }
 
 unsafe extern "C" fn koopa_special_n_max_sound(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_koopa_special_n01"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_koopa_special_n01"));
     }
     wait(fighter.lua_state_agent, 19.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         if fighter.is_motion(Hash40::new("koopa_special_n_max")){
-            macros::PLAY_SE_REMAIN(fighter, Hash40::new("se_koopa_step_left_m"));
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_koopa_step_left_m"));
         }
     }
     frame(fighter.lua_state_agent, 23.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_common_fire_m_damage"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_fire_m_damage"));
     }
     frame(fighter.lua_state_agent, 24.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("vc_kirby_attack05"));
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_kirby_attack05"));
     }
 }
 
 unsafe extern "C" fn koopa_special_n_max_expression(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 25.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
@@ -1320,7 +1320,7 @@ unsafe extern "C" fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -1533,7 +1533,7 @@ unsafe extern "C" fn shizue_special_n_failure_expression(fighter: &mut L2CAgentB
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
     }
 }
 

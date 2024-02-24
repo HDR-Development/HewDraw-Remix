@@ -57,7 +57,7 @@ unsafe extern "C" fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -150,7 +150,7 @@ unsafe extern "C" fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 4);
-        macros::AREA_WIND_2ND_arg10(agent, 0, 1, 80, 300, 0.8, 0, 12, 24, 24, 40);
+        AREA_WIND_2ND_arg10(agent, 0, 1, 80, 300, 0.8, 0, 12, 24, 24, 40);
     }
     frame(lua_state, 11.0);
     app::sv_animcmd::execute(lua_state, 11.0);
@@ -160,12 +160,12 @@ unsafe extern "C" fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        macros::AREA_WIND_2ND_arg10(agent, 0, 2, 30, 300, 0.8, 25, 12, 50, 24, 80);
+        AREA_WIND_2ND_arg10(agent, 0, 2, 30, 300, 0.8, 25, 12, 50, 24, 80);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);
+        QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
@@ -306,8 +306,8 @@ unsafe extern "C" fn palutena_special_n_b_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
-        macros::AREA_WIND_2ND_arg10(agent, 0, 2, 90, 300, 1, 9, 35, 18, 70, 80);
+        QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+        AREA_WIND_2ND_arg10(agent, 0, 2, 90, 300, 1, 9, 35, 18, 70, 80);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -408,11 +408,11 @@ unsafe extern "C" fn palutena_special_n_y_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_beams"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_beams"), 0);
     }
     wait(lua_state, 12.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_beamm"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_beamm"), 0);
     }
 }
 
@@ -531,14 +531,14 @@ unsafe extern "C" fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
         if agent.is_situation(*SITUATION_KIND_GROUND) {
             QUAKE(agent, *CAMERA_QUAKE_KIND_L);
         }
         else {
             QUAKE(agent, *CAMERA_QUAKE_KIND_M);
         }
-        macros::AREA_WIND_2ND_arg10(agent, 0, 0.75, 110, 300, 0.8, 0, 15, 24, 30, 40);
+        AREA_WIND_2ND_arg10(agent, 0, 0.75, 110, 300, 0.8, 0, 15, 24, 30, 40);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
@@ -547,7 +547,7 @@ unsafe extern "C" fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
-        macros::AREA_WIND_2ND_arg10(agent, 0, 0.75, 70, 300, 0.8, 0, 12, 24, 24, 40);
+        AREA_WIND_2ND_arg10(agent, 0, 0.75, 70, 300, 0.8, 0, 12, 24, 24, 40);
     }
     frame(lua_state, 47.0);
     if is_excute(agent) {
@@ -718,11 +718,11 @@ unsafe extern "C" fn palutena_special_n_g_expression(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashss"), 10);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashss"), 10);
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 10);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 10);
     }
 }
 

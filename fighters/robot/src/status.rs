@@ -230,7 +230,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::add_speed(fighter.module_accessor, &vec);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         
-        macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
+        PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
         
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
 
@@ -253,7 +253,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             KineticModule::add_speed(fighter.module_accessor, &vec);
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             
-            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_s"));
+            PLAY_SE(fighter, Hash40::new("se_common_bomb_s"));
             
             fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
     
@@ -266,7 +266,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             }
 
-            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
+            PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
 
         } else {
             let vec = Vector3f{x: (0.05*rotX.abs()), y: (1.5 + (0.05*robotFrames))-(0.025*rotX.abs()), z: 0.0};
@@ -277,7 +277,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             }
 
-            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_l"));
+            PLAY_SE(fighter, Hash40::new("se_common_bomb_l"));
         }
 
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
@@ -298,7 +298,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         }
 
-        macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_ll"));
+        PLAY_SE(fighter, Hash40::new("se_common_bomb_ll"));
 
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
 

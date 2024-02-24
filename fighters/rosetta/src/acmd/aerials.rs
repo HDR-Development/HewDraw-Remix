@@ -13,7 +13,7 @@ unsafe extern "C" fn rosetta_attack_air_n_expression(fighter: &mut L2CAgentBase)
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

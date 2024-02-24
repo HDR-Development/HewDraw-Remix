@@ -32,7 +32,7 @@ unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn special_hi_h_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_h"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {

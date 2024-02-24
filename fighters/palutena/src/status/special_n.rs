@@ -33,7 +33,7 @@ unsafe extern "C" fn special_n_r_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_n_r_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_r"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -120,7 +120,7 @@ unsafe extern "C" fn special_n_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_n_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_b"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -207,7 +207,7 @@ unsafe extern "C" fn special_n_y_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_n_y_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_y"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -294,7 +294,7 @@ unsafe extern "C" fn special_n_p_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_n_p_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_p"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -378,7 +378,7 @@ unsafe extern "C" fn special_n_o_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_n_o_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_o"), 0.0, 1.0, false, 0.0, false, false);
         
     }
@@ -462,7 +462,7 @@ unsafe extern "C" fn special_n_g_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_n_g_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_g"), 0.0, 1.0, false, 0.0, false, false);
         
     }

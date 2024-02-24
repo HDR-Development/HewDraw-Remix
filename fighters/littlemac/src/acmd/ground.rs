@@ -198,12 +198,12 @@ unsafe extern "C" fn littlemac_attack_dash_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 10.0);
     if !WorkModule::is_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_ATTACK_HIT) {
         if is_excute(fighter) {
-            macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
             ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }

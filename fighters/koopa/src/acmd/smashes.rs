@@ -137,12 +137,12 @@ unsafe extern "C" fn koopa_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         let excellent = VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
         if excellent {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_finish"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_finish"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
         }
     }
     frame(lua_state, 48.0);

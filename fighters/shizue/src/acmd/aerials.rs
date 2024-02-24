@@ -112,7 +112,7 @@ unsafe extern "C" fn shizue_attack_air_f_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

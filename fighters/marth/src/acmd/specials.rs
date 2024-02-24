@@ -41,7 +41,7 @@ unsafe extern "C" fn marth_special_s1_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 

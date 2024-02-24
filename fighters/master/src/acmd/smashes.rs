@@ -674,17 +674,17 @@ unsafe extern "C" fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         fighter.clear_lua_stack();
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 1);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 2);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 3);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 4);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 1);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 2);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 3);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 4);
     }
     frame(lua_state, 44.0);
     frame(lua_state, 46.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         }
     }
     frame(lua_state, 85.0);

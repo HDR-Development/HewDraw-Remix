@@ -52,8 +52,8 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
         if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames as i32) && is_hold {
             if fighter.motion_frame() == charge_start_frame {
                 let facing = eff_offset.z * PostureModule::lr(fighter.module_accessor);
-                smash_script::macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hip"), eff_offset.x, eff_offset.y, facing, 0, 0, 0, 0.55, true);
-                smash_script::macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_krool_rnd_attack"));
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hip"), eff_offset.x, eff_offset.y, facing, 0, 0, 0, 0.55, true);
+                PLAY_SEQUENCE(fighter, Hash40::new("seq_krool_rnd_attack"));
             }
             let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
             MotionModule::set_rate(fighter.module_accessor, motion_rate);

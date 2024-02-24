@@ -174,7 +174,7 @@ unsafe extern "C" fn pichu_special_hi_1_expression(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x24772eddef), false);
         MotionModule::set_helper_calculation(boma, false);
         if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
     frame(lua_state, 6.0);
@@ -211,7 +211,7 @@ unsafe extern "C" fn pichu_special_hi_2_expression(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         MotionModule::set_helper_calculation(boma, false);
         if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
     frame(lua_state, 6.0);

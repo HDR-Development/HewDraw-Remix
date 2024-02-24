@@ -265,23 +265,23 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 
 unsafe extern "C" fn jack_attack_lw3_sound(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_jack_special_n01"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_jack_special_n01"));
     }
 }
 
 unsafe extern "C" fn jack_attack_lw3_sound_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
     }
     frame(agent.lua_state_agent, 18.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
     }
     frame(agent.lua_state_agent, 24.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
     }
 
 }

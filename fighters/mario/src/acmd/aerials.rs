@@ -236,7 +236,7 @@ unsafe extern "C" fn expression_attackairlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackss"), 5);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackss"), 5);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {

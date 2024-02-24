@@ -50,7 +50,7 @@ unsafe extern "C" fn olimar_attack_air_f_expression(fighter: &mut L2CAgentBase) 
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if (pikmin_count != 0) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
 
@@ -106,7 +106,7 @@ unsafe extern "C" fn olimar_attack_air_hi_expression(fighter: &mut L2CAgentBase)
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if (pikmin_count != 0) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
 
@@ -199,7 +199,7 @@ unsafe extern "C" fn olimar_attack_air_b_expression(fighter: &mut L2CAgentBase) 
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if (pikmin_count != 0) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
 
@@ -207,7 +207,7 @@ unsafe extern "C" fn olimar_attack_air_b_expression(fighter: &mut L2CAgentBase) 
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if (pikmin_count == 0) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         }
     }
 

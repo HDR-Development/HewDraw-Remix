@@ -388,7 +388,7 @@ unsafe extern "C" fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -486,7 +486,7 @@ unsafe extern "C" fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBas
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 

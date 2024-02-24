@@ -71,7 +71,7 @@ unsafe extern "C" fn popo_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -79,7 +79,7 @@ unsafe extern "C" fn popo_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3, true);
     }
@@ -168,7 +168,7 @@ unsafe extern "C" fn popo_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {

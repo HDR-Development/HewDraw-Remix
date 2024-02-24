@@ -48,7 +48,7 @@ unsafe extern "C" fn reflet_attack_11_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 
@@ -102,7 +102,7 @@ unsafe extern "C" fn reflet_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
 }
 

@@ -474,7 +474,7 @@ unsafe extern "C" fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_81_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_81_attackl"), 0);
     }
 }
 

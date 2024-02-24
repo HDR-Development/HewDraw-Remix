@@ -140,7 +140,7 @@ unsafe extern "C" fn attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 8);
     }
 }

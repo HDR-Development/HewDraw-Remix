@@ -284,7 +284,7 @@ unsafe extern "C" fn lucario_special_hi_move_expression(fighter: &mut L2CAgentBa
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
     }
 }
 

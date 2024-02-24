@@ -87,7 +87,7 @@ unsafe extern "C" fn pfushigisou_attack_air_f_expression(fighter: &mut L2CAgentB
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 

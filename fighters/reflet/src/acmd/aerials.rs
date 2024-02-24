@@ -179,9 +179,9 @@ unsafe extern "C" fn reflet_attack_air_f_expression(fighter: &mut L2CAgentBase) 
     app::sv_animcmd::execute(lua_state, 11.0);
     if is_excute(fighter) {
         if WorkModule::is_flag(boma,  *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
         }
     }
 }

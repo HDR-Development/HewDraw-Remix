@@ -118,7 +118,7 @@ unsafe extern "C" fn miifighter_attack_lw3_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {

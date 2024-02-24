@@ -84,7 +84,7 @@ unsafe extern "C" fn jack_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
 }
 
@@ -171,7 +171,7 @@ unsafe extern "C" fn jack_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {

@@ -174,7 +174,7 @@ unsafe extern "C" fn samusd_attack_air_n_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
@@ -182,7 +182,7 @@ unsafe extern "C" fn samusd_attack_air_n_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }

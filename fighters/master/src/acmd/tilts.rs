@@ -84,7 +84,7 @@ unsafe extern "C" fn master_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.6);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -163,7 +163,7 @@ unsafe extern "C" fn master_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 

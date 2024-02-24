@@ -204,7 +204,7 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn expression_wait4(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
+    if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
 }

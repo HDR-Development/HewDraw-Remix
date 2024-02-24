@@ -91,7 +91,7 @@ unsafe extern "C" fn buddy_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -99,7 +99,7 @@ unsafe extern "C" fn buddy_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
@@ -107,7 +107,7 @@ unsafe extern "C" fn buddy_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -163,7 +163,7 @@ unsafe extern "C" fn buddy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -285,7 +285,7 @@ unsafe extern "C" fn buddy_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -370,28 +370,28 @@ unsafe extern "C" fn buddy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 unsafe extern "C" fn buddy_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FLW_POS(agent, Hash40::new("buddy_air_lw"), Hash40::new("top"), 0, -7, 0, 0, 0, 0, 1, true);
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("buddy_air_lw"), Hash40::new("top"), 0, -7, 0, 0, 0, 0, 1, true);
     }
     frame(agent.lua_state_agent, 17.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, true);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, true);
     }
     frame(agent.lua_state_agent, 18.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
     }
     frame(agent.lua_state_agent, 46.0);
-    if macros::is_excute(agent) {
+    if is_excute(agent) {
         if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             EFFECT_OFF_KIND(agent, Hash40::new("buddy_air_lw"),false,false);
-            macros::EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1.1, true);
+            EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1.1, true);
             sv_animcmd::EFFECT_WORK(agent.lua_state_agent);
         }
     }
     frame(agent.lua_state_agent, 50.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
     }
 }
 
@@ -407,7 +407,7 @@ unsafe extern "C" fn buddy_attack_air_lw_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

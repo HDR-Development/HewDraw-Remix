@@ -99,7 +99,7 @@ unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
         AREA_WIND_2ND_arg10(fighter, 0, 0.8, 110, 8, 0.8, 0, 4, 32, 8, 80);
     }
     frame(lua_state, 9.0);

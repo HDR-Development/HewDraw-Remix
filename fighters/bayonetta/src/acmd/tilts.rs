@@ -54,7 +54,7 @@ unsafe extern "C" fn bayonetta_attack_s3_s_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
@@ -107,7 +107,7 @@ unsafe extern "C" fn bayonetta_attack_s3_s2_expression(fighter: &mut L2CAgentBas
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
@@ -282,7 +282,7 @@ unsafe extern "C" fn bayonetta_attack_lw3_expression(fighter: &mut L2CAgentBase)
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 

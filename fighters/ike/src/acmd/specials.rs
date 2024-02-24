@@ -361,13 +361,13 @@ unsafe extern "C" fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase)
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slash_critical"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slash_critical"), 0);
         }
     }
     frame(lua_state, 1.3);
     if is_excute(fighter) {
         if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         }
     }
     frame(lua_state, 21.0);

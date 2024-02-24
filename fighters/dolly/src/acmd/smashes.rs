@@ -210,9 +210,9 @@ unsafe extern "C" fn dolly_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attack_critical"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
         }
     }
     frame(lua_state, 20.0);

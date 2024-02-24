@@ -139,7 +139,7 @@ unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 6);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 5, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 7.0);
@@ -156,7 +156,7 @@ unsafe extern "C" fn wario_special_hi_jump_expression(fighter: &mut L2CAgentBase
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }

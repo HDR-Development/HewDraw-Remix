@@ -336,7 +336,7 @@ unsafe extern "C" fn palutena_attack_lw3_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {

@@ -63,7 +63,7 @@ unsafe extern "C" fn kamui_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         VisibilityModule::set_int64(boma, hash40("hair") as i64, hash40("hair_hide") as i64);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -138,7 +138,7 @@ unsafe extern "C" fn kamui_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.85);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
@@ -269,7 +269,7 @@ unsafe extern "C" fn kamui_attack_air_hi_expression(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 

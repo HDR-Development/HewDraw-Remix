@@ -87,7 +87,7 @@ unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
                 *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
                 VarModule::on_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
                 VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 10);
-                macros::EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+                EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
             }
         }
         if VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC) {
