@@ -2,17 +2,9 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-    install_status_scripts!(
-        pre_final,
-        pre_final2,
-    );
-}
-
 // FIGHTER_STATUS_KIND_FINAL //
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_FINAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -44,9 +36,14 @@ pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_RYU_STATUS_KIND_FINAL2 //
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_FINAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
+pub unsafe extern "C" fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Pre, fighter, *FIGHTER_RYU_STATUS_KIND_FINAL2)(fighter);
     MeterModule::drain(fighter.object(), 10);
     ret
+}
+pub fn install() {
+    smashline::Agent::new("ken")
+        .status(Pre, *FIGHTER_STATUS_KIND_FINAL, pre_final)
+        .status(Pre, *FIGHTER_RYU_STATUS_KIND_FINAL2, pre_final2)
+        .install();
 }

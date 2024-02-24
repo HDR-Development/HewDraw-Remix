@@ -7,7 +7,6 @@ mod special_hi;
 mod special_s;
 mod special_lw;
 
-
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::peach::instance::DISABLE_SPECIAL_S) {
@@ -38,8 +37,7 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
     }
 }
 
-#[smashline::fighter_init]
-fn peach_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn peach_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_PEACH {
@@ -50,9 +48,8 @@ fn peach_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(peach_init);
+    smashline::Agent::new("peach").on_start(peach_init).install();
     attack_air::install();
     jump_aerial::install();
     special_hi::install();

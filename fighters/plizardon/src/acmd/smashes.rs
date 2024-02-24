@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "plizardon", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn plizardon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -44,8 +42,7 @@ unsafe fn plizardon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -68,7 +65,7 @@ unsafe fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("wingl2"), 5.0, 368, 100, 0, 0, 5.0, 3.5, -1.5, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         ATTACK(fighter, 3, 0, Hash40::new("wingl4"), 5.0, 280, 100, 32, 0, 4.2, 7.0, 0.0, 2.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         ATTACK(fighter, 4, 0, Hash40::new("bust"), 5.0, 368, 100, 0, 0, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
-        let hit1 = smash::phx::Vector2f { x: 0.0, y: 18.0 };
+        let hit1 = Vector2f { x: 0.0, y: 18.0 };
         AttackModule::set_vec_target_pos(boma, 1, smash::phx::Hash40::new("top"), &hit1, 8, false);
         AttackModule::set_vec_target_pos(boma, 2, smash::phx::Hash40::new("top"), &hit1, 8, false);
         AttackModule::set_vec_target_pos(boma, 4, smash::phx::Hash40::new("top"), &hit1, 8, false);
@@ -81,7 +78,7 @@ unsafe fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 3, 0, Hash40::new("wingl4"), 5.0, 340, 100, 60, 0, 4.2, 7.0, 0.0, 2.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         ATTACK(fighter, 0, 0, Hash40::new("wingl4"), 5.0, 368, 100, 0, 0, 4.2, 7.0, 0.0, 2.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
-        let hit2 = smash::phx::Vector2f { x: 0.0, y: 18.0 };
+        let hit2 = Vector2f { x: 0.0, y: 18.0 };
         AttackModule::set_vec_target_pos(boma, 0, smash::phx::Hash40::new("top"), &hit2, 8, false);
     }
     frame(lua_state, 11.0);
@@ -106,8 +103,7 @@ unsafe fn plizardon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "plizardon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn plizardon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -134,10 +130,9 @@ unsafe fn plizardon_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        plizardon_attack_s4_s_game,
-        plizardon_attack_hi4_game,
-        plizardon_attack_lw4_game,
-    );
+    smashline::Agent::new("plizardon")
+        .acmd("game_attacks4", plizardon_attack_s4_s_game)
+        .acmd("game_attackhi4", plizardon_attack_hi4_game)
+        .acmd("game_attacklw4", plizardon_attack_lw4_game)
+        .install();
 }
-

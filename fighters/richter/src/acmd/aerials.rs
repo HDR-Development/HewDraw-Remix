@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "richter", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -61,8 +60,7 @@ unsafe fn richter_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -81,8 +79,7 @@ unsafe fn richter_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -103,8 +100,7 @@ unsafe fn richter_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -124,16 +120,14 @@ unsafe fn richter_whip_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_landing_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairfhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -157,8 +151,7 @@ unsafe fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairfhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -178,14 +171,12 @@ unsafe fn richter_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairfhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairfhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -205,8 +196,7 @@ unsafe fn richter_whip_attack_air_f_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -230,8 +220,7 @@ unsafe fn richter_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -251,14 +240,12 @@ unsafe fn richter_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -278,8 +265,7 @@ unsafe fn richter_whip_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairflw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -303,8 +289,7 @@ unsafe fn richter_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairflw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -324,14 +309,12 @@ unsafe fn richter_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairflw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairflw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -351,16 +334,14 @@ unsafe fn richter_whip_attack_air_f_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_landing_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairbhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -391,8 +372,7 @@ unsafe fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairbhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -412,8 +392,7 @@ unsafe fn richter_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attackairbhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_attack_air_b_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -427,14 +406,12 @@ unsafe fn richter_attack_air_b_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairbhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairbhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -444,8 +421,7 @@ unsafe fn richter_whip_attack_air_b_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -476,8 +452,7 @@ unsafe fn richter_attack_air_b_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -497,8 +472,7 @@ unsafe fn richter_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -512,14 +486,12 @@ unsafe fn richter_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -529,8 +501,7 @@ unsafe fn richter_whip_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairblw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -561,8 +532,7 @@ unsafe fn richter_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairblw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -582,8 +552,7 @@ unsafe fn richter_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attackairblw" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_attack_air_b_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_b_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -597,14 +566,12 @@ unsafe fn richter_attack_air_b_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairblw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairblw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -614,8 +581,7 @@ unsafe fn richter_whip_attack_air_b_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_landing_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -624,8 +590,7 @@ unsafe fn richter_landing_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -643,8 +608,7 @@ unsafe fn richter_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -659,8 +623,7 @@ unsafe fn richter_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_attack_air_hi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_hi_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -670,20 +633,17 @@ unsafe fn richter_attack_air_hi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma(); 
 }
 
-#[acmd_script( agent = "richter_whip", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_whip_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "richter", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -730,8 +690,7 @@ unsafe fn richter_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attackairlw2" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -754,52 +713,62 @@ unsafe fn richter_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_attack_air_n_game,
-        richter_attack_air_n_effect,
-        richter_attack_air_n_sound,
-        richter_whip_attack_air_n_effect,
-        richter_landing_air_n_game,
+    smashline::Agent::new("richter")
+        .acmd("game_attackairn", richter_attack_air_n_game)
+        .acmd("effect_attackairn", richter_attack_air_n_effect)
+        .acmd("sound_attackairn", richter_attack_air_n_sound)
+        .acmd("game_attackairn", richter_landing_air_n_game)
 
-        richter_attack_air_f_hi_game,
-        richter_attack_air_f_hi_effect,
-        richter_whip_attack_air_f_hi_game,
-        richter_whip_attack_air_f_hi_effect,
-        richter_attack_air_f_game,
-        richter_attack_air_f_effect,
-        richter_whip_attack_air_f_game,
-        richter_whip_attack_air_f_effect,
-        richter_attack_air_f_lw_game,
-        richter_attack_air_f_lw_effect,
-        richter_whip_attack_air_f_lw_game,
-        richter_whip_attack_air_f_lw_effect,
-        richter_landing_air_f_game,
+        .acmd("game_attackairfhi", richter_attack_air_f_hi_game)
+        .acmd("effect_attackairfhi",richter_attack_air_f_hi_effect)
+        .acmd("game_attackairf", richter_attack_air_f_game)
+        .acmd("effect_attackairf", richter_attack_air_f_effect)
+        .acmd("game_attackairflw", richter_attack_air_f_lw_game)
+        .acmd("effect_attackairflw", richter_attack_air_f_lw_effect)
+        .acmd("game_attackairf", richter_landing_air_f_game)
 
-        richter_attack_air_b_hi_game,
-        richter_attack_air_b_hi_effect,
-        richter_attack_air_b_hi_sound,
-        richter_whip_attack_air_b_hi_game,
-        richter_whip_attack_air_b_hi_effect,
-        richter_attack_air_b_game,
-        richter_attack_air_b_effect,
-        richter_attack_air_b_sound,
-        richter_whip_attack_air_b_game,
-        richter_whip_attack_air_b_effect,
-        richter_attack_air_b_lw_game,
-        richter_attack_air_b_lw_effect,
-        richter_attack_air_b_lw_sound,
-        richter_whip_attack_air_b_lw_game,
-        richter_whip_attack_air_b_lw_effect,
-        richter_landing_air_b_game,
+        .acmd("game_attackairbhi", richter_attack_air_b_hi_game)
+        .acmd("effect_attackairbhi", richter_attack_air_b_hi_effect)
+        .acmd("sound_attackairbhi", richter_attack_air_b_hi_sound)
 
-        richter_attack_air_hi_game,
-        richter_attack_air_hi_effect,
-        richter_whip_attack_air_hi_effect,
-        richter_attack_air_hi_sound,
-        richter_whip_attack_air_hi_game,
+        .acmd("game_attackairb", richter_attack_air_b_game)
+        .acmd("effect_attackairb", richter_attack_air_b_effect)
+        .acmd("sound_attackairb", richter_attack_air_b_sound)
 
-        richter_attack_air_lw_game,
-        richter_attack_air_lw2_effect
-    );
+        .acmd("game_attackairblw", richter_attack_air_b_lw_game)
+        .acmd("effect_attackairblw", richter_attack_air_b_lw_effect)
+        .acmd("sound_attackairblw", richter_attack_air_b_lw_sound)
+        .acmd("game_attackairblw", richter_landing_air_b_game)
+
+        .acmd("game_attackairhi", richter_attack_air_hi_game)
+        .acmd("effect_attackairhi", richter_attack_air_hi_effect)
+        .acmd("sound_attackairhi", richter_attack_air_hi_sound)
+
+        .acmd("game_attackairlw", richter_attack_air_lw_game)
+        .acmd("effect_attackairlw2", richter_attack_air_lw2_effect)
+        .install();
+    smashline::Agent::new("richter_whip")
+        .acmd("game_attackairn", richter_whip_attack_air_n_game)
+        .acmd("effect_attackairn", richter_whip_attack_air_n_effect)
+        .acmd("game_landingairn", richter_landing_air_n_game)
+
+        .acmd("game_attackairfhi", richter_whip_attack_air_f_hi_game)
+        .acmd("effect_attackairfhi", richter_whip_attack_air_f_hi_effect)
+
+        .acmd("game_attackairf", richter_whip_attack_air_f_game)
+        .acmd("effect_attackairf", richter_whip_attack_air_f_effect)
+
+        .acmd("game_attackairflw", richter_whip_attack_air_f_lw_game)
+        .acmd("effect_attackairflw", richter_whip_attack_air_f_lw_effect)
+
+        .acmd("game_attackairbhi", richter_whip_attack_air_b_hi_game)
+        .acmd("effect_attackairbhi", richter_whip_attack_air_b_hi_effect)
+        .acmd("game_attackairb", richter_whip_attack_air_b_game)
+        .acmd("effect_attackairb", richter_whip_attack_air_b_effect)
+        .acmd("game_attackairblw", richter_whip_attack_air_b_lw_game)
+        .acmd("effect_attackairblw", richter_whip_attack_air_b_lw_effect)
+
+        .acmd("game_attackairhi", richter_whip_attack_air_hi_game)
+        .acmd("effect_attackairhi", richter_whip_attack_air_hi_effect)
+        .install();
 }
-

@@ -22,8 +22,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn miigunner_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn miigunner_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_MIIGUNNER {
@@ -34,5 +33,7 @@ fn miigunner_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(miigunner_init);
+    smashline::Agent::new("miigunner")
+        .on_start(miigunner_init)
+        .install();
 }

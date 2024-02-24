@@ -8,7 +8,6 @@ mod specialairs;
 mod specials;
 mod jumpaerial;
 
-
 pub fn install() {
     attack::install();
     batwithin::install();
@@ -17,8 +16,4 @@ pub fn install() {
     specialairs::install();
     specials::install();
     jumpaerial::install();
-}
-
-pub fn add_statuses() {
-    specials::install_custom();
 }

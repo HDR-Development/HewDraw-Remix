@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "richter", script = "game_specialn" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -15,8 +14,7 @@ unsafe fn richter_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -39,8 +37,7 @@ unsafe fn richter_special_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_specialn" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -50,8 +47,7 @@ unsafe fn richter_special_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_specialn" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn richter_special_n_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -64,8 +60,7 @@ unsafe fn richter_special_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -78,8 +73,7 @@ unsafe fn richter_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -98,8 +92,7 @@ unsafe fn richter_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_specialairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_air_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -109,8 +102,7 @@ unsafe fn richter_special_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_specialairn" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn richter_special_air_n_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -123,8 +115,7 @@ unsafe fn richter_special_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_axe", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_axe_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_axe_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let lr = PostureModule::lr(fighter.module_accessor);
@@ -150,8 +141,7 @@ unsafe fn richter_axe_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_axe", script = "effect_fly" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_axe_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_axe_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -202,8 +192,7 @@ unsafe fn richter_axe_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_axe", script = "sound_fly" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_axe_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_axe_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -212,8 +201,7 @@ unsafe fn richter_axe_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_specials1" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -238,8 +226,7 @@ unsafe fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_s1_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -268,8 +255,7 @@ unsafe fn richter_special_s1_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_specials1" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -282,8 +268,7 @@ unsafe fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_specials1whip" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_special_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -292,8 +277,7 @@ unsafe fn richter_whip_special_s1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -323,8 +307,7 @@ unsafe fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_air_s1_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -345,8 +328,7 @@ unsafe fn richter_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_specialairs1" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_air_s1_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_s1_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -359,8 +341,7 @@ unsafe fn richter_special_air_s1_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_specialairs1whip" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_whip_special_air_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -369,8 +350,7 @@ unsafe fn richter_whip_special_air_s1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -421,8 +401,7 @@ unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -452,8 +431,7 @@ unsafe fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -504,8 +482,7 @@ unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -535,8 +512,7 @@ unsafe fn richter_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -561,8 +537,7 @@ unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_speciallw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -579,8 +554,7 @@ unsafe fn richter_special_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_speciallw" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -590,8 +564,7 @@ unsafe fn richter_special_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_speciallw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn richter_special_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -603,8 +576,7 @@ unsafe fn richter_special_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -628,8 +600,7 @@ unsafe fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -642,8 +613,7 @@ unsafe fn richter_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_specialairlw" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -653,8 +623,7 @@ unsafe fn richter_special_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_specialairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn richter_special_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -666,8 +635,7 @@ unsafe fn richter_special_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_speciallwblank" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_lw_blank_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_blank_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -676,8 +644,7 @@ unsafe fn richter_special_lw_blank_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_speciallwblank" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_lw_blank_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_blank_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -687,8 +654,7 @@ unsafe fn richter_special_lw_blank_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_speciallwblank" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn richter_special_lw_blank_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_blank_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -700,8 +666,7 @@ unsafe fn richter_special_lw_blank_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_specialairlwblank" , category = ACMD_EFFECT , low_priority)]
-unsafe fn richter_special_air_lw_blank_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_blank_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 18.0);
@@ -710,8 +675,7 @@ unsafe fn richter_special_air_lw_blank_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_specialairlwblank" , category = ACMD_SOUND , low_priority)]
-unsafe fn richter_special_air_lw_blank_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_blank_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -721,8 +685,7 @@ unsafe fn richter_special_air_lw_blank_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_specialairlwblank" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn richter_special_air_lw_blank_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_blank_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -735,47 +698,45 @@ unsafe fn richter_special_air_lw_blank_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_special_n_game,
-        richter_special_n_effect,
-        richter_special_n_sound,
-        richter_special_n_expression,
-        richter_special_air_n_game,
-        richter_special_air_n_effect,
-        richter_special_air_n_sound,
-        richter_special_air_n_expression,
-        richter_axe_game,
-        richter_axe_effect,
-        richter_axe_sound,
-
-        richter_special_s1_game,
-        richter_special_s1_effect,
-        richter_special_s1_sound,
-        richter_whip_special_s1_game,
-        richter_special_air_s1_game,
-        richter_special_air_s1_effect,
-        richter_special_air_s1_sound,
-        richter_whip_special_air_s1_game,
-
-        richter_special_hi_game,
-        richter_special_hi_effect,
-        richter_special_air_hi_game,
-        richter_special_air_hi_effect,
-
-        richter_special_lw_game,
-        richter_special_lw_effect,
-        richter_special_lw_sound,
-        richter_special_lw_expression,
-        richter_special_air_lw_game,
-        richter_special_air_lw_effect,
-        richter_special_air_lw_sound,
-        richter_special_air_lw_expression,
-        richter_special_lw_blank_effect,
-        richter_special_lw_blank_sound,
-        richter_special_lw_blank_expression,
-        richter_special_air_lw_blank_effect,
-        richter_special_air_lw_blank_sound,
-        richter_special_air_lw_blank_expression,
-    );
+    smashline::Agent::new("richter")
+        .acmd("game_specialn", richter_special_n_game)
+        .acmd("effect_specialn", richter_special_n_effect)
+        .acmd("sound_specialn", richter_special_n_sound)
+        .acmd("expression_specialn", richter_special_n_expression)
+        .acmd("game_specialairn", richter_special_air_n_game)
+        .acmd("effect_specialairn", richter_special_air_n_effect)
+        .acmd("sound_specialairn", richter_special_air_n_sound)
+        .acmd("expression_specialairn", richter_special_air_n_expression)
+        .acmd("game_specials1", richter_special_s1_game)
+        .acmd("effect_specials1", richter_special_s1_effect)
+        .acmd("sound_specials1", richter_special_s1_sound)
+        .acmd("game_specialairs1", richter_special_air_s1_game)
+        .acmd("effect_specialairs1", richter_special_air_s1_effect)
+        .acmd("sound_specialairs1", richter_special_air_s1_sound)
+        .acmd("game_specialhi", richter_special_hi_game)
+        .acmd("effect_specialhi", richter_special_hi_effect)
+        .acmd("game_specialairhi", richter_special_air_hi_game)
+        .acmd("effect_specialairhi", richter_special_air_hi_effect)
+        .acmd("game_speciallw", richter_special_lw_game)
+        .acmd("effect_speciallw", richter_special_lw_effect)
+        .acmd("sound_speciallw", richter_special_lw_sound)
+        .acmd("expression_speciallw", richter_special_lw_expression)
+        .acmd("game_specialairlw", richter_special_air_lw_game)
+        .acmd("effect_specialairlw", richter_special_air_lw_effect)
+        .acmd("sound_specialairlw", richter_special_air_lw_sound)
+        .acmd("expression_specialairlw", richter_special_air_lw_expression)
+        .acmd("effect_speciallwblank", richter_special_lw_blank_effect)
+        .acmd("sound_speciallwblank", richter_special_lw_blank_sound)
+        .acmd("expression_speciallwblank", richter_special_lw_blank_expression)
+        .acmd("effect_specialairlwblank", richter_special_air_lw_blank_effect)
+        .acmd("sound_specialairlwblank", richter_special_air_lw_blank_sound)
+        .acmd("expression_specialairlwblank", richter_special_air_lw_blank_expression)
+    smashline::Agent::new("richter_whip")
+        .acmd("game_specials1", richter_whip_special_s1_game)
+        .acmd("game_specialairs1", richter_whip_special_air_s1_game)
+    smashline::Agent::new("richter_axe")
+        .acmd("game_fly", richter_axe_game)
+        .acmd("effect_fly", richter_axe_effect)
+        .acmd("sound_fly", richter_axe_sound)
+        .install();
 }
-

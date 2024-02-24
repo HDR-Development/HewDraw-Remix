@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "richter", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn richter_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -21,8 +20,7 @@ unsafe fn richter_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -45,8 +43,7 @@ unsafe fn richter_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn richter_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -68,9 +65,9 @@ unsafe fn richter_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_throw_f_game,
-        richter_throw_hi_game,
-        richter_throw_lw_game,
-    );
+    smashline::Agent::new("richter")
+        .acmd("game_throwf", richter_throw_f_game)
+        .acmd("game_throwhi", richter_throw_hi_game)
+        .acmd("game_throwlw", richter_throw_lw_game)
+        .install();
 }

@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "simon", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -29,8 +28,7 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -57,8 +55,7 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -75,8 +72,7 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -117,8 +113,7 @@ unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -132,12 +127,11 @@ unsafe fn sound_attackdash(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attack11,
-        game_attack12,
-        game_attackdash,
-        effect_attackdash,
-        sound_attackdash
-    );
+    smashline::Agent::new("simon")
+        .acmd("game_attack11", game_attack11)
+        .acmd("game_attack12", game_attack12)
+        .acmd("game_attackdash", game_attackdash)
+        .acmd("effect_attackdash", effect_attackdash)
+        .acmd("sound_attackdash", sound_attackdash)
+        .install();
 }
-

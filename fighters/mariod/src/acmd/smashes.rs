@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "mariod", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -17,29 +16,7 @@ unsafe fn mariod_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_s4_s_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 16.0, 361, 95, 0, 25, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 16.0, 361, 95, 0, 25, 2.5, -2.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 20.0, 361, 95, 0, 25, 5.0, 4.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    
-}
-
-#[acmd_script( agent = "mariod", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -59,8 +36,27 @@ unsafe fn mariod_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 16.0, 361, 95, 0, 25, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("arml"), 16.0, 361, 95, 0, 25, 2.5, -2.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("arml"), 20.0, 361, 95, 0, 25, 5.0, 4.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    
+}
+
+unsafe extern "C" fn mariod_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let attack_start_frame = 9.0;
@@ -105,8 +101,7 @@ unsafe fn mariod_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -143,8 +138,7 @@ unsafe fn mariod_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn mariod_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -174,8 +168,7 @@ unsafe fn mariod_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mariod", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -217,13 +210,13 @@ unsafe fn mariod_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mariod_attack_s4_hi_game,
-        mariod_attack_s4_s_game,
-        mariod_attack_s4_lw_game,
-        mariod_attack_hi4_game,
-        mariod_attack_hi4_effect,
-        mariod_attack_lw4_game,
-        mariod_attack_lw4_effect,
-    );
+    smashline::Agent::new("mariod")
+        .acmd("game_attacks4hi", mariod_attack_s4_hi_game)
+        .acmd("game_attacks4", mariod_attack_s4_s_game)
+        .acmd("game_attacks4lw", mariod_attack_s4_lw_game)
+        .acmd("game_attackhi4", mariod_attack_hi4_game)
+        .acmd("effect_attackhi4", mariod_attack_hi4_effect)
+        .acmd("game_attacklw4", mariod_attack_lw4_game)
+        .acmd("effect_attacklw4", mariod_attack_lw4_effect)
+        .install();
 }

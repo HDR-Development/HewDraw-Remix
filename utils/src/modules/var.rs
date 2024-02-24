@@ -459,7 +459,6 @@ impl VarModule {
         }
     }
 
-
     /// Gets a 4-dimensional vector
     /// # Arguments
     /// * `object` - The owning `BattleObject` instance

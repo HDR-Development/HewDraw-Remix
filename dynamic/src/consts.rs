@@ -374,10 +374,10 @@ pub mod vars {
         pub mod instance {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
+            pub const SOARING_SLASH_HIT: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SOARING_SLASH_HIT: i32 = 0x1100;
             pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
@@ -525,7 +525,12 @@ pub mod vars {
     pub mod edge {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x1000;
+            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const FLASH_HOLD: i32 = 0x1101;
+            pub const SPECIAL_N_FIRE: i32 = 0x1102;
         }
     }
 
@@ -672,6 +677,8 @@ pub mod vars {
             pub use super::super::luigi::status::THUNDERHAND;
             pub use super::super::mariod::status::CHILL_PILL;
             pub const MINING_TIMER: i32 = 0x11F4;
+            pub const KO_PUNCH_GRAVITY: i32 = 0x11F5;
+            pub const KO_PUNCH_GRAVITY_END: i32 = 0x11F6;
         }
     }
 
@@ -903,6 +910,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
+            pub const SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE: i32 = 0x0101;
         }
         pub mod status {
             // flags
@@ -1467,68 +1475,73 @@ pub mod vars {
 
 pub mod statuses {
     pub mod elight {
-        pub const SPECIAL_HI_FINISH2: i32 = 0;
+        pub const SPECIAL_HI_FINISH2: i32 = 0x1F1;
     }
 
     pub mod falco {
-        pub const SPECIAL_LW_LOOP: i32 = 0;
-        pub const SPECIAL_LW_END: i32 = 1;
+        pub const SPECIAL_LW_LOOP: i32 = 0x1e8;
+        pub const SPECIAL_LW_END: i32 = 0x1e9;
     }
 
     pub mod gamewatch {
-        pub const SPECIAL_HI_OPEN: i32 = 0;
+        pub const SPECIAL_HI_OPEN: i32 = 0x205;
     }
 
     pub mod ganon {
-        pub const SPECIAL_N_FLOAT: i32 = 0;
+        pub const SPECIAL_N_FLOAT: i32 = 0x1EC;
     }
 
     pub mod ryu {
-        pub const AIR_DASH: i32 = 0;
+        pub const AIR_DASH: i32 = 0x202;
     }
 
     pub mod ken {
-        pub const ATTACK_COMMAND_4: i32 = 0;
+        pub const ATTACK_COMMAND_4: i32 = 0x202;
     }
 
     pub mod buddy {
-        pub const BUDDY_BAYONET_END: i32 = 0;
+        pub const BUDDY_BAYONET_END: i32 = 0x1FB;
     }
 
     pub mod littlemac {
-        pub const SPECIAL_LW_CANCEL: i32 = 1;
-        pub const SPECIAL_LW_CANCEL_JUMP: i32 = 2;
+        pub const SPECIAL_LW_CANCEL: i32 = 0x1F4;
+        pub const SPECIAL_LW_CANCEL_JUMP: i32 = 0x1F5;
     }
 
     pub mod wolf {
-        pub const SPECIAL_S_RUSH: i32 = 0;
-        pub const SPECIAL_S_END: i32 = 1;
+        pub const SPECIAL_S_RUSH: i32 = 0x1EA;
+        pub const SPECIAL_S_END: i32 = 0x1EB;
     }
 
     pub mod diddy {
-        pub const SPECIAL_N_CANCEL: i32 = 3;
-        pub const SPECIAL_N_CANCEL_JUMP: i32 = 4;
+        pub const SPECIAL_N_CANCEL: i32 = 0x1FF;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 0x200;
     }
 
     pub mod kirby {
-        pub const SPECIAL_HI_H: i32 = 69; //Weird value to avoid conflicts with copy ability values
+        pub const SPECIAL_HI_H: i32 = 0x3E6; //Weird value to avoid conflicts with copy ability values
+        pub const GANON_SPECIAL_N_FLOAT: i32 = 0x3E7; 
+        pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8; 
+        pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9; 
+        pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
+        pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB; 
     }
 
     pub mod krool {
-        pub const SPECIAL_LW_GUT: i32 = 0;
+        pub const SPECIAL_LW_GUT: i32 = 0x1F9;
     }
 
     pub mod palutena {
-        pub const SPECIAL_N_R: i32 = 0;
-        pub const SPECIAL_N_B: i32 = 1;
-        pub const SPECIAL_N_Y: i32 = 2;
-        pub const SPECIAL_N_P: i32 = 3;
-        pub const SPECIAL_N_O: i32 = 4;
-        pub const SPECIAL_N_G: i32 = 5;
+        pub const SPECIAL_N_R: i32 = 0x1E9;
+        pub const SPECIAL_N_B: i32 = 0x1EA;
+        pub const SPECIAL_N_Y: i32 = 0x1EB;
+        pub const SPECIAL_N_P: i32 = 0x1EC;
+        pub const SPECIAL_N_O: i32 = 0x1ED;
+        pub const SPECIAL_N_G: i32 = 0x1EE;
     }
     
     pub mod bayonetta {
-        pub const SPECIAL_S_KICK: i32 = 0;
-        pub const SPECIAL_S_EDGE: i32 = 1;
+        pub const SPECIAL_S_KICK: i32 = 0x1F2;
+        pub const SPECIAL_S_EDGE: i32 = 0x1F3;
     }
 }

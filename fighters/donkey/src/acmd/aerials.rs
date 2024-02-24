@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "donkey", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -34,9 +32,7 @@ unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "donkey", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn attack_air_n_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -53,9 +49,7 @@ unsafe fn attack_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "donkey", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_f(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -89,8 +83,7 @@ unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_b(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -118,8 +111,7 @@ unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn donkey_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn donkey_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -133,9 +125,7 @@ unsafe fn donkey_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "donkey", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state,6.0);
@@ -149,8 +139,7 @@ unsafe fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -181,8 +170,7 @@ unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -195,8 +183,7 @@ unsafe fn attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_lw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -227,8 +214,7 @@ unsafe fn attack_air_lw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn donkey_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn donkey_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -246,17 +232,16 @@ unsafe fn donkey_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        attack_air_n,
-        attack_air_n_expression,
-        attack_air_f,
-        attack_air_b,
-        attack_air_hi,
-        attack_air_hi_expression,
-        attack_air_lw,
-        donkey_attack_air_b_effect,
-        donkey_attack_air_hi_effect,
-        donkey_attack_air_lw_effect,
-    );
+    smashline::Agent::new("donkey")
+        .acmd("game_attackairn", attack_air_n)
+        .acmd("expression_attackairn", attack_air_n_expression)
+        .acmd("game_attackairf", attack_air_f)
+        .acmd("game_attackairb", attack_air_b)
+        .acmd("effect_attackairhi", donkey_attack_air_hi_effect)
+        .acmd("effect_attackairb", donkey_attack_air_b_effect)
+        .acmd("game_attackairhi", attack_air_hi)
+        .acmd("expression_attackairhi", attack_air_hi_expression)
+        .acmd("game_attackairlw", attack_air_lw)
+        .acmd("effect_attackairlw", donkey_attack_air_lw_effect)
+        .install();
 }
-

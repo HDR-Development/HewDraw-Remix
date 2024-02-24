@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "yoshi", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	let lua_state = fighter.lua_state_agent;
@@ -25,9 +23,7 @@ unsafe fn yoshi_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
-#[acmd_script( agent = "yoshi", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn yoshi_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -41,9 +37,7 @@ unsafe fn yoshi_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	FT_DESIRED_RATE(fighter, 5.0, 6.0);
@@ -63,9 +57,7 @@ unsafe fn yoshi_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
-#[acmd_script( agent = "yoshi", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn yoshi_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -79,9 +71,7 @@ unsafe fn yoshi_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	FT_DESIRED_RATE(fighter, 5.0, 6.0);
@@ -102,8 +92,7 @@ unsafe fn yoshi_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 }
   
 
-#[acmd_script( agent = "yoshi", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn yoshi_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -117,9 +106,7 @@ unsafe fn yoshi_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -137,9 +124,7 @@ unsafe fn yoshi_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "yoshi", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn yoshi_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -153,8 +138,7 @@ unsafe fn yoshi_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "yoshi", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn yoshi_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -170,9 +154,7 @@ unsafe fn yoshi_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "yoshi", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn yoshi_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 7.0);
@@ -192,9 +174,7 @@ unsafe fn yoshi_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "yoshi", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn yoshi_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 7.0);
@@ -208,20 +188,18 @@ unsafe fn yoshi_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-		yoshi_attack_s3_hi_game,
-		yoshi_attack_s3_s_game,
-		yoshi_attack_s3_lw_game,
-		yoshi_attack_hi3_game,
-		yoshi_attack_lw3_game,
-		yoshi_attack_s3_hi_effect,
-		yoshi_attack_s3_s_effect,
-		yoshi_attack_s3_lw_effect,
-		yoshi_attack_hi3_effect,
-		yoshi_attack_lw3_effect,
-		yoshi_attack_hi3_expression
-    );
+    smashline::Agent::new("yoshi")
+        .acmd("game_attacks3hi", yoshi_attack_s3_hi_game)
+        .acmd("effect_attacks3hi", yoshi_attack_s3_hi_effect)
+        .acmd("game_attacks3", yoshi_attack_s3_s_game)
+        .acmd("effect_attacks3", yoshi_attack_s3_s_effect)
+        .acmd("game_attacks3lw", yoshi_attack_s3_lw_game)
+        .acmd("effect_attacks3lw", yoshi_attack_s3_lw_effect)
+        .acmd("game_attackhi3", yoshi_attack_hi3_game)
+        .acmd("effect_attackhi3", yoshi_attack_hi3_effect)
+        .acmd("expression_attackhi3", yoshi_attack_hi3_expression)
+        .acmd("game_attacklw3", yoshi_attack_lw3_game)
+        .acmd("effect_attacklw3", yoshi_attack_lw3_effect)
+        .install();
 }
-

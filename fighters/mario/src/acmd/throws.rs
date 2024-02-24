@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "mario", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_grab(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_grab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn mario_grab(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_dashgrab(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_dashgrab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -49,8 +47,7 @@ unsafe fn mario_dashgrab(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -71,8 +68,7 @@ unsafe fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn mario_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -92,8 +88,7 @@ unsafe fn mario_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn mario_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -122,8 +117,7 @@ unsafe fn mario_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn mario_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -143,8 +137,7 @@ unsafe fn mario_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -163,13 +156,13 @@ unsafe fn mario_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_grab,
-        mario_dashgrab,
-        mario_pivotgrab,
-        mario_throw_f_game,
-        mario_throw_b_game,
-        mario_throw_hi_game,
-        mario_throw_lw_game,
-    );
+    smashline::Agent::new("mario")
+        .game_acmd("game_catch", mario_grab)
+        .game_acmd("game_catchdash", mario_dashgrab)
+        .game_acmd("game_catchturn", mario_pivotgrab)
+        .game_acmd("game_throwf", mario_throw_f_game)
+        .game_acmd("game_throwb", mario_throw_b_game)
+        .game_acmd("game_throwhi", mario_throw_hi_game)
+        .game_acmd("game_throwlw", mario_throw_lw_game)
+        .install();
 }
