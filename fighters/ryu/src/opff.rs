@@ -63,9 +63,6 @@ extern "Rust" {
 
 unsafe extern "C" fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        if fighter.kind() != FIGHTER_KIND_RYU {
-            return;
-        }
         MeterModule::update(fighter.battle_object, false);
         utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_ex_meter_info(

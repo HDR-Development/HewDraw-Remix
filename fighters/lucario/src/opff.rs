@@ -5,9 +5,6 @@ use globals::*;
 
 pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        if fighter.kind() != FIGHTER_KIND_LUCARIO {
-            return;
-        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         MeterModule::set_meter_per_level(fighter.object(), 100.0);

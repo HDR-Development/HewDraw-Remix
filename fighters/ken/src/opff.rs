@@ -64,9 +64,6 @@ extern "Rust" {
 
 unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        if fighter.kind() != FIGHTER_KIND_KEN {
-            return;
-        }
         MeterModule::update(fighter.battle_object, false);
         MeterModule::set_meter_cap(fighter.object(), 10);
         MeterModule::set_meter_per_level(fighter.object(), 30.0);

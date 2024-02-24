@@ -278,9 +278,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 extern "C" fn buddy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_BUDDY {
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     }
 }
 

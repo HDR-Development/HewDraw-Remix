@@ -539,9 +539,7 @@ extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let lua_state = fighter.lua_state_agent;    
         let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-        if fighter.kind() == *FIGHTER_KIND_BUDDY {
-            on_rebirth(fighter,boma);
-        }
+        on_rebirth(fighter, boma);
     }
 }
 

@@ -5,11 +5,9 @@ use globals::*;
 
 // Ice Climbers Cheer Cancel (Techy)
 unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.kind() == *FIGHTER_KIND_NANA {
-        if fighter.is_status(*FIGHTER_POPO_STATUS_KIND_THROW_NANA) {
-            MotionModule::set_frame(fighter.module_accessor, MotionModule::end_frame(fighter.module_accessor), true);
-            StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, true);
-        }
+    if fighter.is_status(*FIGHTER_POPO_STATUS_KIND_THROW_NANA) {
+        MotionModule::set_frame(fighter.module_accessor, MotionModule::end_frame(fighter.module_accessor), true);
+        StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, true);
     }
 }
  
