@@ -65,7 +65,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					let tico_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
 					let new_x = tico_x;
 					let new_y = tico_y;
-					let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
+					let pos = Vector3f { x: new_x, y: new_y, z: 0.0 };
 					PostureModule::set_pos(boma, &pos);
 					PostureModule::init_pos(boma, &pos, true, true);
 				}
@@ -199,7 +199,7 @@ unsafe extern "C" fn tico_frame(weapon: &mut L2CFighterBase) {
 				EFFECT(weapon, Hash40::new("rosetta_escape_end"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 				let new_x = VarModule::get_int(rosetta, vars::rosetta::instance::ROSA_X) as f32;
 				let new_y = VarModule::get_int(rosetta, vars::rosetta::instance::ROSA_Y) as f32;
-				let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
+				let pos = Vector3f { x: new_x, y: new_y, z: 0.0 };
 				PostureModule::set_pos(weapon.module_accessor, &pos);
 				PostureModule::init_pos(weapon.module_accessor, &pos, true, true);
 			}

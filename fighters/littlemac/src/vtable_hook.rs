@@ -1,5 +1,6 @@
 use super::*;
 
+#[repr(C)]
 pub struct CollisionLog {
     next: *mut CollisionLog,
     end: *mut CollisionLog,

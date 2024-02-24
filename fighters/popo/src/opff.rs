@@ -90,32 +90,32 @@ unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-pub static mut nana_boma: [u64; 8] = [0; 8];
+pub static mut NANA_BOMA: [u64; 8] = [0; 8];
 
 unsafe fn get_nana_boma(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     if boma.kind() == *FIGHTER_KIND_NANA {
         let mut nana_boma_deez = boma;
-        nana_boma[id] = (&mut *nana_boma_deez as *mut BattleObjectModuleAccessor) as u64;
+        NANA_BOMA[id] = (&mut *nana_boma_deez as *mut BattleObjectModuleAccessor) as u64;
     }
 }
 
-static mut effect_on: bool = false;
-static mut nana_pos_x: f32 = 0.0;
-static mut nana_pos_y: f32 = 0.0;
+static mut EFFECT_ON: bool = false;
+static mut NANA_POS_X: f32 = 0.0;
+static mut NANA_POS_Y: f32 = 0.0;
 
 unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 
     if boma.kind() == *FIGHTER_KIND_POPO {
         if status_kind == *FIGHTER_STATUS_KIND_STANDBY {
-            effect_on = true;
-            nana_pos_x = PostureModule::pos_x(nana_boma[id] as *mut BattleObjectModuleAccessor);
-            nana_pos_y = PostureModule::pos_y(nana_boma[id] as *mut BattleObjectModuleAccessor);
+            EFFECT_ON = true;
+            NANA_POS_X = PostureModule::pos_x(NANA_BOMA[id] as *mut BattleObjectModuleAccessor);
+            NANA_POS_Y = PostureModule::pos_y(NANA_BOMA[id] as *mut BattleObjectModuleAccessor);
         }
-        if status_kind == *FIGHTER_STATUS_KIND_REBIRTH && fighter.status_frame() <= 1 && effect_on {
-            let pos =  Vector3f {x: nana_pos_x, y: nana_pos_y, z: 0.0};
+        if status_kind == *FIGHTER_STATUS_KIND_REBIRTH && fighter.status_frame() <= 1 && EFFECT_ON {
+            let pos =  Vector3f {x: NANA_POS_X, y: NANA_POS_Y, z: 0.0};
             let rot =  Vector3f {x: 0.0, y: 0.0, z: 0.0};
             EffectModule::req(boma, Hash40::new("sys_recovery"), &pos, &rot, 1.0, *EFFECT_SUB_ATTRIBUTE_NO_JOINT_SCALE as u32, 0, true, 0);
-            effect_on = false;
+            EFFECT_ON = false;
         }
     }
 }
@@ -125,7 +125,7 @@ unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         return;
     }
 
-    let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
+    let nana = NANA_BOMA[id] as *mut BattleObjectModuleAccessor;
     if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO) {
         if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH]) {
             StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_STANDBY, false);
@@ -149,7 +149,7 @@ unsafe fn attacklw4_lr(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD]) {
-        let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
+        let nana = NANA_BOMA[id] as *mut BattleObjectModuleAccessor;
         let popo_lr = PostureModule::lr(boma);
         let nana_lr = PostureModule::lr(nana);
         if nana_lr != popo_lr {

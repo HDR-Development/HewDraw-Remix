@@ -2,9 +2,9 @@ use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
 use crate::ext::*;
-use std::arch::asm;
+// use std::arch::asm;
 use smash::phx::Vector2f;
-use crate::se;
+// use crate::se;
 
 #[macro_export]
 macro_rules! dump_trace {
@@ -168,7 +168,7 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
 pub unsafe fn get_all_active_battle_object_ids() -> Vec<u32> {
     use smash::lib::lua_const::*;
     use smash::app::lua_bind::*;
-    use super::ext::*;
+    // use super::ext::*;
     let mut vec: Vec<u32> = Vec::new();
     for entry_id in 0..8 {
         // get the active battle object id and add it to the list
@@ -253,8 +253,8 @@ struct SomeControllerStruct {
 pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
         .add(0x5339860) as *const u64);
-    let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
-    let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
+    let uvar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
+    let controller_struct = (base + (0x8 * (uvar3 as i32)) as u64) as *mut SomeControllerStruct;
     (*controller_struct).controller
 }
 

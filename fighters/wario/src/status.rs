@@ -86,7 +86,7 @@ unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CVal
         
         if currentFrame >= lastFrame { 
             if !grounded{
-                let speed = smash::phx::Vector3f { x: 0.0, y: -0.1, z: 0.0 };
+                let speed = Vector3f { x: 0.0, y: -0.1, z: 0.0 };
                 KineticModule::add_speed(fighter.module_accessor, &speed);
             }
             fighter.change_status(status.into(), false.into());
@@ -98,7 +98,7 @@ unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CVal
     if (currentFrame >= FRAME_FALLLOOP && currentFrame < FRAME_LAND)
     {
         MotionModule::set_rate(fighter.module_accessor, 0.0);
-        let speed = smash::phx::Vector3f { x: 0.0, y: -0.425, z: 0.0 };
+        let speed = Vector3f { x: 0.0, y: -0.425, z: 0.0 };
         KineticModule::add_speed(fighter.module_accessor, &speed);
     }
     //Groundcast to see if we touched the ground (only after falling), then cut to the landing frame

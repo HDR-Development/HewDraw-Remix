@@ -285,7 +285,7 @@ unsafe extern "C" fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             //Ray check here is used for checking if you're on the ground. Unfortunately is_touch and is_wall_touch_line didnt work for this. Sorry!
             if GroundModule::ray_check(
                 fighter.module_accessor, 
-                &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                 &Vector2f{ x: 0.0, y: -7.0}, true
             ) == 1 {
                 FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -303,7 +303,7 @@ unsafe extern "C" fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             EffectModule::set_alpha(boma, wave_3, 0.4);
             if GroundModule::ray_check(
                 fighter.module_accessor, 
-                &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                 &Vector2f{ x: 0.0, y: -7.0}, true
             ) == 1 {
                 FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -316,7 +316,7 @@ unsafe extern "C" fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             EffectModule::set_rate(boma, wave_3, 0.000001);
             if GroundModule::ray_check(
                 fighter.module_accessor, 
-                &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                 &Vector2f{ x: 0.0, y: -7.0}, true
             ) == 1 {
                 FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -329,7 +329,7 @@ unsafe extern "C" fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             if is_excute(fighter) {
                     if GroundModule::ray_check(
                         fighter.module_accessor, 
-                        &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                        &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                         &Vector2f{ x: 0.0, y: -7.0}, true
                     ) == 1 {
                         FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);

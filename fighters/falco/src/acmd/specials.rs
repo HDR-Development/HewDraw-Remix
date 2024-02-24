@@ -95,7 +95,7 @@ unsafe extern "C" fn falco_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     for _ in 0..7 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 368, 40, 0, 30, 7.0, 0.0, 6.0, 0.0, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-            let target = smash::phx::Vector2f { x: 0.0, y: 5.0 };
+            let target = Vector2f { x: 0.0, y: 5.0 };
             AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &target, 8, false);
         }
         wait(lua_state, 1.0);

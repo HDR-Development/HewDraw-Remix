@@ -132,20 +132,20 @@ unsafe extern "C" fn bullet_movement(fighter: &mut L2CFighterCommon) -> L2CValue
                 let y_reset = fighter.get_float(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLOAT_MOTION_SPEED_Y);
                 let initial_x = fighter.get_param_float("param_special_s", "ab_u_shooting_speed_x_mul");
                 let initial_y = fighter.get_param_float("param_special_s", "ab_u_shooting_speed_y_mul");
-                let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut KineticEnergy; //272
-                let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut KineticEnergy; //288
-                let mut motion_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as *mut KineticEnergy;
+                let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy; //272
+                let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::KineticEnergy; //288
+                let mut motion_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as *mut app::KineticEnergy;
                 //motion to stop energy
-                app::lua_bind::KineticEnergy::reset_energy(stop_energy as _, *ENERGY_STOP_RESET_TYPE_AIR, &Vector2f { x: x_reset * initial_x, y: 0.0 }, &Vector3f::zero(), fighter.module_accessor);
-                lua_bind::KineticEnergyNormal::set_accel(stop_energy as *mut smash::app::KineticEnergyNormal, &Vector2f { x: 0.0, y: 0.0 });
-                lua_bind::KineticEnergyNormal::set_brake(stop_energy as *mut smash::app::KineticEnergyNormal, &Vector2f { x: fighter.get_param_float("param_special_s", "ab_u_shooting_brake_speed_x"), y: 0.0 });
-                lua_bind::KineticEnergyNormal::set_stable_speed(stop_energy as *mut smash::app::KineticEnergyNormal, &Vector2f { x: fighter.get_param_float("param_special_s", "ab_u_shooting_stable_speed_x"), y: 0.0 });
-                lua_bind::KineticEnergyNormal::set_limit_speed(stop_energy as *mut smash::app::KineticEnergyNormal, &Vector2f { x: -1.0, y: -1.0 });
+                lua_bind::KineticEnergy::reset_energy(stop_energy as _, *ENERGY_STOP_RESET_TYPE_AIR, &Vector2f { x: x_reset * initial_x, y: 0.0 }, &Vector3f::zero(), fighter.module_accessor);
+                lua_bind::KineticEnergyNormal::set_accel(stop_energy as *mut app::KineticEnergyNormal, &Vector2f { x: 0.0, y: 0.0 });
+                lua_bind::KineticEnergyNormal::set_brake(stop_energy as *mut app::KineticEnergyNormal, &Vector2f { x: fighter.get_param_float("param_special_s", "ab_u_shooting_brake_speed_x"), y: 0.0 });
+                lua_bind::KineticEnergyNormal::set_stable_speed(stop_energy as *mut app::KineticEnergyNormal, &Vector2f { x: fighter.get_param_float("param_special_s", "ab_u_shooting_stable_speed_x"), y: 0.0 });
+                lua_bind::KineticEnergyNormal::set_limit_speed(stop_energy as *mut app::KineticEnergyNormal, &Vector2f { x: -1.0, y: -1.0 });
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
                 //motion to gravity
-                app::lua_bind::KineticEnergy::reset_energy(gravity_energy as _, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &Vector2f { x: 0.0, y: initial_y }, &Vector3f::zero(), fighter.module_accessor);
-                smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(gravity_energy as *mut FighterKineticEnergyGravity, -fighter.get_param_float("param_special_s", "ab_u_shooting_accel_y"));
-                smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(gravity_energy as *mut FighterKineticEnergyGravity, fighter.get_param_float("param_special_s", "ab_u_shooting_max_speed_y"));
+                lua_bind::KineticEnergy::reset_energy(gravity_energy as _, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &Vector2f { x: 0.0, y: initial_y }, &Vector3f::zero(), fighter.module_accessor);
+                lua_bind::FighterKineticEnergyGravity::set_accel(gravity_energy as *mut app::FighterKineticEnergyGravity, -fighter.get_param_float("param_special_s", "ab_u_shooting_accel_y"));
+                lua_bind::FighterKineticEnergyGravity::set_stable_speed(gravity_energy as *mut app::FighterKineticEnergyGravity, fighter.get_param_float("param_special_s", "ab_u_shooting_max_speed_y"));
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
                 fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK);
@@ -161,7 +161,7 @@ unsafe extern "C" fn bullet_movement(fighter: &mut L2CFighterCommon) -> L2CValue
         }
     } else if fighter.get_int(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_INT_STEP) == *FIGHTER_BAYONETTA_SHOOTING_STEP_SHOOTING { //shooting 
         if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SHOOTING_STEP) != *FIGHTER_BAYONETTA_SHOOTING_STEP_SHOOTING {
-            let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut KineticEnergy;
+            let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
             let speed = Vector2f{
                 x: lua_bind::KineticEnergy::get_speed_x(stop_energy),
                 y: lua_bind::KineticEnergy::get_speed_y(stop_energy)

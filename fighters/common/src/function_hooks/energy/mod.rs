@@ -1,3 +1,5 @@
+#![allow(improper_ctypes_definitions)]
+
 use super::*;
 mod control;
 mod motion;

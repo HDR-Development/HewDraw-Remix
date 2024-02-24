@@ -145,7 +145,7 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
 }
 // Sets GroundCollisionLine
 #[skyline::hook(offset = 0x52d920)]
-unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut smash::phx::Vector2f, ecb_bottom_translation: *mut smash::phx::Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
+unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut Vector2f, ecb_bottom_translation: *mut Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
     if *((groundcollision + 0x39f) as *mut bool) {
         // Ignore ground collision
         return 0 as *mut GroundCollisionLine;

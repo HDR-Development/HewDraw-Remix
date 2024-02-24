@@ -161,7 +161,7 @@ unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
@@ -198,7 +198,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     zippy_zap_jump_cancel(boma, status_kind, situation_kind, cat[0]);
     charge_training_taunt(fighter, boma, status_kind);
     jc_agility(boma);
-    pichu_meter(fighter);
 }
 
 pub extern "C" fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -217,5 +216,6 @@ pub unsafe fn pichu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn install() {
     smashline::Agent::new("pichu")
         .on_line(Main, pichu_frame_wrapper)
+        .on_line(Exec, pichu_meter)
         .install();
 }

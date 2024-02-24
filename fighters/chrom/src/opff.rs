@@ -181,10 +181,10 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn double_edge_dance_vertical_momentum(fighter: &mut L2CFighterCommon){
-    let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+    let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && fighter.is_situation(*SITUATION_KIND_AIR) {
-        smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
-        smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
+        lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
+        lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
     }
 
     if fighter.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED) {

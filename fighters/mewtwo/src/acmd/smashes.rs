@@ -93,7 +93,7 @@ unsafe extern "C" fn mewtwo_attack_hi4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 368, 100, 90, 0, 3.0, 0.0, 11.7, -6.0, Some(0.0), Some(11.7), Some(7.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
         ATTACK(fighter, 4, 0, Hash40::new("top"), 2.0, 368, 100, 90, 0, 4.0, 0.0, 5.2, -6.5, Some(0.0), Some(5.2), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        let hit1 = smash::phx::Vector2f { x: 0.0, y: 24.0 };
+        let hit1 = Vector2f { x: 0.0, y: 24.0 };
         AttackModule::set_vec_target_pos(boma, 2, Hash40::new("top"), &hit1, 7, false);
         AttackModule::set_vec_target_pos(boma, 4, Hash40::new("top"), &hit1, 7, false);
     }

@@ -136,7 +136,7 @@ unsafe extern "C" fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         KineticModule::suspend_energy(boma,*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 
-        let speed = smash::phx::Vector3f { x: 0.0, y: -3.75, z: 0.0 };
+        let speed = Vector3f { x: 0.0, y: -3.75, z: 0.0 };
         KineticModule::add_speed(boma, &speed);
 
         ATTACK_IGNORE_THROW(fighter, 1, 0, Hash40::new("rot"), 8.0*factorPower, 50, 70, 0, 100, 6.0*factorSize, 0.0, 0.0, 0.0, Some(0.0), Some(2.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);

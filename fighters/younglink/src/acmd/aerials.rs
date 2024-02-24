@@ -161,7 +161,7 @@ unsafe extern "C" fn attack_air_lw2_bounce(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let bounce_speed = smash::phx::Vector3f {x: 0.0, y: 1.8, z: 0.0};
+        let bounce_speed = Vector3f {x: 0.0, y: 1.8, z: 0.0};
         KineticModule::add_speed(boma, &bounce_speed);
     }
 }

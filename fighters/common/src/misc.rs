@@ -236,9 +236,11 @@ unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
             let speed_x = KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed_y = KineticModule::get_sum_speed_y(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             // lets make sure not to divide by zero
-            let speed_x_adjust = match speed_x {
-                0.0 => 0.01,
-                _ => 0.0
+            let speed_x_adjust = if speed_x == 0.0 {
+                0.01
+            }
+            else {
+                0.0
             };
             let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
 

@@ -54,7 +54,7 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_ground = GroundModule::ray_check(
             fighter.module_accessor, 
-            &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor) + ((charge_distance + 12.0) * lr), y: PostureModule::pos_y(fighter.module_accessor)}, 
+            &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor) + ((charge_distance + 12.0) * lr), y: PostureModule::pos_y(fighter.module_accessor)}, 
             &Vector2f{ x: 0.0, y: -6.0}, true
         ) == 1;
         if fighter.motion_frame() < 3.0 {

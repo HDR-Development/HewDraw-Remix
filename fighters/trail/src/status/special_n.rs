@@ -127,19 +127,19 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
         // let mut y_string = aerial_y_speed.to_string();
         // println!("Pre X: {}" , x_string);
         // println!("Pre Y: {}" , y_string);
-        let mut reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: 0.0 };
-        let mut reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: 0.0 };
-        let mut reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-        let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut KineticEnergy;
-        let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut KineticEnergy;
-        smash::app::lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
-        smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
-        smash::app::lua_bind::KineticEnergy::enable(stop_energy);
-        smash::app::lua_bind::KineticEnergy::enable(gravity_energy);
+        let mut reset_speed_2f = Vector2f { x: aerial_x_speed, y: 0.0 };
+        let mut reset_speed_gravity_2f = Vector2f { x: 0.0, y: 0.0 };
+        let mut reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
+        let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::KineticEnergy;
+        lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
+        lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
+        lua_bind::KineticEnergy::enable(stop_energy);
+        lua_bind::KineticEnergy::enable(gravity_energy);
         // Don't allow drift during the move and set accelleration to slow descent
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
-        smash::app::lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
+        lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
+        lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
         // Keep accelleration
         sv_kinetic_energy!(controller_set_accel_x_mul, fighter, aerial_x_speed);
         // Bounds here were made based off testing, may need tweaking if not getting float effect

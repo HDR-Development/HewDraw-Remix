@@ -256,7 +256,7 @@ unsafe extern "C" fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 		if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
 			let pos_x = PostureModule::pos_x(boma);
 			let pos_y = PostureModule::pos_y(boma);
-			let pos = smash::phx::Vector3f { x: pos_x + 35.2 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
+			let pos = Vector3f { x: pos_x + 35.2 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
 			PostureModule::set_pos(boma, &pos);
 			VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
 		}

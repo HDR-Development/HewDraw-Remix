@@ -48,6 +48,7 @@ pub fn count_vtable_length(address: *const *const u64) -> usize {
     count
 }
 
+#[allow(dropping_references)]
 pub fn recreate_vtable_with_space(address: *const *const u64) -> *mut *mut u64 {
     let vtable_length = count_vtable_length(address);
     let current_vtable = unsafe {

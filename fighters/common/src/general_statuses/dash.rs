@@ -108,7 +108,7 @@ unsafe fn status_Dash_sub(fighter: &mut L2CFighterCommon) {
 }
 
 macro_rules! interrupt {
-    () => { return L2CValue::I32(1); };
+    () => { return L2CValue::I32(1) };
     ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
 }
 
@@ -124,7 +124,7 @@ macro_rules! interrupt_if {
 }
 
 macro_rules! ok {
-    () => { return L2CValue::I32(0); };
+    () => { return L2CValue::I32(0) };
 }
 
 macro_rules! ok_if {
