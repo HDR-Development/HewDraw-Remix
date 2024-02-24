@@ -16,4 +16,5 @@ pub fn install() {
     specials::install();
     throws::install();
     ground::install();
+    finals::install();
 }
