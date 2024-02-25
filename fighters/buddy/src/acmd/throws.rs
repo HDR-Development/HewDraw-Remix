@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "buddy", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,8 +24,7 @@ unsafe fn buddy_throw_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "buddy", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -53,8 +51,7 @@ unsafe fn buddy_throw_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "buddy", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -84,8 +81,7 @@ unsafe fn buddy_throw_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "buddy", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 10.0, 7.0);
@@ -106,8 +102,7 @@ unsafe fn buddy_throw_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "buddy", script = "effect_throwlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn buddy_throw_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -129,8 +124,7 @@ unsafe fn buddy_throw_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_throwlw" , category = ACMD_SOUND , low_priority)]
-unsafe fn buddy_throw_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_throw_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -153,12 +147,12 @@ unsafe fn buddy_throw_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        buddy_throw_f_game,
-        buddy_throw_b_game,
-        buddy_throw_hi_game,
-        buddy_throw_lw_game,
-        buddy_throw_lw_effect,
-        buddy_throw_lw_sound,
-    );
+    smashline::Agent::new("buddy")
+        .acmd("game_throwf", buddy_throw_f_game)
+        .acmd("game_throwb", buddy_throw_b_game)
+        .acmd("game_throwhi", buddy_throw_hi_game)
+        .acmd("game_throwlw", buddy_throw_lw_game)
+        .acmd("effect_throwlw", buddy_throw_lw_effect)
+        .acmd("sound_throwlw", buddy_throw_lw_sound)
+        .install();
 }

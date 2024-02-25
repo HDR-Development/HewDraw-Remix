@@ -40,14 +40,11 @@ def create_diff(zip1: str, zip2: str, output_name: str):
             for file in changed_files:
                 zip2.extract(file, "diff")
 
-
     shutil.make_archive(output_name, 'zip', 'diff')
 
     
     with open('deletions.json', "w") as deletions_file:
         deletions_file.write(deletions_text)
-
-
 
 if __name__ == '__main__':
     print("diffing zips")

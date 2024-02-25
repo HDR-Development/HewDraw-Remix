@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "wiifit", script = "game_specialsheading" , category = ACMD_GAME , low_priority)]
-unsafe fn wiifit_special_s_heading_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wiifit_special_s_heading_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,7 +34,7 @@ unsafe fn wiifit_special_s_heading_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wiifit_special_s_heading_game,
-    );
+    smashline::Agent::new("wiifit")
+        .acmd("game_specialsheading", wiifit_special_s_heading_game)
+        .install();
 }

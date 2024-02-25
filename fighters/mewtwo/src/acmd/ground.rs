@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "mewtwo", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -39,8 +37,7 @@ unsafe fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -56,8 +53,7 @@ unsafe fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -83,8 +79,7 @@ unsafe fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mewtwo_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -104,11 +99,10 @@ unsafe fn mewtwo_attack_dash_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attack_11_game,
-        mewtwo_attack_100_end_game,
-        mewtwo_attack_dash_game,
-        mewtwo_attack_dash_effect
-    );
+    smashline::Agent::new("mewtwo")
+        .acmd("game_attack11", mewtwo_attack_11_game)
+        .acmd("game_attack100end", mewtwo_attack_100_end_game)
+        .acmd("game_attackdash", mewtwo_attack_dash_game)
+		.acmd("effect_attackdash", mewtwo_attack_dash_effect)
+        .install();
 }
-

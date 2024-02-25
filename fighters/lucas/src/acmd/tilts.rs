@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "lucas", scripts = ["game_attacks3lw", "game_attacks3", "game_attacks3hi"], category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -28,8 +26,7 @@ unsafe fn lucas_attack_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucas", scripts = ["effect_attacks3lw", "effect_attacks3", "effect_attacks3hi"], category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_s3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -54,8 +51,7 @@ unsafe fn lucas_attack_s3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", scripts = ["expression_attacks3lw", "expression_attacks3", "expression_attacks3hi"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucas_attack_s3_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_s3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,13 +63,12 @@ unsafe fn lucas_attack_s3_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -99,8 +94,7 @@ unsafe fn lucas_attack_hi3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -126,8 +120,7 @@ unsafe fn lucas_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucas", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 3.0, 4.0);
@@ -146,8 +139,7 @@ unsafe fn lucas_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -173,14 +165,19 @@ unsafe fn lucas_attack_lw3_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucas_attack_s3_game,
-        lucas_attack_s3_effect,
-        lucas_attack_s3_expression,
-        lucas_attack_hi3_game,
-        lucas_attack_hi3_effect,
-        lucas_attack_lw3_game,
-        lucas_attack_lw3_effect,
-    );
+    smashline::Agent::new("lucas")
+        .acmd("game_attacks3lw", lucas_attack_s3_game)
+        .acmd("game_attacks3", lucas_attack_s3_game)
+        .acmd("game_attacks3hi", lucas_attack_s3_game)
+        .acmd("effect_attacks3lw", lucas_attack_s3_effect)
+        .acmd("effect_attacks3", lucas_attack_s3_effect)
+        .acmd("effect_attacks3hi", lucas_attack_s3_effect)
+        .acmd("expression_attacks3lw", lucas_attack_s3_expression)
+        .acmd("expression_attacks3", lucas_attack_s3_expression)
+        .acmd("expression_attacks3hi", lucas_attack_s3_expression)
+        .acmd("game_attackhi3", lucas_attack_hi3_game)
+        .acmd("effect_attackhi3", lucas_attack_hi3_effect)
+        .acmd("game_attacklw3", lucas_attack_lw3_game)
+        .acmd("effect_attacklw3", lucas_attack_lw3_effect)
+        .install();
 }
-

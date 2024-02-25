@@ -38,10 +38,10 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
+pub fn install() {
     acmd::install();
     status::install();
-    opff::install(is_runtime);
+    opff::install();
 
     // NOPs nana's change_status call (inner impl) to the FIGHTER_POPO_STATUS_KIND_THROW_NANA status when buffered
     skyline::patching::Patch::in_text(0xfb6434).nop();

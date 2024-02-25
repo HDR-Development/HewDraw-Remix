@@ -1,7 +1,7 @@
 
 use super::*;
-#[acmd_script( agent = "jack", script = "game_specialairndown", category = ACMD_GAME, low_priority )]
-unsafe fn jack_special_airn_down_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn jack_special_airn_down_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -60,8 +60,7 @@ unsafe fn jack_special_airn_down_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "jack", script = "game_specialhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,8 +110,7 @@ unsafe fn jack_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -184,8 +182,7 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 20.0);
@@ -200,7 +197,7 @@ unsafe fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 21.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 26.0);
@@ -210,8 +207,7 @@ unsafe fn jack_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairhif" , category = ACMD_GAME , low_priority)]
-unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -227,12 +223,11 @@ unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        jack_special_airn_down_game,
-        jack_special_hi_game,
-        jack_special_air_hi_game,
-        jack_special_air_hi_effect,
-        jack_special_air_hi_f_game,
-    );
+    smashline::Agent::new("jack")
+        .acmd("game_specialairndown", jack_special_airn_down_game)
+        .acmd("game_specialhi", jack_special_hi_game)
+        .acmd("game_specialairhi", jack_special_air_hi_game)
+        .acmd("effect_specialairhi", jack_special_air_hi_effect)
+        .acmd("game_specialairhif", jack_special_air_hi_f_game)
+        .install();
 }
-

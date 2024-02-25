@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "dolly", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +76,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +91,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +116,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -132,8 +126,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_dashb" , category = ACMD_SOUND , low_priority)]
-unsafe fn dashb_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dashb_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -143,8 +136,7 @@ unsafe fn dashb_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -158,8 +150,7 @@ unsafe fn dolly_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_escapeattack" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_escape_attack_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_escape_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -220,8 +211,7 @@ unsafe fn dolly_escape_attack_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -247,8 +237,7 @@ unsafe fn dolly_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_catch_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -269,8 +258,7 @@ unsafe fn dolly_catch_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_catch_turn_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -291,8 +279,7 @@ unsafe fn dolly_catch_turn_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_landingfallspecial" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_landing_fall_special_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_landing_fall_special_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -304,8 +291,7 @@ unsafe fn dolly_landing_fall_special_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly_burst", script = "game_superspecial" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_burst_super_special_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_burst_super_special_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -323,8 +309,7 @@ unsafe fn dolly_burst_super_special_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly_burst", script = "game_final3" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_burst_final3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_burst_final3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -354,8 +339,7 @@ unsafe fn dolly_burst_final3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dolly_wave", script = "game_hit" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_wave_hit_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_wave_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -364,8 +348,7 @@ unsafe fn dolly_wave_hit_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -380,8 +363,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -396,25 +378,28 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_sound,
-        dashb_sound,
-        dolly_escape_attack_game,
-		dolly_turn_dash_game,
-        dolly_catch_game,
-        dolly_catch_dash_game,
-        dolly_catch_turn_game,
-        dolly_landing_fall_special_game,
-        dolly_wave_hit_game,
-        dolly_burst_super_special_game,
-        dolly_burst_final3_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
+    smashline::Agent::new("dolly")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("sound_dash", dash_sound)
+        .acmd("sound_dashb", dashb_sound)
+        .acmd("game_turndash", dolly_turn_dash_game)
+        .acmd("game_escapeattack", dolly_escape_attack_game)
+        .acmd("game_catch", dolly_catch_game)
+        .acmd("game_catchdash", dolly_catch_dash_game)
+        .acmd("game_catchturn", dolly_catch_turn_game)
+        .acmd("game_landingfallspecial", dolly_landing_fall_special_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("dolly_burst")
+        .acmd("game_superspecial", dolly_burst_super_special_game)
+        .acmd("game_final3", dolly_burst_final3_game)
+        .install();
+    smashline::Agent::new("dolly_wave")
+        .acmd("game_hit", dolly_wave_hit_game)
+        .install();
 }
-

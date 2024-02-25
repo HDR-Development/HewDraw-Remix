@@ -1,11 +1,14 @@
 use smash::app::lua_bind::*;
 use smash::app::*;
+use smash::phx::*;
 use smash::hash40;
 use smash::lib::lua_const::*;
 use smash::lua2cpp::*;
 use utils::consts::*;
 use utils::ext::*;
 use utils::*;
+use utils::game_modes::CustomMode;
+use smashline::*;
 
 use globals::*;
 
@@ -79,7 +82,12 @@ unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    smashline::install_agent_resets!(fighter_reset);
+    smashline::Agent::new("fighter")
+        .on_start(fighter_reset)
+        .on_line(Main, turbo_mode)
+        .on_line(Main, hitfall_mode)
+        .on_line(Main, airdash_mode)
+        .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
     // skyline::patching::Patch::in_text(0x6285d0).nop();
     skyline::install_hooks!(
@@ -93,9 +101,10 @@ pub fn install() {
         ptrainer_stub_death_switch,
         // shield_damage_analog,
         // shield_pushback_analog
-        // set_hit_team_hook,
+        //set_hit_team_hook,
         hero_rng_hook,
         psych_up_hit,
+        donkey_link_event,
         krool_belly_damage_hook,
     );
 }
@@ -152,8 +161,7 @@ unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i3
     }
 }
 
-#[smashline::fighter_reset]
-pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
+pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let ratio =
             (WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0)
@@ -171,6 +179,90 @@ pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
         }
     }
 
+}
+
+pub extern "C" fn turbo_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::TurboMode) {
+                    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                        // enable turbo behavior
+                        CancelModule::enable_cancel(fighter.boma());
+                        //println!("enabled cancelling!");
+                
+                        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                            fighter.sub_wait_ground_check_common(false.into());
+                        } else {
+                            fighter.sub_air_check_fall_common();
+                        }
+                    }
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+pub extern "C" fn hitfall_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::HitfallMode) {
+                    fighter.check_hitfall();
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+pub extern "C" fn airdash_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::AirdashMode) {
+                    check_airdash(fighter);
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+        if fighter.status_frame() < 1 {
+            let speed_x = KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            let speed_y = KineticModule::get_sum_speed_y(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            // lets make sure not to divide by zero
+            let speed_x_adjust = if speed_x == 0.0 {
+                0.01
+            }
+            else {
+                0.0
+            };
+            let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
+
+            let pos = Vector3f { x: 0., y: 3., z: 0.};
+            let mut rot = Vector3f { x:0., y:0., z: (90. + 180. * angle/3.14159)};
+
+            if speed_x > 0. {
+                EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }
+            else{
+                rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
+                EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }
+        }
+
+        CancelModule::enable_cancel(fighter.boma());
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            fighter.sub_air_check_fall_common();
+        }
+    }
 }
 
 extern "C" {
@@ -191,6 +283,27 @@ extern "C" {
 #[skyline::hook(replace = special_lw_open_command)]
 pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
     hero_rng_hook_impl(fighter);
+}
+
+#[skyline::hook(offset = 0x993ee0)]
+pub unsafe extern "C" fn donkey_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash2::app::LinkEvent) -> u64 {
+    // param_3 + 0x10
+    if event.link_event_kind.0 == hash40("capture") {
+        // println!("hi");
+        let capture_event : &mut smash2::app::LinkEventCapture = std::mem::transmute(event);
+        let module_accessor = fighter.battle_object.module_accessor;
+        if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+            // param_3[0x28]
+            capture_event.result = true;
+            // capture_event.constraint = false;
+            // param_3 + 0x30
+            capture_event.node = smash2::phx::Hash40::new("throw");
+            StatusModule::change_status_request(module_accessor, *FIGHTER_STATUS_KIND_CATCH_PULL, false);
+            return 0;
+        }
+        return 1;
+    }
+    original!()(vtable, fighter, event)
 }
 
 #[skyline::hook(offset = 0x853e10)]

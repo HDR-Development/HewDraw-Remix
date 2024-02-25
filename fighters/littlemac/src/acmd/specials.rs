@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "littlemac", scripts = ["game_specialnstart", "game_specialairnstart"] , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -14,8 +13,7 @@ unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["game_specialncancel", "game_specialairncancel"] , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -24,29 +22,25 @@ unsafe fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["effect_specialncancel", "effect_specialairncancel"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["sound_specialncancel", "sound_specialairncancel"] , category = ACMD_SOUND , low_priority)]
-unsafe fn littlemac_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["expression_specialncancel", "expression_specialairncancel"] , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn littlemac_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["game_specialn2", "game_specialairn2"] , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -97,8 +91,7 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["effect_specialn2", "effect_specialairn2"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
@@ -149,8 +142,7 @@ unsafe fn littlemac_special_n2_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["sound_specialn2", "sound_specialairn2"] , category = ACMD_SOUND , low_priority)]
-unsafe fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -198,8 +190,7 @@ unsafe fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "littlemac", scripts = ["expression_specialn2", "expression_specialairn2"] , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn littlemac_special_n2_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_n2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -228,8 +219,7 @@ unsafe fn littlemac_special_n2_expression(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "littlemac", script = "game_specialsjump", category = ACMD_GAME, low_priority)]
-unsafe fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -265,8 +255,7 @@ unsafe fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_specialairsblow" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -293,8 +282,7 @@ unsafe fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_specialairsblow" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_special_air_s_blow_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_air_s_blow_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -309,8 +297,7 @@ unsafe fn littlemac_special_air_s_blow_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -324,8 +311,7 @@ unsafe fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -341,8 +327,7 @@ unsafe fn littlemac_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -391,21 +376,30 @@ unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        littlemac_special_n_start_game,
-        littlemac_special_n_cancel_game,
-        littlemac_special_n_cancel_effect,
-        littlemac_special_n_cancel_sound,
-        littlemac_special_n_cancel_expression,
-        littlemac_special_n2_game,
-        littlemac_special_n2_effect,
-        littlemac_special_n2_sound,
-        littlemac_special_n2_expression,
-        littlemac_special_s_jump_game,
-        littlemac_special_air_s_blow_game,
-        littlemac_special_air_s_blow_effect,
-        littlemac_special_air_hi_start_game,
-        littlemac_special_hi_start_game,
-        littlemac_special_hi_game,
-    );
+    smashline::Agent::new("littlemac")
+        .acmd("game_specialnstart", littlemac_special_n_start_game)
+        .acmd("game_specialairnstart", littlemac_special_n_start_game)
+        .acmd("game_specialncancel", littlemac_special_n_cancel_game)
+        .acmd("game_specialairncancel", littlemac_special_n_cancel_game)
+        .acmd("effect_specialncancel", littlemac_special_n_cancel_effect)
+        .acmd("effect_specialairncancel", littlemac_special_n_cancel_effect)
+        .acmd("sound_specialncancel", littlemac_special_n_cancel_sound)
+        .acmd("sound_specialairncancel", littlemac_special_n_cancel_sound)
+        .acmd("expression_specialncancel", littlemac_special_n_cancel_expression)
+        .acmd("expression_specialairncancel", littlemac_special_n_cancel_expression)
+        .acmd("game_specialn2", littlemac_special_n2_game)
+        .acmd("game_specialairn2", littlemac_special_n2_game)
+        .acmd("effect_specialn2", littlemac_special_n2_effect)
+        .acmd("effect_specialairn2", littlemac_special_n2_effect)
+        .acmd("sound_specialn2", littlemac_special_n2_sound)
+        .acmd("sound_specialairn2", littlemac_special_n2_sound)
+        .acmd("expression_specialn2", littlemac_special_n2_expression)
+        .acmd("expression_specialairn2", littlemac_special_n2_expression)
+        .acmd("game_specialsjump", littlemac_special_s_jump_game)
+        .acmd("game_specialairsblow", littlemac_special_air_s_blow_game)
+        .acmd("effect_specialairsblow", littlemac_special_air_s_blow_effect)
+        .acmd("game_specialhistart", littlemac_special_hi_start_game)
+        .acmd("game_specialairhistart", littlemac_special_air_hi_start_game)
+        .acmd("game_specialhi", littlemac_special_hi_game)
+        .install();
 }

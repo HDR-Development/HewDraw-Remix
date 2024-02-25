@@ -91,8 +91,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_EDGE )]
-pub fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		edge_frame(fighter)
@@ -105,9 +104,7 @@ pub unsafe fn edge_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-
-#[smashline::weapon_frame_callback(main)]
-pub fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_EDGE_FLAREDUMMY {
             return
@@ -128,4 +125,13 @@ pub fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             }
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("edge")
+        .on_line(Main, edge_frame_wrapper)
+        .install();
+    smashline::Agent::new("edge_flaredummy")
+        .on_line(Main, shadowflare_orb_callback)
+        .install();
 }

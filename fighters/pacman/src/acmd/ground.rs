@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script(agent = "pacman", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -31,9 +29,7 @@ unsafe fn pacman_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script(agent = "pacman", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -52,8 +48,7 @@ unsafe fn pacman_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "pikmin", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -67,9 +62,7 @@ unsafe fn pacman_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "pacman", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     wait(lua_state, 3.0);
@@ -100,11 +93,12 @@ unsafe fn pacman_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pacman_attack_11_game,
-        pacman_attack_12_game,
-        pacman_attack_13_game,
-        pacman_attack_dash_game,
-    );
+    smashline::Agent::new("pacman")
+        .acmd("game_attack11", pacman_attack_11_game)
+        .acmd("game_attack12", pacman_attack_12_game)
+        .acmd("game_attackdash", pacman_attack_dash_game)
+        .install();
+    smashline::Agent::new("pikmin")
+        .acmd("game_attack13", pacman_attack_13_game)
+        .install();
 }
-

@@ -2,15 +2,6 @@ use super::*;
 use globals::*;
 // status script import
  
-pub fn install() {
-    install_status_scripts!(
-        pre_jump,
-        jump,
-        attack_air,
-        init_special_s
-    );
-    smashline::install_agent_init_callbacks!(murabito_init);
-}
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -30,8 +21,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn murabito_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn murabito_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_MURABITO {
@@ -43,16 +33,14 @@ fn murabito_init(fighter: &mut L2CFighterCommon) {
 
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-#[status_script(agent = "murabito", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::murabito::instance::DISABLE_SPECIAL_S);
     0.into()
 }
 
 // FIGHTER_STATUS_KIND_JUMP //
 
-#[status_script(agent = "murabito", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE {
         if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE_LOOP {
             if !fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool() {
@@ -79,8 +67,7 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     return L2CValue::I32(0);
 }
 
-#[status_script(agent = "murabito", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE_LOOP {
         fighter.sub_jump_item_rocketbelt();
         fighter.status_Jump_sub(L2CValue::Hash40s("invalid"), L2CValue::F32(0.0));
@@ -97,8 +84,7 @@ pub unsafe fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR
 
-#[status_script(agent = "murabito", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if [hash40("attack_air_hi")].contains(&motion) {
@@ -129,4 +115,14 @@ pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_SHOOT_NUM);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
+}
+
+pub fn install() {
+    smashline::Agent::new("murabito")
+        .on_start(murabito_init)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
+        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
+        .status(Main, *FIGHTER_STATUS_KIND_JUMP, jump)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
+        .install();
 }

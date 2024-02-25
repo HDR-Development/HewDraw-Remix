@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "richter", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -25,8 +23,7 @@ unsafe fn richter_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "richter", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn richter_attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -38,14 +35,13 @@ unsafe fn richter_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_attack_dash_game,
-        richter_attack_dash_expression
-    );
+    smashline::Agent::new("richter")
+        .acmd("game_attackdash", richter_attack_dash_game)
+        .acmd("expression_attackdash", richter_attack_dash_expression)
+        .install();
 }
-

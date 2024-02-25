@@ -37,8 +37,7 @@ use utils::{
 };
 use smashline::*;
 
-#[fighter_reset]
-fn reflet_reset(fighter: &mut L2CFighterCommon) {
+extern "C" fn reflet_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_REFLET {
@@ -47,8 +46,7 @@ fn reflet_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_init]
-fn reflet_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn reflet_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.global_table[globals::FIGHTER_KIND] != FIGHTER_KIND_REFLET {
         return;
@@ -57,14 +55,12 @@ fn reflet_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install(is_runtime: bool) {
-    if is_runtime {
-        utils::singletons::init();
-    }
-
-    smashline::install_agent_resets!(reflet_reset);
-    smashline::install_agent_init_callbacks!(reflet_init);
+pub fn install() {
     acmd::install();
     status::install();
-    opff::install(is_runtime);
+    opff::install();
+    smashline::Agent::new("reflet")
+        .on_start(reflet_reset)
+        .on_start(reflet_init)
+        .install();
 }

@@ -1,8 +1,9 @@
+#![allow(improper_ctypes_definitions)]
+
 use super::*;
 mod control;
 mod motion;
 mod stop;
-
 
 #[repr(C)]
 pub struct KineticEnergyVTable {
@@ -71,7 +72,6 @@ pub struct KineticEnergy {
     pub _x83: u8,
     pub energy_reset_type: u32,
 }
-
 
 #[repr(simd)]
 pub struct Vec2 {

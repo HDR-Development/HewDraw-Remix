@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "master", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -26,8 +24,7 @@ unsafe fn master_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "master", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -54,9 +51,7 @@ unsafe fn master_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "master", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -70,9 +65,7 @@ unsafe fn master_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "master", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -99,8 +92,7 @@ unsafe fn master_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "master", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -138,12 +130,11 @@ unsafe fn master_attack_dash_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        master_attack_11_game,
-        master_attack_12_game,
-        master_attack_13_game,
-        master_attack_dash_game,
-        master_attack_dash_effect,
-    );
+    smashline::Agent::new("master")
+        .acmd("game_attack11", master_attack_11_game)
+        .acmd("game_attack12", master_attack_12_game)
+        .acmd("game_attack13", master_attack_13_game)
+        .acmd("game_attackdash", master_attack_dash_game)
+        .acmd("effect_attackdash", master_attack_dash_effect)
+        .install();
 }
-
