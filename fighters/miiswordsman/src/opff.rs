@@ -194,8 +194,6 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
-
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -280,8 +278,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_MIISWORDSMAN )]
-pub fn miiswordsman_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn miiswordsman_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		miiswordsman_frame(fighter)
@@ -294,9 +291,17 @@ pub unsafe fn miiswordsman_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon)
     }
 }
 
-#[weapon_frame( agent = WEAPON_KIND_MIISWORDSMAN_TORNADOSHOT )]
-pub fn tornadoshot_frame(weapon: &mut L2CFighterBase) {
+pub extern "C" fn tornadoshot_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         ModelModule::set_joint_scale(weapon.module_accessor, Hash40::new("top"), &Vector3f::new(0.6, 0.6, 0.6));
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("miiswordsman")
+        .on_line(Main, miiswordsman_frame_wrapper)
+        .install();
+    smashline::Agent::new("miiswordsman_tornadoshot")
+        .on_line(Main, tornadoshot_frame)
+        .install();
 }

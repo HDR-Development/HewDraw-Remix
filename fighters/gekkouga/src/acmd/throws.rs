@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "gekkouga", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -23,8 +22,7 @@ unsafe fn gekkouga_throw_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gekkouga", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn gekkouga_throw_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_throw_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -37,8 +35,7 @@ unsafe fn gekkouga_throw_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -64,9 +61,9 @@ unsafe fn gekkouga_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_throw_f_game,
-        gekkouga_throw_f_expression,
-        gekkouga_throw_lw_game,
-    );
+    smashline::Agent::new("gekkouga")
+        .acmd("game_throwf", gekkouga_throw_f_game)
+        .acmd("expression_throwf", gekkouga_throw_f_expression)
+        .acmd("game_throwlw", gekkouga_throw_lw_game)
+        .install();
 }

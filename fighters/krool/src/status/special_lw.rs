@@ -1,8 +1,7 @@
 use super::*;
 
-#[status_script(agent = "krool", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_lw_main_old(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.change_to_custom_status(statuses::krool::SPECIAL_LW_GUT, true, false);
+    fighter.change_status(statuses::krool::SPECIAL_LW_GUT.into(), true.into());
    
     0.into()
 }
@@ -112,14 +111,11 @@ unsafe extern "C" fn special_lw_change_motion(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_lw_main_old,
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_krool"),
-        statuses::krool::SPECIAL_LW_GUT,
-        StatusInfo::new()
-            .with_pre(special_lw_pre)
-            .with_main(special_lw_main)
-    );
+    smashline::Agent::new("krool")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main_old)
+        .install();
+    smashline::Agent::new("krool")
+        .status(Pre, statuses::krool::SPECIAL_LW_GUT, special_lw_pre)
+        .status(Main, statuses::krool::SPECIAL_LW_GUT, special_lw_main)
+        .install();
 }

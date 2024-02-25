@@ -34,8 +34,7 @@ use super::*;
 //     }
 // }
 
-#[acmd_script( agent = "samusd", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -90,8 +89,7 @@ unsafe fn samusd_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_special_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -135,8 +133,7 @@ unsafe fn samusd_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -168,8 +165,7 @@ unsafe fn samusd_special_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -190,11 +186,10 @@ unsafe fn samusd_special_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        samusd_special_hi_game,
-        samusd_special_air_hi_game,
-        samusd_special_lw_game,
-        samusd_special_air_lw_game,
-    );
+    smashline::Agent::new("samusd")
+        .acmd("game_specialhi", samusd_special_hi_game)
+        .acmd("game_specialairhi", samusd_special_air_hi_game)
+        .acmd("game_speciallw", samusd_special_lw_game)
+        .acmd("game_specialairlw", samusd_special_air_lw_game)
+        .install();
 }
-

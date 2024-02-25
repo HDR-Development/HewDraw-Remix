@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "diddy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -19,8 +17,7 @@ unsafe fn diddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "diddy", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -38,9 +35,8 @@ unsafe fn diddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_attack_hi3_game,
-        diddy_attack_lw3_game,
-    );
+    smashline::Agent::new("diddy")
+        .acmd("game_attackhi3", diddy_attack_hi3_game)
+        .acmd("game_attacklw3", diddy_attack_lw3_game)
+        .install();
 }
-

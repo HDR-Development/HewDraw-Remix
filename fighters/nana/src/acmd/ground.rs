@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "nana", script = "game_attack11_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn nana_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -28,8 +26,7 @@ unsafe fn nana_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "nana", script = "game_attackdash_nana" , category = ACMD_GAME , low_priority)]
-unsafe fn nana_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn nana_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -50,9 +47,8 @@ unsafe fn nana_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        nana_attack_11_game,
-        nana_attack_dash_game,
-    );
+    smashline::Agent::new("nana")
+        .acmd("game_attack11_nana", nana_attack_11_game)
+        .acmd("game_attackdash_nana", nana_attack_dash_game)
+        .install();
 }
-

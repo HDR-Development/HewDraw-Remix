@@ -1,34 +1,33 @@
 
 use super::*;
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_spsremved", "game_spsremved_b","game_spsremved_v","game_spsremved_w","game_spsremved_y",   "game_splwairrespond", "game_splwairrespond_b","game_splwairrespond_v","game_splwairrespond_w","game_splwairrespond_y"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_spsremved(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_spsremved(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        let dmg = 4.8;
-        // special case for yellow pikmin
-        // reduces the length of the paralyze effect
-        let hitlag = if variation == 1 {
-            0.4
-        } else {
-            1.0
-        };
-        ATTACK(fighter, 0, 0, Hash40::new("waist"), dmg * p.dmg, 90, 105, 0, 65, 6.0, 0.0, 0.0, 0.0, None, None, None, hitlag * p.hitlag, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        fighter.change_status_req(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_DEATH.into(), false.into());
+    if VarModule::is_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE) {
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            let dmg = 4.8;
+            // special case for yellow pikmin
+            // reduces the length of the paralyze effect
+            let hitlag = if variation == 1 {
+                0.4
+            } else {
+                1.0
+            };
+            ATTACK(fighter, 0, 0, Hash40::new("waist"), dmg * p.dmg, 90, 105, 0, 65, 6.0, 0.0, 0.0, 0.0, None, None, None, hitlag * p.hitlag, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr_special, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        }
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            fighter.change_status_req(WEAPON_PIKMIN_PIKMIN_STATUS_KIND_DEATH.into(), false.into());
+        }
     }
 }
 
-
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_spntakenoutstart", "game_spntakenoutstart_y", "game_spntakenoutstart_b", "game_spntakenoutstart_w", "game_spntakenoutstart_v"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -41,9 +40,7 @@ unsafe fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "pikmin_pikmin", script = "game_spsthrown", category = ACMD_GAME, low_priority )]
-unsafe fn game_spsthrown(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_spsthrown(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -65,8 +62,7 @@ unsafe fn game_spsthrown(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", script = "game_spsthrown_b", category = ACMD_GAME, low_priority )]
-unsafe fn game_spsthrown_b(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_spsthrown_b(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -88,8 +84,7 @@ unsafe fn game_spsthrown_b(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", script = "game_spsthrown_v", category = ACMD_GAME, low_priority )]
-unsafe fn game_spsthrown_v(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_spsthrown_v(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -109,8 +104,7 @@ unsafe fn game_spsthrown_v(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", script = "game_spsthrown_w", category = ACMD_GAME, low_priority )]
-unsafe fn game_spsthrown_w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_spsthrown_w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -132,8 +126,7 @@ unsafe fn game_spsthrown_w(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", script = "game_spsthrown_y", category = ACMD_GAME, low_priority )]
-unsafe fn game_spsthrown_y(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_spsthrown_y(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -155,16 +148,27 @@ unsafe fn game_spsthrown_y(agent: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        game_spsremved,
-        pikmin_special_n_pikmin,
-        game_spsthrown,
-        game_spsthrown_b,
-        game_spsthrown_v,
-        game_spsthrown_w,
-        game_spsthrown_y,
-    );
+    smashline::Agent::new("pikmin_pikmin")
+        .acmd("game_spsremved", game_spsremved)
+        .acmd("game_spsremved_b", game_spsremved)
+        .acmd("game_spsremved_v", game_spsremved)
+        .acmd("game_spsremved_w", game_spsremved)
+        .acmd("game_spsremved_y", game_spsremved)
+        .acmd("game_splwairrespond", game_spsremved)
+        .acmd("game_splwairrespond_b", game_spsremved)
+        .acmd("game_splwairrespond_v", game_spsremved)
+        .acmd("game_splwairrespond_w", game_spsremved)
+        .acmd("game_splwairrespond_y", game_spsremved)
+        .acmd("game_spntakenoutstart", pikmin_special_n_pikmin)
+        .acmd("game_spntakenoutstart_y", pikmin_special_n_pikmin)
+        .acmd("game_spntakenoutstart_b", pikmin_special_n_pikmin)
+        .acmd("game_spntakenoutstart_w", pikmin_special_n_pikmin)
+        .acmd("game_spntakenoutstart_v", pikmin_special_n_pikmin)
+        .acmd("game_spsthrown", game_spsthrown)
+        .acmd("game_spsthrown_b", game_spsthrown_b)
+        .acmd("game_spsthrown_v", game_spsthrown_v)
+        .acmd("game_spsthrown_w", game_spsthrown_w)
+        .acmd("game_spsthrown_y", game_spsthrown_y)
+        .install();
 }
-

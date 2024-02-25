@@ -1,12 +1,11 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "ridley", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
     || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB) {
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB);
-        original!(fighter)
+        smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
     }
     else {
         if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0 {
@@ -156,7 +155,11 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 // }
 
 pub fn install() {
-    install_status_scripts!(
-        special_lw_status_main,
-    );
+    smashline::Agent::new("ridley")
+        .status(
+            Main,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            special_lw_status_main,
+        )
+        .install();
 }
