@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "shulk", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -47,8 +45,7 @@ unsafe fn shulk_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -92,8 +89,7 @@ unsafe fn shulk_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -137,8 +133,7 @@ unsafe fn shulk_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -177,8 +172,7 @@ unsafe fn shulk_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shulk", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -202,8 +196,7 @@ unsafe fn shulk_attack_lw4_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "shulk", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe  fn shulk_attack_lw4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_lw4_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -238,8 +231,7 @@ unsafe  fn shulk_attack_lw4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "sound_attacklw4" , category = ACMD_SOUND , low_priority)]
-unsafe fn shulk_attack_lw4_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_lw4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -253,8 +245,7 @@ unsafe fn shulk_attack_lw4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "expression_attacklw4" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn shulk_attack_lw4_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attack_lw4_expression(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -289,15 +280,14 @@ unsafe fn shulk_attack_lw4_expression(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        shulk_attack_s4_hi_game,
-        shulk_attack_s4_s_game,
-        shulk_attack_s4_lw_game,
-        shulk_attack_hi4_game,
-        shulk_attack_lw4_game,
-        shulk_attack_lw4_effect,
-        shulk_attack_lw4_sound,
-        shulk_attack_lw4_expression
-    );
+    smashline::Agent::new("shulk")
+        .acmd("game_attacks4hi", shulk_attack_s4_hi_game)
+        .acmd("game_attacks4", shulk_attack_s4_s_game)
+        .acmd("game_attacks4lw", shulk_attack_s4_lw_game)
+        .acmd("game_attackhi4", shulk_attack_hi4_game)
+        .acmd("game_attacklw4", shulk_attack_lw4_game)
+        .acmd("effect_attacklw4", shulk_attack_lw4_effect)
+        .acmd("sound_attacklw4", shulk_attack_lw4_sound)
+        .acmd("expression_attacklw4", shulk_attack_lw4_expression)
+        .install();
 }
-

@@ -58,7 +58,6 @@ pub enum QuakeKind {
     Invalid,
 }
 
-
 // Doubles camera speed
 #[skyline::hook(offset = 0x4fdc10)]
 unsafe fn normal_camera(ptr: u64, float: f32) {

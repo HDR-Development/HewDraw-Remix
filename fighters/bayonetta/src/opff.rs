@@ -160,8 +160,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_BAYONETTA)]
-pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     bayonetta_frame(fighter);
 }
@@ -169,4 +168,10 @@ pub unsafe fn bayonetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("bayonetta")
+        .on_line(Main, bayonetta_frame_wrapper)
+        .install();
 }

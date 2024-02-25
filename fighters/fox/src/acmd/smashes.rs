@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "fox", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -29,12 +27,12 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "fox", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {  }frame(lua_state, 4.0);
+    if is_excute(fighter) {  }
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
@@ -63,8 +61,7 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "fox", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_attackhi4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -85,8 +82,7 @@ unsafe fn effect_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "fox", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -116,8 +112,7 @@ unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "fox", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -144,12 +139,11 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attacks4,
-        game_attackhi4,
-        effect_attackhi4,
-        expression_attackhi4,
-        game_attacklw4,
-    );
+    smashline::Agent::new("fox")
+        .acmd("game_attacks4", game_attacks4)
+        .acmd("game_attackhi4", game_attackhi4)
+        .acmd("effect_attackhi4", effect_attackhi4)
+        .acmd("expression_attackhi4", expression_attackhi4)
+        .acmd("game_attacklw4", game_attacklw4)
+        .install();
 }
-

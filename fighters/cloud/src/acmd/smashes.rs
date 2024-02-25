@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "cloud", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -45,8 +43,7 @@ unsafe fn cloud_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "cloud", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn cloud_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -70,7 +67,7 @@ unsafe fn cloud_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -82,12 +79,11 @@ unsafe fn cloud_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -126,8 +122,7 @@ unsafe fn cloud_attack_hi4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "cloud", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn cloud_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -150,8 +145,7 @@ unsafe fn cloud_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn cloud_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -180,16 +174,14 @@ unsafe fn cloud_attack_lw4_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 
-
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        cloud_attack_s4_s_game,
-        cloud_attack_s4_s_expression,
-        cloud_attack_hi4_game,
-        cloud_attack_hi4_expression,
-        cloud_attack_lw4_game,
-    );
+    smashline::Agent::new("cloud")
+        .acmd("game_attacks4", cloud_attack_s4_s_game)
+        .acmd("expression_attacks4", cloud_attack_s4_s_expression)
+        .acmd("game_attackhi4", cloud_attack_hi4_game)
+        .acmd("expression_attackhi4", cloud_attack_hi4_expression)
+        .acmd("game_attacklw4", cloud_attack_lw4_game)
+        .install();
 }
-

@@ -2,25 +2,17 @@ use super::*;
 use globals::*;
 
  
-pub fn install() {
-    install_status_scripts!(
-        attack_air_pre,
-        attack_air_f_main
-    );
-}
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
 // FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F //
 
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn attack_air_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     fair_motion(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_attack_air_f_loop as *const () as _))
@@ -73,4 +65,15 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
     false.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("bayonetta")
+        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
+        .status(
+            Main,
+            *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,
+            attack_air_f_main,
+        )
+        .install();
 }

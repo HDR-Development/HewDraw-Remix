@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "shulk", scripts = ["effect_specialnstart", "effect_specialairnstart"], category = ACMD_EFFECT, low_priority )]
-unsafe fn shulk_special_n_start_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_special_n_start_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -26,8 +25,7 @@ unsafe fn shulk_special_n_start_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
-unsafe fn shulk_special_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_special_s_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -84,8 +82,7 @@ unsafe fn shulk_special_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "effect_specials", category = ACMD_EFFECT, low_priority )]
-unsafe fn shulk_special_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_special_s_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 14.0);
@@ -124,8 +121,7 @@ unsafe fn shulk_special_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "effect_specialairs", category = ACMD_EFFECT, low_priority )]
-unsafe fn shulk_special_air_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_special_air_s_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 14.0);
@@ -162,8 +158,7 @@ unsafe fn shulk_special_air_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -223,8 +218,7 @@ unsafe fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"] , category = ACMD_GAME , low_priority)]
-unsafe fn shulk_special_lw_attack_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_special_lw_attack_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -248,7 +242,6 @@ unsafe fn shulk_special_lw_attack_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.8);
 }
 
-#[acmd_script( agent = "shulk", script = "game_speciallwf" , category = ACMD_GAME , low_priority)]
 unsafe extern "C" fn shulk_special_lw_f_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -268,11 +261,17 @@ unsafe extern "C" fn shulk_special_lw_f_game(agent: &mut L2CAgentBase) {
 
 
 pub fn install() {
-    install_acmd_scripts!(
-        shulk_special_n_start_effect,
-        shulk_special_s_game,
-        shulk_special_s_effect,
-        shulk_special_air_s_effect,
-        shulk_special_hi_game,
-    );
+    smashline::Agent::new("shulk")
+        .acmd("effect_specialnstart", shulk_special_n_start_effect)
+        .acmd("effect_specialairnstart", shulk_special_n_start_effect)
+        .acmd("game_specials", shulk_special_s_game)
+        .acmd("game_specialairs", shulk_special_s_game)
+        .acmd("effect_specials", shulk_special_s_effect)
+        .acmd("effect_specialairs", shulk_special_air_s_effect)
+        .acmd("game_specialhi", shulk_special_hi_game)
+        .acmd("game_specialairhi", shulk_special_hi_game)
+        .acmd("game_speciallwattack", shulk_special_lw_attack_game)
+        .acmd("game_specialairlwattack", shulk_special_lw_attack_game)
+        .acmd("game_speciallwf", shulk_special_lw_f_game)
+        .install();
 }

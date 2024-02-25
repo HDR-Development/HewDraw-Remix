@@ -9,7 +9,6 @@ unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterComm
     }
 }
 
-
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
@@ -100,8 +99,7 @@ unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon
     }
 }
 
-#[smashline::fighter_init]
-fn eflame_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn eflame_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_EFLAME {
@@ -111,7 +109,8 @@ fn eflame_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(eflame_init);
+    smashline::Agent::new("eflame")
+        .on_start(eflame_init)
+        .install();
 }

@@ -4,18 +4,18 @@ use smash::app::{
 use smash::lib::lua_const::SITUATION_KIND_AIR;
 use utils_dyn::ext::*;
 
-use crate::consts::globals::*;
+// use crate::consts::globals::*;
 use crate::consts::*;
 use crate::modules::*;
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
-use crate::util::get_fighter_common_from_accessor;
+// use crate::util::get_fighter_common_from_accessor;
 use smash::hash40;
-use smash::app::lua_bind::*;
+// use smash::app::lua_bind::*;
 
 use super::INPUT_MODULE_OFFSET;
 
-use globals::*;
+// use globals::*;
 
 macro_rules! get_input_module {
     ($object:ident) => {{
@@ -549,18 +549,16 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         && triggered_buttons.intersects(Buttons::Jump) {
             if ControlModule::get_stick_x((*input_module.owner).module_accessor) > 0.0 {
                 if input_module.hdr_cat.valid_frames[walljump_right_offset] == 0 {
-                    input_module.hdr_cat.valid_frames[walljump_right_offset] = unsafe {
+                    input_module.hdr_cat.valid_frames[walljump_right_offset] =
                         ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "button_walljump_leniency_frame")
-                        as u8
-                    };
+                        as u8;
                 }
             }
             else if ControlModule::get_stick_x((*input_module.owner).module_accessor) < 0.0 {
                 if input_module.hdr_cat.valid_frames[walljump_left_offset] == 0 {
-                    input_module.hdr_cat.valid_frames[walljump_left_offset] = unsafe {
+                    input_module.hdr_cat.valid_frames[walljump_left_offset] =
                         ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "button_walljump_leniency_frame")
-                        as u8
-                    };
+                        as u8;
                 }
             }
         }
@@ -669,7 +667,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         &mut input_module.hdr_cat.valid_frames,
     ];
 
-    let boma = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
+    // let boma = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
 
     if triggered_buttons.intersects(Buttons::TiltAttack) {
         unsafe {

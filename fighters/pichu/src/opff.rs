@@ -161,9 +161,11 @@ unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PICHU )]
-pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         MeterModule::set_meter_per_level(fighter.object(), 25.0);
@@ -201,8 +203,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     jc_agility(boma);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_PICHU )]
-pub fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pichu_frame(fighter);
@@ -214,4 +215,10 @@ pub unsafe fn pichu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("pichu")
+        .on_line(Main, pichu_frame_wrapper)
+        .on_line(Main, pichu_meter)
+        .install();
 }

@@ -1,8 +1,7 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s_failure_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_failure_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cancel_frame = (FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("special_s_start"), false) - MotionModule::frame(fighter.module_accessor)) + WorkModule::get_param_int(fighter.module_accessor, hash40("landing_heavy_frame"), 0) as f32 + 5.0;
     if cancel_frame < 1.0 {
         VarModule::set_float(fighter.battle_object, vars::ridley::instance::SPECIAL_S_FAILURE_CANCEL_FRAME, 1.0);
@@ -46,7 +45,11 @@ pub unsafe fn side_special_failure_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_s_failure_status_main,
-    );
+    smashline::Agent::new("ridley")
+        .status(
+            Main,
+            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE,
+            special_s_failure_status_main,
+        )
+        .install();
 }

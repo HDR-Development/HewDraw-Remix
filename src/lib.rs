@@ -35,21 +35,10 @@ use skyline::libc::c_char;
 use skyline_web::*;
 use std::{fs, path::Path};
 
-#[smashline::installer]
-pub fn install() {
-    fighters::install();
-}
-
 #[cfg(not(feature = "main_nro"))]
-#[export_name = "hdr_delayed_install"]
-pub fn delayed_install() {
-    fighters::delayed_install();
-}
-
-#[cfg(feature = "add_status")]
-extern "Rust" {
-    #[link_name = "hdr_delayed_install"]
-    fn delayed_install();
+#[no_mangle]
+pub fn smashline_install() {
+    fighters::install();
 }
 
 #[cfg(feature = "main_nro")]
@@ -421,22 +410,6 @@ pub extern "C" fn main() {
     }
 
     fighters::install();
-    #[cfg(all(not(feature = "add_status"), feature = "main_nro"))]
-    {
-        if !(delayed_install as *const ()).is_null() {
-            unsafe {
-                delayed_install();
-            }
-        }
-    }
-
-    #[cfg(all(
-        feature = "add_status",
-        not(all(not(feature = "add_status"), feature = "main_nro"))
-    ))]
-    {
-        fighters::delayed_install();
-    }
 
     #[cfg(feature = "updater")]
     {
@@ -481,18 +454,18 @@ pub fn setup_hid_hdr() {
 
 #[cfg(feature = "main_nro")]
 pub fn quick_validate_install() {
-    let has_smashline_hook = Path::new(
-        "sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook.nro",
+    let has_smashline_plugin = Path::new(
+        "sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_plugin.nro",
     )
     .is_file();
-    if has_smashline_hook {
-        println!("libsmashline_hook.nro is present");
+    if has_smashline_plugin {
+        println!("libsmashline_plugin.nro is present");
     } else {
         if is_on_ryujinx() {
-            println!("No libsmashline_hook.nro found! We will likely crash.");
+            println!("No libsmashline_plugin.nro found! We will likely crash.");
         } else {
             skyline_web::dialog_ok::DialogOk::ok(
-                "No libsmashline_hook.nro found! We will likely crash.",
+                "No libsmashline_plugin.nro found! We will likely crash.",
             );
         }
     }
@@ -521,25 +494,6 @@ pub fn quick_validate_install() {
             println!("No libnro_hook.nro found! We will likely crash.");
         } else {
             skyline_web::dialog_ok::DialogOk::ok("No libnro_hook.nro found! We will likely crash.");
-        }
-    }
-
-    let has_smashline_development_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro").is_file();
-    if has_smashline_development_hook {
-        if is_on_ryujinx() {
-            println!("libsmashline_hook_development.nro found! This will conflict with hdr! Expect a crash soon.");
-        } else {
-            let should_delete = skyline_web::dialog::Dialog::yes_no("libsmashline_hook_development.nro found! This will conflict with hdr! Would you like to delete it?");
-            if should_delete {
-                fs::remove_file("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro");
-                unsafe {
-                    skyline::nn::oe::RequestToRelaunchApplication();
-                }
-            } else {
-                skyline_web::dialog_ok::DialogOk::ok(
-                    "Warning, we will likely crash soon because of this conflict.",
-                );
-            }
         }
     }
 

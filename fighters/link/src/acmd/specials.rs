@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "link", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn special_hi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 7.0/(3.75-0.0));
@@ -42,9 +40,7 @@ unsafe fn special_hi(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "link", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn special_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -110,8 +106,7 @@ unsafe fn special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn special_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -165,8 +160,7 @@ unsafe fn special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn special_air_hi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn special_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -277,11 +271,10 @@ unsafe fn special_air_hi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        special_hi,
-        special_air_hi,
-        special_air_hi_effect,
-        special_hi_effect 
-    );
+    smashline::Agent::new("link")
+        .acmd("game_specialhi", special_hi)
+        .acmd("effect_specialhi", special_hi_effect)
+        .acmd("effect_specialairhi", special_air_hi_effect)
+        .acmd("game_specialairhi", special_air_hi)
+        .install();
 }
-
