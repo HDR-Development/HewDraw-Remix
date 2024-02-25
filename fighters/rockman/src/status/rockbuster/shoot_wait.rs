@@ -1,8 +1,7 @@
 use super::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut status_data_arg = 0;
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     if step != 0 {
@@ -59,8 +58,7 @@ unsafe fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_rockbuster_shoot_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
@@ -147,7 +145,16 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFi
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_wait_pre, rockman_rockbuster_shoot_wait_main
-    );
+    smashline::Agent::new("rockman")
+        .status(
+            Pre,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT,
+            rockman_rockbuster_shoot_wait_pre,
+        )
+        .status(
+            Main,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT,
+            rockman_rockbuster_shoot_wait_main,
+        )
+        .install();
 }

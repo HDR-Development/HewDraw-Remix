@@ -2,17 +2,9 @@ use smash::lib::L2CAgent_clear_lua_stack;
 use super::*;
 use globals::*;
 
-pub fn install() {
-    install_status_scripts!(
-        special_s_cling_main,
-        special_s_cling_remove_end,
-    );
-}
-
 // WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING
 
-#[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_cling_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*WEAPON_PIKMIN_PIKMIN_STATUS_SPECIAL_S_WORK_FLAG_POKEMON_CHANGE_START);
     AttackModule::set_ignore_just_shield(fighter.module_accessor, true);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("sp_s_grab_attack"), 0.0, 1.0, false, 0.0, false, false);
@@ -90,8 +82,22 @@ unsafe extern "C" fn special_s_cling_main_loop(fighter: &mut L2CFighterCommon) -
 
 // WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE
 
-#[status_script(agent = "pikmin_pikmin", status = WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn special_s_cling_remove_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_cling_remove_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
-    original!(fighter)
+    smashline::original_status(End, fighter, *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE)(fighter)
+}
+
+pub fn install() {
+    smashline::Agent::new("pikmin_pikmin")
+        .status(
+            Main,
+            *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING,
+            special_s_cling_main,
+        )
+        .status(
+            End,
+            *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE,
+            special_s_cling_remove_end,
+        )
+        .install();
 }

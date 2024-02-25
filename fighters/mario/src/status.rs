@@ -12,14 +12,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT);
-    return 1.into()
-}
-
-#[smashline::fighter_init]
-fn mario_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn mario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_MARIO {
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
@@ -27,7 +20,11 @@ fn mario_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT);
+    return 1.into()
+}
+
 unsafe extern "C" fn special_lw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -57,10 +54,10 @@ unsafe extern "C" fn special_lw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(mario_init);
     special_n::install();
-    install_status_scripts!(
-        special_lw_pre,
-        special_lw_shoot_pre
-    );
+    smashline::Agent::new("mario")
+        .on_start(mario_init)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
+        .status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_shoot_pre)
+        .install();
 }

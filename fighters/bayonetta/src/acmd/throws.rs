@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "bayonetta", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -28,8 +27,7 @@ unsafe fn bayonetta_throw_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -56,8 +54,7 @@ unsafe fn bayonetta_throw_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -81,9 +78,9 @@ unsafe fn bayonetta_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_throw_f_game,
-        bayonetta_throw_hi_game,
-        bayonetta_throw_lw_game,
-    );
+    smashline::Agent::new("bayonetta")
+        .acmd("game_throwf", bayonetta_throw_f_game)
+        .acmd("game_throwhi", bayonetta_throw_hi_game)
+        .acmd("game_throwlw", bayonetta_throw_lw_game)
+        .install();
 }

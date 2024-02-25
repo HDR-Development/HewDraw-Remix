@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script(agent = "demon", script = "game_attackairn", category = ACMD_GAME, low_priority)]
-unsafe fn demon_attackairn(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
     frame(lua_state, 3.0);
@@ -33,8 +32,7 @@ unsafe fn demon_attackairn(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script(agent = "demon", script = "game_attackairf", category = ACMD_GAME, low_priority)]
-unsafe fn demon_attackairf(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
     frame(lua_state, 3.0);
@@ -69,8 +67,7 @@ unsafe fn demon_attackairf(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script(agent = "demon", script = "game_attackairb", category = ACMD_GAME, low_priority)]
-unsafe fn demon_attackairb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
     frame(lua_state, 5.0);
@@ -119,8 +116,7 @@ unsafe fn demon_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "demon", script = "game_attackairhi", category = ACMD_GAME, low_priority)]
-unsafe fn demon_attackairhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.module_accessor;
     frame(lua_state, 2.0);
@@ -165,10 +161,10 @@ unsafe fn demon_attackairhi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        demon_attackairn,
-        demon_attackairf,
-        demon_attackairb,
-        demon_attackairhi,
-    );
+    smashline::Agent::new("demon")
+        .acmd("game_attackairn", demon_attackairn)
+        .acmd("game_attackairf", demon_attackairf)
+        .acmd("game_attackairb", demon_attackairb)
+        .acmd("game_attackairhi", demon_attackairhi)
+        .install();
 }

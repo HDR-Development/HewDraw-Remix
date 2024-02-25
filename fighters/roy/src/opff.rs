@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
 
 pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleAccessor){
-    let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+    let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && boma.is_situation(*SITUATION_KIND_AIR) {
         smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
@@ -113,14 +113,12 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sword_length(boma);
 }
 
-
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_ROY )]
-pub fn roy_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn roy_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		roy_frame(fighter);
@@ -137,4 +135,9 @@ pub unsafe fn roy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("roy")
+        .on_line(Main, roy_frame_wrapper)
+        .install();
 }

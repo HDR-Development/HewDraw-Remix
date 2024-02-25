@@ -1,21 +1,18 @@
 use super::*;
 use globals::*;
 
-
-#[status_script(agent = "diddy", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
 }
 
-#[status_script(agent = "diddy", status = FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE)(fighter)
 }
 
 unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -185,8 +182,7 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
 
 // FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT
 
-#[status_script(agent = "diddy", status = FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.clear_lua_stack();
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
     app::sv_kinetic_energy::enable(fighter.lua_state_agent);
@@ -245,27 +241,19 @@ unsafe extern "C" fn special_n_shoot_motion_helper(fighter: &mut L2CFighterCommo
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_n_main,
-        special_n_charge_main,
-        special_n_shoot_main
-    );
-}
-pub fn install_custom() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_diddy"),
-        statuses::diddy::SPECIAL_N_CANCEL,
-        StatusInfo::new()
-            .with_pre(special_n_cancel_pre)
-            .with_main(special_n_cancel_main)
-            .with_end(special_n_cancel_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_diddy"),
-        statuses::diddy::SPECIAL_N_CANCEL_JUMP,
-        StatusInfo::new()
-            .with_pre(special_n_jump_cancel_pre)
-            .with_main(special_n_jump_cancel_main)
-            .with_end(special_n_jump_cancel_end)
-    );
+    smashline::Agent::new("diddy")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
+        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main)
+        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_main)
+        .install();
+    smashline::Agent::new("diddy")
+        .status(Pre, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_pre)
+        .status(Main, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_main)
+        .status(End, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_end)
+        .install();
+    smashline::Agent::new("diddy")
+        .status(Pre, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_pre)
+        .status(Main, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_main)
+        .status(End, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_end)
+        .install();
 }

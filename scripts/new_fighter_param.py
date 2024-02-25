@@ -40,7 +40,6 @@ if len(args) == 0:
 
 param_name = args[0]
 
-
 tree = ET.parse(romfs_src_path.joinpath("fighter/common/hdr/param/fighter_param.xml"))
 root = tree.getroot()
 fighter_param_table = root[0]

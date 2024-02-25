@@ -3,7 +3,6 @@ use utils::ext::*;
 use std::arch::asm;
 use utils::game_modes::CustomMode;
 
-
 #[skyline::hook(offset = 0x3dc180)]
 unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut smash2::app::AttackData) {
     let boma = *(module as *mut *mut BattleObjectModuleAccessor).add(1);

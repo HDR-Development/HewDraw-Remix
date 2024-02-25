@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "richter", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -51,8 +49,7 @@ unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "richter", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -100,8 +97,7 @@ unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "richter", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -121,8 +117,7 @@ unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "richter", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -142,11 +137,10 @@ unsafe fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_special_hi_game,
-        richter_special_air_hi_game,
-        richter_special_lw_game,
-        richter_special_air_lw_game,
-    );
+    smashline::Agent::new("richter")
+        .acmd("game_specialhi", richter_special_hi_game)
+        .acmd("game_specialairhi", richter_special_air_hi_game)
+        .acmd("game_speciallw", richter_special_lw_game)
+        .acmd("game_specialairlw", richter_special_air_lw_game)
+        .install();
 }
-

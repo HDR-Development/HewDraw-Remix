@@ -2,8 +2,8 @@
 use super::*;
 
 //Need to match up explosion effect more accurately
-#[acmd_script( agent = "chrom", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_special_n_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -24,8 +24,7 @@ unsafe fn chrom_special_n_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "expression_specialnend" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn chrom_special_n_end_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -53,8 +52,8 @@ unsafe fn chrom_special_n_end_expression(fighter: &mut L2CAgentBase) {
 }
 
 //All levels need to match hitbox placements of level 1 Neutral B
-#[acmd_script( agent = "chrom", script = "game_specialnend2" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_special_n_end2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn chrom_special_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -82,8 +81,7 @@ unsafe fn chrom_special_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialnend3" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,8 +109,7 @@ unsafe fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -138,8 +135,7 @@ unsafe fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "expression_specialairnend" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn chrom_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -166,8 +162,7 @@ unsafe fn chrom_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialairnend2" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -200,8 +195,7 @@ unsafe fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialairnend3" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -239,8 +233,7 @@ unsafe fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -268,8 +261,7 @@ unsafe fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -297,8 +289,7 @@ unsafe fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -323,8 +314,7 @@ unsafe fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -349,8 +339,7 @@ unsafe fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -378,8 +367,7 @@ unsafe fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -407,8 +395,7 @@ unsafe fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -436,8 +423,7 @@ unsafe fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -465,8 +451,7 @@ unsafe fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -491,8 +476,7 @@ unsafe fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -517,8 +501,7 @@ unsafe fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -546,8 +529,7 @@ unsafe fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -575,8 +557,7 @@ unsafe fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -604,8 +585,7 @@ unsafe fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -633,8 +613,7 @@ unsafe fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -662,8 +641,7 @@ unsafe fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -691,8 +669,7 @@ unsafe fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -744,8 +721,7 @@ unsafe fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -797,8 +773,7 @@ unsafe fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhi2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -845,8 +820,7 @@ unsafe fn game_specialhi2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhi2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -893,8 +867,7 @@ unsafe fn game_specialairhi2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhi3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -918,8 +891,7 @@ unsafe fn game_specialhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", scripts = ["game_speciallw", "game_specialairlow"], category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -935,8 +907,7 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME , low_priority)]
-unsafe fn game_speciallwhit(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -962,39 +933,39 @@ unsafe fn game_speciallwhit(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        chrom_special_n_end_game,
-        chrom_special_n_end_expression,
-        chrom_special_n_end2_game,
-        chrom_special_n_end3_game,
-        chrom_special_air_n_end_game,
-        chrom_special_air_n_end_expression,
-        chrom_special_air_n_end2_game,
-        chrom_special_air_n_end3_game,
-        chrom_special_s1_effect,
-        chrom_special_air_s1_effect,
-        chrom_special_s2_hi_effect,
-        chrom_special_air_s2_hi_effect,
-        chrom_special_s2_lw_effect,
-        chrom_special_air_s2_lw_effect,
-        chrom_special_s3_hi_effect,
-        chrom_special_air_s3_hi_effect,
-        chrom_special_s3_s_effect,
-        chrom_special_air_s3_s_effect,
-        chrom_special_s3_lw_effect,
-        chrom_special_air_s3_lw_effect,
-        chrom_special_s4_hi_effect,
-        chrom_special_air_s4_hi_effect,
-        chrom_special_s4_s_effect,
-        chrom_special_air_s4_s_effect,
-        chrom_special_s4_lw_effect,
-        chrom_special_air_s4_lw_effect,
-        game_specialhi2,
-        game_specialairhi2,
-        game_specialhi3,
-        game_speciallw,
-        game_speciallwhit
-
-    );
+    smashline::Agent::new("chrom")
+        .acmd("game_specialnend", chrom_special_n_end_game)
+        .acmd("expression_specialnend", chrom_special_n_end_expression)
+        .acmd("game_specialnend2", chrom_special_n_end2_game)
+        .acmd("game_specialnend3", chrom_special_n_end3_game)
+        .acmd("game_specialairnend", chrom_special_air_n_end_game)
+        .acmd("expression_specialairnend", chrom_special_air_n_end_expression)
+        .acmd("game_specialairnend2", chrom_special_air_n_end2_game)
+        .acmd("game_specialairnend3", chrom_special_air_n_end3_game)
+        .acmd("effect_specials1", chrom_special_s1_effect)
+        .acmd("effect_specialairs1", chrom_special_air_s1_effect)
+        .acmd("effect_specials2hi", chrom_special_s2_hi_effect)
+        .acmd("effect_specialairs2hi", chrom_special_air_s2_hi_effect)
+        .acmd("effect_specials2lw", chrom_special_s2_lw_effect)
+        .acmd("effect_specialairs2lw", chrom_special_air_s2_lw_effect)
+        .acmd("effect_specials3hi", chrom_special_s3_hi_effect)
+        .acmd("effect_specialairs3hi", chrom_special_air_s3_hi_effect)
+        .acmd("effect_specials3s", chrom_special_s3_s_effect)
+        .acmd("effect_specialairs3s", chrom_special_air_s3_s_effect)
+        .acmd("effect_specials3lw", chrom_special_s3_lw_effect)
+        .acmd("effect_specialairs3lw", chrom_special_air_s3_lw_effect)
+        .acmd("effect_specials4hi", chrom_special_s4_hi_effect)
+        .acmd("effect_specialairs4hi", chrom_special_air_s4_hi_effect)
+        .acmd("effect_specials4s", chrom_special_s4_s_effect)
+        .acmd("effect_specialairs4s", chrom_special_air_s4_s_effect)
+        .acmd("effect_specials4lw", chrom_special_s4_lw_effect)
+        .acmd("effect_specialairs4lw", chrom_special_air_s4_lw_effect)
+        .acmd("game_specialhi2", game_specialhi2)
+        .acmd("game_specialairhi2", game_specialairhi2)
+        .acmd("game_specialhi3", game_specialhi3)
+        .acmd("game_speciallw", game_speciallw)
+        .acmd("game_specialairlw", game_speciallw)
+        .acmd("game_speciallwhit", game_speciallwhit)
+        .acmd("game_specialairlwhit", game_speciallwhit)
+        .install();
 }
-

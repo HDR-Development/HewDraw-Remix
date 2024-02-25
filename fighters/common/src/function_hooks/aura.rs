@@ -109,10 +109,10 @@ pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fig
         let right = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_RHADOU) as u32;
         let scale = 0.0;
         if left != 0 {
-            EffectModule::set_scale(module_accessor, left, &smash::phx::Vector3f{x: scale, y: scale, z: scale});
+            EffectModule::set_scale(module_accessor, left, &Vector3f{x: scale, y: scale, z: scale});
         }
         if right != 0 {
-            EffectModule::set_scale(module_accessor, right, &smash::phx::Vector3f{x: scale, y: scale, z: scale});
+            EffectModule::set_scale(module_accessor, right, &Vector3f{x: scale, y: scale, z: scale});
         }
     }
 }

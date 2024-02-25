@@ -2,7 +2,6 @@ use super::*;
 use utils::ext::*;
 use std::arch::asm;
 
-
 #[skyline::hook(offset = 0x6d2194, inline)]
 unsafe fn fullhop_initial_y_speed_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
@@ -30,10 +29,9 @@ unsafe fn jump1_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let ratio = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_RATIO);
     // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
     let mut jump_speed_max_mul = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
-    match jump_speed_max_mul {
+    if jump_speed_max_mul < 0.1 || jump_speed_max_mul > 3.0 {
         // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-        0.1..=3.0 => {},
-        _ => { jump_speed_max_mul = 1.0 }
+        jump_speed_max_mul = 1.0;
     }
     let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
@@ -56,10 +54,9 @@ unsafe fn jump2_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let ratio = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_RATIO);
     // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
     let mut jump_speed_max_mul = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
-    match jump_speed_max_mul {
+    if jump_speed_max_mul < 0.1 || jump_speed_max_mul > 3.0 {
         // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-        0.1..=3.0 => {},
-        _ => { jump_speed_max_mul = 1.0 }
+        jump_speed_max_mul = 1.0;
     }
     let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
@@ -82,10 +79,9 @@ unsafe fn jump3_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let ratio = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_RATIO);
     // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
     let mut jump_speed_max_mul = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
-    match jump_speed_max_mul {
+    if jump_speed_max_mul < 0.1 || jump_speed_max_mul > 3.0 {
         // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-        0.1..=3.0 => {},
-        _ => { jump_speed_max_mul = 1.0 }
+        jump_speed_max_mul = 1.0;
     }
     let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)
@@ -108,10 +104,9 @@ unsafe fn jump4_jump_speed_x_max_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let ratio = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_RATIO);
     // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
     let mut jump_speed_max_mul = VarModule::get_float((*boma).object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
-    match jump_speed_max_mul {
+    if jump_speed_max_mul < 0.1 || jump_speed_max_mul > 3.0 {
         // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-        0.1..=3.0 => {},
-        _ => { jump_speed_max_mul = 1.0 }
+        jump_speed_max_mul = 1.0;
     }
     let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
     asm!("fmov s0, w8", in("w8") jump_speed_x_max)

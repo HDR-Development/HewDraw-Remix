@@ -280,10 +280,7 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
 //     ret
 // }
 
-pub fn install(is_runtime: bool) {
-    if is_runtime {
-        return;
-    }
+pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
     skyline::patching::Patch::in_text(0x107eaa4).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.

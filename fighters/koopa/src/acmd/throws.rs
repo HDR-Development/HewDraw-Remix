@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -61,8 +60,7 @@ unsafe fn koopa_throw_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "koopa", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -93,8 +91,8 @@ unsafe fn koopa_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        koopa_throw_hi_game,
-        koopa_throw_lw_game,
-    );
+    smashline::Agent::new("koopa")
+        .acmd("game_throwhi", koopa_throw_hi_game)
+        .acmd("game_throwlw", koopa_throw_lw_game)
+        .install();
 }

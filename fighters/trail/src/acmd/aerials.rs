@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "trail", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -54,8 +53,7 @@ unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -85,8 +83,7 @@ unsafe fn sora_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
-unsafe fn sora_attack_air_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -104,8 +101,7 @@ unsafe fn sora_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -146,8 +142,7 @@ unsafe fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -162,8 +157,7 @@ unsafe fn sora_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairf2" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_f2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -207,8 +201,7 @@ unsafe fn sora_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairf3" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_f3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -234,8 +227,7 @@ unsafe fn sora_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attackairf3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_air_f3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_f3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -250,8 +242,7 @@ unsafe fn sora_attack_air_f3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -289,11 +280,9 @@ unsafe fn sora_attack_air_b_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 
-
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -343,8 +332,7 @@ unsafe fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "trail", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -359,8 +347,7 @@ unsafe fn sora_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let attack_start_frame = 15.5;
@@ -448,8 +435,7 @@ unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "trail", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -469,8 +455,7 @@ unsafe fn sora_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "sound_attackairlw" , category = ACMD_SOUND , low_priority)]
-unsafe fn sora_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -480,8 +465,7 @@ unsafe fn sora_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.5);
@@ -490,18 +474,16 @@ unsafe fn sora_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.5);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_81_attackl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_81_attackl"), 0);
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 }
 
-#[acmd_script( agent = "trail", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -509,8 +491,7 @@ unsafe fn sora_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "sound_landingairlw" , category = ACMD_SOUND , low_priority)]
-unsafe fn sora_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -519,8 +500,7 @@ unsafe fn sora_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn sora_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -543,28 +523,26 @@ unsafe fn sora_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        sora_attack_air_n_game,
-        sora_attack_air_n_effect,
-        sora_attack_air_n_sound,
-        sora_attack_air_f_game,
-        sora_attack_air_f_effect,
-        sora_attack_air_f2_game,
-        sora_attack_air_f3_game,
-        sora_attack_air_f3_effect,
-        sora_attack_air_b_game,
-        sora_attack_air_hi_game,
-        sora_attack_air_hi_effect,
-        sora_attack_air_lw_game,
-        sora_attack_air_lw_effect,
-        sora_attack_air_lw_sound,
-        sora_attack_air_lw_expression,
-        sora_landing_air_lw_game,
-        sora_landing_air_lw_effect,
-        sora_landing_air_lw_sound,
-        sora_landing_air_lw_expression,
-    );
+    smashline::Agent::new("trail")
+        .acmd("game_attackairn", sora_attack_air_n_game)
+        .acmd("effect_attackairn", sora_attack_air_n_effect)
+        .acmd("sound_attackairn", sora_attack_air_n_sound)
+        .acmd("game_attackairf", sora_attack_air_f_game)
+        .acmd("effect_attackairf", sora_attack_air_f_effect)
+        .acmd("game_attackairf2", sora_attack_air_f2_game)
+        .acmd("game_attackairf3", sora_attack_air_f3_game)
+        .acmd("effect_attackairf3", sora_attack_air_f3_effect)
+        .acmd("game_attackairb", sora_attack_air_b_game)
+        .acmd("game_attackairhi", sora_attack_air_hi_game)
+        .acmd("effect_attackairhi", sora_attack_air_hi_effect)
+        .acmd("game_attackairlw", sora_attack_air_lw_game)
+        .acmd("effect_attackairlw", sora_attack_air_lw_effect)
+        .acmd("sound_attackairlw", sora_attack_air_lw_sound)
+        .acmd("expression_attackairlw", sora_attack_air_lw_expression)
+        .acmd("game_landingairlw", sora_landing_air_lw_game)
+        .acmd("effect_landingairlw", sora_landing_air_lw_effect)
+        .acmd("sound_landingairlw", sora_landing_air_lw_sound)
+        .acmd("expression_landingairlw", sora_landing_air_lw_expression)
+        .install();
 }
-

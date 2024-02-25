@@ -2,8 +2,7 @@
 use super::*;
 use smash::app::sv_battle_object;
 
-#[acmd_script( agent = "miiswordsman", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -28,8 +27,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -54,8 +52,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -80,8 +77,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -96,8 +92,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -122,8 +117,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -144,8 +138,7 @@ unsafe fn miiswordsman_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_catch_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -166,9 +159,7 @@ unsafe fn miiswordsman_catch_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "miiswordsman", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_catch_turn_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -189,9 +180,7 @@ unsafe fn miiswordsman_catch_turn_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "miiswordsman", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -201,8 +190,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miiswordsman", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -220,8 +208,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -235,8 +222,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miiswordsman_tornadoshot", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -268,8 +254,7 @@ unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
 //     }
 // }
 
-#[acmd_script( agent = "miiswordsman_lightshuriken", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -282,8 +267,7 @@ unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman_lightshuriken", script = "effect_fly" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
         let lua_state = fighter.lua_state_agent;
         let boma = fighter.boma();
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -301,7 +285,7 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             //Ray check here is used for checking if you're on the ground. Unfortunately is_touch and is_wall_touch_line didnt work for this. Sorry!
             if GroundModule::ray_check(
                 fighter.module_accessor, 
-                &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                 &Vector2f{ x: 0.0, y: -7.0}, true
             ) == 1 {
                 FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -319,7 +303,7 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             EffectModule::set_alpha(boma, wave_3, 0.4);
             if GroundModule::ray_check(
                 fighter.module_accessor, 
-                &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                 &Vector2f{ x: 0.0, y: -7.0}, true
             ) == 1 {
                 FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -332,7 +316,7 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             EffectModule::set_rate(boma, wave_3, 0.000001);
             if GroundModule::ray_check(
                 fighter.module_accessor, 
-                &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                 &Vector2f{ x: 0.0, y: -7.0}, true
             ) == 1 {
                 FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -345,7 +329,7 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
             if is_excute(fighter) {
                     if GroundModule::ray_check(
                         fighter.module_accessor, 
-                        &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                        &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
                         &Vector2f{ x: 0.0, y: -7.0}, true
                     ) == 1 {
                         FOOT_EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -356,8 +340,7 @@ unsafe fn miiswordsman_wave_fly_effect(fighter: &mut L2CAgentBase) {
         }
 }
 
-#[acmd_script( agent = "miiswordsman_chakram", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -386,8 +369,7 @@ unsafe fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman_chakram", script = "game_flynormalsub" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_chakram_fly_normal_sub_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_chakram_fly_normal_sub_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -403,8 +385,7 @@ unsafe fn miiswordsman_chakram_fly_normal_sub_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman_chakram", script = "game_flyflicksub" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_chakram_fly_flick_sub_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_chakram_fly_flick_sub_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -413,8 +394,7 @@ unsafe fn miiswordsman_chakram_fly_flick_sub_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman_chakram", script = "game_hop" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_chakram_hop_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_chakram_hop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -423,8 +403,7 @@ unsafe fn miiswordsman_chakram_hop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman_chakram", script = "game_stick" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_chakram_stick_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_chakram_stick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -433,8 +412,7 @@ unsafe fn miiswordsman_chakram_stick_game(fighter: &mut L2CAgentBase) {
         
 }
 
-#[acmd_script( agent = "miiswordsman_chakram", script = "effect_stick" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miiswordsman_chakram_stick_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_chakram_stick_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 142.0);
@@ -444,8 +422,7 @@ unsafe fn miiswordsman_chakram_stick_effect(fighter: &mut L2CAgentBase) {
         
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -460,8 +437,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -476,29 +452,34 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        miiswordsman_catch_game,
-        miiswordsman_catch_dash_game,
-        miiswordsman_catch_turn_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        miiswordsman_tornadoshot_fly_game,
-        miiswordsman_wave_fly_game,
-        miiswordsman_wave_fly_effect,
-        miiswordsman_chakram_fly_game,
-        miiswordsman_chakram_fly_normal_sub_game,
-        miiswordsman_chakram_fly_flick_sub_game,
-        //miiswordsman_chakram_hop_game,
-        miiswordsman_chakram_stick_game,
-        miiswordsman_chakram_stick_effect,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
+    smashline::Agent::new("miiswordsman")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_catch", miiswordsman_catch_game)
+        .acmd("game_catchdash", miiswordsman_catch_dash_game)
+        .acmd("game_catchturn", miiswordsman_catch_turn_game)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("miiswordsman_chakram")
+        .acmd("game_fly", miiswordsman_chakram_fly_game)
+        .acmd("game_flynormalsub", miiswordsman_chakram_fly_normal_sub_game)
+        .acmd("game_flyflicksub", miiswordsman_chakram_fly_flick_sub_game)
+        //.acmd("game_hop", miiswordsman_chakram_hop_game)
+        .acmd("game_stick", miiswordsman_chakram_stick_game)
+        .acmd("effect_stick", miiswordsman_chakram_stick_effect)
+        .install();
+    smashline::Agent::new("miiswordsman_tornadoshot")
+        .acmd("game_fly", miiswordsman_tornadoshot_fly_game)
+        .install();
+    smashline::Agent::new("miiswordsman_lightshuriken")
+        .acmd("game_fly", miiswordsman_wave_fly_game)
+        .acmd("effect_fly", miiswordsman_wave_fly_effect)
+        .install();
 }
-

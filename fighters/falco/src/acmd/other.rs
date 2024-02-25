@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "falco", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +76,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +91,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +116,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -140,8 +134,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn falco_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -155,8 +148,7 @@ unsafe fn falco_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn falco_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -182,8 +174,7 @@ unsafe fn falco_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco_blaster_bullet", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_blaster_bullet_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn falco_blaster_bullet_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -209,8 +200,7 @@ unsafe fn falco_blaster_bullet_fly_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "falco", script = "sound_escapeair" , category = ACMD_SOUND )]
-unsafe fn escape_air_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 3.0);
@@ -221,8 +211,7 @@ unsafe fn escape_air_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "falco", script = "sound_escapeairslide" , category = ACMD_SOUND )]
-unsafe fn escape_air_slide_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 3.0);
@@ -233,8 +222,7 @@ unsafe fn escape_air_slide_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "falco", script = "sound_escapen" , category = ACMD_SOUND )]
-unsafe fn escape_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
@@ -245,8 +233,7 @@ unsafe fn escape_n_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "falco", script = "sound_passivewalljump" , category = ACMD_SOUND )]
-unsafe fn wall_jump_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wall_jump_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
@@ -257,8 +244,7 @@ unsafe fn wall_jump_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "falco", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -273,8 +259,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -288,8 +273,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco_illusion", script = "game_moveair" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_illusion_move_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn falco_illusion_move_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -299,23 +283,26 @@ unsafe fn falco_illusion_move_air_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_sound,
-        falco_turn_dash_game,
-		falco_catch_game,
-        falco_blaster_bullet_fly_game,
-        escape_air_sound,
-        escape_air_slide_sound,
-        escape_n_sound,
-        wall_jump_sound,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound,
-        falco_illusion_move_air_game,
-    );
+    smashline::Agent::new("falco_illusion")
+        .acmd("game_moveair", falco_illusion_move_air_game)
+        .install();
+    smashline::Agent::new("falco")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", falco_turn_dash_game)
+        .acmd("game_catch", falco_catch_game)
+        .acmd("sound_escapeair", escape_air_sound)
+        .acmd("sound_escapeairslide", escape_air_slide_sound)
+        .acmd("sound_escapen", escape_n_sound)
+        .acmd("sound_passivewalljump", wall_jump_sound)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("falco_blaster_bullet")
+        .acmd("game_fly", falco_blaster_bullet_fly_game)
+        .install();
 }
-

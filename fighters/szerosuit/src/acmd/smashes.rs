@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "szerosuit", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 25.0);
@@ -41,8 +39,7 @@ unsafe fn szerosuit_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -104,8 +101,7 @@ unsafe fn szerosuit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 26.0);
@@ -135,8 +131,7 @@ unsafe fn szerosuit_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_attack_hi_4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_hi_4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -186,13 +181,11 @@ if is_excute(fighter) {
 }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_attack_s4_hi_game,
-        szerosuit_attack_s4_s_game,
-        szerosuit_attack_s4_lw_game,
-        szerosuit_attack_hi_4_game,
-    );
+    smashline::Agent::new("szerosuit")
+        .acmd("game_attacks4hi", szerosuit_attack_s4_hi_game)
+        .acmd("game_attacks4", szerosuit_attack_s4_s_game)
+        .acmd("game_attacks4lw", szerosuit_attack_s4_lw_game)
+        .acmd("game_attackhi4", szerosuit_attack_hi_4_game)
+        .install();
 }
-

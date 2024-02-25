@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "roy", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -27,8 +25,7 @@ unsafe fn roy_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "roy", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -46,9 +43,8 @@ unsafe fn roy_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        roy_attack_11_game,
-        roy_attack_dash_game,
-    );
+    smashline::Agent::new("roy")
+        .acmd("game_attack11", roy_attack_11_game)
+        .acmd("game_attackdash", roy_attack_dash_game)
+        .install();
 }
-

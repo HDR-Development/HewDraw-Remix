@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "edge", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,8 +24,7 @@ unsafe fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -58,8 +56,7 @@ unsafe fn edge_throw_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "edge", script = "effect_throwhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn edge_throw_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -101,8 +98,7 @@ unsafe fn edge_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_throwhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn edge_throw_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -120,8 +116,7 @@ unsafe fn edge_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "expression_throwhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn edge_throw_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -134,8 +129,7 @@ unsafe fn edge_throw_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -156,8 +150,7 @@ unsafe fn edge_throw_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_throwlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -198,13 +191,13 @@ unsafe fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        edge_throw_b_game,
-        edge_throw_hi_game,
-        edge_throw_hi_effect,
-        edge_throw_hi_sound,
-        edge_throw_hi_expression,
-        edge_throw_lw_game,
-        edge_throw_lw_effect,
-    );
+    smashline::Agent::new("edge")
+        .acmd("game_throwb", edge_throw_b_game)
+        .acmd("game_throwhi", edge_throw_hi_game)
+        .acmd("effect_throwhi", edge_throw_hi_effect)
+        .acmd("sound_throwhi", edge_throw_hi_sound)
+        .acmd("expression_throwhi", edge_throw_hi_expression)
+        .acmd("game_throwlw", edge_throw_lw_game)
+        .acmd("effect_throwlw", edge_throw_lw_effect)
+        .install();
 }
