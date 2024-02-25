@@ -43,9 +43,9 @@
   </list>
   <list hash="param_bowarrow">
     <struct index="0">
-      <int hash="life">35</int>
-      <float hash="speed_min">2.1</float>
-      <float hash="power_min">4.5</float>
+      <int hash="life">42</int>
+      <float hash="speed_min">1.8</float>
+      <float hash="power_min">5</float>
       <float hash="accel_y">0.045</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -64,6 +64,15 @@
       <float hash="rslash_fall_special_speed_x_max_mul">1.2</float>
       <float hash="rslash_air_spd_x_mul">0.5</float>
       <float hash="rslash_air_init_spd_mul">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+<list hash="param_linkbomb">
+    <struct index="0">
+      <float hash="linkbomb_limit_frame">300</float>
+      <float hash="linkbomb_flash_frame">90</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
