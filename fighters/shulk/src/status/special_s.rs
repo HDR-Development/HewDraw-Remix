@@ -1,15 +1,7 @@
 use super::*;
 use globals::*;
 
-pub fn install() {
-    install_status_scripts!(
-        shulk_special_s_pre,
-        shulk_special_s_main,
-    );
-}
-
-#[status_script(agent = "shulk", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn shulk_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn shulk_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -37,8 +29,7 @@ unsafe fn shulk_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-#[status_script(agent = "shulk", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn shulk_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn shulk_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
     }
@@ -152,4 +143,11 @@ unsafe extern "C" fn shulk_special_s_main_loop(fighter: &mut L2CFighterCommon) -
         }
     }
     return 0.into();
+}
+
+pub fn install() {
+    smashline::Agent::new("shulk")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_pre,)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_main)
+        .install();
 }

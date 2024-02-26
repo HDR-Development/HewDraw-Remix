@@ -51,7 +51,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn monado_beat(fighter: &mut L2CFighterCommon, status_kind: i32) {
+unsafe fn arts_cancelling(fighter: &mut L2CFighterCommon, status_kind: i32) {
     if fighter.is_motion_one_of(&[
         Hash40::new("attack_13"),
         Hash40::new("attack_s3_s"),
@@ -88,7 +88,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Magic Series
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
-    monado_beat(fighter, status_kind);
+    arts_cancelling(fighter, status_kind);
 }
 
 pub extern "C" fn shulk_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

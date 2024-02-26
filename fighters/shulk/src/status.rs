@@ -3,12 +3,13 @@ use super::*;
 mod special_s;
 
 pub fn install() {
+    smashline::Agent::new("shulk")
+        .on_start(shulk_init)
+        .install();
     special_s::install();
-    smashline::install_agent_init_callbacks!(shulk_init);
 }
 
-#[smashline::fighter_init]
-fn shulk_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn shulk_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_SHULK {
             return;
