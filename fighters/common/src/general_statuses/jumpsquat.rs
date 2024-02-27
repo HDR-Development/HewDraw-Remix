@@ -6,11 +6,11 @@ use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Exec, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_exec_JumpSquat)
-        .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_end_JumpSquat)
-        .status(Main, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_JumpSquat)
-        .install();
+    // Agent::new("fighter")
+    //     .status(Exec, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_exec_JumpSquat)
+    //     .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_end_JumpSquat)
+    //     .status(Main, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_JumpSquat)
+    //     .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -25,6 +25,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_jump_squat_uniq_check_sub_mini_attack,
             sub_status_JumpSquat_check_stick_lr_update,
             status_JumpSquat,
+            bind_address_call_status_end_JumpSquat,
             status_end_JumpSquat,
         );
     }
@@ -182,7 +183,11 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // end status stuff
-// no symbol since you can't call `fighter.status_end_JumpSquat()`, and replacing `bind_call_...` makes no sense here
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_JumpSquat)]
+unsafe fn bind_address_call_status_end_JumpSquat(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_JumpSquat()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_JumpSquat)]
 unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     InputModule::disable_persist(fighter.battle_object);

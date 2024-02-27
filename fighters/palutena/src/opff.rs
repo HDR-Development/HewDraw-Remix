@@ -278,7 +278,7 @@ unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
                 //println!("and why he ourple");
             }
             else if color_2 == 3 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_R.into(), false.into());
+                fighter.change_status(statuses::palutena::SPECIAL_N_G.into(), false.into());
                 //println!("i like cash from my hair to my ass");
             }
             else {

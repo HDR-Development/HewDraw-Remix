@@ -365,6 +365,9 @@ extern "C" fn pickel_init(fighter: &mut L2CFighterCommon) {
     }
 }
 pub fn install() {
+    skyline::install_hooks!(
+        stuff_hook
+    );
     smashline::Agent::new("pickel")
         .status(
             Main,
