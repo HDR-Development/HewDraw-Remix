@@ -1,6 +1,6 @@
 use super::*;
 
-// disables art wheel during hitstun, and enables it during jab, da, tilts and aerials
+// disables art wheel during hitstun, and enables it during jab, tilts and aerials
 
 #[skyline::hook(offset = 0x116a3d0)]
 pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) -> u64 {
