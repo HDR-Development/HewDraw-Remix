@@ -41,7 +41,6 @@ unsafe extern "C" fn younglink_attack_lw3_game(fighter: &mut L2CAgentBase) {
 FT_MOTION_RATE(fighter, 1.0);
 }
 }
-#[acmd_script( agent = "younglink", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe extern "C" fn younglink_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
