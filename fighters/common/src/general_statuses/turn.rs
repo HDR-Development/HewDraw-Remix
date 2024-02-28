@@ -205,8 +205,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Main, *FIGHTER_STATUS_KIND_TURN, status_turn)
-        .status(End, *FIGHTER_STATUS_KIND_TURN, status_end_turn)
-        .install();
+    // Agent::new("fighter")
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN, status_turn)
+    //     .status(End, *FIGHTER_STATUS_KIND_TURN, status_end_turn)
+    //     .install();
 }

@@ -261,7 +261,7 @@ unsafe extern "C" fn tantan_special_hi_exec(fighter: &mut L2CFighterCommon) -> L
         fighter.change_status_req(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR, false);
         return 0.into();
     }
-    return smashline::original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter);
+    return smashline::original_status(Exec, fighter, *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND)(fighter);
 }
 
 unsafe extern "C" fn tantan_special_hi_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

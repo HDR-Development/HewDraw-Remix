@@ -218,11 +218,11 @@ fn nro_info(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_info);
-    Agent::new("fighter")
-        .status(Pre, *FIGHTER_STATUS_KIND_RUN, status_pre_run)
-        .status(Main, *FIGHTER_STATUS_KIND_RUN, status_run)
-        .status(Main, *FIGHTER_STATUS_KIND_RUN_BRAKE, status_runbrake)
-        .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_turnrunbrake)
-        .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_turnrun)
-        .install();
+    // Agent::new("fighter")
+    //     .status(Pre, *FIGHTER_STATUS_KIND_RUN, status_pre_run)
+    //     .status(Main, *FIGHTER_STATUS_KIND_RUN, status_run)
+    //     .status(Main, *FIGHTER_STATUS_KIND_RUN_BRAKE, status_runbrake)
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_turnrunbrake)
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_turnrun)
+    //     .install();
 }
