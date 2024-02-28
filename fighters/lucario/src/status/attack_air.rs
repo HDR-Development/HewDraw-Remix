@@ -14,7 +14,7 @@ pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CVa
         }
         VarModule::off_flag(fighter.object(), vars::lucario::instance::IS_USPECIAL_ATTACK_CANCEL);
     }
-    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {

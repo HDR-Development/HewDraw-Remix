@@ -5,7 +5,7 @@ use globals::*;
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND
 
 pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = smashline::original_status(Main, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND)(fighter);
+    let ret = smashline::original_status(End, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND)(fighter);
 
     fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
     
