@@ -101,7 +101,6 @@ pub fn install() {
         ptrainer_stub_death_switch,
         // shield_damage_analog,
         // shield_pushback_analog
-        //set_hit_team_hook,
         hero_rng_hook,
         psych_up_hit,
         donkey_link_event,
