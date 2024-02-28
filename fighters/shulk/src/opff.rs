@@ -63,24 +63,9 @@ unsafe fn arts_cancelling(fighter: &mut L2CFighterCommon, status_kind: i32) {
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw") ]) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            println!("beat");
-            VarModule::on_flag(fighter.object(), vars::shulk::instance::MONADO_BEAT);
+            // println!("beat");
+            VarModule::on_flag(fighter.object(), vars::shulk::status::MONADO_BEAT);
         }
-    }
-    else if !fighter.is_motion_one_of(&[
-        Hash40::new("attack_13"),
-        Hash40::new("attack_s3_s"),
-        Hash40::new("attack_hi3"),
-        Hash40::new("attack_lw3"),
-        Hash40::new("attack_air_n"),
-        Hash40::new("attack_air_f"),
-        Hash40::new("attack_air_b"),
-        Hash40::new("attack_air_hi"),
-        Hash40::new("attack_air_lw"),
-        Hash40::new("special_n_start"),
-        Hash40::new("special_air_n_start") ]) {
-        println!("no beat");
-        VarModule::off_flag(fighter.object(), vars::shulk::instance::MONADO_BEAT);
     }
 }
 

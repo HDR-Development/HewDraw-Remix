@@ -5,18 +5,18 @@ unsafe extern "C" fn shulk_special_n_start_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if VarModule::is_flag(agent.object(), vars::shulk::instance::MONADO_BEAT) {
+    if VarModule::is_flag(agent.object(), vars::shulk::status::MONADO_BEAT) {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("shulk_vision_start"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1.3, true);
             LAST_EFFECT_SET_RATE(agent, 1.2);
         }
     }
     wait(lua_state, 2.0);
-    if VarModule::is_flag(agent.object(), vars::shulk::instance::MONADO_BEAT) {
+    if VarModule::is_flag(agent.object(), vars::shulk::status::MONADO_BEAT) {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("shulk_vision_start"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1.5, true);
             LAST_EFFECT_SET_RATE(agent, 1.2);
-            LAST_EFFECT_SET_ALPHA(agent, 0.5);
+            LAST_EFFECT_SET_ALPHA(agent, 0.75);
         }
     }
     frame(lua_state, 4.0);

@@ -7,7 +7,7 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) 
     let module_accessor = (fighter.battle_object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let object = &mut fighter.battle_object;
-    if VarModule::is_flag(object, vars::shulk::instance::MONADO_BEAT) {
+    if VarModule::is_flag(object, vars::shulk::status::MONADO_BEAT) {
         u64::from([
             *FIGHTER_STATUS_KIND_WAIT,
             *FIGHTER_STATUS_KIND_WALK,
