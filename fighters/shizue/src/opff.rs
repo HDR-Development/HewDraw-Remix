@@ -19,8 +19,6 @@ unsafe fn fishing_rod_shield_cancel(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
-
-
 unsafe fn fair_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("attack_air_f"))  {
         if fighter.motion_frame() > 13.0 || fighter.motion_frame() < 17.0 {
@@ -58,8 +56,7 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 //Lloid explode on hit
-#[smashline::weapon_frame_callback(main)]
-pub fn lloid_callback(weapon : &mut L2CFighterBase) {
+unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         if weapon.kind() != *WEAPON_KIND_SHIZUE_CLAYROCKET {
             return
@@ -68,10 +65,39 @@ pub fn lloid_callback(weapon : &mut L2CFighterBase) {
         let shizue = utils::util::get_battle_object_from_id(owner_id as u32);
         let shizue_boma = &mut *(*shizue).module_accessor;
         let status = StatusModule::status_kind(weapon.module_accessor);
+        if [*WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST,
+            *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_DISAPPEAR].contains(&status) {
+            VarModule::off_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
+            VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 0);
+        }
         if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY {
-            VarModule::on_flag(shizue, vars::shizue::status::IS_LLOID_READY);
-        } else {
-            VarModule::off_flag(shizue, vars::shizue::status::IS_LLOID_READY);
+            if shizue_boma.is_cat_flag(Cat1::SpecialLw)
+            && !VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC)
+            && !shizue_boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_SET)
+            && !CancelModule::is_enable_cancel(shizue_boma)
+            && !shizue_boma.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_DAMAGE,
+                *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
+                VarModule::on_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
+                VarModule::set_int(shizue, vars::shizue::instance::LLOID_TIMER, 10);
+                EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+            }
+        }
+        if VarModule::is_flag(shizue, vars::shizue::instance::LLOID_ASYNC) {
+            if VarModule::get_int(shizue, vars::shizue::instance::LLOID_TIMER) > 0 {
+                VarModule::dec_int(shizue, vars::shizue::instance::LLOID_TIMER);
+            }
+            else {
+                VarModule::off_flag(shizue, vars::shizue::instance::LLOID_ASYNC);
+                StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY, true);
+            }
         }
         if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
         && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -96,16 +122,16 @@ unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
 }
 
 //Cancel anything on hit into Lloid Call
-unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
-    let boma = fighter.boma();
-    if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-    && !fighter.is_in_hitlag()  
-    && VarModule::is_flag(fighter.battle_object, vars::shizue::status::IS_LLOID_READY) {
-        if fighter.is_cat_flag(Cat1::SpecialLw) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, false);
-        }
-    }
-}
+// unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
+//     let boma = fighter.boma();
+//     if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+//     && !fighter.is_in_hitlag()  
+//     && VarModule::is_flag(fighter.battle_object, vars::shizue::status::IS_LLOID_READY) {
+//         if fighter.is_cat_flag(Cat1::SpecialLw) {
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, false);
+//         }
+//     }
+// }
 
 //Reel in
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
@@ -124,8 +150,7 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
 }
  
 //Disable grab on fishingrod when pullingback
-#[smashline::weapon_frame_callback(main)]
-pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
+unsafe extern "C" fn fishingrod_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         let object_id = (*weapon.battle_object).battle_object_id;
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
@@ -253,8 +278,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fair_scale(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_SHIZUE )]
-pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
@@ -265,4 +289,17 @@ pub unsafe fn shizue_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("shizue")
+        .on_line(Main, shizue_frame_wrapper)
+        .install();
+
+    smashline::Agent::new("shizue_fishingrod")
+        .on_line(Main, fishingrod_callback)
+        .install();
+
+    smashline::Agent::new("shizue_clayrocket")
+        .on_line(Main, lloid_callback)
+        .install();
 }

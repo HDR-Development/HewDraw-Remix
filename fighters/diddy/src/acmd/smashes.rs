@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "diddy", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -39,8 +37,52 @@ unsafe fn diddy_attack_s4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_s4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    app::sv_animcmd::execute(lua_state, 5.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 4);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn diddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -98,11 +140,10 @@ unsafe fn diddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "diddy", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -131,14 +172,14 @@ unsafe fn diddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_attack_s4_game,
-        diddy_attack_hi4_game,
-        diddy_attack_lw4_game,
-    );
+    smashline::Agent::new("diddy")
+        .acmd("game_attacks4", diddy_attack_s4_game)
+        .acmd("expression_attacks4", diddy_attack_s4_expression)
+        .acmd("game_attackhi4", diddy_attack_hi4_game)
+        .acmd("game_attacklw4", diddy_attack_lw4_game)
+        .install();
 }
-

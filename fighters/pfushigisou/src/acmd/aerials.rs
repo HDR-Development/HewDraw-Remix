@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "pfushigisou", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -37,11 +35,10 @@ unsafe fn pfushigisou_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /*
@@ -54,11 +51,10 @@ unsafe fn pfushigisou_landing_air_n_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     */
-    
+
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -80,11 +76,24 @@ unsafe fn pfushigisou_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pfushigisou_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+}
+
+unsafe extern "C" fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -114,11 +123,10 @@ unsafe fn pfushigisou_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -154,11 +162,10 @@ unsafe fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-#[acmd_script( agent = "pfushigisou", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -183,17 +190,17 @@ unsafe fn pfushigisou_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pfushigisou_attack_air_n_game,
-        pfushigisou_landing_air_n_game,
-        pfushigisou_attack_air_f_game,
-        pfushigisou_attack_air_b_game,
-        pfushigisou_attack_air_hi_game,
-        pfushigisou_attack_air_lw_game,
-    );
+    smashline::Agent::new("pfushigisou")
+        .acmd("game_attackairn", pfushigisou_attack_air_n_game)
+        .acmd("game_landingairn", pfushigisou_landing_air_n_game)
+        .acmd("game_attackairf", pfushigisou_attack_air_f_game)
+        .acmd("expression_attackairf", pfushigisou_attack_air_f_expression)
+        .acmd("game_attackairb", pfushigisou_attack_air_b_game)
+        .acmd("game_attackairhi", pfushigisou_attack_air_hi_game)
+        .acmd("game_attackairlw", pfushigisou_attack_air_lw_game)
+        .install();
 }
-

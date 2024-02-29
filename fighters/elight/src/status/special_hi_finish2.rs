@@ -21,7 +21,7 @@ unsafe extern "C" fn special_hi_finish2_pre(fighter: &mut L2CFighterCommon) -> L
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_AIR_LASSO) as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_AIR_LASSO | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
@@ -61,23 +61,26 @@ unsafe extern "C" fn special_hi_finish2_main_loop(fighter: &mut L2CFighterCommon
     // [h] when the motion is over disable special hi jump and special s
     if MotionModule::is_end(fighter.module_accessor) {
         VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        if VarModule::is_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), true.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
     }
 
     0.into()
 }
 
 unsafe extern "C" fn special_hi_finish2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::UP_SPECIAL_FREEFALL);
     0.into()
 }
 
 pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_elight"),
-        statuses::elight::SPECIAL_HI_FINISH2,
-        StatusInfo::new()
-            .with_pre(special_hi_finish2_pre)
-            .with_main(special_hi_finish2_main)
-            .with_end(special_hi_finish2_end)    
-    );
+    smashline::Agent::new("elight")
+        .status(Pre, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_pre)
+        .status(Main, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_main)
+        .status(End, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_end)
+        .install();
 }

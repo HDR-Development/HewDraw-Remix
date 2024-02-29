@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "krool", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -28,8 +27,7 @@ unsafe fn krool_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -60,8 +58,7 @@ unsafe fn krool_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -92,8 +89,7 @@ unsafe fn krool_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn krool_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -146,8 +142,7 @@ unsafe fn krool_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -167,9 +162,27 @@ unsafe fn krool_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 15.0, 270, 100, 200, 0, 6.0, -1.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("hip"), 15.0, 270, 100, 200, 0, 6.0, 4.5, -2.5, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 2, 0, Hash40::new("hip"), 15.0, 270, 100, 200, 0, 6.0, 11.0, -6.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        let top_pos = &mut Vector3f{ x: 0.0, y: 0.0, z: 0.0 };
+        ModelModule::joint_global_position(boma, Hash40::new("top"), top_pos, false);
+        let hip_pos = &mut Vector3f{ x: 0.0, y: 0.0, z: 0.0 };
+        ModelModule::joint_global_position(boma, Hash40::new("hip"), hip_pos, false);
+        let facing = PostureModule::lr(boma);
+        let ground = &mut Vector2f{ x: 0.0, y: 0.0 };
+        if GroundModule::line_segment_check(boma,
+            &Vector2f{ x: hip_pos.x, y: hip_pos.y },
+            &Vector2f{ x: top_pos.x, y: top_pos.y - 5.0 },
+            &Vector2f::zero(),
+            ground,
+            true).is_null() {
+            ATTACK(fighter, 0, 0, Hash40::new("hip"), 15.0, 270, 100, 200, 0, 6.0, -1.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 15.0, 270, 100, 200, 0, 6.0, 4.5, -2.5, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 2, 0, Hash40::new("hip"), 15.0, 270, 100, 200, 0, 6.0, 11.0, -6.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        }
+        else {
+            ATTACK(fighter, 0, 0, Hash40::new("hip"), 18.0, 361, 80, 0, 65, 6.0, -4.0, -3.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 18.0, 361, 80, 0, 65, 6.0, 1.5, -5.5, 3.5, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 2, 0, Hash40::new("hip"), 18.0, 361, 80, 0, 65, 6.0, 7.0, -8.0, 7.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        }
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
     }
     frame(lua_state, 22.0);
@@ -196,8 +209,7 @@ unsafe fn krool_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "krool", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn krool_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn krool_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -220,12 +232,12 @@ unsafe fn krool_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        krool_attack_s4_hi_game,
-        krool_attack_s4_s_game,
-        krool_attack_s4_lw_game,
-        krool_attack_hi4_game,
-        krool_attack_lw4_game,
-        krool_attack_lw4_effect,
-    );
+    smashline::Agent::new("krool")
+        .acmd("game_attacks4hi", krool_attack_s4_hi_game)
+        .acmd("game_attacks4", krool_attack_s4_s_game)
+        .acmd("game_attacks4lw", krool_attack_s4_lw_game)
+        .acmd("game_attackhi4", krool_attack_hi4_game)
+        .acmd("game_attacklw4", krool_attack_lw4_game)
+        .acmd("effect_attacklw4", krool_attack_lw4_effect)
+        .install();
 }

@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -10,11 +14,14 @@ guard_off:
     cancel_frame: 12
 catch:
   extra:
-    cancel_frame: 52
+    cancel_frame: 44
 catch_l:
   extra:
-    cancel_frame: 52
+    cancel_frame: 44
 special_n:
+  extra:
+    cancel_frame: 41
+special_air_n:
   extra:
     cancel_frame: 41
 attack_13:
@@ -72,13 +79,68 @@ attack_s3_hi:
 attack_air_lw:
   extra:
     cancel_frame: 32
-special_air_n:
-  extra:
-    cancel_frame: 41
 attack_air_hi:
   extra:
     cancel_frame: 30
 attack_hi4_hold:
+special_n_thunder:
+  game_script: game_specialnthunder
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialnthunder.nuanmb
+  scripts:
+  - expression_specialnthunder
+  - sound_specialnthunder
+  - effect_specialnthunder
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 55
+    freeze_during_hitstop: false
+special_air_n_thunder:
+  game_script: game_specialairnthunder
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialairnthunder.nuanmb
+  scripts:
+  - expression_specialairnthunder
+  - sound_specialairnthunder
+  - effect_specialairnthunder
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 55
+    freeze_during_hitstop: false
 special_air_s_end:
   extra:
     cancel_frame: 36

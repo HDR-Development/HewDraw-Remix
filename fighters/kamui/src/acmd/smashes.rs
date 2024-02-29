@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "kamui", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -33,8 +32,7 @@ unsafe fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -67,8 +65,7 @@ unsafe fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -100,8 +97,58 @@ unsafe fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-#[acmd_script( agent = "kamui_spearhand", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("hair") as i64, hash40("hair_hide") as i64);
+    }
+    frame(lua_state, 9.0);
+    app::sv_animcmd::execute(lua_state, 9.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            ItemModule::set_have_item_visibility(boma, false, 0);
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        }
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("rbkind_attackm"), 0, 0);
+        sv_animcmd::RUMBLE_HIT(lua_state);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("rbkind_attackm"), 0, 1);
+        sv_animcmd::RUMBLE_HIT(lua_state);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("rbkind_piercel"), 0, 2);
+        sv_animcmd::RUMBLE_HIT(lua_state);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("hair") as i64, hash40("hair_normal") as i64);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("dragon") as i64, hash40("dragon_none") as i64);
+    }
+}
+
+unsafe extern "C" fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
@@ -116,8 +163,7 @@ unsafe fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.2);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -142,8 +188,7 @@ unsafe fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -168,12 +213,17 @@ unsafe fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_attack_s4_hi_game,
-        kamui_attack_s4_game,
-        kamui_attack_s4_lw_game,
-        kamui_spearhand_attack_s4_game,
-        kamui_attack_hi4_game,
-        kamui_attack_lw4_game,
-    );
+    smashline::Agent::new("kamui_spearhand")
+        .acmd("game_attacks4", kamui_spearhand_attack_s4_game)
+        .install();
+    smashline::Agent::new("kamui")
+        .acmd("game_attacks4hi", kamui_attack_s4_hi_game)
+        .acmd("game_attacks4", kamui_attack_s4_game)
+        .acmd("game_attacks4lw", kamui_attack_s4_lw_game)
+        .acmd("expression_attacks4hi", kamui_attack_s4_expression)
+        .acmd("expression_attacks4", kamui_attack_s4_expression)
+        .acmd("expression_attacks4lw", kamui_attack_s4_expression)
+        .acmd("game_attackhi4", kamui_attack_hi4_game)
+        .acmd("game_attacklw4", kamui_attack_lw4_game)
+        .install();
 }

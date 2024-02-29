@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "gaogaen", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -23,8 +22,7 @@ unsafe fn gaogaen_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -55,8 +53,7 @@ unsafe fn gaogaen_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -78,8 +75,23 @@ unsafe fn gaogaen_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn gaogaen_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attack_13_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
+unsafe extern "C" fn gaogaen_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.91);
@@ -107,11 +119,11 @@ unsafe fn gaogaen_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gaogaen_attack_11_game,
-        gaogaen_attack_12_game,
-        gaogaen_attack_13_game,
-        gaogaen_attack_dash_game,
-    );
+    smashline::Agent::new("gaogaen")
+        .acmd("game_attack11", gaogaen_attack_11_game)
+        .acmd("game_attack12", gaogaen_attack_12_game)
+        .acmd("game_attack13", gaogaen_attack_13_game)
+        .acmd("expression_attack13", gaogaen_attack_13_expression)
+        .acmd("game_attackdash", gaogaen_attack_dash_game)
+        .install();
 }
-

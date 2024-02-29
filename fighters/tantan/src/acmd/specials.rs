@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "tantan", script = "game_specialairn", category = ACMD_GAME, low_priority)]
-unsafe fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -55,8 +53,8 @@ unsafe fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-#[acmd_script( agent = "tantan", script = "effect_specialairn", category = ACMD_EFFECT, low_priority)]
-unsafe fn tantan_special_n_air_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_special_n_air_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -86,8 +84,8 @@ unsafe fn tantan_special_n_air_effect(fighter: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("sys_damage_fire_fly"), -1);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_specialairn", category = ACMD_SOUND, low_priority)]
-unsafe fn tantan_special_n_air_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_special_n_air_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -120,8 +118,7 @@ unsafe fn tantan_special_n_air_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "expression_specialairn", category = ACMD_EXPRESSION, low_priority)]
-unsafe fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -146,9 +143,7 @@ unsafe fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "tantan", script = "game_specialairnend", category = ACMD_GAME, low_priority)]
-unsafe fn tantan_special_n_air_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_special_n_air_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -177,16 +172,16 @@ unsafe fn tantan_special_n_air_end_game(fighter: &mut L2CAgentBase) {
         CancelModule::enable_cancel(boma);
     }
 }
-#[acmd_script( agent = "tantan", script = "effect_specialairnend", category = ACMD_EFFECT, low_priority)]
-unsafe fn tantan_special_n_air_end_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_special_n_air_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_specialairnend", category = ACMD_SOUND, low_priority)]
-unsafe fn tantan_special_n_air_end_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_special_n_air_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 2.0);
@@ -194,8 +189,8 @@ unsafe fn tantan_special_n_air_end_sound(fighter: &mut L2CAgentBase) {
         PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_specialairnend", category = ACMD_EXPRESSION, low_priority)]
-unsafe fn tantan_special_n_air_end_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_special_n_air_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -205,13 +200,15 @@ unsafe fn tantan_special_n_air_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", scripts = ["effect_specialairhi","effect_specialairhi2"], category = ACMD_EFFECT, low_priority )]
-unsafe fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let angle = WorkModule::get_float(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLOAT_ATTACK_SHIFT_ANGLE_L);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("tantan_jump_air"), Hash40::new("pl1_have"), 0, 0, 0, 0, 180.0+angle, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 1.3, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        }
     }
     if !WorkModule::is_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_IS_SPECIAL_HI_AIR_PHYSICS) {
         if is_excute(fighter) {
@@ -235,12 +232,11 @@ unsafe fn tantan_special_hi_air_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", scripts = ["game_specialairhistart","game_specialairhistart2"], category = ACMD_GAME, low_priority )]
-unsafe fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let bReverseFrame = if fighter.is_prev_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND) {2.0} else {4.0};
-    
+
     frame(lua_state, bReverseFrame);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_REVERSE_LR);
@@ -269,8 +265,8 @@ unsafe fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
 }
 
 //Right arm charging punch//
-#[acmd_script( agent = "tantan", scripts = ["sound_attacks4charger","sound_attacks4chargerb"], category = ACMD_SOUND, low_priority )]
-unsafe fn tantan_special_s_charge_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_special_s_charge_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -300,21 +296,23 @@ unsafe fn tantan_special_s_charge_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        tantan_special_n_air_game,
-        tantan_special_n_air_effect,
-        tantan_special_n_air_sound,
-        tantan_special_n_air_expression,
-        
-        tantan_special_n_air_end_game,
-        tantan_special_n_air_end_effect,
-        tantan_special_n_air_end_sound,
-        tantan_special_n_air_end_expression,
-
-        tantan_special_s_charge_sound,
-
-        tantan_special_hi_air_game,
-        tantan_special_hi_air_effect
-    );
+    smashline::Agent::new("tantan")
+        .acmd("game_specialairn", tantan_special_n_air_game)
+        .acmd("effect_specialairn", tantan_special_n_air_effect)
+        .acmd("sound_specialairn", tantan_special_n_air_sound)
+        .acmd("expression_specialairn", tantan_special_n_air_expression)
+        .acmd("game_specialairnend", tantan_special_n_air_end_game)
+        .acmd("effect_specialairnend", tantan_special_n_air_end_effect)
+        .acmd("sound_specialairnend", tantan_special_n_air_end_sound)
+        .acmd(
+            "expression_specialairnend",
+            tantan_special_n_air_end_expression,
+        )
+        .acmd("effect_specialairhi", tantan_special_hi_air_effect)
+        .acmd("effect_specialairhi2", tantan_special_hi_air_effect)
+        .acmd("game_specialairhistart", tantan_special_hi_air_game)
+        .acmd("game_specialairhistart2", tantan_special_hi_air_game)
+        .acmd("sound_attacks4charger", tantan_special_s_charge_sound)
+        .acmd("sound_attacks4chargerb", tantan_special_s_charge_sound)
+        .install();
 }
-

@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "demon", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,8 +50,7 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand1" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -115,8 +113,7 @@ unsafe fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand21" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -165,8 +162,7 @@ unsafe fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand22" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -223,8 +219,7 @@ unsafe fn kazuya_triple_spin_kicks_2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand23" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -260,8 +255,7 @@ unsafe fn kazuya_triple_spin_kicks_3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand24" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -293,8 +287,7 @@ unsafe fn kazuya_triple_spin_kicks_4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand31" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -342,8 +335,7 @@ unsafe fn kazuya_tsunami_kick_1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand32" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -371,8 +363,7 @@ unsafe fn kazuya_tsunami_kick_2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand4" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -415,8 +406,7 @@ unsafe fn kazuya_stature_smash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand5" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -469,8 +459,7 @@ unsafe fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand6" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -479,8 +468,8 @@ unsafe fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_KEEP_SITUATION_AIR);
-        WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_IGNORE_CHANGE_FALL);
+        //WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_KEEP_SITUATION_AIR);
+        //WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_IGNORE_CHANGE_FALL);
         HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
@@ -515,17 +504,16 @@ unsafe fn kazuya_jump_side_kick_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_KEEP_SITUATION_AIR);
+        //WorkModule::off_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_KEEP_SITUATION_AIR);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        WorkModule::off_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_IGNORE_CHANGE_FALL);
+        //WorkModule::off_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_STAND_6_FLAG_IGNORE_CHANGE_FALL);
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attacksquat2", category = ACMD_GAME, low_priority )]
-unsafe fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -555,8 +543,7 @@ unsafe fn kazuya_crouch_jab_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attacksquat3" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -590,8 +577,7 @@ unsafe fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "demon", script = "game_attacksquat4" , category = ACMD_GAME , low_priority)]
-unsafe fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -624,8 +610,8 @@ unsafe fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
         }
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 65, 50, 0, 40, 2.0, 0.0, 11.25, 9.0, None, None, None, 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x19f2214801), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKSQUAT4, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 65, 50, 0, 40, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(9.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x19f2214801), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKSQUAT4, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 65, 50, 0, 40, 2.0, 0.0, 11.25, 9.0, None, None, None, 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fist_down2"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKSQUAT4, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 65, 50, 0, 40, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(9.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fist_down2"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKSQUAT4, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 12.0, 65, 50, 0, 40, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(9.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKSQUAT4, *ATTACK_REGION_PUNCH);
         AttackModule::set_attack_level(boma, 2, 2 as u8);
         AttackModule::set_add_reaction_frame(boma, 2, 5.0, false);
@@ -644,20 +630,20 @@ unsafe fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attackdash,
-        kazuya_left_splits_kick_game,
-        kazuya_triple_spin_kicks_1_game,
-        kazuya_triple_spin_kicks_2_game,
-        kazuya_triple_spin_kicks_3_game,
-        kazuya_triple_spin_kicks_4_game,
-        kazuya_tsunami_kick_1_game,
-        kazuya_tsunami_kick_2_game,
-        kazuya_stature_smash_game,
-        kazuya_flash_tornado_game,
-        kazuya_jump_side_kick_game,
-        kazuya_crouch_jab_game,
-        kazuya_crouching_spin_kick_game,
-        kazuya_demon_god_fist_game,
-    );
+    smashline::Agent::new("demon")
+        .acmd("game_attackdash", game_attackdash)
+        .acmd("game_attackstand1", kazuya_left_splits_kick_game)
+        .acmd("game_attackstand21", kazuya_triple_spin_kicks_1_game)
+        .acmd("game_attackstand22", kazuya_triple_spin_kicks_2_game)
+        .acmd("game_attackstand23", kazuya_triple_spin_kicks_3_game)
+        .acmd("game_attackstand24", kazuya_triple_spin_kicks_4_game)
+        .acmd("game_attackstand31", kazuya_tsunami_kick_1_game)
+        .acmd("game_attackstand32", kazuya_tsunami_kick_2_game)
+        .acmd("game_attackstand4", kazuya_stature_smash_game)
+        .acmd("game_attackstand5", kazuya_flash_tornado_game)
+        .acmd("game_attackstand6", kazuya_jump_side_kick_game)
+        .acmd("game_attacksquat2", kazuya_crouch_jab_game)
+        .acmd("game_attacksquat3", kazuya_crouching_spin_kick_game)
+        .acmd("game_attacksquat4", kazuya_demon_god_fist_game)
+        .install();
 }

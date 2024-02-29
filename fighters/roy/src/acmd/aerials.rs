@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "roy", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -63,8 +61,7 @@ unsafe fn roy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "roy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +92,7 @@ unsafe fn roy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "roy", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn roy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -112,8 +108,7 @@ unsafe fn roy_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -139,8 +134,7 @@ unsafe fn roy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "roy", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -165,8 +159,7 @@ unsafe fn roy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -191,8 +184,7 @@ unsafe fn roy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "roy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -239,8 +231,7 @@ unsafe fn roy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "roy", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -270,34 +261,31 @@ unsafe fn roy_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "sound_attackairlw" , category = ACMD_SOUND , low_priority)]
-unsafe fn roy_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new_raw(0x169ba09789));
-        PLAY_SE(fighter, Hash40::new_raw(0x14e8f9fb62));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_roy_rnd_attack_air"));
+        PLAY_SE(fighter, Hash40::new("se_roy_attackair_h01"));
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x14eff053be));
+        PLAY_SE(fighter, Hash40::new("se_roy_attackair_l01"));
     }
     
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        roy_attack_air_n_game,
-        roy_attack_air_f_game,
-        roy_attack_air_f_expression,
-        roy_attack_air_b_game,
-        roy_attack_air_b_game,
-        roy_attack_air_b_effect,
-        roy_attack_air_hi_game,
-        roy_attack_air_lw_game,
-        roy_attack_air_lw_effect,
-        roy_attack_air_lw_sound,
-    );
+    smashline::Agent::new("roy")
+        .acmd("game_attackairn", roy_attack_air_n_game)
+        .acmd("game_attackairf", roy_attack_air_f_game)
+        .acmd("expression_attackairf", roy_attack_air_f_expression)
+        .acmd("game_attackairb", roy_attack_air_b_game)
+        .acmd("effect_attackairb", roy_attack_air_b_effect)
+        .acmd("game_attackairhi", roy_attack_air_hi_game)
+        .acmd("game_attackairlw", roy_attack_air_lw_game)
+        .acmd("effect_attackairlw", roy_attack_air_lw_effect)
+        .acmd("sound_attackairlw", roy_attack_air_lw_sound)
+        .install();
 }
-

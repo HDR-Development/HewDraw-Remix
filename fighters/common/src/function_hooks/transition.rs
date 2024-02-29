@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 //=================================================================
 //== WorkModule::is_enable_transition_term
 //== Note: Disable transition terms
@@ -141,13 +140,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
                 return false;
             }
-        }
-
-        // disable palutena projectiles during aegis reflector
-        if fighter_kind == *FIGHTER_KIND_PALUTENA 
-            && ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
-                return false;
         }
 
         if fighter_kind == *FIGHTER_KIND_TRAIL {

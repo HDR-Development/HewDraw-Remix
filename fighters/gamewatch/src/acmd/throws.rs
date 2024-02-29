@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "gamewatch", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -42,8 +41,7 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -85,8 +83,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -131,8 +128,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -161,13 +157,8 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::set_float(boma, 70.0, *FIGHTER_GAMEWATCH_STATUS_THROW_WORK_FLOAT_STOCK_ICON_ROTATE);
     }
-    frame(lua_state, 29.0);
-    if (is_excute(fighter)) {
-        FT_MOTION_RATE(fighter, 2.000);
-    }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         CHECK_FINISH_CAMERA(fighter, -9, 0);
     }
     frame(lua_state, 35.0);
@@ -179,17 +170,17 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
     }
     frame(lua_state, 41.0);
-    if (is_excute(fighter)) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
+    frame(lua_state, 47.0);
+    FT_MOTION_RATE(fighter, 1.0);
 
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwf,
-        game_throwb,
-        game_throwhi,
-        game_throwlw,
-    );
+    smashline::Agent::new("gamewatch")
+        .acmd("game_throwf", game_throwf)
+        .acmd("game_throwb", game_throwb)
+        .acmd("game_throwhi", game_throwhi)
+        .acmd("game_throwlw", game_throwlw)
+        .install();
 }

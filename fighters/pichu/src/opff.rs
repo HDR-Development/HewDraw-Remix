@@ -161,9 +161,11 @@ unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PICHU )]
-pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         MeterModule::set_meter_per_level(fighter.object(), 25.0);
@@ -178,7 +180,16 @@ pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
     
-
+// JC Agility
+unsafe fn jc_agility(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL)
+    && boma.status_frame() > 3
+    && boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_prev_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END)
+    && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC) {
+        boma.check_jump_cancel(true, false);
+    }
+}
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     charge_state_increase(fighter, boma);
@@ -189,10 +200,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     discharge_momentum(fighter);
     zippy_zap_jump_cancel(boma, status_kind, situation_kind, cat[0]);
     charge_training_taunt(fighter, boma, status_kind);
+    jc_agility(boma);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_PICHU )]
-pub fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pichu_frame(fighter);
@@ -204,4 +215,10 @@ pub unsafe fn pichu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("pichu")
+        .on_line(Main, pichu_frame_wrapper)
+        .on_line(Main, pichu_meter)
+        .install();
 }

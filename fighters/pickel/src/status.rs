@@ -2,59 +2,132 @@ use super::*;
 use globals::*;
 // status script import
 
-pub unsafe extern "C" fn pickel_attack_que(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    if !FighterSpecializer_Pickel::is_status_kind_attack(prev_status) {
-        fighter.sub_GetLightItemImm(L2CValue::Void());
-        if StatusModule::status_kind_que_from_script(fighter.module_accessor) as i32 != *STATUS_KIND_NONE {
-            return true.into();
+// prevent steve from spawning the crafting table through vanilla circumstances
+
+unsafe extern "C" fn recreate_table(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !fighter.is_prev_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT)
+    || !VarModule::is_flag(fighter.object(), vars::pickel::instance::CAN_RESPAWN_TABLE) {
+        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        StatusModule::change_status_force(fighter.boma(), *FIGHTER_STATUS_KIND_GUARD_OFF, true); // steve will instead parry
+        
+        return 1.into();
+    }
+
+    smashline::original_status(Main, fighter, *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE)(fighter)
+}
+
+// prevent steve's shield from being locked in place after it is damaged (vanilla bug) 
+
+unsafe extern "C" fn guarddamage_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.boma(), *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
+
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_GUARD_DAMAGE)(fighter)
+}
+
+unsafe extern "C" fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_end_GuardDamage()
+}
+
+// lets the "stuff" article generate in new statuses
+#[skyline::hook(offset = 0xf13d5c, inline)]
+unsafe fn stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let new_shield_statuses = &[
+        0x1B, // GUARD_ON
+        0x1C // GUARD
+        ];
+    let status = *ctx.registers[0].x.as_ref();
+    if new_shield_statuses.contains(&status) {
+        *ctx.registers[0].x.as_mut() = 0x1E;
+    } 
+}
+
+// keep shield article visible while shielding
+
+pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !ArticleModule::is_exist(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF){
+        ArticleModule::generate_article(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, false, -1);
+        ArticleModule::set_rate(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, 0.0);
+    }
+
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_GUARD)(fighter)
+}
+
+// handles the removal of steves resources when respawning
+
+pub unsafe extern "C" fn rebirth(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let dirt = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
+    let wood = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
+    let stone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
+    let iron = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON);
+    let gold = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD);
+    let diamond = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_DIAMOND);
+    let redstone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
+    let reduce_half: [[i32;2];4] = [ // these materials will be reduced by 50% on respawn
+        [*FIGHTER_PICKEL_MATERIAL_KIND_GRADE_1, dirt],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_WOOD, wood],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_STONE, stone],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_IRON, iron]]; 
+    for material in reduce_half {
+        if material[1] > 1 {
+            let reduction = (material[1] / 2);
+            FighterSpecializer_Pickel::sub_material_num(fighter.boma(), material[0], reduction);
+        }
+    }     
+    if gold > 0 { // remove all gold
+        FighterSpecializer_Pickel::sub_material_num(fighter.boma(), *FIGHTER_PICKEL_MATERIAL_KIND_GOLD, gold);
+    }
+    if diamond > 0 { // remove all diamonds
+        FighterSpecializer_Pickel::sub_material_num(fighter.boma(), *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND, diamond);
+    }
+    let init_rstn = WorkModule::get_param_int(fighter.boma(), hash40("param_private"), hash40("start_material_red_stone_num"));
+    if redstone > init_rstn { // reduce redstone to starting value
+        FighterSpecializer_Pickel::sub_material_num(fighter.boma(), *FIGHTER_PICKEL_MATERIAL_KIND_RED_STONE, (redstone - init_rstn));
+    }
+    
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_REBIRTH)(fighter)
+}
+
+// handles materials when steve is entering the match, to account for salty runbacks
+
+pub unsafe extern "C" fn entry(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let dirt = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GRADE_1);
+    let wood = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_WOOD);
+    let stone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_STONE);
+    let iron = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON);
+    let gold = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD);
+    let diamond = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_DIAMOND);
+    let redstone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
+    let remove_mats: [[i32;2];4] = [ // these materials will be removed on entry
+        [*FIGHTER_PICKEL_MATERIAL_KIND_STONE, stone],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_IRON, iron],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_GOLD, dirt],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND, wood]]; 
+    for material in remove_mats {
+        let (kind, has) = (material[0], material[1]);
+        if has > 0 {
+            FighterSpecializer_Pickel::sub_material_num(fighter.boma(), kind, has);
+        }
+    }    
+    let init_dirt = WorkModule::get_param_int(fighter.boma(), hash40("param_private"), hash40("start_material_grade_1_num"));
+    let init_wood = WorkModule::get_param_int(fighter.boma(), hash40("param_private"), hash40("start_material_wood_num")); 
+    let init_rstn = WorkModule::get_param_int(fighter.boma(), hash40("param_private"), hash40("start_material_red_stone_num"));
+    let init_mats: [[i32;3];3] = [ // these materials will be reverted to the initial amount defined in params
+        [*FIGHTER_PICKEL_MATERIAL_KIND_GRADE_1, dirt, init_dirt],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_WOOD, wood, init_wood],
+        [*FIGHTER_PICKEL_MATERIAL_KIND_RED_STONE, redstone, init_rstn]];
+    for material in init_mats {
+        let (kind, has, init) = (material[0], material[1], material[2]);
+        if has > init {
+            FighterSpecializer_Pickel::sub_material_num(fighter.boma(), kind, (has - init));
+        } else if has < init {
+            FighterSpecializer_Pickel::add_material_num(fighter.boma(), kind, (init - has));
         }
     }
-    false.into()
+    
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
 }
 
-pub unsafe extern "C" fn pickel_attack_catch_item(fighter: &mut L2CFighterCommon) {
-    let catch_frame_param = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        hash40("item_catch_frame_attack_3")
-    }
-    else {
-        hash40("item_air_catch_frame")
-    };
-    let catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), catch_frame_param);
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_ATTACK_FRAME) <= catch_frame {
-        fighter.sub_GetLightItemImm(L2CValue::Void());
-    }
-}
-
-#[smashline::status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_GUARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_Guard()
-}
-
-#[smashline::status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_GUARD_ON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_GuardOn()
-}
-
-pub fn install() {
-    install_status_scripts!(
-        //jumpsquat,
-        //exec_stop_jumpsquat,
-        //waza_jumpsquat,
-        pre_jump,
-        guard,
-        guard_on,
-        //jump
-
-        attack_air_lw_start_main,
-        special_s_pre
-
-    );
-    smashline::install_agent_init_callbacks!(steve_init);
-}
-
-#[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if pickel_attack_que(fighter).get_bool() {
         return 0.into();
     }
@@ -136,6 +209,29 @@ unsafe extern "C" fn attack_air_lw_start_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
+pub unsafe extern "C" fn pickel_attack_que(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    if !FighterSpecializer_Pickel::is_status_kind_attack(prev_status) {
+        fighter.sub_GetLightItemImm(L2CValue::Void());
+        if StatusModule::status_kind_que_from_script(fighter.module_accessor) as i32 != *STATUS_KIND_NONE {
+            return true.into();
+        }
+    }
+    false.into()
+}
+
+pub unsafe extern "C" fn pickel_attack_catch_item(fighter: &mut L2CFighterCommon) {
+    let catch_frame_param = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        hash40("item_catch_frame_attack_3")
+    } else {
+        hash40("item_air_catch_frame")
+    };
+    let catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), catch_frame_param);
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_ATTACK_FRAME) <= catch_frame {
+        fighter.sub_GetLightItemImm(L2CValue::Void());
+    }
+}
+
 unsafe extern "C" fn attack_air_lw_dead_area(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         let pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
@@ -162,35 +258,33 @@ pub unsafe extern "C" fn attack_air_lw_fail_main_status_loop(fighter: &mut L2CFi
             fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec_fix_pos();
         }
         0.into()
-    }
-    else {
+    } else {
         1.into()
     }
 }
 
-#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-
+pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
     let trolleyArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
     let canCart = hasIron && !trolleyArticle;
-
     if canCart {
         VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
     }
-    return original!(fighter);
+
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
 }
 
-// Prevents sideB from being used again if it has already been used once in the current airtime
+// Prevents side special from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S) {
+    if fighter.is_situation(*SITUATION_KIND_AIR)
+    && VarModule::is_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S) {
         false.into()
     } else {
         true.into()
     }
 }
 
-// Re-enables the ability to use sideB when connecting to ground or cliff
+// Re-enables the ability to use side special when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     let still_SideSpecial = fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -199,155 +293,29 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE
         ]
     );
-    
-    let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
-                            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-                            *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
     if (!fighter.is_situation(*SITUATION_KIND_AIR) && !still_SideSpecial) 
     || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING])
-    || fighter.is_status_one_of(damage_statuses) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
     }
 
     return true.into();
 }
 
-#[smashline::fighter_init]
-fn steve_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_PICKEL {
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
-    }
-}
-
-// FIGHTER_STATUS_KIND_JUMP_SQUAT //
-
-#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if pickel_js_status_check(fighter).get_bool() {
-        fighter.sub_shift_status_main(L2CValue::Ptr(
-            smash::lua2cpp::L2CFighterCommon_status_JumpSquat_Main as *const () as _,
-        ))
+unsafe extern "C" fn pickel_jump_status_check(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !fighter.is_prev_status_one_of(&[
+        *FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP]) {
+        return false.into();
     } else {
-        fighter.status_JumpSquat()
+        return true.into();
     }
 }
 
-#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-pub unsafe fn exec_stop_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if pickel_js_status_check(fighter).get_bool() {
-        MotionModule::change_motion_inherit_frame(
-            fighter.module_accessor,
-            Hash40::new_raw(0xad160bda8),
-            -1.0,
-            1.0,
-            0.0,
-            true,
-            true,
-        );
-    } else {
-        fighter.sub_jump_squat_uniq_process_init();
-    }
-    return 0.into();
-}
-
-unsafe extern "C" fn pickel_js_status_check(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP_SQUAT
-        && fighter.global_table[PREV_STATUS_KIND]
-            != FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT
-        && fighter.global_table[PREV_STATUS_KIND]
-            != FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT
-    {
-        return L2CValue::Bool(false);
-    } else {
-        return L2CValue::Bool(true);
-    }
-}
-
-// acts as exec status
-// do not use; causes bugs, simply here for research purposes
-#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_LINE_WAZA_CUSTOMIZE)]
-pub unsafe fn waza_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let stick_x = fighter.global_table[STICK_X].get_f32();
-    let special_stick_x = WorkModule::get_param_float(
-        fighter.module_accessor,
-        hash40("common"),
-        hash40("special_stick_x"),
-    );
-    let stick_y = fighter.global_table[STICK_Y].get_f32();
-    let special_stick_y = WorkModule::get_param_float(
-        fighter.module_accessor,
-        hash40("common"),
-        hash40("special_stick_y"),
-    );
-
-    fighter.uniq_process_JumpSquat_exec_status(); //this call is causing bugs for some reason
-    if WorkModule::is_flag(
-        fighter.module_accessor,
-        *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP,
-    ) {
-        return 0.into();
-    }
-    if WorkModule::is_flag(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI,
-    ) {
-        if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            return 0.into();
-        } else {
-            if special_stick_x > stick_x.abs() {
-                return 0.into();
-            } else {
-                if special_stick_y > stick_y.abs() {
-                    return 0.into();
-                } else {
-                    WorkModule::off_flag(
-                        fighter.module_accessor,
-                        *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI,
-                    );
-                }
-            }
-        }
-    } else {
-        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        {
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-                if stick_x.abs() >= special_stick_x {
-                    return 0.into();
-                } else {
-                    if stick_y.abs() >= special_stick_y {
-                        return 0.into();
-                    } else {
-                        WorkModule::on_flag(
-                            fighter.module_accessor,
-                            *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI,
-                        );
-                    }
-                }
-            }
-        }
-    }
-    return 0.into();
-}
-
-// FIGHTER_STATUS_KIND_JUMP //
-
-#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter
-        .status_pre_Jump_Common_param(L2CValue::Bool(true))
-        .get_bool()
+pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool()
     {
         return 1.into();
     } else {
@@ -359,9 +327,9 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
                 L2CValue::I32(*KINETIC_TYPE_NONE),
                 L2CValue::I32(
                     *FS_SUCCEEDS_KEEP_EFFECT
-                        | *FS_SUCCEEDS_KEEP_SOUND
-                        | *FS_SUCCEEDS_KEEP_TRANSITION
-                        | *FS_SUCCEEDS_KEEP_CANCEL,
+                    | *FS_SUCCEEDS_KEEP_SOUND
+                    | *FS_SUCCEEDS_KEEP_TRANSITION
+                    | *FS_SUCCEEDS_KEEP_CANCEL,
                 ),
             );
         } else {
@@ -377,115 +345,47 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 }
 
-#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if pickel_jump_status_check(fighter).get_bool() {
-        if !sub_jump(fighter).get_bool() {
-            if MotionModule::motion_kind(fighter.module_accessor) != 0x17f0bb63e4u64 {
-                if MotionModule::motion_kind(fighter.module_accessor) != 0x12e6fa5eceu64 {
-                    if MotionModule::motion_kind(fighter.module_accessor) != 0x176b2a21f2u64 {
-                        MotionModule::change_motion_inherit_frame(
-                            fighter.module_accessor,
-                            Hash40::new_raw(0x62dd02058),
-                            -1.0,
-                            1.0,
-                            0.0,
-                            true,
-                            true,
-                        );
-                    } else {
-                        MotionModule::change_motion_inherit_frame(
-                            fighter.module_accessor,
-                            Hash40::new_raw(0xb38c9ab48),
-                            -1.0,
-                            1.0,
-                            0.0,
-                            true,
-                            true,
-                        );
-                    }
-                } else {
-                    MotionModule::change_motion_inherit_frame(
-                        fighter.module_accessor,
-                        Hash40::new_raw(0x62abde441),
-                        -1.0,
-                        1.0,
-                        0.0,
-                        true,
-                        true,
-                    );
-                }
-            } else {
-                MotionModule::change_motion_inherit_frame(
-                    fighter.module_accessor,
-                    Hash40::new_raw(0xba358e95e),
-                    -1.0,
-                    1.0,
-                    0.0,
-                    true,
-                    true,
-                );
-            }
-            if !StopModule::is_stop(fighter.module_accessor) {
-                fighter.sub_fall_common_uniq(L2CValue::Bool(false));
-            }
-            fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(
-                smash::lua2cpp::L2CFighterCommon_sub_fall_common_uniq as *const () as _,
-            ));
-            fighter.sub_shift_status_main(L2CValue::Ptr(
-                smash::lua2cpp::L2CFighterCommon_status_Jump_Main as *const () as _,
-            ))
-        } else {
-            return 0.into();
+extern "C" fn pickel_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.kind() != FIGHTER_KIND_PICKEL {
+            return;
         }
-    } else {
-        if WorkModule::is_flag(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI,
-        ) {
-            let pickel_int = WorkModule::get_param_int(
-                fighter.module_accessor,
-                hash40("param_private"),
-                0xf9b69867e,
-            );
-            WorkModule::set_int(
-                fighter.module_accessor,
-                pickel_int,
-                *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_JUMP_MINI_FRAME,
-            );
-        }
-        fighter.status_Jump()
+        
+        // set callbacks and variables on fighter init
+        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+        VarModule::on_flag(fighter.battle_object, vars::pickel::instance::SHOULD_CYCLE_MATERIAL);
+        VarModule::off_flag(fighter.battle_object, vars::pickel::instance::SHOULD_RESET_ROT);
+        VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::pickel::instance::HITSTUN_TIMER, 0);
+        VarModule::set_float(fighter.battle_object, vars::pickel::instance::DAMAGE_TRACKER, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::pickel::instance::TABLE_HP_TRACKER, 20.0);
+        
     }
 }
-
-unsafe extern "C" fn sub_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let attack_cancel_status_kind = WorkModule::get_int(
-        fighter.module_accessor,
-        *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_ATTACK_CANCEL_STATUS_KIND,
+pub fn install() {
+    skyline::install_hooks!(
+        stuff_hook
     );
-    if attack_cancel_status_kind != *FIGHTER_STATUS_KIND_NONE {
-        fighter.change_status(
-            L2CValue::I32(attack_cancel_status_kind),
-            L2CValue::Bool(true),
-        );
-        WorkModule::set_int(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_KIND_NONE,
-            *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_ATTACK_CANCEL_STATUS_KIND,
-        );
-        return L2CValue::Bool(true);
-    } else {
-        return L2CValue::Bool(false);
-    }
-}
-
-unsafe extern "C" fn pickel_jump_status_check(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP
-        && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP
-        && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP
-    {
-        return L2CValue::Bool(false);
-    } else {
-        return L2CValue::Bool(true);
-    }
+    smashline::Agent::new("pickel")
+        .status(
+            Main,
+            *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE,
+            recreate_table,
+        )
+        .status(Pre, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guarddamage_pre)
+        .status(End, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guarddamage_end)
+        .status(Main, *FIGHTER_STATUS_KIND_GUARD, guard)
+        .status(Main, *FIGHTER_STATUS_KIND_REBIRTH, rebirth)
+        .status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry)
+        .status(
+            Main,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START,
+            attack_air_lw_start_main,
+        )
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre)
+        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
+        .on_start(pickel_init)
+        .install();
 }

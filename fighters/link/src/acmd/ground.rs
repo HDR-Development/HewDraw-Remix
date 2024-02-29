@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "link", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_11(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -23,8 +21,7 @@ unsafe fn attack_11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_12 (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_12 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -40,8 +37,7 @@ unsafe fn attack_12 (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "link", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_13 (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_13 (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 6.0);
@@ -56,8 +52,7 @@ unsafe fn attack_13 (fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "link", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let nodes = ["head", "bust", "waist", "arml", "shoulderl", "armr", "shoulderr"]; // nodes that become intangible during the attack
@@ -77,8 +72,7 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -105,8 +99,7 @@ unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -124,8 +117,7 @@ unsafe fn sound_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -133,38 +125,36 @@ unsafe fn expression_attackdash(fighter: &mut L2CAgentBase) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
     }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 8.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_R, 3);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_landl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_walk_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        attack_11,
-        attack_12,
-        attack_13,
-        game_attackdash,
-        effect_attackdash,
-        sound_attackdash,
-        expression_attackdash
-    );
+    smashline::Agent::new("link")
+        .acmd("game_attack11", attack_11)
+        .acmd("game_attack12", attack_12)
+        .acmd("game_attack13", attack_13)
+        .acmd("game_attackdash", game_attackdash)
+        .acmd("effect_attackdash", effect_attackdash)
+        .acmd("sound_attackdash", sound_attackdash)
+        .acmd("expression_attackdash", expression_attackdash)
+        .install();
 }
-

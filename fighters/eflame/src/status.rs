@@ -9,7 +9,6 @@ unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterComm
     }
 }
 
-
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
@@ -30,7 +29,37 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         //Re-enable Mythra UpB
         Set_Mythra_Up_Special_Cancel(fighter,false);
     }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+        reset_mythra_up_special_freefall(fighter);
+    }
     return true.into();
+}
+
+unsafe extern "C" fn reset_mythra_up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if let Some(object_id) = Some(fighter.battle_object_id + 0x10000){
+        let object = crate::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let object = unsafe { &mut *object };
+            let kind = object.kind as i32;
+            if kind == *FIGHTER_KIND_ELIGHT {
+                VarModule::off_flag(object, vars::elight::instance::UP_SPECIAL_FREEFALL);
+                return;
+            }
+        }
+    }
+    //This is used if the player selects Mythra first
+    if let Some(object_id) = Some(fighter.battle_object_id - 0x10000){
+        let object = crate::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let object = unsafe { &mut *object };
+            let kind = object.kind as i32;
+            if kind == *FIGHTER_KIND_ELIGHT {
+                VarModule::off_flag(object, vars::elight::instance::UP_SPECIAL_FREEFALL);
+                return;
+            }
+        }
+    }
 }
 
 unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon, cancel_state: bool)
@@ -70,8 +99,7 @@ unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon
     }
 }
 
-#[smashline::fighter_init]
-fn eflame_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn eflame_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_EFLAME {
@@ -81,7 +109,8 @@ fn eflame_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(eflame_init);
+    smashline::Agent::new("eflame")
+        .on_start(eflame_init)
+        .install();
 }

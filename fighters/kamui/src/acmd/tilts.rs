@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "kamui", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -24,8 +23,23 @@ unsafe fn kamui_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.9);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.9);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+unsafe extern "C" fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -63,8 +77,7 @@ unsafe fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kamui", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
+unsafe extern "C" fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -81,8 +94,7 @@ unsafe fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -102,10 +114,11 @@ unsafe fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_attack_s3_game,
-        kamui_attack_hi3_game,
-        kamui_attack_hi3_effect,
-        kamui_attack_lw3_game,
-    );
+    smashline::Agent::new("kamui")
+        .acmd("game_attacks3", kamui_attack_s3_game)
+        .acmd("expression_attacks3", kamui_attack_s3_expression)
+        .acmd("game_attackhi3", kamui_attack_hi3_game)
+        .acmd("effect_attackhi3", kamui_attack_hi3_effect)
+        .acmd("game_attacklw3", kamui_attack_lw3_game)
+        .install();
 }

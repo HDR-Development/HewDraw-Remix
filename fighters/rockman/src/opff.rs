@@ -53,6 +53,33 @@ unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
     }
 }
 
+// upB freefalls after one use per airtime
+// unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+//     if StatusModule::is_changing(fighter.module_accessor)
+//     && (fighter.is_situation(*SITUATION_KIND_GROUND)
+//         || fighter.is_situation(*SITUATION_KIND_CLIFF)
+//         || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+//     {
+//         VarModule::off_flag(fighter.battle_object, vars::rockman::instance::UP_SPECIAL_FREEFALL);
+//     }
+//     if fighter.is_prev_status(*FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP) {
+//         if StatusModule::is_changing(fighter.module_accessor) {
+//             VarModule::on_flag(fighter.battle_object, vars::rockman::instance::UP_SPECIAL_FREEFALL);
+//         }
+//     }
+//     if fighter.is_status(*FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP) {
+//         if fighter.is_situation(*SITUATION_KIND_AIR)
+//         && !StatusModule::is_changing(fighter.module_accessor)
+//         && VarModule::is_flag(fighter.battle_object, vars::rockman::instance::UP_SPECIAL_FREEFALL) {
+//             if CancelModule::is_enable_cancel(fighter.module_accessor) {
+//                 fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+//                 let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+//                 *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+//             }
+//         }
+//     }
+// }
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -88,11 +115,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // utilt_command_input(boma, id, status_kind, situation_kind, frame);
     // jc_dtilt_hit(boma, status_kind, situation_kind, cat[0], frame);
     blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
+    // up_special_freefall(fighter);
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_ROCKMAN )]
-pub fn rockman_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn rockman_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		rockman_frame(fighter)
@@ -103,4 +130,9 @@ pub unsafe fn rockman_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("rockman")
+        .on_line(Main, rockman_frame_wrapper)
+        .install();
 }

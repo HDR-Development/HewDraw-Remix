@@ -1,9 +1,6 @@
-
 use super::*;
 
-
-#[acmd_script( agent = "daisy", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -39,8 +36,7 @@ unsafe fn daisy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -54,7 +50,7 @@ unsafe fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.5);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0/(17.0-16.5));
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 50, 85, 0, 50, 3.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 13.0, 42, 86, 0, 50, 3.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("arml"), 13.0, 42, 86, 0, 50, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 2, 0, Hash40::new("arml"), 13.0, 42, 86, 0, 50, 4.5, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
@@ -82,8 +78,7 @@ unsafe fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -115,8 +110,7 @@ unsafe fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "daisy", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn daisy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -135,8 +129,7 @@ unsafe fn daisy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -162,18 +155,16 @@ unsafe fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "daisy", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x128beb5f99));
+        PLAY_SE(fighter, Hash40::new("se_daisy_smash_s01"));
     }
     
 }
 
-#[acmd_script( agent = "daisy", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -182,13 +173,12 @@ unsafe fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("footl"), 0.0, 0.0, 0.0, 0, 0, 0, 1.6, true, 1.0);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("footl"), 0.0, 0.0, 0.0, 0, 0, 0, 1.6, true, 1.0);
     }
     
 }
 
-#[acmd_script( agent = "daisy", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn daisy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -202,8 +192,7 @@ unsafe fn daisy_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -244,17 +233,46 @@ unsafe fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        daisy_attack_air_n_game,
-        daisy_attack_air_f_game,
-        daisy_attack_air_b_game,
-        daisy_attack_air_b_effect,
-        daisy_attack_air_hi_game,
-        daisy_attack_air_hi_sound,
-        daisy_attack_air_hi_effect,
-        daisy_attack_air_hi_expression,
-        daisy_attack_air_lw_game,
-    );
+unsafe extern "C" fn daisy_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 16);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
+pub fn install() {
+    smashline::Agent::new("daisy")
+        .acmd("game_attackairn", daisy_attack_air_n_game)
+        .acmd("game_attackairf", daisy_attack_air_f_game)
+        .acmd("game_attackairb", daisy_attack_air_b_game)
+        .acmd("effect_attackairb", daisy_attack_air_b_effect)
+        .acmd("game_attackairhi", daisy_attack_air_hi_game)
+        .acmd("sound_attackairhi", daisy_attack_air_hi_sound)
+        .acmd("effect_attackairhi", daisy_attack_air_hi_effect)
+        .acmd("expression_attackairhi", daisy_attack_air_hi_expression)
+        .acmd("game_attackairlw", daisy_attack_air_lw_game)
+        .acmd("expression_attackairlw", daisy_attack_air_lw_expression)
+        .install();
+}

@@ -1,10 +1,8 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING
 
-#[status_script(agent = "simon", status = FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn attack_lw32_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_lw32_landing_frame"));
     let anim_length = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("attack_lw32_landing"));
@@ -40,7 +38,11 @@ unsafe extern "C" fn attack_lw32_landing_main_loop(fighter: &mut L2CFighterCommo
 }
 
 pub fn install() {
-    install_status_scripts!(
-        attack_lw32_landing_main
-    );
+    smashline::Agent::new("simon")
+        .status(
+            Main,
+            *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING,
+            attack_lw32_landing_main,
+        )
+        .install();
 }

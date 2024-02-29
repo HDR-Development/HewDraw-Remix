@@ -2,15 +2,23 @@ use super::*;
 use globals::*;
 // status script import
  
-#[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::remove_motion_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, false);
     fighter.status_end_Run();
     0.into()
 }
 
-#[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+pub unsafe extern "C" fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+    if (fighter.is_situation(*SITUATION_KIND_GROUND) )
+    {
+    let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
+    if feathers_g <= 0 {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
+        PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
+        return 1.into();
+    }
+}
 
     if (fighter.is_situation(*SITUATION_KIND_AIR) )
     {
@@ -57,29 +65,29 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
         }
         return 0.into();
     }
-    return original!(fighter);
+    return smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter);
 }
 
-#[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn buddy_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn buddy_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
     //Bypass if transitioning into Air Fail
-    if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    {
-        return 1.into();
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        if VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN) > 0.0 {
+            return 1.into();
+        }
     }
     else {
         fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
-        let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
-        if feathers_g < 0 && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if feathers_g <= 0 {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
+            fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
         }
-        fighter.sub_change_motion_by_situation(Hash40::new("special_s").into(), Hash40::new("special_air_s").into(), false.into());
-        fighter.sub_set_ground_correct_by_situation(false.into());
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR_EQUIP);
-        fighter.sub_shift_status_main(L2CValue::Ptr(buddy_special_s_main_loop as *const () as _))
     }
+    fighter.sub_change_motion_by_situation(Hash40::new("special_s").into(), Hash40::new("special_air_s").into(), false.into());
+    fighter.sub_set_ground_correct_by_situation(false.into());
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR_EQUIP);
+    fighter.sub_shift_status_main(L2CValue::Ptr(buddy_special_s_main_loop as *const () as _))
     
 }
 
@@ -111,8 +119,7 @@ unsafe extern "C" fn buddy_special_s_armor(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[status_script(agent = "buddy", status = FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+pub unsafe extern "C" fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR))
     {
         fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
@@ -147,23 +154,20 @@ pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         );
         return 0.into();
     }
-    return original!(fighter);
+    return smashline::original_status(Pre, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)(fighter);
 }
 
-
-#[status_script(agent = "buddy", status = FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn buddy_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn buddy_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        return original!(fighter);
+        return smashline::original_status(Main, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)(fighter);
     }
     //Prevents losing a gold feather
     WorkModule::add_int(fighter.module_accessor, 1, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
 
-    return original!(fighter);
+    return smashline::original_status(Main, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)(fighter);
 }
 
-#[status_script(agent = "buddy", status = FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+pub unsafe extern "C" fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR))
     {
         if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED)
@@ -188,7 +192,7 @@ pub unsafe fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         );
         
     }
-    return original!(fighter);
+    return smashline::original_status(Pre, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL)(fighter);
 }
 
 /// pre status for bayonet
@@ -271,33 +275,26 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     return true.into();
 }
 
-#[smashline::fighter_init]
-fn buddy_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn buddy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_BUDDY {
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(buddy_init);
-    install_status_scripts!(
-        end_run,
-        buddy_special_s_pre,
-        //buddy_special_s_dash_pre,
-        buddy_special_s_dash_main,
-        buddy_special_s_fail_pre,
-        buddy_special_s_main,
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_buddy"),
-        statuses::buddy::BUDDY_BAYONET_END,
-        StatusInfo::new()
-            .with_pre(bayonet_end_pre)
-            .with_main(bayonet_end_main)
-            .with_end(bayonet_end_end)
-    );
+    smashline::Agent::new("buddy")
+        .status(End, *FIGHTER_STATUS_KIND_RUN, end_run)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, buddy_special_s_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, buddy_special_s_main)
+        .status(Pre, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, buddy_special_s_dash_pre)
+        .status(Main, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, buddy_special_s_dash_main)
+        .status(Pre, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, buddy_special_s_fail_pre)
+        .on_start(buddy_init)
+        .install();
+    smashline::Agent::new("buddy")
+        .status(Pre, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_pre)
+        .status(Main, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_main)
+        .status(End, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_end)
+        .install();
 }

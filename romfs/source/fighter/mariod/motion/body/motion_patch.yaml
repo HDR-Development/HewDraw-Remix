@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -16,7 +20,7 @@ attack_12:
     cancel_frame: 18
 attack_13:
   extra:
-    cancel_frame: 27
+    cancel_frame: 25
 attack_s3_s:
   flags:
     move: false
@@ -43,13 +47,13 @@ attack_hi4:
     cancel_frame: 44
 attack_lw4:
   extra:
-    cancel_frame: 48
+    cancel_frame: 45
 attack_air_f:
   extra:
     cancel_frame: 46
 attack_air_b:
   extra:
-    cancel_frame: 32
+    cancel_frame: 30
 attack_air_hi:
   extra:
     cancel_frame: 30
@@ -85,7 +89,7 @@ special_n_chill:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d00specialn.nuanmb
+  - name: d00specialnchill.nuanmb
   scripts:
   - expression_specialnchill
   - sound_specialnchill
@@ -114,7 +118,7 @@ special_air_n_chill:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d00specialairn.nuanmb
+  - name: d00specialairnchill.nuanmb
   scripts:
   - expression_specialairnchill
   - sound_specialairnchill
@@ -130,9 +134,26 @@ special_s:
 special_air_s:
   extra:
     cancel_frame: 46
+special_hi:
+    extra:
+      intangible_start_frame: 0
+      intangible_end_frame: 0
+special_air_hi:
+    extra:
+      intangible_start_frame: 0
+      intangible_end_frame: 0
+throw_f:
+  extra:
+    cancel_frame: 28
 throw_b:
   extra:
     cancel_frame: 47
+throw_lw:
+  extra:
+    cancel_frame: 40
+throw_hi:
+  extra:
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0

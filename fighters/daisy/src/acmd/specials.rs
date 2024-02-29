@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "daisy", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -16,8 +14,7 @@ unsafe fn daisy_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -30,8 +27,7 @@ unsafe fn daisy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialsjump" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_s_jump_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_s_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -49,8 +45,7 @@ unsafe fn daisy_special_s_jump_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialshitend" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -62,11 +57,10 @@ unsafe fn daisy_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 1.4);
     }
-    
+
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -103,8 +97,25 @@ unsafe fn daisy_special_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_hi_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 2);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn daisy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,17 +152,28 @@ unsafe fn daisy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialhiopen" , category = ACMD_GAME , low_priority)]
-unsafe fn daisy_special_hi_open_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_air_hi_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn daisy_special_hi_open_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_open"), false, 1.0);
     }
-    
+
 }
 
-#[acmd_script( agent = "daisy", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -174,8 +196,7 @@ unsafe fn daisy_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn daisy_special_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -189,8 +210,7 @@ unsafe fn daisy_special_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
-unsafe fn daisy_special_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_special_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -208,17 +228,18 @@ unsafe fn daisy_special_lw_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        daisy_special_s_start_game,
-        daisy_special_air_s_start_game,
-        daisy_special_s_jump_game,
-        daisy_special_s_hit_end_game,
-        daisy_special_hi_start_game,
-        daisy_special_air_hi_start_game,
-        daisy_special_hi_open_game,
-        daisy_special_lw_game,
-        daisy_special_lw_effect,
-        daisy_special_lw_sound
-    );
+    smashline::Agent::new("daisy")
+        .acmd("game_specialsstart", daisy_special_s_start_game)
+        .acmd("game_specialairsstart", daisy_special_air_s_start_game)
+        .acmd("game_specialsjump", daisy_special_s_jump_game)
+        .acmd("game_specialshitend", daisy_special_s_hit_end_game)
+        .acmd("game_specialhistart", daisy_special_hi_start_game)
+        .acmd("expression_specialhistart", daisy_special_hi_start_expression)
+        .acmd("game_specialairhistart", daisy_special_air_hi_start_game)
+        .acmd("expression_specialairhistart", daisy_special_air_hi_start_expression)
+        .acmd("game_specialhiopen", daisy_special_hi_open_game)
+        .acmd("game_speciallw", daisy_special_lw_game)
+        .acmd("effect_speciallw", daisy_special_lw_effect)
+        .acmd("sound_speciallw", daisy_special_lw_sound)
+        .install();
 }
-

@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,8 +34,7 @@ unsafe fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -56,8 +54,7 @@ unsafe fn gamewatch_special_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials2", "game_specialairs2"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -75,8 +72,7 @@ unsafe fn gamewatch_special_s2_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials3", "game_specialairs3"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -93,8 +89,7 @@ unsafe fn gamewatch_special_s3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials4", "game_specialairs4"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -111,8 +106,7 @@ unsafe fn gamewatch_special_s4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials5", "game_specialairs5"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s5_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s5_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -135,8 +129,7 @@ unsafe fn gamewatch_special_s5_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials6", "specialairs6"], category = ACMD_GAME, low_priority )]
-unsafe fn gamewatch_special_s6_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s6_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -152,8 +145,7 @@ unsafe fn gamewatch_special_s6_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials7", "game_specialairs7"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s7_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s7_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -171,8 +163,7 @@ unsafe fn gamewatch_special_s7_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials8", "game_specialairs8"], category = ACMD_GAME, low_priority )]
-unsafe fn gamewatch_special_s8_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s8_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -188,8 +179,7 @@ unsafe fn gamewatch_special_s8_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specials9", "game_specialairs9"], category = ACMD_GAME, low_priority)]
-unsafe fn gamewatch_special_s9_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_s9_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -206,12 +196,11 @@ unsafe fn gamewatch_special_s9_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gamewatch", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 3.0, 6.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 3.0, 5.0);
     frame(lua_state, 3.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
@@ -224,7 +213,7 @@ unsafe fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            ATTACK(fighter, 0, 0, Hash40::new("waist"), 6.0, 361, 80, 0, 60, 5.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("waist"), 6.0, 80, 80, 0, 60, 5.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
         WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_FLAG_DECIDE_DIRECTION);
     }
@@ -238,21 +227,133 @@ unsafe fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            ATTACK(fighter, 0, 0, Hash40::new("waist"), 4.0, 80, 80, 0, 60, 5.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    frame(lua_state, 26.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 30.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 33.0);
+    FT_MOTION_RATE_RANGE(fighter, 33.0, 43.0, 12.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_FLAG_PARACHUTE_OPEN);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
+    frame(lua_state, 43.0);
+    FT_MOTION_RATE(fighter, 1.0);
     
 }
 
-#[acmd_script( agent = "gamewatch_rescue", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn gamewatch_rescue_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_special_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_attach_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_bounce"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("head") as i64, hash40("head_close") as i64);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn gamewatch_special_hi_open_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, Hash40::new("special_hi_open"), false, -1.0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 361, 104, 0, 20, 11.22, 0.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE_RANGE(fighter, 30.0, 45.0, 10.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 45.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+unsafe extern "C" fn gamewatch_special_hi_open_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_wave10_hi"));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_gamewatch_wave10_hi"));
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        let handle = SoundModule::play_se(boma, Hash40::new("se_gamewatch_wave03_mi"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 1.25, 0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_gamewatch_wave03_mi"));
+    }
+}
+
+unsafe extern "C" fn gamewatch_special_hi_open_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+unsafe extern "C" fn gamewatch_parachute_special_hi_open_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("para3") as i64, hash40("on") as i64);
+        VisibilityModule::set_int64(boma, hash40("para4") as i64, hash40("on") as i64);
+    }
+}
+
+unsafe extern "C" fn gamewatch_rescue_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -271,8 +372,7 @@ unsafe fn gamewatch_rescue_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch_rescue", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn gamewatch_rescue_special_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_rescue_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -292,19 +392,46 @@ unsafe fn gamewatch_rescue_special_air_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_special_n_game,
-        gamewatch_special_s1_game,
-        gamewatch_special_s2_game,
-        gamewatch_special_s3_game,
-        gamewatch_special_s4_game,
-        gamewatch_special_s5_game,
-        gamewatch_special_s6_game,
-        gamewatch_special_s7_game,
-        gamewatch_special_s8_game,
-        gamewatch_special_s9_game,
-        gamewatch_special_hi_game,
-        gamewatch_rescue_special_hi_game,
-        gamewatch_rescue_special_air_hi_game,
-    );
+    smashline::Agent::new("gamewatch_rescue")
+        .acmd("game_specialhi", gamewatch_rescue_special_hi_game)
+        .acmd("game_specialairhi", gamewatch_rescue_special_air_hi_game)
+        .install();
+    smashline::Agent::new("gamewatch")
+        .acmd("game_specialn", gamewatch_special_n_game)
+        .acmd("game_specialairn", gamewatch_special_n_game)
+        .acmd("game_specials1", gamewatch_special_s1_game)
+        .acmd("game_specialairs1", gamewatch_special_s1_game)
+        .acmd("game_specials2", gamewatch_special_s2_game)
+        .acmd("game_specialairs2", gamewatch_special_s2_game)
+        .acmd("game_specials3", gamewatch_special_s3_game)
+        .acmd("game_specialairs3", gamewatch_special_s3_game)
+        .acmd("game_specials4", gamewatch_special_s4_game)
+        .acmd("game_specialairs4", gamewatch_special_s4_game)
+        .acmd("game_specials5", gamewatch_special_s5_game)
+        .acmd("game_specialairs5", gamewatch_special_s5_game)
+        .acmd("game_specials6", gamewatch_special_s6_game)
+        .acmd("game_specialairs6", gamewatch_special_s6_game)
+        .acmd("game_specials7", gamewatch_special_s7_game)
+        .acmd("game_specialairs7", gamewatch_special_s7_game)
+        .acmd("game_specials8", gamewatch_special_s8_game)
+        .acmd("game_specialairs8", gamewatch_special_s8_game)
+        .acmd("game_specials9", gamewatch_special_s9_game)
+        .acmd("game_specialairs9", gamewatch_special_s9_game)
+        .acmd("game_specialhi", gamewatch_special_hi_game)
+        .acmd("game_specialairhi", gamewatch_special_hi_game)
+        .acmd("expression_specialhi", gamewatch_special_hi_expression)
+        .acmd("expression_specialairhi", gamewatch_special_hi_expression)
+        .acmd("game_specialhiopen", gamewatch_special_hi_open_game)
+        .acmd("sound_specialhiopen", gamewatch_special_hi_open_sound)
+        .acmd(
+            "expression_specialhiopen",
+            gamewatch_special_hi_open_expression,
+        )
+        .install();
+    smashline::Agent::new("gamewatch_parachute")
+        .acmd(
+            "game_specialhiopen",
+            gamewatch_parachute_special_hi_open_game,
+        )
+        .install();
 }

@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "gamewatch", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -75,8 +74,7 @@ unsafe fn gamewatch_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -115,8 +113,7 @@ unsafe fn gamewatch_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_landing_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -125,8 +122,7 @@ unsafe fn gamewatch_landing_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn gamewatch_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -143,8 +139,7 @@ unsafe fn gamewatch_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -205,8 +200,7 @@ unsafe fn gamewatch_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_landing_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -215,8 +209,7 @@ unsafe fn gamewatch_landing_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -228,8 +221,8 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, false, 0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 85, 40, 0, 65, 6.0, 2.0, 20.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 85, 40, 0, 65, 5.0, 0.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 82, 70, 0, 55, 6.0, 2.0, 20.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 82, 70, 0, 55, 5.0, 0.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
     }
     frame(lua_state, 14.0);
     FT_MOTION_RATE_RANGE(fighter, 14.0, 42.0, 13.0);
@@ -240,8 +233,7 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn gamewatch_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -250,15 +242,13 @@ unsafe fn gamewatch_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch_breath", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_breath_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_breath_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn gamewatch_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -276,8 +266,7 @@ unsafe fn gamewatch_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -316,15 +305,13 @@ unsafe fn gamewatch_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn gamewatch_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "gamewatch", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn gamewatch_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gamewatch_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -339,19 +326,24 @@ unsafe fn gamewatch_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_attack_air_n_game,
-        gamewatch_attack_air_f_game,
-        gamewatch_landing_air_f_game,
-        gamewatch_attack_air_f_expression,
-        gamewatch_attack_air_b_game,
-        gamewatch_landing_air_b_game,
-        gamewatch_attack_air_hi_game,
-        gamewatch_attack_air_hi_sound,
-        gamewatch_breath_attack_air_hi_game,
-        gamewatch_attack_air_hi_expression,
-        gamewatch_attack_air_lw_game,
-        gamewatch_landing_air_lw_game,
-        gamewatch_landing_air_lw_expression,
-    );
+    smashline::Agent::new("gamewatch_breath")
+        .acmd("game_attackairhi", gamewatch_breath_attack_air_hi_game)
+        .install();
+    smashline::Agent::new("gamewatch")
+        .acmd("game_attackairn", gamewatch_attack_air_n_game)
+        .acmd("game_attackairf", gamewatch_attack_air_f_game)
+        .acmd("game_landingairf", gamewatch_landing_air_f_game)
+        .acmd("expression_attackairf", gamewatch_attack_air_f_expression)
+        .acmd("game_attackairb", gamewatch_attack_air_b_game)
+        .acmd("game_landingairb", gamewatch_landing_air_b_game)
+        .acmd("game_attackairhi", gamewatch_attack_air_hi_game)
+        .acmd("sound_attackairhi", gamewatch_attack_air_hi_sound)
+        .acmd("expression_attackairhi", gamewatch_attack_air_hi_expression)
+        .acmd("game_attackairlw", gamewatch_attack_air_lw_game)
+        .acmd("game_landingairlw", gamewatch_landing_air_lw_game)
+        .acmd(
+            "expression_landingairlw",
+            gamewatch_landing_air_lw_expression,
+        )
+        .install();
 }

@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "samusd", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -21,11 +20,10 @@ unsafe fn samusd_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-    
+
 }
 
-#[acmd_script( agent = "samusd", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -42,11 +40,10 @@ unsafe fn samusd_attack_12_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
-unsafe fn samusd_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -59,8 +56,23 @@ unsafe fn samusd_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackdash" , category = ACMD_GAME, low_priority)]
-unsafe fn samusd_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+unsafe extern "C" fn samusd_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.93);
@@ -77,11 +89,10 @@ unsafe fn samusd_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackdash" , category = ACMD_EFFECT, low_priority)]
-unsafe fn samusd_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -93,12 +104,12 @@ unsafe fn samusd_attack_dash_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        samusd_attack_11_game,
-        samusd_attack_12_game,
-        samusd_attack_12_effect,
-        samusd_attack_dash_game,
-        samusd_attack_dash_effect,
-    );
+    smashline::Agent::new("samusd")
+        .acmd("game_attack11", samusd_attack_11_game)
+        .acmd("game_attack12", samusd_attack_12_game)
+        .acmd("effect_attack12", samusd_attack_12_effect)
+        .acmd("expression_attack12", samusd_attack_12_expression)
+        .acmd("game_attackdash", samusd_attack_dash_game)
+        .acmd("effect_attackdash", samusd_attack_dash_effect)
+        .install();
 }
-

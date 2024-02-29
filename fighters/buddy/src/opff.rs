@@ -23,7 +23,7 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
         // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         let landing_lag = 12.0;
         if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n"), 49.0 - landing_lag, 1.0, 0.0, false, false);
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 49.0 - landing_lag, true, true, false);
         }
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
@@ -119,7 +119,6 @@ unsafe fn bonk_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         CancelModule::enable_cancel(fighter.module_accessor);
     }
 }
-
 
 unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if StatusModule::is_changing(boma) {
@@ -276,7 +275,7 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             let can_cancel = fighter.motion_frame() >= transition_frame;
             if (!can_cancel) {return;}
 
-            fighter.change_to_custom_status(statuses::buddy::BUDDY_BAYONET_END, false, false);
+            fighter.change_status(statuses::buddy::BUDDY_BAYONET_END.into(), false.into());
 
             let currentEggs=
             //VarModule::get_int(boma.object(), vars::buddy::instance::BAYONET_EGGS);
@@ -448,6 +447,33 @@ unsafe fn training_reset(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectM
 
 }
 
+// upB freefalls after one use per airtime
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor)
+    && (fighter.is_situation(*SITUATION_KIND_GROUND)
+        || fighter.is_situation(*SITUATION_KIND_CLIFF)
+        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+    {
+        VarModule::off_flag(fighter.battle_object, vars::buddy::instance::UP_SPECIAL_FREEFALL);
+    }
+    if fighter.is_prev_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP) {
+        if StatusModule::is_changing(fighter.module_accessor) {
+            VarModule::on_flag(fighter.battle_object, vars::buddy::instance::UP_SPECIAL_FREEFALL);
+        }
+    }
+    if fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP) {
+        if fighter.is_situation(*SITUATION_KIND_AIR)
+        && !StatusModule::is_changing(fighter.module_accessor)
+        && VarModule::is_flag(fighter.battle_object, vars::buddy::instance::UP_SPECIAL_FREEFALL) {
+            if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+                let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+                *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+            }
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -498,6 +524,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     breegull_bayonet(fighter,boma,status_kind);
     buddy_meter_controller(fighter,boma,status_kind);
     training_reset(fighter,boma);
+    up_special_freefall(fighter);
     fastfall_specials(fighter);
 
     if boma.is_status_one_of(&[
@@ -508,20 +535,15 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-
-#[fighter_reset]
-fn buddy_reset(fighter: &mut L2CFighterCommon) {
+extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let lua_state = fighter.lua_state_agent;    
         let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-        if fighter.kind() == *FIGHTER_KIND_BUDDY {
-            on_rebirth(fighter,boma);
-        }
+        on_rebirth(fighter, boma);
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_BUDDY)]
-pub unsafe fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     buddy_frame(fighter);
 }
@@ -530,4 +552,11 @@ pub unsafe fn buddy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("buddy")
+        .on_start(buddy_reset)
+        .on_line(Main, buddy_frame_wrapper)
+        .install();
 }

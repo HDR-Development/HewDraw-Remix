@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "luigi", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -25,8 +23,7 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "luigi", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -48,8 +45,7 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "luigi", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -63,8 +59,32 @@ unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack_dash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack13(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 2);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn game_attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.81);
@@ -117,11 +137,11 @@ unsafe fn game_attack_dash(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attack11,
-        game_attack12,
-        game_attack13,
-        game_attack_dash
-    );
+    smashline::Agent::new("luigi")
+        .acmd("game_attack11", game_attack11)
+        .acmd("game_attack12", game_attack12)
+        .acmd("game_attack13", game_attack13)
+        .acmd("expression_attack13", expression_attack13)
+        .acmd("game_attackdash", game_attack_dash)
+        .install();
 }
-

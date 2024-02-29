@@ -1,8 +1,8 @@
 use super::*;
 
 // New animation
-#[acmd_script( agent = "miiswordsman", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -23,11 +23,30 @@ unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 	}
-    
+
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_s3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 8);
+    }
+}
+
+unsafe extern "C" fn attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -43,8 +62,7 @@ unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -67,9 +85,10 @@ unsafe fn attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-		attack_s3_game,
-		attack_hi3_game,
-		attack_lw3_game,
-	);
+    smashline::Agent::new("miiswordsman")
+        .acmd("game_attacks3", attack_s3_game)
+        .acmd("expression_attacks3", attack_s3_expression)
+        .acmd("game_attackhi3", attack_hi3_game)
+        .acmd("game_attacklw3", attack_lw3_game)
+        .install();
 }

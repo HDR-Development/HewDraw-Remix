@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "roy", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -25,11 +23,10 @@ unsafe fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialnend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,11 +64,10 @@ unsafe fn roy_special_n_end_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "sound_specialnend" , category = ACMD_SOUND , low_priority)]
-unsafe fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -83,8 +79,7 @@ unsafe fn roy_special_n_end_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "expression_specialnend" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -94,9 +89,6 @@ unsafe fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
     }
@@ -114,8 +106,7 @@ unsafe fn roy_special_n_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "game_specialnend2" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -137,11 +128,10 @@ unsafe fn roy_special_n_end2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialnend3" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -163,11 +153,10 @@ unsafe fn roy_special_n_end3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -189,11 +178,10 @@ unsafe fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairnend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -231,11 +219,10 @@ unsafe fn roy_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("roy_erupution_hold"), false, false);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "sound_specialairnend" , category = ACMD_SOUND , low_priority)]
-unsafe fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -247,8 +234,7 @@ unsafe fn roy_special_air_n_end_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "expression_specialairnend" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -258,9 +244,6 @@ unsafe fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
     }
@@ -278,8 +261,7 @@ unsafe fn roy_special_air_n_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairnend2" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -301,11 +283,10 @@ unsafe fn roy_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairnend3" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -327,11 +308,10 @@ unsafe fn roy_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specials1" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -375,11 +355,10 @@ unsafe fn roy_special_s1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -408,11 +387,10 @@ unsafe fn roy_special_s1_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -459,8 +437,7 @@ unsafe fn roy_special_air_s1_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -489,63 +466,60 @@ unsafe fn roy_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ecc4870af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ab35d6703), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0ecc4870af), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ecc4870af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ab35d6703), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0ecc4870af), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specials2lw" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -594,11 +568,10 @@ unsafe fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -607,31 +580,30 @@ unsafe fn roy_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.3);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dec39723c), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.75);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0a2d3e9f64), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_2lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 5.5);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0dec39723c), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairs2lw" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -680,11 +652,10 @@ unsafe fn roy_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -693,31 +664,30 @@ unsafe fn roy_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.3);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dec39723c), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.75);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0a2d3e9f64), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_2lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 5.5);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0dec39723c), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -726,27 +696,26 @@ unsafe fn roy_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ecc4870af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ab29f0d34), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0ecc4870af), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -755,27 +724,26 @@ unsafe fn roy_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ecc4870af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ab29f0d34), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0ecc4870af), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specials3s" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -832,21 +800,20 @@ unsafe fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dec39723c), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 3.5);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x09a709a51a), Hash40::new("top"), 0, -2.0, 3.0, 0, 0, 25.0, 1.1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_3s"), Hash40::new("top"), 0, -2.0, 3.0, 0, 0, 25.0, 1.1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EffectModule::set_disable_render_offset_last(boma);
     }
@@ -856,17 +823,16 @@ unsafe fn roy_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0dec39723c), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairs3s" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -924,21 +890,20 @@ unsafe fn roy_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dec39723c), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 3.5);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x09a709a51a), Hash40::new("top"), 0, -2.0, 3.0, 0, 0, 25.0, 1.1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_3s"), Hash40::new("top"), 0, -2.0, 3.0, 0, 0, 25.0, 1.1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EffectModule::set_disable_render_offset_last(boma);
     }
@@ -948,17 +913,16 @@ unsafe fn roy_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0dec39723c), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -967,27 +931,26 @@ unsafe fn roy_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f5aad5977), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0a2cfcf553), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_3lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f5aad5977), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_green"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -996,27 +959,26 @@ unsafe fn roy_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f5aad5977), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0a2cfcf553), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_3lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f5aad5977), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_green"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1025,27 +987,26 @@ unsafe fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ecc4870af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ab7d01bb1), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0ecc4870af), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1054,27 +1015,26 @@ unsafe fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ecc4870af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0ab7d01bb1), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0ecc4870af), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1083,27 +1043,26 @@ unsafe fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dec39723c), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x09e84833dd), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0dec39723c), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1112,27 +1071,26 @@ unsafe fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0dec39723c), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x09e84833dd), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0dec39723c), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1141,52 +1099,51 @@ unsafe fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f5aad5977), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f5aad5977), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_green"), false, true);
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -1195,52 +1152,51 @@ unsafe fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f5aad5977), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f5aad5977), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_sword_green"), false, true);
         COL_NORMAL(fighter);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -1294,11 +1250,10 @@ unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
@@ -1347,8 +1302,7 @@ unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "roy", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -1358,19 +1312,18 @@ unsafe fn roy_special_lw_hit_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_force_reaction(boma, 0, true, false);
         AttackModule::set_force_reaction(boma, 1, true, false);
         if WorkModule::is_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
-            AttackModule::set_optional_hit_sound(boma, 0, smash::phx::Hash40::new_raw(0x12813fe196));
-            AttackModule::set_optional_hit_sound(boma, 1, smash::phx::Hash40::new_raw(0x12813fe196));
+            AttackModule::set_optional_hit_sound(boma, 0, smash::phx::Hash40::new("se_roy_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 1, smash::phx::Hash40::new("se_roy_criticalhit"));
         }
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairlwhit" , category = ACMD_GAME , low_priority)]
-unsafe fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -1384,51 +1337,53 @@ unsafe fn roy_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        roy_special_n_end_game,
-        roy_special_n_end_effect,
-        roy_special_n_end_sound,
-        roy_special_n_end_expression,
-        roy_special_n_end2_game,
-        roy_special_n_end3_game,
-        roy_special_air_n_end_game,
-        roy_special_air_n_end_effect,
-        roy_special_air_n_end_sound,
-        roy_special_air_n_end_expression,
-        roy_special_air_n_end2_game,
-        roy_special_air_n_end3_game,
-        //roy_special_s1_game,
-        roy_special_s1_effect,
-        //roy_special_air_s1_game,
-        roy_special_air_s1_effect,
-        roy_special_s2_hi_effect,
-        roy_special_air_s2_hi_effect,
-        //roy_special_s2_lw_game,
-        roy_special_s2_lw_effect,
-        //roy_special_air_s2_lw_game,
-        roy_special_air_s2_lw_effect,
-        roy_special_s3_hi_effect,
-        roy_special_air_s3_hi_effect,
-        //roy_special_s3_s_game,
-        roy_special_s3_s_effect,
-        //roy_special_air_s3_s_game,
-        roy_special_air_s3_s_effect,
-        roy_special_s3_lw_effect,
-        roy_special_air_s3_lw_effect,
-        roy_special_s4_hi_effect,
-        roy_special_air_s4_hi_effect,
-        roy_special_s4_s_effect,
-        roy_special_air_s4_s_effect,
-        roy_special_s4_lw_effect,
-        roy_special_air_s4_lw_effect,
-        roy_special_hi_game,
-        roy_special_air_hi_game,
-        roy_special_lw_hit_game,
-        roy_special_air_lw_hit_game,
-    );
+    smashline::Agent::new("roy")
+        .acmd("game_specialnend", roy_special_n_end_game)
+        .acmd("effect_specialnend", roy_special_n_end_effect)
+        .acmd("sound_specialnend", roy_special_n_end_sound)
+        .acmd("expression_specialnend", roy_special_n_end_expression)
+        .acmd("game_specialnend2", roy_special_n_end2_game)
+        .acmd("game_specialnend3", roy_special_n_end3_game)
+        .acmd("game_specialairnend", roy_special_air_n_end_game)
+        .acmd("effect_specialairnend", roy_special_air_n_end_effect)
+        .acmd("sound_specialairnend", roy_special_air_n_end_sound)
+        .acmd(
+            "expression_specialairnend",
+            roy_special_air_n_end_expression,
+        )
+        .acmd("game_specialairnend2", roy_special_air_n_end2_game)
+        .acmd("game_specialairnend3", roy_special_air_n_end3_game)
+        .acmd("game_specials1", roy_special_s1_game)
+        .acmd("effect_specials1", roy_special_s1_effect)
+        .acmd("game_specialairs1", roy_special_air_s1_game)
+        .acmd("effect_specialairs1", roy_special_air_s1_effect)
+        .acmd("effect_specials2hi", roy_special_s2_hi_effect)
+        .acmd("effect_specialairs2hi", roy_special_air_s2_hi_effect)
+        .acmd("game_specials2lw", roy_special_s2_lw_game)
+        .acmd("effect_specials2lw", roy_special_s2_lw_effect)
+        .acmd("game_specialairs2lw", roy_special_air_s2_lw_game)
+        .acmd("effect_specialairs2lw", roy_special_air_s2_lw_effect)
+        .acmd("effect_specials3hi", roy_special_s3_hi_effect)
+        .acmd("effect_specialairs3hi", roy_special_air_s3_hi_effect)
+        .acmd("game_specials3s", roy_special_s3_s_game)
+        .acmd("effect_specials3s", roy_special_s3_s_effect)
+        .acmd("game_specialairs3s", roy_special_air_s3_s_game)
+        .acmd("effect_specialairs3s", roy_special_air_s3_s_effect)
+        .acmd("effect_specials3lw", roy_special_s3_lw_effect)
+        .acmd("effect_specialairs3lw", roy_special_air_s3_lw_effect)
+        .acmd("effect_specials4hi", roy_special_s4_hi_effect)
+        .acmd("effect_specialairs4hi", roy_special_air_s4_hi_effect)
+        .acmd("effect_specials4s", roy_special_s4_s_effect)
+        .acmd("effect_specialairs4s", roy_special_air_s4_s_effect)
+        .acmd("effect_specials4lw", roy_special_s4_lw_effect)
+        .acmd("effect_specialairs4lw", roy_special_air_s4_lw_effect)
+        .acmd("game_specialhi", roy_special_hi_game)
+        .acmd("game_specialairhi", roy_special_air_hi_game)
+        .acmd("game_speciallwhit", roy_special_lw_hit_game)
+        .acmd("game_specialairlwhit", roy_special_air_lw_hit_game)
+        .install();
 }
-

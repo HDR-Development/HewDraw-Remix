@@ -1,7 +1,6 @@
 use super::*;
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,13 +31,13 @@ unsafe fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Motion Kind change depending on situation.
     VarModule::on_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("float_start"), L2CValue::Hash40s("float_air_start"), false.into());
     if fighter.global_table[globals::SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -132,52 +131,48 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     // Only perform these actions if vars::ganon::status::FLOAT_ENABLE_ACTIONS is true.
     if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS) {
         // if the proper transition terms are enabled, these functions will check for
-        // if Ganon performs an aerial or a double jump.
+        // if Ganon performs an aerial, a double jump, or airdodge.
         if fighter.sub_transition_group_check_air_cliff().get_bool()
         || fighter.sub_transition_group_check_air_attack().get_bool()
-        || fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+        || fighter.sub_transition_group_check_air_jump_aerial().get_bool()
+        || fighter.sub_transition_group_check_air_escape().get_bool() {
             return 1.into();
         }
         // If Special is pressed, enable a flag and transition into the next status.
         if fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0
         || fighter.global_table[globals::STICK_Y].get_f32() <= -0.7 {
             VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
-            let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
             // Clear the buffer here so you don't accidentally buffer a side special on cancel.
-            fighter.change_status(float_status.into(), true.into());
+            fighter.change_status(statuses::ganon::SPECIAL_N_FLOAT.into(), true.into());
             return 0.into();
         }
     }
     // When the animation ends, transition to the next status.
     if MotionModule::is_end(fighter.module_accessor) {
-        let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
-        fighter.change_status(float_status.into(), false.into());
+        fighter.change_status(statuses::ganon::SPECIAL_N_FLOAT.into(), false.into());
     }
 
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_n_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_n_pre,
-        special_n_main,
-        special_n_end,
-        special_n_init,
-        special_n_exec
-    );
+    smashline::Agent::new("ganon")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_init)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec)
+        .install();
 }

@@ -1,11 +1,10 @@
 use super::*;
 
-#[acmd_script( agent = "pit", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn pit_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pit_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 45, 150, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 45, 180, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 12.0);
@@ -23,8 +22,7 @@ unsafe fn pit_throw_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn pit_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pit_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -47,8 +45,8 @@ unsafe fn pit_throw_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pit_throw_f_game,
-        pit_throw_hi_game,
-    );
+    smashline::Agent::new("pit")
+        .acmd("game_throwf", pit_throw_f_game)
+        .acmd("game_throwhi", pit_throw_hi_game)
+        .install();
 }

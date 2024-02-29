@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "ken", scripts = ["game_attacks3w", "game_attacknearw"] , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3w(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -37,8 +35,7 @@ unsafe fn game_attacks3w(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["effect_attacks3w", "effect_attacknearw"], category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attacks3w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -51,8 +48,7 @@ unsafe fn effect_attacks3w(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["sound_attacks3w", "sound_attacknearw"], category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attacks3w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -62,8 +58,7 @@ unsafe fn sound_attacks3w(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["expression_attacks3w", "expression_attacknearw"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attacks3w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -83,8 +78,7 @@ unsafe fn expression_attacks3w(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attacks3s" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -107,8 +101,7 @@ unsafe fn game_attacks3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_attacks3s", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attacks3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -126,8 +119,7 @@ unsafe fn effect_attacks3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackhi3w" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi3w(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -170,8 +162,7 @@ unsafe fn game_attackhi3w(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "ken", script = "game_attacklw3w" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw3w(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3w(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -215,8 +206,7 @@ unsafe fn game_attacklw3w(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attacklw3s" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -245,8 +235,7 @@ unsafe fn game_attacklw3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackhi3s" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -297,8 +286,7 @@ unsafe fn game_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_attackhi3s", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -318,8 +306,7 @@ unsafe fn effect_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "sound_attackhi3s", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attackhi3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -329,8 +316,7 @@ unsafe fn sound_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "expression_attackhi3s", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -340,11 +326,11 @@ unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 4);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
@@ -358,23 +344,24 @@ unsafe fn expression_attackhi3s(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        game_attacks3w,
-        effect_attacks3w,
-        sound_attacks3w,
-        expression_attacks3w,
-        game_attacks3w,
-        game_attacks3s,
-        effect_attacks3s,
-        game_attackhi3w,
-        game_attacklw3w,
-        game_attacklw3s,
-        game_attackhi3s,
-        effect_attackhi3s,
-        sound_attackhi3s,
-        expression_attackhi3s,
-    );
+    smashline::Agent::new("ken")
+        .acmd("game_attacks3w", game_attacks3w)
+        .acmd("game_attacknearw", game_attacks3w)
+        .acmd("effect_attacks3w", effect_attacks3w)
+        .acmd("effect_attacknearw", effect_attacks3w)
+        .acmd("sound_attacks3w", sound_attacks3w)
+        .acmd("sound_attacknearw", sound_attacks3w)
+        .acmd("expression_attacks3w", expression_attacks3w)
+        .acmd("expression_attacknearw", expression_attacks3w)
+        .acmd("game_attacks3s", game_attacks3s)
+        .acmd("effect_attacks3s", effect_attacks3s)
+        .acmd("game_attackhi3w", game_attackhi3w)
+        .acmd("game_attacklw3w", game_attacklw3w)
+        .acmd("game_attacklw3s", game_attacklw3s)
+        .acmd("game_attackhi3s", game_attackhi3s)
+        .acmd("effect_attackhi3s", effect_attackhi3s)
+        .acmd("sound_attackhi3s", sound_attackhi3s)
+        .acmd("expression_attackhi3s", expression_attackhi3s)
+        .install();
 }
-

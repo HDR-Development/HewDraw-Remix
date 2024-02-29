@@ -1,9 +1,55 @@
 
 use super::*;
 
+unsafe extern "C" fn pacman_attack_air_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        ATTACK(fighter, 0, 0, Hash40::new("pizzapacman"), 10.0, 50, 70, 0, 45, 8.1, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("pizzapacman"), 8.5, 50, 70, 0, 45, 7.2, 0.0, 0.5, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("pizzapacman"), 6.0, 50, 70, 0, 45, 4.5, 0.0, 0.5, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 45.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
 
-#[acmd_script( agent = "pacman", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pacman_change_start"), Hash40::new("pizzapacman"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 5.9, 0.8, 0, 0, 90, 0.8, true, *EF_FLIP_YZ, 0.4);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 5.9, 0.7, 0, 0, 90, 0.75, true, *EF_FLIP_YZ, 0.4);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("pacman_change_end"), Hash40::new("pizzapacman"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_spin_wind"), true, true);
+    }
+}
+
+unsafe extern "C" fn pacman_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -28,11 +74,10 @@ unsafe fn pacman_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
+
 }
 
-#[acmd_script( agent = "pacman", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -62,11 +107,10 @@ unsafe fn pacman_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-#[acmd_script( agent = "pacman", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -99,11 +143,23 @@ unsafe fn pacman_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
-#[acmd_script( agent = "pacman", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+unsafe extern "C" fn pacman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -138,15 +194,17 @@ unsafe fn pacman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pacman_attack_air_f_game,
-        pacman_attack_air_b_game,
-        pacman_attack_air_hi_game,
-        pacman_attack_air_lw_game,
-    );
+    smashline::Agent::new("pacman")
+        .acmd("game_attackairn", pacman_attack_air_n_game)
+        .acmd("effect_attackairn", pacman_attack_air_n_effect)
+        .acmd("game_attackairf", pacman_attack_air_f_game)
+        .acmd("game_attackairb", pacman_attack_air_b_game)
+        .acmd("game_attackairhi", pacman_attack_air_hi_game)
+        .acmd("expression_attackairhi", pacman_attack_air_hi_expression)
+        .acmd("game_attackairlw", pacman_attack_air_lw_game)
+        .install();
 }
-

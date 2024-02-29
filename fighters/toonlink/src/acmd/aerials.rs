@@ -1,10 +1,7 @@
 use super::*;
-
 use crate::vars::*;
 
-
-#[acmd_script( agent = "toonlink", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -16,7 +13,7 @@ unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("sword2"), 10.5, 50, 100, 0, 20, 4.5, 6.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("sword2"), 10.5, 50, 100, 0, 20, 4.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("arml"), 10.5, 50, 100, 0, 20, 4.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new_raw(0x09aee445d1), 10.5, 50, 100, 0, 20, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("clavicler"), 10.5, 50, 100, 0, 20, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -27,7 +24,7 @@ unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("sword2"), 9.0, 35, 100, 0, 20, 4.5, 6.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("sword2"), 9.0, 35, 100, 0, 20, 4.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("arml"), 9.0, 35, 100, 0, 20, 4.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new_raw(0x09aee445d1), 9.0, 35, 100, 0, 20, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("clavicler"), 9.0, 35, 100, 0, 20, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -40,8 +37,7 @@ unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -75,8 +71,7 @@ unsafe fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "toonlink", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -92,8 +87,7 @@ unsafe fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -122,9 +116,7 @@ unsafe fn toonlink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "toonlink", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -140,8 +132,7 @@ unsafe fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -179,13 +170,12 @@ unsafe fn toonlink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "toonlink", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0e854bf712), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("toonlink_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.8);
     }
     frame(lua_state, 11.0);
@@ -195,14 +185,46 @@ unsafe fn toonlink_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 41.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0e854bf712), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("toonlink_sword"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), false, true);
     }
     
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_back") as i64);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_piercem"), 0);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+    }
+}
+
+unsafe extern "C" fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -253,24 +275,23 @@ unsafe fn toonlink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
-unsafe fn toonlink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        toonlink_attack_air_n_game,
-        toonlink_attack_air_f_game,
-        toonlink_attack_air_f_expression,
-        toonlink_attack_air_b_game,
-        toonlink_attack_air_b_expression,
-        toonlink_attack_air_hi_game,
-        toonlink_attack_air_hi_effect,
-        toonlink_attack_air_lw_game,
-        toonlink_landing_air_catch_game,
-    );
+    smashline::Agent::new("toonlink")
+        .acmd("game_attackairn", toonlink_attack_air_n_game)
+        .acmd("game_attackairf", toonlink_attack_air_f_game)
+        .acmd("expression_attackairf", toonlink_attack_air_f_expression)
+        .acmd("game_attackairb", toonlink_attack_air_b_game)
+        .acmd("expression_attackairb", toonlink_attack_air_b_expression)
+        .acmd("game_attackairhi", toonlink_attack_air_hi_game)
+        .acmd("effect_attackairhi", toonlink_attack_air_hi_effect)
+        .acmd("expression_attackairhi", toonlink_attack_air_hi_expression)
+        .acmd("game_attackairlw", toonlink_attack_air_lw_game)
+        .acmd("game_aircatchlanding", toonlink_landing_air_catch_game)
+        .install();
 }
-

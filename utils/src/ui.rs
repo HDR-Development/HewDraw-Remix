@@ -6,12 +6,14 @@ use self::ff_meter::FfMeter;
 use self::power_board::PowerBoard;
 use self::pichu_meter::PichuMeter;
 use self::aura_meter::AuraMeter;
+use self::robot_meter::RobotMeter;
 
 mod ex_meter;
 mod ff_meter;
 mod power_board;
 mod pichu_meter;
 mod aura_meter;
+mod robot_meter;
 
 trait UiObject {
     fn update(&mut self);
@@ -26,6 +28,7 @@ static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager 
     power_board: [PowerBoard::default(); 8],
     pichu_meter: [PichuMeter::default(); 8],
     aura_meter: [AuraMeter::default(); 8],
+    robot_meter: [RobotMeter::default(); 8]
 }));
 
 #[repr(C)]
@@ -34,7 +37,8 @@ pub struct UiManager {
     ff_meter: [FfMeter; 8],
     power_board: [PowerBoard; 8],
     pichu_meter: [PichuMeter; 8],
-    aura_meter: [AuraMeter; 8]
+    aura_meter: [AuraMeter; 8],
+    robot_meter: [RobotMeter; 8]
 }
 
 impl UiManager {
@@ -66,7 +70,7 @@ impl UiManager {
     }
 
     #[export_name = "UiManager__set_dk_barrel_enable"]
-    pub extern "C" fn set_dk_barrel_enable(entry_id: u32, enable: bool) {
+    pub extern "C" fn set_dk_barrel_enable(_entry_id: u32, _enable: bool) {
         // let manager = UI_MANAGER.read();
         // unsafe {
         //     set_pane_visible(manager.dk_handles[entry_id as usize], enable);
@@ -74,7 +78,7 @@ impl UiManager {
     }
 
     #[export_name = "UiManager__set_shoto_meter_enable"]
-    pub extern "C" fn set_shoto_meter_enable(entry_id: u32, enable: bool) {
+    pub extern "C" fn set_shoto_meter_enable(_entry_id: u32, _enable: bool) {
         // let manager = UI_MANAGER.read();
         // unsafe {
         //     set_pane_visible(manager.shoto_meter_handles[entry_id as usize], enable);
@@ -84,7 +88,7 @@ impl UiManager {
     }
 
     #[export_name = "UiManager__set_shoto_bar_percentage"]
-    pub extern "C" fn set_shoto_bar_percentage(entry_id: u32, percentage: f32) {
+    pub extern "C" fn set_shoto_bar_percentage(_entry_id: u32, _percentage: f32) {
         // let mut manager = UI_MANAGER.write();
         // unsafe {
         //     if manager.shoto_bar_widths[entry_id as usize] < 0.0 {
@@ -109,7 +113,7 @@ impl UiManager {
     }
 
     #[export_name = "UiManager__set_shoto_number"]
-    pub extern "C" fn set_shoto_number(entry_id: u32, number: i32) {
+    pub extern "C" fn set_shoto_number(_entry_id: u32, _number: i32) {
         // let number = number.clamp(0, 5);
         // let manager = UI_MANAGER.read();
         // unsafe {
@@ -131,89 +135,85 @@ impl UiManager {
     #[export_name = "UiManager__set_ex_meter_enable"]
     pub extern "C" fn set_ex_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
-        }
+        manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
     }
 
     #[export_name = "UiManager__set_ex_meter_info"]
     pub extern "C" fn set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
-        }
+        manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__set_ff_meter_enable"]
     pub extern "C" fn set_ff_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
-        }
+        manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
     }
 
     #[export_name = "UiManager__set_ff_meter_info"]
     pub extern "C" fn set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
-        }
+        manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
+    }
+
+    #[export_name = "UiManager__change_ff_meter_cap"]
+    pub extern "C" fn change_ff_meter_cap(entry_id: u32, cap: f32) {
+        let mut manager = UI_MANAGER.write();
+        manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].change_cap(cap);
     }
 
     #[export_name = "UiManager__set_power_board_enable"]
     pub extern "C" fn set_power_board_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
-        }
+        manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
     }
 
     #[export_name = "UiManager__set_power_board_info"]
     pub extern "C" fn set_power_board_info(entry_id: u32, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, color_1, color_2);
-        }
+        manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, color_1, color_2);
     }
 
     #[export_name = "UiManager__change_power_board_color"]
     pub extern "C" fn change_power_board_color(entry_id: u32, color_1: i32, color_2: i32) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].change_color(color_1, color_2);
-        }
+        manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].change_color(color_1, color_2);
     }
     
     #[export_name = "UiManager__set_pichu_meter_enable"]
     pub extern "C" fn set_pichu_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.pichu_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
-        }
+        manager.pichu_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
     }
 
     #[export_name = "UiManager__set_pichu_meter_info"]
     pub extern "C" fn set_pichu_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, charged: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.pichu_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, charged);
-        }
+        manager.pichu_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, charged);
     }
 
     #[export_name = "UiManager__set_aura_meter_enable"]
     pub extern "C" fn set_aura_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
-        }
+        manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
     }
 
     #[export_name = "UiManager__set_aura_meter_info"]
     pub extern "C" fn set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, burnout: bool) {
         let mut manager = UI_MANAGER.write();
-        unsafe {
-            manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, burnout);
-        }
+        manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, burnout);
+    }
+
+    #[export_name = "UiManager__set_robot_meter_enable"]
+    pub extern "C" fn set_robot_meter_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+    }
+
+    #[export_name = "UiManager__set_robot_meter_info"]
+    pub extern "C" fn set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+        let mut manager = UI_MANAGER.write();
+        manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
     }
 }
 
@@ -253,7 +253,7 @@ fn set_vertex_colors(
 }
 
 unsafe fn get_pane_by_name(layout_view: u64, name: &str) -> [u64; 4] {
-    let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37752e0));
+    let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F60));
     func(layout_view, name.as_ptr())
 }
 
@@ -310,7 +310,7 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::hook(offset = 0x1b6c108, inline)]
+#[skyline::hook(offset = 0x1b6cbe8, inline)]
 unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     let layout_udata = *ctx.registers[0].x.as_ref();
     let layout_view = *(layout_udata as *const u64).add(1);
@@ -318,7 +318,7 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     let ui2d_pane = *(layout_pane as *const u64);
 
     let name_ptr = (ui2d_pane as *const u8).add(0xb0);
-    let mut len = skyline::libc::strlen(name_ptr);
+    let len = skyline::libc::strlen(name_ptr);
 
     let name = std::str::from_utf8_unchecked(std::slice::from_raw_parts(name_ptr, len));
     let index = match name {
@@ -340,13 +340,14 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.power_board[index] = PowerBoard::new(layout_udata);
     manager.pichu_meter[index] = PichuMeter::new(layout_udata);
     manager.aura_meter[index] = AuraMeter::new(layout_udata);
+    manager.robot_meter[index] = RobotMeter::new(layout_udata);
 }
 
-#[skyline::hook(offset = 0x138a6f0, inline)]
+#[skyline::hook(offset = 0x138a710, inline)]
 fn hud_update(_: &skyline::hooks::InlineCtx) {
     unsafe {
         // check the global static menu-based mode field
-        let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+        let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0) as *const u64;
         // if we are in the following modes, there is no ui overlay, so dont update the hud
         if [
             0x6020000, // Controls Menu
@@ -379,6 +380,11 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     for aura_meter in mgr.aura_meter.iter_mut() {
         if aura_meter.is_valid() && aura_meter.is_enabled() {
             aura_meter.update();
+        }
+    }
+    for robot_meter in mgr.robot_meter.iter_mut() {
+        if robot_meter.is_valid() && robot_meter.is_enabled() {
+            robot_meter.update();
         }
     }
 }

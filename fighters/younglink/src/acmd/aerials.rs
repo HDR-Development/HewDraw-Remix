@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "younglink", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -30,8 +28,7 @@ unsafe fn younglink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -73,32 +70,31 @@ unsafe fn younglink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-#[acmd_script( agent = "younglink", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn younglink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 13);
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
 }
 
-
-
-#[acmd_script( agent = "younglink", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -134,8 +130,7 @@ unsafe fn younglink_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -162,18 +157,16 @@ unsafe fn younglink_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackairlw2bound" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_lw2_bounce(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_lw2_bounce(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let bounce_speed = smash::phx::Vector3f {x: 0.0, y: 1.8, z: 0.0};
+        let bounce_speed = Vector3f {x: 0.0, y: 1.8, z: 0.0};
         KineticModule::add_speed(boma, &bounce_speed);
     }
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackairlw2attack" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_lw2_attack(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_lw2_attack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -183,10 +176,7 @@ unsafe fn attack_air_lw2_attack(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
-#[acmd_script( agent = "younglink", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -227,24 +217,22 @@ unsafe fn younglink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "younglink", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        younglink_attack_air_n_game,
-        younglink_attack_air_f_game,
-        younglink_attack_air_f_expression,
-        younglink_attack_air_b_game,
-        younglink_attack_air_hi_game,
-        younglink_attack_air_lw_game,
-        attack_air_lw2_bounce,
-        //attack_air_lw2_attack,
-        younglink_landing_air_catch_game,
-    );
+    smashline::Agent::new("younglink")
+        .acmd("game_attackairn", younglink_attack_air_n_game)
+        .acmd("game_attackairf", younglink_attack_air_f_game)
+        .acmd("expression_attackairf", younglink_attack_air_f_expression)
+        .acmd("game_attackairb", younglink_attack_air_b_game)
+        .acmd("game_attackairhi", younglink_attack_air_hi_game)
+        .acmd("game_attackairlw2bound", attack_air_lw2_bounce)
+        .acmd("game_attackairlw2attack", attack_air_lw2_attack)
+        .acmd("game_attackairlw", younglink_attack_air_lw_game)
+        .acmd("game_aircatchlanding", younglink_landing_air_catch_game)
+        .install();
 }
-

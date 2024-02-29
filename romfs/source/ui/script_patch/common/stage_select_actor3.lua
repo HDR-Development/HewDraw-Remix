@@ -1035,8 +1035,6 @@ local change_sub_page = function(target_page)
     local current_page_ = pages[current_page + 1]
     local target_page_ = pages[target_page + 1]
 
-
-
     local positions = {}
 
     for i = 1, PANELS_PER_PAGE, 1 do
@@ -1501,12 +1499,12 @@ end
 local strike_stage = function(panel_id, is_strike)
     if panel_id ~= UI_INVALID_INDEX and stage_panels[panel_id + 1].is_striked_ ~= is_strike then
         stage_panels[panel_id + 1].is_striked_ = is_strike
+        UiSoundManager.play_se_label("se_system_plate_catch")
         local parts = root_view:get_parts(get_stage_panel_name(panel_id))
         local strike_pane = parts:get_pane("set_rep_strike")
         strike_pane:set_visible(is_strike)
     end
 end
-
 
 local check_for_strike_cancel = function()
     strike_cancel.is_canceling_ = virtual_input:is_pressing(INPUT_STRIKE)
@@ -2161,7 +2159,6 @@ local update_panel_scalings = function()
         update_panel_scaling(i)
     end
 end
-
 
 local handle_change_page = function(dir)
     if dir == 0 then

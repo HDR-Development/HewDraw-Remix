@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script(agent = "reflet", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn reflet_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn reflet_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -35,8 +33,26 @@ unsafe fn reflet_attack_11_game(fighter: &mut L2CAgentBase) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
     }
 }
-#[acmd_script(agent = "reflet", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn reflet_attack_12_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn reflet_attack_11_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 0.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 2.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+}
+
+unsafe extern "C" fn reflet_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -72,9 +88,25 @@ unsafe fn reflet_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn reflet_attack_12_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 2.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 4.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
+    }
+}
 
-#[acmd_script(agent = "reflet", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn reflet_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn reflet_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -87,8 +119,7 @@ unsafe fn reflet_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "reflet", script = "game_attack100", category = ACMD_GAME, low_priority )]
-unsafe fn reflet_attack_100_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn reflet_attack_100_game(fighter: &mut L2CAgentBase) {
     for _ in 0..99 {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.9, 65, 10, 0, 9, 8.0, 0.0, 9.0, 12.0, Some(0.0), Some(9.0), Some(8.0), 0.4, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
@@ -100,8 +131,7 @@ unsafe fn reflet_attack_100_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "reflet", script = "game_attack100end", category = ACMD_GAME, low_priority )]
-unsafe fn reflet_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn reflet_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -117,8 +147,7 @@ unsafe fn reflet_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "reflet", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn reflet_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn reflet_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -136,18 +165,18 @@ unsafe fn reflet_attack_dash_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-    }   
+    }
 }
-
 
 pub fn install() {
-    install_acmd_scripts!(
-        reflet_attack_11_game,
-        reflet_attack_12_game,
-        reflet_attack_13_game,
-        reflet_attack_100_game,
-        reflet_attack_100_end_game,
-        reflet_attack_dash_game,
-    );
+    smashline::Agent::new("reflet")
+        .acmd("game_attack11", reflet_attack_11_game)
+        .acmd("expression_attack11", reflet_attack_11_expression)
+        .acmd("game_attack12", reflet_attack_12_game)
+        .acmd("expression_attack12", reflet_attack_12_expression)
+        .acmd("game_attack13", reflet_attack_13_game)
+        .acmd("game_attack100", reflet_attack_100_game)
+        .acmd("game_attack100end", reflet_attack_100_end_game)
+        .acmd("game_attackdash", reflet_attack_dash_game)
+        .install();
 }
-

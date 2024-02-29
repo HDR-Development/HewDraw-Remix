@@ -15,38 +15,18 @@ extern "C" {
     fn store_event_table(event: *const app::LinkEvent) -> L2CValue;
 }
 
-pub fn install() {
-    attack_air::install();
-    attack_hi4::install();
-    special_hi::install();
-    special_lw::install();
-    special_n::install();
-    special_s::install();
-    install_status_scripts!(
-        shield_break_fly_main,
-        dead_main,
-        pre_walk,
-        pre_dash,
-        pre_run,
-    );
-    smashline::install_agent_init_callbacks!(lucario_init);
-}
-
-#[smashline::fighter_init]
-fn lucario_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn lucario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_LUCARIO {
             return;
         }
         fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
         fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
-        if fighter.kind() == *FIGHTER_KIND_LUCARIO {
-            MeterModule::reset(fighter.battle_object);
-            let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
-            MeterModule::add(fighter.battle_object, meter_max / 3.0);
-            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 10 * 60);
-        }
+        MeterModule::reset(fighter.battle_object);
+        MeterModule::set_meter_cap(fighter.object(), 2);
+        MeterModule::set_meter_per_level(fighter.object(), 100.0);
+        MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     }
 }
 
@@ -65,15 +45,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     || fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_REBIRTH,
         *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_DAMAGE,
-        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
+        *FIGHTER_STATUS_KIND_LANDING])
     {
         VarModule::off_flag(fighter.battle_object, vars::lucario::instance::DISABLE_SPECIAL_LW);
     }
@@ -81,44 +53,74 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-// FIGHTER_STATUS_KIND_DEAD
+// FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY
 // go into burnout when shield broken
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
     VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY)(fighter)
 }
 
 // FIGHTER_STATUS_KIND_DEAD
 // reset meter to initial state between stocks
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_DEAD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
-    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
-    MeterModule::add(fighter.battle_object, meter_max / 3.0);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_DEAD)(fighter)
+}
+
+// FIGHTER_STATUS_KIND_ENTRY
+// reset meter to initial state between stocks
+
+unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MeterModule::reset(fighter.battle_object);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
 }
 
 // FIGHTER_STATUS_KIND_WALK //
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Walk()
 }
 
 // FIGHTER_STATUS_KIND_DASH //
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Dash()
 }
 
 // FIGHTER_STATUS_KIND_RUN //
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Run()
+}
+
+pub fn install() {
+    attack_air::install();
+    attack_hi4::install();
+    special_hi::install();
+    special_lw::install();
+    special_n::install();
+    special_s::install();
+    smashline::Agent::new("lucario")
+        .on_start(lucario_init)
+        .status(Main, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, shield_break_fly_main)
+        .status(Main, *FIGHTER_STATUS_KIND_DEAD, dead_main)
+        .status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry_main)
+        .status(Pre, *FIGHTER_STATUS_KIND_WALK, pre_walk)
+        .status(Pre, *FIGHTER_STATUS_KIND_DASH, pre_dash)
+        .status(Pre, *FIGHTER_STATUS_KIND_RUN, pre_run)
+        .install();
 }

@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "palutena", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_attack_s4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attack_s4_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -44,8 +42,7 @@ unsafe fn palutena_attack_s4_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_s4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attack_s4_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -60,23 +57,21 @@ unsafe fn palutena_attack_s4_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 6, -3, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 6, -6, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
     }
 }
 
-
-#[acmd_script( agent = "palutena", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -103,8 +98,7 @@ unsafe fn palutena_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_hi4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attack_hi4_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -132,8 +126,7 @@ unsafe fn palutena_attack_hi4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_attack_lw4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attack_lw4_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -172,8 +165,7 @@ unsafe fn palutena_attack_lw4_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
-unsafe fn palutena_attack_lw4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attack_lw4_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -187,29 +179,28 @@ unsafe fn palutena_attack_lw4_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 3, 13.5, 0, 0, -90, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 3, 8, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_feather"), Hash40::new("top"), 0, 3, -8, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
+        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
         LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        palutena_attack_s4_game,
-        palutena_attack_s4_effect,
-        palutena_attack_hi4_game,
-        palutena_attack_hi4_effect,
-        palutena_attack_lw4_game,
-        palutena_attack_lw4_effect
-    );
+    smashline::Agent::new("palutena")
+        .acmd("game_attacks4", palutena_attack_s4_game)
+        .acmd("effect_attacks4", palutena_attack_s4_effect)
+        .acmd("game_attackhi4", palutena_attack_hi4_game)
+        .acmd("effect_attackhi4", palutena_attack_hi4_effect)
+        .acmd("game_attacklw4", palutena_attack_lw4_game)
+        .acmd("effect_attacklw4", palutena_attack_lw4_effect)
+        .install();
 }
-

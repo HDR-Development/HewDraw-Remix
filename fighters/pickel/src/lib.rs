@@ -2,11 +2,6 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 
-pub mod acmd;
-
-pub mod status;
-pub mod opff;
-
 use smash::{
     lib::{
         L2CValue,
@@ -36,12 +31,16 @@ use utils::{
     ext::*,
     consts::*,
 };
-use smashline::*;
 
-pub fn install(is_runtime: bool) {
+use smashline::*;
+pub mod acmd;
+pub mod status;
+pub mod opff;
+pub mod material_table;
+
+pub fn install() {
     acmd::install();
     status::install();
-    opff::install(is_runtime);
-    use opff::*;
-    smashline::install_agent_frames!(pickel_trolley_frame, pickel_table_frame, pickel_forge_frame);
+    opff::install();
+    material_table::install();
 }

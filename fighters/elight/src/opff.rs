@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
  
 unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if (fighter.is_status_one_of(&[
@@ -50,7 +49,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -83,11 +81,16 @@ unsafe fn side_special_landing_lag(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_ELIGHT )]
-pub unsafe fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub unsafe extern "C" fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     hit_cancel_blade_switch(fighter);
     photon_edge_actionability(fighter);
     fastfall_specials(fighter);
     side_special_landing_lag(fighter);
+}
+
+pub fn install() {
+    smashline::Agent::new("elight")
+        .on_line(Main, elight_frame_wrapper)
+        .install();
 }

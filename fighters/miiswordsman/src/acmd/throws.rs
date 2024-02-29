@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn throwf_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn throwf_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -31,8 +30,7 @@ unsafe fn throwf_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn throwb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -64,8 +62,7 @@ unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn throwhi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn throwhi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -91,8 +88,7 @@ unsafe fn throwhi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn throwlw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn throwlw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -114,13 +110,11 @@ unsafe fn throwlw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        throwf_game,
-		throwb_game,
-        throwhi_game,
-        throwlw_game
-    );
+    smashline::Agent::new("miiswordsman")
+        .acmd("game_throwf", throwf_game)
+        .acmd("game_throwb", throwb_game)
+        .acmd("game_throwhi", throwhi_game)
+        .acmd("game_throwlw", throwlw_game)
+        .install();
 }
-

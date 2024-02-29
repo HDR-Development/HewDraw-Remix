@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "sonic", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn sonic_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -24,8 +22,7 @@ unsafe fn sonic_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sonic", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn sonic_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -45,8 +42,7 @@ unsafe fn sonic_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sonic", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn sonic_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -67,8 +63,7 @@ unsafe fn sonic_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sonic", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn sonic_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -92,8 +87,7 @@ unsafe fn sonic_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn sonic_attackhi4_exp(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -105,7 +99,7 @@ unsafe fn sonic_attackhi4_exp(fighter: &mut L2CAgentBase) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
     frame(lua_state, 8.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         ControlModule::set_rumble(
             boma,
             Hash40::new("rbkind_nohitm"),
@@ -124,8 +118,7 @@ unsafe fn sonic_attackhi4_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
-unsafe fn sonic_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -138,7 +131,7 @@ unsafe fn sonic_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10e97de698), Hash40::new("top"), 0, 13, 0, 0, 50, 90, 1.2, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 13, 0, 0, 50, 90, 1.2, true);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
@@ -148,8 +141,7 @@ unsafe fn sonic_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
-unsafe fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -158,7 +150,7 @@ unsafe fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-        PLAY_SE(fighter, Hash40::new_raw(0x1651c5e760));
+        PLAY_SE(fighter, Hash40::new("se_sonic_attackair_f03"));
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -172,8 +164,7 @@ unsafe fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -208,8 +199,39 @@ unsafe fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sonic", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sonic_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_lw4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+    }
+    frame(lua_state, 6.0);
+    app::sv_animcmd::execute(lua_state, 6.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 8);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
+unsafe extern "C" fn sonic_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -236,16 +258,16 @@ unsafe fn sonic_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sonic_attack_s4_hi_game,
-        sonic_attack_s4_s_game,
-        sonic_attack_s4_lw_game,
-        sonic_attack_hi4_game,
-        sonic_attackhi4_exp,
-        sonic_attack_hi4_effect,
-        sonic_attack_hi4_sound,
-        sonic_attack_lw4_game,
-        sonic_attack_lw4_effect,
-    );
+    smashline::Agent::new("sonic")
+        .acmd("game_attacks4hi", sonic_attack_s4_hi_game)
+        .acmd("game_attacks4", sonic_attack_s4_s_game)
+        .acmd("game_attacks4lw", sonic_attack_s4_lw_game)
+        .acmd("game_attackhi4", sonic_attack_hi4_game)
+        .acmd("expression_attackhi4", sonic_attack_hi4_expression)
+        .acmd("effect_attackhi4", sonic_attack_hi4_effect)
+        .acmd("sound_attackhi4", sonic_attack_hi4_sound)
+        .acmd("game_attacklw4", sonic_attack_lw4_game)
+        .acmd("expression_attacklw4", sonic_attack_lw4_expression)
+        .acmd("effect_attacklw4", sonic_attack_lw4_effect)
+        .install();
 }
-

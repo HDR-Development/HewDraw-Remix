@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -59,7 +63,7 @@ attack_air_lw:
     cancel_frame: 41
 attack_air_hi:
   extra:
-    cancel_frame: 30
+    cancel_frame: 33
 attack_100_end:
   extra:
     cancel_frame: 38
@@ -69,6 +73,216 @@ item_light_throw_f:
 catch_attack:
   extra:
     cancel_frame: 0
+attack_s4_s_2:
+  game_script: game_attacks42
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c03attacks4s2.nuanmb
+      unk: 0
+  scripts:
+    - expression_attacks42
+    - sound_attacks42
+    - effect_attacks42
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 70
+    no_stop_intp: false
+attack_s4_hold_2:
+  game_script: game_attacks4charge2
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c03attacks4charge2.nuanmb
+      unk: 0
+  scripts:
+    - expression_attacks4charge2
+    - sound_attacks4charge2
+    - effect_attacks4charge2
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
+attack_air_b_s:
+  game_script: game_attackairbs
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c05attackairbs.nuanmb
+      unk: 0
+  scripts:
+    - expression_attackairbs
+    - sound_attackairbs
+    - effect_attackairbs
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 62
+    no_stop_intp: false
+special_s_shoot_s:
+  game_script: game_specialsshoots
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d01specialsshoots.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialsshoot
+    - sound_specialsshoots
+    - effect_specialsshoots
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 56
+    no_stop_intp: false
+special_air_s_shoot_s:
+  game_script: game_specialairsshoots
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d01specialairsshoots.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairsshoot
+    - sound_specialairsshoots
+    - effect_specialairsshoots
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 56
+    no_stop_intp: false
+attack_s3_s_a:
+  game_script: game_attacks3a
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c01attacks3sa.nuanmb
+      unk: 0
+  scripts:
+    - expression_attacks3
+    - sound_attacks3a
+    - effect_attacks3a
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 33
+    no_stop_intp: false
 furafura_end:
   extra:
     cancel_frame: 10
+appeal_hi_2:
+  game_script: game_appealhi2
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: j01appealhi2.nuanmb
+      unk: 0
+  scripts:
+    - expression_appealhi2
+    - sound_appealhi2
+    - effect_appealhi2
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 17
+    no_stop_intp: false

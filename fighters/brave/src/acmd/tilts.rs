@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "brave", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -35,11 +34,10 @@ unsafe fn brave_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
+
 }
 
-#[acmd_script( agent = "brave", script = "game_attacks3s2" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     AttackModule::clear_inflict_kind_status(boma);
@@ -66,11 +64,28 @@ unsafe fn brave_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
 
-#[acmd_script( agent = "brave", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attack_s3_s2_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
+    }
+    frame(lua_state, 5.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+unsafe extern "C" fn brave_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -119,10 +134,39 @@ unsafe fn brave_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+
 }
-#[acmd_script( agent = "brave", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn brave_attack_lw3_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn brave_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("top"), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 5.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 2);
+    }
+    frame(lua_state, 7.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn brave_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -142,11 +186,12 @@ unsafe fn brave_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        brave_attack_s3_s_game,
-        brave_attack_s3_s2_game,
-        brave_attack_hi3_game,
-        brave_attack_lw3_game,
-    );
+    smashline::Agent::new("brave")
+        .acmd("game_attacks3", brave_attack_s3_s_game)
+        .acmd("game_attacks3s2", brave_attack_s3_s2_game)
+        .acmd("expression_attacks3s2", brave_attack_s3_s2_expression)
+        .acmd("game_attackhi3", brave_attack_hi3_game)
+        .acmd("expression_attackhi3", brave_attack_hi3_expression)
+        .acmd("game_attacklw3", brave_attack_lw3_game)
+        .install();
 }
-

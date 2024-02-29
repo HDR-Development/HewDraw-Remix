@@ -2,18 +2,9 @@ use super::*;
 use globals::*;
  
 
-pub fn install() {
-    install_status_scripts!(
-        pre_specialhi,
-        pre_specialhi_end,
-        specialhi_end
-    );
-}
-
 // FIGHTER_STATUS_KIND_SPECIAL_HI //
 
-#[status_script(agent = "younglink", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_specialhi(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValue {
+pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let start_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_x_mul");
@@ -70,8 +61,7 @@ unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2
     return 0.into()
 }
 
-#[status_script(agent = "younglink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -100,8 +90,7 @@ pub unsafe fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "younglink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -124,7 +113,6 @@ unsafe extern "C" fn specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L2CVa
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let frame = MotionModule::frame(fighter.module_accessor);
     let mut motion_value = 0.55;
-
 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into()
@@ -229,4 +217,19 @@ unsafe extern "C" fn sub_specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L
         }
     }
     return 0.into()
+}
+pub fn install() {
+    smashline::Agent::new("younglink")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_specialhi)
+        .status(
+            Pre,
+            *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END,
+            pre_specialhi_end,
+        )
+        .status(
+            Main,
+            *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END,
+            specialhi_end,
+        )
+        .install();
 }

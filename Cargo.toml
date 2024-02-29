@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*", "dynamic", "fighters/*", "hdr-macros", "utils"]
+members = ["dynamic", "fighters/*", "hdr-macros", "utils"]
 
 resolver = "2"
 
@@ -12,7 +12,7 @@ edition = "2021"
 skyline = "0.2"
 skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
-smashline = { git = "https://github.com/blu-dev/smashline", branch = "development" }
+smashline = { git = "https://github.com/HDR-Development/smashline" }
 
 dynamic = { path = "dynamic" }
 hdr-macros = { path = "hdr-macros" }
@@ -213,6 +213,8 @@ yoshi = { workspace = true, optional = true }
 younglink = { workspace = true, optional = true }
 zelda = { workspace = true, optional = true }
 
+dynamic.workspace = true
+locks = { git = "https://github.com/HDR-Development/smashline" }
 hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["warnings"] }
 once_cell = "1"
 ninput = { git = "https://github.com/blu-dev/ninput" }
@@ -223,10 +225,6 @@ skyline_smash.workspace = true
 smashline.workspace = true
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
-
-[build-dependencies]
-build-tools = { path = "crates/build-tools" }
-hdr-macros.workspace = true
 
 [features]
 default = [
@@ -260,7 +258,7 @@ default = [
     "ken",
     "kirby",
     "koopa",
-    "koopag",
+    # "koopag",
     "koopajr",
     "krool",
     "link",
@@ -325,7 +323,6 @@ default = [
 ]
 dev = ["utils/no-offset-search"]
 main_nro = ["skyline-web", "common"]
-add_status = []
 runtime = []
 
 [patch.'https://github.com/jam1garner/smash-arc']

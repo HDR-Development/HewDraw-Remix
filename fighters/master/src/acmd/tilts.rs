@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "master", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -42,11 +40,10 @@ unsafe fn master_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -72,11 +69,26 @@ unsafe fn master_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("master_swordflare"), false, true);
         EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold2"), false, true);
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 6.6);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.6);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+unsafe extern "C" fn master_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -109,8 +121,7 @@ unsafe fn master_attack_hi3_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "master", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -122,7 +133,7 @@ unsafe fn master_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_master_sword1"), Hash40::new("tex_master_sword2"), 6, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 17.5, 0.0, 0.15, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, -90.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
-        EFFECT_FOLLOW(fighter, Hash40::new("master_swordflare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, -90, 1, true);  
+        EFFECT_FOLLOW(fighter, Hash40::new("master_swordflare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, -90, 1, true);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -136,11 +147,27 @@ unsafe fn master_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold2"), false, true);
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 6.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+unsafe extern "C" fn master_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -160,16 +187,17 @@ unsafe fn master_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        master_attack_s3_s_game,
-        master_attack_s3_s_effect,
-        master_attack_hi3_game,
-        master_attack_hi3_effect,
-        master_attack_lw3_game,
-    );
+    smashline::Agent::new("master")
+        .acmd("game_attacks3", master_attack_s3_s_game)
+        .acmd("effect_attacks3", master_attack_s3_s_effect)
+        .acmd("expression_attacks3", master_attack_s3_s_expression)
+        .acmd("game_attackhi3", master_attack_hi3_game)
+        .acmd("effect_attackhi3", master_attack_hi3_effect)
+        .acmd("expression_attackhi3", master_attack_hi3_expression)
+        .acmd("game_attacklw3", master_attack_lw3_game)
+        .install();
 }
-

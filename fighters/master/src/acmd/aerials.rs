@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "master", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -21,7 +19,7 @@ unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 2.5, 94, 100, 45, 0, 3.5, -4.0, 1.5, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("haver"), 2.5, 120, 100, 45, 0, 4.5, -5.0, -3.5, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.5, 80, 100, 45, 0, 3.5, 0.0, 9.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        
+
         // Air-only
         ATTACK(fighter, 3, 0, Hash40::new("haver"), 2.5, 366, 100, 40, 0, 3.5, -4.0, 1.5, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 4, 0, Hash40::new("haver"), 2.5, 366, 100, 40, 0, 4.5, -5.0, -3.5, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -53,11 +51,10 @@ unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
-unsafe fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,8 +64,7 @@ unsafe fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,11 +107,27 @@ unsafe fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        WorkModule::on_flag(boma, *FIGHTER_MASTER_INSTANCE_WORK_ID_FLAG_SWORD_OFF_EFFECT_AURA);
+    }
+    frame(lua_state, 9.5);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.5);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+unsafe extern "C" fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -154,11 +166,10 @@ unsafe fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -208,11 +219,10 @@ unsafe fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
+
 }
 
-#[acmd_script( agent = "master", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn master_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -227,8 +237,7 @@ unsafe fn master_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -250,7 +259,7 @@ unsafe fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("haver"), 15.0, 72, 70, 0, 97, 4.0, 0.0, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 4, 0, Hash40::new("haver"), 15.0, 72, 70, 0, 97, 4.0, 0.0, 7.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 5, 0, Hash40::new("haver"), 19.0, 270, 78, 0, 97, 5.0, 0.0, 15.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
-        
+
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
@@ -264,19 +273,18 @@ unsafe fn master_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
-    
+
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        master_attack_air_n_game,
-        master_landing_air_n_game,
-        master_attack_air_f_game,
-        master_attack_air_b_game,
-        master_attack_air_hi_game,
-        master_attack_air_hi_effect,
-        master_attack_air_lw_game,
-    );
+    smashline::Agent::new("master")
+        .acmd("game_attackairn", master_attack_air_n_game)
+        .acmd("game_landingairn", master_landing_air_n_game)
+        .acmd("game_attackairf", master_attack_air_f_game)
+        .acmd("expression_attackairf", master_attack_air_f_expression)
+        .acmd("game_attackairb", master_attack_air_b_game)
+        .acmd("game_attackairhi", master_attack_air_hi_game)
+        .acmd("effect_attackairhi", master_attack_air_hi_effect)
+        .acmd("game_attackairlw", master_attack_air_lw_game)
+        .install();
 }
-

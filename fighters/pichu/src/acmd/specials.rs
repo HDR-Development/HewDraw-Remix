@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "pichu", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = if fighter.kind() == *FIGHTER_KIND_KIRBY {false} else {VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1};
@@ -32,8 +30,8 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-#[acmd_script( agent = "pichu", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -74,8 +72,8 @@ unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_BRAKE_TRIGGER);
     }
 }
-#[acmd_script( agent = "pichu", script = "effect_specials" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pichu_special_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -115,8 +113,8 @@ unsafe fn pichu_special_s_effect(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
 }
-#[acmd_script( agent = "pichu", scripts = ["game_specialsend", "game_specialairsend"] , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_s_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -126,8 +124,8 @@ unsafe fn pichu_special_s_end_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-#[acmd_script( agent = "pichu", script = "game_specialairsmissend" , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_air_s_miss_end_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_air_s_miss_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,8 +139,8 @@ unsafe fn pichu_special_air_s_miss_end_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_MISS_END_RUMBLE_2);
     }
 }
-#[acmd_script( agent = "pichu", scripts = ["game_specialhi1", "game_specialairhi1"] , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_hi_1_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_hi_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -164,8 +162,28 @@ unsafe fn pichu_special_hi_1_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, false);
     }
 }
-#[acmd_script( agent = "pichu", scripts = ["game_specialhi2", "game_specialairhi2"] , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_hi_2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_hi_1_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_whole(boma, false);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f20a9d549), false);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x24772eddef), false);
+        MotionModule::set_helper_calculation(boma, false);
+        if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        MotionModule::set_helper_calculation(boma, true);
+    }
+}
+
+unsafe extern "C" fn pichu_special_hi_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -180,8 +198,29 @@ unsafe fn pichu_special_hi_2_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, false);
     }
 }
-#[acmd_script( agent = "pichu", scripts = ["game_speciallw", "game_specialairlw"] , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_hi_2_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_whole(boma, false);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f20a9d549), false);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x24772eddef), false);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        MotionModule::set_helper_calculation(boma, false);
+        if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        MotionModule::set_helper_calculation(boma, true);
+    }
+}
+
+unsafe extern "C" fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
@@ -226,8 +265,8 @@ unsafe fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
-#[acmd_script( agent = "pichu", scripts = ["game_speciallwhit", "game_specialairlwhit"] , category = ACMD_GAME , low_priority)]
-unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let discharge_power_mul = VarModule::get_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL);
@@ -254,9 +293,15 @@ unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.5 * discharge_power_mul);
         }
     }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) && fighter.is_situation(*SITUATION_KIND_AIR) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        }
+    }
 }
-#[acmd_script( agent = "pichu", script = "effect_speciallwhit" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -375,8 +420,7 @@ unsafe fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pichu", script = "effect_specialairlwhit" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pichu_special_air_lw_hit_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pichu_special_air_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -491,18 +535,27 @@ unsafe fn pichu_special_air_lw_hit_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pichu_special_n_game,
-        pichu_special_s_game,
-        pichu_special_s_effect,
-        pichu_special_s_end_game,
-        pichu_special_air_s_miss_end_game,
-        pichu_special_hi_1_game,
-        pichu_special_hi_2_game,
-        pichu_special_lw_game,
-        pichu_special_lw_hit_game,
-        pichu_special_lw_hit_effect,
-        pichu_special_air_lw_hit_effect
-    );
+    smashline::Agent::new("pichu")
+        .acmd("game_specialn", pichu_special_n_game)
+        .acmd("game_specialairn", pichu_special_n_game)
+        .acmd("game_specials", pichu_special_s_game)
+        .acmd("effect_specials", pichu_special_s_effect)
+        .acmd("game_specialsend", pichu_special_s_end_game)
+        .acmd("game_specialairsend", pichu_special_s_end_game)
+        .acmd("game_specialairsmissend", pichu_special_air_s_miss_end_game)
+        .acmd("game_specialhi1", pichu_special_hi_1_game)
+        .acmd("game_specialairhi1", pichu_special_hi_1_game)
+        .acmd("expression_specialhi1", pichu_special_hi_1_expression)
+        .acmd("expression_specialairhi1", pichu_special_hi_1_expression)
+        .acmd("game_specialhi2", pichu_special_hi_2_game)
+        .acmd("game_specialairhi2", pichu_special_hi_2_game)
+        .acmd("expression_specialhi2", pichu_special_hi_2_expression)
+        .acmd("expression_specialairhi2", pichu_special_hi_2_expression)
+        .acmd("game_speciallw", pichu_special_lw_game)
+        .acmd("game_specialairlw", pichu_special_lw_game)
+        .acmd("game_speciallwhit", pichu_special_lw_hit_game)
+        .acmd("game_specialairlwhit", pichu_special_lw_hit_game)
+        .acmd("effect_speciallwhit", pichu_special_lw_hit_effect)
+        .acmd("effect_specialairlwhit", pichu_special_air_lw_hit_effect)
+        .install();
 }
-

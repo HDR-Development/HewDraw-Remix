@@ -7,7 +7,8 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, true);
+            fighter.change_status(FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3.into(), true.into());
+            return;
         }
     }
 
@@ -16,8 +17,8 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
 
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
-        let touch_normal_y_left = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-        let touch_normal_y_right = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
+        let touch_normal_y_left = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
+        let touch_normal_y_right = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
         if (touch_right && touch_normal_y_right != 0.0)
         || (touch_left && touch_normal_y_left != 0.0)
         || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE)
@@ -61,13 +62,11 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
         *FIGHTER_STATUS_KIND_ATTACK_LW4,
         *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_AIR]) {
-        if fighter.is_cat_flag(Cat1::SpecialLw) {
-            if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        if fighter.is_cat_flag(Cat1::SpecialLw) && !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
+            if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) { //displacement flag
                 VarModule::on_flag(fighter.battle_object, vars::zelda::instance::HIT_CANCEL_PHANTOM);
-            } //displacement flag
-            if !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
-            } //no cancel to activate
+            }//cancel if phantom is off cd
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
     }
 }
@@ -120,12 +119,10 @@ unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if fighter.status_frame() > 9 {
-            if ControlModule::get_stick_y(boma) < -0.66 && GroundModule::is_passable_ground(boma) {
-                GroundModule::pass_floor(boma);
-            }
-        }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 9 {
+        if ControlModule::get_stick_y(boma) < -0.66 && GroundModule::is_passable_ground(boma) {
+            GroundModule::pass_floor(boma);
+        }//platdrop
     }
     if VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER) == -1 {
         if ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
@@ -141,6 +138,8 @@ pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCom
         let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER) as u32;
         if !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -2);//remove
+            VarModule::off_flag(fighter.battle_object, vars::zelda::instance::HIT_CANCEL_PHANTOM);
+            VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_HIT);
         } else if !EffectModule::is_exist_effect(boma, handle as u32) {
             VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
         } //reapply
@@ -193,8 +192,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_ZELDA )]
-pub fn zelda_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn zelda_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		zelda_frame(fighter)
@@ -207,78 +205,84 @@ pub unsafe fn zelda_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-extern "Rust" {
-    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
-}
-
-#[smashline::weapon_frame_callback(main)]
-pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_ZELDA_PHANTOM {
-            return
+pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    GroundModule::correct(weapon.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let zelda = utils::util::get_battle_object_from_id(owner_id);
+    let zelda_boma = &mut *(*zelda).module_accessor;
+    //hitcheck
+    if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_HIT); 
+    }
+    if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_HIT) {
+        VarModule::on_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
+    }//misc mechanics
+    if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
+        let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+        if weapon.is_situation(*SITUATION_KIND_AIR) {
+            let through_passable_ground_stick_y= WorkModule::get_param_float(zelda_boma, hash40("common"), hash40("through_passable_ground_stick_y")) * -1.0;
+            if zelda_boma.stick_y() < through_passable_ground_stick_y {
+                GroundModule::set_passable_check(weapon.module_accessor, true);
+            }
+            else {
+                GroundModule::set_passable_check(weapon.module_accessor, false);
+            }
         }
-        GroundModule::correct(weapon.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let zelda = utils::util::get_battle_object_from_id(owner_id);
-        let zelda_boma = &mut *(*zelda).module_accessor;
-        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_CANCEL) {
-            if StopModule::is_damage(weapon.module_accessor) && !AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-                MotionModule::set_rate(weapon.module_accessor, 0.25); //8s
-            }
-        } else if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
-            let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-            if weapon.is_situation(*SITUATION_KIND_AIR) {
-                let through_passable_ground_stick_y= WorkModule::get_param_float(zelda_boma, hash40("common"), hash40("through_passable_ground_stick_y")) * -1.0;
-                if zelda_boma.stick_y() < through_passable_ground_stick_y {
-                    GroundModule::set_passable_check(weapon.module_accessor, true);
-                }
-                else {
-                    GroundModule::set_passable_check(weapon.module_accessor, false);
-                }
-            }
-            if zelda_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD,
-                                            *FIGHTER_STATUS_KIND_ESCAPE,
-                                            *FIGHTER_STATUS_KIND_ESCAPE,
-                                            *FIGHTER_STATUS_KIND_ESCAPE_F,
-                                            *FIGHTER_STATUS_KIND_ESCAPE_B,
-                                            *FIGHTER_STATUS_KIND_ESCAPE_AIR,
-                                            *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
-                                            *FIGHTER_STATUS_KIND_CATCH,
-                                            *FIGHTER_STATUS_KIND_CATCH_DASH,
-                                            *FIGHTER_STATUS_KIND_CATCH_TURN,
-                                            *FIGHTER_STATUS_KIND_CATCH_PULL,
-                                            *FIGHTER_STATUS_KIND_CATCH_WAIT,
-                                            *FIGHTER_STATUS_KIND_CATCH_ATTACK,
-                                            *FIGHTER_STATUS_KIND_CATCH_CUT,
-                                            *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
-                                            *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
-                                            *FIGHTER_STATUS_KIND_CATCHED_REFLET,
-                                            *FIGHTER_STATUS_KIND_CATCHED_GANON,
-                                            *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
-                                            *FIGHTER_STATUS_KIND_CATCHED_CUT_GANON,
-                                            *FIGHTER_STATUS_KIND_DAMAGE,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-                                            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-                                            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-                                            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_CHARGE,
-                                            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_END,
-                                            *FIGHTER_STATUS_KIND_THROW])
+        if zelda_boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_GUARD,
+            *FIGHTER_STATUS_KIND_ESCAPE,
+            *FIGHTER_STATUS_KIND_ESCAPE,
+            *FIGHTER_STATUS_KIND_ESCAPE_F,
+            *FIGHTER_STATUS_KIND_ESCAPE_B,
+            *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+            *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+            *FIGHTER_STATUS_KIND_CATCH,
+            *FIGHTER_STATUS_KIND_CATCH_DASH,
+            *FIGHTER_STATUS_KIND_CATCH_TURN,
+            *FIGHTER_STATUS_KIND_CATCH_PULL,
+            *FIGHTER_STATUS_KIND_CATCH_WAIT,
+            *FIGHTER_STATUS_KIND_CATCH_ATTACK,
+            *FIGHTER_STATUS_KIND_CATCH_CUT,
+            *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+            *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+            *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+            *FIGHTER_STATUS_KIND_CATCHED_GANON,
+            *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+            *FIGHTER_STATUS_KIND_CATCHED_CUT_GANON,
+            *FIGHTER_STATUS_KIND_DAMAGE,
+            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_CHARGE,
+            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_END,
+            *FIGHTER_STATUS_KIND_THROW
+        ])
             || WorkModule::is_flag(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
             || WorkModule::is_flag(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-            || (remaining_hitstun > 0.0){
-                return
-            }
+            || remaining_hitstun > 0.0
+        {
+            return
+        }
 
-            if AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-            && zelda_boma.is_cat_flag(Cat1::SpecialLw) {
-                StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
-            }
+        if AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && zelda_boma.is_cat_flag(Cat1::SpecialLw) {
+            StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("zelda")
+        .on_line(Main, zelda_frame_wrapper)
+        .install();
+
+    smashline::Agent::new("zelda_phantom")
+        .on_line(Main, phantom_callback)
+        .install();
 }

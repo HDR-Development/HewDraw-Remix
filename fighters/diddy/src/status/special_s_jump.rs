@@ -1,11 +1,9 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_SPECIAL_S //
 
-#[status_script(agent = "diddy", status = FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("monkey_flip_jump_start_spd_y"));
     let lr = PostureModule::lr(fighter.module_accessor);
     let start_speed_x = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_FLAG_SMASH) {
@@ -35,7 +33,7 @@ pub unsafe fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_STOP,
         ENERGY_STOP_RESET_TYPE_AIR,
-        start_speed_x,
+        start_speed_x * lr,
         0.0,
         0.0,
         0.0,
@@ -95,7 +93,7 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
 
     let current_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_KICK_FRAME);
     let kick_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("monkey_flip_kick_frame"));
-    if kick_frame <= current_frame
+    if current_frame <= kick_frame
     && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 { // Normally also checks *FIGHTER_PAD_FLAG_ATTACK_TRIGGER
         fighter.change_status(FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_KICK.into(), true.into());
         return 0.into();
@@ -105,7 +103,7 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 pub fn install() {
-    install_status_scripts!(
-        special_s_jump_main
-    );
+    smashline::Agent::new("diddy")
+        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main)
+        .install();
 }

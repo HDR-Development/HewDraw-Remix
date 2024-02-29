@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -45,8 +44,7 @@ unsafe fn attack_air_n_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -98,8 +96,8 @@ unsafe fn attack_air_f_game(fighter: &mut L2CAgentBase) {
 }
 
 // Motion rates for this were done this way to best replicate previous hitbox coverage
-#[acmd_script( agent = "miiswordsman", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -107,11 +105,11 @@ unsafe fn attack_air_b_game(fighter: &mut L2CAgentBase) {
 		FT_MOTION_RATE(fighter, 0.9);
 	}
 	frame(lua_state, 7.0);
-	if is_excute(fighter) {	
+	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 3.0);
     }
 	frame(lua_state, 8.0);
-    if is_excute(fighter) {	
+    if is_excute(fighter) {
 		ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 12.0, 361, 109, 0, 10, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
 		ATTACK(fighter, 1, 0, Hash40::new("armr"), 12.0, 361, 109, 0, 10, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
 		ATTACK(fighter, 2, 0, Hash40::new("haver"), 14.0, 361, 109, 0, 10, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -133,8 +131,21 @@ unsafe fn attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x26769bd1de), 0, 30, 8);
+    }
+}
+
+unsafe extern "C" fn attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -175,8 +186,7 @@ unsafe fn attack_air_hi_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -210,12 +220,12 @@ unsafe fn attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        attack_air_n_game,
-		attack_air_f_game,
-		attack_air_b_game,
-		attack_air_hi_game,
-		attack_air_lw_game,
-    );
+    smashline::Agent::new("miiswordsman")
+        .acmd("game_attackairn", attack_air_n_game)
+        .acmd("game_attackairf", attack_air_f_game)
+        .acmd("game_attackairb", attack_air_b_game)
+        .acmd("expression_attackairb", attack_air_b_expression)
+        .acmd("game_attackairhi", attack_air_hi_game)
+        .acmd("game_attackairlw", attack_air_lw_game)
+        .install();
 }
-

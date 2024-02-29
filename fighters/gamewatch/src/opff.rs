@@ -15,10 +15,41 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Game & Watch Parachute Double Jump
-unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE]) {
-        boma.check_jump_cancel(false, false);
+unsafe fn parachute(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE) {
+        if fighter.is_cat_flag(Cat1::SpecialAny) {
+            if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) && !CancelModule::is_enable_cancel(fighter.module_accessor))
+            || fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+                *FIGHTER_STATUS_KIND_DAMAGE,
+                *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
+                return;
+            }
+            fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
+        }
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
+        if fighter.is_prev_status(statuses::gamewatch::SPECIAL_HI_OPEN) && fighter.status_frame() > 10 {    // 11F landing lag
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+}
+
+unsafe fn once_per_airtime(fighter: &mut L2CFighterCommon) {
+    if fighter.is_situation(*SITUATION_KIND_GROUND)
+    || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING])
+    {
+        VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
+        VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
     }
 }
 
@@ -76,14 +107,14 @@ unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     ff_chef_land_cancel(boma);
-    parachute_dj(boma);
+    parachute(fighter);
+    once_per_airtime(fighter);
     jc_judge_four(boma);
     dthrow_reverse(boma);
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_GAMEWATCH )]
-pub fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn gamewatch_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		gamewatch_frame(fighter)
@@ -96,8 +127,7 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback(main)]
-pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
             return
@@ -117,4 +147,14 @@ pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             }
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("gamewatch")
+        .on_line(Main, gamewatch_frame_wrapper)
+        .install();
+
+    smashline::Agent::new("gamewatch_box")
+        .on_line(Main, box_callback)
+        .install();
 }

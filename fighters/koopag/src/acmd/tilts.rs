@@ -8,10 +8,8 @@ use smash::app::utility::*;
 use crate::utils::hdr;
 use crate::vars::*;
 
-
 pub fn install() {
     acmd::add_hooks!(
     );
 }
-
 

@@ -139,24 +139,18 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL, *FIGHTER_STATUS_KIND_SPECIAL_N])
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL])
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     && fighter.global_table[CURRENT_FRAME].get_i32() <= 1
     && fighter.is_parry_input()
     {
-        // prevents lucario from parrying during ASC
-        if fighter.kind() == *FIGHTER_KIND_LUCARIO
-        && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::DISABLE_NSPECIAL_PARRY_FORGIVENESS) {
-            return;
-        }
         EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_NONE as u32, true, false);
         SoundModule::stop_all_sound(fighter.module_accessor);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
     }
 }
 
-#[smashline::fighter_frame_callback()]
-pub fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
+pub extern "C" fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             if fighter.is_status(*FIGHTER_STATUS_KIND_DOWN) {
@@ -312,8 +306,7 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[smashline::fighter_frame_callback()]
-pub fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
+pub extern "C" fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.left_stick_x() == 0.0 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);

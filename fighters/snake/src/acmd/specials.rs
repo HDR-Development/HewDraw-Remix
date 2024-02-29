@@ -2,9 +2,7 @@
 use super::*;
 use smash::app::lua_bind::ItemManager::get_num_of_active_item;
 
-
-#[acmd_script( agent = "snake", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -27,8 +25,7 @@ unsafe fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -51,8 +48,7 @@ unsafe fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_speciallwblast" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -73,8 +69,7 @@ unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_speciallwsquatblast" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -93,7 +88,7 @@ unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
@@ -102,8 +97,7 @@ unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairlwblast" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -115,7 +109,7 @@ unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
@@ -124,8 +118,7 @@ unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -174,8 +167,7 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -224,8 +216,7 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairhihang", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhihang(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhihang(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -247,8 +238,7 @@ unsafe fn game_specialairhihang(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
-unsafe fn game_cypher_detach(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_cypher_detach(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -258,8 +248,8 @@ unsafe fn game_cypher_detach(fighter: &mut L2CAgentBase) {
 }
 
 //new self-stick scripts
-#[acmd_script( agent = "snake", script = "game_speciallwselfstick", category = ACMD_GAME, low_priority )]
-unsafe fn snake_down_special_floor(fighter : &mut L2CAgentBase) {
+
+unsafe extern "C" fn snake_down_special_floor(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -268,8 +258,7 @@ unsafe fn snake_down_special_floor(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_speciallwsquatselfstick", category = ACMD_GAME, low_priority )]
-unsafe fn snake_down_special_crouch_floor(fighter : &mut L2CAgentBase) {
+unsafe extern "C" fn snake_down_special_crouch_floor(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -278,8 +267,7 @@ unsafe fn snake_down_special_crouch_floor(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairlwselfstick", category = ACMD_GAME, low_priority )]
-unsafe fn snake_down_special_air_floor(fighter : &mut L2CAgentBase) {
+unsafe extern "C" fn snake_down_special_air_floor(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -288,8 +276,7 @@ unsafe fn snake_down_special_air_floor(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
-unsafe fn snake_side_special_game(fighter : &mut L2CAgentBase) {
+unsafe extern "C" fn snake_side_special_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -354,8 +341,7 @@ unsafe fn snake_side_special_game(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", scripts = ["expression_specialsstart", "expression_specialairsstart"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn snake_side_special_expr(fighter : &mut L2CAgentBase) {
+unsafe extern "C" fn snake_side_special_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -370,8 +356,7 @@ unsafe fn snake_side_special_expr(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", scripts = ["sound_specialsstart", "sound_specialairsstart"], category = ACMD_SOUND, low_priority )]
-unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
+unsafe extern "C" fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -392,11 +377,11 @@ unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 41.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_snake_special_s02"));
     }
     wait(lua_state, 11.0);
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_snake_special_s03"));
     }
     frame(lua_state, 80.0);
@@ -405,8 +390,7 @@ unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", scripts = ["effect_specialsstart", "effect_specialairsstart"], category = ACMD_EFFECT, low_priority )]
-unsafe fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
+unsafe extern "C" fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -441,23 +425,34 @@ unsafe fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_cypher_detach,
-        game_specialairhihang,
-        snake_special_hi_start_game,
-        snake_special_air_hi_start_game,
-        snake_special_lw_blast_game,
-        snake_special_lw_squat_blast_game,
-        snake_special_air_lw_blast_game,
-        snake_special_n_start_game,
-        snake_special_air_n_start_game,
-        snake_down_special_floor,
-        snake_down_special_crouch_floor,
-        snake_down_special_air_floor,
-        snake_side_special_game,
-        snake_side_special_expr,
-        snake_side_special_snd,
-        snake_side_special_eff,
-    );
+    smashline::Agent::new("snake")
+        .acmd("game_specialhistart", snake_special_hi_start_game)
+        .acmd("game_specialairhistart", snake_special_air_hi_start_game)
+        .acmd("game_speciallwblast", snake_special_lw_blast_game)
+        .acmd(
+            "game_speciallwsquatblast",
+            snake_special_lw_squat_blast_game,
+        )
+        .acmd("game_specialairlwblast", snake_special_air_lw_blast_game)
+        .acmd("game_specialnstart", snake_special_n_start_game)
+        .acmd("game_specialairnstart", snake_special_air_n_start_game)
+        .acmd("game_specialairhihang", game_specialairhihang)
+        .acmd("game_speciallwselfstick", snake_down_special_floor)
+        .acmd(
+            "game_speciallwsquatselfstick",
+            snake_down_special_crouch_floor,
+        )
+        .acmd("game_specialairlwselfstick", snake_down_special_air_floor)
+        .acmd("game_specialsstart", snake_side_special_game)
+        .acmd("game_specialairsstart", snake_side_special_game)
+        .acmd("expression_specialsstart", snake_side_special_expr)
+        .acmd("expression_specialairsstart", snake_side_special_expr)
+        .acmd("sound_specialsstart", snake_side_special_snd)
+        .acmd("sound_specialairsstart", snake_side_special_snd)
+        .acmd("effect_specialsstart", snake_side_special_eff)
+        .acmd("effect_specialairsstart", snake_side_special_eff)
+        .install();
+    smashline::Agent::new("snake_cypher")
+        .acmd("game_detach", game_cypher_detach)
+        .install();
 }
-

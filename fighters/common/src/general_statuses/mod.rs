@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use utils::game_modes::CustomMode;
 
 macro_rules! interrupt {
     () => { return L2CValue::I32(1); };
@@ -26,7 +27,7 @@ mod catch;
 mod damage;
 mod escape;
 mod dead;
-mod damageflyreflect;
+// mod damageflyreflect;
 mod down;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
@@ -124,6 +125,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_cliff_uniq_process_exec_fix_pos,
             end_pass_ground,
             virtual_ftStatusUniqProcessDamage_exec_common,
+            FighterStatusDamage__correctDamageVector,
             FighterStatusDamage__correctDamageVectorEffect,
             sub_fighter_pre_end_status,
             sub_is_dive,
@@ -568,8 +570,29 @@ pub unsafe fn virtual_ftStatusUniqProcessDamage_exec_common(fighter: &mut L2CFig
     }
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVector)]
+pub unsafe fn FighterStatusDamage__correctDamageVector(fighter: &mut L2CFighterCommon) -> L2CValue {
+    match utils::game_modes::get_custom_mode() {
+        Some(modes) => {
+            if modes.contains(&CustomMode::Smash64Mode) {
+                return 0.into();
+            }
+        },
+        _ => {}
+    }
+    call_original!(fighter)
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
 pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon) -> L2CValue {
+    match utils::game_modes::get_custom_mode() {
+        Some(modes) => {
+            if modes.contains(&CustomMode::Smash64Mode) {
+                return 0.into();
+            }
+        },
+        _ => {}
+    }
     if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
         return call_original!(fighter);
     }
@@ -672,49 +695,8 @@ pub fn install() {
     damage::install();
     escape::install();
     dead::install();
-    damageflyreflect::install();
+    // damageflyreflect::install();
     down::install();
 
     skyline::nro::add_hook(nro_hook);
-}
-
-pub fn general_mechanics_status_script_nro_hooks(nro: &skyline::nro::NroInfo) {
-    match nro.name {
-        "common" => {
-            skyline::install_hooks!(
-                //status_jump_squat_hook, //Smash4 shorthop aerials (aerials can be buffered out of jumpsquat - no shorthop aerial macro)
-                status_main_jumpsquat_hook, //Melee shorthop aerials (no buffered aerials - no shorthop aerial macro)
-            );
-        },
-        _ => (),
-    }
-}
-
-/*
-Thought process here... for smash4 you can buffer an aerial out of jumpsquat...
-so we clear buffer right before jumpsquat (status_JumpSquat runs once right as you enter that status)
-For melee, you can't buffer aerials in jumpsquat, so we clear the buffer just after jumpsquat (or in this case since status_end_JumpSquat just didn't cooperate, during Jumpsquat)
-so that any aerials you buffered during JS aren't taken into account.
-*/
-
-//Smash4 style shorthop aerials
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat)]
-pub unsafe fn status_jump_squat_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if (ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) == 0 {
-        ControlModule::clear_command(boma, true);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    }
-    original!()(fighter)
-}
-
-//Melee style shorthop aerials
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat_Main)] //prolly better to use status_end_JumpSquat but for some reason it seemed like it wasn't being called
-pub unsafe fn status_main_jumpsquat_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if MotionModule::frame(boma) <= 3.0 && (ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) == 0 { //during JS and you're not inputting an airdodge...
-        ControlModule::clear_command(boma, true);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    }
-    original!()(fighter)
 }
