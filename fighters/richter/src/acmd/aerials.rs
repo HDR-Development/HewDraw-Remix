@@ -120,12 +120,6 @@ unsafe extern "C" fn richter_whip_attack_air_n_effect(fighter: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn richter_landing_air_n_game(fighter: &mut L2CAgentBase) {
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-}
 
 unsafe extern "C" fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -334,12 +328,6 @@ unsafe extern "C" fn richter_whip_attack_air_f_lw_effect(fighter: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn richter_landing_air_f_game(fighter: &mut L2CAgentBase) {
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-}
 
 unsafe extern "C" fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -717,7 +705,6 @@ pub fn install() {
         .acmd("game_attackairn", richter_attack_air_n_game)
         .acmd("effect_attackairn", richter_attack_air_n_effect)
         .acmd("sound_attackairn", richter_attack_air_n_sound)
-        .acmd("game_attackairn", richter_landing_air_n_game)
 
         .acmd("game_attackairfhi", richter_attack_air_f_hi_game)
         .acmd("effect_attackairfhi",richter_attack_air_f_hi_effect)
@@ -725,7 +712,6 @@ pub fn install() {
         .acmd("effect_attackairf", richter_attack_air_f_effect)
         .acmd("game_attackairflw", richter_attack_air_f_lw_game)
         .acmd("effect_attackairflw", richter_attack_air_f_lw_effect)
-        .acmd("game_attackairf", richter_landing_air_f_game)
 
         .acmd("game_attackairbhi", richter_attack_air_b_hi_game)
         .acmd("effect_attackairbhi", richter_attack_air_b_hi_effect)
