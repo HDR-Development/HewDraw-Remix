@@ -168,6 +168,11 @@ unsafe extern "C" fn status_turncommon(fighter: &mut L2CFighterCommon) -> L2CVal
     return L2CValue::Bool(true)
 }
 
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_Turn)]
+unsafe fn bind_address_call_status_end_turn(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_Turn()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_Turn)]
 unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT);
@@ -198,6 +203,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_turncommon,
             sub_exit_Turn,
             status_turn,
+            bind_address_call_status_end_turn,
             status_end_turn
         );
     }
