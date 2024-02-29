@@ -150,7 +150,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fireball_cooldown(boma,status_kind);
     koopa_ex_punch(fighter);
     fastfall_specials(fighter);
-    fastfall_specials(fighter);
 }
 
 pub extern "C" fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

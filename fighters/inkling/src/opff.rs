@@ -162,4 +162,7 @@ pub fn install() {
     smashline::Agent::new("inkling")
         .on_line(Main, inkling_frame_wrapper)
         .install();
+    skyline::install_hooks!(
+        get_ink_colors
+    );
 }
