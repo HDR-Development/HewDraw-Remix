@@ -207,21 +207,39 @@ unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCt
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 
-const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 6] = [
+const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 3] = [
     // transition_groups::CHECK_GROUND_SPECIAL,
     // transition_groups::CHECK_AIR_SPECIAL,
     transition_groups::CHECK_GROUND_ESCAPE,
     // transition_groups::CHECK_AIR_ESCAPE,
-    transition_groups::CHECK_GROUND_GUARD,
-    transition_groups::CHECK_GROUND_ATTACK,
+    // transition_groups::CHECK_GROUND_GUARD,
+    // transition_groups::CHECK_GROUND_ATTACK,
     transition_groups::CHECK_GROUND_CATCH,
     transition_groups::CHECK_AIR_ATTACK,
-    transition_groups::CHECK_AIR_CLIFF
+    // transition_groups::CHECK_AIR_CLIFF
 ];
 
-const LEAFSHIELD_DISABLE_INDIVI: [WorkId; 8] = [
+const LEAFSHIELD_DISABLE_INDIVI: [WorkId; 26] = [
     // transition_terms::CONT_DASH,
     // transition_terms::CONT_TURN_DASH,
+    transition_terms::CONT_ATTACK,
+    transition_terms::CONT_ATTACK_100,
+    transition_terms::CONT_ATTACK_S3,
+    transition_terms::CONT_ATTACK_HI3,
+    transition_terms::CONT_ATTACK_LW3,
+    transition_terms::CONT_ATTACK_S4_START,
+    transition_terms::CONT_ATTACK_HI4_START,
+    transition_terms::CONT_ATTACK_LW4_START,
+    transition_terms::CONT_ATTACK_COMMAND1,
+    transition_terms::CONT_ITEM_SWING_4,
+    transition_terms::CONT_ITEM_SWING_3,
+    transition_terms::CONT_ITEM_SWING,
+    transition_terms::CONT_ITEM_SHOOT,
+    transition_terms::CONT_ITEM_SHOOT_S3,
+    transition_terms::CONT_ITEM_SHOOT_S4,
+    transition_terms::CONT_COMMAND_623NB,
+    transition_terms::CONT_ATTACK_STAND,
+    transition_terms::CONT_ATTACK_SQUAT,
     transition_terms::CONT_ATTACK_DASH,
     transition_terms::CONT_CATCH_DASH,
     transition_terms::CONT_CATCH_TURN,
@@ -284,7 +302,7 @@ pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
     skyline::patching::Patch::in_text(0x107eaa4).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
-    skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
+    // skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
 
     // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
     // Disable
