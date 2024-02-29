@@ -4,8 +4,6 @@ unsafe extern "C" fn rockman_attack_pre(fighter: &mut L2CFighterCommon) -> L2CVa
     fighter.status_pre_Attack()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK, rockman_attack_pre)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK, rockman_attack_pre);
 }

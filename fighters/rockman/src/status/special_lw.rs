@@ -45,12 +45,10 @@ unsafe extern "C" fn rockman_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(
+pub fn install(agent: &mut Agent) {
+    agent.status(
             Main,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             rockman_special_lw_main,
-        )
-        .install();
+        );
 }

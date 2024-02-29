@@ -102,10 +102,8 @@ unsafe extern "C" fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_end);
 }

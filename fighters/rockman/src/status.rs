@@ -9,11 +9,9 @@ mod attack_s4;
 
 mod attack_air;
 mod ladder_attack;
-mod airshooter;
 
 mod special_n;
 mod rockbuster;
-mod chargeshot;
 
 mod special_s;
 
@@ -55,30 +53,26 @@ extern "C" fn agent_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .on_start(agent_reset)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(agent_reset);
 
-    walk::install();
+    walk::install(agent);
 
-    attack::install();
+    attack::install(agent);
 
-    attack_s3::install();
+    attack_s3::install(agent);
 
-    attack_s4::install();
+    attack_s4::install(agent);
 
-    attack_s4::install();
+    attack_s4::install(agent);
 
-    attack_air::install();
-    ladder_attack::install();
-    airshooter::install();
+    attack_air::install(agent);
+    ladder_attack::install(agent);
     
-    special_n::install();
-    rockbuster::install();
-    chargeshot::install();
+    special_n::install(agent);
+    rockbuster::install(agent);
 
-    special_s::install();
+    special_s::install(agent);
 
-    special_lw::install();
+    special_lw::install(agent);
 }

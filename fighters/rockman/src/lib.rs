@@ -9,6 +9,14 @@ pub mod opff;
 mod vtable_hook;
 pub mod vl;
 
+// articles
+
+mod rockbuster;
+mod chargeshot;
+mod airshooter;
+mod hardknuckle;
+mod leafshield;
+
 use smash::{
     lib::{
         L2CValue,
@@ -43,8 +51,16 @@ use smashline::*;
 #[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("rockman");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
     vtable_hook::install();
+    agent.install();
+
+    rockbuster::install();
+    chargeshot::install();
+    airshooter::install();
+    hardknuckle::install();
+    leafshield::install();
 }

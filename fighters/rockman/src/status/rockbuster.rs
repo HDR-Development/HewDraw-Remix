@@ -9,12 +9,12 @@ mod shoot_air;
 mod shoot_landing;
 pub mod helper;
 
-pub fn install() {
-    shoot_wait::install();
-    shoot_walk::install();
-    shoot_turn::install();
-    shoot_jump_squat::install();
-    shoot_jump::install();
-    shoot_air::install();
-    shoot_landing::install();
+pub fn install(agent: &mut Agent) {
+    shoot_wait::install(agent);
+    shoot_walk::install(agent);
+    shoot_turn::install(agent);
+    shoot_jump_squat::install(agent);
+    shoot_jump::install(agent);
+    shoot_air::install(agent);
+    shoot_landing::install(agent);
 }

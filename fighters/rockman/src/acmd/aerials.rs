@@ -230,18 +230,16 @@ unsafe extern "C" fn rockman_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .acmd("game_attackairnmelee", rockman_attackairn)
-        .acmd("effect_attackairnmelee", rockman_attackairn_eff)
-        .acmd("sound_attackairnmelee", rockman_attackairn_snd)
-        .acmd("expression_attackairnmelee", rockman_attackairn_exp)
-        .acmd("game_attackairf", rockman_attack_air_f_game)
-        .acmd("effect_attackairf", rockman_attack_air_f_effect)
-        .acmd("expression_attackairf", rockman_attack_air_f_expression)
-        .acmd("game_attackairb", rockman_attack_air_b_game)
-        .acmd("effect_attackairb", rockman_attack_air_b_effect)
-        .acmd("game_attackairhi", rockman_attack_air_hi_game)
-        .acmd("game_attackairlw", rockman_attack_air_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairnmelee", rockman_attackairn);
+    agent.acmd("effect_attackairnmelee", rockman_attackairn_eff);
+    agent.acmd("sound_attackairnmelee", rockman_attackairn_snd);
+    agent.acmd("expression_attackairnmelee", rockman_attackairn_exp);
+    agent.acmd("game_attackairf", rockman_attack_air_f_game);
+    agent.acmd("effect_attackairf", rockman_attack_air_f_effect);
+    agent.acmd("expression_attackairf", rockman_attack_air_f_expression);
+    agent.acmd("game_attackairb", rockman_attack_air_b_game);
+    agent.acmd("effect_attackairb", rockman_attack_air_b_effect);
+    agent.acmd("game_attackairhi", rockman_attack_air_hi_game);
+    agent.acmd("game_attackairlw", rockman_attack_air_lw_game);
 }
