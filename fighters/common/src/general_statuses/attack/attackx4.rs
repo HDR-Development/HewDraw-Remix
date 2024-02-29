@@ -5,10 +5,10 @@ use globals::*;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, status_end_AttackHi4Start)
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, status_end_AttackLw4Start)
-        .install();
+    // Agent::new("fighter")
+    //     .status(End, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, status_end_AttackHi4Start)
+    //     .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, status_end_AttackLw4Start)
+    //     .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

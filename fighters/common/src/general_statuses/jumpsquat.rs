@@ -6,11 +6,11 @@ use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Exec, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_exec_JumpSquat)
-        .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_end_JumpSquat)
-        .status(Main, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_JumpSquat)
-        .install();
+    // Agent::new("fighter")
+    //     .status(Exec, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_exec_JumpSquat)
+    //     .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_end_JumpSquat)
+    //     .status(Main, *FIGHTER_STATUS_KIND_JUMP_SQUAT, status_JumpSquat)
+    //     .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -25,6 +25,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_jump_squat_uniq_check_sub_mini_attack,
             sub_status_JumpSquat_check_stick_lr_update,
             status_JumpSquat,
+            bind_address_call_status_end_JumpSquat,
             status_end_JumpSquat,
         );
     }
@@ -182,7 +183,11 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // end status stuff
-// no symbol since you can't call `fighter.status_end_JumpSquat()`, and replacing `bind_call_...` makes no sense here
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_JumpSquat)]
+unsafe fn bind_address_call_status_end_JumpSquat(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_JumpSquat()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_JumpSquat)]
 unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     InputModule::disable_persist(fighter.battle_object);
@@ -386,7 +391,8 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2
         // compare the value of the left stick with the threshold for stick jumping
         if fighter.left_stick_y() < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
             // used to buffer specials and make sure that we aren't detecting when c stick is off
-            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
+            || ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
             }
         }
