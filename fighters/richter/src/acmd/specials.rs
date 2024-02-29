@@ -204,10 +204,6 @@ unsafe extern "C" fn richter_axe_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-    }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 66, 60, 0, 60, 4.0, 0.0, 8.5, -6.9, Some(0.0), Some(8.5), Some(8.8), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
@@ -282,7 +278,7 @@ unsafe extern "C" fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+        app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -300,9 +296,9 @@ unsafe extern "C" fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
-    frame(lua_state, 31.0);
+    frame(lua_state, 37.0);
     if is_excute(fighter) {
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
@@ -353,6 +349,8 @@ unsafe extern "C" fn richter_whip_special_air_s1_game(fighter: &mut L2CAgentBase
 unsafe extern "C" fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_hi") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND);
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
     if is_excute(fighter) {
         boma.select_cliff_hangdata_from_name("special_hi");
     }
@@ -434,6 +432,8 @@ unsafe extern "C" fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_hi") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND);
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
     if is_excute(fighter) {
         boma.select_cliff_hangdata_from_name("special_hi");
     }
