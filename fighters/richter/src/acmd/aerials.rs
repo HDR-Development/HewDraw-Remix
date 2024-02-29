@@ -748,9 +748,7 @@ pub fn install() {
         .acmd("effect_attackairlw2", richter_attack_air_lw2_effect)
         .install();
     smashline::Agent::new("richter_whip")
-        .acmd("game_attackairn", richter_whip_attack_air_n_game)
         .acmd("effect_attackairn", richter_whip_attack_air_n_effect)
-        .acmd("game_landingairn", richter_landing_air_n_game)
 
         .acmd("game_attackairfhi", richter_whip_attack_air_f_hi_game)
         .acmd("effect_attackairfhi", richter_whip_attack_air_f_hi_effect)

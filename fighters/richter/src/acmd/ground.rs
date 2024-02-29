@@ -316,6 +316,7 @@ pub fn install() {
         .acmd("effect_attackdash", richter_attack_dash_effect)
         .acmd("sound_attackdash", richter_attack_dash_sound)
         .acmd("expression_attackdash", richter_attack_dash_expression)
+        .install();
         smashline::Agent::new("richter_whip")
         .acmd("game_attack13", richter_whip_attack_13_game)
         .install();

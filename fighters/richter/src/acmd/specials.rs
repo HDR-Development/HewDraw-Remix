@@ -731,9 +731,11 @@ pub fn install() {
         .acmd("effect_specialairlwblank", richter_special_air_lw_blank_effect)
         .acmd("sound_specialairlwblank", richter_special_air_lw_blank_sound)
         .acmd("expression_specialairlwblank", richter_special_air_lw_blank_expression)
+        .install();
     smashline::Agent::new("richter_whip")
         .acmd("game_specials1", richter_whip_special_s1_game)
         .acmd("game_specialairs1", richter_whip_special_air_s1_game)
+        .install();
     smashline::Agent::new("richter_axe")
         .acmd("game_fly", richter_axe_game)
         .acmd("effect_fly", richter_axe_effect)

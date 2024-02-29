@@ -187,7 +187,6 @@ unsafe extern "C" fn richter_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), -2, 10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -463,6 +462,25 @@ unsafe extern "C" fn richter_attack_s4_lw_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_item_firebar_ll"));
     }
 }
+
+unsafe extern "C" fn richter_whip_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+}
+
+unsafe extern "C" fn richter_whip_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+}
+
 
 unsafe extern "C" fn richter_whip_attack_s4_charge_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -815,8 +833,8 @@ pub fn install() {
         .acmd("effect_attacks4hi", richter_attack_s4_hi_effect)
         .acmd("sound_attacks4hi", richter_attack_s4_hi_sound)
         .acmd("game_attacks4", richter_attack_s4_s_game)
-        .acmd("effect_attacks4", richter_attack_s4_s_effect)
-        .acmd("sound_attacks4", richter_attack_s4_s_sound)
+        .acmd("effect_attacks4", richter_attack_s4_effect)
+        .acmd("sound_attacks4", richter_attack_s4_sound)
         .acmd("game_attacks4lw", richter_attack_s4_lw_game)
         .acmd("effect_attacks4lw", richter_attack_s4_lw_effect)
         .acmd("sound_attacks4lw", richter_attack_s4_lw_sound)
@@ -824,14 +842,17 @@ pub fn install() {
         .acmd("effect_attackhi4", richter_attack_hi4_effect)
         .acmd("sound_attackhi4", richter_attack_hi4_sound)
         .acmd("game_attacklw4", richter_attack_lw4_game)
+        .install();
     smashline::Agent::new("richter_whip")
         .acmd("game_attackhi4", richter_whip_attack_hi4_game)
         .acmd("game_attacklw4", richter_whip_attack_lw4_game)
         .acmd("game_attacks4charge", richter_whip_attack_s4_charge_game)
         .acmd("game_attacks4hi", richter_whip_attack_s4_hi_game)
+        .acmd("game_attacks4lw", richter_whip_attack_s4_lw_game)
         .acmd("effect_attacks4", richter_whip_attack_s4_effect)
         .acmd("effect_attacks4lw", richter_whip_attack_s4_lw_effect)
         .acmd("game_attackhi4charge", richter_whip_attack_hi4_charge_game)
         .acmd("effect_attackhi4", richter_whip_attack_hi4_effect)
+        .acmd("game_attacklw4", richter_whip_attack_lw4_game)
         .install();
 }

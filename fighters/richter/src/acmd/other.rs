@@ -403,6 +403,7 @@ pub fn install() {
         .acmd("effect_slipattack", slipattack_effect)
         .acmd("effect_downattacku", downattacku_effect)
         .acmd("effect_downattackd", downattackd_effect)
+        .install();
     smashline::Agent::new("richter_whip")
         .acmd("game_guardon", richter_whip_attack_guardon_game)
         .install();
