@@ -7,12 +7,6 @@ macro_rules! interrupt {
     ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Turn)]
-unsafe fn status_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
-    status_pre_turncommon(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(status_turn_main as *const () as _))
-}
-
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnCommon)]
 unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
@@ -202,7 +196,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_turn_main,
             status_turncommon,
             sub_exit_Turn,
-            status_turn,
             bind_address_call_status_end_turn,
             status_end_turn
         );
@@ -211,8 +204,4 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    // Agent::new("fighter")
-    //     .status(Main, *FIGHTER_STATUS_KIND_TURN, status_turn)
-    //     .status(End, *FIGHTER_STATUS_KIND_TURN, status_end_turn)
-    //     .install();
 }

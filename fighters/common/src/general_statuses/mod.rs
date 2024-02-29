@@ -27,7 +27,7 @@ mod catch;
 mod damage;
 mod escape;
 mod dead;
-mod damageflyreflect;
+// mod damageflyreflect;
 mod down;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
@@ -695,7 +695,7 @@ pub fn install() {
     damage::install();
     escape::install();
     dead::install();
-    damageflyreflect::install();
+    // damageflyreflect::install();
     down::install();
 
     skyline::nro::add_hook(nro_hook);
