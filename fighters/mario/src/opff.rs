@@ -212,43 +212,6 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
-// NokNok Shell Timer Count
-unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 1801 {
-        if gimmick_timerr > 1799 {
-            VarModule::off_flag(boma.object(), vars::mario::instance::NOKNOK_SHELL);
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-            gimmick_flash(boma);
-        } else {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
-        }
-    }
-}
-
-// NokNok shell flag reset
-unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if VarModule::is_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL) {
-        if [*FIGHTER_STATUS_KIND_DEAD,
-            *FIGHTER_STATUS_KIND_REBIRTH,
-            *FIGHTER_STATUS_KIND_WIN,
-            *FIGHTER_STATUS_KIND_LOSE,
-            *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
-        }
-    }
-}
-
-// TRAINING MODE
-// NokNok shell flag reset via taunt
-unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if is_training_mode() {
-        if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -287,9 +250,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     galaxy_spin_poc(fighter, boma, status_kind);
     galaxy_spin_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame);
     galaxy_spin_move(fighter, boma, status_kind, motion_kind, situation_kind, frame, stick_x, facing);
-    noknok_timer(fighter, boma, id);
-    noknok_reset(fighter, id, status_kind);
-    noknok_training(fighter, id, status_kind);
     fastfall_specials(fighter);
 }
 
