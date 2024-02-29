@@ -125,13 +125,12 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             //    }
             //}
             // FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME will sometimes erroneously decrement once every 2 frames (effectively allowing for double the max float time); this overrides that
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
-                if ([*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) || [*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL, *FIGHTER_STATUS_KIND_ATTACK_AIR].contains(&status_kind)) && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
-                    let fall_slowly_frame = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-                    WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
-                    WorkModule::set_int(boma, fall_slowly_frame - 1, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-                }
+            // With SL2 float time is no longer doubled, but forcing the flag to be on is still required?
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 
+            && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION)
+            && ([*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) || [*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL, *FIGHTER_STATUS_KIND_ATTACK_AIR].contains(&status_kind)) && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
+            {
+                WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
             }
 
             // Omnidirectional float for Dark Samus and Mewtwo
