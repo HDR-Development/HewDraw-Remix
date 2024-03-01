@@ -258,7 +258,7 @@ default = [
     "ken",
     "kirby",
     "koopa",
-    # "koopag",
+    "koopag",
     "koopajr",
     "krool",
     "link",
