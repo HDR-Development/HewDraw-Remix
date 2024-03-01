@@ -1,6 +1,8 @@
 use super::*;
 use super::helper::*;
-use super::super::vl;
+
+pub const CHARGE_SHOT_DELAY_CHARGE_FRAME : i32 = 50;
+pub const CHARGE_SHOT_MAX_FRAME : i32 = 160;
 
 unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
@@ -50,8 +52,8 @@ unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2
 unsafe extern "C" fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::rockman::status::CHARGE_SHOT_KEEP_CHARGE);
     let charge_frame = VarModule::get_int(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_FRAME);
-    let top = charge_frame as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
-    let bottom = vl::private::CHARGE_SHOT_MAX_FRAME as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
+    let top = charge_frame as f32 - CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
+    let bottom = CHARGE_SHOT_MAX_FRAME as f32 - CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let ratio = top / bottom;
     WorkModule::set_float(fighter.module_accessor, ratio, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_HOLD_RATE);
     fighter.sub_shift_status_main(L2CValue::Ptr(rockman_special_n_main_loop as *const () as _))
@@ -102,10 +104,8 @@ unsafe extern "C" fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_end);
 }

@@ -160,14 +160,12 @@ unsafe extern "C" fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .acmd("game_attacks3melee", rockman_attacks3)
-        .acmd("effect_attacks3melee", rockman_attacks3_eff)
-        .acmd("sound_attacks3melee", rockman_attacks3_snd)
-        .acmd("expression_attacks3melee", rockman_attacks3_exp)
-        .acmd("game_attackhi3", rockman_attack_hi3_game)
-        .acmd("effect_attackhi3", rockman_attack_hi3_effect)
-        .acmd("game_attacklw3", rockman_attack_lw3_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3melee", rockman_attacks3);
+    agent.acmd("effect_attacks3melee", rockman_attacks3_eff);
+    agent.acmd("sound_attacks3melee", rockman_attacks3_snd);;
+    agent.acmd("expression_attacks3melee", rockman_attacks3_exp);
+    agent.acmd("game_attackhi3", rockman_attack_hi3_game);
+    agent.acmd("effect_attackhi3", rockman_attack_hi3_effect);
+    agent.acmd("game_attacklw3", rockman_attack_lw3_game);
 }

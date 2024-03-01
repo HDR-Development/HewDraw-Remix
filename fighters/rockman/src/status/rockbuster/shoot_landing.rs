@@ -95,17 +95,15 @@ unsafe extern "C" fn rockman_rockbuster_shoot_landing_main_loop(fighter: &mut L2
     1.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(
+pub fn install(agent: &mut Agent) {
+    agent.status(
             Pre,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING,
             rockman_rockbuster_shoot_landing_pre,
-        )
-        .status(
+        );
+    agent.status(
             Main,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING,
             rockman_rockbuster_shoot_landing_main,
-        )
-        .install();
+        );
 }

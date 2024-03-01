@@ -182,7 +182,7 @@ std::arch::global_asm!(
     .word _mod_header
     .word 0
     .word 0
-    
+
     .section .rodata.module_name
         .word 0
         .word 3
@@ -200,7 +200,7 @@ std::arch::global_asm!(
     .global IS_NRO
     IS_NRO:
         .word 1
-    
+
     .section .bss.module_runtime
     __nx_module_runtime:
     .space 0xD0

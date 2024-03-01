@@ -93,12 +93,10 @@ unsafe extern "C" fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommo
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman_chargeshot")
-        .status(
+pub fn install(agent: &mut Agent) {
+    agent.status(
             Init,
             *WEAPON_ROCKMAN_CHARGESHOT_STATUS_KIND_REGULAR,
             rockman_chargeshot_regular_init,
-        )
-        .install();
+        );
 }
