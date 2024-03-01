@@ -1,11 +1,13 @@
 use super::*;
 
+mod special_n;
 mod special_s;
 
 pub fn install() {
     smashline::Agent::new("shulk")
         .on_start(shulk_init)
         .install();
+    special_n::install();
     special_s::install();
 }
 
