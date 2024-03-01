@@ -4,14 +4,14 @@ use globals::*;
 // This file contains code for ceiling/wall/ground bounces
 
 pub fn install() {
-    Agent::new("fighter")
-        .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY, damage_fly_end)
-        .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, damage_fly_reflect_d_end)
-        .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD, damage_fly_reflect_jump_board_end)
-        .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR, damage_fly_reflect_lr_end)
-        .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, damage_fly_roll_end)
-        .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR, damage_fly_meteor_end)
-        .install();
+    // Agent::new("fighter")
+    //     .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY, damage_fly_end)
+    //     .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, damage_fly_reflect_d_end)
+    //     .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD, damage_fly_reflect_jump_board_end)
+    //     .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR, damage_fly_reflect_lr_end)
+    //     .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, damage_fly_roll_end)
+    //     .status(End, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR, damage_fly_meteor_end)
+    //     .install();
     skyline::nro::add_hook(nro_hook);
 }
 

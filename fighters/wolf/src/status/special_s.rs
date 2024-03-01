@@ -442,7 +442,7 @@ pub fn install() {
         .status(Main, SPECIAL_S_END, special_s_end_main)
         .status(End, SPECIAL_S_END, special_s_end_end)
         .status(Init, SPECIAL_S_END, special_s_end_init)
-        .status(Init, SPECIAL_S_END, special_s_end_exec)
+        .status(Exec, SPECIAL_S_END, special_s_end_exec)
         .on_start(wolf_init)
         .install();
 }

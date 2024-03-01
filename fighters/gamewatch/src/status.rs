@@ -62,4 +62,6 @@ pub fn install() {
     smashline::Agent::new("gamewatch")
         .on_start(gamewatch_init)
         .install();
+    special_hi::install();
+    special_hi_open::install();
 }

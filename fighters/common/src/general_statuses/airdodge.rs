@@ -6,11 +6,6 @@ use globals::*;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(Pre, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_pre_EscapeAir)
-        .status(Main, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_EscapeAir)
-        .status(End, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_end_EscapeAir)
-        .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -152,9 +147,9 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
         }
-        VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
     }
+    VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
     0.into()
 }

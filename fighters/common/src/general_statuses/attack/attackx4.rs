@@ -5,10 +5,10 @@ use globals::*;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    Agent::new("fighter")
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, status_end_AttackHi4Start)
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, status_end_AttackLw4Start)
-        .install();
+    // Agent::new("fighter")
+    //     .status(End, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, status_end_AttackHi4Start)
+    //     .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, status_end_AttackLw4Start)
+    //     .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -19,7 +19,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_AttackHi4Start_Main,
             //status_AttackHi4Start_Common,
             status_AttackLw4Start_Main,
+            bind_address_call_status_end_attackhi4start,
             status_end_AttackHi4Start,
+            bind_address_call_status_end_attacklw4start,
             status_end_AttackLw4Start,
         );
     }
@@ -117,6 +119,11 @@ unsafe fn status_AttackHi4Start_Common(fighter: &mut L2CFighterCommon, motion: L
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackHi4Start_Main as *const () as _));
 }
 
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackHi4Start)]
+unsafe extern "C" fn bind_address_call_status_end_attackhi4start(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_AttackHi4Start()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackHi4Start)]
 unsafe fn status_end_AttackHi4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
@@ -205,6 +212,11 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         }
     }
     return 0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackLw4Start)]
+unsafe extern "C" fn bind_address_call_status_end_attacklw4start(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_AttackLw4Start()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackLw4Start)]

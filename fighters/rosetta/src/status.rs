@@ -24,4 +24,5 @@ pub fn install() {
     smashline::Agent::new("rosetta")
         .on_start(rosetta_init)
         .install();
+    special_hi::install();
 }

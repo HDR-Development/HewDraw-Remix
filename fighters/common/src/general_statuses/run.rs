@@ -58,12 +58,6 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_Run)]
-unsafe fn status_run(fighter: &mut L2CFighterCommon) -> L2CValue {
-    status_run_sub(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(status_run_main as *const () as _))
-}
-
 #[skyline::hook(replace = L2CFighterCommon_status_Run_Main)]
 unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let run_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_add"), 0);
@@ -120,6 +114,11 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
     ret
 }
 
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_RunBrake)]
+unsafe fn bind_address_call_status_runbrake(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_RunBrake()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_RunBrake)]
 unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_RunBrake();
@@ -158,6 +157,11 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
 	call_original!(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_TurnRunBrake)]
+unsafe fn bind_address_call_status_turnrunbrake(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_TurnRunBrake()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake)]
@@ -208,8 +212,9 @@ fn nro_info(info: &skyline::nro::NroInfo) {
             status_runbrake_main,
             status_turnrunbrake_main,
             status_pre_run,
-            status_run,
+            bind_address_call_status_runbrake,
             status_runbrake,
+            bind_address_call_status_turnrunbrake,
             status_turnrunbrake,
             status_turnrun,
         );
@@ -218,11 +223,10 @@ fn nro_info(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_info);
-    Agent::new("fighter")
-        .status(Pre, *FIGHTER_STATUS_KIND_RUN, status_pre_run)
-        .status(Main, *FIGHTER_STATUS_KIND_RUN, status_run)
-        .status(Main, *FIGHTER_STATUS_KIND_RUN_BRAKE, status_runbrake)
-        .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_turnrunbrake)
-        .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_turnrun)
-        .install();
+    // Agent::new("fighter")
+    //     .status(Pre, *FIGHTER_STATUS_KIND_RUN, status_pre_run)
+    //     .status(Main, *FIGHTER_STATUS_KIND_RUN_BRAKE, status_runbrake)
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_turnrunbrake)
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_turnrun)
+    //     .install();
 }
