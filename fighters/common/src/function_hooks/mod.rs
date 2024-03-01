@@ -23,7 +23,6 @@ pub mod attack;
 pub mod collision;
 pub mod camera;
 pub mod shotos;
-pub mod aura;
 pub mod sound;
 mod fighterspecializer;
 mod fighter_util;
@@ -760,7 +759,6 @@ pub fn install() {
     collision::install();
     camera::install();
     shotos::install();
-    aura::install();
     sound::install();
     fighterspecializer::install();
     fighter_util::install();
