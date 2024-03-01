@@ -109,17 +109,16 @@ unsafe extern "C" fn shulk_special_s_effect(agent: &mut L2CAgentBase) {
                 LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 1.0)
             }
         }
-        EFFECT_FOLLOW(agent, Hash40::new("sys_flyroll_smoke"), Hash40::new("top"), -4, 13, -10, 0, 0, 0, 1.3, true);
-        LAST_EFFECT_SET_ALPHA(agent, 0.5);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -4, 13, -30, 0, 0, 0, 1.5, true);
+        LAST_EFFECT_SET_RATE(agent, 1.75);
         if WorkModule::is_flag(boma, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE) {
             if WorkModule::get_int(boma, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE) == *FIGHTER_SHULK_MONAD_TYPE_SPEED {
                 LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 1.0)
             }
         }
-    }
-    frame(lua_state, 28.0);
-    if is_excute(agent){
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_flyroll_smoke"), false, false);
     }
     frame(lua_state, 37.0);
     if is_excute(agent) {
@@ -157,17 +156,16 @@ unsafe extern "C" fn shulk_special_air_s_effect(agent: &mut L2CAgentBase) {
                 LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 1.0)
             }
         }
-        EFFECT_FOLLOW(agent, Hash40::new("sys_flyroll_smoke"), Hash40::new("top"), -4, 13, -10, 0, 0, 0, 1.3, true);
-        LAST_EFFECT_SET_ALPHA(agent, 0.5);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -4, 13, -30, 0, 0, 0, 1.5, true);
+        LAST_EFFECT_SET_RATE(agent, 1.75);
         if WorkModule::is_flag(boma, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE) {
             if WorkModule::get_int(boma, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE) == *FIGHTER_SHULK_MONAD_TYPE_SPEED {
                 LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 1.0)
             }
         }
-    }
-    frame(lua_state, 28.0);
-    if is_excute(agent){
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_flyroll_smoke"), false, false);
     }
     frame(lua_state, 37.0);
     if is_excute(agent) {
