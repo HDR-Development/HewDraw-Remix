@@ -221,7 +221,11 @@ pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 unsafe extern "C" fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE) {
-        if LinkModule::get_parent_status_kind(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT) as i32 != *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
+        let parent_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID);
+        let parent_object = get_battle_object_from_id(parent_id as u32);
+        if !parent_object.is_null()
+        && sv_battle_object::kind(parent_id as u32) == *FIGHTER_KIND_LUCAS
+        && StatusModule::status_kind((*parent_object).module_accessor) != *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
             VarModule::on_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE);
             MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("move"), 0.0, 1.0, 1.0);
             return 0.into();
