@@ -50,11 +50,6 @@ unsafe extern "C" fn mewtwo_special_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("havel"), -1.5, 0, 2, 0, 0, 0, 0.4, true, *EF_FLIP_YZ);
     }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 8, 13, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.8);
-    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("mewtwo_nenriki"), Hash40::new("top"), 0, 9, 17, 0, 90, 0, 0.45, true);

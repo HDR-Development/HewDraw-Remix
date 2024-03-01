@@ -101,11 +101,16 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, false);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP {
                     if StatusModule::is_changing(boma) { //peach ground-float mechanic
-                        let pos = Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 2.5 + motion_value, z: PostureModule::pos_z(boma) };
+                        let pos = Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 1.5 + motion_value, z: PostureModule::pos_z(boma) };
                         PostureModule::set_pos(boma, &pos);
                     }
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 }
+            }
+            //Exit jump while floating
+            if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL 
+            && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, false);
             }
             // Run-off anim cancel
             if [hash40("walk_fall_l"), hash40("walk_fall_r"), hash40("run_fall_l"), hash40("run_fall_r")].contains(&MotionModule::motion_kind(boma)) 
