@@ -6,8 +6,6 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
-mod vtable_hook;
-pub mod vl;
 
 // articles
 
@@ -55,7 +53,6 @@ pub fn install() {
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
-    vtable_hook::install();
     agent.install();
 
     rockbuster::install();

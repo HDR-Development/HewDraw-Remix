@@ -27,6 +27,7 @@ pub mod aura;
 pub mod sound;
 mod fighterspecializer;
 mod fighter_util;
+mod vtables;
 
 #[repr(C)]
 pub struct TempModule {
@@ -362,7 +363,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
                         app::lua_bind::KineticEnergyNormal::set_speed(damage_energy, &vec2);
                     }
                 }
-                
+
                 // </HDR>
 
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x6212f0);
@@ -384,7 +385,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
                     let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
                     let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
                     let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
-            
+
                     if jostle_energy_x != 0.0
                     && (main_speed_x + damage_speed_x).abs() < jostle_energy_x.abs() {
                         // This check passes if the speed at which your character is moving due to general movement
@@ -622,7 +623,7 @@ unsafe fn after_collision(object: *mut BattleObject) {
             {
                 WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
             }
-            
+
             // No need to check for motion kind changes if we are:
             //   1. Not currently detecting surface collision
             //   2. Neither on the ground nor in the air
@@ -630,20 +631,20 @@ unsafe fn after_collision(object: *mut BattleObject) {
             && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma))
             && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::prev_situation_kind(boma))
             {
-                
+
                 let ground_module = *(boma as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
                 let ground_collision_info = *((ground_module + 0x28) as *mut *mut f32);
-        
+
                 let prev_collision_line_up = ((ground_collision_info as u64) + 0x190) as *mut GroundCollisionLine;
                 let prev_collision_line_left = ((ground_collision_info as u64) + 0x1c0) as *mut GroundCollisionLine;
                 let prev_collision_line_right = ((ground_collision_info as u64) + 0x1f0) as *mut GroundCollisionLine;
                 let prev_collision_line_down = ((ground_collision_info as u64) + 0x220) as *mut GroundCollisionLine;
-                
+
                 let collision_line_up = ((ground_collision_info as u64) + 0x10) as *mut GroundCollisionLine;
                 let collision_line_left = ((ground_collision_info as u64) + 0x40) as *mut GroundCollisionLine;
                 let collision_line_right = ((ground_collision_info as u64) + 0x70) as *mut GroundCollisionLine;
                 let collision_line_down = ((ground_collision_info as u64) + 0xa0) as *mut GroundCollisionLine;
-        
+
                 // This check passes only on the first frame you come into contact with/leave a surface (ground/wall/ceiling)
                 // except when jumping, as the game already changes motion earlier on
                 if ( (*(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0)
@@ -763,6 +764,7 @@ pub fn install() {
     sound::install();
     fighterspecializer::install();
     fighter_util::install();
+    vtables::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -770,7 +772,7 @@ pub fn install() {
         skyline::patching::Patch::in_text(utils::offsets::kill_zoom_regular()).nop();
         skyline::patching::Patch::in_text(utils::offsets::kill_zoom_throw()).data(KILL_ZOOM_DATA);
         // Changes full hops to calculate vertical velocity identically to short hops
-        skyline::patching::Patch::in_text(0x6d21a8).data(0x52800015u32);        
+        skyline::patching::Patch::in_text(0x6d21a8).data(0x52800015u32);
 
         // removes phantoms
         skyline::patching::Patch::in_text(0x3e6d08).data(0x14000012u32);
