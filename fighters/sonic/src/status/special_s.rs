@@ -263,7 +263,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe fn sonic_special_s_ledge_cancel_helper(fighter: &mut L2CFighterCommon) {
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_boost_end"), 0.0, 24.0 / 10.0, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_boost_end"), 0.0, 24.0 / 18.0, false, 0.0, false, false);
     sv_kinetic_energy!(
         reset_energy,
         fighter,
