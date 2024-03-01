@@ -993,6 +993,10 @@ pub mod vars {
             // flags
             pub const TRAIL_EFFECT: i32 = 0x0100;
         }
+        pub mod status {
+            // flags
+            pub const SIDE_B_REVERSE : i32 = 0x1150;
+        }
     }
 
     pub mod shotos {

@@ -1,5 +1,10 @@
-use super::{vl, *};
+use super::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
+
+pub const CHARGE_SHOT_CLEAR_INPUT_FRAME : i32 = 6;
+pub const CHARGE_SHOT_DELAY_CHARGE_FRAME : i32 = 50;
+pub const CHARGE_SHOT_MAX_FRAME : i32 = 160;
+pub const CHARGE_SHOT_RELEASE_FRAME : i32 = 6;
 
 #[skyline::hook(offset = 0x107e970)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
@@ -51,11 +56,11 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                     rockman_kill_charge(module_accessor, object);
                 }
                 else if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_RELEASE) {
-                    VarModule::set_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME, vl::private::CHARGE_SHOT_RELEASE_FRAME);
+                    VarModule::set_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME, CHARGE_SHOT_RELEASE_FRAME);
                     VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_RELEASE);
                 }
             }
-            
+
             if VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME) >= 0 {
                 VarModule::dec_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME);
             }
@@ -69,11 +74,11 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
         }
         if VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING) {
             let charge_frame = VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME);
-            if charge_frame < vl::private::CHARGE_SHOT_MAX_FRAME + 1 {
+            if charge_frame < CHARGE_SHOT_MAX_FRAME + 1 {
                 VarModule::inc_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME);
             }
             let charge_frame = VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME);
-            if charge_frame == vl::private::CHARGE_SHOT_MAX_FRAME {
+            if charge_frame == CHARGE_SHOT_MAX_FRAME {
                 FighterUtil::flash_eye_info(module_accessor);
                 EffectModule::req_follow(
                     module_accessor,
@@ -92,10 +97,10 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                     false
                 );
             }
-            if charge_frame == vl::private::CHARGE_SHOT_CLEAR_INPUT_FRAME {
+            if charge_frame == CHARGE_SHOT_CLEAR_INPUT_FRAME {
                 ControlModule::clear_command_one(module_accessor, 0, *FIGHTER_PAD_CMD_CAT1_SPECIAL_N);
             }
-            if charge_frame > vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME {
+            if charge_frame > CHARGE_SHOT_DELAY_CHARGE_FRAME {
                 if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
                     SoundModule::play_se(module_accessor, Hash40::new("se_rockman_smash_s02"), true, false, false, false, enSEType(0));
                     EffectModule::req_follow(
@@ -207,21 +212,39 @@ unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCt
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 
-const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 6] = [
+const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 3] = [
     // transition_groups::CHECK_GROUND_SPECIAL,
     // transition_groups::CHECK_AIR_SPECIAL,
     transition_groups::CHECK_GROUND_ESCAPE,
     // transition_groups::CHECK_AIR_ESCAPE,
-    transition_groups::CHECK_GROUND_GUARD,
-    transition_groups::CHECK_GROUND_ATTACK,
+    // transition_groups::CHECK_GROUND_GUARD,
+    // transition_groups::CHECK_GROUND_ATTACK,
     transition_groups::CHECK_GROUND_CATCH,
     transition_groups::CHECK_AIR_ATTACK,
-    transition_groups::CHECK_AIR_CLIFF
+    // transition_groups::CHECK_AIR_CLIFF
 ];
 
-const LEAFSHIELD_DISABLE_INDIVI: [WorkId; 8] = [
+const LEAFSHIELD_DISABLE_INDIVI: [WorkId; 26] = [
     // transition_terms::CONT_DASH,
     // transition_terms::CONT_TURN_DASH,
+    transition_terms::CONT_ATTACK,
+    transition_terms::CONT_ATTACK_100,
+    transition_terms::CONT_ATTACK_S3,
+    transition_terms::CONT_ATTACK_HI3,
+    transition_terms::CONT_ATTACK_LW3,
+    transition_terms::CONT_ATTACK_S4_START,
+    transition_terms::CONT_ATTACK_HI4_START,
+    transition_terms::CONT_ATTACK_LW4_START,
+    transition_terms::CONT_ATTACK_COMMAND1,
+    transition_terms::CONT_ITEM_SWING_4,
+    transition_terms::CONT_ITEM_SWING_3,
+    transition_terms::CONT_ITEM_SWING,
+    transition_terms::CONT_ITEM_SHOOT,
+    transition_terms::CONT_ITEM_SHOOT_S3,
+    transition_terms::CONT_ITEM_SHOOT_S4,
+    transition_terms::CONT_COMMAND_623NB,
+    transition_terms::CONT_ATTACK_STAND,
+    transition_terms::CONT_ATTACK_SQUAT,
     transition_terms::CONT_ATTACK_DASH,
     transition_terms::CONT_CATCH_DASH,
     transition_terms::CONT_CATCH_TURN,
@@ -284,7 +307,7 @@ pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
     skyline::patching::Patch::in_text(0x107eaa4).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
-    skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
+    // skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
 
     // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
     // Disable

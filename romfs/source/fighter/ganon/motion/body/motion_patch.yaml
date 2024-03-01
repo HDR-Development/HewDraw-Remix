@@ -67,7 +67,7 @@ attack_11:
     cancel_frame: 25
 attack_lw3:
   extra:
-    cancel_frame: 36
+    cancel_frame: 32
 attack_lw3_2:
   game_script: game_attacklw32
   flags:

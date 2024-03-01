@@ -42,9 +42,7 @@ unsafe extern "C" fn walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(Pre, *FIGHTER_STATUS_KIND_WALK, pre_walk)
-        .status(Main, *FIGHTER_STATUS_KIND_WALK, walk)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_WALK, pre_walk);
+    agent.status(Main, *FIGHTER_STATUS_KIND_WALK, walk);
 }

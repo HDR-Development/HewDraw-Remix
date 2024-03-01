@@ -10,13 +10,13 @@ unsafe extern "C" fn rockman_attacks4(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 14.5);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footr"), 12.0, 361, 60, 0, 75, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footr"), 12.0, 361, 60, 0, 85, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 15.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 19.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footr"), 9.0, 361, 60, 0, 75, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footr"), 9.0, 361, 60, 0, 85, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 25.0);
     if is_excute(agent) {
@@ -98,8 +98,8 @@ unsafe extern "C" fn rockman_attacks4hi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footr"), 12.0, 75, 60, 0, 90, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 75, 60, 0, 90, 4.0, 0.0, 6.0, 2.0, Some(0.0), Some(16.0), Some(3.6), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footr"), 12.0, 72, 60, 0, 90, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 72, 60, 0, 90, 4.0, 0.0, 6.0, 2.0, Some(0.0), Some(16.0), Some(3.6), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 16.0);
     if is_excute(agent) {
@@ -184,13 +184,13 @@ unsafe extern "C" fn rockman_attacks4lw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 14.5);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footr"), 9.0, 361, 40, 0, 75, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footr"), 9.0, 361, 40, 0, 85, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 15.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 19.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footr"), 6.0, 361, 40, 0, 75, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footr"), 6.0, 361, 40, 0, 85, 4.0, 0.0, -2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 25.0);
     if is_excute(agent) {
@@ -376,24 +376,22 @@ unsafe extern "C" fn rockman_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .acmd("game_attacks4", rockman_attacks4)
-        .acmd("effect_attacks4", rockman_attacks4_eff)
-        .acmd("sound_attacks4", rockman_attacks4_snd)
-        .acmd("expression_attacks4", rockman_attacks4_exp)
-        .acmd("game_attacks4hi", rockman_attacks4hi)
-        .acmd("effect_attacks4hi", rockman_attacks4hi_eff)
-        .acmd("sound_attacks4hi", rockman_attacks4hi_snd)
-        .acmd("expression_attacks4hi", rockman_attacks4hi_exp)
-        .acmd("game_attacks4lw", rockman_attacks4lw)
-        .acmd("effect_attacks4lw", rockman_attacks4lw_eff)
-        .acmd("sound_attacks4lw", rockman_attacks4lw_snd)
-        .acmd("expression_attacks4lw", rockman_attacks4lw_exp)
-        .acmd("effect_attacks4charge", rockman_attacks4charge_eff)
-        .acmd("sound_attacks4charge", rockman_attacks4charge_snd)
-        .acmd("expression_attacks4charge", rockman_attacks4charge_exp)
-        .acmd("game_attackhi4", rockman_attack_hi4_game)
-        .acmd("game_attacklw4", rockman_attack_lw4_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", rockman_attacks4);
+    agent.acmd("effect_attacks4", rockman_attacks4_eff);
+    agent.acmd("sound_attacks4", rockman_attacks4_snd);
+    agent.acmd("expression_attacks4", rockman_attacks4_exp);
+    agent.acmd("game_attacks4hi", rockman_attacks4hi);
+    agent.acmd("effect_attacks4hi", rockman_attacks4hi_eff);
+    agent.acmd("sound_attacks4hi", rockman_attacks4hi_snd);
+    agent.acmd("expression_attacks4hi", rockman_attacks4hi_exp);
+    agent.acmd("game_attacks4lw", rockman_attacks4lw);
+    agent.acmd("effect_attacks4lw", rockman_attacks4lw_eff);
+    agent.acmd("sound_attacks4lw", rockman_attacks4lw_snd);
+    agent.acmd("expression_attacks4lw", rockman_attacks4lw_exp);
+    agent.acmd("effect_attacks4charge", rockman_attacks4charge_eff);
+    agent.acmd("sound_attacks4charge", rockman_attacks4charge_snd);
+    agent.acmd("expression_attacks4charge", rockman_attacks4charge_exp);
+    agent.acmd("game_attackhi4", rockman_attack_hi4_game);
+    agent.acmd("game_attacklw4", rockman_attack_lw4_game);
 }

@@ -97,14 +97,8 @@ pub fn install() {
         set_team_second_hook,
         set_team_hook,
         set_team_owner_id_hook,
-        ptrainer_swap_backwards_hook,
-        ptrainer_stub_death_switch,
         // shield_damage_analog,
         // shield_pushback_analog
-        hero_rng_hook,
-        psych_up_hit,
-        donkey_link_event,
-        krool_belly_damage_hook,
     );
 }
 
@@ -132,7 +126,7 @@ unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: 
 /// because editing item statuses is not possible
 #[skyline::hook(replace=TeamModule::set_team)]
 unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: bool) {
-    if (boma.is_item() 
+    if (boma.is_item()
       && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set team ignored for barrel: {:x}", arg2);
     } else {
@@ -189,7 +183,7 @@ pub extern "C" fn turbo_mode(fighter: &mut L2CFighterCommon) {
                         // enable turbo behavior
                         CancelModule::enable_cancel(fighter.boma());
                         //println!("enabled cancelling!");
-                
+
                         if fighter.is_situation(*SITUATION_KIND_GROUND) {
                             fighter.sub_wait_ground_check_common(false.into());
                         } else {
@@ -263,77 +257,3 @@ unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
-extern "C" {
-    #[link_name = "_ZN3app24FighterSpecializer_Brave23special_lw_open_commandERNS_7FighterE"]
-    fn special_lw_open_command();
-}
-
-extern "C" {
-    #[link_name = "hero_rng_hook_impl"]
-    fn hero_rng_hook_impl(fighter: *mut BattleObject);
-}
-
-extern "C" {
-    #[link_name = "krool_belly_damage_hook_impl"]
-    fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut Fighter, unk: bool);
-}
-
-#[skyline::hook(replace = special_lw_open_command)]
-pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
-    hero_rng_hook_impl(fighter);
-}
-
-#[skyline::hook(offset = 0x993ee0)]
-pub unsafe extern "C" fn donkey_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash2::app::LinkEvent) -> u64 {
-    // param_3 + 0x10
-    if event.link_event_kind.0 == hash40("capture") {
-        // println!("hi");
-        let capture_event : &mut smash2::app::LinkEventCapture = std::mem::transmute(event);
-        let module_accessor = fighter.battle_object.module_accessor;
-        if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-            // param_3[0x28]
-            capture_event.result = true;
-            // capture_event.constraint = false;
-            // param_3 + 0x30
-            capture_event.node = smash2::phx::Hash40::new("throw");
-            StatusModule::change_status_request(module_accessor, *FIGHTER_STATUS_KIND_CATCH_PULL, false);
-            return 0;
-        }
-        return 1;
-    }
-    original!()(vtable, fighter, event)
-}
-
-#[skyline::hook(offset = 0x853e10)]
-pub unsafe fn psych_up_hit() {
-    // do nothing
-}
-
-// #[skyline::hook(offset = 0xc050d8, inline)]
-// pub unsafe fn krool_belly_toggle_hook(ctx: &mut skyline::hooks::InlineCtx) {
-//     krool_belly_toggle_hook_impl(ctx);
-// }
-
-#[skyline::hook(offset = 0xc055f0)]
-pub unsafe fn krool_belly_damage_hook(damage: f32, fighter: *mut Fighter, unk: bool) {
-    krool_belly_damage_hook_impl(damage, fighter, unk);
-}
-
-#[skyline::hook(offset = 0x34ce8e4, inline)]
-unsafe fn ptrainer_swap_backwards_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let object = *ctx.registers[20].x.as_ref() as *mut BattleObject;
-    if VarModule::is_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS) {
-        let new = match *ctx.registers[8].x.as_ref() {
-            0 => 1,
-            1 => 2,
-            2 => 0,
-            _ => unreachable!()
-        };
-
-        *ctx.registers[8].x.as_mut() = new;
-    }
-}
-
-#[skyline::hook(offset = 0xf96330)]
-unsafe fn ptrainer_stub_death_switch() {}

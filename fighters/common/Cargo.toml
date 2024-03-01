@@ -13,5 +13,5 @@ smashline = { git = "https://github.com/HDR-Development/smashline.git" }
 utils = { package = "dynamic", path = "../../dynamic" }
 ninput = { git = "https://github.com/blu-dev/ninput" }
 interpolation = "0.2.0" # for f32::lerp
-smash2 = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
+smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 rand = { git = "https://github.com/skyline-rs/rand" }

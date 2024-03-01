@@ -214,10 +214,7 @@ pub unsafe fn ness_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_NESS_PK_THUNDER {
-            return
-        }
+    unsafe {
         WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }

@@ -243,6 +243,42 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn roy_jumpback_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_roy_jump01"));
+    }
+}
+
+unsafe extern "C" fn roy_jumpfront_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_roy_jump01"));
+    }
+}
+
+unsafe extern "C" fn roy_jumpbackmini_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_roy_jump01"));
+    }
+}
+
+unsafe extern "C" fn roy_jumpfrontmini_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_roy_jump01"));
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("roy")
         .acmd("sound_damageflyhi", damageflyhi_sound)
@@ -258,6 +294,9 @@ pub fn install() {
         .acmd("game_appeallwr", roy_appeallwr_game)
         .acmd("game_appeallwl", roy_appeallwl_game)
         .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("sound_jumpback", roy_jumpback_sound)
+        .acmd("sound_jumpfront", roy_jumpfront_sound)
+        .acmd("sound_jumpbackmini", roy_jumpbackmini_sound)
+        .acmd("sound_jumpfrontmini", roy_jumpfrontmini_sound)
         .install();
 }
