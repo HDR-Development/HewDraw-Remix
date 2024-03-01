@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "wario", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -43,8 +42,7 @@ unsafe fn wario_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "expression_landingairn" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wario_landing_air_n_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -65,8 +63,7 @@ unsafe fn wario_landing_air_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -93,8 +90,7 @@ unsafe fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "expression_landingairf" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wario_landing_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -115,8 +111,7 @@ unsafe fn wario_landing_air_f_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -154,8 +149,7 @@ unsafe fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "effect_attackairb", category = ACMD_EFFECT )]
-unsafe fn wario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -171,8 +165,7 @@ unsafe fn wario_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "sound_attackairb", category = ACMD_SOUND )]
-unsafe fn wario_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -190,8 +183,7 @@ unsafe fn wario_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "expression_attackairb", category = ACMD_EXPRESSION )]
-unsafe fn wario_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -205,8 +197,7 @@ unsafe fn wario_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -236,8 +227,7 @@ unsafe fn wario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -245,7 +235,7 @@ unsafe fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -253,8 +243,7 @@ unsafe fn wario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "expression_landingairhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn wario_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -275,8 +264,7 @@ unsafe fn wario_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_attackairlw", category = ACMD_GAME )]
-unsafe fn wario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -322,8 +310,7 @@ unsafe fn wario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "effect_attackairlw", category = ACMD_EFFECT )]
-unsafe fn wario_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -338,8 +325,7 @@ unsafe fn wario_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "sound_attackairlw", category = ACMD_SOUND )]
-unsafe fn wario_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -357,8 +343,7 @@ unsafe fn wario_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "expression_attackairlw", category = ACMD_EXPRESSION )]
-unsafe fn wario_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -375,8 +360,7 @@ unsafe fn wario_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_landingairlw", category = ACMD_GAME )]
-unsafe fn wario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -389,8 +373,7 @@ unsafe fn wario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "sound_landingairlw", category = ACMD_SOUND )]
-unsafe fn wario_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -399,8 +382,7 @@ unsafe fn wario_landing_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "effect_landingairlw", category = ACMD_EFFECT )]
-unsafe fn wario_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -415,8 +397,7 @@ unsafe fn wario_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "expression_landingairlw", category = ACMD_EXPRESSION )]
-unsafe fn wario_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -433,8 +414,8 @@ unsafe fn wario_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 //AttackAirLw2 is the upwards bounce//
-#[acmd_script( agent = "wario", script = "game_attackairlw2", category = ACMD_GAME )]
-unsafe fn wario_attack_air_lw2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_attack_air_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let speed_max=0.75;
@@ -474,8 +455,7 @@ unsafe fn wario_attack_air_lw2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "effect_attackairlw2", category = ACMD_EFFECT )]
-unsafe fn wario_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -485,8 +465,7 @@ unsafe fn wario_attack_air_lw2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "sound_attackairlw2", category = ACMD_SOUND )]
-unsafe fn wario_attack_air_lw2_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_air_lw2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 16.0);
@@ -496,34 +475,28 @@ unsafe fn wario_attack_air_lw2_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wario_attack_air_n_game,
-        wario_landing_air_n_expression,
-
-        wario_attack_air_f_game,
-        wario_landing_air_f_expression,
-
-        wario_attack_air_hi_game,
-        wario_attack_air_hi_expression,
-        wario_landing_air_hi_expression,
-
-        wario_attack_air_b_game,
-        wario_attack_air_b_effect,
-        wario_attack_air_b_sound,
-        wario_attack_air_b_expression,
-
-        wario_attack_air_lw_game,
-        wario_attack_air_lw_effect,
-        wario_attack_air_lw_sound,
-        wario_attack_air_lw_expression,
-
-        wario_landing_air_lw_game,
-        wario_landing_air_lw_effect,
-        wario_landing_air_lw_sound,
-        wario_landing_air_lw_expression,
-
-        wario_attack_air_lw2_game,
-        wario_attack_air_lw2_effect,
-        wario_attack_air_lw2_sound
-    );
+    smashline::Agent::new("wario")
+        .acmd("game_attackairn", wario_attack_air_n_game)
+        .acmd("expression_landingairn", wario_landing_air_n_expression)
+        .acmd("game_attackairf", wario_attack_air_f_game)
+        .acmd("expression_landingairf", wario_landing_air_f_expression)
+        .acmd("game_attackairb", wario_attack_air_b_game)
+        .acmd("effect_attackairb", wario_attack_air_b_effect)
+        .acmd("sound_attackairb", wario_attack_air_b_sound)
+        .acmd("expression_attackairb", wario_attack_air_b_expression)
+        .acmd("game_attackairhi", wario_attack_air_hi_game)
+        .acmd("expression_attackairhi", wario_attack_air_hi_expression)
+        .acmd("expression_landingairhi", wario_landing_air_hi_expression)
+        .acmd("game_attackairlw", wario_attack_air_lw_game)
+        .acmd("effect_attackairlw", wario_attack_air_lw_effect)
+        .acmd("sound_attackairlw", wario_attack_air_lw_sound)
+        .acmd("expression_attackairlw", wario_attack_air_lw_expression)
+        .acmd("game_landingairlw", wario_landing_air_lw_game)
+        .acmd("sound_landingairlw", wario_landing_air_lw_sound)
+        .acmd("effect_landingairlw", wario_landing_air_lw_effect)
+        .acmd("expression_landingairlw", wario_landing_air_lw_expression)
+        .acmd("game_attackairlw2", wario_attack_air_lw2_game)
+        .acmd("effect_attackairlw2", wario_attack_air_lw2_effect)
+        .acmd("sound_attackairlw2", wario_attack_air_lw2_sound)
+        .install();
 }

@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "sonic", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn sonic_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -32,9 +31,7 @@ unsafe fn sonic_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "sonic", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
-unsafe fn sonic_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -52,9 +49,7 @@ unsafe fn sonic_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "sonic", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn sonic_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -84,8 +79,7 @@ unsafe fn sonic_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
-unsafe fn sonic_attack_s3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -103,9 +97,7 @@ unsafe fn sonic_attack_s3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "sonic", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn sonic_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -136,9 +128,7 @@ unsafe fn sonic_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "sonic", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
-unsafe fn sonic_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -156,9 +146,7 @@ unsafe fn sonic_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "sonic", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn sonic_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -179,9 +167,7 @@ unsafe fn sonic_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "sonic", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -194,33 +180,8 @@ unsafe fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "sonic", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
-unsafe fn sonic_attack_hi3_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8, 4, 180, 320, 90, 1.2, true);
-        LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
-        LAST_EFFECT_SET_RATE(fighter, 1.0);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8, -0.2, 180, 260, 90, 1.1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
-        LAST_EFFECT_SET_RATE(fighter, 1.1);
-    }
-    frame(lua_state, 27.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-}
- #[acmd_script( agent = "sonic", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
- unsafe fn sonic_attack_hi3_game(fighter: &mut L2CAgentBase) {
+
+ unsafe extern "C" fn sonic_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -250,20 +211,42 @@ unsafe fn sonic_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-
-pub fn install() {
-    install_acmd_scripts!(
-        sonic_attack_s3_hi_game,
-        sonic_attack_s3_hi_effect,
-        sonic_attack_s3_game,
-        sonic_attack_s3_effect,
-        sonic_attack_s3_lw_game,
-        sonic_attack_s3_lw_effect,
-        sonic_attack_lw3_game,
-        sonic_attack_lw3_effect,
-        sonic_attack_hi3_game,
-        sonic_attack_hi3_effect,
-    );
+ unsafe extern "C" fn sonic_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8, 4, 180, 320, 90, 1.2, true);
+        LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8, -0.2, 180, 260, 90, 1.1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
 }
 
+pub fn install() {
+    smashline::Agent::new("sonic")
+        .acmd("game_attacks3hi", sonic_attack_s3_hi_game)
+        .acmd("effect_attacks3hi", sonic_attack_s3_hi_effect)
+        .acmd("game_attacks3", sonic_attack_s3_game)
+        .acmd("effect_attacks3", sonic_attack_s3_effect)
+        .acmd("game_attacks3lw", sonic_attack_s3_lw_game)
+        .acmd("effect_attacks3lw", sonic_attack_s3_lw_effect)
+        .acmd("game_attacklw3", sonic_attack_lw3_game)
+        .acmd("effect_attacklw3", sonic_attack_lw3_effect)
+        .acmd("game_attackhi3", sonic_attack_hi3_game)
+        .acmd("effect_attackhi3", sonic_attack_hi3_effect)
+        .install();
+}

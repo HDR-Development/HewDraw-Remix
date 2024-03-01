@@ -2,14 +2,7 @@ use super::*;
 use globals::*;
 // status script import
 
-pub fn install() {
-    install_status_scripts!(
-        attack_hi4_pre, attack_hi4_main
-    );
-}
-
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_ATTACK_HI4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn attack_hi4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_hi4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_GROUND),
@@ -38,8 +31,7 @@ pub unsafe fn attack_hi4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_ATTACK_HI4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_hi4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_hi4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackHi4_common(L2CValue::Hash40s("attack_hi4"));
     // fighter.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
     // let restart_frame = fighter.get_float(*FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
@@ -97,4 +89,10 @@ unsafe extern "C" fn attack_hi_set_kinetic(fighter: &mut L2CFighterCommon) {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
+}
+pub fn install() {
+    smashline::Agent::new("lucario")
+        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_main)
+        .install();
 }

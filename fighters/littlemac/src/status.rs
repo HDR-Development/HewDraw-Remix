@@ -14,8 +14,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn littlemac_init(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn littlemac_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_LITTLEMAC {
@@ -30,9 +29,7 @@ pub fn install() {
     special_hi::install();
     special_lw::install();
     special_lw_cancel::install();
-    smashline::install_agent_init_callbacks!(littlemac_init);
-}
-
-pub fn add_statuses() {
-    special_lw_cancel::install();
+    smashline::Agent::new("littlemac")
+        .on_start(littlemac_init)
+        .install();
 }

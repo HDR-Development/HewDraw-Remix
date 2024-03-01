@@ -38,12 +38,8 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
-    if is_runtime {
-        utils::singletons::init();
-    }
-
+pub fn install() {
     acmd::install();
     status::install();
-    opff::install(is_runtime);
+    opff::install();
 }

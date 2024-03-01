@@ -1,8 +1,7 @@
 use super::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn rockman_rockbuster_shoot_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -37,8 +36,7 @@ unsafe fn rockman_rockbuster_shoot_jump_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_rockbuster_shoot_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     rockman_rockbuster_main_helper(fighter, true.into(), false.into(), L2CValue::Void(), L2CValue::Void());
     fighter.sub_shift_status_main(L2CValue::Ptr(rockman_rockbuster_shoot_jump_main_loop as *const () as _))
 }
@@ -64,8 +62,15 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_main_loop(fighter: &mut L2CFi
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_jump_pre, rockman_rockbuster_shoot_jump_main
-    );
+pub fn install(agent: &mut Agent) {
+    agent.status(
+            Pre,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP,
+            rockman_rockbuster_shoot_jump_pre,
+        );
+    agent.status(
+            Main,
+            *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP,
+            rockman_rockbuster_shoot_jump_main,
+        );
 }

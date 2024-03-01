@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "dedede", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +76,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +91,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +116,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "expression_landingheavy" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -134,8 +128,7 @@ unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "dedede", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -165,8 +158,7 @@ unsafe fn dedede_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -180,8 +172,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -195,8 +186,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -210,8 +200,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "game_specialsthrow" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -255,8 +244,7 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "effect_specialsthrow" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter){
@@ -264,8 +252,7 @@ unsafe fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "game_specialsshot" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -284,15 +271,13 @@ unsafe fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "effect_specialsshot" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dedede_gordo_special_s_shot_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_s_shot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "game_specialsattack" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -369,16 +354,14 @@ unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "effect_specialsattack" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dedede_gordo_special_s_attack_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     //Intentionally blank to kill vanilla effects
 
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "game_specialswallstop" , category = ACMD_GAME , low_priority)]
-unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
+unsafe extern "C" fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -386,8 +369,7 @@ unsafe fn dedede_gordo_special_s_wall_stop_game(fighter: &mut L2CAgentBase){
     }
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
+unsafe extern "C" fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -402,8 +384,7 @@ unsafe fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
     }
 }
 
-#[acmd_script( agent = "dedede_gordo", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -419,8 +400,7 @@ unsafe fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -438,8 +418,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -456,8 +435,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede_star", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter){
@@ -465,8 +443,7 @@ unsafe fn fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "sound_landingfallspecial", category = ACMD_SOUND, low_priority )]
-unsafe fn landing_fall_special_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn landing_fall_special_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -475,30 +452,33 @@ unsafe fn landing_fall_special_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        expression_landingheavy,
-        dedede_catch_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        dedede_gordo_special_s_throw_game,
-        dedede_gordo_special_s_throw_effect,
-        dedede_gordo_special_s_shot_game,
-        dedede_gordo_special_s_shot_effect,
-        dedede_gordo_special_s_attack_game,
-        dedede_gordo_special_s_attack_effect,
-        dedede_gordo_special_s_start_game,
-        dedede_gordo_special_air_s_start_game,
-        dedede_gordo_special_s_wall_stop_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound,
-        fly_game,
-        landing_fall_special_sound,
-    );
+    smashline::Agent::new("dedede_gordo")
+        .acmd("game_specialsthrow", dedede_gordo_special_s_throw_game)
+        .acmd("effect_specialsthrow", dedede_gordo_special_s_throw_effect)
+        .acmd("game_specialsshot", dedede_gordo_special_s_shot_game)
+        .acmd("effect_specialsshot", dedede_gordo_special_s_shot_effect)
+        .acmd("game_specialsattack", dedede_gordo_special_s_attack_game)
+        .acmd("effect_specialsattack", dedede_gordo_special_s_attack_effect)
+        .acmd("game_specialswallstop", dedede_gordo_special_s_wall_stop_game)
+        .acmd("game_specialsstart", dedede_gordo_special_s_start_game)
+        .acmd("game_specialairsstart", dedede_gordo_special_air_s_start_game)
+        .install();
+    smashline::Agent::new("dedede_star")
+        .acmd("game_fly", fly_game)
+        .install();
+    smashline::Agent::new("dedede")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("expression_landingheavy", expression_landingheavy)
+        .acmd("game_catch", dedede_catch_game)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("sound_landingfallspecial", landing_fall_special_sound)
+        .install();
 }
-

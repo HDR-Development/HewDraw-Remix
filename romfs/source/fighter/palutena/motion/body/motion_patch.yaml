@@ -1,7 +1,13 @@
+landing_fall_special:
+  animations:
+  - name: a05landingheavy.nuanmb
+landing_heavy:
+  animations:
+  - name: a04landingfallspecial.nuanmb
 jump_squat:
   blend_frames: 0
   animations:
-  - name: a05landingheavy.nuanmb
+  - name: a04landingfallspecial.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:

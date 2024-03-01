@@ -376,7 +376,6 @@ pub trait FastShift {
         &mut self,
         new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue,
     ) -> L2CValue;
-    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool);
 }
 
 impl MainShift for L2CFighterCommon {
@@ -394,18 +393,6 @@ impl FastShift for L2CFighterBase {
         new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue,
     ) -> L2CValue {
         unsafe { self.fastshift(L2CValue::Ptr(new_main as *const () as _)) }
-    }
-
-    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool) {
-        use crate::CustomStatusModule;
-
-        let kind = if common {
-            CustomStatusModule::get_common_status_kind(self.battle_object, id)
-        } else {
-            CustomStatusModule::get_agent_status_kind(self.battle_object, id)
-        };
-
-        unsafe { self.change_status(kind.into(), clear_cat.into()) }
     }
 }
 
@@ -922,7 +909,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])) {
+        if require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]) {
             return false;
         }
 
@@ -1141,8 +1128,8 @@ impl BomaExt for BattleObjectModuleAccessor {
         //let p2_x = -9.6;
         //let p2_y = 9.0;
 
-        self.set_front_cliff_hangdata(p1_x, (p1_y - p2_y));
-        self.set_back_cliff_hangdata((p2_x * -1.0), (p1_y - p2_y));
+        self.set_front_cliff_hangdata(p1_x, p1_y - p2_y);
+        self.set_back_cliff_hangdata(p2_x * -1.0, p1_y - p2_y);
         self.set_center_cliff_hangdata(0.0, p2_y);
     }
 
@@ -1419,6 +1406,7 @@ pub struct ControllerMapping {
 }
 
 /// Controller class used internally by the game
+#[allow(non_snake_case)]
 #[repr(C)]
 pub struct Controller {
     pub vtable: *const u64,
@@ -1531,142 +1519,19 @@ pub struct MappedInputs {
     pub rstick_y: i8,
 }
 
-pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
-
 #[repr(C)]
-pub struct StatusInfo {
-    pub pre: Option<StatusFunc>,
-    pub main: Option<StatusFunc>,
-    pub end: Option<StatusFunc>,
-    pub init: Option<StatusFunc>,
-    pub exec: Option<StatusFunc>,
-    pub exec_stop: Option<StatusFunc>,
-    pub exec_post: Option<StatusFunc>,
-    pub exit: Option<StatusFunc>,
-    pub map_correction: Option<StatusFunc>,
-    pub fix_camera: Option<StatusFunc>,
-    pub fix_pos_slow: Option<StatusFunc>,
-    pub check_damage: Option<StatusFunc>,
-    pub check_attack: Option<StatusFunc>,
-    pub on_change_lr: Option<StatusFunc>,
-    pub leave_stop: Option<StatusFunc>,
-    pub notify_event_gimmick: Option<StatusFunc>,
-    pub calc_param: Option<StatusFunc>,
-}
-
-impl StatusInfo {
-    pub fn new() -> StatusInfo {
-        StatusInfo {
-            pre: None,
-            main: None,
-            end: None,
-            init: None,
-            exec: None,
-            exec_stop: None,
-            exec_post: None,
-            exit: None,
-            map_correction: None,
-            fix_camera: None,
-            fix_pos_slow: None,
-            check_damage: None,
-            check_attack: None,
-            on_change_lr: None,
-            leave_stop: None,
-            notify_event_gimmick: None,
-            calc_param: None,
-        }
-    }
-
-    pub fn with_pre(mut self, pre: StatusFunc) -> Self {
-        self.pre = Some(pre);
-        self
-    }
-
-    pub fn with_main(mut self, main: StatusFunc) -> Self {
-        self.main = Some(main);
-        self
-    }
-
-    pub fn with_end(mut self, end: StatusFunc) -> Self {
-        self.end = Some(end);
-        self
-    }
-
-    pub fn with_init(mut self, init: StatusFunc) -> Self {
-        self.init = Some(init);
-        self
-    }
-
-    pub fn with_exec(mut self, exec: StatusFunc) -> Self {
-        self.exec = Some(exec);
-        self
-    }
-
-    pub fn with_exec_stop(mut self, exec_stop: StatusFunc) -> Self {
-        self.exec_stop = Some(exec_stop);
-        self
-    }
-
-    pub fn with_exec_post(mut self, exec_post: StatusFunc) -> Self {
-        self.exec_post = Some(exec_post);
-        self
-    }
-
-    pub fn with_exit(mut self, exit: StatusFunc) -> Self {
-        self.exit = Some(exit);
-        self
-    }
-
-    pub fn with_map_correction(mut self, map_correction: StatusFunc) -> Self {
-        self.map_correction = Some(map_correction);
-        self
-    }
-
-    pub fn with_fix_camera(mut self, fix_camera: StatusFunc) -> Self {
-        self.fix_camera = Some(fix_camera);
-        self
-    }
-
-    pub fn with_fix_pos_slow(mut self, fix_pos_slow: StatusFunc) -> Self {
-        self.fix_pos_slow = Some(fix_pos_slow);
-        self
-    }
-
-    pub fn with_check_damage(mut self, check_damage: StatusFunc) -> Self {
-        self.check_damage = Some(check_damage);
-        self
-    }
-
-    pub fn with_check_attack(mut self, check_attack: StatusFunc) -> Self {
-        self.check_attack = Some(check_attack);
-        self
-    }
-
-    pub fn with_on_change_lr(mut self, on_change_lr: StatusFunc) -> Self {
-        self.on_change_lr = Some(on_change_lr);
-        self
-    }
-
-    pub fn with_leave_stop(mut self, leave_stop: StatusFunc) -> Self {
-        self.leave_stop = Some(leave_stop);
-        self
-    }
-
-    pub fn with_notify_event_gimmick(mut self, notify_event_gimmick: StatusFunc) -> Self {
-        self.notify_event_gimmick = Some(notify_event_gimmick);
-        self
-    }
-
-    pub fn with_calc_param(mut self, calc_param: StatusFunc) -> Self {
-        self.calc_param = Some(calc_param);
-        self
-    }
-}
-
-pub fn is_hdr_available() -> bool {
-    let mut symbol = 0usize;
-    unsafe {
-        skyline::nn::ro::LookupSymbol(&mut symbol, "hdr_is_available\0".as_ptr());
-    }
-    symbol != 0
+pub struct CollisionLog {
+    pub next: *mut CollisionLog,
+    pub end: *mut CollisionLog,
+    pub location: Vector3f,
+    pub padding_0: u32,
+    pub padding_1: u32,
+    pub opponent_battle_object_id: u32,
+    pub padding_2: [u8;7],
+    pub collision_kind: u8,
+    pub receiver_part_id: u8,
+    pub collider_part_id: u8,
+    pub receiver_id: u8,
+    pub collider_id: u8,
+    pub padding_3: [u8;10]
 }

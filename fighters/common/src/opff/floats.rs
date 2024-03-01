@@ -3,7 +3,6 @@ use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
 use smash_script::macros::*;
 
-
 // Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     let mut motion_value = 0.0;
@@ -33,30 +32,25 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     if VarModule::get_int(boma.object(), vars::common::instance::FLOAT_STYLE) == 2 {
         VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 0);
     }
-    // Activate float_pause aerial flag to prevent floats from being activated during aerials if
-    // float option isnt 1
-    if VarModule::get_int(boma.object(), vars::common::instance::FLOAT_STYLE) != 1 {
-        if status_kind != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            VarModule::set_flag(boma.object(), vars::common::instance::FLOAT_PAUSE_AERIAL, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION));
-        } else if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
-            VarModule::off_flag(boma.object(), vars::common::instance::FLOAT_PAUSE_AERIAL);
-        }
-    }
 
     if situation_kind == *SITUATION_KIND_AIR
     && !boma.is_prev_status(*SITUATION_KIND_GROUND)
-    //&& !StatusModule::is_changing(boma)
     {
+        // FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME will sometimes erroneously decrement once every 2 frames (effectively allowing for double the max float time); this overrides that
+        // With SL2 float time is no longer doubled, but forcing the flag to be on is still required?
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 
+        && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION)
+        {
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
+        }
         if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
         }
         // Prevent float from activating during aerials
         if VarModule::get_int(boma.object(), vars::common::instance::FLOAT_STYLE) != 1 && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && !CancelModule::is_enable_cancel(boma) {
-                if VarModule::is_flag(boma.object(), vars::common::instance::FLOAT_PAUSE_AERIAL) {
-                    VarModule::on_flag(boma.object(), vars::common::instance::AERIAL_NO_FLOAT);
-                    WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-                }
+                VarModule::on_flag(boma.object(), vars::common::instance::AERIAL_NO_FLOAT);
+                WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
             } else {
                 if VarModule::is_flag(boma.object(), vars::common::instance::AERIAL_NO_FLOAT) {
                     WorkModule::set_int(boma, VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION), *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
@@ -90,53 +84,36 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
             if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) 
-            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
-            && (boma.left_stick_y() >= -0.66 && InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= 4)
-            { //disables held floats unless jump is held 5f
-                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
+                if (boma.left_stick_y() >= -0.66 && InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= 4) //disable helf floats for 4f
+                || fighter.is_button_off(Buttons::Jump) { //disable 1f float
+                    WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+                }
             }
             // Immediately transition to fall/double jump fall when activating float
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
+            if !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
+            && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0
+            && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66
+            {
                 if [*FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3, *FIGHTER_STATUS_KIND_DAMAGE_FALL, *FIGHTER_STATUS_KIND_PASS].contains(&status_kind) {
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
-                    ControlModule::reset_trigger(boma);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
-                    ControlModule::reset_trigger(boma);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
-                } else if [hash40("walk_fall_l"), hash40("walk_fall_r"), hash40("run_fall_l"), hash40("run_fall_r")].contains(&MotionModule::motion_kind(boma)) {
-                    MotionModule::change_motion(boma, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, false);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP {
                     if StatusModule::is_changing(boma) { //peach ground-float mechanic
-                        let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 3.5, z: PostureModule::pos_z(boma) };
+                        let pos = Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 2.5 + motion_value, z: PostureModule::pos_z(boma) };
                         PostureModule::set_pos(boma, &pos);
                     }
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
-                    ControlModule::reset_trigger(boma);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 }
             }
-            //else {
-            //    // "superjump" bugfix
-            //    if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) && status_kind == *FIGHTER_STATUS_KIND_JUMP && boma.status_frame() <= 1 {
-            //        ControlModule::reset_trigger(boma);
-            //        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
-            //    }
-            //}
-            // FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME will sometimes erroneously decrement once every 2 frames (effectively allowing for double the max float time); this overrides that
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
-                if ([*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) || [*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL, *FIGHTER_STATUS_KIND_ATTACK_AIR].contains(&status_kind)) && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
-                    let fall_slowly_frame = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-                    WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
-                    WorkModule::set_int(boma, fall_slowly_frame - 1, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-                }
+            // Run-off anim cancel
+            if [hash40("walk_fall_l"), hash40("walk_fall_r"), hash40("run_fall_l"), hash40("run_fall_r")].contains(&MotionModule::motion_kind(boma)) 
+            && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
+                MotionModule::change_motion(boma, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
             }
-
             // Omnidirectional float for Dark Samus and Mewtwo
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 
-            && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) 
+            if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
             && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
                 if boma.left_stick_y() != 0.0 && VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER) > 2 {
                     let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};

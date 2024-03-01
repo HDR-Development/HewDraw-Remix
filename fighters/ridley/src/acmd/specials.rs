@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "ridley", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME )]
-unsafe fn ridley_special_n_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -12,8 +10,7 @@ unsafe fn ridley_special_n_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", scripts = ["game_specialnhold", "game_specialairnhold"], category = ACMD_GAME )]
-unsafe fn ridley_special_n_hold_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -22,8 +19,7 @@ unsafe fn ridley_special_n_hold_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME )]
-unsafe fn ridley_special_n_shoot_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -42,8 +38,7 @@ unsafe fn ridley_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialnexplode", category = ACMD_GAME )]
-unsafe fn ridley_special_n_explode_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -63,8 +58,7 @@ unsafe fn ridley_special_n_explode_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "effect_specialnexplode", category = ACMD_EFFECT )]
-unsafe fn ridley_special_n_explode_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_explode_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,8 +85,7 @@ unsafe fn ridley_special_n_explode_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "sound_specialnexplode", category = ACMD_SOUND )]
-unsafe fn ridley_special_n_explode_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_explode_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -106,8 +99,7 @@ unsafe fn ridley_special_n_explode_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "expression_specialnexplode", category = ACMD_EXPRESSION )]
-unsafe fn ridley_special_n_explode_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_n_explode_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -120,8 +112,7 @@ unsafe fn ridley_special_n_explode_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairnexplode", category = ACMD_GAME )]
-unsafe fn ridley_special_air_n_explode_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_n_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,8 +132,7 @@ unsafe fn ridley_special_air_n_explode_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "effect_specialairnexplode", category = ACMD_EFFECT )]
-unsafe fn ridley_special_air_n_explode_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_n_explode_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -163,8 +153,7 @@ unsafe fn ridley_special_air_n_explode_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "sound_specialairnexplode", category = ACMD_SOUND )]
-unsafe fn ridley_special_air_n_explode_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_n_explode_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -178,8 +167,7 @@ unsafe fn ridley_special_air_n_explode_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "expression_specialairnexplode", category = ACMD_EXPRESSION )]
-unsafe fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 18.0);
@@ -189,8 +177,7 @@ unsafe fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
-unsafe fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -252,8 +239,7 @@ unsafe fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargef", category = ACMD_GAME, low_priority )]
-unsafe fn ridley_special_air_hi_charge_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_hi_charge_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -267,8 +253,7 @@ unsafe fn ridley_special_air_hi_charge_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargeb", category = ACMD_GAME, low_priority )]
-unsafe fn ridley_special_air_hi_charge_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_hi_charge_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -283,8 +268,7 @@ unsafe fn ridley_special_air_hi_charge_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargehi" , category = ACMD_GAME , low_priority)]
-unsafe fn ridley_special_air_hi_charge_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_hi_charge_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -299,8 +283,7 @@ unsafe fn ridley_special_air_hi_charge_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargelw" , category = ACMD_GAME , low_priority)]
-unsafe fn ridley_special_air_hi_charge_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_air_hi_charge_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -314,8 +297,7 @@ unsafe fn ridley_special_air_hi_charge_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", scripts = ["game_speciallwstab", "game_specialairlwstab"], category = ACMD_GAME , low_priority )]
-unsafe fn ridley_special_lw_stab_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_stab_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 28.0);
@@ -364,8 +346,7 @@ unsafe fn ridley_special_lw_stab_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", scripts = ["effect_speciallwstab", "effect_specialairlwstab"], category = ACMD_EFFECT , low_priority )]
-unsafe fn ridley_special_lw_stab_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_stab_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -398,8 +379,7 @@ unsafe fn ridley_special_lw_stab_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", scripts = ["game_speciallwfinish", "game_specialairlwfinish"], category = ACMD_GAME , low_priority )]
-unsafe fn ridley_special_lw_finish_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_finish_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -424,8 +404,7 @@ unsafe fn ridley_special_lw_finish_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairlwpogo", category = ACMD_GAME )]
-unsafe fn ridley_special_lw_pogo_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -475,8 +454,7 @@ unsafe fn ridley_special_lw_pogo_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "effect_specialairlwpogo", category = ACMD_EFFECT , low_priority )]
-unsafe fn ridley_special_lw_pogo_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -501,8 +479,7 @@ unsafe fn ridley_special_lw_pogo_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "sound_specialairlwpogo", category = ACMD_SOUND , low_priority )]
-unsafe fn ridley_special_lw_pogo_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -515,8 +492,7 @@ unsafe fn ridley_special_lw_pogo_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "expression_specialairlwpogo", category = ACMD_EXPRESSION , low_priority )]
-unsafe fn ridley_special_lw_pogo_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -532,8 +508,7 @@ unsafe fn ridley_special_lw_pogo_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_speciallwpogolanding", category = ACMD_GAME , low_priority )]
-unsafe fn ridley_special_lw_pogo_landing_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -549,8 +524,7 @@ unsafe fn ridley_special_lw_pogo_landing_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "effect_speciallwpogolanding", category = ACMD_EFFECT , low_priority )]
-unsafe fn ridley_special_lw_pogo_landing_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_landing_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -565,8 +539,7 @@ unsafe fn ridley_special_lw_pogo_landing_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "sound_speciallwpogolanding", category = ACMD_SOUND , low_priority )]
-unsafe fn ridley_special_lw_pogo_landing_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_landing_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -579,8 +552,7 @@ unsafe fn ridley_special_lw_pogo_landing_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "expression_speciallwpogolanding", category = ACMD_EXPRESSION , low_priority )]
-unsafe fn ridley_special_lw_pogo_landing_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_special_lw_pogo_landing_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -591,34 +563,79 @@ unsafe fn ridley_special_lw_pogo_landing_expression(fighter: &mut L2CAgentBase) 
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ridley_special_n_start_game,
-        ridley_special_n_hold_game,
-        ridley_special_n_shoot_game,
-        ridley_special_n_explode_game,
-        ridley_special_n_explode_effect,
-        ridley_special_n_explode_sound,
-        ridley_special_n_explode_expression,
-        ridley_special_air_n_explode_game,
-        ridley_special_air_n_explode_effect,
-        ridley_special_air_n_explode_sound,
-        ridley_special_air_n_explode_expression,
-        ridley_special_s_start_game,
-        ridley_special_air_hi_charge_f_game,
-        ridley_special_air_hi_charge_b_game,
-        ridley_special_air_hi_charge_hi_game,
-        ridley_special_air_hi_charge_lw_game,
-        ridley_special_lw_stab_game,
-        ridley_special_lw_stab_effect,
-        ridley_special_lw_finish_game,
-        ridley_special_lw_pogo_game,
-        ridley_special_lw_pogo_effect,
-        ridley_special_lw_pogo_sound,
-        ridley_special_lw_pogo_expression,
-        ridley_special_lw_pogo_landing_game,
-        ridley_special_lw_pogo_landing_effect,
-        ridley_special_lw_pogo_landing_sound,
-        ridley_special_lw_pogo_landing_expression,
-    );
+    smashline::Agent::new("ridley")
+        .acmd("game_specialnstart", ridley_special_n_start_game)
+        .acmd("game_specialairnstart", ridley_special_n_start_game)
+        .acmd("game_specialnhold", ridley_special_n_hold_game)
+        .acmd("game_specialairnhold", ridley_special_n_hold_game)
+        .acmd("game_specialnshoot", ridley_special_n_shoot_game)
+        .acmd("game_specialairnshoot", ridley_special_n_shoot_game)
+        .acmd("game_specialnexplode", ridley_special_n_explode_game)
+        .acmd("effect_specialnexplode", ridley_special_n_explode_effect)
+        .acmd("sound_specialnexplode", ridley_special_n_explode_sound)
+        .acmd(
+            "expression_specialnexplode",
+            ridley_special_n_explode_expression,
+        )
+        .acmd("game_specialairnexplode", ridley_special_air_n_explode_game)
+        .acmd(
+            "effect_specialairnexplode",
+            ridley_special_air_n_explode_effect,
+        )
+        .acmd(
+            "sound_specialairnexplode",
+            ridley_special_air_n_explode_sound,
+        )
+        .acmd(
+            "expression_specialairnexplode",
+            ridley_special_air_n_explode_expression,
+        )
+        .acmd("game_specialsstart", ridley_special_s_start_game)
+        .acmd("game_specialairsstart", ridley_special_s_start_game)
+        .acmd(
+            "game_specialairhichargef",
+            ridley_special_air_hi_charge_f_game,
+        )
+        .acmd(
+            "game_specialairhichargeb",
+            ridley_special_air_hi_charge_b_game,
+        )
+        .acmd(
+            "game_specialairhichargehi",
+            ridley_special_air_hi_charge_hi_game,
+        )
+        .acmd(
+            "game_specialairhichargelw",
+            ridley_special_air_hi_charge_lw_game,
+        )
+        .acmd("game_speciallwstab", ridley_special_lw_stab_game)
+        .acmd("game_specialairlwstab", ridley_special_lw_stab_game)
+        .acmd("effect_speciallwstab", ridley_special_lw_stab_effect)
+        .acmd("effect_specialairlwstab", ridley_special_lw_stab_effect)
+        .acmd("game_speciallwfinish", ridley_special_lw_finish_game)
+        .acmd("game_specialairlwfinish", ridley_special_lw_finish_game)
+        .acmd("game_specialairlwpogo", ridley_special_lw_pogo_game)
+        .acmd("effect_specialairlwpogo", ridley_special_lw_pogo_effect)
+        .acmd("sound_specialairlwpogo", ridley_special_lw_pogo_sound)
+        .acmd(
+            "expression_specialairlwpogo",
+            ridley_special_lw_pogo_expression,
+        )
+        .acmd(
+            "game_speciallwpogolanding",
+            ridley_special_lw_pogo_landing_game,
+        )
+        .acmd(
+            "effect_speciallwpogolanding",
+            ridley_special_lw_pogo_landing_effect,
+        )
+        .acmd(
+            "sound_speciallwpogolanding",
+            ridley_special_lw_pogo_landing_sound,
+        )
+        .acmd(
+            "expression_speciallwpogolanding",
+            ridley_special_lw_pogo_landing_expression,
+        )
+        .install();
 }
-

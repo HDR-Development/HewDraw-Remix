@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "mewtwo", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -38,8 +36,7 @@ unsafe fn mewtwo_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -71,8 +68,7 @@ unsafe fn mewtwo_attack_air_f_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "mewtwo", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn mewtwo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("haver"), 1.2, 0, 1.8, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
@@ -93,8 +89,7 @@ unsafe fn mewtwo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -127,8 +122,7 @@ unsafe fn mewtwo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -166,10 +160,7 @@ unsafe fn mewtwo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-
-
-#[acmd_script( agent = "mewtwo", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mewtwo_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -182,8 +173,7 @@ unsafe fn mewtwo_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn mewtwo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mewtwo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -210,14 +200,13 @@ unsafe fn mewtwo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attack_air_n_game,
-        mewtwo_attack_air_f_game,
-        mewtwo_attack_air_f_effect,
-        mewtwo_attack_air_b_game,
-        mewtwo_attack_air_hi_game,
-        mewtwo_attack_air_hi_expression,
-        mewtwo_attack_air_lw_game,
-    );
+    smashline::Agent::new("mewtwo")
+        .acmd("game_attackairn", mewtwo_attack_air_n_game)
+        .acmd("game_attackairf", mewtwo_attack_air_f_game)
+        .acmd("effect_attackairf", mewtwo_attack_air_f_effect)
+        .acmd("game_attackairb", mewtwo_attack_air_b_game)
+        .acmd("game_attackairhi", mewtwo_attack_air_hi_game)
+        .acmd("expression_attackairhi", mewtwo_attack_air_hi_expression)
+        .acmd("game_attackairlw", mewtwo_attack_air_lw_game)
+        .install();
 }
-

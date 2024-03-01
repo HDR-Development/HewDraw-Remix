@@ -317,17 +317,6 @@ unsafe fn training_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
-// plays footstep sounds during sora's new run animation (acmd does not seem to work for this, as it will not loop)
-unsafe fn run_sfx(fighter: &mut L2CFighterCommon, frame: f32) {
-    if fighter.is_motion(Hash40::new("run")) {
-        if frame as i32 == 30 {
-            PLAY_SE(fighter, Hash40::new("se_trail_step_left_l"));
-        } else if frame as i32 == 16 {
-            PLAY_SE(fighter, Hash40::new("se_trail_step_right_l"));
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -372,12 +361,10 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     side_special_walljump(boma, cat[0]);
     //aerial_sweep_hit_actionability(boma, frame);
     training_cycle(fighter, boma, frame);
-    run_sfx(fighter, frame);
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_TRAIL)]
-pub fn trail_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn trail_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		trail_frame(fighter);
@@ -393,4 +380,10 @@ pub unsafe fn trail_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         };
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("trail")
+        .on_line(Main, trail_frame_wrapper)
+        .install();
 }

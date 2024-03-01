@@ -2,15 +2,7 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
-pub fn install() {
-    install_status_scripts!(
-        pre_special_s_dash
-    );
-}
-
-#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_s_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_special_s_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let log_mask_flags;
     let power_up_bit;
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SONIC_STATUS_SPECIAL_S_DASH_FLAG_SPECIAL_LW_HOLD) {
@@ -49,4 +41,14 @@ pub unsafe fn pre_special_s_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
     }
     0.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("sonic")
+        .status(
+            Pre,
+            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH,
+            pre_special_s_dash,
+        )
+        .install();
 }

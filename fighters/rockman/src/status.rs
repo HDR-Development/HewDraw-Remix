@@ -9,11 +9,9 @@ mod attack_s4;
 
 mod attack_air;
 mod ladder_attack;
-mod airshooter;
 
 mod special_n;
 mod rockbuster;
-mod chargeshot;
 
 mod special_s;
 
@@ -31,8 +29,13 @@ unsafe extern "C" fn rockman_special_lw_uniq(fighter: &mut L2CFighterCommon) -> 
     (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)).into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn rockman_check_turn_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let leafshield = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
+    WorkModule::set_flag(fighter.module_accessor, leafshield, *FIGHTER_STATUS_TURN_FLAG_NO_TURN_TO_ESCAPE);
+    false.into()
+}
+
+extern "C" fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_ROCKMAN {
@@ -44,36 +47,45 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
         fighter.global_table[0x2A].assign(&false.into());
         fighter.global_table[0x2B].assign(&false.into());
         fighter.global_table[0x34].assign(&false.into());
-        fighter.global_table[0x35].assign(&false.into());
+        fighter.global_table[0x35].assign(&L2CValue::Ptr(rockman_check_turn_uniq as *const () as _));
         fighter.global_table[0x4E].assign(&false.into());
         fighter.global_table[USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(rockman_special_lw_uniq as *const () as _));
     }
 }
 
-pub fn install() {
-    install_agent_resets!(
-        agent_reset
-    );
+unsafe extern "C" fn rockman_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mot = MotionModule::motion_kind(fighter.module_accessor);
+    if [
+        hash40("appeal_lw_l"),
+        hash40("appeal_lw_r")
+    ].contains(&mot) {
+        VisibilityModule::set_whole(fighter.module_accessor, true);
+    }
+    fighter.status_end_Rebirth();
+    0.into()
+}
 
-    walk::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(agent_reset);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, rockman_rebirth_end);
 
-    attack::install();
+    walk::install(agent);
 
-    attack_s3::install();
+    attack::install(agent);
 
-    attack_s4::install();
+    attack_s3::install(agent);
 
-    attack_s4::install();
+    attack_s4::install(agent);
 
-    attack_air::install();
-    ladder_attack::install();
-    airshooter::install();
+    attack_s4::install(agent);
+
+    attack_air::install(agent);
+    ladder_attack::install(agent);
     
-    special_n::install();
-    rockbuster::install();
-    chargeshot::install();
+    special_n::install(agent);
+    rockbuster::install(agent);
 
-    special_s::install();
+    special_s::install(agent);
 
-    special_lw::install();
+    special_lw::install(agent);
 }

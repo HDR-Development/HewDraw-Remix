@@ -896,9 +896,11 @@
       <float hash="damage_fly_top_speed_y_stable">2.4</float>
       <float hash="dive_speed_y">3.024</float>
       <float hash="weight">85</float>
-      <float hash="landing_attack_air_frame_f">9</float>
+      <float hash="landing_attack_air_frame_f">10</float>
+      <float hash="landing_attack_air_frame_h">9</float>
+      <float hash="landing_attack_air_frame_n">10</float>
       <float hash="landing_attack_air_frame_b">12</float>
-      <float hash="landing_attack_air_frame_lw">13</float>
+      <float hash="landing_attack_air_frame_lw">12</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">0.96</float>
       <float hash="shield_radius">12.4</float>
@@ -2825,7 +2827,7 @@
       <float hash="dive_speed_y">3.239</float>
       <float hash="weight">80</float>
       <float hash="landing_attack_air_frame_f">12</float>
-      <float hash="landing_attack_air_frame_b">13</float>
+      <float hash="landing_attack_air_frame_b">15</float>
       <float hash="landing_attack_air_frame_hi">14</float>
       <float hash="landing_attack_air_frame_lw">30</float>
       <int hash="landing_heavy_frame">4</int>
@@ -3080,9 +3082,9 @@
       <float hash="jump_speed_x">0.9</float>
       <float hash="jump_speed_x_max">1.4</float>
       <float hash="jump_initial_y">11.0718</float>
-      <float hash="jump_y">29.97</float>
+      <float hash="jump_y">29.0</float>
       <float hash="mini_jump_y">13.3</float>
-      <float hash="jump_aerial_y">27.97</float>
+      <float hash="jump_aerial_y">27.0</float>
       <float hash="air_accel_x_mul">0.03</float>
       <float hash="air_accel_x_add">0.03</float>
       <float hash="air_speed_x_stable">1.11</float>
@@ -3099,6 +3101,7 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">0.96</float>
       <float hash="shield_radius">12.5</float>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
