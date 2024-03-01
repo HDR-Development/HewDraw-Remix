@@ -98,14 +98,14 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
 // 0x2 - corneria
 // 0x3 - space battle (small ships)
 // 0x4 - default haz off space
-#[skyline::hook(offset = 0x297D68C, inline)]
-unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
-    // if get_current_stage_alt() == 0 {
-    //     *ctx.registers[8].x.as_mut() = 0x2;
-    // } else {
-        *ctx.registers[8].x.as_mut() = 0x4;
-    // }
-}
+// #[skyline::hook(offset = 0x297D68C, inline)]
+// unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
+//     // if get_current_stage_alt() == 0 {
+//     //     *ctx.registers[8].x.as_mut() = 0x2;
+//     // } else {
+//         *ctx.registers[8].x.as_mut() = 0x4;
+//     // }
+// }
 
 pub fn install() {
     // NOTE: The 0xc80 is from the 13.0.1 -> 13.0.2 port
