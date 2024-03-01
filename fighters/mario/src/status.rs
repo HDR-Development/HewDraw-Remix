@@ -53,11 +53,21 @@ unsafe extern "C" fn special_lw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
+unsafe extern "C" fn mario_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_CAPPY) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_CAPPY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    EffectModule::remove_post_effect_line(fighter.module_accessor, 0x1e, true);
+    fighter.status_end_Rebirth();
+    0.into()
+}
+
 pub fn install() {
     special_n::install();
     smashline::Agent::new("mario")
         .on_start(mario_init)
         .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
         .status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_shoot_pre)
+        .status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, mario_rebirth_end)
         .install();
 }

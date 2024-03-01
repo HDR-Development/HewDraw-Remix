@@ -55,9 +55,22 @@ extern "C" fn agent_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe extern "C" fn rockman_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mot = MotionModule::motion_kind(fighter.module_accessor);
+    if [
+        hash40("appeal_lw_l"),
+        hash40("appeal_lw_r")
+    ].contains(&mot) {
+        VisibilityModule::set_whole(fighter.module_accessor, true);
+    }
+    fighter.status_end_Rebirth();
+    0.into()
+}
+
 pub fn install() {
     smashline::Agent::new("rockman")
         .on_start(agent_reset)
+        .status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, rockman_rebirth_end)
         .install();
 
     walk::install();
