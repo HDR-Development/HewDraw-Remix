@@ -1112,8 +1112,7 @@ pub mod vars {
             pub const ATTACK_12_INTO_S3: i32 = 0x0100;
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
-            pub const CYCLE_MAGIC: i32 = 0x0103; // used to properly cycle Sora's HUD to fire in training mode
-            pub const ATTACK_LW4_REBOUND: i32 = 0x0104;
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
