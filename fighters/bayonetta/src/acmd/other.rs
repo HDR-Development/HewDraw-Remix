@@ -484,31 +484,10 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn escape_n_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
-    }
 }
 
 unsafe extern "C" fn escape_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
-    }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         REVERSE_LR(fighter);
@@ -516,17 +495,6 @@ unsafe extern "C" fn escape_f_game(fighter: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn escape_b_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
-    }
 }
 
 unsafe extern "C" fn down_left_taunt_game(fighter: &mut L2CAgentBase) {
@@ -659,10 +627,11 @@ unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_landing_heavy_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn just_shield_off_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new("bayonetta_butterfly_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_bayonetta_rnd_escape"));
     }
 }
 
@@ -692,7 +661,7 @@ pub fn install() {
         .acmd("sound_appeallwr", sound_appeallwr)
         .acmd("sound_appeallwl", sound_appeallwl)
         .acmd("game_catchattack", game_catchattack)
-        .acmd("effect_landingheavy", bayonetta_landing_heavy_effect)
+        .acmd("sound_justshieldoff", just_shield_off_sound)
         .install();
     smashline::Agent::new("bayonetta_wickedweavearm")
         .acmd("game_attacks4", bayonetta_wickedweavearm_attack_s4_game)

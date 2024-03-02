@@ -23,6 +23,7 @@ unsafe extern "C" fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(boma, 0, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 1, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 2, 2.0, false);
+        AttackModule::set_down_only(boma, 3, true);
     }
     frame(lua_state, 13.0); //8
     FT_MOTION_RATE_RANGE(fighter, 13.0, 27.0, 12.0);//20f
@@ -59,6 +60,7 @@ unsafe extern "C" fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(boma, 0, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 1, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 2, 1.0, false);
+        AttackModule::set_down_only(boma, 3, true);
     }
     frame(lua_state, 12.0);//10
     FT_MOTION_RATE_RANGE(fighter, 12.0, 27.0, 10.0);
