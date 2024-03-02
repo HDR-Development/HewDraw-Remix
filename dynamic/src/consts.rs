@@ -180,6 +180,8 @@ pub mod vars {
 
             pub const DISABLE_CSTICK_BUFFER_ROLL_OOS: i32 = 0x0064;
 
+            pub const IS_INIT: i32 = 0x0065;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;

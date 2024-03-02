@@ -347,6 +347,27 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn initialize_magic(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_INIT) {
+        return;
+    }
+    if !is_training_mode() {
+        VarModule::off_flag(fighter.battle_object, vars::trail::instance::CYCLE_MAGIC);
+        let magic_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
+        let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
+        if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_FIRE {
+            WorkModule::on_flag(fighter.boma(), *FIGHTER_TRAIL_STATUS_SPECIAL_N1_FLAG_CHANGE_MAGIC);
+            FighterSpecializer_Trail::change_magic(trail); // cycles to thunder
+        }
+        if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER {
+            FighterSpecializer_Trail::change_magic(trail); // cycles to "blizzard", which is now fire
+        }
+    } else {
+        VarModule::on_flag(fighter.battle_object, vars::trail::instance::CYCLE_MAGIC); // initial training cycle is handled through opff
+    }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_INIT);
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jab_2_ftilt_cancel(boma, cat[0], status_kind, situation_kind, motion_kind);
     nair_sword_scale(fighter, boma, frame);
@@ -362,6 +383,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //aerial_sweep_hit_actionability(boma, frame);
     training_cycle(fighter, boma, frame);
     fastfall_specials(fighter);
+    initialize_magic(fighter);
 }
 
 pub extern "C" fn trail_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

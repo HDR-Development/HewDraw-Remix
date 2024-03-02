@@ -16,17 +16,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
 extern "C" fn koopa_init(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if fighter.kind() == *FIGHTER_KIND_KOOPA {
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-
-            //Grant fireball during training mode
-            if is_training_mode() {
-                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
-            }
-            else{
-                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
-            }
-        }
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     }
 }
 
