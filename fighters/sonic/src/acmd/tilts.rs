@@ -216,19 +216,22 @@ unsafe extern "C" fn sonic_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8, 4, 180, 320, 90, 1.2, true);
-        LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
-        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 2, 8, 4, 180, 290, 90, 1.2, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.6);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8, -0.2, 180, 260, 90, 1.1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
-        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc"), false, true);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 2, 8, -0.2, 180, 260, 90, 1.1, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.5);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc"), false, true);
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
