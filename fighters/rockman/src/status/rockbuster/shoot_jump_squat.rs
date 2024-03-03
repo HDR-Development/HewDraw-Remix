@@ -105,17 +105,15 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_main_loop(fighter: &mut
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(
+pub fn install(agent: &mut Agent) {
+    agent.status(
             Pre,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT,
             rockman_rockbuster_shoot_jump_squat_pre,
-        )
-        .status(
+        );
+    agent.status(
             Main,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT,
             rockman_rockbuster_shoot_jump_squat_main,
-        )
-        .install();
+        );
 }

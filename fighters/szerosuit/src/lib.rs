@@ -4,7 +4,7 @@
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -41,5 +41,6 @@ use smashline::*;
 
 pub fn install() {
     acmd::install();
+    status::install();
     opff::install();
 }

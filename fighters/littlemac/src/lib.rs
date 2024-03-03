@@ -42,5 +42,4 @@ pub fn install() {
     acmd::install();
     status::install();
     opff::install();
-    vtable_hook::install();
 }

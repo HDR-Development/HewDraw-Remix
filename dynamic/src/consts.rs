@@ -816,9 +816,8 @@ pub mod vars {
     pub mod mario {
         pub mod instance {
             // flags
-            pub const NOKNOK_SHELL: i32 = 0x0100;
-            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0101;
-            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0102;
+            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0100;
+            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0101;
         }
 
         pub mod status {
@@ -993,6 +992,10 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const TRAIL_EFFECT: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const SIDE_B_REVERSE : i32 = 0x1150;
         }
     }
 

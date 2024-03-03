@@ -16,16 +16,15 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_Jump_Main,
-            status_pre_Jump,
-            status_Jump,
-            //status_end_Jump,
-            status_pre_Jump_Common,
-            status_pre_Jump_Common_param,
-            status_pre_Jump_sub,
+            // status_pre_Jump,
+            // status_Jump,
+            // status_end_Jump,
+            // status_pre_Jump_Common,
+            // status_pre_Jump_Common_param,
+            // status_pre_Jump_sub,
             status_pre_Jump_sub_param,
-            //status_Jump_Main,
             // status_Jump_sub,
-            //status_pre_JumpAerial_sub
+            // status_pre_JumpAerial_sub
         );
     }
 }
@@ -40,8 +39,8 @@ unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_Common)]
-unsafe extern "C" fn status_pre_Jump_Common(fighter: &mut L2CFighterCommon) {
-    fighter.status_pre_Jump_Common_param(L2CValue::Bool(true));
+unsafe extern "C" fn status_pre_Jump_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Jump_Common_param(L2CValue::Bool(true))
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_Common_param)]
@@ -49,25 +48,27 @@ unsafe extern "C" fn status_pre_Jump_Common_param(fighter: &mut L2CFighterCommon
     //println!("status_pre_Jump_Common_param");
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_HAMMER_JUMP);
-        L2CValue::Bool(true)
-    } else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SCREW) && arg.get_bool() {
+        return true.into();
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SCREW) && arg.get_bool() {
         let screw_jump_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SCREW_JUMP_COUNT);
         if screw_jump_count < *FIGHTER_STATUS_SCREW_JUMP_COUNT_MAX {
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP);
+            return true.into();
         }
-        L2CValue::Bool(true)
-    } else if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_GENESISSET {
+    }
+    if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_GENESISSET {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ITEM_SHOOT_JUMP);
-        L2CValue::Bool(true)
-    } else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_BOARD) {
+        return true.into();
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_BOARD) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_BOARD);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_GIMMICK_JUMP_BOARD);
+            return true.into();
         }
-        L2CValue::Bool(true)
-    } else {
-        L2CValue::Bool(false)
     }
+    false.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Jump_sub)]
