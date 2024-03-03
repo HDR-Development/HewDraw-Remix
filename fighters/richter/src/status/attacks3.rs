@@ -1,10 +1,8 @@
 use super::*;
 use globals::*;
 
-
 // FIGHTER_STATUS_KIND_ATTACK_S3
 
-#[status_script(agent = "richter", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS3Common();
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_HOLD_INPUT);
@@ -56,7 +54,7 @@ unsafe extern "C" fn attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install() {
-    install_status_scripts!(
-        attack_s3_main
-    );
+    smashline::Agent::new("richter")
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, attack_s3_main)
+        .install();
 }

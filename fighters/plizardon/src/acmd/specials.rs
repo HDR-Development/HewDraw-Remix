@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "plizardon", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -79,8 +77,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "plizardon", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -157,9 +154,8 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_specialhi,
-        game_specialairhi
-);
+    smashline::Agent::new("plizardon")
+        .acmd("game_specialhi", game_specialhi)
+        .acmd("game_specialairhi", game_specialairhi)
+        .install();
 }
-

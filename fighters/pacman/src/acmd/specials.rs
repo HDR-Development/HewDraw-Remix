@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "pacman", script = "game_specialnshoot" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -51,8 +50,7 @@ unsafe fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pacman", script = "game_specialairnshoot" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -101,8 +99,7 @@ unsafe fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pacman", script = "expression_specialairsreturn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_specialairsreturn(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairsreturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -126,8 +123,7 @@ unsafe fn expression_specialairsreturn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pacman", script = "game_specialairhiend" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -135,8 +131,7 @@ unsafe fn pacman_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pacman", script = "game_speciallwfailure" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -159,8 +154,7 @@ unsafe fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pacman", script = "game_specialairlwfailure" , category = ACMD_GAME , low_priority)]
-unsafe fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -184,13 +178,12 @@ unsafe fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        //pacman_special_n_shoot_game,
-        //pacman_special_air_n_shoot_game,
-        expression_specialairsreturn,
-        pacman_special_air_hi_end_game,
-        pacman_special_lw_failure_game,
-        pacman_special_air_lw_failure_game,
-    );
+    smashline::Agent::new("pacman")
+        .acmd("game_specialnshoot", pacman_special_n_shoot_game)
+        .acmd("game_specialairnshoot", pacman_special_air_n_shoot_game)
+        .acmd("expression_specialairsreturn", expression_specialairsreturn)
+        .acmd("game_specialairhiend", pacman_special_air_hi_end_game)
+        .acmd("game_speciallwfailure", pacman_special_lw_failure_game)
+        .acmd("game_specialairlwfailure", pacman_special_air_lw_failure_game)
+        .install();
 }
-

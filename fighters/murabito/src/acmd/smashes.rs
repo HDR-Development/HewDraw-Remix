@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "murabito", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -23,8 +21,7 @@ unsafe fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "murabito_bowlingball", script = "game_fall", category = ACMD_GAME, low_priority)]
-unsafe fn murabito_bowlingball__game_fall(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_bowlingball__game_fall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -37,8 +34,7 @@ unsafe fn murabito_bowlingball__game_fall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -65,9 +61,7 @@ unsafe fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "murabito_firework", script = "game_shoot" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -93,8 +87,7 @@ unsafe fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -188,8 +181,7 @@ unsafe fn murabito_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "murabito", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -271,8 +263,7 @@ unsafe fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "murabito", script = "sound_attacklw4" , category = ACMD_SOUND , low_priority)]
-unsafe fn murabito_attack_lw4_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -301,14 +292,17 @@ unsafe fn murabito_attack_lw4_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        murabito_attack_s4_s_game,
-        murabito_bowlingball__game_fall,
-        murabito_attack_hi4_game,
-        murabito_firework_shoot_game,
-        murabito_attack_lw4_game,
-        murabito_attack_lw4_effect,
-        murabito_attack_lw4_sound,
-    );
+    smashline::Agent::new("murabito_bowlingball")
+        .acmd("game_fall", murabito_bowlingball__game_fall)
+        .install();
+    smashline::Agent::new("murabito")
+        .acmd("game_attacks4", murabito_attack_s4_s_game)
+        .acmd("game_attackhi4", murabito_attack_hi4_game)
+        .acmd("game_attacklw4", murabito_attack_lw4_game)
+        .acmd("effect_attacklw4", murabito_attack_lw4_effect)
+        .acmd("sound_attacklw4", murabito_attack_lw4_sound)
+        .install();
+    smashline::Agent::new("murabito_firework")
+        .acmd("game_shoot", murabito_firework_shoot_game)
+        .install();
 }
-

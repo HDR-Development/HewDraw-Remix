@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "mario", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -17,8 +16,7 @@ unsafe fn mario_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks3hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mario_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -31,8 +29,7 @@ unsafe fn mario_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -48,8 +45,7 @@ unsafe fn mario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mario_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -62,8 +58,7 @@ unsafe fn mario_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -80,8 +75,7 @@ unsafe fn mario_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks3lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mario_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -94,8 +88,7 @@ unsafe fn mario_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -117,8 +110,7 @@ unsafe fn mario_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -136,15 +128,14 @@ unsafe fn mario_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_attack_s3_hi_game,
-        mario_attack_s3_hi_effect,
-        mario_attack_s3_s_game,
-        mario_attack_s3_s_effect,
-        mario_attack_s3_lw_game,
-        mario_attack_s3_lw_effect,
-        mario_attack_hi3_game,
-        mario_attack_lw3_game,
-    );
+    smashline::Agent::new("mario")
+        .game_acmd("game_attacks3hi", mario_attack_s3_hi_game)
+        .effect_acmd("effect_attacks3hi", mario_attack_s3_hi_effect)
+        .game_acmd("game_attacks3", mario_attack_s3_s_game)
+        .effect_acmd("effect_attacks3", mario_attack_s3_s_effect)
+        .game_acmd("game_attacks3lw", mario_attack_s3_lw_game)
+        .effect_acmd("effect_attacks3lw", mario_attack_s3_lw_effect)
+        .game_acmd("game_attackhi3", mario_attack_hi3_game)
+        .game_acmd("game_attacklw3", mario_attack_lw3_game)
+        .install();
 }
-

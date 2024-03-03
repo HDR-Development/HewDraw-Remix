@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "edge", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +76,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +91,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +116,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn sephiroth_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sephiroth_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -143,8 +137,7 @@ unsafe fn sephiroth_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -158,8 +151,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -172,8 +164,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -189,22 +180,19 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge_fire", script = "game_specialn1" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_fire_special_n1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_fire_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "edge_fire", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_fire_special_n2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_fire_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
 }
 
-#[acmd_script( agent = "edge_fire", script = "game_bursts" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_fire_burst_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_fire_burst_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -223,8 +211,7 @@ unsafe fn edge_fire_burst_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge_flare1", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_flare1_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_flare1_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -241,8 +228,7 @@ unsafe fn edge_flare1_fly_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge_flare2", script = "game_exp" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_flare2_exp_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_flare2_exp_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -257,8 +243,7 @@ unsafe fn edge_flare2_exp_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge_flare2", script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_flare2_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_flare2_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -267,8 +252,7 @@ unsafe fn edge_flare2_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge_flare2", script = "game_try" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_flare2_try_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_flare2_try_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -277,8 +261,7 @@ unsafe fn edge_flare2_try_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge_flash", script = "game_attack" , category = ACMD_GAME , low_priority)]
-unsafe fn edge_flash_game_attack(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_flash_game_attack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -303,8 +286,7 @@ unsafe fn edge_flash_game_attack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -319,8 +301,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -335,26 +316,33 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        sephiroth_catch_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        edge_fire_special_n1_game,
-        edge_fire_special_n2_game,
-        edge_fire_burst_s_game,
-        edge_flare1_fly_game,
-        edge_flare2_exp_game,
-        edge_flare2_fly_game,
-        edge_flare2_try_game,
-        edge_flash_game_attack,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
+    smashline::Agent::new("edge")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_catch", sephiroth_catch_game)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("edge_fire")
+        .acmd("game_specialn1", edge_fire_special_n1_game)
+        .acmd("game_specialn2", edge_fire_special_n2_game)
+        .acmd("game_bursts", edge_fire_burst_s_game)
+        .install();
+    smashline::Agent::new("edge_flare1")
+        .acmd("game_fly", edge_flare1_fly_game)
+        .install();
+    smashline::Agent::new("edge_flare2")
+        .acmd("game_exp", edge_flare2_exp_game)
+        .acmd("game_fly", edge_flare2_fly_game)
+        .acmd("game_try", edge_flare2_try_game)
+        .install();
+    smashline::Agent::new("edge_flash")
+        .acmd("game_attack", edge_flash_game_attack)
+        .install();
 }
-

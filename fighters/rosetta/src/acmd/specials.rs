@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "rosetta", script = "expression_speciallw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn rosetta_special_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn rosetta_special_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
@@ -52,10 +51,8 @@ unsafe fn rosetta_special_lw_expression(fighter: &mut L2CAgentBase) {
     
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        rosetta_special_lw_expression
-    );
+    smashline::Agent::new("rosetta")
+        .acmd("expression_speciallw", rosetta_special_lw_expression)
+        .install();
 }
-

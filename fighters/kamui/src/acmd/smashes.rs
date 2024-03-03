@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "kamui", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -33,8 +32,7 @@ unsafe fn kamui_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -67,8 +65,7 @@ unsafe fn kamui_attack_s4_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -100,8 +97,7 @@ unsafe fn kamui_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 35.0, 61.0, 29.0);
 }
 
-#[acmd_script( agent = "kamui", scripts = ["expression_attacks4hi", "expression_attacks4", "expression_attacks4lw"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn kamui_attack_s4_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -152,8 +148,7 @@ unsafe fn kamui_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_spearhand", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
@@ -168,8 +163,7 @@ unsafe fn kamui_spearhand_attack_s4_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.2);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -194,8 +188,7 @@ unsafe fn kamui_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -220,13 +213,17 @@ unsafe fn kamui_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_attack_s4_hi_game,
-        kamui_attack_s4_game,
-        kamui_attack_s4_lw_game,
-        kamui_attack_s4_expression,
-        kamui_spearhand_attack_s4_game,
-        kamui_attack_hi4_game,
-        kamui_attack_lw4_game,
-    );
+    smashline::Agent::new("kamui_spearhand")
+        .acmd("game_attacks4", kamui_spearhand_attack_s4_game)
+        .install();
+    smashline::Agent::new("kamui")
+        .acmd("game_attacks4hi", kamui_attack_s4_hi_game)
+        .acmd("game_attacks4", kamui_attack_s4_game)
+        .acmd("game_attacks4lw", kamui_attack_s4_lw_game)
+        .acmd("expression_attacks4hi", kamui_attack_s4_expression)
+        .acmd("expression_attacks4", kamui_attack_s4_expression)
+        .acmd("expression_attacks4lw", kamui_attack_s4_expression)
+        .acmd("game_attackhi4", kamui_attack_hi4_game)
+        .acmd("game_attacklw4", kamui_attack_lw4_game)
+        .install();
 }

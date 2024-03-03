@@ -1,7 +1,7 @@
-use std::convert::TryInto;
+// use std::convert::TryInto;
 use std::io::Seek;
 use std::sync::Arc;
-use std::{borrow::BorrowMut, collections::HashMap};
+use std::{/*borrow::BorrowMut, */collections::HashMap};
 
 use arcropolis_api::{arc_callback, load_original_file};
 use parking_lot::RwLock;
@@ -301,7 +301,7 @@ const STAGE_SELECT_ACTOR_LUA_TOURNEY: &str =
 
 use prc::{ParamList, ParamStruct};
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
+// use serde_json::Result;
 
 /// stores the tournament mode configuration
 #[derive(Serialize, Deserialize, Debug)]
@@ -405,7 +405,7 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     // get the db_root list
     let db_root = &mut (&mut (&mut base_struct).0)[0];
     assert_eq!(*db_root.0, hash40("db_root"));
-    let list_kind = (&mut db_root.1);
+    let list_kind = &mut db_root.1;
     let param_list = list_kind
         .try_into_mut::<ParamList>()
         .expect("Failed to load db_root list from ui_stage_db.prc!");
@@ -484,14 +484,14 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
 
     // write the data back into the buffer
     let buf = &mut std::io::Cursor::new(data);
-    prc::write_stream(buf, &base_struct);
+    let _ = prc::write_stream(buf, &base_struct);
     let size = buf.stream_len().unwrap() as usize;
 
     Some(size)
 }
 
 #[arc_callback]
-fn stage_select_layout_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+fn stage_select_layout_callback(_hash: u64, mut data: &mut [u8]) -> Option<usize> {
     // ensure that the tourney config is loaded, and if not, return
     match TourneyConfig::load() {
         Some(config) => match config.is_valid() {
@@ -511,7 +511,7 @@ fn stage_select_layout_callback(hash: u64, mut data: &mut [u8]) -> Option<usize>
 
 /// this callback is used to allocate more space than normal for the stage
 #[arc_callback]
-fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+fn stage_select_actor_callback(_hash: u64, data: &mut [u8]) -> Option<usize> {
     // ensure that the tourney config is loaded, and if not, return
     match TourneyConfig::load() {
         Some(config) => match config.is_valid() {
@@ -526,7 +526,7 @@ fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> 
     // load the actor lua in hdr-dev (REMOVE THIS)
     let mut bytes = match std::fs::read(STAGE_SELECT_ACTOR_LUA_TOURNEY) {
         Ok(b) => b,
-        Err(e) => {
+        Err(_e) => {
             println!("\n\n\n\n\nFAILED TO LOAD DEV STAGE SELECT ACTOR!\n\n\n\n\n");
             return None;
         }

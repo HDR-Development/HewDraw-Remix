@@ -145,8 +145,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_INKLING)]
-pub fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		inkling_frame(fighter);
@@ -157,4 +156,13 @@ pub unsafe fn inkling_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("inkling")
+        .on_line(Main, inkling_frame_wrapper)
+        .install();
+    skyline::install_hooks!(
+        get_ink_colors
+    );
 }

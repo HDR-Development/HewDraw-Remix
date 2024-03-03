@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "littlemac", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -24,8 +23,7 @@ unsafe fn littlemac_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -58,8 +56,7 @@ unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -93,8 +90,7 @@ unsafe fn littlemac_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_attack13", category = ACMD_EFFECT, low_priority)]
-unsafe fn littlemac_attack_13_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -142,8 +138,7 @@ unsafe fn littlemac_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "sound_attack13", category = ACMD_SOUND, low_priority)]
-unsafe fn littlemac_attack_13_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_13_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -163,8 +158,7 @@ unsafe fn littlemac_attack_13_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.81);
@@ -192,8 +186,7 @@ unsafe fn littlemac_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn littlemac_attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -205,25 +198,25 @@ unsafe fn littlemac_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 10.0);
     if !WorkModule::is_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_ATTACK_HIT) {
         if is_excute(fighter) {
-            macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
             ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        littlemac_attack_11_game,
-        littlemac_attack_12_game,
-        littlemac_attack_13_game,
-        littlemac_attack_13_effect,
-        littlemac_attack_13_sound,
-        littlemac_attack_dash_game,
-        littlemac_attack_dash_expression,
-    );
+    smashline::Agent::new("littlemac")
+        .acmd("game_attack11", littlemac_attack_11_game)
+        .acmd("game_attack12", littlemac_attack_12_game)
+        .acmd("game_attack13", littlemac_attack_13_game)
+        .acmd("effect_attack13", littlemac_attack_13_effect)
+        .acmd("sound_attack13", littlemac_attack_13_sound)
+        .acmd("game_attackdash", littlemac_attack_dash_game)
+        .acmd("expression_attackdash", littlemac_attack_dash_expression)
+        .install();
 }

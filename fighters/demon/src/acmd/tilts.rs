@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "demon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,8 +34,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -88,8 +86,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attackhi32" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi32(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi32(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -140,8 +137,7 @@ unsafe fn game_attackhi32(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "demon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -197,10 +193,10 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attacks3,
-        game_attackhi3,
-        game_attackhi32,
-        game_attacklw3,
-    );
+    smashline::Agent::new("demon")
+        .acmd("game_attacks3", game_attacks3)
+        .acmd("game_attackhi3", game_attackhi3)
+        .acmd("game_attackhi32", game_attackhi32)
+        .acmd("game_attacklw3", game_attacklw3)
+        .install();
 }

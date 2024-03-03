@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "peach", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -39,8 +38,7 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "peach", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -77,8 +75,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "peach", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -114,9 +111,9 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwf,
-        game_throwb,
-        game_throwhi
-    );
+    smashline::Agent::new("peach")
+        .acmd("game_throwf", game_throwf)
+        .acmd("game_throwb", game_throwb)
+        .acmd("game_throwhi", game_throwhi)
+        .install();
 }

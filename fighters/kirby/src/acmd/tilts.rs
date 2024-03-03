@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "kirby", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3hi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -20,8 +18,7 @@ unsafe fn game_attacks3hi(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -38,8 +35,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks3lw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -57,8 +53,7 @@ unsafe fn game_attacks3lw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -81,8 +76,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -102,12 +96,11 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_attacks3hi,
-        game_attacks3,
-        game_attacks3lw,
-        game_attackhi3,
-        game_attacklw3,
-    );
+    smashline::Agent::new("kirby")
+        .acmd("game_attacks3hi", game_attacks3hi)
+        .acmd("game_attacks3", game_attacks3)
+        .acmd("game_attacks3lw", game_attacks3lw)
+        .acmd("game_attackhi3", game_attackhi3)
+        .acmd("game_attacklw3", game_attacklw3)
+        .install();
 }
-

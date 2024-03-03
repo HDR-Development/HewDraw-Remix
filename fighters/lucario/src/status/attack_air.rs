@@ -2,14 +2,7 @@ use super::*;
 use globals::*;
 // status script import
 
-pub fn install() {
-    install_status_scripts!(
-        attack_air_main, attack_air_end,
-    );
-}
-
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if under USpecial penalty and next status would have been landing, use special landing instead
     let next_status = fighter.global_table[STATUS_KIND].get_i32();
     if VarModule::is_flag(fighter.object(), vars::lucario::instance::IS_USPECIAL_ATTACK_CANCEL) {
@@ -21,11 +14,10 @@ pub unsafe fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         VarModule::off_flag(fighter.object(), vars::lucario::instance::IS_USPECIAL_ATTACK_CANCEL);
     }
-    original!(fighter)
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     fighter.sub_shift_status_main(L2CValue::Ptr(attack_air_main_loop as *const () as _))
 }
@@ -92,4 +84,11 @@ unsafe extern "C" fn status_AttackAir_Main_lucario(fighter: &mut L2CFighterCommo
         return true.into();
     }
     return false.into();
+}
+
+pub fn install() {
+    smashline::Agent::new("lucario")
+        .status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
+        .install();
 }

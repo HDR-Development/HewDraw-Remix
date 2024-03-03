@@ -10,11 +10,11 @@ extern "C" {
 
 #[skyline::hook(offset = 0x30F6DE0)]
 unsafe fn stub(arg: u64) {
-    if get_stage_id() == 0x8f && get_current_stage_alt() == 0 {
+    // if get_stage_id() == 0x8f && get_current_stage_alt() == 0 {
         return;
-    } else {
-        call_original!(arg);
-    }
+    // } else {
+    //     call_original!(arg);
+    // }
 }
 
 #[skyline::hook(offset = 0x5209c0)]
@@ -23,9 +23,10 @@ unsafe fn area_manager_process(manager: *const u64) {
     let end = *manager.add(2);
     while start != end {
         let current = *(start as *const u64);
-        if *(current as *mut u8).add(0x20) == 0x1b
-            && (get_stage_id() == 0x8f && get_current_stage_alt() == 0)
-        {
+        // if *(current as *mut u8).add(0x20) == 0x1b
+        //     && (get_stage_id() == 0x8f && get_current_stage_alt() == 0)
+        // {
+        if *(current as *mut u8).add(0x20) == 0x1b && get_stage_id() == 0x8f {
             *(current as *mut bool).add(0x21) = false;
             *((current + 0x40) as *mut f32) = 0.0;
             *((current + 0x40) as *mut f32).add(1) = 0.0;
@@ -57,9 +58,10 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
 #[skyline::hook(offset = 0x178ab60, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
     let stage_id = *ctx.registers[1].w.as_ref();
-    let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
-        || (stage_id == 0x68 && get_current_stage_alt() == 0);
-    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    // let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
+    //     || (stage_id == 0x68 && get_current_stage_alt() == 0);
+    // if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || stage_id == 0x68 || stage_id == 0x59 {
         *ctx.registers[3].w.as_mut() = 0;
     }
 }
@@ -76,9 +78,10 @@ unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
     let ptr = *ctx.registers[1].x.as_ref();
     let stage_id = *(ptr as *const u16) as u32;
-    let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
-        || (stage_id == 0x68 && get_current_stage_alt() == 0);
-    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    // let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
+    //     || (stage_id == 0x68 && get_current_stage_alt() == 0);
+    // if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || stage_id == 0x68 || stage_id == 0x59 {
         *(ptr as *mut bool).add(0x10) = false;
     }
 }
@@ -95,14 +98,14 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
 // 0x2 - corneria
 // 0x3 - space battle (small ships)
 // 0x4 - default haz off space
-#[skyline::hook(offset = 0x297D68C, inline)]
-unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
-    if get_current_stage_alt() == 0 {
-        *ctx.registers[8].x.as_mut() = 0x2;
-    } else {
-        *ctx.registers[8].x.as_mut() = 0x4;
-    }
-}
+// #[skyline::hook(offset = 0x297D68C, inline)]
+// unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
+//     // if get_current_stage_alt() == 0 {
+//     //     *ctx.registers[8].x.as_mut() = 0x2;
+//     // } else {
+//         *ctx.registers[8].x.as_mut() = 0x4;
+//     // }
+// }
 
 pub fn install() {
     // NOTE: The 0xc80 is from the 13.0.1 -> 13.0.2 port

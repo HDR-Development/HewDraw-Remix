@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "shizue", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -16,8 +15,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shizue", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -27,8 +25,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -44,8 +41,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shizue", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -60,8 +56,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -74,8 +69,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-#[acmd_script( agent = "shizue_fishingrod", script = "game_start" , category = ACMD_GAME , low_priority)]
-unsafe fn shizue_fishingrod_start_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn shizue_fishingrod_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -88,8 +83,7 @@ unsafe fn shizue_fishingrod_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -123,8 +117,7 @@ unsafe fn catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn catchturn_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn catchturn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -154,8 +147,7 @@ unsafe fn catchturn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn catchdash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn catchdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -185,8 +177,7 @@ unsafe fn catchdash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue_bullet", script = "game_shootb" , category = ACMD_GAME , low_priority)]
-unsafe fn shootb_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shootb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -204,16 +195,20 @@ unsafe fn shootb_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        shizue_fishingrod_start_game,
-        catch_game,
-        catchturn_game,
-        catchdash_game,
-        shootb_game,
-    );
+    smashline::Agent::new("shizue_fishingrod")
+        .acmd("game_start", shizue_fishingrod_start_game)
+        .install();
+    smashline::Agent::new("shizue_bullet")
+        .acmd("game_shootb", shootb_game)
+        .install();
+    smashline::Agent::new("shizue")
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("game_catch", catch_game)
+        .acmd("game_catchturn", catchturn_game)
+        .acmd("game_catchdash", catchdash_game)
+        .install();
 }
