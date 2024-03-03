@@ -1,11 +1,10 @@
 use super::*;
 use globals::*;
 
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
-        return original!(fighter);
+        return smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
     else{
         fighter.sub_change_motion_by_situation(Hash40::new("special_n_max").into(), Hash40::new("special_air_n_max").into(), false.into());
@@ -63,8 +62,7 @@ unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE_START)
@@ -74,18 +72,17 @@ unsafe fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
                 VarModule::inc_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME);
             }
         }
-        return original!(fighter);
+        return smashline::original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
     else{
         return 0.into();
     }
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-unsafe fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
-        return original!(fighter);
+        return smashline::original_status(ExecStop, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
     else{
         return 0.into();
@@ -93,13 +90,12 @@ unsafe fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIREBREATH
-#[status_script(agent = "koopa_breath", status = WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let boma = weapon.boma();
     let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let is_fireball =  WorkModule::get_float(owner_boma,*FIGHTER_KOOPA_STATUS_BREATH_WORK_FLOAT_GENE_ANGLE) > 360.0;
     if (!is_fireball){
-        return original!(weapon);
+        return smashline::original_status(Main, weapon, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE)(weapon);
     }
     else{
         WorkModule::set_customize_no(weapon.module_accessor, 1, 0);
@@ -192,11 +188,12 @@ unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> 
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(koopa_init);
-    install_status_scripts!(
-        special_n_main,
-        special_n_exec,
-        special_n_execstop,
-        breath_move_main,
-    );
+    smashline::Agent::new("koopa")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec)
+        .status(ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_execstop)
+        .install();
+    smashline::Agent::new("koopa_breath")
+        .status(Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, breath_move_main)
+        .install();
 }

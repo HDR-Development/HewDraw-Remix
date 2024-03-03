@@ -1,3 +1,4 @@
+//use interpolation::Lerp;
 use super::*;
 use globals::*;
 
@@ -198,8 +199,7 @@ unsafe extern "C" fn special_s_kinetic_exec(fighter: &mut L2CFighterCommon) {
     
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn specials_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn specials_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE,0);
     WorkModule::set_float(fighter.module_accessor, PostureModule::pos_y(fighter.module_accessor),*FIGHTER_KOOPA_STATUS_SPECIAL_S_WORK_FLOAT_START_Y);
     specials_situation_helper(fighter,true);
@@ -236,12 +236,11 @@ unsafe extern "C" fn specials_squat_main_loop(fighter: &mut L2CFighterCommon) ->
 
     0.into()
 }
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn specials_squat_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn specials_squat_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_s_kinetic_exec(fighter);
     0.into()
 }
-
 
 unsafe extern "C" fn specials_ejected(fighter: &mut L2CFighterCommon) {
     let no_change = fighter.global_table[0xB] == FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL;
@@ -257,8 +256,7 @@ unsafe extern "C" fn specials_ejected(fighter: &mut L2CFighterCommon) {
     WorkModule::off_flag(fighter.module_accessor,*FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_CAPTURE);
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn specials_squat_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn specials_squat_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[0xB] != FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP
     && fighter.global_table[0xB] != FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL
     && fighter.global_table[0xB] != FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING {
@@ -270,9 +268,8 @@ unsafe fn specials_squat_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn specials_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let toReturn = original!(fighter);
+unsafe extern "C" fn specials_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let toReturn = return smashline::original_status(Init, fighter, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP)(fighter);
     
     let certain_death = GroundModule::ray_check(
         fighter.module_accessor, 
@@ -283,8 +280,8 @@ unsafe fn specials_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     toReturn
 }
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn specials_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn specials_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN); /*{
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
@@ -328,14 +325,13 @@ unsafe fn specials_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     0.into()
 }
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn specials_fall_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn specials_fall_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::clear_speed_all(fighter.module_accessor);
-    original!(fighter)
+    return smashline::original_status(Init, fighter, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL)(fighter);
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn specials_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn specials_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::clear_speed_all(fighter.module_accessor);
     //Unable energies
     if LinkModule::is_linked(fighter.module_accessor, *LINK_NO_CAPTURE){
@@ -347,10 +343,9 @@ unsafe fn specials_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn specials_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn specials_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) == SPECIAL_S_KIND_LW_A {
-        return original!(fighter);
+        return smashline::original_status(Pre, fighter, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING)(fighter);
     }
     let kinetic = KineticModule::get_kinetic_type(fighter.module_accessor);
     StatusModule::init_settings(
@@ -381,8 +376,7 @@ unsafe fn specials_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn specials_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn specials_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let throw_input = VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE);
 
     if throw_input == SPECIAL_S_KIND_LW_A {
@@ -459,8 +453,7 @@ unsafe extern "C" fn specials_landing_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn specials_landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn specials_landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_s_kinetic_exec(fighter);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_HIT) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_CAPTURE) {
@@ -481,16 +474,16 @@ unsafe fn specials_landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        specials_squat_main,
-        specials_squat_exec,
-        specials_squat_exit,
-        specials_jump_init,
-        specials_jump_exec,
-        specials_fall_init,
-        specials_landing_init,
-        specials_landing_pre,
-        specials_landing_main,
-        specials_landing_exec,
-    );
+    smashline::Agent::new("koopa")
+        .status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_main)
+        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exec)
+        .status(Exit, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exit)
+        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_init)
+        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_exec)
+        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL, specials_fall_init)
+        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_init)
+        .status(Pre, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_pre)
+        .status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_main)
+        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_exec)
+        .install();
 }
