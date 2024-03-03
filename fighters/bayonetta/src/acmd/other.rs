@@ -627,11 +627,42 @@ unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn just_shield_off_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("bayonetta_batwithin"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 1, true);
+        let rate = WorkModule::get_float(boma, *WEAPON_BAYONETTA_BAT_INSTANCE_WORK_ID_FLOAT_MOTION_RATE);
+        LAST_EFFECT_SET_RATE(fighter, rate);
+    }
+    // if fighter.get_int(*WEAPON_BAYONETTA_BAT_INSTANCE_WORK_ID_INT_COSTUME_KIND) == *FIGHTER_BAYONETTA_COSTUME_KIND_BAYONETTA_1 {
+    //     if is_excute(fighter) {
+    //         EFFECT_FOLLOW(fighter, Hash40::new("bayonetta_batwithin_bat"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
+    //     } 
+    // } else {
+    //     if is_excute(fighter) {
+    //         EFFECT_FOLLOW(fighter, Hash40::new("bayonetta_batwithin_bat2"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
+    //     }
+    // }
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("bayonetta_batwithin_change"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 unsafe extern "C" fn just_shield_off_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_bayonetta_rnd_escape"));
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_batwithin02"));
+        let rng = app::sv_math::rand(hash40("fighter"), 6) as i32;
+        if rng >= 2 {
+            match rng {
+                2 => PLAY_SE(fighter, Hash40::new("vc_bayonetta_special_l02")),
+                3 => PLAY_SE(fighter, Hash40::new("vc_bayonetta_special_l03")),
+                4 => PLAY_SE(fighter, Hash40::new("vc_bayonetta_special_l04")),
+                _ => PLAY_SE(fighter, Hash40::new("vc_bayonetta_win09")),
+            }
+        }
     }
 }
 
@@ -661,6 +692,7 @@ pub fn install() {
         .acmd("sound_appeallwr", sound_appeallwr)
         .acmd("sound_appeallwl", sound_appeallwl)
         .acmd("game_catchattack", game_catchattack)
+        .acmd("effect_justshieldoff", just_shield_off_effect)
         .acmd("sound_justshieldoff", just_shield_off_sound)
         .install();
     smashline::Agent::new("bayonetta_wickedweavearm")
