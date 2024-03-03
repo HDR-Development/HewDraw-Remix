@@ -513,6 +513,7 @@ pub trait BomaExt {
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
+    unsafe fn check_airdash(&mut self);
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
@@ -1177,6 +1178,56 @@ impl BomaExt for BattleObjectModuleAccessor {
             if self.is_cat_flag(Cat2::FallJump) && self.stick_y() < 0.0 && 0 < buffer && buffer <= 5 {
                 WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
+        }
+    }
+
+    unsafe fn check_airdash(&mut self) {
+        if !self.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+            return;
+        }
+        if self.status_frame() < 1 {
+            let speed_x = KineticModule::get_sum_speed_x(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            let speed_y = KineticModule::get_sum_speed_y(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            // lets make sure not to divide by zero
+            let speed_x_adjust = match speed_x {
+                0.0 => 0.01,
+                _ => 0.0
+            };
+            let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
+
+            let pos = Vector3f { x: 0., y: 3., z: 0.};
+            let mut rot = Vector3f { x:0., y:0., z: (90. + 180. * angle/3.14159)};
+
+            if speed_x > 0. {
+                EffectModule::req_on_joint(self, Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }else{
+                rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
+                EffectModule::req_on_joint(self, Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }
+        }
+
+        // if you have an escape_air_dash motion, change into it
+        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash")) 
+        && !self.is_motion(Hash40::new("escape_air_dash"))
+        && self.motion_frame() >= 1.0 {
+            MotionModule::change_motion(
+                self,
+                Hash40::new("escape_air_dash"),
+                self.motion_frame(),
+                1.0,
+                false,
+                0.0,
+                false,
+                false,
+            );
+        }
+
+        CancelModule::enable_cancel(self);
+        if self.is_situation(*SITUATION_KIND_AIR) {
+            let fighter = crate::util::get_fighter_common_from_accessor(self);
+            fighter.sub_air_check_fall_common();
         }
     }
 

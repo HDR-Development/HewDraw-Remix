@@ -1013,6 +1013,7 @@ pub mod vars {
             pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
             pub const IS_CURRENT_HADOKEN_AIR: i32 = 0x0107;
             pub const DISABLE_SPECIAL_LW:     i32 = 0x0108;
+            pub const IS_ENABLE_SPECIAL_LW_INSTALL: i32 = 0x0109;
 
             // ints
             pub const REPEAT_COUNT_LW: i32 = 0x0100;
@@ -1025,6 +1026,7 @@ pub mod vars {
             pub const SHOULD_COMBOS_SCALE: i32 = 0x1100;
             pub const REPEAT_INCREMENTED: i32 = 0x1101;
             pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1102;
+            pub const FLAG_MOT_INHERIT: i32 = 0x1103;
         }
     }
 
@@ -1496,7 +1498,7 @@ pub mod statuses {
     }
 
     pub mod ryu {
-        pub const AIR_DASH: i32 = 0x202;
+        pub const INSTALL: i32 = 0x202;
     }
 
     pub mod ken {

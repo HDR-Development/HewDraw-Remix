@@ -641,7 +641,7 @@ unsafe extern "C" fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
             // 1. Initial airdodge energy to be applied
             // 2. change_motion to run so we change into airdodge animation
             // 3. Certain flags/transition terms to be set, such as FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::ryu::AIR_DASH);
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::ryu::INSTALL);
             return 1.into();
         }
     }
@@ -1091,9 +1091,9 @@ pub fn install() {
         .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
         .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
         .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
-        .status(Pre, statuses::ryu::AIR_DASH, air_dash_pre)
-        .status(Main, statuses::ryu::AIR_DASH, air_dash_main)
-        .status(Init, statuses::ryu::AIR_DASH, air_dash_init)
+        .status(Pre, statuses::ryu::INSTALL, air_dash_pre)
+        .status(Main, statuses::ryu::INSTALL, air_dash_main)
+        .status(Init, statuses::ryu::INSTALL, air_dash_init)
         .install();
     finals::install();
     special_s::install();
