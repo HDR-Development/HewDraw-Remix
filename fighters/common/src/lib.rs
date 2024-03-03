@@ -30,6 +30,7 @@ pub mod shoto_status;
 
 extern "C" fn common_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_INIT);
 }
 
 pub fn install() {
