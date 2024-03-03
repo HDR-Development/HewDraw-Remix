@@ -1,4 +1,3 @@
-//use interpolation::Lerp;
 use super::*;
 use globals::*;
 
