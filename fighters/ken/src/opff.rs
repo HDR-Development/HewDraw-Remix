@@ -144,9 +144,9 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
     // only check EX if this is a heavy shoryu with A+B on f4
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
-    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
-    && frame == 4.0 {
+    && frame <= 4.0 {
         // change into different motions depending on current motion
         // MeterModule and VarModule calls are repeated so that I know
         // for 100% fact they can only be called if we change motion
@@ -186,7 +186,7 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     // EX Hado
     if !boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND])
     && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN)
-    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
     && frame <= 4.0
     && MeterModule::drain(boma.object(), 1) {
@@ -223,7 +223,7 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
     ])
     && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
-    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
     && frame <= 4.0
     && MeterModule::drain(boma.object(), 2) {
@@ -401,6 +401,7 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
     }
 }
+
 pub fn install() {
     smashline::Agent::new("ken")
         .on_line(Main, ken_frame_wrapper)
