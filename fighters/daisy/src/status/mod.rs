@@ -36,12 +36,10 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
 
 extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_DAISY {
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-            fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        }
+        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+        fighter.global_table[0x33].assign(&L2CValue::Bool(false));
     }
 }
 
