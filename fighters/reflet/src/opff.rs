@@ -33,8 +33,14 @@ unsafe fn elwind1_burn(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) 
-    && boma.status_frame() <= 5 
+    if boma.is_motion_one_of(&[
+        Hash40::new("attack_air_n"),
+        Hash40::new("attack_air_f"),
+        Hash40::new("attack_air_b"),
+        Hash40::new("attack_air_hi"),
+        Hash40::new("attack_air_lw"),
+    ])
+    && boma.motion_frame() <= 5.0
     && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
     && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard) 
     && !StatusModule::is_changing(boma) {

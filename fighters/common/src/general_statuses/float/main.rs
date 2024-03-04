@@ -80,6 +80,7 @@ unsafe fn float_check_aerial(fighter: &mut L2CFighterCommon) {
 
 #[no_mangle]
 unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
+    let reflet = fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_REFLET;
     if VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
         let motion = MotionModule::motion_kind(fighter.module_accessor);
         let log = match motion {
@@ -98,6 +99,10 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
         VarModule::off_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
     }
     else {
+        if reflet {
+            VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
+        }
         let mot = fighter.sub_attack_air_kind_set_log_info();
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -111,7 +116,7 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
         );
     }
 
-    if fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_REFLET {
+    if reflet {
         if let Some(target) = smashline::api::get_target_function("lua2cpp_reflet.nrs", 0x3000) {
             let check_levin: fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(target);
             check_levin(fighter);
