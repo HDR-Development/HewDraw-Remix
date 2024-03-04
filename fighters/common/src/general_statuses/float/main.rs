@@ -15,28 +15,6 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
 
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {
-        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            ENERGY_CONTROLLER_RESET_TYPE_FREE,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        );
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            speed_x,
-            0.0
-        );
-    }
-
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
@@ -134,6 +112,29 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
 
 #[no_mangle]
 unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[CURRENT_FRAME].get_f32() == 3.0
+    && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FREE,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            speed_x,
+            0.0
+        );
+    }
+
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
