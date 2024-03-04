@@ -30,6 +30,7 @@ unsafe extern "C" fn reflet_air_jump_aerial_uniq(fighter: &mut L2CFighterCommon)
 unsafe extern "C" fn reflet_on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[0x32].assign(&L2CValue::Ptr(reflet_air_jump_uniq as *const () as _));
     fighter.global_table[0x33].assign(&L2CValue::Ptr(reflet_air_jump_aerial_uniq as *const () as _));
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::reflet::FLOAT);
 }
 
 pub fn install() {

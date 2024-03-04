@@ -24,16 +24,18 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 1);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOAT);
 
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("fall"),
-        0.0,
-        0.5, // purposefully run the animation slower because it might look nicer
-        false,
-        0.0,
-        false,
-        false
-    );
+    if !VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("fall"),
+            0.0,
+            0.5, // purposefully run the animation slower because it might look nicer
+            false,
+            0.0,
+            false,
+            false
+        );
+    }
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
     let shield_stiff_mul_attack_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_mul_attack_air"));
@@ -63,7 +65,8 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[no_mangle]
 unsafe fn float_check_aerial(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+    || VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
         if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) != 1 {
             float_set_aerial(fighter);
             return;
@@ -77,17 +80,36 @@ unsafe fn float_check_aerial(fighter: &mut L2CFighterCommon) {
 
 #[no_mangle]
 unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
-    let mot = fighter.sub_attack_air_kind_set_log_info();
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new_raw(mot.get_u64()),
-        0.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
+        let motion = MotionModule::motion_kind(fighter.module_accessor);
+        let log = match motion {
+            0xc3a4e2597 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N),
+            0xc3495ada5 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F),
+            0xc33f869bc => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_B),
+            0xdde67d935 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_HI),
+            0xd40042152 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_LW),
+            _ => None
+        };
+    
+        if let Some(log) = log {
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, log);
+        }
+
+        VarModule::off_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
+    }
+    else {
+        let mot = fighter.sub_attack_air_kind_set_log_info();
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new_raw(mot.get_u64()),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+    }
 
     if fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_REFLET {
         if let Some(target) = smashline::api::get_target_function("lua2cpp_reflet.nrs", 0x3000) {

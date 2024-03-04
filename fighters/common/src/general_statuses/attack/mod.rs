@@ -9,4 +9,6 @@ pub fn install() {
     attack::install();
     attackx4::install();
     attackdash::install();
+
+    attackair::install();
 }

@@ -191,7 +191,7 @@ pub mod vars {
             pub const COSTUME_SLOT_NUMBER: i32 = 0x0001; // Unironically why does this need to exist? We have WorkModule.
 
             pub const FLOAT_DURATION: i32 = 0x0002;
-            pub const FLOAT_STYLE: i32 = 0x0003;
+            pub const FLOAT_STATUS_KIND: i32 = 0x0003;
 
             pub const HITFALL_BUFFER: i32 = 0x0004;
 
@@ -284,6 +284,8 @@ pub mod vars {
             pub const PUMMEL_OVERRIDE_GLOBAL_STATS: i32 = 0x1000;
 
             pub const CSTICK_IRAR: i32 = 0x1000;
+
+            pub const FLOAT_INHERIT_AERIAL: i32 = 0x1000;
 
             // ints
 
