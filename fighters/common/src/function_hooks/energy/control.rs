@@ -136,8 +136,6 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
         0.0
     };
 
-    let mut change_y = energy.accel.y;
-
     use EnergyControllerResetType::*;
 
     let mut do_standard_accel = true;
@@ -213,7 +211,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
                 // If stick is at neutral
                 do_standard_accel = false;
                 energy.accel.x = 0.0;
-                energy.accel.y = change_y;
+                energy.accel.y = 0.0;
                 energy.speed_max.x = 0.0;
                 0.0
             } else {
@@ -230,7 +228,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
             }
         },
         Free => {
-            change_y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
+            energy.accel.y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
             energy.speed_max.y = stick.y * energy.speed_max.y;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },

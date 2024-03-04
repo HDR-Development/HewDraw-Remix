@@ -182,38 +182,39 @@ pub mod vars {
 
             pub const IS_INIT: i32 = 0x0065;
 
+            pub const IS_FLOAT: i32 = 0x0066;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
 
             pub const COSTUME_SLOT_NUMBER: i32 = 0x0001; // Unironically why does this need to exist? We have WorkModule.
 
-            pub const FLOAT_TIMER: i32 = 0x0002;
-            pub const FLOAT_DURATION: i32 = 0x0003;
-            pub const FLOAT_STYLE: i32 = 0x0004;
+            pub const FLOAT_DURATION: i32 = 0x0002;
+            pub const FLOAT_STYLE: i32 = 0x0003;
 
-            pub const HITFALL_BUFFER: i32 = 0x0005;
+            pub const HITFALL_BUFFER: i32 = 0x0004;
 
-            pub const JUMP_SQUAT_FRAME: i32 = 0x0006;
+            pub const JUMP_SQUAT_FRAME: i32 = 0x0005;
 
-            pub const GIMMICK_TIMER: i32 = 0x0007;
+            pub const GIMMICK_TIMER: i32 = 0x0006;
 
-            pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0008;
+            pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0007;
 
-            pub const CSTICK_LIFE: i32 = 0x0009;
+            pub const CSTICK_LIFE: i32 = 0x0008;
 
-            pub const AGT_USED_COUNTER: i32 = 0x000A;
+            pub const AGT_USED_COUNTER: i32 = 0x0009;
 
-            pub const CLIFF_XLU_FRAME: i32 = 0x000B;
-            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
-            pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+            pub const CLIFF_XLU_FRAME: i32 = 0x000A;
+            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000B;
+            pub const SHIELD_EFFECT_HANDLE: i32 = 0x000C;
 
-            pub const FRAME_COUNTER: i32 = 0x000E;
+            pub const FRAME_COUNTER: i32 = 0x000D;
 
-            pub const LEFT_STICK_FLICK_X: i32 = 0x000F;
-            pub const LEFT_STICK_FLICK_Y: i32 = 0x0010;
+            pub const LEFT_STICK_FLICK_X: i32 = 0x000E;
+            pub const LEFT_STICK_FLICK_Y: i32 = 0x000F;
 
-            pub const LEDGE_ID: i32 = 0x0011;
+            pub const LEDGE_ID: i32 = 0x0010;
 
             // floats
 
@@ -287,6 +288,10 @@ pub mod vars {
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
+
+            pub const FLOAT_FRAME: i32 = 0x1000;
+            pub const FLOAT_ENABLE_UNIQ: i32 = 0x1001;
+            pub const FLOAT_MTRANS: i32 = 0x1002;
 
             // floats
 
@@ -1482,6 +1487,10 @@ pub mod statuses {
         pub const SPECIAL_HI_FINISH2: i32 = 0x1F1;
     }
 
+    pub mod samusd {
+        pub const FLOAT: i32 = 0x1F6;
+    }
+
     pub mod falco {
         pub const SPECIAL_LW_LOOP: i32 = 0x1e8;
         pub const SPECIAL_LW_END: i32 = 0x1e9;
@@ -1493,6 +1502,14 @@ pub mod statuses {
 
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0x1EC;
+    }
+
+    pub mod mewtwo {
+        pub const FLOAT: i32 = 0x1E9;
+    }
+
+    pub mod reflet {
+        pub const FLOAT: i32 = 0x1FD;
     }
 
     pub mod ryu {
