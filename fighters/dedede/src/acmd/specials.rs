@@ -307,6 +307,32 @@ unsafe extern "C" fn dedede_special_air_s_get_effect(fighter: &mut L2CAgentBase)
     }
 }
 
+unsafe extern "C" fn dedede_special_s_get_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn dedede_special_air_s_get_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 unsafe extern "C" fn dedede_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -569,6 +595,8 @@ pub fn install() {
         .acmd("game_specialairsget", dedede_special_air_s_get_game)
         .acmd("effect_specialsget", dedede_special_s_get_effect)
         .acmd("effect_specialairsget", dedede_special_air_s_get_effect)
+        .acmd("expression_specialsget", dedede_special_s_get_expression)
+        .acmd("expression_specialairsget", dedede_special_air_s_get_expression)
         .acmd("game_speciallwstart", dedede_special_lw_start_game)
         .acmd("game_specialairlwstart", dedede_special_lw_start_game)
         .acmd("game_specialairlwstart", dedede_special_air_lw_start_game)
