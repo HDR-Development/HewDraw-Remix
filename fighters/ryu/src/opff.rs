@@ -351,14 +351,19 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // check final smashes
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
-    // the shin shoryuken
-    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
-    && is_special
+    if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0 {
-        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-        AttackModule::clear_all(fighter.module_accessor);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+        } else if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        }
         return;
     }
 
