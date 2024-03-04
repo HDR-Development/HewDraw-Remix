@@ -106,12 +106,12 @@ special_n:
   flags:
     move: false
   extra:
-    cancel_frame: 40
+    cancel_frame: 41
 special_air_n:
   flags:
     move: false
   extra:
-    cancel_frame: 40
+    cancel_frame: 41
 special_s1:
   flags:
     move: true
@@ -126,12 +126,12 @@ special_lw:
   flags:
     move: true
   extra:
-    cancel_frame: 30
+    cancel_frame: 35
 special_air_lw:
   flags:
     move: true
   extra:
-    cancel_frame: 30
+    cancel_frame: 35
 attack_air_n:
   extra:
     cancel_frame: 38
@@ -142,4 +142,14 @@ attack_air_lw2:
   blend_frames: 8
   extra:
     cancel_frame: 26
+special_air_hi:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 41
+special_air_hi:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 41
     
