@@ -17,9 +17,6 @@ pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CV
         VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
     }
-    else {
-        VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
-    }
     fighter.sub_attack_air_uniq_process_init();
     0.into()
 }

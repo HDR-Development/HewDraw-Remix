@@ -969,7 +969,7 @@ pub mod vars {
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
 
             // ints
-            pub const LEVIN_AERIAL_LENIENCY: i32 = 0x1000;
+            pub const LEVIN_AERIAL_LENIENCY: i32 = 0x0100;
         }
     }
 

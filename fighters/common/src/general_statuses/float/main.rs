@@ -102,7 +102,6 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
         if reflet {
             VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-            VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
         }
         let mot = fighter.sub_attack_air_kind_set_log_info();
         MotionModule::change_motion(

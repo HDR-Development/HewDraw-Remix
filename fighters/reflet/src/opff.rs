@@ -40,9 +40,9 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw"),
     ])
-    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) <= 5 {
+    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0 {
         VarModule::dec_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY);
-        if VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) >= 0
+        if VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0
         && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
         && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard)
         && !StatusModule::is_changing(boma) {
