@@ -48,22 +48,22 @@ unsafe fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_stat
         }
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOAT) {
-            let mut allow_float = false;
-            let stick_y = fighter.left_stick_y();
-            let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-            if jump_stick_y <= stick_y {
-                if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
-                    allow_float = !is_aerial;
-                }
-            }
+    // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL) {
+    //     if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOAT) {
+    //         let mut allow_float = false;
+    //         let stick_y = fighter.left_stick_y();
+    //         let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
+    //         if jump_stick_y <= stick_y {
+    //             if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
+    //                 allow_float = !is_aerial;
+    //             }
+    //         }
 
-            if allow_float {
-                fighter.change_status(float_status, true.into());
-                return 1.into();
-            }
-        }
-    }
+    //         if allow_float {
+    //             fighter.change_status(float_status, true.into());
+    //             return 1.into();
+    //         }
+    //     }
+    // }
     0.into()
 }

@@ -4,6 +4,11 @@ use globals::*;
 mod special_s;
 mod special_lw;
 
+extern "Rust" {
+    #[link_name = "float_check_air_jump_aerial"]
+    fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+}
+
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::daisy::instance::DISABLE_SPECIAL_S) {
@@ -34,12 +39,16 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
     }
 }
 
+unsafe extern "C" fn air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump_aerial(fighter, FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into())
+}
+
 extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
         fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
         fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        fighter.global_table[0x33].assign(&L2CValue::Bool(false));
+        fighter.global_table[0x33].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
     }
 }
 
