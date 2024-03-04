@@ -18,6 +18,8 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
+
     // let uniq_float_float_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("uniq_float_float_frame"));
     let float_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_FRAME, float_frame);
@@ -272,6 +274,9 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
 
         if check_aerial {
+            if fighter.sub_transition_group_check_air_lasso().get_bool() {
+                return 1.into();
+            }
             float_check_aerial(fighter);
         }
     }
