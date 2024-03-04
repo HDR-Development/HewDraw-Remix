@@ -49,6 +49,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         // Consume double jump, except when Teleport is initiated on ground
         if !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
             fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOAT);
         }
         
     }
