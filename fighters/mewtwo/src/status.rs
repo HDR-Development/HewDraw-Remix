@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 
+mod jump_aerial;
 mod attack_air;
 mod float;
 
@@ -27,6 +28,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
+    jump_aerial::install();
     attack_air::install();
     float::install();
     smashline::Agent::new("mewtwo")
