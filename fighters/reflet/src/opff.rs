@@ -40,18 +40,21 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw"),
     ])
-    && boma.motion_frame() <= 5.0
-    && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
-    && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard) 
-    && !StatusModule::is_changing(boma) {
-        let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
-        if WorkModule::get_int(boma, levin) > 0 {
-            if WorkModule::get_int(boma, levin) == 1 {
-                app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_SWORD, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) <= 5 {
+        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY);
+        if VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) >= 0
+        && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
+        && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard)
+        && !StatusModule::is_changing(boma) {
+            let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
+            if WorkModule::get_int(boma, levin) > 0 {
+                if WorkModule::get_int(boma, levin) == 1 {
+                    app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_SWORD, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+                }
+                fighter.on_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
+                VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
+                WorkModule::dec_int(boma, levin);
             }
-            fighter.on_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-            VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
-            WorkModule::dec_int(boma, levin);
         }
     }
 }

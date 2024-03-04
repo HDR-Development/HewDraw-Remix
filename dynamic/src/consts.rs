@@ -964,9 +964,12 @@ pub mod vars {
             pub const ELWIND1_CANCEL: i32 = 0x1100;
         }
         pub mod instance {
-            //flags
+            // flags
             pub const THUNDER_CHARGE: i32 = 0x0100;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
+
+            // ints
+            pub const LEVIN_AERIAL_LENIENCY: i32 = 0x1000;
         }
     }
 
