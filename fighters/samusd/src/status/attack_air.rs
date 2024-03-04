@@ -9,11 +9,11 @@ extern "Rust" {
 }
 
 unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    attack_air_float_pre(fighter, statuses::reflet::FLOAT.into())
+    attack_air_float_pre(fighter, statuses::samusd::FLOAT.into())
 }
 
 unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    attack_air_float_main(fighter, statuses::reflet::FLOAT.into())
+    attack_air_float_main(fighter, statuses::samusd::FLOAT.into())
 }
 
 pub fn install() {
