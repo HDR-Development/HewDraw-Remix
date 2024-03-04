@@ -962,6 +962,11 @@ pub mod vars {
         }
     }
 
+    pub mod richter {
+        pub mod instance {
+        }
+    }
+
     pub mod rockman {
         pub mod instance {
             // flags

@@ -66,12 +66,12 @@ unsafe extern "C" fn richter_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("richter_attack100_end"), Hash40::new("top"), 0, 12, 8.1, 0, -32, 110, 1.2, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.3);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 19.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("richter_attack100_end"), Hash40::new("top"), 0, 16.6, -3.3, 0, 213.7, -95, 0.9, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.2);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.3);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
