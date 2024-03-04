@@ -51,9 +51,12 @@
       <float hash="air_add_speed_y">0</float>
       <float hash="air_accel_y">0.13</float>
       <float hash="air_max_speed_y">2.17</float>
-      <int hash="air_loop_num_w">1</int>
+      <int hash="loop_num_w">1</int>
       <int hash="loop_num_m">2</int>
+      <int hash="loop_num_s">3</int>
+      <int hash="air_loop_num_w">1</int>
       <int hash="air_loop_num_m">2</int>
+      <int hash="air_loop_num_s">3</int>
       <float hash="speed_x_w">1</float>
       <float hash="air_speed_x_w">0.6</float>
       <float hash="speed_x_m">1.1</float>
