@@ -229,7 +229,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
         },
         Free => {
             energy.accel.y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
-            energy.speed_max.y = stick.y * energy.speed_max.y;
+            energy.speed_max.y = stick.y.abs() * energy.speed_max.y;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         ItemLift => loop {
