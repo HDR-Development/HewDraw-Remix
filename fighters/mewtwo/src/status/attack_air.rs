@@ -14,6 +14,14 @@ unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     attack_air_float_pre(fighter, statuses::mewtwo::FLOAT.into())
 }
 
+unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    if prev_status_kind != statuses::mewtwo::FLOAT {
+        return smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter);
+    }
+    fighter.sub_attack_air_uniq_process_init()
+}
+
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if prev_status_kind != statuses::mewtwo::FLOAT {
@@ -43,6 +51,7 @@ pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CV
 pub fn install() {
     smashline::Agent::new("mewtwo")
         .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
+        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_init)
         .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
         .install();
 }
