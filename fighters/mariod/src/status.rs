@@ -34,4 +34,7 @@ pub fn install() {
         .on_start(mariod_init)
         .status(End, *FIGHTER_STATUS_KIND_REBIRTH, mariod_rebirth_end)
         .install();
+
+    // Pill Fix for respawn platform
+    let _ = skyline::patching::Patch::in_text(0xcc9e34).data(0x14000047u32);
 }
