@@ -16,6 +16,9 @@ unsafe extern "C" fn float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::req_follow(fighter.module_accessor, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
+    
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MEWTWO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_BUOYANCY);
+
     float_main_common(fighter)
 }
 
