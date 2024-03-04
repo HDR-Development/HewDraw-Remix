@@ -21,12 +21,13 @@ unsafe extern "C" fn float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
 
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MEWTWO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_BUOYANCY);
-    
     float_main_common(fighter)
 }
 
 unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_S {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MEWTWO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_BUOYANCY);
+    }
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("mewtwo_final_aura"), false, true);
     float_end_common(fighter)
 }
