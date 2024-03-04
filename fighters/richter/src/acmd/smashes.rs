@@ -43,7 +43,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.2, true);        
         LAST_EFFECT_SET_RATE(fighter, 3.0);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
@@ -51,7 +51,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -59,7 +59,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -78,7 +78,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -89,7 +89,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
@@ -100,7 +100,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.34, false);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.7, 0.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
@@ -108,7 +108,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
@@ -119,7 +119,7 @@ unsafe extern "C" fn richter_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.36, false);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.7, 0.0);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
@@ -196,7 +196,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.2, true);        
         LAST_EFFECT_SET_RATE(fighter, 3.0);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
@@ -204,7 +204,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -212,7 +212,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -231,7 +231,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -242,7 +242,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
@@ -253,7 +253,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.34, false);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.7, 0.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
@@ -261,7 +261,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
@@ -272,7 +272,7 @@ unsafe extern "C" fn richter_attack_s4_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.36, false);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.7, 0.0);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
@@ -350,7 +350,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.5);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.2, true);        
         LAST_EFFECT_SET_RATE(fighter, 3.0);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
@@ -358,7 +358,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -366,7 +366,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -385,7 +385,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
         EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -396,7 +396,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
@@ -407,7 +407,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.34, false);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.7, 0.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
@@ -415,7 +415,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
@@ -426,7 +426,7 @@ unsafe extern "C" fn richter_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.36, false);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.7, 0.0);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
-        FLASH(fighter, 1.0, 0.4, 0.0, 0.1);
+        FLASH(fighter, 1.0, 0.4, 0.0, 0.2);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {

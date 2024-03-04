@@ -1354,10 +1354,10 @@ unsafe extern "C" fn richter_special_n_effect(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_n_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 26.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("vc_kirby_copy_richter_01"));
         PLAY_SE(agent, Hash40::new("se_richter_special_l01"));
+        PLAY_SE(agent, Hash40::new("vc_kirby_copy_richter_01"));
     }
 }
 
@@ -1396,13 +1396,10 @@ unsafe extern "C" fn richter_special_air_n_effect(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_air_n_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SEQUENCE(agent, Hash40::new("seq_richter_rnd_special_s"));
-    }
     frame(lua_state, 13.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_richter_special_l01"));
+        PLAY_SE(agent, Hash40::new("vc_kirby_copy_richter_01"));
     }
 }
 
