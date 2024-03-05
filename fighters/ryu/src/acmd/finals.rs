@@ -97,7 +97,7 @@ unsafe extern "C" fn game_finalhit(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 7.5, 80, 126, 0, 82, 10.0, 0.0, 20.0, 8.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL03, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 7.1, 80, 126, 0, 82, 10.0, 0.0, 20.0, 8.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL03, *ATTACK_REGION_PUNCH);
         AttackModule::set_force_reaction(agent.module_accessor, 0, true, false);
         AttackModule::set_damage_shake_scale(agent.module_accessor, 0.18);
         WorkModule::set_int(agent.module_accessor, *FIGHTER_RYU_FINAL_CAMERA_OFFSET_3, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_INT_CAMERA_OFFSET_TYPE);
