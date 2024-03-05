@@ -263,23 +263,21 @@ unsafe extern "C" fn rockman_attack_dash_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .acmd("game_attack11melee", rockman_attack11)
-        .acmd("effect_attack11melee", rockman_attack11_eff)
-        .acmd("sound_attack11melee", rockman_attack11_snd)
-        .acmd("expression_attack11melee", rockman_attack11_exp)
-        .acmd("game_attack12", rockman_attack12)
-        .acmd("effect_attack12", rockman_attack12_eff)
-        .acmd("sound_attack12", rockman_attack12_snd)
-        .acmd("expression_attack12", rockman_attack12_exp)
-        .acmd("game_attack13", rockman_attack13)
-        .acmd("effect_attack13", rockman_attack13_eff)
-        .acmd("sound_attack13", rockman_attack13_snd)
-        .acmd("expression_attack13", rockman_attack13_exp)
-        .acmd("game_attackdash", rockman_attack_dash_game)
-        .acmd("effect_attackdash", rockman_attack_dash_effect)
-        .acmd("sound_attackdash", rockman_attack_dash_sound)
-        .acmd("expression_attackdash", rockman_attack_dash_expression)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11melee", rockman_attack11);
+    agent.acmd("effect_attack11melee", rockman_attack11_eff);
+    agent.acmd("sound_attack11melee", rockman_attack11_snd);
+    agent.acmd("expression_attack11melee", rockman_attack11_exp);
+    agent.acmd("game_attack12", rockman_attack12);
+    agent.acmd("effect_attack12", rockman_attack12_eff);
+    agent.acmd("sound_attack12", rockman_attack12_snd);
+    agent.acmd("expression_attack12", rockman_attack12_exp);
+    agent.acmd("game_attack13", rockman_attack13);
+    agent.acmd("effect_attack13", rockman_attack13_eff);
+    agent.acmd("sound_attack13", rockman_attack13_snd);
+    agent.acmd("expression_attack13", rockman_attack13_exp);
+    agent.acmd("game_attackdash", rockman_attack_dash_game);
+    agent.acmd("effect_attackdash", rockman_attack_dash_effect);
+    agent.acmd("sound_attackdash", rockman_attack_dash_sound);
+    agent.acmd("expression_attackdash", rockman_attack_dash_expression);
 }

@@ -15,6 +15,7 @@ pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleA
     }
 }
 
+
 pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3]) {
         return;
@@ -39,9 +40,14 @@ pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
             if enable_hi_lw == 0 {
                 return;
             }
+            let stick_x = fighter.global_table[STICK_X].get_f32();
             let stick_y = fighter.global_table[STICK_Y].get_f32();
             let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
-            if stick_y > -squat_stick_y {
+            let lr = PostureModule::lr(fighter.module_accessor);
+            if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_S3) && stick_x * lr < squat_stick_y {
+                VarModule::on_flag(fighter.battle_object, vars::roy::status::SIDE_B_REVERSE);
+            }
+            else if stick_y > -squat_stick_y {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
             }
             else if stick_y < squat_stick_y {
@@ -104,6 +110,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     double_edge_dance_during_hitlag(fighter);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
+    sword_length(boma);
 }
 
 // symbol-based call for the fe characters' common opff
@@ -115,8 +122,13 @@ pub extern "C" fn roy_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterComm
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		roy_frame(fighter);
-        fe_common(fighter);
     }
+}
+
+unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+    let long_sword_scale = Vector3f{x: 1.0, y: 1.06, z: 1.0};
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
 pub unsafe fn roy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

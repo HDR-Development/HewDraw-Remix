@@ -268,10 +268,10 @@ unsafe extern "C" fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-    }
+    // frame(lua_state, 30.0);
+    // if is_excute(fighter) {
+    //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    // }
 }
 
 unsafe extern "C" fn ganon_attack_lw3_effect(fighter: &mut L2CAgentBase) {
