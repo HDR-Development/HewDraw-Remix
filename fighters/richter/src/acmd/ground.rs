@@ -27,16 +27,11 @@ unsafe extern "C" fn richter_attack_11_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 9.5, 2.2, 13, -29, 154, 0.8, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
         LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-        FLASH(fighter, 0.961, 0.733, 0.243, 0.05);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        COL_NORMAL(fighter);
     }
 }
 
