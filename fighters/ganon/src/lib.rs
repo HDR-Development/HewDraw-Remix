@@ -6,7 +6,6 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
-mod vtable_hook;
 
 use smash::{
     lib::{
@@ -43,5 +42,4 @@ pub fn install() {
     acmd::install();
     status::install();
     opff::install();
-    vtable_hook::install();
 }

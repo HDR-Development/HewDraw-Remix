@@ -6,11 +6,6 @@ use globals::*;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    // Agent::new("fighter")
-    //     .status(Pre, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_pre_EscapeAir)
-    //     .status(Main, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_EscapeAir)
-    //     .status(End, *FIGHTER_STATUS_KIND_ESCAPE_AIR, status_end_EscapeAir)
-    //     .install();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

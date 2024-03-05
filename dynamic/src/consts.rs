@@ -180,6 +180,8 @@ pub mod vars {
 
             pub const DISABLE_CSTICK_BUFFER_ROLL_OOS: i32 = 0x0064;
 
+            pub const IS_INIT: i32 = 0x0065;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -816,9 +818,8 @@ pub mod vars {
     pub mod mario {
         pub mod instance {
             // flags
-            pub const NOKNOK_SHELL: i32 = 0x0100;
-            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0101;
-            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0102;
+            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0100;
+            pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0101;
         }
 
         pub mod status {
@@ -999,6 +1000,10 @@ pub mod vars {
             // flags
             pub const TRAIL_EFFECT: i32 = 0x0100;
         }
+        pub mod status {
+            // flags
+            pub const SIDE_B_REVERSE : i32 = 0x1150;
+        }
     }
 
     pub mod shotos {
@@ -1112,8 +1117,7 @@ pub mod vars {
             pub const ATTACK_12_INTO_S3: i32 = 0x0100;
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
-            pub const CYCLE_MAGIC: i32 = 0x0103; // used to properly cycle Sora's HUD to fire in training mode
-            pub const ATTACK_LW4_REBOUND: i32 = 0x0104;
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;

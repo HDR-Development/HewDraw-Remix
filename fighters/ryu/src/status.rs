@@ -1094,6 +1094,7 @@ pub fn install() {
         .status(Pre, statuses::ryu::AIR_DASH, air_dash_pre)
         .status(Main, statuses::ryu::AIR_DASH, air_dash_main)
         .status(Init, statuses::ryu::AIR_DASH, air_dash_init)
-        .status(Exec, statuses::ryu::AIR_DASH, air_dash_exec)
         .install();
+    finals::install();
+    special_s::install();
 }

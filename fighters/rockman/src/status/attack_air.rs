@@ -15,13 +15,11 @@ unsafe extern "C" fn rockman_attack_air_end(fighter: &mut L2CFighterCommon) -> L
     fighter.status_end_AttackAir()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(
+pub fn install(agent: &mut Agent) {
+    agent.status(
             Main,
             *FIGHTER_STATUS_KIND_ATTACK_AIR,
             rockman_attack_air_main,
-        )
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, rockman_attack_air_end)
-        .install();
+        );
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, rockman_attack_air_end);
 }

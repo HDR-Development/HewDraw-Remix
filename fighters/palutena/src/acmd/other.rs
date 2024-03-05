@@ -308,6 +308,53 @@ unsafe extern "C" fn palutena_autoaimbullet_shot_effect(agent: &mut L2CAgentBase
     }
 }
 
+unsafe extern "C" fn palutena_explosiveflame_explode_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.5, 160, 100, 50, 0, 4.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -0.7, 0.0, 5, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);
+        AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 6.0);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 7.2);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 8.4);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 9.6);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 10.8);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 12.0);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        //AREA_WIND_2ND_RAD(fighter, 0, 1, 0.02, 1000, 1, 0, 0, 29);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 1, Hash40::new("top"), 5.5, 84, 141, 0, 60, 15.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.7, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -357,6 +404,9 @@ pub fn install() {
         .install();
     smashline::Agent::new("palutena_reflectionboard")
         .acmd("game_shoot", palutena_reflectionboard_shoot_game)
+        .install();
+    smashline::Agent::new("palutena_explosiveflame")
+        .acmd("game_explode", palutena_explosiveflame_explode_game)
         .install();
     // smashline::Agent::new("palutena_explosiveflame_reserve")
     //     .acmd("effect_wait", palutena_explosiveflame_reserve_wait_effect)
