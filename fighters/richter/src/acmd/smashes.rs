@@ -848,6 +848,7 @@ pub fn install() {
         .acmd("game_attacklw4", richter_whip_attack_lw4_game)
         .acmd("game_attacks4charge", richter_whip_attack_s4_charge_game)
         .acmd("game_attacks4hi", richter_whip_attack_s4_hi_game)
+        .acmd("effect_attacks4hi", richter_whip_attack_s4_hi_effect)
         .acmd("game_attacks4lw", richter_whip_attack_s4_lw_game)
         .acmd("effect_attacks4", richter_whip_attack_s4_effect)
         .acmd("effect_attacks4lw", richter_whip_attack_s4_lw_effect)
