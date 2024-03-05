@@ -353,6 +353,7 @@ unsafe extern "C" fn game_attacklw3s(fighter: &mut L2CAgentBase) {
 pub fn install() {
     smashline::Agent::new("ryu")
         .acmd("game_attacks3w", game_attacks3w)
+        .acmd("game_attacknearw", game_attacks3w)
         .acmd("effect_attacks3w", effect_attacks3w)
         .acmd("sound_attacks3w", sound_attacks3w)
         .acmd("expression_attacks3w", expression_attacks3w)
