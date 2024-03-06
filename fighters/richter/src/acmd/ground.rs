@@ -138,10 +138,11 @@ unsafe extern "C" fn richter_attack_13_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("richter_upper"), true, true);
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 21.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, false);
-        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 0.6, false);
+        LAST_EFFECT_SET_RATE(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
 

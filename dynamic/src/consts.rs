@@ -965,6 +965,8 @@ pub mod vars {
 
     pub mod richter {
         pub mod instance {
+            // flags
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
         }
     }
 
