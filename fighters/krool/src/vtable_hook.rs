@@ -2,7 +2,7 @@ use super::*;
 
 // Covers Canonball Suction (Applies to Kirby as well) and Crown Catch
 
-#[skyline::hook(offset = 0xc06530)]
+#[skyline::hook(offset = 0xc06550)]
 pub unsafe extern "C" fn krool_func(_vtable: u64, fighter: &mut Fighter) -> u64 {
     let module_accessor = (fighter.battle_object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);

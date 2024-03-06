@@ -9,7 +9,3 @@ pub fn install() {
     special_hi::install();
     special_lw::install();
 }
-
-pub fn add_statuses() {
-    special_s::add_statuses();
-}

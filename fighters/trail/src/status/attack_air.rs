@@ -3,14 +3,12 @@ utils::import!(common::djc::attack_air_main_status);
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
     let frame = MotionModule::frame(fighter.module_accessor);
 
@@ -81,8 +79,7 @@ pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
@@ -155,8 +152,7 @@ unsafe extern "C" fn sub_attack_air_n(fighter: &mut L2CFighterCommon) {
     return;
 }
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_attack_air_n(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_attack_air_n(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_n(fighter);
     // Momentum transfer stuff
     let ratio = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_RATIO);
@@ -243,8 +239,7 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
     return;
 }
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_f(fighter);
     // Momentum transfer stuff
     let ratio = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_RATIO);
@@ -263,11 +258,19 @@ pub unsafe fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        attack_air_pre,
-        init_attack_air,
-        attack_air,
-        init_attack_air_n,
-        init_attack_air_f
-    );
+    smashline::Agent::new("trail")
+        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
+        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, init_attack_air)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
+        .status(
+            Init,
+            *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N,
+            init_attack_air_n,
+        )
+        .status(
+            Init,
+            *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F,
+            init_attack_air_f,
+        )
+        .install();
 }

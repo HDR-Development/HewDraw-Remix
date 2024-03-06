@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "link", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn catch(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -29,8 +27,7 @@ unsafe fn catch(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn catch_dash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn catch_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -51,8 +48,7 @@ unsafe fn catch_dash(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn catch_turn(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn catch_turn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -73,8 +69,7 @@ unsafe fn catch_turn(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -100,11 +95,10 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        catch,
-        catch_dash,
-        catch_turn,
-		game_throwb,
-    );
+    smashline::Agent::new("link")
+        .acmd("game_catch", catch)
+        .acmd("game_catchdash", catch_dash)
+        .acmd("game_catchturn", catch_turn)
+        .acmd("game_throwb", game_throwb)
+        .install();
 }
-

@@ -35,21 +35,10 @@ use skyline::libc::c_char;
 use skyline_web::*;
 use std::{fs, path::Path};
 
-#[smashline::installer]
-pub fn install() {
-    fighters::install();
-}
-
 #[cfg(not(feature = "main_nro"))]
-#[export_name = "hdr_delayed_install"]
-pub fn delayed_install() {
-    fighters::delayed_install();
-}
-
-#[cfg(feature = "add_status")]
-extern "Rust" {
-    #[link_name = "hdr_delayed_install"]
-    fn delayed_install();
+#[no_mangle]
+pub fn smashline_install() {
+    fighters::install();
 }
 
 #[cfg(feature = "main_nro")]
@@ -140,45 +129,45 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::from_offset(0x23ecb70)]
+#[skyline::from_offset(0x23ed7f0)]
 unsafe fn music_function1(arg: u64);
 
-#[skyline::from_offset(0x23ed420)]
+#[skyline::from_offset(0x23ee0a0)]
 unsafe fn music_function2(arg: u64, arg2: u64);
 
-#[skyline::hook(offset = 0x14f97bc, inline)]
+#[skyline::hook(offset = 0x14f99cc, inline)]
 unsafe fn training_reset_music2(ctx: &skyline::hooks::InlineCtx) {
     if !smash::app::smashball::is_training_mode() {
         music_function2(*ctx.registers[0].x.as_ref(), *ctx.registers[1].x.as_ref());
     }
 }
 
-#[skyline::hook(offset = 0x1509dc4, inline)]
+#[skyline::hook(offset = 0x1509fd4, inline)]
 unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
     if !smash::app::smashball::is_training_mode() {
         music_function1(*ctx.registers[0].x.as_ref());
     }
 }
 
-#[skyline::hook(offset = 0x235be30, inline)]
+#[skyline::hook(offset = 0x235cab0, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
     let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x100);
     *(sp.add(0x60) as *mut u64) = 0x1100000000;
     let mut slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
     slice.copy_from_slice(b"MenuSequenceScene\0");
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
         as *const u64;
     // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
     println!("{:#x}", *mode);
 }
 
-#[skyline::from_offset(0x353f4d0)]
+#[skyline::from_offset(0x3540150)]
 fn load_file_by_hash40(tables: u64, hash: u64);
 
-#[skyline::hook(offset = 0x1864310, inline)]
+#[skyline::hook(offset = 0x1864de0, inline)]
 unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
     let tables = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8)
-        .add(0x5330f20) as *const u64);
+        .add(0x5332f20) as *const u64);
     load_file_by_hash40(
         tables,
         smash::hash40("ui/layout/menu/main_menu/main_menu/layout.arc"),
@@ -193,7 +182,7 @@ std::arch::global_asm!(
     .word _mod_header
     .word 0
     .word 0
-    
+
     .section .rodata.module_name
         .word 0
         .word 3
@@ -211,7 +200,7 @@ std::arch::global_asm!(
     .global IS_NRO
     IS_NRO:
         .word 1
-    
+
     .section .bss.module_runtime
     __nx_module_runtime:
     .space 0xD0
@@ -221,11 +210,11 @@ std::arch::global_asm!(
 use skyline::hooks::InlineCtx;
 use smash::lib::lua_const::*;
 use smash::lua2cpp::*;
-#[skyline::from_offset(0x15433b0)]
+#[skyline::from_offset(0x15435c0)]
 unsafe fn ask_game_state_nicely(arg: *mut u64, game_state: u64, hash: u64);
-#[skyline::from_offset(0x135a0d0)]
+#[skyline::from_offset(0x135a0f0)]
 unsafe fn push_something_base(addr: u64);
-#[skyline::from_offset(0x135ac60)]
+#[skyline::from_offset(0x135ac80)]
 unsafe fn push_hash_base(addr: u64);
 unsafe fn push_something(game_state: u64, amt: u32) {
     let game_state = game_state as *mut u64;
@@ -272,11 +261,11 @@ unsafe fn push_hash(game_state: u64, hash: u64) {
 
 // let this code stay dormant but this is an example of how to abuse the game state,
 // this will exit the game without going to results at the end.
-#[skyline::hook(offset = 0x14d6570)]
+#[skyline::hook(offset = 0x14d6590)]
 unsafe fn game_end(game_state: u64) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
         as *const u64;
     if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
@@ -291,11 +280,11 @@ unsafe fn game_end(game_state: u64) {
     call_original!(game_state);
 }
 
-#[skyline::hook(offset = 0x14d7ed0)]
+#[skyline::hook(offset = 0x14d7ef0)]
 unsafe fn game_exit(game_state: u64, arg: u64) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
         as *const u64;
     if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
@@ -326,13 +315,13 @@ impl FuckingAssStringStructureShit {
     }
 }
 
-#[skyline::hook(offset = 0x2334b58, inline)]
+#[skyline::hook(offset = 0x23357d8, inline)]
 unsafe fn sss_to_css(ctx: &InlineCtx) {
     let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
     (*thing).set("CharaSelectScene");
 }
 
-#[skyline::hook(offset = 0x23344e4, inline)]
+#[skyline::hook(offset = 0x2335164, inline)]
 unsafe fn css_to_sss(ctx: &InlineCtx) {
     let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
     (*thing).set("StageSelectScene");
@@ -347,30 +336,31 @@ pub struct UnknownFighterInfoStruct {
 
 static mut IS_LOADING: bool = false;
 
+// OFFSET IS WRONG, IT'S FROM 13.0.1 but it don't fuckin work
 #[skyline::hook(offset = 0x1785348)]
 unsafe fn load_ingame_call_sequence_scene(arg: u64) {
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
         as *const u64;
     IS_LOADING = *mode != 0x4040000;
     call_original!(arg)
 }
 
-#[skyline::hook(offset = 0x1850190)]
+#[skyline::hook(offset = 0x1850810)]
 unsafe fn load_melee_scene(arg: u64) {
     IS_LOADING = false;
     call_original!(arg);
 }
 
-#[skyline::from_offset(0x1742da0)]
+#[skyline::from_offset(0x1743870)]
 unsafe fn check_mode(mode: &mut u32, submode: &mut u32);
 
-#[skyline::hook(offset = 0x16b7f70)]
+#[skyline::hook(offset = 0x16b6bb0)]
 unsafe fn copy_fighter_info(
     dst: &mut UnknownFighterInfoStruct,
     src: &mut UnknownFighterInfoStruct,
 ) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
     if src.hash1 & 0xFF_FFFFFFFF == smash::hash40("ui_chara_random") && one == 0 && IS_LOADING {
         dst.hash1 = 0xC1FFFF00_00000000;
         dst.hash2 = 0xC1FFFF00_00000000;
@@ -390,8 +380,8 @@ pub extern "C" fn main() {
         controls::install();
         lua::install();
         online::install();
-        skyline::patching::Patch::in_text(0x14f97bc).nop().unwrap();
-        skyline::patching::Patch::in_text(0x1509dc4).nop().unwrap();
+        skyline::patching::Patch::in_text(0x14f99cc).nop().unwrap();
+        skyline::patching::Patch::in_text(0x1509fd4).nop().unwrap();
         skyline::install_hooks!(
             training_reset_music1,
             training_reset_music2,
@@ -420,22 +410,6 @@ pub extern "C" fn main() {
     }
 
     fighters::install();
-    #[cfg(all(not(feature = "add_status"), feature = "main_nro"))]
-    {
-        if !(delayed_install as *const ()).is_null() {
-            unsafe {
-                delayed_install();
-            }
-        }
-    }
-
-    #[cfg(all(
-        feature = "add_status",
-        not(all(not(feature = "add_status"), feature = "main_nro"))
-    ))]
-    {
-        fighters::delayed_install();
-    }
 
     #[cfg(feature = "updater")]
     {
@@ -480,18 +454,18 @@ pub fn setup_hid_hdr() {
 
 #[cfg(feature = "main_nro")]
 pub fn quick_validate_install() {
-    let has_smashline_hook = Path::new(
-        "sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook.nro",
+    let has_smashline_plugin = Path::new(
+        "sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_plugin.nro",
     )
     .is_file();
-    if has_smashline_hook {
-        println!("libsmashline_hook.nro is present");
+    if has_smashline_plugin {
+        println!("libsmashline_plugin.nro is present");
     } else {
         if is_on_ryujinx() {
-            println!("No libsmashline_hook.nro found! We will likely crash.");
+            println!("No libsmashline_plugin.nro found! We will likely crash.");
         } else {
             skyline_web::dialog_ok::DialogOk::ok(
-                "No libsmashline_hook.nro found! We will likely crash.",
+                "No libsmashline_plugin.nro found! We will likely crash.",
             );
         }
     }
@@ -520,25 +494,6 @@ pub fn quick_validate_install() {
             println!("No libnro_hook.nro found! We will likely crash.");
         } else {
             skyline_web::dialog_ok::DialogOk::ok("No libnro_hook.nro found! We will likely crash.");
-        }
-    }
-
-    let has_smashline_development_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro").is_file();
-    if has_smashline_development_hook {
-        if is_on_ryujinx() {
-            println!("libsmashline_hook_development.nro found! This will conflict with hdr! Expect a crash soon.");
-        } else {
-            let should_delete = skyline_web::dialog::Dialog::yes_no("libsmashline_hook_development.nro found! This will conflict with hdr! Would you like to delete it?");
-            if should_delete {
-                fs::remove_file("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro");
-                unsafe {
-                    skyline::nn::oe::RequestToRelaunchApplication();
-                }
-            } else {
-                skyline_web::dialog_ok::DialogOk::ok(
-                    "Warning, we will likely crash soon because of this conflict.",
-                );
-            }
         }
     }
 

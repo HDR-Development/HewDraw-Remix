@@ -27,8 +27,9 @@ mod catch;
 mod damage;
 mod escape;
 mod dead;
-mod damageflyreflect;
+// mod damageflyreflect;
 mod down;
+mod float;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -695,49 +696,8 @@ pub fn install() {
     damage::install();
     escape::install();
     dead::install();
-    damageflyreflect::install();
+    // damageflyreflect::install();
     down::install();
 
     skyline::nro::add_hook(nro_hook);
-}
-
-pub fn general_mechanics_status_script_nro_hooks(nro: &skyline::nro::NroInfo) {
-    match nro.name {
-        "common" => {
-            skyline::install_hooks!(
-                //status_jump_squat_hook, //Smash4 shorthop aerials (aerials can be buffered out of jumpsquat - no shorthop aerial macro)
-                status_main_jumpsquat_hook, //Melee shorthop aerials (no buffered aerials - no shorthop aerial macro)
-            );
-        },
-        _ => (),
-    }
-}
-
-/*
-Thought process here... for smash4 you can buffer an aerial out of jumpsquat...
-so we clear buffer right before jumpsquat (status_JumpSquat runs once right as you enter that status)
-For melee, you can't buffer aerials in jumpsquat, so we clear the buffer just after jumpsquat (or in this case since status_end_JumpSquat just didn't cooperate, during Jumpsquat)
-so that any aerials you buffered during JS aren't taken into account.
-*/
-
-//Smash4 style shorthop aerials
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat)]
-pub unsafe fn status_jump_squat_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if (ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) == 0 {
-        ControlModule::clear_command(boma, true);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    }
-    original!()(fighter)
-}
-
-//Melee style shorthop aerials
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat_Main)] //prolly better to use status_end_JumpSquat but for some reason it seemed like it wasn't being called
-pub unsafe fn status_main_jumpsquat_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if MotionModule::frame(boma) <= 3.0 && (ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) == 0 { //during JS and you're not inputting an airdodge...
-        ControlModule::clear_command(boma, true);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    }
-    original!()(fighter)
 }

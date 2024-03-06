@@ -2,8 +2,7 @@ use smash::app::sv_animcmd::QUAKE;
 
 use super::*;
 
-#[acmd_script( agent = "mario", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -20,8 +19,7 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", scripts = ["effect_specialn", "effect_specialairn"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -58,8 +56,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", scripts = ["sound_specialn", "sound_specialairn"] , category = ACMD_SOUND , low_priority)]
-unsafe fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -68,8 +65,7 @@ unsafe fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mario_special_n_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -81,8 +77,7 @@ unsafe fn mario_special_n_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["game_specialnfire", "game_specialairnfire"] , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_n_fire_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -106,27 +101,23 @@ unsafe fn mario_special_n_fire_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["effect_specialnfire", "effect_specialairnfire"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn mario_special_n_fire_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.5);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 6, 11, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         if PostureModule::lr(boma) > 0.0 {
-            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, 45, 0, 0.7, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("haver"), 0, 0, 0, 0, 45, 0, 0.7, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, 45, 0, 0.55, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("haver"), 0, 0, 0, 0, 45, 0, 0.55, true);
         }
         else {
-            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, -45, 0, 0.7, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("haver"), 0, 0, 0, 0, -45, 0, 0.7, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, -45, 0, 0.55, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("mario_fb_shoot"), Hash40::new("haver"), 0, 0, 0, 0, -45, 0, 0.55, true);
         }
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.2, 0.2, 0.2);
@@ -135,10 +126,13 @@ unsafe fn mario_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0, 0.35);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.2, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("handr"), 1.0, 0, 0, 0, 0, 0, 0.2, true);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 7.5, 10.5, 0, 0, 0, 0.26, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.2);
+        LAST_EFFECT_SET_COLOR(fighter, 0.65, 0.2, 0.08);
+        LAST_EFFECT_SET_RATE(fighter, 0.75);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 0, 6.0, 10.5, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.55);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 0, 5.0, 10.5, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.55);
         EffectModule::enable_sync_init_pos_last(boma);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
@@ -170,8 +164,7 @@ unsafe fn mario_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["sound_specialnfire", "sound_specialairnfire"], category = ACMD_SOUND, low_priority )]
-unsafe fn mario_special_n_fire_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_fire_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -182,8 +175,7 @@ unsafe fn mario_special_n_fire_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["expression_specialnfire", "expression_specialairnfire"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mario_special_n_fire_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_n_fire_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -191,12 +183,11 @@ unsafe fn mario_special_n_fire_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_55_smash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -231,8 +222,7 @@ unsafe fn mario_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -270,8 +260,7 @@ unsafe fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = ["game_specialhi", "game_specialairhi"] , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if (WorkModule::is_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY)) {
@@ -379,8 +368,7 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "mario", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_special_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -409,8 +397,7 @@ unsafe fn mario_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -435,8 +422,7 @@ unsafe fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_speciallwlight" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 0.0, 10.0, 5.0);
@@ -465,28 +451,28 @@ unsafe fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 //Galaxy spin special effects
-#[acmd_script( agent = "mario", script = "effect_speciallwlight", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
         LAST_EFFECT_SET_ALPHA(fighter, 0.55);
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.45, 0, 0, 0, 0, 1.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.65);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
         LAST_EFFECT_SET_ALPHA(fighter, 0.55);
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.5, 0, 0, 180, 0, 1.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.65);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
         LAST_EFFECT_SET_ALPHA(fighter, 0.55);
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 9.45, 0, 0, 180, 0, 1.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.65);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.045, 0.345, 2.05);
         LAST_EFFECT_SET_ALPHA(fighter, 0.55);
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
+        LAST_EFFECT_SET_RATE(fighter, 0.65);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.0, true);
         LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_starrod_splash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
@@ -503,38 +489,36 @@ unsafe fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 //Galaxy spin sound effects
-#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
     frame(lua_state, 6.0);
-	if is_excute(fighter) {	
+	if is_excute(fighter) {
+        let handle = SoundModule::play_se(boma, Hash40::new("se_mario_special_l01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 0.7, 0);
 		PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
-		PLAY_SE(fighter, Hash40::new("se_mario_special_l01"));
 		PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
     }
 
 }
 
-#[acmd_script( agent = "mario", scripts = ["expression_speciallwlight", "expression_specialairlwlight"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter){
         if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         } else {
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
         }
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 
 }
 
-#[acmd_script( agent = "mario", script = "game_specialairlwlight" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter){
@@ -587,8 +571,8 @@ unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 //Galaxy spin special effects
-#[acmd_script( agent = "mario", script = "effect_specialairlwlight", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_special_air_lw_light(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn effect_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -642,15 +626,16 @@ unsafe fn effect_special_air_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 //Galaxy spin sound effects
-#[acmd_script( agent = "mario", script = "sound_specialairlwlight", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_special_air_lw_light(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn sound_special_air_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
 	if is_excute(fighter) {
         if !VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) { // Effects will change if you used galaxy spin in the air
-			PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
-			PLAY_SE(fighter, Hash40::new("se_mario_special_l01"));
+			let handle = SoundModule::play_se(boma, Hash40::new("se_mario_special_l01"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(boma, handle as i32, 0.7, 0);
+            PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
 			PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
         }
         else {
@@ -661,26 +646,39 @@ unsafe fn sound_special_air_lw_light(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_special_n_game,
-        mario_special_n_effect,
-        mario_special_n_sound,
-        mario_special_n_expression,
-        mario_special_n_fire_game,
-        mario_special_n_fire_effect,
-        mario_special_n_fire_sound,
-        mario_special_n_fire_expression,
-        mario_special_s_game,
-        mario_special_air_s_game,
-        mario_special_lw_light,
-        effect_special_lw_light,
-        sound_special_lw_light,
-        expression_special_lw_light,
-        mario_special_air_lw_light,
-        effect_special_air_lw_light,
-        sound_special_air_lw_light,
-        mario_special_hi_game,
-        mario_special_hi_effect,
-        mario_special_air_hi_effect,
-    );
+    smashline::Agent::new("mario")
+        .game_acmd("game_specialn", mario_special_n_game)
+        .game_acmd("game_specialairn", mario_special_n_game)
+        .effect_acmd("effect_specialn", mario_special_n_effect)
+        .effect_acmd("effect_specialairn", mario_special_n_effect)
+        .sound_acmd("sound_specialn", mario_special_n_sound)
+        .sound_acmd("sound_specialairn", mario_special_n_sound)
+        .expression_acmd("expression_specialn", mario_special_n_expression)
+        .expression_acmd("expression_specialairn", mario_special_n_expression)
+        .game_acmd("game_specialnfire", mario_special_n_fire_game)
+        .game_acmd("game_specialairnfire", mario_special_n_fire_game)
+        .effect_acmd("effect_specialnfire", mario_special_n_fire_effect)
+        .effect_acmd("effect_specialairnfire", mario_special_n_fire_effect)
+        .sound_acmd("sound_specialnfire", mario_special_n_fire_sound)
+        .sound_acmd("sound_specialairnfire", mario_special_n_fire_sound)
+        .expression_acmd("expression_specialnfire", mario_special_n_fire_expression)
+        .expression_acmd(
+            "expression_specialairnfire",
+            mario_special_n_fire_expression,
+        )
+        .game_acmd("game_specials", mario_special_s_game)
+        .game_acmd("game_specialairs", mario_special_air_s_game)
+        .game_acmd("game_specialhi", mario_special_hi_game)
+        .game_acmd("game_specialairhi", mario_special_hi_game)
+        .effect_acmd("effect_specialhi", mario_special_hi_effect)
+        .effect_acmd("effect_specialairhi", mario_special_air_hi_effect)
+        .game_acmd("game_speciallwlight", mario_special_lw_light)
+        .effect_acmd("effect_speciallwlight", effect_special_lw_light)
+        .sound_acmd("sound_speciallwlight", sound_special_lw_light)
+        .expression_acmd("expression_speciallwlight", expression_special_lw_light)
+        .expression_acmd("expression_specialairlwlight", expression_special_lw_light)
+        .game_acmd("game_specialairlwlight", mario_special_air_lw_light)
+        .effect_acmd("effect_specialairlwlight", effect_special_air_lw_light)
+        .sound_acmd("sound_specialairlwlight", sound_special_air_lw_light)
+        .install();
 }

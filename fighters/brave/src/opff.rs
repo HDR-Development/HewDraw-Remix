@@ -159,8 +159,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_BRAVE )]
-pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     persist_rng(fighter);
     psych_up_crit(fighter);
@@ -173,4 +172,10 @@ pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
 
     // Extend sword length
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.1, 1.05, 1.045));
+}
+
+pub fn install() {
+    smashline::Agent::new("brave")
+        .on_line(Main, brave_frame_wrapper)
+        .install();
 }

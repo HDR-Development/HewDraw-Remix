@@ -3,7 +3,6 @@ use globals::*;
 
 mod special_n;
 
-
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Reset cape stall flag on landing or ledgegrab
     if [*SITUATION_KIND_GROUND, *SITUATION_KIND_CLIFF].contains(&fighter.global_table[SITUATION_KIND].get_i32())
@@ -13,8 +12,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn mariod_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn mariod_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_MARIOD {
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
@@ -22,7 +20,21 @@ fn mariod_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe extern "C" fn mariod_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_CAPPY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    fighter.status_end_Rebirth();
+    0.into()
+}
+
 pub fn install() {
-    smashline::install_agent_init_callbacks!(mariod_init);
     special_n::install();
+    smashline::Agent::new("mariod")
+        .on_start(mariod_init)
+        .status(End, *FIGHTER_STATUS_KIND_REBIRTH, mariod_rebirth_end)
+        .install();
+
+    // Pill Fix for respawn platform
+    let _ = skyline::patching::Patch::in_text(0xcc9e34).data(0x14000047u32);
 }

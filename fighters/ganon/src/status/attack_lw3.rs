@@ -1,17 +1,11 @@
 use super::*;
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     fighter.main_shift(attack_lw3_main_loop)
 }
 
-unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor)
-    && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-        return 0.into();
-    }
-
+unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {    
     if !StatusModule::is_changing(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
         && fighter.global_table[globals::CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
@@ -28,7 +22,13 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             );
             fighter.clear_lua_stack();
             sv_kinetic_energy::set_motion_energy_update_flag(fighter.lua_state_agent);
+            return 0.into();
         }
+    }
+
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+        return 0.into();
     }
 
     if fighter.global_table[globals::SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
@@ -67,8 +67,7 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         set_speed,
         fighter,
@@ -80,8 +79,8 @@ unsafe fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        attack_lw3_main,
-        attack_lw3_end
-    );
+    smashline::Agent::new("ganon")
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main)
+        .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_end)
+        .install();
 }

@@ -3,30 +3,9 @@ use globals::*;
 utils::import!(common::djc::attack_air_main_status);
 // status script import
 
-pub fn install() {
-    install_status_scripts!(
-        //lucas_attack_lw4_main,
-        attack_air,
-        move_exec,
-        special_hi_hold_end,
-        special_hi_attack, 
-        //lucas_special_s_pre,
-        lucas_special_n_pre,
-        lucas_special_n_hold_main, // notably, do not try to install the main loop
-        attack_lw4,
-        pre_specialhi,
-        pre_specialhi_end,
-        //lucas_special_n_end
-        //lucas_special_s_main
-    );
-
-    install_agent_resets!(lucas_reset);
-}
-
 // FIGHTER RESET //
 
-#[fighter_reset]
-fn lucas_reset(fighter: &mut L2CFighterCommon) {
+extern "C" fn lucas_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_LUCAS {
             let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
@@ -38,34 +17,21 @@ fn lucas_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// AttackLw4 //
-
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucas_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.main_shift(lucas_attack_lw_4_main_loop)
-}
-
-unsafe extern "C" fn lucas_attack_lw_4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    1.into()
-}
-
 // SPECIAL N //
 
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{  
+unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
         return 0.into();
     }
     else {
-        original!(fighter)
+        smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
     }
 }
 
 // SPECIAL N HOLD //
 
-#[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //
     // OLD SPECIAL N STATUS MAIN CODE //
     //
@@ -86,14 +52,14 @@ unsafe fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_hold"), 0.0, 1.0, false, 0.0, false, false);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
     fighter.main_shift(lucas_special_n_hold_main_loop)
-    
+
 }
 
 unsafe fn lucas_special_n_check_explosion(fighter: &mut L2CFighterCommon) {
     //
     // OLD PK FREEZE EXPLOSION CODE //
     //
-    // if fighter.is_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE) 
+    // if fighter.is_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE)
     //     && !fighter.is_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_ALREADY_GENERATED)
     // {
     //     fighter.off_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE);
@@ -122,9 +88,9 @@ unsafe fn lucas_special_n_check_explosion(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn lucas_special_n_hold_main_sub_status(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
-    // 
+    //
     // OLD SPECIAL N SUBSTATUS CODE //
-    // 
+    //
     // if arg.get_bool() {
     //     lucas_special_n_check_explosion(fighter);
     // }
@@ -158,7 +124,7 @@ unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterComm
     // OLD SPECIAL N MAIN LOOP STATUS SCRIPT CODE //
     //
     // let nobang_time = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_NOBANG_TIME);
-    // if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE) 
+    // if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE)
     //     && nobang_time <= 0
     // {
     //     fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
@@ -167,8 +133,8 @@ unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterComm
     // let wait_mtrans_kind = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND);
     // if StatusModule::is_changing(fighter.module_accessor) || fighter.is_situation(wait_mtrans_kind) {
     //     // else block
-    //     lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE, 
-    //         *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"), 
+    //     lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
+    //         *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"),
     //         Hash40::new("special_air_n_hold"), *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
     // }
     // 1.into()
@@ -196,8 +162,8 @@ unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterComm
     let wait_mtrans_kind = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND);
     if StatusModule::is_changing(fighter.module_accessor) || fighter.is_situation(wait_mtrans_kind) {
         // else block
-        lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE, 
-            *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"), 
+        lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
+            *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"),
             Hash40::new("special_air_n_hold"), *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
     }
     1.into()
@@ -237,30 +203,31 @@ unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::attack_air_main_status(fighter)
 }
 
 // WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE //
 
-#[status_script(agent = "lucas_pkthunder", status = WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn move_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE) {
-        if LinkModule::get_parent_status_kind(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT) as i32 != *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
+        let parent_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID);
+        let parent_object = get_battle_object_from_id(parent_id as u32);
+        if !parent_object.is_null()
+        && sv_battle_object::kind(parent_id as u32) == *FIGHTER_KIND_LUCAS
+        && StatusModule::status_kind((*parent_object).module_accessor) != *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
             VarModule::on_flag(weapon.object(), vars::lucas::status::THUNDER_LOOSE);
             MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("move"), 0.0, 1.0, 1.0);
             return 0.into();
         }
-        original!(weapon);
+        smashline::original_status(Exec, weapon, *WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE)(weapon);
     }
-    0.into() 
+    0.into()
 }
 
 // FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD //
 
-#[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if LinkModule::is_link(fighter.module_accessor, *FIGHTER_LUCAS_LINK_NO_PK_THUNDER) {
         LinkModule::unlink(fighter.module_accessor, *FIGHTER_LUCAS_LINK_NO_PK_THUNDER);
     }
@@ -271,13 +238,12 @@ unsafe fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         EffectModule::detach(fighter.module_accessor, fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE) as u32, 5);
         fighter.set_int(0, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_GUIDE_EFFECT_HANDLE);
     }
-    0.into() 
+    0.into()
 }
 
 // FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK //
 
-#[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64;
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -306,8 +272,7 @@ pub unsafe fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -336,8 +301,7 @@ pub unsafe fn pre_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_WALL_BRAKE);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -446,9 +410,7 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
     }
 }
 
-
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_lw4(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_lw4(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw4_common();
     fighter.main_shift(status_attacklw4_main_param)
 }
@@ -474,4 +436,21 @@ unsafe extern "C" fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon)
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
     }
     0.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("lucas")
+        .on_start(lucas_reset)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, lucas_special_n_pre)
+        .status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, lucas_special_n_hold_main)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
+        .status(End, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end)
+        .status(Pre, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, pre_specialhi_end)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_specialhi)
+        .status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack,)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4)
+        .install();
+    smashline::Agent::new("lucas_pkthunder")
+        .status(Exec, *WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE, move_exec)
+        .install();
 }

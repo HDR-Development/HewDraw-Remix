@@ -14,32 +14,20 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn koopa_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn koopa_init(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if fighter.kind() == *FIGHTER_KIND_KOOPA {
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-
-            //Grant fireball during training mode
-            if is_training_mode() {
-                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
-            }
-            else{
-                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
-            }
-        }
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     }
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn attack_s4_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_s4_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_explosion_sign"), false, false);
-    return original!(fighter);
+    return smashline::original_status(Exit, fighter, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD)(fighter);
 }
 
 // FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A
-#[status_script(agent = "koopa", status = FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-pub unsafe fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
     if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL && fighter.global_table[PREV_STATUS_KIND] == FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
@@ -62,11 +50,11 @@ pub unsafe fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // NEUTRAL SPECIAL
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
-        return original!(fighter);
+        return smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
     else{
         fighter.sub_change_motion_by_situation(Hash40::new("special_n_max").into(), Hash40::new("special_air_n_max").into(), false.into());
@@ -124,8 +112,7 @@ unsafe extern "C" fn specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE_START)
@@ -135,18 +122,17 @@ unsafe fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
                 VarModule::inc_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME);
             }
         }
-        return original!(fighter);
+        return smashline::original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
     else{
         return 0.into();
     }
 }
 
-#[status_script(agent = "koopa", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-unsafe fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
-        return original!(fighter);
+        return smashline::original_status(ExecStop, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     }
     else{
         return 0.into();
@@ -154,13 +140,13 @@ unsafe fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIREBREATH
-#[status_script(agent = "koopa_breath", status = WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+
+unsafe extern "C" fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let boma = weapon.boma();
     let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let is_fireball =  WorkModule::get_float(owner_boma,*FIGHTER_KOOPA_STATUS_BREATH_WORK_FLOAT_GENE_ANGLE) > 360.0;
     if (!is_fireball){
-        return original!(weapon);
+        return smashline::original_status(Main, weapon, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE)(weapon);
     }
     else{
         WorkModule::set_customize_no(weapon.module_accessor, 1, 0);
@@ -253,13 +239,15 @@ unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> 
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(koopa_init);
-    install_status_scripts!(
-        attack_s4_charge_exit,
-        exec_special_hi_a,
-        special_n_main,
-        special_n_exec,
-        special_n_execstop,
-        breath_move_main,
-    );
+    smashline::Agent::new("koopa")
+        .on_start(koopa_init)
+        .status(Exit, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_charge_exit)
+        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, exec_special_hi_a)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec)
+        .status(ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_execstop)
+        .install();
+    smashline::Agent::new("koopa_breath")
+        .status(Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, breath_move_main)
+        .install();
 }

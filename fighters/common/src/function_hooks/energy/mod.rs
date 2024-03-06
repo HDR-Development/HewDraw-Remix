@@ -1,8 +1,9 @@
+#![allow(improper_ctypes_definitions)]
+
 use super::*;
 mod control;
 mod motion;
 mod stop;
-
 
 #[repr(C)]
 pub struct KineticEnergyVTable {
@@ -72,7 +73,6 @@ pub struct KineticEnergy {
     pub energy_reset_type: u32,
 }
 
-
 #[repr(simd)]
 pub struct Vec2 {
     pub x: f32,
@@ -97,7 +97,7 @@ pub struct Vec4 {
 
 impl KineticEnergy {
     pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, boma: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
-        #[skyline::from_offset(0x47b4d0)]        
+        #[skyline::from_offset(0x47b4f0)]        
         extern "C" fn adjust_speed_for_ground_normal_internal(speed: Vec2, boma: &mut BattleObjectModuleAccessor) -> Vec2;
 
         unsafe {
@@ -108,7 +108,7 @@ impl KineticEnergy {
 
     pub fn process(&mut self, boma: &mut BattleObjectModuleAccessor) {
         unsafe {
-            #[skyline::from_offset(0x47bf70)]
+            #[skyline::from_offset(0x47bf90)]
             extern "C" fn process_energy(energy: &mut KineticEnergy, boma: &mut BattleObjectModuleAccessor);
 
             process_energy(self, boma)

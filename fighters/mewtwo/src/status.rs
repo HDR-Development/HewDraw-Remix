@@ -1,17 +1,38 @@
 use super::*;
 use globals::*;
-utils::import!(common::djc::attack_air_main_status);
-// status script import
- 
-pub fn install() {
-    install_status_scripts!(
-        attack_air
-    );
+
+mod jump_aerial;
+mod attack_air;
+mod float;
+
+extern "Rust" {
+    #[link_name = "float_check_air_jump"]
+    fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+    #[link_name = "float_check_air_jump_aerial"]
+    fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }
 
-// FIGHTER_STATUS_KIND_ATTACK_AIR //
+unsafe extern "C" fn air_jump_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump(fighter, statuses::mewtwo::FLOAT.into())
+}
 
-#[status_script(agent = "mewtwo", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
-    common::djc::attack_air_main_status(fighter)
+unsafe extern "C" fn air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump_aerial(fighter, statuses::mewtwo::FLOAT.into())
+}
+
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[0x32].assign(&L2CValue::Ptr(air_jump_uniq as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION, 60);
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::mewtwo::FLOAT);
+}
+
+pub fn install() {
+    jump_aerial::install();
+    attack_air::install();
+    float::install();
+    smashline::Agent::new("mewtwo")
+        .on_start(on_start)
+        .install();
 }

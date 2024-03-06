@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "trail", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -66,8 +65,7 @@ unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -83,8 +81,7 @@ unsafe fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -127,8 +124,7 @@ unsafe fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -147,8 +143,7 @@ unsafe fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -173,8 +168,7 @@ unsafe fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "trail", script = "effect_attack13" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -192,8 +186,7 @@ unsafe fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -248,14 +241,13 @@ unsafe fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sora_attack_11_game,
-        sora_attack_11_effect,
-        sora_attack_12_game,
-        sora_attack_12_effect,
-        sora_attack_13_game,
-        sora_attack_13_effect,
-        sora_attack_dash_game,
-    );
+    smashline::Agent::new("trail")
+        .acmd("game_attack11", sora_attack_11_game)
+        .acmd("effect_attack11", sora_attack_11_effect)
+        .acmd("game_attack12", sora_attack_12_game)
+        .acmd("effect_attack12", sora_attack_12_effect)
+        .acmd("game_attack13", sora_attack_13_game)
+        .acmd("effect_attack13", sora_attack_13_effect)
+        .acmd("game_attackdash", sora_attack_dash_game)
+        .install();
 }
-

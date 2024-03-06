@@ -77,7 +77,7 @@ impl From<i32> for PikminInfo {
     }
 }
 
-pub fn install(is_runtime: bool) {
+pub fn install() {
     acmd::install();
     status::install();
 }

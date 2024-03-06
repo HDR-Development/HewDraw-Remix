@@ -2,17 +2,6 @@ use super::*;
 use globals::*;
  
 
-pub fn install() {
-    install_status_scripts!(
-        snake_taunt_status_main,
-        snake_taunt_status_end,
-        snake_down_taunt_wait_status_main,
-        snake_down_taunt_wait_status_end,
-        snake_down_taunt_end_status_main,
-        snake_down_taunt_end_status_end
-    );
-}
-
 //implimented function for checking if an article is "constrained" to snake
 extern "C" {
     #[link_name = "\u{1}_ZN3app24FighterSpecializer_Snake21is_constraint_articleERNS_7FighterEiNS_22ArticleOperationTargetE"]
@@ -24,8 +13,8 @@ extern "C" {
 }
 
 ////added new up-taunt and side-taunt
-#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn snake_taunt_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_taunt_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     if ControlModule::get_command_flag_cat(fighter.module_accessor, 1) == *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_hi_r"), 0.0, 1.0, false, 0.0, false, false);
@@ -65,8 +54,8 @@ pub unsafe fn snake_taunt_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue 
     }
     return false.into()
 }
-#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn snake_taunt_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_taunt_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[0xb].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT {
         fighter.clear_lua_stack();
         let object = sv_system::battle_object(fighter.lua_state_agent);
@@ -80,8 +69,8 @@ unsafe fn snake_taunt_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 //added down-taunt box walk and c4 place/explode
-#[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn snake_down_taunt_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_down_taunt_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_wait"), 0.0, 1.0, false, 0.0, false, false);
     fighter.off_flag(*FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
@@ -161,8 +150,8 @@ pub unsafe fn snake_down_taunt_wait_main_loop(fighter: &mut L2CFighterCommon) ->
     }
     return false.into()
 }
-#[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn snake_down_taunt_wait_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_down_taunt_wait_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[0xb].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END {
         fighter.clear_lua_stack();
         let object = sv_system::battle_object(fighter.lua_state_agent);
@@ -174,8 +163,8 @@ unsafe fn snake_down_taunt_wait_status_end(fighter: &mut L2CFighterCommon) -> L2
     }
     return 0.into()
 }
-#[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_APPEAL_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn snake_down_taunt_end_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_down_taunt_end_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if VarModule::is_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE) {
         VarModule::off_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
@@ -204,8 +193,8 @@ pub unsafe fn snake_down_taunt_end_main_loop(fighter: &mut L2CFighterCommon) -> 
     }
     return false.into()
 }
-#[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_APPEAL_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn snake_down_taunt_end_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn snake_down_taunt_end_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.clear_lua_stack();
     let object = sv_system::battle_object(fighter.lua_state_agent);
     let fighta : *mut Fighter = std::mem::transmute(object);
@@ -215,4 +204,30 @@ unsafe fn snake_down_taunt_end_status_end(fighter: &mut L2CFighterCommon) -> L2C
     }
     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     return 0.into()
+}
+pub fn install() {
+    smashline::Agent::new("snake")
+        .status(Main, *FIGHTER_STATUS_KIND_APPEAL, snake_taunt_status_main)
+        .status(End, *FIGHTER_STATUS_KIND_APPEAL, snake_taunt_status_end)
+        .status(
+            Main,
+            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT,
+            snake_down_taunt_wait_status_main,
+        )
+        .status(
+            End,
+            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT,
+            snake_down_taunt_wait_status_end,
+        )
+        .status(
+            Main,
+            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END,
+            snake_down_taunt_end_status_main,
+        )
+        .status(
+            End,
+            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END,
+            snake_down_taunt_end_status_end,
+        )
+        .install();
 }
