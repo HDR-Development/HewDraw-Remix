@@ -184,12 +184,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) == 2
-    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-    && {
-        let stick_y = fighter.left_stick_y();
-        let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-        stick_y <= jump_stick_y
-    } {
+    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N);
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
         fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1));
@@ -198,12 +193,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) == 1
-    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-    && {
-        let stick_y = fighter.left_stick_y();
-        let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-        stick_y <= jump_stick_y
-    } {
+    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
         return 0.into();
     }
