@@ -1,8 +1,11 @@
 use super::*;
 use globals::*;
 
+mod attack_air;
 mod special_s;
 mod special_lw;
+mod uniq_float_start;
+mod uniq_float;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -66,6 +69,9 @@ extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::Agent::new("daisy").on_start(daisy_init).install();
+    attack_air::install();
     special_s::install();
     special_lw::install();
+    uniq_float_start::install();
+    uniq_float::install();
 }
