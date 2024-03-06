@@ -1499,6 +1499,7 @@ pub mod statuses {
 
     pub mod ryu {
         pub const INSTALL: i32 = 0x202;
+        pub const ATTACK_COMMAND_4: i32 = 0x203;
     }
 
     pub mod ken {

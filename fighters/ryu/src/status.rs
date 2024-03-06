@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 
 mod finals;
+mod special_cmd4;
 mod special_lw;
 mod special_s;
 
@@ -41,6 +42,7 @@ pub fn install() {
         .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
         .install();
     finals::install();
+    special_cmd4::install();
     special_lw::install();
     special_s::install();
 }
@@ -280,6 +282,15 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
     && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_S_CALLBACK].clone()).get_bool()
     && FighterSpecializer_Ryu::check_special_air_s_command(fighter.module_accessor) {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // donkey kick
+    if is_normal
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
+        fighter.change_status(statuses::ryu::ATTACK_COMMAND_4.into(), true.into());
         return true.into();
     }
 
