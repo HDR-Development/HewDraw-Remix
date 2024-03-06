@@ -4,6 +4,8 @@ use globals::*;
 mod jump_aerial;
 mod attack_air;
 mod float;
+mod fall;
+mod special_n;
 
 extern "Rust" {
     #[link_name = "float_check_air_jump"]
@@ -32,6 +34,8 @@ pub fn install() {
     jump_aerial::install();
     attack_air::install();
     float::install();
+    fall::install();
+    special_n::install();
     smashline::Agent::new("mewtwo")
         .on_start(on_start)
         .install();

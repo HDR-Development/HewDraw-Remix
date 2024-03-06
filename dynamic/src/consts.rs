@@ -867,9 +867,8 @@ pub mod vars {
     pub mod mewtwo {
         pub mod instance {
             // flags
-            pub const GROUNDED_TELEPORT: i32 = 0x0100;
-            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
-            pub const UP_SPECIAL_FREEFALL: i32 = 0x0102;
+            pub const TELEPORT_CANCEL: i32 = 0x0100;
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
         }
     }
 
