@@ -700,10 +700,12 @@ pub mod vars {
             pub const FIREBALL_COOLDOWN_FRAME: i32 = 0x0100;
             pub const FIREBALL_EFFECT_ID: i32 = 0x0101;
             pub const CHARGE_EFFECT_HANDLER: i32 = 0x0102;
+            pub const SPECIAL_S_THROW_TYPE: i32 = 0x0103;
         }
         pub mod status {
-            // flags
+            //flags
             pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
+            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1102;
         }
     }
 
