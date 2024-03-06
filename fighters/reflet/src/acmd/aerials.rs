@@ -3,6 +3,9 @@ use super::*;
 unsafe extern "C" fn reflet_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if macros::is_excute(fighter) {
+        VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
+    }
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.75);
     frame(lua_state, 4.0);
@@ -112,6 +115,9 @@ unsafe extern "C" fn reflet_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn reflet_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if macros::is_excute(fighter) {
+        VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
+    }
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 9.0/(12.0));
     frame(lua_state, 6.0);
@@ -216,6 +222,9 @@ unsafe extern "C" fn reflet_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn reflet_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if macros::is_excute(fighter) {
+        VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
+    }
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -295,6 +304,9 @@ unsafe extern "C" fn reflet_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn reflet_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if macros::is_excute(fighter) {
+        VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
+    }
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 5.0);
@@ -374,6 +386,9 @@ unsafe extern "C" fn reflet_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn reflet_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if macros::is_excute(fighter) {
+        VarModule::set_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
+    }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
