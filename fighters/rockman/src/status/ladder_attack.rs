@@ -15,17 +15,15 @@ unsafe extern "C" fn rockman_ladder_attack_end(fighter: &mut L2CFighterCommon) -
     fighter.status_end_LadderAttack()
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .status(
+pub fn install(agent: &mut Agent) {
+    agent.status(
             Main,
             *FIGHTER_STATUS_KIND_LADDER_ATTACK,
             rockman_ladder_attack_main,
-        )
-        .status(
+        );
+    agent.status(
             End,
             *FIGHTER_STATUS_KIND_LADDER_ATTACK,
             rockman_ladder_attack_end,
-        )
-        .install();
+        );
 }

@@ -15,25 +15,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         let fighter_kind = boma.kind();
         let status_kind = StatusModule::status_kind(boma);
         let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        
-        // disable jumping while using floats
-        if [*FIGHTER_STATUS_KIND_FALL,
-        *FIGHTER_STATUS_KIND_FALL_AERIAL,
-        *FIGHTER_STATUS_KIND_JUMP,
-        *FIGHTER_STATUS_KIND_JUMP_AERIAL,
-        *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
-        *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
-        *FIGHTER_STATUS_KIND_CLIFF_JUMP3,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind)
-        && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
-        || VarModule::is_flag(boma.object(), vars::common::instance::OMNI_FLOAT) {
-            if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL].contains(&flag) {
-                    return false;
-            }
-        }
-    
+
         // Disallow airdodge out of tumble until you reach your stable fall speed
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
         && [*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
@@ -78,17 +60,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND && (VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT)) {
             return false;
         }
-    
-        // Disable transition to double jump if you have float juice and are holding down
-        if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
-            if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON].contains(&flag) {
-                if boma.left_stick_y() < -0.66 {
-                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
-                        return false;
-                    }
-                }
-            }
-        }
+
         if fighter_kind == *FIGHTER_KIND_PEACH {
             if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
                 if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL || flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON {

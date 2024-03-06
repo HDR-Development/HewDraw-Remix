@@ -65,10 +65,8 @@ unsafe extern "C" fn rockman_throw_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("rockman")
-        .acmd("game_throwb", rockman_throw_b_game)
-        .acmd("game_throwhi", rockman_throw_hi_game)
-        .acmd("game_throwlw", rockman_throw_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_throwb", rockman_throw_b_game);
+    agent.acmd("game_throwhi", rockman_throw_hi_game);
+    agent.acmd("game_throwlw", rockman_throw_lw_game);
 }
