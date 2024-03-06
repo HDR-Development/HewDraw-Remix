@@ -334,8 +334,8 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
-        ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    );
+        statuses::ryu::ATTACK_COMMAND_4
+    ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD));
 
     let is_nspecial_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,

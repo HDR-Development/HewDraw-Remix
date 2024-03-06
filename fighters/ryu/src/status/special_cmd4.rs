@@ -57,9 +57,9 @@ pub unsafe extern "C" fn ryu_attack_command_4_main_loop(fighter: &mut L2CFighter
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         return 0.into();
     }
+    let motion_frame = fighter.motion_frame();
     if !fighter.is_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON) && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         fighter.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
-        let motion_frame = fighter.motion_frame();
         let button_strength = if motion_frame <= 2.0 {
             *FIGHTER_RYU_STRENGTH_W
         } else if motion_frame <= 4.0 {
@@ -68,6 +68,12 @@ pub unsafe extern "C" fn ryu_attack_command_4_main_loop(fighter: &mut L2CFighter
             *FIGHTER_RYU_STRENGTH_S
         };
         fighter.set_int(button_strength, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    }
+    if motion_frame < 5.0 && fighter.is_button_on(Buttons::SpecialAll | Buttons::Catch | Buttons::AppealAll)
+    && (MeterModule::level(fighter.battle_object) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+        fighter.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
+        fighter.set_int(*FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
     }
 
     0.into()
