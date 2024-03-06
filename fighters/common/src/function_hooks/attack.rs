@@ -53,10 +53,13 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
 unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
-            if modes.contains(&CustomMode::Smash64Mode) {
-                let damage_frame_mul_n64: f32 = 0.533;
-                asm!("fmov s0, w8", in("w8") damage_frame_mul_n64)
+            let damage_frame_mul: f32 = if modes.contains(&CustomMode::Smash64Mode) {
+                0.533
             }
+            else {
+                0.42
+            };
+            asm!("fmov s0, w8", in("w8") damage_frame_mul)
         },
         _ => {}
     }
@@ -66,10 +69,13 @@ unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn get_hitstop_frame_add(ctx: &mut skyline::hooks::InlineCtx) {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
-            if modes.contains(&CustomMode::Smash64Mode) {
-                let hitstop_frame_add_n64: f32 = 5.0;
-                asm!("fmov s0, w8", in("w8") hitstop_frame_add_n64)
+            let hitstop_frame_add: f32 = if modes.contains(&CustomMode::Smash64Mode) {
+                5.0
             }
+            else {
+                4.0
+            };
+            asm!("fmov s0, w8", in("w8") hitstop_frame_add)
         },
         _ => {}
     }
