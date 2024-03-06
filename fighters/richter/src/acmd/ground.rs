@@ -92,7 +92,6 @@ unsafe extern "C" fn richter_attack_12_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_s"));
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
     }
 }
 
