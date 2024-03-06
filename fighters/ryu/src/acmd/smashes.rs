@@ -20,6 +20,7 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
         } else {
             Hash40::new("collision_attr_normal")
         };
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 367, 100, 30, 0, 3.0, 0.0, 9.5,  8.0, None, None, None, 1.25, 0.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 367, 100, 30, 0, 3.3, 0.0, 9.5,  4.0, None, None, None, 1.25, 0.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 367, 100, 30, 0, 3.6, 0.0, 12.0, 2.0, None, None, None, 1.25, 0.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
@@ -31,6 +32,7 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
         } else {
             Hash40::new("collision_attr_normal")
         };
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 98, 0, 26, 3.5, 0.0, 9.5,  8.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 361, 98, 0, 26, 3.8, 0.0, 9.5,  4.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 13.0, 361, 98, 0, 26, 4.1, 0.0, 12.0, 2.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
@@ -40,6 +42,7 @@ unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, false);
         AttackModule::clear_all(boma);
     }
     wait(lua_state, 10.0);
@@ -140,6 +143,7 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
         } else {
             Hash40::new("collision_attr_normal")
         };
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.4, 83, 95, 0, 30, 5.3, 0.0, 9.0, 8.5, None, None, None, 1.22, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 10.0);
@@ -162,6 +166,7 @@ unsafe extern "C" fn game_attackhi4(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, false);
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }

@@ -17,6 +17,7 @@ unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+        MeterModule::add(fighter.battle_object, 8.0 * MeterModule::damage_gain_mul(fighter.battle_object));
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -44,6 +45,7 @@ unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
         let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        MeterModule::add(fighter.battle_object, 11.0 * MeterModule::damage_gain_mul(fighter.battle_object));
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -68,6 +70,7 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+        MeterModule::add(fighter.battle_object, 6.0 * MeterModule::damage_gain_mul(fighter.battle_object));
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
