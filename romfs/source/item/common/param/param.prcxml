@@ -99,7 +99,13 @@
     <hash40 index="82">dummy</hash40>
     <hash40 index="83">dummy</hash40>
     <hash40 index="84">dummy</hash40>
-    <hash40 index="85">dummy</hash40>
+    <struct index="85">  
+      <float hash="scale">0.7</float>
+      <float hash="throw_speed_mul">0.5</float>
+      <float hash="throw_power_speed_add">-0.4</float>
+      <float hash="throw_power_speed_mul">1.0</float>
+      <float hash="hp">8</float>
+    </struct>
     <hash40 index="86">dummy</hash40>
     <hash40 index="87">dummy</hash40>
     <hash40 index="88">dummy</hash40>

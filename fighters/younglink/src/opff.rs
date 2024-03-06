@@ -32,9 +32,9 @@ extern "Rust" {
 // Bombchu Timer Count
 unsafe fn bombchu_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 721 {
+    if gimmick_timerr > 0 && gimmick_timerr < 301 {
         // Bombchu Timer Reset
-        if gimmick_timerr > 719 {
+        if gimmick_timerr > 299 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
