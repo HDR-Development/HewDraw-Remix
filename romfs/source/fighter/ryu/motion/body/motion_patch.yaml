@@ -180,9 +180,9 @@ special_air_lw_install:
     - name: j01appeallwr.nuanmb
       unk: 0
   scripts:
-    - expression_appeallwr
-    - sound_appeallwr
-    - effect_appeallwr
+    - expression_speciallwinstall
+    - sound_speciallwinstall
+    - effect_speciallwinstall
   extra:
     xlu_start: 0
     xlu_end: 0
@@ -227,9 +227,9 @@ special_lw_install:
     - name: j01appeallwr.nuanmb
       unk: 0
   scripts:
-    - expression_appeallwr
-    - sound_appeallwr
-    - effect_appeallwr
+    - expression_speciallwinstall
+    - sound_speciallwinstall
+    - effect_speciallwinstall
   extra:
     xlu_start: 0
     xlu_end: 0
