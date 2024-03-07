@@ -43,7 +43,7 @@ unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
 // dtilt bounce
 unsafe fn dtilt_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if fighter.is_motion(Hash40::new("attack_lw32"))
-    && fighter.motion_frame() > 7.0 {
+    && fighter.motion_frame() > 1.0 {
         let mut speed = -0.2;
         if fighter.motion_frame() < 18.0 { 
             speed = -0.05;

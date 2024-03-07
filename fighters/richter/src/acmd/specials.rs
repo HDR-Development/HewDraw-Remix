@@ -376,6 +376,14 @@ unsafe extern "C" fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
         boma.select_cliff_hangdata_from_name("special_hi");
         WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
     }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -420,6 +428,10 @@ unsafe extern "C" fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         VarModule::on_flag(fighter.object(), vars::common::instance::UP_SPECIAL_CANCEL);
     }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
 }
 
 unsafe extern "C" fn richter_special_hi_effect(fighter: &mut L2CAgentBase) {
@@ -459,17 +471,25 @@ unsafe extern "C" fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
         boma.select_cliff_hangdata_from_name("special_hi");
         WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
     }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 71, 90, 0, 65, 8.5, 0.0, 9.5, 10.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 2.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 71, 90, 0, 65, 8.5, 0.0, 9.5, 10.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 2.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 71, 90, 0, 65, 6.0, 0.0, 23.0, 9.5, Some(0.0), Some(6.0), Some(7.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 71, 90, 0, 65, 6.0, 0.0, 23.0, 9.5, Some(0.0), Some(6.0), Some(7.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
     }
     frame(lua_state, 8.0);
@@ -501,6 +521,7 @@ unsafe extern "C" fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         VarModule::on_flag(fighter.object(), vars::common::instance::UP_SPECIAL_CANCEL);
     }
 }
