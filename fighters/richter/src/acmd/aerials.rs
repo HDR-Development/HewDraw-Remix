@@ -415,8 +415,13 @@ unsafe extern "C" fn richter_attack_air_b_hi_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_whip_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE_RANGE(fighter, 1.0, 12.0, 9.0);
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
@@ -501,8 +506,13 @@ unsafe extern "C" fn richter_attack_air_b_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_whip_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE_RANGE(fighter, 1.0, 12.0, 9.0);
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
@@ -587,8 +597,13 @@ unsafe extern "C" fn richter_attack_air_b_lw_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_whip_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE_RANGE(fighter, 1.0, 12.0, 9.0);
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
