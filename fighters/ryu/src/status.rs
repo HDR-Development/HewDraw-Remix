@@ -217,6 +217,10 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 /// I have divided these inputs into command normals (A) and command specials (B)
 /// NOTE: order is important! early order has higher priority
 pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_in_hitlag() {
+        return false.into();
+    }
+
     let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
