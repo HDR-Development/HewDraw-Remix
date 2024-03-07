@@ -13,27 +13,30 @@ unsafe extern "C" fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     // I could just rewrite the status script to prevent this but thats a lot.
     if is_excute(fighter) && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
-        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
-        if fighter.kind() != *FIGHTER_KIND_KIRBY && !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
-            MeterModule::add(fighter.battle_object, 2.0);
+        fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
+        if fighter.kind() != *FIGHTER_KIND_KIRBY 
+        && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            MeterModule::add(fighter.battle_object, 2.0 * MeterModule::damage_gain_mul(fighter.battle_object));
         }
     }
     frame(lua_state, 14.0);
-    if boma.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+    if fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 18.0);
+    } else if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 26.0);
     } else {
         FT_MOTION_RATE_RANGE(fighter, 14.0, 58.0, 36.0);
     }
     if is_excute(fighter) {
-        boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        fighter.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
+        fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 58.0);
     FT_MOTION_RATE(fighter, 1.0);
@@ -50,13 +53,20 @@ unsafe extern "C" fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
-        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
-        if fighter.kind() != *FIGHTER_KIND_KIRBY && !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
-            MeterModule::add(fighter.battle_object, 2.0);
+        fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
+        if fighter.kind() != *FIGHTER_KIND_KIRBY 
+        && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            MeterModule::add(fighter.battle_object, 2.0 * MeterModule::damage_gain_mul(fighter.battle_object));
         }
     }
     frame(lua_state, 15.0);
-    FT_MOTION_RATE(fighter, 36.0 / (70.0 - 15.0));
+    if fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        FT_MOTION_RATE_RANGE(fighter, 15.0, 70.0, 18.0);
+    } else if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        FT_MOTION_RATE_RANGE(fighter, 15.0, 70.0, 26.0);
+    } else {
+        FT_MOTION_RATE_RANGE(fighter, 15.0, 70.0, 36.0);
+    }
     if is_excute(fighter) {
         boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -128,19 +138,19 @@ unsafe extern "C" fn effect_specialn(fighter: &mut L2CAgentBase) {
     if !boma.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             }
         }
         frame(lua_state, 6.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
             }
         }
         frame(lua_state, 8.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             } else {
                 FLASH(fighter, 0.392, 1, 1, 0.353);
@@ -149,7 +159,7 @@ unsafe extern "C" fn effect_specialn(fighter: &mut L2CAgentBase) {
         frame(lua_state, 10.0);
         if is_excute(fighter) {
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 12, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
             }
         }
@@ -161,27 +171,27 @@ unsafe extern "C" fn effect_specialn(fighter: &mut L2CAgentBase) {
         frame(lua_state, 12.0);
         if is_excute(fighter) {
             FOOT_EFFECT(fighter, Hash40::new("ken_hadoken_smoke"), Hash40::new("top"), 8, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             }
         }
         for _ in 0..6 {
             wait(lua_state, 3.0);
             if is_excute(fighter) {
-                if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                     FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
                 }
             }
             wait(lua_state, 3.0);
             if is_excute(fighter) {
-                if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                     FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
                 }
             }
         }
         wait(lua_state, 3.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -211,19 +221,19 @@ unsafe extern "C" fn effect_specialairn(fighter: &mut L2CAgentBase) {
         frame(lua_state, 4.0);
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             }
         }
         frame(lua_state, 6.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
             }
         }
         frame(lua_state, 8.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             } else {
                 FLASH(fighter, 0.392, 1, 1, 0.353);
@@ -231,7 +241,7 @@ unsafe extern "C" fn effect_specialairn(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 10.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
             }
         }
@@ -242,19 +252,19 @@ unsafe extern "C" fn effect_specialairn(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 12.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             }
         }
         frame(lua_state, 14.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
             }
         }
         frame(lua_state, 16.0);
         if is_excute(fighter) {
-            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
