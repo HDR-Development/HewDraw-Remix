@@ -58,6 +58,13 @@ unsafe extern "C" fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2
         }
     };
     smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, fighter_log_attack_kind);
+
+    // allow fast fall during float release aerials
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_fall_common_uniq(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_fall_common_uniq as *const () as _));
+
     let _ = fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     fighter.main_shift(peach_attack_air_main_loop)
