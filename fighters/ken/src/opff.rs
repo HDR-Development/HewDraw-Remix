@@ -99,7 +99,7 @@ unsafe fn extra_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battl
         *FIGHTER_STATUS_KIND_ATTACK_HI4
     ])
     && !CancelModule::is_enable_cancel(boma)
-    && WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL) 
+    && boma.is_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL) 
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
         let terms = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
@@ -143,7 +143,7 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         return;
     }
     // only check EX if this is a heavy shoryu with A+B on f4
-    if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
+    if boma.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
     && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll)
     && frame <= 4.0 {
@@ -339,10 +339,10 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // the tatsu super
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-    && WorkModule::is_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    && boma.is_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
     && MeterModule::level(fighter.object()) >= 6 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         AttackModule::clear_all(fighter.module_accessor);
         return;
@@ -350,10 +350,10 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // the shinryuken
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && WorkModule::is_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    && boma.is_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
     && MeterModule::level(fighter.object()) >= 10 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
         AttackModule::clear_all(fighter.module_accessor);
         return;
@@ -387,7 +387,7 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         && !boma.is_cat_flag(Cat1::AttackLw3)
         && !boma.is_cat_flag(Cat1::AttackS3)
         && !boma.is_cat_flag(Cat1::AttackHi3) {
-            WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+            boma.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
         }
@@ -396,7 +396,7 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     // light FTilt --> FSmash
     else if boma.is_motion_one_of(&[Hash40::new("attack_s3_s_w"), Hash40::new("attack_near_w")])
     && boma.is_cat_flag(Cat1::AttackS4) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        boma.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
     }

@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attackcommand1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -17,7 +17,7 @@ unsafe extern "C" fn game_attackcommand1(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
+        boma.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -31,7 +31,7 @@ unsafe extern "C" fn game_attackcommand1(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 
@@ -39,7 +39,7 @@ unsafe extern "C" fn game_attackcommand2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -51,7 +51,7 @@ unsafe extern "C" fn game_attackcommand2(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
+        boma.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -61,7 +61,7 @@ unsafe extern "C" fn game_attackcommand2(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 
@@ -69,7 +69,7 @@ unsafe extern "C" fn game_attackcommand3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -93,7 +93,7 @@ unsafe extern "C" fn game_attackcommand3(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 
@@ -101,7 +101,7 @@ unsafe extern "C" fn game_attackcommand4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -114,7 +114,7 @@ unsafe extern "C" fn game_attackcommand4(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, false);
         AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
+        boma.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -130,7 +130,7 @@ unsafe extern "C" fn game_attackcommand4(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 10.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 28.0);
     FT_MOTION_RATE(fighter, 12.0 / (46.0 - 28.0));
