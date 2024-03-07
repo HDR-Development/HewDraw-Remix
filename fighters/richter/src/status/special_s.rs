@@ -56,7 +56,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     if fighter.is_motion(Hash40::new("special_air_s1"))
-    && fighter.motion_frame() > 33.0
+    && fighter.motion_frame() > 32.0
     {
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
