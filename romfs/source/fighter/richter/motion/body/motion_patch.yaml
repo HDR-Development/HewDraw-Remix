@@ -44,7 +44,7 @@ attack_lw3:
 attack_hi4:
 attack_hi3:
   extra:
-    cancel_frame: 34
+    cancel_frame: 28
 attack_dash:
   extra:
     cancel_frame: 36
@@ -95,7 +95,7 @@ item_light_throw_f:
     move: false
 attack_lw32_landing:
   extra:
-    cancel_frame: 18
+    cancel_frame: 12
 catch_attack:
   extra:
     cancel_frame: 0
@@ -106,22 +106,22 @@ special_n:
   flags:
     move: false
   extra:
-    cancel_frame: 41
+    cancel_frame: 34
 special_air_n:
   flags:
     move: false
   extra:
-    cancel_frame: 41
+    cancel_frame: 34
 special_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 44
+    cancel_frame: 40
 special_air_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 44
+    cancel_frame: 40
 special_lw:
   flags:
     move: true
@@ -134,10 +134,10 @@ special_air_lw:
     cancel_frame: 37
 attack_air_n:
   extra:
-    cancel_frame: 38
+    cancel_frame: 37
 attack_air_hi:
   extra:
-    cancel_frame: 35
+    cancel_frame: 32
 attack_air_lw2:
   blend_frames: 8
   extra:
@@ -146,10 +146,10 @@ special_air_hi:
   flags:
     move: true
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 special_air_hi:
   flags:
     move: true
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
     

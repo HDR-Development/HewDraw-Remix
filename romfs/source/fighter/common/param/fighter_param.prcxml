@@ -3196,10 +3196,10 @@
       <float hash="jump_aerial_y">28</float>
       <float hash="air_accel_x_mul">0.04</float>
       <float hash="air_speed_x_stable">1.1</float>
-      <float hash="air_brake_x">0.0125</float>
-      <float hash="air_accel_y">0.12</float>
+      <float hash="air_brake_x">0.013</float>
+      <float hash="air_accel_y">0.11</float>
       <float hash="air_speed_y_stable">2.23</float>
-      <float hash="damage_fly_top_air_accel_y">0.12</float>
+      <float hash="damage_fly_top_air_accel_y">0.11</float>
       <float hash="damage_fly_top_speed_y_stable">2.23</float>
       <float hash="dive_speed_y">3</float>
       <float hash="weight">96</float>
