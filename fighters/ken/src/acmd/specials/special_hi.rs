@@ -156,6 +156,141 @@ unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 17, 12, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        if fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
+        || fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
+            EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_arc"), Hash40::new("trans"), 6.5, 5, 0, 5, 0, 25, 1, false);
+        } else {
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+            if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
+            } else {
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
+            }
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("ken_syoryuken_firearc"), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("ken_savingattack_aura"), -1);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ryu_syoryuken_arc"), true, true);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ken_syoryuken_fire"), false, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+        }
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+        }
+    }
+}
+
 unsafe extern "C" fn game_specialhifall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -172,5 +307,9 @@ pub fn install() {
         .acmd("game_specialhi", game_specialhi)
         .acmd("game_specialhicommand", game_specialhi)
         .acmd("game_specialhifall", game_specialhifall)
+        .acmd("effect_specialhi", effect_specialhi)
+        .acmd("effect_specialhicommand", effect_specialhi)
+        .acmd("effect_specialairhi", effect_specialhi)
+        .acmd("effect_specialairhicommand", effect_specialhi)
         .install();
 }
