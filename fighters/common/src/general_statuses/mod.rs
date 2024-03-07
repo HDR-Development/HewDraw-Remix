@@ -29,6 +29,7 @@ mod escape;
 mod dead;
 // mod damageflyreflect;
 mod down;
+mod float;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
