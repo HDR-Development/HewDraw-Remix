@@ -116,7 +116,7 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         //Prevents B reversing when we are in the dash
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S 
         && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO){
-            if fighter.status_frame() < 5{
+            if fighter.status_frame() > 1 && fighter.status_frame() < 4{
                 ControlModule::reset_main_stick(boma);
             }
         }

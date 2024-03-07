@@ -4,8 +4,7 @@ use smash::app::lua_bind::CancelModule::is_enable_cancel;
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) || fighter.is_motion(Hash40::new("attack_air_f3")))
-    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
+    if fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_hi"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_f3"), Hash40::new("attack_air_b")])
     && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) 
     && !fighter.is_in_hitlag() {
         let mut new_status = 0;
@@ -68,7 +67,7 @@ unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     } 
     //resets hitflag
     if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
-        if StatusModule::is_changing(boma) && !boma.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP) {
+        if StatusModule::is_changing(boma) && !boma.is_status_one_of(&[*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP, statuses::bayonetta::SPECIAL_S_EDGE]) {
             VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT);
         }
     }

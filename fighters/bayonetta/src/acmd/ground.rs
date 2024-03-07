@@ -67,13 +67,16 @@ unsafe extern "C" fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
         }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
         fighter.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         fighter.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }

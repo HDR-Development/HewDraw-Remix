@@ -291,7 +291,8 @@ unsafe extern "C" fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBa
         WorkModule::set_int(boma, 300, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         /* below grabs the boma of the opponent hitting gordo, the attack data of that hit, and adjusts the speed accordingly */
         let num_players = Fighter::get_fighter_entry_count(); 
-        if StopModule::is_hit(boma){ 
+        if StopModule::is_hit(boma)
+        && !StopModule::is_hit(owner_module_accessor) { 
             for i in 0..num_players{
                 let opponent_boma = sv_battle_object::module_accessor(Fighter::get_id_from_entry_id(i));
 

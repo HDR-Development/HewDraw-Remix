@@ -500,7 +500,7 @@ unsafe extern "C" fn escape_b_game(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn down_left_taunt_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 175.0);
     if is_excute(fighter) {
-        StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_SQUAT_RV, false);
+        StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_SQUAT_WAIT, false);
     }
 }
 
