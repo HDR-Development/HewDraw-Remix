@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -27,8 +26,7 @@ unsafe fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -45,8 +43,7 @@ unsafe fn koopa_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -64,8 +61,7 @@ unsafe fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -82,8 +78,7 @@ unsafe fn koopa_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.7);
@@ -93,9 +88,9 @@ unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("handr"), 12.0, 80, 70, 0, 80, 6.0, 3.5, -0.6, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 10.0, 80, 70, 0, 85, 5.0, 0.0, 0.0, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 80, 70, 0, 85, 4.5, 0.0, 4.0, 4.5, Some(0.0), Some(7.0), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("handr"), 12.0, 80, 70, 0, 80, 6.0, 3.5, -0.6, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("armr"), 10.0, 80, 70, 0, 85, 5.0, 0.0, 0.0, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 80, 70, 0, 85, 4.5, 0.0, 4.0, 4.5, Some(0.0), Some(7.0), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -104,8 +99,7 @@ unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -139,8 +133,7 @@ unsafe fn koopa_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
-unsafe fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -158,8 +151,7 @@ unsafe fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "koopa", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -173,14 +165,14 @@ unsafe fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        koopa_attack_11_game,
-        koopa_attack_11_effect,
-        koopa_attack_12_game,
-        koopa_attack_12_effect,
-        koopa_attack_dash_game,
-        koopa_attack_dash_effect,
-        koopa_attack_dash_sound,
-        koopa_attack_dash_expression,
-    );
+    smashline::Agent::new("koopa")
+        .acmd("game_attack11", koopa_attack_11_game)
+        .acmd("effect_attack11", koopa_attack_11_effect)
+        .acmd("game_attack12", koopa_attack_12_game)
+        .acmd("effect_attack12", koopa_attack_12_effect)
+        .acmd("game_attackdash", koopa_attack_dash_game)
+        .acmd("effect_attackdash", koopa_attack_dash_effect)
+        .acmd("sound_attackdash", koopa_attack_dash_sound)
+        .acmd("expression_attackdash", koopa_attack_dash_expression)
+        .install();
 }

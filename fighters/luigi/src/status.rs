@@ -1,7 +1,7 @@
 use super::*;
+mod special_n;
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CHARGE_MELEE_NO_RANDOM) {
         let should_do_effect = if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED) {
             VarModule::off_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
@@ -100,8 +100,7 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, -1); 
     VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, -1);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_BONUS) {
@@ -118,23 +117,39 @@ unsafe fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.main_shift(special_s_charge_main_loop)
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_s_charge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_charge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
     0.into()
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn special_s_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
     0.into()
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_s_charge_init,
-        special_s_charge_main,
-        special_s_charge_end,
-        special_s_charge_exit
-    );
+    special_n::install();
+
+    smashline::Agent::new("luigi")
+        .status(
+            Init,
+            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
+            special_s_charge_init,
+        )
+        .status(
+            Main,
+            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
+            special_s_charge_main,
+        )
+        .status(
+            End,
+            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
+            special_s_charge_end,
+        )
+        .status(
+            Exit,
+            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
+            special_s_charge_exit,
+        )
+        .install();
 }

@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script(agent = "koopajr", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -32,9 +31,7 @@ unsafe fn koopajr_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script(agent = "koopajr", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -60,9 +57,7 @@ unsafe fn koopajr_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "koopajr", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -84,7 +79,7 @@ unsafe fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 75, 80, 0, 85, 5.0, 0.0, 8.0, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new_raw(0x0c9b8e246e), 4.0, 75, 80, 0, 85, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("clowntongue3"), 4.0, 75, 80, 0, 85, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -94,10 +89,9 @@ unsafe fn koopajr_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        koopajr_attack_11_game,
-        koopajr_attack_12_game,
-        koopajr_attack_dash_game,
-    );
+    smashline::Agent::new("koopajr")
+        .acmd("game_attack11", koopajr_attack_11_game)
+        .acmd("game_attack12", koopajr_attack_12_game)
+        .acmd("game_attackdash", koopajr_attack_dash_game)
+        .install();
 }
-

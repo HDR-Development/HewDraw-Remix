@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "lucario", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -34,8 +32,7 @@ unsafe fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -62,8 +59,7 @@ unsafe fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -86,15 +82,14 @@ unsafe fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        ATTACK(fighter, 0, 0, Hash40::new("top"),   5.0, 55, 120, 0, 30, 5.5, 0.0, 8.0, 4.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("footr"), 5.0, 55, 120, 0, 25, 4.5, 3.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"),   5.0, 55, 120, 0, 30, 5.5, 0.0, 8.0, 4.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("footr"), 5.0, 55, 120, 0, 25, 4.5, 3.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -104,11 +99,10 @@ unsafe fn lucario_attack_13_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_attack_dash_game,
-        lucario_attack_11_game,
-        lucario_attack_12_game,
-        lucario_attack_13_game,
-    );
+    smashline::Agent::new("lucario")
+        .acmd("game_attackdash", lucario_attack_dash_game)
+        .acmd("game_attack11", lucario_attack_11_game)
+        .acmd("game_attack12", lucario_attack_12_game)
+        .acmd("game_attack13", lucario_attack_13_game)
+        .install();
 }
-

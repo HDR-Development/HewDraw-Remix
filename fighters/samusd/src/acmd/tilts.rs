@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "samusd", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -35,8 +34,7 @@ unsafe fn samusd_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority)]
-unsafe fn samusd_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -44,14 +42,13 @@ unsafe fn samusd_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 16, 11, 30, 0, 195, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 13.5, 5, 30, 0, 195, 1, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -84,8 +81,7 @@ unsafe fn samusd_attack_s3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attacks3", category = ACMD_EFFECT, low_priority)]
-unsafe fn samusd_attack_s3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -93,14 +89,13 @@ unsafe fn samusd_attack_s3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 14, 2, 5, 165, 0.95, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 9, 2, 5, 165, 0.95, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -134,8 +129,7 @@ unsafe fn samusd_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority)]
-unsafe fn samusd_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -143,14 +137,13 @@ unsafe fn samusd_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 11, -15, 0, 195, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 6, -15, 0, 195, 1, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.8);
@@ -211,8 +204,7 @@ unsafe fn samusd_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "sound_attackhi3" , category = ACMD_SOUND , low_priority)]
-unsafe fn samusd_attack_hi3_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -226,8 +218,7 @@ unsafe fn samusd_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority)]
-unsafe fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0); 
@@ -252,8 +243,7 @@ unsafe fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samusd_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -272,8 +262,7 @@ unsafe fn samusd_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn samusd_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -290,18 +279,17 @@ unsafe fn samusd_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        samusd_attack_s3_hi_game,
-        samusd_attack_s3_hi_effect,
-        samusd_attack_s3_game,
-        samusd_attack_s3_effect,
-        samusd_attack_s3_lw_game,
-        samusd_attack_s3_lw_effect,
-        samusd_attack_hi3_game,
-        samusd_attack_hi3_sound,
-        samusd_attack_hi3_effect,
-        samusd_attack_hi3_expression,
-        samusd_attack_lw3_game,
-    );
+    smashline::Agent::new("samusd")
+        .acmd("game_attacks3hi", samusd_attack_s3_hi_game)
+        .acmd("effect_attacks3hi", samusd_attack_s3_hi_effect)
+        .acmd("game_attacks3", samusd_attack_s3_game)
+        .acmd("effect_attacks3", samusd_attack_s3_effect)
+        .acmd("game_attacks3lw", samusd_attack_s3_lw_game)
+        .acmd("effect_attacks3lw", samusd_attack_s3_lw_effect)
+        .acmd("game_attackhi3", samusd_attack_hi3_game)
+        .acmd("sound_attackhi3", samusd_attack_hi3_sound)
+        .acmd("effect_attackhi3", samusd_attack_hi3_effect)
+        .acmd("expression_attackhi3", samusd_attack_hi3_expression)
+        .acmd("game_attacklw3", samusd_attack_lw3_game)
+        .install();
 }
-

@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "szerosuit", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -29,9 +28,7 @@ unsafe fn szerosuit_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "szerosuit", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -52,9 +49,7 @@ unsafe fn szerosuit_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "szerosuit", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -69,9 +64,7 @@ unsafe fn szerosuit_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "szerosuit", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let attack_motion_rate = 11.0/(20.0-6.0);
@@ -84,13 +77,13 @@ unsafe fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(attack_speed_reduction, 0.0, 0.0));
         FT_MOTION_RATE(fighter, attack_motion_rate);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 64, 0, 50, 4.5, 0.0, 10.0, 1.0, Some(0.0), Some(5.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
-        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 10.0, 361, 64, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 64, 0, 50, 4.5, 0.0, 10.0, 1.0, Some(0.0), Some(5.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 10.0, 361, 64, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
     }
     frame(lua_state, 6.0 + 4.0/attack_motion_rate);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 70, 85, 0, 60, 4.5, 0.0, 10.0, 1.0, Some(0.0), Some(5.0), Some(1.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
-        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 7.0, 70, 85, 0, 60, 3.1, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 70, 85, 0, 60, 4.5, 0.0, 10.0, 1.0, Some(0.0), Some(5.0), Some(1.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 7.0, 70, 85, 0, 60, 3.1, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
     }
     frame(lua_state, 20.0);
     FT_MOTION_RATE(fighter, 1.0);
@@ -104,8 +97,7 @@ unsafe fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -130,12 +122,11 @@ unsafe fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_attack_11_game,
-        szerosuit_attack_12_game,
-        szerosuit_attack_13_game,
-        szerosuit_attack_dash_game,
-        szerosuit_attack_dash_expression,
-    );
+    smashline::Agent::new("szerosuit")
+        .acmd("game_attack11", szerosuit_attack_11_game)
+        .acmd("game_attack12", szerosuit_attack_12_game)
+        .acmd("game_attack13", szerosuit_attack_13_game)
+        .acmd("game_attackdash", szerosuit_attack_dash_game)
+        .acmd("expression_attackdash", szerosuit_attack_dash_expression)
+        .install();
 }
-

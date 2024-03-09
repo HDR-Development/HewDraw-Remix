@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script(agent = "packun", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -30,9 +29,7 @@ unsafe fn packun_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script(agent = "packun", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -71,9 +68,7 @@ unsafe fn packun_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script(agent = "packun", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -100,8 +95,7 @@ unsafe fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_attack13", category = ACMD_EFFECT, low_priority )]
-unsafe fn packun_attack_13_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -117,8 +111,7 @@ unsafe fn packun_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -138,8 +131,7 @@ unsafe fn packun_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "effect_attack100end" , category = ACMD_EFFECT , low_priority)]
-unsafe fn packun_attack_100_end_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_100_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -169,8 +161,7 @@ unsafe fn packun_attack_100_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -186,7 +177,7 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new_raw(0x0496187f8d), 12.0 * stance.damage_other, 45, 100, 0, 45, 5.3, -5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("potc"), 12.0 * stance.damage_other, 45, 100, 0, 45, 5.3, -5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0 * stance.damage_other, 45, 100, 0, 45, 4.0, 0.0, 11.0, 0.0, Some(0.0), Some(5.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 1.3);
         if stance.label == 2 {
@@ -222,14 +213,13 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        packun_attack_11_game,
-        packun_attack_12_game,
-        packun_attack_13_game,
-        packun_attack_13_effect,
-        packun_attack_100_end_game,
-        packun_attack_100_end_effect,
-        packun_attack_dash_game,
-    );
+    smashline::Agent::new("packun")
+        .acmd("game_attack11", packun_attack_11_game)
+        .acmd("game_attack12", packun_attack_12_game)
+        .acmd("game_attack13", packun_attack_13_game)
+        .acmd("effect_attack13", packun_attack_13_effect)
+        .acmd("game_attack100end", packun_attack_100_end_game)
+        .acmd("effect_attack100end", packun_attack_100_end_effect)
+        .acmd("game_attackdash", packun_attack_dash_game)
+        .install();
 }
-

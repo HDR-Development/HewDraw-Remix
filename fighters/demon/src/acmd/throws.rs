@@ -1,8 +1,7 @@
 use super::*;
 use smash2;
 
-#[acmd_script( agent = "demon", script = "game_catch", category = ACMD_GAME, low_priority )]
-unsafe fn game_catch(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -22,8 +21,7 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_throwhi" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -46,8 +44,7 @@ unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -102,8 +99,7 @@ unsafe fn demon_throw_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.375);
 }
 
-#[acmd_script( agent = "demon_blaster", script = "game_flythrow", category = ACMD_GAME, low_priority )]
-unsafe fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -118,8 +114,7 @@ unsafe fn demon_blaster_fly_throw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
@@ -167,12 +162,80 @@ unsafe fn demon_throw_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+unsafe extern "C" fn demon_throw_command_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if !smash2::app::FighterCutInManager::is_vr_mode() {
+        if smash2::app::FighterCutInManager::is_one_on_one_including_thrown(&*(fighter.module_accessor as *const smash2::app::BattleObjectModuleAccessor)) {
+            if is_excute(fighter) {
+                FighterSpecializer_Demon::check_disabled_motion_camera_of_scale(boma);
+                FighterSpecializer_Demon::check_disabled_motion_camera_of_stage(boma);
+            }
+            if WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_THROW_MOTION_CAMERA) {
+                if is_excute(fighter) {
+                    CHECK_VALID_START_CAMERA(fighter, 0, 7, 0, 50, 30, 0, true);
+                }
+                if !WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_DISABLE_THROW_MOTION_CAMERA) {
+                    if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
+                        if is_excute(fighter) {
+                            REQ_MOTION_CAMERA(fighter, Hash40::new_raw(0x163d9703b0), false);
+                        }
+                    }
+                }
+                if is_excute(fighter) {
+                    let scale = PostureModule::scale(boma);
+                    CAM_ZOOM_IN_arg5(fighter, 7.0, 0.0, scale * 1.5, 0.0, 0.0);
+                }
+            }
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        REVERSE_LR(fighter);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 1.0, 165, 150, 0, 65, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 60, 80, 0, 50, 5.0, 0.0, 8.0, -3.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_THROWCOMMAND, *ATTACK_REGION_KICK);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 80.0);
+    if is_excute(fighter) {
+        if !WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_THROW_COMMAND_FLAG_USE_OTHER_PARAM) {
+            CHECK_FINISH_CAMERA(fighter, 18, 2);
+        }
+        else {
+            CHECK_FINISH_CAMERA(fighter, 18, 15);
+        }
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 19, 50, 0, 30, 6.0, 0.0, 7.5, -14.0, Some(0.0), Some(6.0), Some(-14.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_THROWCOMMAND, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 19, 50, 0, 30, 4.0, 0.0, 8.0, -6.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_THROWCOMMAND, *ATTACK_REGION_KICK);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    frame(lua_state, 81.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        CAM_ZOOM_OUT(fighter);
+    }
+}
+
 pub fn install() {
-    install_acmd_scripts!(
-        game_catch,
-        demon_throw_b_game,
-        demon_blaster_fly_throw_game,
-        demon_throw_hi_expression,
-        demon_throw_lw_game,
-    );
+    smashline::Agent::new("demon_blaster")
+        .acmd("game_flythrow", demon_blaster_fly_throw_game)
+        .install();
+    smashline::Agent::new("demon")
+        .acmd("game_catch", game_catch)
+        .acmd("expression_throwhi", demon_throw_hi_expression)
+        .acmd("game_throwb", demon_throw_b_game)
+        .acmd("game_throwlw", demon_throw_lw_game)
+        .acmd("game_throwcommand", demon_throw_command_game)
+        .install();
 }

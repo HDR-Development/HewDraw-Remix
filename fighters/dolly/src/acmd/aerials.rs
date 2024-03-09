@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "dolly", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -46,8 +44,7 @@ unsafe fn dolly_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -118,8 +115,7 @@ unsafe fn dolly_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -183,8 +179,7 @@ unsafe fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -222,8 +217,7 @@ unsafe fn dolly_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn dolly_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -274,12 +268,11 @@ unsafe fn dolly_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        dolly_attack_air_n_game,
-        dolly_attack_air_f_game,
-        dolly_attack_air_b_game,
-        dolly_attack_air_hi_game,
-        dolly_attack_air_lw_game,
-    );
+    smashline::Agent::new("dolly")
+        .acmd("game_attackairn", dolly_attack_air_n_game)
+        .acmd("game_attackairf", dolly_attack_air_f_game)
+        .acmd("game_attackairb", dolly_attack_air_b_game)
+        .acmd("game_attackairhi", dolly_attack_air_hi_game)
+        .acmd("game_attackairlw", dolly_attack_air_lw_game)
+        .install();
 }
-

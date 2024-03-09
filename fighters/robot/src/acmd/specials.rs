@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "robot", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -16,8 +15,7 @@ unsafe fn robot_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -32,8 +30,7 @@ unsafe fn robot_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", scripts = ["game_specials", "game_specialairs"] , category = ACMD_GAME , low_priority)]
-unsafe fn robot_special_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -60,8 +57,7 @@ unsafe fn robot_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", scripts = ["effect_specials", "effect_specialairs"], category = ACMD_EFFECT, low_priority )]
-unsafe fn robot_special_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -117,8 +113,7 @@ unsafe fn robot_special_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", scripts = ["game_specialshi", "game_specialairshi"] , category = ACMD_GAME , low_priority)]
-unsafe fn robot_special_s_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -145,8 +140,7 @@ unsafe fn robot_special_s_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", scripts = ["effect_specialshi", "effect_specialairshi"], category = ACMD_EFFECT, low_priority )]
-unsafe fn robot_special_s_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -205,8 +199,7 @@ unsafe fn robot_special_s_hi_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "robot", scripts = ["game_specialslw", "game_specialairslw"] , category = ACMD_GAME , low_priority)]
-unsafe fn robot_special_s_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -233,8 +226,7 @@ unsafe fn robot_special_s_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", scripts = ["effect_specialslw", "effect_specialairslw"], category = ACMD_EFFECT, low_priority )]
-unsafe fn robot_special_s_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -290,8 +282,7 @@ unsafe fn robot_special_s_lw_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "robot", scripts = ["expression_specials", "expression_specialairs", "expression_specialshi", "expression_specialairshi", "expression_specialslw", "expression_specialairslw"] , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -302,7 +293,7 @@ unsafe fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -310,12 +301,11 @@ unsafe fn robot_special_s_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-#[acmd_script( agent = "robot", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME, low_priority )]
-unsafe fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -324,8 +314,7 @@ unsafe fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_specialhirise", category = ACMD_GAME, low_priority )]
-unsafe fn robot_special_hi_rise_game (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_rise_game (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
@@ -333,7 +322,13 @@ unsafe fn robot_special_hi_rise_game (fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, vars::robot::status::HELD_BUTTON);
-        let mut workingDamage = robotFrames/4.0;
+        let mut workingDamage = robotFrames/3.5;
+
+        if robotFrames <= 10.0 {
+            MeterModule::drain_direct(fighter.object(), 20.0);
+        } else {
+            MeterModule::drain_direct(fighter.object(), (robotFrames * 2.0));
+        }
 
         if (workingDamage < 4.0) {
             workingDamage = 0.0;
@@ -354,12 +349,27 @@ unsafe fn robot_special_hi_rise_game (fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.6);
+
+        if VarModule::is_flag(fighter.battle_object, vars::robot::instance::GROUNDED_UPB) {
+            FT_MOTION_RATE(fighter, 9.0/(22.0-4.0));
+        }
     }
+
+    /*frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::instance::GROUNDED_UPB) {
+            VarModule::on_flag(fighter.battle_object, vars::robot::instance::UPB_CANCEL);
+        }
+    }*/
+
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::robot::instance::UPB_CANCEL);
+    }
+
 }
 
-#[acmd_script( agent = "robot", script = "effect_specialhirise" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_special_hi_rise_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_rise_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
@@ -367,7 +377,7 @@ unsafe fn robot_special_hi_rise_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.55, 0.55, 2.25);
     }
-    if (robotFrames/4.0) > 4.0 {
+    if (robotFrames/3.5) > 4.0 {
         frame(lua_state, 1.0);
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
@@ -405,8 +415,7 @@ unsafe fn robot_special_hi_rise_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn robot_special_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -415,8 +424,7 @@ unsafe fn robot_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn robot_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -425,8 +433,7 @@ unsafe fn robot_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_specialhi", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -436,8 +443,7 @@ unsafe fn robot_special_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_specialairhi", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_air_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -447,9 +453,7 @@ unsafe fn robot_special_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "robot", scripts = ["expression_specialhi", "expression_specialairhi"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn robot_special_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -458,12 +462,11 @@ unsafe fn robot_special_hi_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_specialairsstart", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
 }
    
-#[acmd_script( agent = "robot", script = "sound_specialairs", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_air_s_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn robot_special_air_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -473,16 +476,13 @@ unsafe fn robot_special_air_s_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_specialairsend", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_air_s_end_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_air_s_end_sound(fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "robot", script = "sound_specialsstart", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_s_start_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_start_sound(fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "robot", script = "sound_specials", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_s_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -497,12 +497,10 @@ unsafe fn robot_special_s_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_specialsend", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_special_s_end_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_s_end_sound(fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "robot", script = "expression_specialhirise", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn robot_special_hi_rise_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_special_hi_rise_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let robotFrames = VarModule::get_float(fighter.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
@@ -517,39 +515,49 @@ unsafe fn robot_special_hi_rise_expression(fighter: &mut L2CAgentBase) {
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         }
         
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        robot_special_lw_game,
-        robot_special_air_lw_game,
-        robot_special_s_game,
-        robot_special_s_hi_game,
-        robot_special_s_lw_game,
-        robot_special_s_expression,
-        robot_special_hi_game,
-        robot_special_hi_rise_game,
-
-        robot_special_s_effect,
-        robot_special_s_lw_effect,
-        robot_special_s_hi_effect,
-        robot_special_hi_effect,
-        robot_special_air_hi_effect,
-        robot_special_hi_expression,
-        robot_special_hi_rise_effect,
-
-        robot_special_hi_sound,
-        robot_special_air_hi_sound,
-        robot_special_air_s_start_sound,
-        robot_special_air_s_sound,
-        robot_special_air_s_end_sound,
-        robot_special_s_start_sound,
-        robot_special_s_sound,
-        robot_special_s_end_sound,
-
-        robot_special_hi_rise_expression
-    );
+    smashline::Agent::new("robot")
+        .acmd("game_speciallw", robot_special_lw_game)
+        .acmd("game_specialairlw", robot_special_air_lw_game)
+        .acmd("game_specials", robot_special_s_game)
+        .acmd("game_specialairs", robot_special_s_game)
+        .acmd("effect_specials", robot_special_s_effect)
+        .acmd("effect_specialairs", robot_special_s_effect)
+        .acmd("game_specialshi", robot_special_s_hi_game)
+        .acmd("game_specialairshi", robot_special_s_hi_game)
+        .acmd("effect_specialshi", robot_special_s_hi_effect)
+        .acmd("effect_specialairshi", robot_special_s_hi_effect)
+        .acmd("game_specialslw", robot_special_s_lw_game)
+        .acmd("game_specialairslw", robot_special_s_lw_game)
+        .acmd("effect_specialslw", robot_special_s_lw_effect)
+        .acmd("effect_specialairslw", robot_special_s_lw_effect)
+        .acmd("expression_specials", robot_special_s_expression)
+        .acmd("expression_specialairs", robot_special_s_expression)
+        .acmd("expression_specialshi", robot_special_s_expression)
+        .acmd("expression_specialairshi", robot_special_s_expression)
+        .acmd("expression_specialslw", robot_special_s_expression)
+        .acmd("expression_specialairslw", robot_special_s_expression)
+        .acmd("game_specialhi", robot_special_hi_game)
+        .acmd("game_specialairhi", robot_special_hi_game)
+        .acmd("game_specialhirise", robot_special_hi_rise_game)
+        .acmd("effect_specialhirise", robot_special_hi_rise_effect)
+        .acmd("effect_specialhi", robot_special_hi_effect)
+        .acmd("effect_specialairhi", robot_special_air_hi_effect)
+        .acmd("sound_specialhi", robot_special_hi_sound)
+        .acmd("sound_specialairhi", robot_special_air_hi_sound)
+        .acmd("expression_specialhi", robot_special_hi_expression)
+        .acmd("expression_specialairhi", robot_special_hi_expression)
+        .acmd("sound_specialairsstart", robot_special_air_s_start_sound)
+        .acmd("sound_specialairs", robot_special_air_s_sound)
+        .acmd("sound_specialairsend", robot_special_air_s_end_sound)
+        .acmd("sound_specialsstart", robot_special_s_start_sound)
+        .acmd("sound_specials", robot_special_s_sound)
+        .acmd("sound_specialsend", robot_special_s_end_sound)
+        .acmd("expression_specialhirise", robot_special_hi_rise_expression)
+        .install();
 }

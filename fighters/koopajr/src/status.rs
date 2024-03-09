@@ -24,8 +24,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn koopajr_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn koopajr_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_KOOPAJR {
@@ -35,10 +34,20 @@ fn koopajr_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::install_agent_init_callbacks!(koopajr_init);
-    special_s_jump::install();
+unsafe extern "C" fn koopajr_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_KART) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_KART, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    fighter.status_end_Rebirth();
+    0.into()
+}
 
+pub fn install() {
+    special_s_jump::install();
     special_hi_escape::install();
     special_hi_damage::install();
+    smashline::Agent::new("koopajr")
+        .on_start(koopajr_init)
+        .status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, koopajr_rebirth_end)
+        .install();
 }

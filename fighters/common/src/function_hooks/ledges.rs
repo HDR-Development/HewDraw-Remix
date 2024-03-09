@@ -43,19 +43,17 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                           || (fighter_kind == *FIGHTER_KIND_RICHTER && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
                           || (fighter_kind == *FIGHTER_KIND_MASTER  && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
 
-
     // Ledgehog code
-    let pos = GroundModule::hang_cliff_pos_3f(boma);
+    let cliff_id = GroundModule::get_cliff_id_uint32(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
     for object_id in util::get_all_active_battle_object_ids() {
         let object = ::utils::util::get_battle_object_from_id(object_id);
         if !object.is_null() {
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-            || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) {
                 continue;
             }
 
-            if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+            if VarModule::get_int(object, vars::common::instance::LEDGE_ID) == cliff_id as i32 {
                 if !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
                     return 0;
                 }
@@ -95,8 +93,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 //=================================================================
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+    VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, -1);
     original!()(boma)
 }
 
@@ -461,7 +458,6 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         }
     }
 
-
     if fighter_kind == *FIGHTER_KIND_IKE {
         if status_kind == *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH {
             return 0;
@@ -723,8 +719,6 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         }
     }
 
-
-
     if fighter_kind == *FIGHTER_KIND_KAMUI {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
             if frame < 45.0 {
@@ -779,7 +773,6 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
             }
         }
     }
-
 
     if fighter_kind == *FIGHTER_KIND_SHIZUE {
         if status_kind == *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP {
@@ -961,7 +954,6 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR{
         return -1;
     }
-
 
     1
 }

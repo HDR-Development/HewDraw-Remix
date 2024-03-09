@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "ike", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -26,8 +25,7 @@ unsafe fn ike_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -47,8 +45,7 @@ unsafe fn ike_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -66,8 +63,7 @@ unsafe fn ike_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.1);
@@ -94,8 +90,7 @@ unsafe fn ike_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ike", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ike_attack_dash_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -111,7 +106,7 @@ unsafe fn ike_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
@@ -120,12 +115,11 @@ unsafe fn ike_attack_dash_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ike_attack_11_game,
-        ike_attack_12_game,
-        ike_attack_13_game,
-        ike_attack_dash_game,
-        ike_attack_dash_expression,
-    );
+    smashline::Agent::new("ike")
+        .acmd("game_attack11", ike_attack_11_game)
+        .acmd("game_attack12", ike_attack_12_game)
+        .acmd("game_attack13", ike_attack_13_game)
+        .acmd("game_attackdash", ike_attack_dash_game)
+        .acmd("expression_attackdash", ike_attack_dash_expression)
+        .install();
 }
-

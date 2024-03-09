@@ -53,6 +53,8 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         sv_kinetic_energy!(
             set_accel,
@@ -132,12 +134,21 @@ unsafe extern "C" fn special_n_float_end(_fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_kirby"),
-        statuses::ganon::SPECIAL_N_FLOAT,
-        StatusInfo::new()
-            .with_pre(special_n_float_pre)
-            .with_main(special_n_float_main)
-            .with_end(special_n_float_end)
-    );
+    smashline::Agent::new("kirby")
+        .status(
+            Pre,
+            statuses::kirby::GANON_SPECIAL_N_FLOAT,
+            special_n_float_pre,
+        )
+        .status(
+            Main,
+            statuses::kirby::GANON_SPECIAL_N_FLOAT,
+            special_n_float_main,
+        )
+        .status(
+            End,
+            statuses::kirby::GANON_SPECIAL_N_FLOAT,
+            special_n_float_end,
+        )
+        .install();
 }

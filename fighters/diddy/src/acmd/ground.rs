@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "diddy", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_11(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -23,8 +22,7 @@ unsafe fn diddy_attack_11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_12(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -45,8 +43,7 @@ unsafe fn diddy_attack_12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_13(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_13(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -62,8 +59,7 @@ unsafe fn diddy_attack_13(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "diddy", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_attack_dash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -100,8 +96,7 @@ unsafe fn diddy_attack_dash(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "diddy", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -126,12 +121,11 @@ unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_attack_11,
-        diddy_attack_12,
-        diddy_attack_13,
-        diddy_attack_dash,
-        effect_attackdash,
-    );
+    smashline::Agent::new("diddy")
+        .acmd("game_attack11", diddy_attack_11)
+        .acmd("game_attack12", diddy_attack_12)
+        .acmd("game_attack13", diddy_attack_13)
+        .acmd("game_attackdash", diddy_attack_dash)
+        .acmd("effect_attackdash", effect_attackdash)
+        .install();
 }
-

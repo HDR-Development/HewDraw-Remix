@@ -1,8 +1,6 @@
 use super::*;
 
-
-#[acmd_script( agent = "buddy", script = "game_jumpaerialf1" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_jump_aerial_f1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_jump_aerial_f1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
 
@@ -11,8 +9,8 @@ unsafe fn buddy_jump_aerial_f1_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_JUMP_FLY_NEXT);
     }
 }
-#[acmd_script( agent = "buddy", script = "game_jumpaerialf2" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_jump_aerial_f2_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn buddy_jump_aerial_f2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     
@@ -22,8 +20,7 @@ unsafe fn buddy_jump_aerial_f2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -48,8 +45,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -74,8 +70,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -100,8 +95,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,8 +110,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -142,8 +135,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -163,8 +155,7 @@ unsafe fn buddy_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_turn" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -173,8 +164,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -184,8 +174,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -198,21 +187,21 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy_bullet", script = "game_bakyun" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_bullet_bakyun_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_bullet_bakyun_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.4, 86, 62, 0, 72, 3.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(boma);
         //AttackModule::set_add_reaction_frame(boma, 0, 6, false);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.4, 86, 62, 0, 72, 3.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         //AttackModule::set_add_reaction_frame(boma, 0, 6, false);
     }
-    frame(lua_state, 6.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.4, 361, 8, 0, 8, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.9, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
@@ -223,8 +212,7 @@ unsafe fn buddy_bullet_bakyun_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "buddy_bullet", script = "game_missile", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_bullet_missile_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_bullet_missile_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -244,8 +232,7 @@ unsafe fn buddy_bullet_missile_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy_pad", script = "game_fall" , category = ACMD_GAME , low_priority)]
-unsafe fn buddy_pad_fall_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_pad_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     let pad_length = 6.0;
@@ -279,8 +266,7 @@ unsafe fn buddy_pad_fall_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -295,8 +281,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -311,22 +296,26 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        //buddy_jump_aerial_f1_game,
-        //buddy_jump_aerial_f2_game,
-        escape_air_game,
-        escape_air_slide_game,
-        buddy_catch_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        buddy_bullet_bakyun_game,
-        buddy_bullet_missile_game,
-        buddy_pad_fall_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
+    smashline::Agent::new("buddy_bullet")
+        .acmd("game_bakyun", buddy_bullet_bakyun_game)
+        .acmd("game_missile", buddy_bullet_missile_game)
+        .install();
+    smashline::Agent::new("buddy")
+        .acmd("game_jumpaerialf1", buddy_jump_aerial_f1_game)
+        .acmd("game_jumpaerialf2", buddy_jump_aerial_f2_game)
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_catch", buddy_catch_game)
+        .acmd("game_turn", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .install();
+    smashline::Agent::new("buddy_pad")
+        .acmd("game_fall", buddy_pad_fall_game)
+        .install();
 }

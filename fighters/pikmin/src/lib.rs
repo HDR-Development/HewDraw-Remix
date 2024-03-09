@@ -3,7 +3,7 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-
+pub mod pikmin;
 pub mod status;
 pub mod opff;
 
@@ -38,8 +38,9 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
+pub fn install() {
     acmd::install();
+    pikmin::install();
     status::install();
-    opff::install(is_runtime);
+    opff::install();
 }

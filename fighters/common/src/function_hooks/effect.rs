@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), 0xde89fce0a];
+const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), hash40("sys_nopassive")];
 const SMOKE_FX: [u64 ; 16] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
@@ -207,7 +207,6 @@ unsafe fn FOOT_EFFECT_FLIP_hook(lua_state: u64) {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
 
-
     l2c_agent.clear_lua_stack();
 
     for i in 0..18 {
@@ -232,9 +231,6 @@ unsafe fn FOOT_EFFECT_FLIP_hook(lua_state: u64) {
 #[skyline::hook(replace=smash::app::sv_animcmd::LANDING_EFFECT)]
 unsafe fn LANDING_EFFECT_hook(lua_state: u64) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-        return;
-    }
 
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
@@ -268,9 +264,6 @@ unsafe fn LANDING_EFFECT_hook(lua_state: u64) {
 #[skyline::hook(replace=smash::app::sv_animcmd::LANDING_EFFECT_FLIP)]
 unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-        return;
-    }
 
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
@@ -279,7 +272,6 @@ unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
     for i in 0..18 {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
-
 
     l2c_agent.clear_lua_stack();
 
@@ -334,7 +326,7 @@ unsafe fn DOWN_EFFECT_hook(lua_state: u64) {
 }
 
 #[skyline::hook(replace=EffectModule::req_on_joint)]
-unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: &smash::phx::Vector3f, arg8: &smash::phx::Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
+unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: &Vector3f, arg8: &Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
     let mut eff_size = size;
     if SHOCKWAVE_FX.contains(&effHash.hash) {
         eff_size = size * 0.7;
@@ -343,10 +335,10 @@ unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smas
 }
 
 #[skyline::hook(replace=EffectModule::req_follow)]
-unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
+unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
     let mut eff_size = size;
     // Shrink knockback smoke effect by 25%
-    if effHash.hash == 0x1154cb72bf as u64 {  // hash for kb smoke
+    if effHash.hash == hash40("sys_flyroll_smoke") as u64 {  // hash for kb smoke
         eff_size = size * 0.75;
     }
     original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
@@ -371,7 +363,7 @@ unsafe fn preset_lifetime_rate_partial_hook(boma: &mut BattleObjectModuleAccesso
 }
 
 #[skyline::hook(replace=EffectModule::get_dead_effect_scale)]
-unsafe fn get_dead_effect_scale_hook(boma: &mut BattleObjectModuleAccessor, arg1: &smash::phx::Vector3f, arg2: f32, arg3: bool) -> f32 {
+unsafe fn get_dead_effect_scale_hook(boma: &mut BattleObjectModuleAccessor, arg1: &Vector3f, arg2: f32, arg3: bool) -> f32 {
     // Shrink KO gfx by 25%
     original!()(boma, arg1, arg2, arg3) * 0.75
 }

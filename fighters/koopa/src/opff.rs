@@ -92,8 +92,8 @@ unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
         if fighter.status_frame() == 51 { // indicates start of "excellent" frame window
             VarModule::on_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
-            macros::LAST_EFFECT_SET_RATE(fighter, 3.0);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
+            LAST_EFFECT_SET_RATE(fighter, 3.0);
         } else if fighter.status_frame() == 58 { // window ends
             VarModule::off_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
         }
@@ -102,9 +102,9 @@ unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH) {
             if VarModule::is_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                 SlowModule::set_whole(fighter.module_accessor, 8, 40);
-                macros::CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
-                macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
+                CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
+                QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
                 PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
                 PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
                 VarModule::off_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM);
@@ -143,6 +143,20 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn initialize_fireball(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_INIT) {
+        return;
+    }
+    //Grant fireball during training mode
+    if is_training_mode() {
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+    }
+    else{
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+    }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_INIT);
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
@@ -150,11 +164,10 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fireball_cooldown(boma,status_kind);
     koopa_ex_punch(fighter);
     fastfall_specials(fighter);
-    fastfall_specials(fighter);
+    initialize_fireball(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_KOOPA )]
-pub fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		koopa_frame(fighter)
@@ -165,4 +178,10 @@ pub unsafe fn koopa_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("koopa")
+        .on_line(Main, koopa_frame_wrapper)
+        .install();
 }

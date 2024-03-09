@@ -8,20 +8,23 @@ unsafe fn sub_ftStatusUniqProcessGuardOn_initStatus_common(fighter: &mut L2CFigh
         fighter.module_accessor,
         *FIGHTER_SHIELD_KIND_GUARD,
         app::ShieldStatus(*SHIELD_STATUS_NORMAL),
-        0,
+        0
     );
-    let hit_stop_mul =
-        WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64);
+    let hit_stop_mul = WorkModule::get_param_float(
+        fighter.module_accessor,
+        hash40("common"),
+        0x20d241cd64
+    );
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
     let recovery_frame = WorkModule::get_param_int(
         fighter.module_accessor,
         hash40("common"),
-        hash40("guard_off_disable_shield_recovery"),
+        hash40("guard_off_disable_shield_recovery")
     );
     WorkModule::set_int(
         fighter.module_accessor,
         recovery_frame,
-        *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME,
+        *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME
     );
 }
 

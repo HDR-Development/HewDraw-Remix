@@ -255,19 +255,6 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
         }
     };
 
-    let path = Path::new(file!()).strip_prefix("hdr-macros").unwrap();
-    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
-    let parent = match path.parent() {
-        Some(parent) => parent,
-        None => {
-            return syn::Error::new(literal.span(), "Failed to get parent of current path.")
-                .into_compile_error()
-                .into()
-        }
-    };
-
-    let rom_path = parent.join("../../romfs/build/");
-
     let mut output = String::new();
     for line in data.lines() {
         let line = line.trim_start();
@@ -275,12 +262,7 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
             if let Some((agent, file)) = line.split_once(":") {
                 let agent = agent.trim_start().trim_end();
                 let file = file.trim_start().trim_end();
-                if let Ok(metadata) = std::fs::metadata(rom_path.join(file)) {
-                    writeln!(output, "fighter_kind_{}:{}:{}", agent, file, metadata.len())
-                        .expect("Unknown error writing to output!");
-                } else {
-                    panic!("Missing romfs file {}", file);
-                }
+                let _ = writeln!(output, "fighter_kind_{}:{}", agent, file);
             }
         }
     }

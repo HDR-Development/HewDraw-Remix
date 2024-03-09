@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "wario", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -38,8 +36,7 @@ unsafe fn wario_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -54,8 +51,7 @@ unsafe fn wario_attack_12_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "wario", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn wario_attack_12_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_12_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -68,12 +64,11 @@ unsafe fn wario_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn wario_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -102,8 +97,8 @@ unsafe fn wario_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-#[acmd_script( agent = "wario", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn wario_attack_dash_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn wario_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -124,12 +119,11 @@ unsafe fn wario_attack_dash_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wario_attack_11_game,
-        wario_attack_12_game,
-        wario_attack_12_expression,
-        wario_attack_dash_game,
-        wario_attack_dash_effect,
-    );
+    smashline::Agent::new("wario")
+        .acmd("game_attack11", wario_attack_11_game)
+        .acmd("game_attack12", wario_attack_12_game)
+        .acmd("expression_attack12", wario_attack_12_expression)
+        .acmd("game_attackdash", wario_attack_dash_game)
+        .acmd("effect_attackdash", wario_attack_dash_effect)
+        .install();
 }
-

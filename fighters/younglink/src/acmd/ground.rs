@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "younglink", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -24,8 +22,7 @@ unsafe fn younglink_attack_11_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "younglink", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -48,8 +45,7 @@ unsafe fn younglink_attack_12_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "younglink", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_13_game (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_13_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 6.0);
@@ -65,8 +61,7 @@ unsafe fn younglink_attack_13_game (fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
@@ -78,7 +73,7 @@ unsafe fn younglink_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 50, 80, 0, 50, 4.5, 0.0, 5.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 50, 80, 0, 50, 4.5, 0.0, 5.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 22.0);
     FT_MOTION_RATE_RANGE(fighter, 22.0, 47.0, 18.0);
@@ -93,8 +88,8 @@ unsafe fn younglink_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 47.0);
     FT_MOTION_RATE(fighter, 1.0);
 }
-#[acmd_script( agent = "younglink", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn younglink_attack_dash_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn younglink_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -128,8 +123,8 @@ unsafe fn younglink_attack_dash_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
 }
-#[acmd_script( agent = "younglink", script = "sound_attackdash" , category = ACMD_SOUND , low_priority)]
-unsafe fn younglink_attack_dash_sound(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn younglink_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -137,8 +132,8 @@ unsafe fn younglink_attack_dash_sound(fighter: &mut L2CAgentBase) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_younglink_rnd_attack"));
     }
 }
-#[acmd_script( agent = "younglink", script = "expression_attackdash" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn younglink_attack_dash_expression(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn younglink_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -156,16 +151,14 @@ unsafe fn younglink_attack_dash_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        younglink_attack_11_game,
-        younglink_attack_12_game,
-        younglink_attack_13_game,
-        younglink_attack_dash_game,
-        younglink_attack_dash_effect,
-        younglink_attack_dash_sound,
-        younglink_attack_dash_expression
-    );
+    smashline::Agent::new("younglink")
+        .acmd("game_attack11", younglink_attack_11_game)
+        .acmd("game_attack12", younglink_attack_12_game)
+        .acmd("game_attack13", younglink_attack_13_game)
+        .acmd("game_attackdash", younglink_attack_dash_game)
+        .acmd("effect_attackdash", younglink_attack_dash_effect)
+        .acmd("sound_attackdash", younglink_attack_dash_sound)
+        .acmd("expression_attackdash", younglink_attack_dash_expression)
+        .install();
 }
-

@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "captain", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -25,8 +23,7 @@ unsafe fn captain_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "captain", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -51,9 +48,7 @@ unsafe fn captain_attack_12_game(fighter: &mut L2CAgentBase) {
     }   
 }
 
-
-#[acmd_script( agent = "captain", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn captain_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -67,9 +62,7 @@ unsafe fn captain_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -83,9 +76,7 @@ unsafe fn captain_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "game_attack100end", category = ACMD_GAME, low_priority )]
-unsafe fn captain_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     wait(lua_state, 6.0);
@@ -99,20 +90,18 @@ unsafe fn captain_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn captain_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 51, 80, 0, 70, 5.5, 0.0, 10.0, 8.5, Some(0.0), Some(8.0), Some(8.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 10.0, 51, 80, 0, 70, 4.5, -2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 51, 80, 0, 70, 5.5, 0.0, 10.0, 8.5, Some(0.0), Some(8.0), Some(8.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 10.0, 51, 80, 0, 70, 4.5, -2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 51, 80, 0, 70, 4.0, 0.0, 10.0, 9.5, Some(0.0), Some(6.5), Some(9.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 6.0, 51, 80, 0, 70, 4.0, -2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 51, 80, 0, 70, 4.0, 0.0, 10.0, 9.5, Some(0.0), Some(6.5), Some(9.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 6.0, 51, 80, 0, 70, 4.0, -2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -120,9 +109,7 @@ unsafe fn captain_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "captain", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn captain_attack_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_attack_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -140,16 +127,14 @@ unsafe fn captain_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        captain_attack_11_game,
-        captain_attack_12_game,
-        captain_attack_13_game,
-        captain_attack_100_end_game,
-        captain_attack_dash_game,
-        captain_attack_12_effect,
-        captain_attack_dash_effect,
-    );
+    smashline::Agent::new("captain")
+        .acmd("game_attack11", captain_attack_11_game)
+        .acmd("game_attack12", captain_attack_12_game)
+        .acmd("effect_attack12", captain_attack_12_effect)
+        .acmd("game_attack13", captain_attack_13_game)
+        .acmd("game_attack100end", captain_attack_100_end_game)
+        .acmd("game_attackdash", captain_attack_dash_game)
+        .acmd("effect_attackdash", captain_attack_dash_effect)
+        .install();
 }
-
