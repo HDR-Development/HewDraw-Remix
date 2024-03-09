@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "gekkouga", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -32,8 +30,7 @@ unsafe fn gekkouga_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gekkouga", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gekkouga_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -45,8 +42,7 @@ unsafe fn gekkouga_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,8 +72,7 @@ unsafe fn gekkouga_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gekkouga", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn gekkouga_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -99,8 +94,8 @@ unsafe fn gekkouga_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-#[acmd_script( agent = "gekkouga", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_air_b_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn gekkouga_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -163,8 +158,7 @@ unsafe fn gekkouga_attack_air_b_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -201,8 +195,7 @@ unsafe fn gekkouga_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn gekkouga_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -237,7 +230,8 @@ unsafe fn gekkouga_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 50.0);
-    if is_excute(fighter) {  }frame(lua_state, 53.0);
+    if is_excute(fighter) {  }
+    frame(lua_state, 53.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -245,13 +239,13 @@ unsafe fn gekkouga_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_attack_air_n_game,
-        gekkouga_attack_air_n_effect,
-        gekkouga_attack_air_f_game,
-        gekkouga_attack_air_f_effect,
-        gekkouga_attack_air_b_game,
-        gekkouga_attack_air_hi_game,
-        gekkouga_attack_air_lw_game,
-    );
+    smashline::Agent::new("gekkouga")
+        .acmd("game_attackairn", gekkouga_attack_air_n_game)
+        .acmd("effect_attackairn", gekkouga_attack_air_n_effect)
+        .acmd("game_attackairf", gekkouga_attack_air_f_game)
+        .acmd("effect_attackairf", gekkouga_attack_air_f_effect)
+        .acmd("game_attackairb", gekkouga_attack_air_b_game)
+        .acmd("game_attackairhi", gekkouga_attack_air_hi_game)
+        .acmd("game_attackairlw", gekkouga_attack_air_lw_game)
+        .install();
 }

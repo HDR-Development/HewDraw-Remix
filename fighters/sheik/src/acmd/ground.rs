@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "sheik", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -21,8 +20,7 @@ unsafe fn sheik_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -37,8 +35,7 @@ unsafe fn sheik_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -61,8 +58,7 @@ unsafe fn sheik_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -77,8 +73,7 @@ unsafe fn sheik_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sheik", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -94,15 +89,14 @@ unsafe fn sheik_attack_100_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "sheik", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("bust"), 9.0, 60, 100, 0, 50, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 11.0, 75, 100, 0, 50, 4.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("armr"), 11.0, 75, 100, 0, 50, 4.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("bust"), 9.0, 60, 85, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("arml"), 11.0, 75, 85, 0, 40, 4.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("armr"), 11.0, 75, 85, 0, 40, 4.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -118,13 +112,12 @@ unsafe fn sheik_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sheik_attack_11_game,
-        sheik_attack_11_effect,
-        sheik_attack_12_game,
-        sheik_attack_12_effect,
-        sheik_attack_100_end_game,
-        sheik_attack_dash_game,
-    );
+    smashline::Agent::new("sheik")
+        .acmd("game_attack11", sheik_attack_11_game)
+        .acmd("effect_attack11", sheik_attack_11_effect)
+        .acmd("game_attack12", sheik_attack_12_game)
+        .acmd("effect_attack12", sheik_attack_12_effect)
+        .acmd("game_attack100end", sheik_attack_100_end_game)
+        .acmd("game_attackdash", sheik_attack_dash_game)
+        .install();
 }
-

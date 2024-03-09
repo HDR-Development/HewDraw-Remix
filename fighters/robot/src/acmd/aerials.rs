@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "robot", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -38,8 +37,7 @@ unsafe fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -67,8 +65,7 @@ unsafe fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -114,8 +111,7 @@ unsafe fn robot_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -148,8 +144,7 @@ unsafe fn robot_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -175,16 +170,19 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         for _ in 0..5 {
             wait(lua_state, 1.0);
             if is_excute(fighter) {
-                if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && !VarModule::is_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED){
+                if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) 
+                && !VarModule::is_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED) 
+                && WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) > 10.0 {
                     // If holding down the button, increment the charge and continue the slowed animation
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                         VarModule::on_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_STARTED);
                         VarModule::add_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL, 1.0);
                         let current_fuel = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-                        let current_fuel_depletion = (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 15.0);
+                        let current_fuel_depletion = (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 13.0);
                         if (current_fuel_depletion > current_fuel) {
                             VarModule::on_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED);
                             WorkModule::set_float(boma, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+                            MeterModule::drain_direct(fighter.battle_object, 200.0);
                             FT_MOTION_RATE(fighter, 1.0);
                         } else {
                             FT_MOTION_RATE(fighter, 2.0);
@@ -201,8 +199,9 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 
     if !VarModule::is_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_FINISHED) {
-        WorkModule::set_float(boma, WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 6.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-		FT_MOTION_RATE(fighter, 1.0);
+        WorkModule::set_float(boma, WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 13.0), *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+		MeterModule::drain_direct(fighter.battle_object, (VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) * 13.0));
+        FT_MOTION_RATE(fighter, 1.0);
 
         if VarModule::get_float(fighter.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) >= 5.0 {
             VarModule::on_flag(fighter.battle_object, vars::robot::status::IS_CHARGE_MAX);
@@ -258,8 +257,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -342,8 +340,7 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -374,8 +371,7 @@ unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -387,8 +383,7 @@ unsafe fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -454,8 +449,7 @@ unsafe fn robot_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -467,9 +461,9 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     for _ in 0..6 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 6.0, -3.0, Some(0.0), Some(6.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 2.0, -3.0, Some(0.0), Some(2.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 2.0, 0.0, -2.0, -3.0, Some(0.0), Some(-2.0), Some(3.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 6.0, -4.0, Some(0.0), Some(6.0), Some(8.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 1.2, 365, 100, 40, 0, 3.0, 0.0, 2.0, -4.0, Some(0.0), Some(2.0), Some(8.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 80, 100, 40, 0, 2.0, 0.0, -3.0, -4.0, Some(0.0), Some(-3.0), Some(8.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -478,7 +472,7 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 2.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 40, 85, 0, 45, 8.0, 0.0, 1.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 40, 85, 0, 45, 6.0, 0.0, 2.5, 0.0, Some(0.0), Some(2.5), Some(7.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -490,8 +484,7 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let mut effectX = 48.0;
@@ -510,23 +503,20 @@ unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     };
     for _ in 0..6 {
         if is_excute(fighter) {
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1.5, 7, 0, effectX, 0, 0, 1.3, true, *EF_FLIP_NONE);
+            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 3, 10, 1.5, effectX, 30, 0, 1.2, true, *EF_FLIP_NONE);
             LAST_EFFECT_SET_RATE(fighter, 3.0);
             effectX += 8.0;
             LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
-            LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 7, 0, effectX, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
-            LAST_EFFECT_SET_RATE(fighter, 3.0);
         }
         wait(lua_state, 3.0);
     }
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 3.0, -2.0, 0, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 3.0, 2.0, 8.0, 0, 0, 0, 1.5, true);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -556,8 +546,7 @@ unsafe fn robot_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -567,7 +556,7 @@ unsafe fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -579,24 +568,24 @@ unsafe fn robot_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        robot_attack_air_n_game,
-        robot_attack_air_n_effect,
-        robot_attack_air_f_game,
-        robot_attack_air_f_effect,
-        robot_attack_air_b_game,
-        robot_attack_air_b_effect,
-        robot_attack_air_b_sound,
-        robot_landing_air_b_game,
-        robot_attack_air_hi_game,
-        robot_attack_air_lw_game,
-        robot_attack_air_lw_effect,
-        robot_attack_air_lw_sound,
-        robot_attack_air_lw_expression
-    );
+    smashline::Agent::new("robot")
+        .acmd("game_attackairn", robot_attack_air_n_game)
+        .acmd("effect_attackairn", robot_attack_air_n_effect)
+        .acmd("game_attackairf", robot_attack_air_f_game)
+        .acmd("effect_attackairf", robot_attack_air_f_effect)
+        .acmd("game_attackairb", robot_attack_air_b_game)
+        .acmd("effect_attackairb", robot_attack_air_b_effect)
+        .acmd("sound_attackairb", robot_attack_air_b_sound)
+        .acmd("game_landingairb", robot_landing_air_b_game)
+        .acmd("game_attackairhi", robot_attack_air_hi_game)
+        .acmd("game_attackairlw", robot_attack_air_lw_game)
+        .acmd("effect_attackairlw", robot_attack_air_lw_effect)
+        .acmd("sound_attackairlw", robot_attack_air_lw_sound)
+        .acmd("expression_attackairlw", robot_attack_air_lw_expression)
+        .install();
 }

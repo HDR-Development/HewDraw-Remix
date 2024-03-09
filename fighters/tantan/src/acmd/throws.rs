@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "tantan", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn tantan_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -25,7 +24,7 @@ unsafe fn tantan_throw_hi_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        tantan_throw_hi_game,
-    );
+    smashline::Agent::new("tantan")
+        .acmd("game_throwhi", tantan_throw_hi_game)
+        .install();
 }

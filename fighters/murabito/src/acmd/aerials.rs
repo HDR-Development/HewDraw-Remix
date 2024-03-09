@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "murabito", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -30,8 +28,7 @@ unsafe fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "murabito", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -73,40 +70,38 @@ unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
 }
 
 //Not an ideal solution as hitbox will appear a frame before effects begin. Will have to revisit this in the future for a better solution
-#[acmd_script( agent = "murabito", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
         LAST_EFFECT_SET_ALPHA(fighter, 0.6);
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new_raw(0x11c7b3e40a), Hash40::new("top"), 0, 4.5, -10.0, 0, -90, 0, 0.8, false);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("murabito_firework"), Hash40::new("top"), 0, 4.5, -10.0, 0, -90, 0, 0.8, false);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
-        EFFECT(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -5.0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14e7f3855b), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
+        EFFECT(fighter, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -5.0, 0, -90, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
 
 }
 
-#[acmd_script( agent = "murabito", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
-unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x1946174757));
+        PLAY_SE(fighter, Hash40::new("se_murabito_attackair_b01"));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new_raw(0x152d914323));
+        PLAY_SE(fighter, Hash40::new("se_murabito_smash_h02"));
     }
 
 }
 
-#[acmd_script( agent = "murabito", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -115,11 +110,11 @@ unsafe fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 21.0);
@@ -140,8 +135,7 @@ unsafe fn murabito_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -182,8 +176,7 @@ unsafe fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "murabito", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -234,14 +227,13 @@ unsafe fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        murabito_attack_air_n_game,
-        murabito_attack_air_b_game,
-        murabito_attack_air_b_effect,
-        murabito_attack_air_b_sound,
-        murabito_attack_air_b_expression,
-        murabito_attack_air_hi_game,
-        murabito_attack_air_lw_game,
-    );
+    smashline::Agent::new("murabito")
+        .acmd("game_attackairn", murabito_attack_air_n_game)
+        .acmd("game_attackairb", murabito_attack_air_b_game)
+        .acmd("effect_attackairb", murabito_attack_air_b_effect)
+        .acmd("sound_attackairb", murabito_attack_air_b_sound)
+        .acmd("expression_attackairb", murabito_attack_air_b_expression)
+        .acmd("game_attackairhi", murabito_attack_air_hi_game)
+        .acmd("game_attackairlw", murabito_attack_air_lw_game)
+        .install();
 }
-

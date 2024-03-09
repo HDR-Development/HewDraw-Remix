@@ -38,14 +38,9 @@ pub mod status;
 pub mod opff;
 pub mod material_table;
 
-pub fn install(is_runtime: bool) {
+pub fn install() {
     acmd::install();
     status::install();
-    opff::install(is_runtime);
+    opff::install();
     material_table::install();
-    use opff::*;
-    smashline::install_agent_frames!(
-        pickel_trolley_frame,  
-        pickel_forge_frame
-    );
 }

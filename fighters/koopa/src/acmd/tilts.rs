@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", scripts = ["game_attacks3", "game_attacks3hi", "game_attacks3lw"], category = ACMD_GAME, low_priority )]
-unsafe fn koopa_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -23,8 +22,7 @@ unsafe fn koopa_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -57,8 +55,7 @@ unsafe fn koopa_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -95,8 +92,7 @@ unsafe fn koopa_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn koopa_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack_lw3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -125,10 +121,12 @@ unsafe fn koopa_attack_lw3_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        koopa_attack_s3_game,
-        koopa_attack_hi3_game,
-        koopa_attack_lw3_game,
-        koopa_attack_lw3_expression
-    );
+    smashline::Agent::new("koopa")
+        .acmd("game_attacks3", koopa_attack_s3_game)
+        .acmd("game_attacks3hi", koopa_attack_s3_game)
+        .acmd("game_attacks3lw", koopa_attack_s3_game)
+        .acmd("game_attackhi3", koopa_attack_hi3_game)
+        .acmd("game_attacklw3", koopa_attack_lw3_game)
+        .acmd("expression_attacklw3", koopa_attack_lw3_expression)
+        .install();
 }

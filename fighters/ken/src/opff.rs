@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -63,10 +62,9 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-#[fighter_frame_callback]
-pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        if fighter.kind() != FIGHTER_KIND_KEN {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
             return;
         }
         MeterModule::update(fighter.battle_object, false);
@@ -82,8 +80,7 @@ pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_KEN)]
-pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
         shotos_common(fighter);
@@ -321,7 +318,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
-        CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ken::ATTACK_COMMAND_4)
+        statuses::ken::ATTACK_COMMAND_4
         ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     );
 
@@ -403,4 +400,10 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
     }
+}
+pub fn install() {
+    smashline::Agent::new("ken")
+        .on_line(Main, ken_frame_wrapper)
+        .on_line(Main, ken_meter)
+        .install();
 }

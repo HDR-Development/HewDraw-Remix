@@ -2,9 +2,9 @@ use super::*;
 use globals::*;
 
 //Forces Grounded Earthquake punch on the ground
-#[status_script(agent = "miifighter", status = FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw1_ground_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
+
+unsafe extern "C" fn special_lw1_ground_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND)(fighter);
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_GROUND), false);
@@ -12,8 +12,9 @@ unsafe fn special_lw1_ground_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     ret
 }
+
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_lw1_ground_main
-    );
+    smashline::Agent::new("miifighter")
+        .status(Main, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND, special_lw1_ground_main)
+        .install();
 }

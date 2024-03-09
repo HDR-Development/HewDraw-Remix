@@ -44,7 +44,6 @@ unsafe fn land_cancel_flags(boma: &mut BattleObjectModuleAccessor, fighter_kind:
     }
 }
 
-
 // Up special drift
 unsafe fn up_special_drift(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     let value_link = 0.55;
@@ -101,7 +100,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_LINK_STATUS_KIND_SPECIAL_S2,
-        *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST
         ])
         || (fighter.is_motion(Hash40::new("special_air_hi")) && fighter.motion_frame() > 50.0) )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -131,8 +129,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_LINK )]
-pub fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		link_frame(fighter);
@@ -149,4 +146,9 @@ pub unsafe fn link_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("link")
+        .on_line(Main, link_frame_wrapper)
+        .install();
 }

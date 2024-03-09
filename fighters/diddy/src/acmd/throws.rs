@@ -1,9 +1,10 @@
 use super::*;
 
-#[acmd_script( agent = "diddy", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 18.0, 21.0);
     if is_excute(fighter) {
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 45, 86, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -21,6 +22,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
         ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
     }
     frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         let release_position = Vector3f{ x:-2.5, y: 9.0, z: -15.0 };
         ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
@@ -29,8 +31,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -57,8 +58,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -77,11 +77,10 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwb,
-        game_throwhi,
-        game_throwlw,
-    );
+    smashline::Agent::new("diddy")
+        .acmd("game_throwb", game_throwb)
+        .acmd("game_throwhi", game_throwhi)
+        .acmd("game_throwlw", game_throwlw)
+        .install();
 }

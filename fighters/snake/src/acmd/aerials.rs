@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "snake", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -71,8 +70,7 @@ unsafe fn snake_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -108,8 +106,7 @@ unsafe fn snake_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -148,8 +145,7 @@ unsafe fn snake_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -179,8 +175,7 @@ unsafe fn snake_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "snake", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn snake_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -250,11 +245,11 @@ unsafe fn snake_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        snake_attack_air_n_game,
-        snake_attack_air_f_game,
-        snake_attack_air_b_game,
-        snake_attack_air_hi_game,
-        snake_attack_air_lw_game,
-    );
+    smashline::Agent::new("snake")
+        .acmd("game_attackairn", snake_attack_air_n_game)
+        .acmd("game_attackairf", snake_attack_air_f_game)
+        .acmd("game_attackairb", snake_attack_air_b_game)
+        .acmd("game_attackairhi", snake_attack_air_hi_game)
+        .acmd("game_attackairlw", snake_attack_air_lw_game)
+        .install();
 }

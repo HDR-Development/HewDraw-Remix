@@ -43,7 +43,6 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
     }
 }
 
-
 //=================================================================
 //== ANTI-FOOTSTOOL DEGENERACY TECH
 //=================================================================
@@ -79,8 +78,6 @@ unsafe fn footstool_defense(boma: &mut BattleObjectModuleAccessor, status_kind: 
         VarModule::off_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT);
     }
 }
-
-
 
 pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     //jump_cancel_airdodge(boma, cat[0], status_kind, fighter_kind); // experimental, must be called before jcgrab

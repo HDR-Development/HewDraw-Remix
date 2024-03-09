@@ -1,7 +1,7 @@
 
 use super::*;
-#[acmd_script( agent = "tantan", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_attack_attack11_game(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn tantan_attack_attack11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -36,8 +36,7 @@ unsafe fn tantan_attack_attack11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_attack_attack12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_attack_attack12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -72,8 +71,7 @@ unsafe fn tantan_attack_attack12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_attack_attack13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_attack_attack13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -90,8 +88,7 @@ unsafe fn tantan_attack_attack13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn tantan_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     // base 0.98
@@ -124,11 +121,10 @@ unsafe fn tantan_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        tantan_attack_attack11_game,
-        tantan_attack_attack12_game,
-        tantan_attack_attack13_game,
-        tantan_attack_dash_game,
-    );
+    smashline::Agent::new("tantan")
+        .acmd("game_attack11", tantan_attack_attack11_game)
+        .acmd("game_attack12", tantan_attack_attack12_game)
+        .acmd("game_attack13", tantan_attack_attack13_game)
+        .acmd("game_attackdash", tantan_attack_dash_game)
+        .install();
 }
-

@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "purin", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter){
@@ -21,8 +20,7 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -40,8 +38,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "expression_throwb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -62,8 +59,7 @@ unsafe fn expression_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "purin", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -82,8 +78,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 5.0/(38.0-3.0));
 }
 
-#[acmd_script( agent = "purin", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -104,11 +99,11 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        game_throwf,
-        game_throwb,
-        expression_throwb,
-        game_throwhi,
-        game_throwlw,
-    );
+    smashline::Agent::new("purin")
+        .acmd("game_throwf", game_throwf)
+        .acmd("game_throwb", game_throwb)
+        .acmd("expression_throwb", expression_throwb)
+        .acmd("game_throwhi", game_throwhi)
+        .acmd("game_throwlw", game_throwlw)
+        .install();
 }

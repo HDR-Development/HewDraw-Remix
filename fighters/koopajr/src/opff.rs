@@ -49,6 +49,37 @@ unsafe fn upB_kart_respawn(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
     }
 }
 
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+unsafe fn mechakoopa_cooldown(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    let cooldown_timer = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+    let item_exists = ArticleModule::is_exist(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA);
+    let koopa_is_disabled = VarModule::is_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+    let in_cooldown = VarModule::is_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+
+    // make sure disable flag is set if the koopa exists
+    if item_exists && !koopa_is_disabled {
+        VarModule::on_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+    }
+    // initiate cooldown once the koopa stops existing
+    if !item_exists && !in_cooldown && koopa_is_disabled {
+        VarModule::on_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 120);
+    }
+    // decrement cooldown timer when active
+    if cooldown_timer > 0 {
+        VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+    }
+    // enable the koopa once the timer is over
+    if cooldown_timer <= 0 && in_cooldown {
+        VarModule::off_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+        VarModule::off_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+        gimmick_flash(boma);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -92,11 +123,10 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     kart_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     upB_kart_respawn(fighter, boma, status_kind);
     fastfall_specials(fighter);
+    mechakoopa_cooldown(fighter, boma);
 }
 
-
-#[utils::macros::opff(FIGHTER_KIND_KOOPAJR )]
-pub fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		koopajr_frame(fighter)
@@ -109,8 +139,7 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN, main)]
-pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         if StatusModule::status_kind(boma) == *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_FALL
@@ -120,12 +149,7 @@ pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterB
     }
 }
 
-pub fn install_remainclown() {
-    smashline::install_agent_frame!(koopajr_weapon_remainclown_frame);
-}
-
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL, main )]
-pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         koopajr_weapon_frame(weapon)
     }
@@ -135,4 +159,16 @@ pub unsafe fn koopajr_weapon_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) 
     //if let Some(info) = WeaponFrameInfo::weapon_update_and_get(weapon) {
     //    
     //}
+}
+
+pub fn install() {
+    smashline::Agent::new("koopajr")
+        .on_line(Main, koopajr_frame_wrapper)
+        .install();
+    smashline::Agent::new("koopajr_remainclown")
+        .on_line(Main, koopajr_weapon_remainclown_frame)
+        .install();
+    smashline::Agent::new("koopajr_cannonball")
+        .on_line(Main, koopajr_weapon_frame_wrapper)
+        .install();
 }

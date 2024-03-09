@@ -1,9 +1,12 @@
 use super::*;
 
+mod attack_lw3;
+
 mod special_n;
 mod special_n_float;
 mod special_lw;
 mod special_s;
+mod special_air_s_catch;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -23,8 +26,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn ganon_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn ganon_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_GANON {
@@ -34,14 +36,17 @@ fn ganon_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
-pub fn install() {
-    smashline::install_agent_init_callbacks!(ganon_init);
-    special_n::install();
-    special_lw::install();
-    special_s::install();
+pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
+    fighter.set_situation(SITUATION_KIND_AIR.into());
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
 }
 
-pub fn add_statuses() {
+pub fn install() {
+    smashline::Agent::new("ganon").on_start(ganon_init).install();
+    attack_lw3::install();
+    special_n::install();
     special_n_float::install();
+    special_lw::install();
+    special_s::install();
+    special_air_s_catch::install();
 }
