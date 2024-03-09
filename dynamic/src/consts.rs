@@ -314,7 +314,7 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const FAIR_STATE: i32 = 0x0101;
-            pub const SPECIAL_S_FRAME: i32 = 0x0102;
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x0102;
         }
         pub mod status {
             // floats
@@ -675,6 +675,7 @@ pub mod vars {
             // flags
             pub const SHOULD_CYCLE_MATERIAL: i32 = 0x01F4;
             pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
+            pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
 
             // ints 
             pub const MATERIAL_INDEX: i32 = 0x01F5;
@@ -1551,7 +1552,8 @@ pub mod statuses {
         pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8; 
         pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9; 
         pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
-        pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB; 
+        pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB;
+        pub const BAYONETTA_SPECIAL_N_CANCEL: i32 = 0x3EC;
     }
 
     pub mod krool {
@@ -1570,5 +1572,6 @@ pub mod statuses {
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
         pub const SPECIAL_S_EDGE: i32 = 0x1F3;
+        pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
     }
 }

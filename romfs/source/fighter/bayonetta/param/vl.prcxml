@@ -22,7 +22,7 @@
   <list hash="param_special_n">
     <struct index="0">
       <int hash="charge_frame_max">150</int>
-      <int hash="cancel_frame">18</int>
+      <int hash="cancel_frame">7</int>
       <float hash="air_start_speed_mul_x">0.35</float>
     </struct>
     <hash40 index="1">dummy</hash40>
