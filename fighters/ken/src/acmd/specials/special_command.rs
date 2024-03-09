@@ -4,7 +4,7 @@ use super::*;
 unsafe extern "C" fn game_attackcommand1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let mut attr = Hash40::new("collision_attr_normal");;
+    let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
@@ -44,7 +44,7 @@ unsafe extern "C" fn game_attackcommand1(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackcommand2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let mut attr = Hash40::new("collision_attr_normal");;
+    let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
@@ -80,7 +80,7 @@ unsafe extern "C" fn game_attackcommand2(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackcommand3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let mut attr = Hash40::new("collision_attr_normal");;
+    let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
@@ -118,7 +118,7 @@ unsafe extern "C" fn game_attackcommand3(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackcommand4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let mut attr = Hash40::new("collision_attr_normal");;
+    let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
