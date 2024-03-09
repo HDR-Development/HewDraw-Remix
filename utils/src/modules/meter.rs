@@ -397,33 +397,33 @@ unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u
     VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
 }
 
-// static mut IS_CALCULATING: Option<(u32, u32)> = None;
+static mut IS_CALCULATING: Option<(u32, u32)> = None;
 
-// #[skyline::hook(offset = 0x402ee0, inline)]
-// unsafe fn calculate_knockback(ctx: &InlineCtx) {
-//     let damage_module = *ctx.registers[19].x.as_ref();
-//     let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
-//     let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
-//     let id = *(ptr.add(0x24) as *const u32);
-//     IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
-// }
+#[skyline::hook(offset = 0x402f00, inline)]
+unsafe fn calculate_knockback(ctx: &InlineCtx) {
+    let damage_module = *ctx.registers[19].x.as_ref();
+    let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
+    let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
+    let id = *(ptr.add(0x24) as *const u32);
+    IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
+}
 
-// extern "C" {
-//     #[link_name = "calculate_finishing_hit"]
-//     fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: u64);
-// }
+extern "C" {
+    #[link_name = "calculate_finishing_hit"]
+    fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: u64);
+}
 
-// #[skyline::hook(offset = 0x403930, inline)]
-// unsafe fn process_knockback(ctx: &InlineCtx) {
-//     if let Some((defender, attacker)) = IS_CALCULATING {
-//         let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
-//         if (*boma).battle_object_id == defender {
-//             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref());
-//         }
-//     }
-// }
+#[skyline::hook(offset = 0x403950, inline)]
+unsafe fn process_knockback(ctx: &InlineCtx) {
+    if let Some((defender, attacker)) = IS_CALCULATING {
+        let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
+        if (*boma).battle_object_id == defender {
+            calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref());
+        }
+    }
+}
 
-// #[skyline::hook(offset = 0x401e30)]
+// #[skyline::hook(offset = 0x401e50)]
 // unsafe fn knockback_calculator(arg1: u64, arg2: u64, arg3: u64, arg4: u64, arg5: f32, arg6: f32, arg7: f32, arg8: f32) -> f32 {
 //     let knockback = call_original!(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
 //     if let Some((defender, attacker, log)) = IS_CALCULATING.take() {
@@ -486,7 +486,7 @@ pub fn init() {
         dolly_super_special_check_param,
         hit_module_handle_attack_event,
         shield_module_send_shield_attack_collision_event,
-        // process_knockback,
-        // calculate_knockback
+        process_knockback,
+        calculate_knockback
     );
 }
