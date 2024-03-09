@@ -239,7 +239,7 @@ unsafe extern "C" fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 4, false);
         AttackModule::clear(boma, 5, false);
     }
-    wait(lua_state, 18.0);
+    wait(lua_state, 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -267,7 +267,7 @@ unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("cloud_speedline"), Hash40::new("haver"), 0, 4, 0, -90, 0, 0, 0.8, true);
         LAST_EFFECT_SET_COLOR(fighter, 0.627, 1, 0.674);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
     }
