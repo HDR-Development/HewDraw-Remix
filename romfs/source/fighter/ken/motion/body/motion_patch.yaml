@@ -14,7 +14,7 @@ attack_11_w:
   flags:
     move: true
   extra:
-    cancel_frame: 15
+    cancel_frame: 28
 attack_12:
   flags:
     move: false
