@@ -101,7 +101,7 @@ unsafe extern "C" fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mario_smash_arc"), Hash40::new("mario_smash_arc"), Hash40::new("top"), 1.0, 7.0, 0.0, -30, -100, -80, 0.95, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mario_smash_arc"), Hash40::new("mario_smash_arc"), Hash40::new("top"), 1.0, 7.0, 0.0, -30, -100, -80, 0.90, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 13.0);

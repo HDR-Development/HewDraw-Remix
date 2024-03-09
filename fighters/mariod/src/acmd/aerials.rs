@@ -117,7 +117,7 @@ unsafe extern "C" fn mariod_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7, -1, -3, -20, -113, 1.1, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
-        LAST_EFFECT_SET_COLOR(fighter, 0.25, 0.5, 1.0);
+        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter){
@@ -212,6 +212,16 @@ unsafe extern "C" fn mariod_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }    
 }
 
+unsafe extern "C" fn mariod_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 10, 0, -4, 80, 96, 0.95, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
+    }
+}
+
 unsafe extern "C" fn mariod_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -285,6 +295,7 @@ pub fn install() {
         .acmd("game_attackairb", mariod_attack_air_b_game)
         .acmd("effect_attackairb", mariod_attack_air_b_effect)
         .acmd("game_attackairhi", mariod_attack_air_hi_game)
+        .acmd("effect_attackairhi", mariod_attack_air_hi_effect)
         .acmd("game_attackairlw", mariod_attack_air_lw_game)
         .acmd("effect_attackairlw", mariod_attack_air_lw_effect)
         .install();

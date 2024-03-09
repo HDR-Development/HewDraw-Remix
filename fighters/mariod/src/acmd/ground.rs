@@ -27,6 +27,7 @@ unsafe extern "C" fn mariod_attack_11_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         EFFECT_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), -4, 6.7, 1, 0, 0, 0, 0.95, 0, 1, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -56,6 +57,21 @@ unsafe extern "C" fn mariod_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
+unsafe extern "C" fn mariod_attack_12_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), -3, 5.9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 12, 6.7, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 360, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+    }
+}
+
 unsafe extern "C" fn mariod_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -75,6 +91,19 @@ unsafe extern "C" fn mariod_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     
+}
+
+unsafe extern "C" fn mariod_attack_13_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1, 8.5, 4.5, 0, -25, 80, 0.85, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
+    }
 }
 
 unsafe extern "C" fn mariod_attack_13_expression(fighter: &mut L2CAgentBase) {
@@ -139,7 +168,9 @@ pub fn install() {
         .acmd("game_attack11", mariod_attack_11_game)
         .acmd("effect_attack11", mariod_attack_11_effect)
         .acmd("game_attack12", mariod_attack_12_game)
+        .acmd("effect_attack12", mariod_attack_12_effect)
         .acmd("game_attack13", mariod_attack_13_game)
+        .acmd("effect_attack13", mariod_attack_13_effect)
         .acmd("expression_attack13", mariod_attack_13_expression)
         .acmd("game_attackdash", mariod_attack_dash_game)
         .install();
