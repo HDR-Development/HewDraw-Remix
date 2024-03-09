@@ -124,7 +124,7 @@ special_air_lw_install:
     unk_2000: false
   blend_frames: 0
   animations:
-    - name: j01appeallwr.nuanmb
+    - name: d05specialairlwinstall.nuanmb
       unk: 0
   scripts:
     - expression_speciallwinstall
@@ -174,7 +174,7 @@ special_lw_install:
     unk_2000: false
   blend_frames: 0
   animations:
-    - name: j01appeallwr.nuanmb
+    - name: d05speciallwinstall.nuanmb
       unk: 0
   scripts:
     - expression_speciallwinstall
