@@ -1020,6 +1020,9 @@ pub mod vars {
             pub const REPEAT_COUNT_HI: i32 = 0x0101;
             pub const EX_SPECIAL_SCRIPTING: i32 = 0x0102;
             pub const AIR_CHAIN_COMBO_NUM: i32 = 0x0103;
+            pub const SPECIAL_HI_FIRE_EFF_ID: i32 = 0x0104;
+            pub const SPECIAL_LW_FIRE_EFF_ID_0: i32 = 0x0105;
+            pub const SPECIAL_LW_FIRE_EFF_ID_1: i32 = 0x0106;
         }
         pub mod status {
             // flags

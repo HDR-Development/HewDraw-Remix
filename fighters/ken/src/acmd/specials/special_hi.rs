@@ -180,7 +180,8 @@ unsafe extern "C" fn effect_specialhi(fighter: &mut L2CAgentBase) {
         || fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_arc"), Hash40::new("trans"), 6.5, 5, 0, 5, 0, 25, 1, false);
         } else {
-            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
+            let id = EffectModule::req_follow(fighter.module_accessor, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 1.0, false, 0, 0, 0, 0, 0, false, false);
+            VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_HI_FIRE_EFF_ID, id as i32);
             EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
@@ -251,7 +252,8 @@ unsafe extern "C" fn effect_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("ken_syoryuken_fire"), false, true);
+        let id = VarModule::get_int(fighter.battle_object, vars::shotos::instance::SPECIAL_HI_FIRE_EFF_ID) as u32;
+        EffectModule::kill(fighter.module_accessor, id, true, true);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {

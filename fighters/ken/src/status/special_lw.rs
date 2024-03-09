@@ -53,8 +53,10 @@ unsafe extern "C" fn special_lw_install_main(fighter: &mut L2CFighterCommon) -> 
     // install should only have been allowed if we had max meter upon entering DSpecial, so we set meter to max just in case there was a metered DSpecial cancel
     MeterModule::add(fighter.battle_object, (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())) - MeterModule::meter(fighter.battle_object));
     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-    EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handl"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
-    EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+    let id0 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("ken_syoryuken_fire"), Hash40::new("toel"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+    let id1 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("ken_syoryuken_fire"), Hash40::new("toer"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+    VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_FIRE_EFF_ID_0, id0 as i32);
+    VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_FIRE_EFF_ID_1, id1 as i32);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_install_main_loop as *const () as _))
 }
 

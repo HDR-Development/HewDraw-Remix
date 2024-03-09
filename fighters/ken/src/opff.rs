@@ -153,7 +153,10 @@ unsafe fn check_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battl
 unsafe fn end_magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
     MeterModule::set_damage_gain_mul(fighter.battle_object, 1.0);
-    EffectModule::kill_kind(boma, Hash40::new("sys_thunder"), false, false);
+    let id0 = VarModule::get_int(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_FIRE_EFF_ID_0) as u32;
+    let id1 = VarModule::get_int(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_FIRE_EFF_ID_1) as u32;
+    EffectModule::kill(fighter.module_accessor, id0, true, true);
+    EffectModule::kill(fighter.module_accessor, id1, true, true);
 }
 
 unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {

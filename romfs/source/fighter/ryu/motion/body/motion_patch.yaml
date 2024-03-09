@@ -186,7 +186,7 @@ special_air_lw_install:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 50
+    cancel_frame: 25
     no_stop_intp: false
 special_air_lw_step_b:
   extra:
@@ -233,7 +233,7 @@ special_lw_install:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 50
+    cancel_frame: 25
     no_stop_intp: false
 special_lw_step_b:
   extra:
