@@ -127,9 +127,13 @@ unsafe extern "C" fn younglink_attack_dash_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn younglink_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_younglink_rnd_attack"));
+        let rng = sv_math::rand(hash40("fighter"), 3) as i32;
+        if rng == 2 {
+            PLAY_SE(fighter, Hash40::new("vc_younglink_appeal_h01"));
+        } else {
+            PLAY_SE(fighter, Hash40::new("vc_younglink_attack01"));
+        }
     }
 }
 

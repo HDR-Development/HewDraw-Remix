@@ -104,6 +104,8 @@
       <float hash="throw_speed_mul">0.5</float>
       <float hash="throw_power_speed_add">-0.4</float>
       <float hash="throw_power_speed_mul">1.0</float>
+      <float hash="gravity_accel">0.06</float>
+      <float hash="gravity_accel_max">2.5</float>
       <float hash="hp">8</float>
     </struct>
     <hash40 index="86">dummy</hash40>

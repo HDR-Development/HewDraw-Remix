@@ -66,6 +66,21 @@ unsafe extern "C" fn younglink_attack_s4_charge_expression(agent: &mut L2CAgentB
 
 }
 
+unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
+    }
+    wait(lua_state, 4.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_younglink_attack03"));
+        PLAY_SE(agent, Hash40::new("se_common_smashswing_03"));
+        PLAY_SE(agent, Hash40::new("se_younglink_swing_ll"));
+    }
+}
+
 unsafe extern "C" fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
@@ -224,6 +239,7 @@ pub fn install() {
         .acmd("sound_attackhi4", younglink_attack_hi4_sound)
         .acmd("expression_attackhi4", younglink_attack_hi4_expression)
         .acmd("game_attacklw4", younglink_attack_lw4_game)
+        .acmd("sound_attacks4", sound_attacks4)
         .install();
 }
 
