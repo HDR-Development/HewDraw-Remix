@@ -493,8 +493,8 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
     let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
-    if !defender_boma.is_fighter() && !defender_boma.is_weapon() { return; }
-    if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return; }
+    if !defender_boma.is_fighter() { return; }
+    if !attacker_boma.is_fighter() { return; }
 
     let knockback = *knockback_info;
     let initial_speed_x = *knockback_info.add(4);
