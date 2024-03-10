@@ -8,6 +8,7 @@ pub enum CustomMode {
     TurboMode = 1,
     HitfallMode = 2,
     AirdashMode = 3,
+    Smash64Mode = 4,
 }
 
 impl fmt::Display for CustomMode {
@@ -17,6 +18,7 @@ impl fmt::Display for CustomMode {
             CustomMode::TurboMode => write!(f, "Turbo"),
             CustomMode::HitfallMode => write!(f, "Hitfall"),
             CustomMode::AirdashMode => write!(f, "Airdash"),
+            CustomMode::Smash64Mode => write!(f, "Smash64"),
         }
     }
 }
@@ -31,6 +33,7 @@ impl FromStr for CustomMode {
             "turbo"  => Ok(CustomMode::TurboMode),
             "hitfall"  => Ok(CustomMode::HitfallMode),
             "airdash" => Ok(CustomMode::AirdashMode),
+            "smash64" => Ok(CustomMode::Smash64Mode),
             _      => Err(()),
         }
     }

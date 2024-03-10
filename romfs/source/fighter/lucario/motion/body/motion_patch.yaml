@@ -61,6 +61,10 @@ attack_lw4:
 attack_s4_s:
   extra:
     cancel_frame: 51
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:

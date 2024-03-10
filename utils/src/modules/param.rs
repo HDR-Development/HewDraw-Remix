@@ -1,7 +1,7 @@
-use std::convert::TryInto;
+// use std::convert::TryInto;
 use std::io::Seek;
 use std::sync::Arc;
-use std::{borrow::BorrowMut, collections::HashMap};
+use std::{/*borrow::BorrowMut, */collections::HashMap};
 
 use arcropolis_api::{arc_callback, load_original_file};
 use parking_lot::RwLock;
@@ -274,15 +274,14 @@ lazy_static! {
     // We don't have a good way to manage dropping the memory here, so we will just replace when it gets reloaded.
     static ref GLOBAL_AGENT_PARAMS: RwLock<HashMap<Hash40_2, Arc<ParamListing>>> = RwLock::new(HashMap::new());
 
-    static ref AGENT_PARAM_REVERSE: HashMap<Hash40_2, (Hash40_2, usize)> = {
+    static ref AGENT_PARAM_REVERSE: HashMap<Hash40_2, Hash40_2> = {
         let mut hashes = HashMap::new();
         for line in AGENT_PARAMS.lines() {
             if !line.starts_with("#") && !line.is_empty() {
                 let mut split = line.split(":");
                 let agent = split.next().unwrap();
                 let file = split.next().unwrap();
-                let size = split.next().unwrap().parse::<usize>().unwrap();
-                hashes.insert(Hash40_2::new(file), (Hash40_2::new(agent), size));
+                hashes.insert(Hash40_2::new(file), Hash40_2::new(agent));
             }
         }
         hashes
@@ -296,13 +295,13 @@ const STAGE_SELECT_TOURNEY_LAYOUT: &str =
     "ui/layout/menu/stage_select/stage_select/layout.tourney.arc";
 const DEFAULT_ROW_LENGTH: usize = 7;
 
-const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lc";
+const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lua";
 const STAGE_SELECT_ACTOR_LUA_TOURNEY: &str =
-    "mods:/ui/script_patch/common/stage_select_actor3.tourney.lc";
+    "mods:/ui/script_patch/common/stage_select_actor3.tourney.lua";
 
 use prc::{ParamList, ParamStruct};
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
+// use serde_json::Result;
 
 /// stores the tournament mode configuration
 #[derive(Serialize, Deserialize, Debug)]
@@ -349,7 +348,7 @@ impl TourneyConfig {
             match std::fs::read_to_string("sd:/ultimate/hdr-config/tourney_mode.json") {
                 Ok(json) => serde_json::from_str(&json)
                     .expect("A tourney_mode.json was found, but its contents were invalid!"),
-                Err(e) => {
+                Err(_) => {
                     println!(
                         "No tourney mode config was found. Assuming tourney mode is disabled."
                     );
@@ -406,7 +405,7 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     // get the db_root list
     let db_root = &mut (&mut (&mut base_struct).0)[0];
     assert_eq!(*db_root.0, hash40("db_root"));
-    let list_kind = (&mut db_root.1);
+    let list_kind = &mut db_root.1;
     let param_list = list_kind
         .try_into_mut::<ParamList>()
         .expect("Failed to load db_root list from ui_stage_db.prc!");
@@ -485,14 +484,14 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
 
     // write the data back into the buffer
     let buf = &mut std::io::Cursor::new(data);
-    prc::write_stream(buf, &base_struct);
+    let _ = prc::write_stream(buf, &base_struct);
     let size = buf.stream_len().unwrap() as usize;
 
     Some(size)
 }
 
 #[arc_callback]
-fn stage_select_layout_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+fn stage_select_layout_callback(_hash: u64, mut data: &mut [u8]) -> Option<usize> {
     // ensure that the tourney config is loaded, and if not, return
     match TourneyConfig::load() {
         Some(config) => match config.is_valid() {
@@ -512,7 +511,7 @@ fn stage_select_layout_callback(hash: u64, mut data: &mut [u8]) -> Option<usize>
 
 /// this callback is used to allocate more space than normal for the stage
 #[arc_callback]
-fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+fn stage_select_actor_callback(_hash: u64, data: &mut [u8]) -> Option<usize> {
     // ensure that the tourney config is loaded, and if not, return
     match TourneyConfig::load() {
         Some(config) => match config.is_valid() {
@@ -527,7 +526,7 @@ fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> 
     // load the actor lua in hdr-dev (REMOVE THIS)
     let mut bytes = match std::fs::read(STAGE_SELECT_ACTOR_LUA_TOURNEY) {
         Ok(b) => b,
-        Err(e) => {
+        Err(_e) => {
             println!("\n\n\n\n\nFAILED TO LOAD DEV STAGE SELECT ACTOR!\n\n\n\n\n");
             return None;
         }
@@ -542,21 +541,22 @@ fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> 
     let bytes_slice = bytes.as_slice();
     data.copy_from_slice(&bytes_slice);
 
-    let size = data.len();
-    Some(size)
+    data[bytes.len()..].fill(b' ');
+
+    Some(data.len())
 }
 
 #[arc_callback]
 fn fighter_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
-    assert_eq!(hash, hash40("fighter/common/hdr/param/fighter_param.prc"));
+    assert_eq!(hash, hash40("fighter/common/hdr/param/fighter_param.xml"));
     let size = load_original_file(hash, &mut data)
-        .expect("Unable to load file for 'fighter/common/hdr/param/fighter_param.prc'");
+        .expect("Unable to load file for 'fighter/common/hdr/param/fighter_param.xml'");
     let exact_data = &data[..size];
-    let listing = match prc::read_stream(&mut std::io::Cursor::new(exact_data)) {
+    let listing = match prc::xml::read_xml(&mut std::io::Cursor::new(exact_data)) {
         Ok(struc) => ParamListing::from(ParamKind::Struct(struc)),
         Err(e) => {
             panic!(
-                "Unable to parse 'fighter/common/hdr/param/fighter_param.prc'. Reason: {:?}",
+                "Unable to parse 'fighter/common/hdr/param/fighter_param.xml'. Reason: {:?}",
                 e
             )
         }
@@ -564,7 +564,7 @@ fn fighter_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
 
     let fighter_list = match listing.index("fighter_param_table") {
         Some(listing) if matches!(listing, ParamListing::List(_)) => listing,
-        _ => panic!("Invalid data found in 'fighter/common/hdr/param/fighter_param.prc'"),
+        _ => panic!("Invalid data found in 'fighter/common/hdr/param/fighter_param.xml'"),
     };
 
     let mut param = GLOBAL_FIGHTER_PARAM.write();
@@ -576,11 +576,11 @@ fn fighter_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
 
 #[arc_callback]
 fn common_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
-    assert_eq!(hash, hash40("fighter/common/hdr/param/common.prc"));
+    assert_eq!(hash, hash40("fighter/common/hdr/param/common.xml"));
     let size = load_original_file(hash, &mut data)
-        .expect("Unable to load file for 'fighter/common/hdr/param/common.prc'");
+        .expect("Unable to load file for 'fighter/common/hdr/param/common.xml'");
     let exact_data = &data[..size];
-    let listing = match prc::read_stream(&mut std::io::Cursor::new(exact_data)) {
+    let listing = match prc::xml::read_xml(&mut std::io::Cursor::new(exact_data)) {
         Ok(struc) => ParamListing::from(ParamKind::Struct(struc)),
         Err(e) => {
             panic!(
@@ -599,7 +599,7 @@ fn agent_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     let size =
         load_original_file(hash, &mut data).expect("Unable to load file for agent param file!");
     let exact_data = &data[..size];
-    let param_listing = match prc::read_stream(&mut std::io::Cursor::new(exact_data)) {
+    let param_listing = match prc::xml::read_xml(&mut std::io::Cursor::new(exact_data)) {
         Ok(struc) => ParamListing::from(ParamKind::Struct(struc)),
         Err(e) => {
             panic!("Unable to parse param file {:#x}. Reason: {:?}", hash, e);
@@ -607,7 +607,7 @@ fn agent_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     };
     let hash = Hash40_2::new_raw(hash);
     let agent = match AGENT_PARAM_REVERSE.get(&hash) {
-        Some((agent, _)) => *agent,
+        Some(agent) => *agent,
         None => panic!("Failed to find agent kind hash in param file reverse lookup!"),
     };
     let mut params = GLOBAL_AGENT_PARAMS.write();
@@ -917,15 +917,12 @@ impl ParamModule {
 
 pub(crate) fn init() {
     fighter_param_callback::install(
-        "fighter/common/hdr/param/fighter_param.prc",
-        hdr_macros::size_of_rom_file!("fighter/common/hdr/param/fighter_param.prc"),
+        "fighter/common/hdr/param/fighter_param.xml",
+        1 * 1024 * 1024,
     );
-    common_param_callback::install(
-        "fighter/common/hdr/param/common.prc",
-        hdr_macros::size_of_rom_file!("fighter/common/hdr/param/common.prc"),
-    );
-    for (file, (_, size)) in AGENT_PARAM_REVERSE.iter() {
-        agent_param_callback::install(arcropolis_api::Hash40(file.hash), *size);
+    common_param_callback::install("fighter/common/hdr/param/common.xml", 1 * 1024 * 1024);
+    for (file, _) in AGENT_PARAM_REVERSE.iter() {
+        agent_param_callback::install(arcropolis_api::Hash40(file.hash), 1 * 1024 * 1024);
     }
 
     // if TourneyConfig isn't valid, then don't bother installing callbacks
@@ -946,8 +943,8 @@ pub(crate) fn init() {
                 );
                 stage_select_actor_callback::install(
                     STAGE_SELECT_ACTOR_LUA,
-                    /* 10mb */
-                    hdr_macros::size_of_rom_file!("ui/script_patch/common/stage_select_actor3.lc"),
+                    /* 1mb */
+                    1 * 1024 * 1024,
                 );
             }
             false => {}

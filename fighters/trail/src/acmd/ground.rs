@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "trail", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -16,8 +15,8 @@ unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 60, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 3.0, 60, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 70, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 3.0, 70, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 3.0, 320, 25, 0, 15, 3.5, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 3, 0, Hash40::new("haver"), 3.0, 320, 25, 0, 15, 3.5, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         // Jab lock hitbox
@@ -32,10 +31,10 @@ unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 65, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 3.0, 65, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 70, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 3.0, 70, 25, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 3.0, 75, 25, 0, 20, 3.5, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new("haver"), 3.0, 85, 25, 0, 20, 3.5, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("haver"), 3.0, 75, 25, 0, 20, 3.5, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         // Jab lock hitbox
         ATTACK(fighter, 4, 0, Hash40::new("shoulderr"), 3.0, 361, 16, 0, 26, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 5, 0, Hash40::new("haver"), 3.0, 361, 16, 0, 26, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
@@ -66,8 +65,7 @@ unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -83,8 +81,7 @@ unsafe fn sora_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -127,8 +124,7 @@ unsafe fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_attack12" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -147,8 +143,7 @@ unsafe fn sora_attack_12_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -173,8 +168,7 @@ unsafe fn sora_attack_13_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "trail", script = "effect_attack13" , category = ACMD_EFFECT , low_priority)]
-unsafe fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -192,8 +186,7 @@ unsafe fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -248,14 +241,13 @@ unsafe fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sora_attack_11_game,
-        sora_attack_11_effect,
-        sora_attack_12_game,
-        sora_attack_12_effect,
-        sora_attack_13_game,
-        sora_attack_13_effect,
-        sora_attack_dash_game,
-    );
+    smashline::Agent::new("trail")
+        .acmd("game_attack11", sora_attack_11_game)
+        .acmd("effect_attack11", sora_attack_11_effect)
+        .acmd("game_attack12", sora_attack_12_game)
+        .acmd("effect_attack12", sora_attack_12_effect)
+        .acmd("game_attack13", sora_attack_13_game)
+        .acmd("effect_attack13", sora_attack_13_effect)
+        .acmd("game_attackdash", sora_attack_dash_game)
+        .install();
 }
-

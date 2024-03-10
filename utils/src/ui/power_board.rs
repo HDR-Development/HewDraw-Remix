@@ -1,6 +1,5 @@
 use super::*;
 
-
 const BACKGROUND_WHITE: [f32; 4] = [90.0 / 255.0, 90.0 / 255.0, 90.0 / 255.0, 1.0];
 const BACKGROUND_BLACK: [f32; 4] = [24.0 / 255.0, 24.0 / 255.0, 24.0 / 255.0, 1.0];
 
@@ -130,7 +129,7 @@ impl PowerBoard {
         self.visual_percentage = 0.0;
     }
 
-    pub fn set_meter_info(&mut self, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32) {
+    pub fn set_meter_info(&mut self, current: f32, _max: f32, per_level: f32, color_1: i32, color_2: i32) {
         let bar_total = per_level * 2.0;
 
         let number = current / bar_total;

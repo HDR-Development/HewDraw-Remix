@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "luigi", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
-unsafe fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -11,8 +10,7 @@ unsafe fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "luigi", scripts = ["effect_specialn", "effect_specialairn"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -36,8 +34,7 @@ unsafe fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "luigi", scripts = ["sound_specialn", "sound_specialairn"] , category = ACMD_SOUND , low_priority)]
-unsafe fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -47,8 +44,7 @@ unsafe fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "luigi", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_special_n_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -61,16 +57,15 @@ unsafe fn luigi_special_n_expression(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "luigi", scripts = ["game_specialnthunder", "game_specialairnthunder"] , category = ACMD_GAME , low_priority)]
-unsafe fn luigi_special_n_thunder_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_thunder_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 68, 55, 0, 65, 5.0, 0.0, 9.0, 8.0, None, None, None, 0.6, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 68, 55, 0, 65, 3.0, 0.0, 9.0, 2.0, None, None, None, 0.6, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 68, 55, 0, 65, 5.0, 0.0, 9.0, 8.0, None, None, None, 0.45, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 68, 55, 0, 65, 3.0, 0.0, 9.0, 2.0, None, None, None, 0.45, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -78,8 +73,7 @@ unsafe fn luigi_special_n_thunder_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", scripts = ["effect_specialnthunder", "effect_specialairnthunder"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn luigi_special_n_thunder_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_thunder_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -119,8 +113,7 @@ unsafe fn luigi_special_n_thunder_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", scripts = ["sound_specialnthunder", "sound_specialairnthunder"], category = ACMD_SOUND, low_priority )]
-unsafe fn luigi_special_n_thunder_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_thunder_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 17.0);
@@ -130,8 +123,7 @@ unsafe fn luigi_special_n_thunder_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", scripts = ["expression_specialnthunder", "expression_specialairnthunder"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_special_n_thunder_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_n_thunder_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -143,8 +135,7 @@ unsafe fn luigi_special_n_thunder_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "game_specialairsstart", category = ACMD_GAME)]
-unsafe fn game_specialairsstart(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -159,8 +150,19 @@ unsafe fn game_specialairsstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "effect_specialshold", category = ACMD_EFFECT)]
-unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_special_s_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 2, 15, 5, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
+        if VarModule::get_int(fighter.object(), vars::luigi::instance::REMAINING_SPECIAL_S_UNTIL_MISFIRE) <= 0 {
+            LAST_EFFECT_SET_SCALE_W(fighter, 0.8, 0.8, 0.8);
+            LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.0);
+        }
+    }
+}
+
+unsafe extern "C" fn effect_specialshold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -184,8 +186,7 @@ unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "effect_specialairshold", category = ACMD_EFFECT)]
-unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairshold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -198,8 +199,7 @@ unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "game_specials", category = ACMD_GAME)]
-unsafe fn game_specials(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -237,8 +237,7 @@ unsafe fn game_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "game_specialsdischarge", category = ACMD_GAME)]
-unsafe fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let misfire_multiplier = VarModule::get_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER);
     VarModule::set_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
@@ -272,8 +271,7 @@ unsafe fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "effect_specialsdischarge", category = ACMD_EFFECT)]
-unsafe fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("luigi_rocket_bomb"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
@@ -292,8 +290,7 @@ unsafe fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "luigi", script = "game_specialairsend", category = ACMD_GAME)]
-unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -303,8 +300,7 @@ unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -337,8 +333,7 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "luigi", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -381,8 +376,7 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -415,8 +409,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -449,25 +442,41 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        luigi_special_n_game,
-        luigi_special_n_effect,
-        luigi_special_n_sound,
-        luigi_special_n_expression,
-        luigi_special_n_thunder_game,
-        luigi_special_n_thunder_effect,
-        luigi_special_n_thunder_sound,
-        luigi_special_n_thunder_expression,
-        game_specialairsstart,
-        game_specials,
-        effect_specialshold,
-        effect_specialairshold,
-        game_specialsdischarge,
-        effect_specialsdischarge,
-        game_specialairsend,
-        game_specialhi,
-        game_specialairhi,
-        game_speciallw,
-        game_specialairlw,
-    );
+    smashline::Agent::new("luigi")
+        .acmd("game_specialn", luigi_special_n_game)
+        .acmd("game_specialairn", luigi_special_n_game)
+        .acmd("effect_specialn", luigi_special_n_effect)
+        .acmd("effect_specialairn", luigi_special_n_effect)
+        .acmd("sound_specialn", luigi_special_n_sound)
+        .acmd("sound_specialairn", luigi_special_n_sound)
+        .acmd("expression_specialn", luigi_special_n_expression)
+        .acmd("expression_specialairn", luigi_special_n_expression)
+        .acmd("game_specialnthunder", luigi_special_n_thunder_game)
+        .acmd("game_specialairnthunder", luigi_special_n_thunder_game)
+        .acmd("effect_specialnthunder", luigi_special_n_thunder_effect)
+        .acmd("effect_specialairnthunder", luigi_special_n_thunder_effect)
+        .acmd("sound_specialnthunder", luigi_special_n_thunder_sound)
+        .acmd("sound_specialairnthunder", luigi_special_n_thunder_sound)
+        .acmd(
+            "expression_specialnthunder",
+            luigi_special_n_thunder_expression,
+        )
+        .acmd(
+            "expression_specialairnthunder",
+            luigi_special_n_thunder_expression,
+        )
+        .acmd("game_specialairsstart", game_specialairsstart)
+        .acmd("effect_specialsstart", luigi_special_s_start_effect)
+        .acmd("effect_specialairsstart", luigi_special_s_start_effect)
+        .acmd("effect_specialshold", effect_specialshold)
+        .acmd("effect_specialairshold", effect_specialairshold)
+        .acmd("game_specials", game_specials)
+        .acmd("game_specialsdischarge", game_specialsdischarge)
+        .acmd("effect_specialsdischarge", effect_specialsdischarge)
+        .acmd("game_specialairsend", game_specialairsend)
+        .acmd("game_speciallw", game_speciallw)
+        .acmd("game_specialairlw", game_specialairlw)
+        .acmd("game_specialhi", game_specialhi)
+        .acmd("game_specialairhi", game_specialairhi)
+        .install();
 }

@@ -2,7 +2,7 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
+use skyline_smash::app::FighterKineticEnergyGravity;
 
 unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, situation_kind: i32, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
@@ -212,43 +212,6 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
-// NokNok Shell Timer Count
-unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 1801 {
-        if gimmick_timerr > 1799 {
-            VarModule::off_flag(boma.object(), vars::mario::instance::NOKNOK_SHELL);
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-            gimmick_flash(boma);
-        } else {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
-        }
-    }
-}
-
-// NokNok shell flag reset
-unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if VarModule::is_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL) {
-        if [*FIGHTER_STATUS_KIND_DEAD,
-            *FIGHTER_STATUS_KIND_REBIRTH,
-            *FIGHTER_STATUS_KIND_WIN,
-            *FIGHTER_STATUS_KIND_LOSE,
-            *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
-        }
-    }
-}
-
-// TRAINING MODE
-// NokNok shell flag reset via taunt
-unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if is_training_mode() {
-        if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -287,14 +250,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     galaxy_spin_poc(fighter, boma, status_kind);
     galaxy_spin_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame);
     galaxy_spin_move(fighter, boma, status_kind, motion_kind, situation_kind, frame, stick_x, facing);
-    noknok_timer(fighter, boma, id);
-    noknok_reset(fighter, id, status_kind);
-    noknok_training(fighter, id, status_kind);
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_MARIO )]
-pub fn mario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn mario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		mario_frame(fighter)
@@ -305,4 +264,9 @@ pub unsafe fn mario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("mario")
+        .on_line(Main, mario_frame_wrapper)
+        .install();
 }

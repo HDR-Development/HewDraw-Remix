@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "duckhunt", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +76,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +91,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +116,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -146,8 +140,7 @@ unsafe fn duckhunt_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 13.0);
@@ -157,8 +150,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "duckhunt", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -168,8 +160,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -183,12 +174,11 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "duckhunt_can", script = "game_explode" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_can_explode_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_can_explode_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 60, 100, 0, 40, 13.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 60, 100, 0, 40, 13.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 60, 95, 0, 40, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 300, 1, 0, 0, 26, 60);
     }
@@ -203,8 +193,7 @@ unsafe fn duckhunt_can_explode_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "duckhunt_clay" , script = "game_fly" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_clay_fly_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_clay_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -217,8 +206,7 @@ unsafe fn duckhunt_clay_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt_clay" , script = "game_hit" , category = ACMD_GAME , low_priority)]
-unsafe fn duckhunt_clay_hit_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_clay_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 0.0);
@@ -231,14 +219,13 @@ unsafe fn duckhunt_clay_hit_game(fighter: &mut L2CAgentBase) {
         }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        ATTACK(fighter,  0,  0,  Hash40::new("top"),  3.0,  80,  70,  0,  70,  3.0,  0.0,  9.0,  -6.0,  Some(0.0),  Some(-9.0),  Some(6.0),  0.2,  0.5,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  -1.5,  0.0,  0,  true,  true,  false,  false,  false,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_OBJECT);
-        ATTACK(fighter,  1,  0,  Hash40::new("top"),  3.0,  80,  70,  0,  70,  3.0,  0.0,  0.5,  -11.0,  Some(0.0),  Some(-1.1),  Some(11.0),  0.2,  0.5,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  -1.5,  0.0,  0,  true,  true,  false,  false,  false,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_OBJECT);
-        ATTACK(fighter,  2,  0,  Hash40::new("top"),  3.0,  80,  70,  0,  70,  3.0,  0.0,  -8.0,  -8.0,  Some(0.0),  Some(8.0),  Some(8.0),  0.2,  0.5,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  -1.5,  0.0,  0,  true,  true,  false,  false,  false,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_OBJECT);
+        ATTACK(fighter,  0,  0,  Hash40::new("top"),  3.0,  75,  70,  0,  82,  3.0,  0.0,  9.0,  -6.0,  Some(0.0),  Some(-9.0),  Some(6.0),  0.2,  0.5,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  -1.5,  0.0,  0,  true,  true,  false,  false,  false,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_OBJECT);
+        ATTACK(fighter,  1,  0,  Hash40::new("top"),  3.0,  75,  70,  0,  82,  3.0,  0.0,  0.5,  -11.0,  Some(0.0),  Some(-1.1),  Some(11.0),  0.2,  0.5,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  -1.5,  0.0,  0,  true,  true,  false,  false,  false,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_OBJECT);
+        ATTACK(fighter,  2,  0,  Hash40::new("top"),  3.0,  75,  70,  0,  82,  3.0,  0.0,  -8.0,  -8.0,  Some(0.0),  Some(8.0),  Some(8.0),  0.2,  0.5,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  -1.5,  0.0,  0,  true,  true,  false,  false,  false,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_OBJECT);
         }
 }
 
-#[acmd_script( agent = "duckhunt_gunman" , scripts = ["sound_readyr", "sound_readyl"] , category = ACMD_SOUND , low_priority)]
-unsafe fn duckhunt_gunman_ready_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_gunman_ready_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -250,8 +237,7 @@ unsafe fn duckhunt_gunman_ready_sound(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "duckhunt_gunman" , script = "effect_readyl" , category = ACMD_EFFECT , low_priority)]
-unsafe fn duckhunt_gunman_ready_effectl(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_gunman_ready_effectl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 275.0);
     let gunman_kind = WorkModule::get_int(fighter.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);
@@ -284,8 +270,7 @@ unsafe fn duckhunt_gunman_ready_effectl(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt_gunman" , script = "effect_readyr" , category = ACMD_EFFECT , low_priority)]
-unsafe fn duckhunt_gunman_ready_effectr(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_gunman_ready_effectr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 275.0);
     let gunman_kind = WorkModule::get_int(fighter.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);
@@ -318,8 +303,7 @@ unsafe fn duckhunt_gunman_ready_effectr(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt_gunmanbullet", script = "game_move", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_gunmanbullet_move_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_gunmanbullet_move_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -332,8 +316,7 @@ unsafe fn duckhunt_gunmanbullet_move_game(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -348,8 +331,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -363,26 +345,73 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        duckhunt_catch_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        duckhunt_can_explode_game,
-        duckhunt_clay_fly_game,
-        duckhunt_clay_hit_game,
-        duckhunt_gunman_ready_effectr,
-        duckhunt_gunman_ready_effectl,
-        duckhunt_gunman_ready_sound,
-        duckhunt_gunmanbullet_move_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
+unsafe extern "C" fn effect_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
 }
 
+unsafe extern "C" fn sound_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        let handle = SoundModule::play_se(boma, Hash40::new("se_duckhunt_appeal_s01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 3.0, 0);
+    }
+}
+
+unsafe extern "C" fn expression_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 10);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_superleaf"), 72, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 88.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
+    }
+}
+
+pub fn install() {
+    smashline::Agent::new("duckhunt_gunmanbullet")
+        .acmd("game_move", duckhunt_gunmanbullet_move_game)
+        .install();
+    smashline::Agent::new("duckhunt_gunman")
+        .acmd("sound_readyr", duckhunt_gunman_ready_sound)
+        .acmd("sound_readyl", duckhunt_gunman_ready_sound)
+        .acmd("effect_readyl", duckhunt_gunman_ready_effectl)
+        .acmd("effect_readyr", duckhunt_gunman_ready_effectr)
+        .install();
+    smashline::Agent::new("duckhunt_can")
+        .acmd("game_explode", duckhunt_can_explode_game)
+        .install();
+    smashline::Agent::new("duckhunt")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_catch", duckhunt_catch_game)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("effect_appealsl", effect_appeals)
+        .acmd("effect_appealsr", effect_appeals)
+        .acmd("sound_appealsl", sound_appeals)
+        .acmd("sound_appealsr", sound_appeals)
+        .acmd("expression_appealsl", expression_appeals)
+        .acmd("expression_appealsr", expression_appeals)
+        .install();
+    smashline::Agent::new("duckhunt_clay")
+        .acmd("game_fly", duckhunt_clay_fly_game)
+        .acmd("game_hit", duckhunt_clay_hit_game)
+        .install();
+}

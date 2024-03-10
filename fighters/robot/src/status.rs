@@ -1,9 +1,7 @@
 use super::*;
 use globals::*;
 
-
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
     *FIGHTER_STATUS_KIND_DAMAGE_AIR,
@@ -232,7 +230,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::add_speed(fighter.module_accessor, &vec);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         
-        macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
+        PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
         
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
 
@@ -255,7 +253,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             KineticModule::add_speed(fighter.module_accessor, &vec);
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             
-            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_s"));
+            PLAY_SE(fighter, Hash40::new("se_common_bomb_s"));
             
             fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
     
@@ -268,7 +266,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             }
 
-            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
+            PLAY_SE(fighter, Hash40::new("se_common_bomb_m"));
 
         } else {
             let vec = Vector3f{x: (0.05*rotX.abs()), y: (1.5 + (0.05*robotFrames))-(0.025*rotX.abs()), z: 0.0};
@@ -279,7 +277,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             }
 
-            macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_l"));
+            PLAY_SE(fighter, Hash40::new("se_common_bomb_l"));
         }
 
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
@@ -300,7 +298,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         }
 
-        macros::PLAY_SE(fighter, Hash40::new("se_common_bomb_ll"));
+        PLAY_SE(fighter, Hash40::new("se_common_bomb_ll"));
 
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
 
@@ -311,8 +309,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_TRANSFORM_COMP);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -320,18 +317,15 @@ unsafe fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_keep_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_keep_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_rise"), 0.0, 1.0, false, 0.0, false, false);
 
     fighter.main_shift(special_hi_keep_main_loop)
@@ -416,18 +410,15 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_hi_keep_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_keep_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_hi_keep_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_keep_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
     //KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -436,8 +427,7 @@ unsafe fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
@@ -583,56 +573,70 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-unsafe fn special_s_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "robot", status = FIGHTER_KINETIC_TYPE_ROBOT_SPECIAL_S_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_s_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 pub fn install() {
-
-    install_status_scripts!(
-        special_hi_main,
-        special_hi_end,
-        special_hi_exec,
-        special_hi_init,
-
-        special_hi_keep_main,
-        special_hi_keep_init,
-        special_hi_keep_exec,
-        special_hi_keep_end,
-
-        special_s_main,
-        special_s_init,
-        special_s_exec,
-        special_s_exec_stop,
-        special_s_end,
-        special_s_exit,
-        special_s_attack_main
-    );
+    smashline::Agent::new("robot")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_init)
+        .status(
+            Main,
+            *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
+            special_hi_keep_main,
+        )
+        .status(
+            Init,
+            *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
+            special_hi_keep_init,
+        )
+        .status(
+            Exec,
+            *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
+            special_hi_keep_exec,
+        )
+        .status(
+            End,
+            *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP,
+            special_hi_keep_end,
+        )
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main)
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec)
+        .status(
+            ExecStop,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            special_s_exec_stop,
+        )
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end)
+        .status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exit)
+        .status(
+            Main,
+            *FIGHTER_KINETIC_TYPE_ROBOT_SPECIAL_S_ATTACK,
+            special_s_attack_main,
+        )
+        .install();
 }

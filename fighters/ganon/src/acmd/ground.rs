@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "ganon", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -11,9 +10,9 @@ unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 60, 20, 0, 55, 5.0, 0.0, 12.0, 7.0, Some(0.0), Some(15.0), Some(7.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 60, 20, 0, 55, 3.5, 0.0, 12.0, 11.0, Some(0.0), Some(15.0), Some(11.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 60, 20, 0, 55, 2.0, 0.0, 12.0, 14.0, Some(0.0), Some(15.0), Some(14.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 60, 40, 0, 95, 5.0, 0.0, 12.0, 7.0, Some(0.0), Some(15.0), Some(7.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 60, 40, 0, 95, 3.5, 0.0, 12.0, 11.0, Some(0.0), Some(15.0), Some(11.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 60, 40, 0, 95, 2.0, 0.0, 12.0, 14.0, Some(0.0), Some(15.0), Some(14.0), 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 2.0);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 2.0);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 2.0);
@@ -24,8 +23,7 @@ unsafe fn ganon_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "effect_attack11" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -34,8 +32,7 @@ unsafe fn ganon_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "sound_attack11" , category = ACMD_SOUND , low_priority)]
-unsafe fn ganon_attack_11_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attack_11_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -44,8 +41,7 @@ unsafe fn ganon_attack_11_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "expression_attack11" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn ganon_attack_11_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attack_11_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -61,8 +57,7 @@ unsafe fn ganon_attack_11_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn ganon_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.89);
@@ -83,13 +78,11 @@ unsafe fn ganon_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ganon_attack_11_game,
-        ganon_attack_11_effect,
-        ganon_attack_11_sound,
-        ganon_attack_11_expression,
-
-        ganon_attack_dash_game,
-    );
+    smashline::Agent::new("ganon")
+        .acmd("game_attack11", ganon_attack_11_game)
+        .acmd("effect_attack11", ganon_attack_11_effect)
+        .acmd("sound_attack11", ganon_attack_11_sound)
+        .acmd("expression_attack11", ganon_attack_11_expression)
+        .acmd("game_attackdash", ganon_attack_dash_game)
+        .install();
 }
-

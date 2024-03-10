@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "lucario", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -47,8 +45,7 @@ unsafe fn lucario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -82,8 +79,7 @@ unsafe fn lucario_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucario_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -92,12 +88,11 @@ unsafe fn lucario_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn expression_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -110,8 +105,7 @@ unsafe fn expression_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -124,13 +118,13 @@ unsafe fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 100, 0, 30, 5.2, 0.0, 11.0, -14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 361, 100, 0, 30, 3.0, 0.0, 11.0, -9.0, Some(0.0), Some(11.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.6, 361, 100, 0, 30, 5.2, 0.0, 11.0, -14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 13.5, 361, 100, 0, 30, 3.0, 0.0, 11.0, -9.0, Some(0.0), Some(11.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear(boma, 0, false);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 65, 77, 0, 30, 3.0, 0.0, 11.0, -9.0, Some(0.0), Some(11.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.1, 65, 77, 0, 30, 3.0, 0.0, 11.0, -9.0, Some(0.0), Some(11.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
@@ -143,8 +137,7 @@ unsafe fn lucario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -159,8 +152,8 @@ unsafe fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 80, 80, 0, 30, 5.0, 0.0, 11.0, 2.0, Some(0.0), Some(12.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 90, 100, 0, 40, 5.0, 0.0, 11.0, 2.0, Some(0.0), Some(20.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.4, 80, 80, 0, 30, 5.0, 0.0, 11.0, 2.0, Some(0.0), Some(12.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 13.5, 90, 100, 0, 40, 5.0, 0.0, 11.0, 2.0, Some(0.0), Some(20.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -175,8 +168,7 @@ unsafe fn lucario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -185,13 +177,11 @@ unsafe fn lucario_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
-
-#[acmd_script( agent = "lucario", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -241,14 +231,14 @@ unsafe fn lucario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_attack_air_n_game,
-        lucario_attack_air_f_game,
-        lucario_attack_air_f_expression,
-        lucario_attack_air_b_game,
-        lucario_attack_air_hi_game,
-        lucario_attack_air_hi_expression,
-        lucario_attack_air_lw_game,
-    );
+    smashline::Agent::new("lucario")
+        .acmd("game_attackairn", lucario_attack_air_n_game)
+        .acmd("game_attackairf", lucario_attack_air_f_game)
+        .acmd("expression_attackairf", lucario_attack_air_f_expression)
+        .acmd("expression_attackairf", expression_attackairf)
+        .acmd("game_attackairb", lucario_attack_air_b_game)
+        .acmd("game_attackairhi", lucario_attack_air_hi_game)
+        .acmd("expression_attackairhi", lucario_attack_air_hi_expression)
+        .acmd("game_attackairlw", lucario_attack_air_lw_game)
+        .install();
 }
-

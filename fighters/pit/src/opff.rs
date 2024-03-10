@@ -3,14 +3,12 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 #[no_mangle]
 pub unsafe extern "Rust" fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     power_of_flight_cancel(boma, status_kind);
     upperdash_arm_whiff_freefall(fighter);
     fastfall_specials(fighter);
 }
-
 
 // Pits Power of Flight cancel
 unsafe fn power_of_flight_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -87,8 +85,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pits_common(fighter, boma, status_kind);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_PIT )]
-pub fn pit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pit_frame(fighter)
@@ -99,4 +96,9 @@ pub unsafe fn pit_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("pit")
+        .on_line(Main, pit_frame_wrapper)
+        .install();
 }

@@ -80,9 +80,14 @@ unsafe fn resources(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
         VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
     }
-    //hit-flag
-    if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
-        VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT);
+    //hit-flag to filter bullets
+    if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
+        //hit cancel moves (filter shield)
+        if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, *FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP]) {
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT); }
+        } else { //other moves
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT); }
+        }
     }
 }
 
@@ -155,8 +160,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_BAYONETTA)]
-pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     bayonetta_frame(fighter);
 }
@@ -164,4 +168,10 @@ pub unsafe fn bayonetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("bayonetta")
+        .on_line(Main, bayonetta_frame_wrapper)
+        .install();
 }

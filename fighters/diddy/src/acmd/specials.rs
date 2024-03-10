@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "diddy", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -13,8 +12,7 @@ unsafe fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialsstickattack", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialsstickattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstickattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -32,8 +30,7 @@ unsafe fn game_specialsstickattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialsstickattack2", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialsstickattack2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstickattack2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -55,8 +52,7 @@ unsafe fn game_specialsstickattack2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialsstick", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstick(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     //wait_loop_clear();
@@ -84,16 +80,14 @@ unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialairsjump", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairsjump(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsjump(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.4);
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialairskick", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairskick(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairskick(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(fighter.lua_state_agent, 6.0);
@@ -110,8 +104,7 @@ unsafe fn game_specialairskick(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialncancel" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -125,29 +118,25 @@ unsafe fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "effect_specialncancel" , category = ACMD_EFFECT , low_priority)]
-unsafe fn diddy_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "diddy", script = "sound_specialncancel" , category = ACMD_SOUND , low_priority)]
-unsafe fn diddy_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "diddy", script = "expression_specialncancel" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn diddy_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialairncancel" , category = ACMD_GAME , low_priority)]
-unsafe fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -161,44 +150,39 @@ unsafe fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "effect_specialairncancel" , category = ACMD_EFFECT , low_priority)]
-unsafe fn diddy_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "diddy", script = "sound_specialairncancel" , category = ACMD_SOUND , low_priority)]
-unsafe fn diddy_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
-#[acmd_script( agent = "diddy", script = "expression_specialairncancel" , category = ACMD_EXPRESSION , low_priority)]
-unsafe fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_special_air_hi_start_game,
-        game_specialsstick,
-        game_specialairsjump,
-        game_specialairskick,
-        diddy_special_n_cancel_game,
-        diddy_special_n_cancel_effect,
-        diddy_special_n_cancel_sound,
-        diddy_special_n_cancel_expression,
-        diddy_special_air_n_cancel_game,
-        diddy_special_air_n_cancel_effect,
-        diddy_special_air_n_cancel_sound,
-        diddy_special_air_n_cancel_expression,
-        //game_specialsstickattack,
-        game_specialsstickattack2,
-        
-    );
+    smashline::Agent::new("diddy")
+        .acmd("game_specialairhistart", diddy_special_air_hi_start_game)
+        .acmd("game_specialsstickattack", game_specialsstickattack)
+        .acmd("game_specialsstickattack2", game_specialsstickattack2)
+        .acmd("game_specialsstick", game_specialsstick)
+        .acmd("game_specialairsjump", game_specialairsjump)
+        .acmd("game_specialairskick", game_specialairskick)
+        .acmd("game_specialncancel", diddy_special_n_cancel_game)
+        .acmd("effect_specialncancel", diddy_special_n_cancel_effect)
+        .acmd("sound_specialncancel", diddy_special_n_cancel_sound)
+        .acmd("expression_specialncancel", diddy_special_n_cancel_expression)
+        .acmd("game_specialairncancel", diddy_special_air_n_cancel_game)
+        .acmd("effect_specialairncancel", diddy_special_air_n_cancel_effect)
+        .acmd("sound_specialairncancel", diddy_special_air_n_cancel_sound)
+        .acmd("expression_specialairncancel", diddy_special_air_n_cancel_expression)
+        .install();
 }
-

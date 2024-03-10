@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "mario", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -19,8 +17,7 @@ unsafe fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -40,8 +37,7 @@ unsafe fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -61,8 +57,7 @@ unsafe fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let attack_start_frame = 9.0;
@@ -97,8 +92,7 @@ unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -116,8 +110,7 @@ unsafe fn mario_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -148,13 +141,12 @@ unsafe fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_attack_s4_hi_game,
-        mario_attack_s4_s_game,
-        mario_attack_s4_lw_game,
-        mario_attack_hi4_game,
-        mario_attack_hi4_effect,
-        mario_attack_lw4_game,
-    );
+    smashline::Agent::new("mario")
+        .game_acmd("game_attacks4hi", mario_attack_s4_hi_game)
+        .game_acmd("game_attacks4", mario_attack_s4_s_game)
+        .game_acmd("game_attacks4lw", mario_attack_s4_lw_game)
+        .game_acmd("game_attackhi4", mario_attack_hi4_game)
+        .effect_acmd("effect_attackhi4", mario_attack_hi4_effect)
+        .game_acmd("game_attacklw4", mario_attack_lw4_game)
+        .install();
 }
-

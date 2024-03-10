@@ -1,8 +1,7 @@
 use super::*;
 use std::convert::TryInto;
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, false, -1);
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_START, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -58,14 +57,12 @@ unsafe extern "C" fn special_hi_start_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_start_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_krool_special_h02"), 0);
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
@@ -113,11 +110,10 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_TOP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_air_end"), 0.0, 1.0, false, 0.0, false, false);
-    special_hi_lerp_motion(fighter, "special_hi_air_end_f", "special_hi_air_end_b");
+    special_hi_lerp_motion(fighter, Hash40::new("special_hi_air_end_f"), Hash40::new("special_hi_air_end_b"));
     special_hi_set_physics(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_movement_helper as *const () as _));
     GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_KROOL_CLIFF_HANG_DATA_SPECIAL_HI as u32);
@@ -146,11 +142,10 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
     return 0.into()
 }
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_FALL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     special_hi_change_motion(fighter, Hash40::new("special_hi_fall"), false, true);
-    special_hi_lerp_motion(fighter, "special_hi_fall_f", "special_hi_fall_b");
+    special_hi_lerp_motion(fighter, Hash40::new("special_hi_fall_f"), Hash40::new("special_hi_fall_b"));
     special_hi_set_physics(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_movement_helper as *const () as _));
     GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_KROOL_CLIFF_HANG_DATA_SPECIAL_HI as u32);
@@ -281,7 +276,7 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
 
         sv_kinetic_energy!(reset_energy, fighter, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_x, 0.0);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, fly_limit_spd_x, 0.0);
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
@@ -426,10 +421,10 @@ unsafe extern "C" fn special_hi_movement_helper(fighter: &mut L2CFighterCommon, 
         //     special_hi_lerp_motion(fighter, "special_hi_f", "special_hi_b");
         // }
         if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END {
-            special_hi_lerp_motion(fighter, "special_hi_air_end_f", "special_hi_air_end_b");
+            special_hi_lerp_motion(fighter, Hash40::new("special_hi_air_end_f"), Hash40::new("special_hi_air_end_b"));
         }
         else if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL {
-            special_hi_lerp_motion(fighter, "special_hi_fall_f", "special_hi_fall_b");
+            special_hi_lerp_motion(fighter, Hash40::new("special_hi_fall_f"), Hash40::new("special_hi_fall_b"));
         }
     }
 
@@ -443,20 +438,20 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
     sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
     if mul_stick_x != 0.0 {
         let mut calc_mul_x = mul_stick_x;
-        if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI)
-        || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END)
-        || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL) {
-            // restrict min speed based on charge
-            let fly_lean_min_acl_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_acl_x");
-            if mul_stick_x * PostureModule::lr(fighter.module_accessor) < fly_lean_min_acl_x {
-                calc_mul_x = fly_lean_min_acl_x * PostureModule::lr(fighter.module_accessor);
-                let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
-                let fly_lean_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_spd_x");
-                let fly_lean_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_charge_x_mul");
-                let calc_charge_fly_lean = fly_lean_min_spd_x + (charge_frames * fly_lean_charge_x_mul);
-                sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_fly_lean, 0.0);
-            }
-        }
+        // if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI)
+        // || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END)
+        // || fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL) {
+        //     // restrict min speed based on charge and facing direction
+        //     let fly_lean_min_acl_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_acl_x");
+        //     if mul_stick_x * PostureModule::lr(fighter.module_accessor) < fly_lean_min_acl_x {
+        //         calc_mul_x = fly_lean_min_acl_x * PostureModule::lr(fighter.module_accessor);
+        //         let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
+        //         let fly_lean_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_min_spd_x");
+        //         let fly_lean_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_charge_x_mul");
+        //         let calc_charge_fly_lean = fly_lean_min_spd_x + (charge_frames * fly_lean_charge_x_mul);
+        //         sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_fly_lean, 0.0);
+        //     }
+        // }
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_mul_x, 0.0);
     }
     
@@ -466,9 +461,9 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
             let fly_no_lean_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_no_lean_spd_y");
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_no_lean_spd_y);
         }
-        else if fighter.stick_x() * PostureModule::lr(fighter.module_accessor) > 0.1 {
+        else {
             let fly_lean_f_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_f_spd_y");
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_lean_f_spd_y);
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - 0.05);  //fly_lean_f_spd_y, change properly when prcs are no longer ass
         }
     }
     else if (fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END) && fighter.status_frame() >= 15)
@@ -481,7 +476,7 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
 }
 
 //FUN_710001e090
-unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, motion1: &str, motion2: &str) {
+unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, motion1: Hash40, motion2: Hash40) {
     let mut lerp_rate = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_HI_FLOAT_MOTION_2ND_LERP_RATE);    //l80
     //println!("stick_x: {}, pre-lerp: {}", fighter.stick_x(), lerp_rate);
     if (-0.1..0.1).contains(&fighter.stick_x()) {
@@ -512,14 +507,12 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
     let mut adjusted_lerp;  //la0
     if lerp_rate >= 0.5 {
         //println!("expected motion: {}", motion2);
-        motion_kind = hash40(motion2);
-        hash_motion = Hash40::new(motion2);
+        hash_motion = motion2;
         adjusted_lerp = (lerp_rate - 0.5) * 2.0;
     }
     else {
         //println!("expected motion: {}", motion1);
-        motion_kind = hash40(motion1);
-        hash_motion = Hash40::new(motion1);
+        hash_motion = motion1;
         adjusted_lerp = (lerp_rate * 2.0) - 1.0;
     }
     if MotionModule::motion_kind_2nd(fighter.module_accessor) != motion_kind {
@@ -532,11 +525,11 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
-        special_hi_start_main,
-        special_hi_start_exit,
-        special_hi_main,
-        special_hi_end_main,
-        special_hi_fall_main,
-    );
+    smashline::Agent::new("krool")
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_main)
+        .status(Exit, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_exit)
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, special_hi_main)
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_end_main)
+        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_main)
+        .install();
 }

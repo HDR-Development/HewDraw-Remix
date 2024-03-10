@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -25,8 +24,7 @@ unsafe fn miiswordsman_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -123,8 +121,7 @@ unsafe fn miiswordsman_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "miiswordsman", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -145,7 +142,7 @@ unsafe fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -157,7 +154,7 @@ unsafe fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
@@ -173,9 +170,7 @@ unsafe fn miiswordsman_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "miiswordsman", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -204,10 +199,10 @@ unsafe fn miiswordsman_attack_lw4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        miiswordsman_attack_s4_s_game,
-        miiswordsman_attack_hi4_game,
-        miiswordsman_attack_hi4_expression,
-        miiswordsman_attack_lw4_game,
-    );
+    smashline::Agent::new("miiswordsman")
+        .acmd("game_attacks4", miiswordsman_attack_s4_s_game)
+        .acmd("game_attackhi4", miiswordsman_attack_hi4_game)
+        .acmd("expression_attackhi4", miiswordsman_attack_hi4_expression)
+        .acmd("game_attacklw4", miiswordsman_attack_lw4_game)
+        .install();
 }

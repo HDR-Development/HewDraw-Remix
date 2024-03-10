@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -56,6 +60,18 @@ attack_s3_hi:
 attack_air_hi:
   extra:
     cancel_frame: 51
+special_n1:
+  extra:
+    cancel_frame: 44
+special_air_n1:
+  extra:
+    cancel_frame: 44
+special_n2:
+  extra:
+    cancel_frame: 60
+special_air_n2:
+  extra:
+    cancel_frame: 60
 item_light_throw_f:
   flags:
     move: false

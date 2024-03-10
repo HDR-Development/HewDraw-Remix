@@ -1,8 +1,7 @@
 use smash::app::sv_animcmd::get_value_float;
 use super::*;
 
-#[acmd_script( agent = "littlemac", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -25,8 +24,7 @@ unsafe fn littlemac_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_attacks4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -45,8 +43,7 @@ unsafe fn littlemac_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -69,8 +66,8 @@ unsafe fn littlemac_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-#[acmd_script( agent = "littlemac", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+
+unsafe extern "C" fn littlemac_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -91,8 +88,7 @@ unsafe fn littlemac_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -113,8 +109,7 @@ unsafe fn littlemac_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -142,8 +137,7 @@ unsafe fn littlemac_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -164,8 +158,7 @@ unsafe fn littlemac_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn littlemac_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -215,8 +208,7 @@ unsafe fn littlemac_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -262,15 +254,15 @@ unsafe fn littlemac_attack_lw4_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        littlemac_attack_s4_hi_game,
-        littlemac_attack_s4_hi_effect,
-        littlemac_attack_s4_s_game,
-        littlemac_attack_s4_s_effect,
-        littlemac_attack_s4_lw_game,
-        littlemac_attack_hi4_game,
-        littlemac_attack_hi4_effect,
-        littlemac_attack_lw4_game,
-        littlemac_attack_lw4_effect,
-    );
+    smashline::Agent::new("littlemac")
+        .acmd("game_attacks4hi", littlemac_attack_s4_hi_game)
+        .acmd("effect_attacks4hi", littlemac_attack_s4_hi_effect)
+        .acmd("game_attacks4", littlemac_attack_s4_s_game)
+        .acmd("effect_attacks4", littlemac_attack_s4_s_effect)
+        .acmd("game_attacks4lw", littlemac_attack_s4_lw_game)
+        .acmd("game_attackhi4", littlemac_attack_hi4_game)
+        .acmd("effect_attackhi4", littlemac_attack_hi4_effect)
+        .acmd("game_attacklw4", littlemac_attack_lw4_game)
+        .acmd("effect_attacklw4", littlemac_attack_lw4_effect)
+        .install();
 }

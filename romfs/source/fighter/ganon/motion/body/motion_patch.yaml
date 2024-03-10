@@ -1,3 +1,7 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
 fall_aerial:
@@ -63,7 +67,7 @@ attack_11:
     cancel_frame: 25
 attack_lw3:
   extra:
-    cancel_frame: 36
+    cancel_frame: 32
 attack_lw3_2:
   game_script: game_attacklw32
   flags:
@@ -91,7 +95,7 @@ attack_lw3_2:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 36
+    cancel_frame: 44
     freeze_during_hitstop: false
 attack_hi4:
   extra:

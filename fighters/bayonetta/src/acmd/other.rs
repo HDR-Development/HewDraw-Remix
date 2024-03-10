@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "bayonetta", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,8 +25,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -52,8 +50,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -78,8 +75,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -94,8 +90,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -120,8 +115,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_catch_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
@@ -141,8 +135,7 @@ unsafe fn bayonetta_catch_game(fighter: &mut L2CAgentBase) {
     }  
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -152,8 +145,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "bayonetta", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -167,8 +159,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -182,8 +173,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "bayonetta_wickedweavearm", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_wickedweavearm_attack_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_wickedweavearm_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -231,8 +221,7 @@ unsafe fn bayonetta_wickedweavearm_attack_s4_game(fighter: &mut L2CAgentBase) {
     }   
 }
 
-#[acmd_script( agent = "bayonetta_wickedweavearm", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_wickedweavearm_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_wickedweavearm_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -281,8 +270,7 @@ unsafe fn bayonetta_wickedweavearm_attack_s4_lw_game(fighter: &mut L2CAgentBase)
     }
 }
 
-#[acmd_script( agent = "bayonetta_wickedweavearm", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_wickedweavearm_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_wickedweavearm_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -331,8 +319,7 @@ unsafe fn bayonetta_wickedweavearm_attack_s4_hi_game(fighter: &mut L2CAgentBase)
     }
 }
 
-#[acmd_script( agent = "bayonetta_wickedweavearm", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_wickedweavearm_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_wickedweavearm_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -395,8 +382,7 @@ unsafe fn bayonetta_wickedweavearm_attack_hi4_game(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "bayonetta_wickedweaveleg", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_wickedweaveleg_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_wickedweaveleg_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -434,8 +420,7 @@ unsafe fn bayonetta_wickedweaveleg_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta_specialn_bullet", script = "game_movechargebullet" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_specialn_bullet_move_charge_bullet_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialn_bullet_move_charge_bullet_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -444,8 +429,7 @@ unsafe fn bayonetta_specialn_bullet_move_charge_bullet_game(fighter: &mut L2CAge
     }
 }
 
-#[acmd_script( agent = "bayonetta_specialn_bullet", script = "game_move" , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_specialn_bullet_move_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialn_bullet_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -454,8 +438,7 @@ unsafe fn bayonetta_specialn_bullet_move_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -478,8 +461,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -501,8 +483,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_escapen" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -516,8 +497,7 @@ unsafe fn escape_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_escapef" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -535,8 +515,7 @@ unsafe fn escape_f_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_escapeb" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -550,30 +529,26 @@ unsafe fn escape_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_appeallwl", category = ACMD_GAME , low_priority)]
-unsafe fn down_left_taunt_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn down_left_taunt_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 175.0);
     if is_excute(fighter) {
         StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_SQUAT_RV, false);
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["game_appealsr", "game_appealsl"], category = ACMD_GAME , low_priority)]
-unsafe fn side_taunt_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn side_taunt_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 144/(90-1));
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["game_appealhir", "game_appealhil"], category = ACMD_GAME , low_priority)]
-unsafe fn up_taunt_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn up_taunt_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 210/(100-1));
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["sound_appealhir","sound_appealhil"] , category = ACMD_SOUND , low_priority)]
-unsafe fn sound_appealhi  (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appealhi  (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -610,8 +585,8 @@ unsafe fn sound_appealhi  (fighter: &mut L2CAgentBase) {
 		}
 	}
 
-    #[acmd_script( agent = "bayonetta", script = "sound_appeallwr", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_appeallwr(fighter: &mut L2CAgentBase) {
+    
+unsafe extern "C" fn sound_appeallwr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 21.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_bayonetta_win01"));
@@ -643,8 +618,7 @@ unsafe fn sound_appeallwr(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "sound_appeallwl", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_appeallwl(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appeallwl(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 20.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_bayonetta_win02_02"));
@@ -659,8 +633,7 @@ unsafe fn sound_appeallwl(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_catchattack", category = ACMD_GAME, low_priority )]
-unsafe fn game_catchattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -686,49 +659,52 @@ unsafe fn game_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "effect_landingheavy", category = ACMD_EFFECT, low_priority )]
-unsafe fn bayonetta_landing_heavy_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_landing_heavy_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-            EFFECT(fighter, Hash40::new("bayonetta_jump_circle"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        } else {
-            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(fighter, Hash40::new("bayonetta_butterfly_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        }
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("bayonetta_butterfly_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        bayonetta_catch_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        bayonetta_wickedweavearm_attack_s4_game,
-        bayonetta_wickedweavearm_attack_s4_lw_game,
-        bayonetta_wickedweavearm_attack_s4_hi_game,
-        bayonetta_wickedweavearm_attack_hi4_game,
-        bayonetta_wickedweaveleg_attack_lw4_game,
-        bayonetta_specialn_bullet_move_charge_bullet_game,
-        bayonetta_specialn_bullet_move_game,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound,
-        escape_n_game,
-        escape_f_game,
-        escape_b_game,
-        down_left_taunt_game,
-        side_taunt_game,
-        up_taunt_game,
-        sound_appealhi,
-        sound_appeallwr,
-        sound_appeallwl,
-        game_catchattack,
-        bayonetta_landing_heavy_effect
-    );
+    smashline::Agent::new("bayonetta")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("game_catch", bayonetta_catch_game)
+        .acmd("game_dash", dash_game)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("game_escapen", escape_n_game)
+        .acmd("game_escapef", escape_f_game)
+        .acmd("game_escapeb", escape_b_game)
+        .acmd("game_appeallwl", down_left_taunt_game)
+        .acmd("game_appealsr", side_taunt_game)
+        .acmd("game_appealsl", side_taunt_game)
+        .acmd("game_appealhir", up_taunt_game)
+        .acmd("game_appealhil", up_taunt_game)
+        .acmd("sound_appealhir", sound_appealhi)
+        .acmd("sound_appealhil", sound_appealhi)
+        .acmd("sound_appeallwr", sound_appeallwr)
+        .acmd("sound_appeallwl", sound_appeallwl)
+        .acmd("game_catchattack", game_catchattack)
+        .acmd("effect_landingheavy", bayonetta_landing_heavy_effect)
+        .install();
+    smashline::Agent::new("bayonetta_wickedweavearm")
+        .acmd("game_attacks4", bayonetta_wickedweavearm_attack_s4_game)
+        .acmd("game_attacks4lw", bayonetta_wickedweavearm_attack_s4_lw_game)
+        .acmd("game_attacks4hi",bayonetta_wickedweavearm_attack_s4_hi_game)
+        .acmd("game_attackhi4", bayonetta_wickedweavearm_attack_hi4_game)
+        .install();
+    smashline::Agent::new("bayonetta_wickedweaveleg")
+        .acmd("game_attacklw4", bayonetta_wickedweaveleg_attack_lw4_game)
+        .install();
+    smashline::Agent::new("bayonetta_specialn_bullet")
+        .acmd("game_movechargebullet", bayonetta_specialn_bullet_move_charge_bullet_game)
+        .acmd("game_move", bayonetta_specialn_bullet_move_game)
+        .install();
 }
-

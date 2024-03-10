@@ -15,18 +15,10 @@ use globals::*;
 // ::utils::import!{common::djc::attack_air_main_status}
 // ::utils::import!{common::djc::attack_air_main_status_loop}
 
-pub fn install() {
-    smashline::install_status_scripts!(
-        peach_attack_air_init,
-        peach_attack_air_exec,
-        peach_attack_air_main,
-    );
-}
-
 // TAGS: DJC, Double Jump Cancel, Peach
 // Reimplemented to be similar to other djc characters because peach doesn't make the same function calls as in vanilla
-#[status_script(agent = "peach", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn peach_attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn peach_attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT
     && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START {
         let _ = common::djc::sub_attack_air_inherit_jump_aerial_motion_uniq_process_init(fighter);
@@ -35,15 +27,15 @@ unsafe fn peach_attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // TAGS: DJC, Double Jump Cancel, Peach
-#[status_script(agent = "peach", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn peach_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn peach_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec(fighter)
 }
 
 // TAGS: DJC, Double Jump Cancel, Peach
 // Reimplements the setup main script for peach's aerials to transition into double jump cancel code (if applicable)
-#[status_script(agent = "peach", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT
     && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START {
         fighter.sub_attack_air_common(false.into());
@@ -66,6 +58,13 @@ unsafe fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     };
     smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, fighter_log_attack_kind);
+
+    // allow fast fall during float release aerials
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_fall_common_uniq(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_fall_common_uniq as *const () as _));
+
     let _ = fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     fighter.main_shift(peach_attack_air_main_loop)
@@ -89,14 +88,6 @@ unsafe extern "C" fn peach_attack_air_no_float_main_loop(fighter: &mut L2CFighte
         fighter.change_status(FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into(), true.into());
         return 1.into();
     }
-    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND 
-    && !fighter.is_in_hitlag()
-    && MotionModule::frame_2nd(fighter.module_accessor) >= 2.0
-    && fighter.global_table[CURRENT_FRAME].get_i32() <= ParamModule::get_int(fighter.battle_object, ParamType::Common, "djc_leniency_frame")
-    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
-    }
     if fighter.status_AttackAir_Main_common().get_bool() {
         return 0.into();
     }
@@ -115,4 +106,11 @@ unsafe extern "C" fn peach_attack_air_main_loop(fighter: &mut L2CFighterCommon) 
     let _ = fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     0.into()
+}
+pub fn install() {
+    smashline::Agent::new("peach")
+        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_init)
+        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_exec)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_main)
+        .install();
 }

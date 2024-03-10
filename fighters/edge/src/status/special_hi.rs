@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
-
 unsafe extern "C" fn edge_special_hi_param_int_helper(fighter: &mut L2CFighterCommon, hash: L2CValue, charged_rush: L2CValue) -> L2CValue {
     let param = edge_special_hi_param_helper_inner(hash, charged_rush).get_u64();
     WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), param).into()
@@ -76,8 +75,7 @@ unsafe extern "C" fn edge_special_hi_param_helper_inner(hash: L2CValue, charged_
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
-#[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -109,8 +107,7 @@ unsafe fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn edge_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DIRECTION_EFFECT_VISIBLE);
     WorkModule::set_int(fighter.module_accessor, *EFFECT_HANDLE_NULL, *FIGHTER_EDGE_STATUS_SPECIAL_HI_INT_DIRECTION_EFFECT_HANDLE);
@@ -340,9 +337,8 @@ unsafe extern "C" fn edge_special_hi_ground_touch_down(fighter: &mut L2CFighterC
 
 // FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH
 
-#[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
+pub unsafe extern "C" fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH)(fighter);
 
     // Grounded Blade Rush shorten mechanic
     let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_X);
@@ -495,10 +491,10 @@ pub unsafe fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CVa
 // }
 
 pub fn install() {
-    install_status_scripts!(
-        //edge_special_hi_pre,
-        //edge_special_hi_main,
-        edge_special_hi_rush_main,
-        //edge_special_hi_end_main
-    );
+    smashline::Agent::new("edge")
+        //.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, edge_special_hi_pre)
+        //.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, edge_special_hi_main)
+        .status(Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_main)
+        //.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_end)
+        .install();
 }
