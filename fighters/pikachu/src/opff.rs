@@ -1,4 +1,3 @@
-
 // opff import
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
