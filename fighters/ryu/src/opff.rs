@@ -194,6 +194,8 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ENTRY
     ].contains(&status_kind) {
         end_magic_series(fighter, boma, status_kind, situation_kind);
+        let meter_amount = MeterModule::meter(fighter.battle_object);
+        MeterModule::drain_direct(fighter.battle_object, meter_amount);
     }
 }
 
@@ -368,14 +370,14 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     }
 
     // DSpecial cancels
-    // costs more meter on shield
     if boma.is_cat_flag(Cat1::SpecialLw)
     && !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
-    && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+    && (MeterModule::level(boma.object()) >= 1 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL))
+    && (is_nspecial_cancel || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
         VarModule::set_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL, MeterModule::level(fighter.battle_object) >= 4);
-        StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
-        MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
+        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
         return;
     }
 }
