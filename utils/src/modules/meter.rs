@@ -525,7 +525,7 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         decay_x: defender_boma.get_param_float("common", "damage_air_brake") * angle.cos().abs(),
         decay_y: defender_boma.get_param_float("common", "damage_air_brake") * angle.sin().abs(),
     };
-    println!("{:#x}: {:?}", defender, context);
+    //println!("{:#x}: {:?}", defender, context);
 
     let blastzones = get_dead_area();
     let entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
@@ -568,7 +568,7 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         context = context_ref;
     }
 
-    println!("kill angles: {}/8", kill_angle_num);
+    //println!("kill angles: {}/8", kill_angle_num);
     if kill_angle_num >= 7 {
         let mut last_pos = VarModule::get_vec3(attacker_boma.object(), vars::common::instance::LAST_ATTACK_HIT_LOCATION);
         last_pos.x += 10.0;
