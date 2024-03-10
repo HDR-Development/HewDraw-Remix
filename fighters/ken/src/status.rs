@@ -3,6 +3,7 @@ use globals::*;
 // status script import
 mod finals;
 mod special_cmd4;
+mod special_hi;
 mod special_lw;
 mod special_s;
 
@@ -630,6 +631,7 @@ pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValu
 pub fn install() {
     finals::install();
     special_cmd4::install();
+    special_hi::install();
     special_lw::install();
     special_s::install();
 
