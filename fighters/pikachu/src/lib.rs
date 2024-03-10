@@ -1,5 +1,3 @@
-#![feature(repr_simd)]
-#![feature(simd_ffi)]
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]
