@@ -81,15 +81,6 @@ unsafe fn get_hitstop_frame_add(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-// Only applies 0.67 crouch cancel hitlag multiplier to defender
-#[skyline::hook(offset = 0x46b648, inline)]
-unsafe fn get_hitstop_mul(ctx: &mut skyline::hooks::InlineCtx) {
-    if *ctx.registers[1].w.as_ref() == 0x2 {
-        let hitstop_mul: f32 = 1.0;
-        asm!("fmov s0, w8", in("w8") hitstop_mul)
-    }
-}
-
 static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
