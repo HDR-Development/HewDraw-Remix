@@ -1212,8 +1212,8 @@ unsafe extern "C" fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("top"), 10.0 + add_damage, 79, 80, 0, 60, 3.0, 0.0, 23.0, 14.0, Some(0.0), Some(27.0), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 11.0);
+    FT_MOTION_RATE_RANGE(fighter, 11.0, 44.0, 24.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 24.0/(44.0-11.0));
         AttackModule::clear_all(boma);
     }
 }
@@ -1300,8 +1300,8 @@ unsafe extern "C" fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0 + add_damage, 361, 73, 0, 60, 5.0, 0.0, 9.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 10.0);
+    FT_MOTION_RATE_RANGE(fighter, 10.0, 55.0, 35.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 35.0/(55.0-10.0));
         AttackModule::clear_all(boma);
     }
 }

@@ -16,6 +16,62 @@ pub fn install() {
 
 unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::lucina::instance::DISABLE_SPECIAL_LW);
+    fighter.sub_change_kinetic_type_by_situation(FIGHTER_KINETIC_TYPE_MOTION.into(), FIGHTER_KINETIC_TYPE_AIR_STOP.into());
+    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+        let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+        let speed_x = sum_speed_x.abs().min(air_speed_x_stable);
+        
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ENERGY_STOP_RESET_TYPE_AIR,
+            speed_x,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            air_speed_x_stable
+        );
+        let air_brake = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_brake,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            air_brake*5.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+            0.0,
+            sum_speed_y,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -accel_y
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     0.into()
 }
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -85,40 +141,40 @@ unsafe extern "C" fn special_lw_hit_main_motion_helper(fighter: &mut L2CFighterC
     if situation != *SITUATION_KIND_GROUND {
         mot = VarModule::get_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR);
 
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y
-        );
-        let stable_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
         sv_kinetic_energy!(
             set_limit_speed,
             fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            stable_y*0.75, //hardcoded, prevents Lucina from dropping like a rock
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            air_speed_x_stable
         );
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT,
-            0.0,
-            0.0
-        ); 
-
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        
+        if !WorkModule::is_flag(fighter.module_accessor,*FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_IS_ATTACK_ENEMY) {
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        }
+        else {
+            let air_brake = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                set_brake,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                air_brake*5.0,
+                0.0
+            );
+        }
     } 
     else {
         mot = VarModule::get_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION);
+        KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fighter.module_accessor);
 
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL);
 
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
 
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
@@ -126,8 +182,10 @@ unsafe extern "C" fn special_lw_hit_main_motion_helper(fighter: &mut L2CFighterC
     }
     else {
         let frame = MotionModule::frame(fighter.module_accessor);
+        let rate = MotionModule::rate(fighter.module_accessor);
         MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0);
         MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, frame, true, true, true);
+        MotionModule::set_rate(fighter.module_accessor, rate);
     }
 
 }
@@ -184,6 +242,7 @@ unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) ->
         && fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
             special_lw_hit_check_follow_up(fighter);
             VarModule::off_flag(fighter.battle_object,vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK);
+            WorkModule::on_flag(fighter.module_accessor,*FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_IS_ATTACK_ENEMY);
         }
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             special_lw_hit_main_motion_helper(fighter);
