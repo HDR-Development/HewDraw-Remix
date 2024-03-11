@@ -21,7 +21,7 @@ unsafe extern "C" fn mariod_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 10, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -80,7 +80,7 @@ unsafe extern "C" fn mariod_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 10, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -139,7 +139,7 @@ unsafe extern "C" fn mariod_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 10, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
