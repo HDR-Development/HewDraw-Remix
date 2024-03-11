@@ -90,6 +90,9 @@ unsafe fn get_hitstop_mul(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+static mut IS_KB_CALC_EARLY: bool = false;
+static mut KB: f32 = 0.0;
+
 // This runs directly after knockback is calculated
 #[skyline::hook(offset = 0x402f04, inline)]
 unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
@@ -102,10 +105,23 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
     
         let mut kb: f32;
         asm!("fmov w8, s0", out("w8") kb);
+        IS_KB_CALC_EARLY = true;
+        KB = kb;
         let hitlag = *(((fighta as u64) + 0xf70c) as *mut i32);
         // Set hitlag for attacker
         *(((fighta as u64) + 0xf70c) as *mut i32) = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as i32;
         asm!("fmov s0, w8", in("w8") kb)
+    }
+}
+
+// This runs immediately after an attacker's hitlag is calculated
+#[skyline::hook(offset = 0x406fdc, inline)]
+unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
+    if IS_KB_CALC_EARLY {
+        let hitlag = *ctx.registers[0].w.as_ref();
+        let kb = KB;
+        // Set hitlag for attacker
+        *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as u32;
     }
 }
 
@@ -116,6 +132,8 @@ unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
 
     let hitlag = *ctx.registers[21].w.as_ref();
     let kb = DamageModule::reaction(opponent_boma, 0);
+    IS_KB_CALC_EARLY = true;
+    KB = kb;
     // Set hitlag for attacking article
     *ctx.registers[21].w.as_mut() = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as u32;
 }
@@ -129,6 +147,7 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let kb = DamageModule::reaction(boma, 0);
     // Set hitlag for defender
     *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as u32;
+    IS_KB_CALC_EARLY = false;
 }
 
 pub fn install() {
@@ -138,6 +157,7 @@ pub fn install() {
         get_hitstop_frame_add,
         post_calc_reaction,
         set_weapon_hitlag,
-        set_fighter_hitlag
+        set_fighter_hitlag,
+        handle_on_attack_event
     );
 }
