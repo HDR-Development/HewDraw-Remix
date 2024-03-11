@@ -3,25 +3,22 @@ use globals::*;
 // status script import
  
 pub fn install() {
-    install_status_scripts!(
-        special_lw_init,
-        special_lw_pre,
-        special_lw_exec,
-        special_lw_hit_init,
-        special_lw_hit_pre,
-        special_lw_hit_exec,
-        special_lw_hit_main,
-    );
+    smashline::Agent::new("lucina")
+        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init)
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
+        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec)
+        .status(Init, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_init)
+        .status(Pre, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_pre)
+        .status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_main)
+        .status(Exec, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_exec)
+    .install();
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::lucina::instance::DISABLE_SPECIAL_LW);
     0.into()
 }
-
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     //Something outside of status scripts forces changes to Lucina's kinetic energy while in special lw, but not while in this status
     StatusModule::set_status_kind_interrupt(
         fighter.module_accessor,
@@ -29,27 +26,16 @@ unsafe fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     1.into()
 }
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
-    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, hash40("special_lw"));
-    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, hash40("special_air_lw"));
-    special_lw_hit_main_motion_helper(fighter);
-    fighter.main_shift(special_lw_hit_main_loop)
-}
-
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn special_lw_hit_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_hit_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::lucina::instance::DISABLE_SPECIAL_LW);
     0.into()
 }
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn special_lw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+unsafe extern "C" fn special_lw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -81,12 +67,10 @@ unsafe fn special_lw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn special_lw_hit_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_hit_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
     VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, hash40("special_lw"));
     VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, hash40("special_air_lw"));
@@ -166,7 +150,7 @@ unsafe extern "C" fn special_lw_hit_check_follow_up(fighter: &mut L2CFighterComm
 
         let dash_mul_spd_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("start_mul_spd_x"));
         let dash_add_spd_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("attack_max_y"));
-        macros::SET_SPEED_EX(fighter, lr*speed_x*dash_mul_spd_x, speed_y-dash_add_spd_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, lr*speed_x*dash_mul_spd_x, speed_y-dash_add_spd_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 
         VarModule::on_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_STOP_ON_HIT);
     }
@@ -208,7 +192,7 @@ unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) ->
     if VarModule::is_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_STOP_ON_HIT) {
         if AttackModule::is_infliction(fighter.module_accessor,*COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
         || StopModule::is_hit(fighter.module_accessor) {
-            macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {

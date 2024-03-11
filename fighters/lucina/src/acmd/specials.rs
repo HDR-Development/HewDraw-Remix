@@ -1580,7 +1580,7 @@ unsafe extern "C" fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        macros::SET_SPEED_EX(fighter, 2.3, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 2.3, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 3.0, HitStopMulTarget{_address: (*HIT_STOP_MUL_TARGET_OPPONENT) as u8}, 0.0);
         DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -1605,7 +1605,7 @@ unsafe extern "C" fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        macros::SET_SPEED_EX(fighter, 1.2, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 1.2, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 3.0, HitStopMulTarget{_address: (*HIT_STOP_MUL_TARGET_OPPONENT) as u8}, 0.0);
         DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
