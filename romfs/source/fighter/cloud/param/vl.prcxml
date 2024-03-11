@@ -46,7 +46,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="limit_gauge_add">0.23</float>
+      <float hash="limit_gauge_add">20.23</float>
       <int hash="limit_break_clear_frame">1200</int>
     </struct>
     <hash40 index="1">dummy</hash40>

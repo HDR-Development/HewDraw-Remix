@@ -1486,6 +1486,17 @@ pub mod vars {
             pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
+    
+    pub mod cloud {
+        pub mod instance {
+            // ints
+            pub const METEOR_SPAWN_NUM: i32 = 0x1100;
+
+            // floats
+            pub const METEOR_SPAWN_X: i32 = 0x1100;
+            pub const METEOR_SPAWN_Y: i32 = 0x1101;
+        }
+    }
 }
 
 pub mod statuses {
@@ -1570,5 +1581,11 @@ pub mod statuses {
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
         pub const SPECIAL_S_EDGE: i32 = 0x1F3;
+    }
+
+    pub mod cloud {
+        pub const METEOR_STATUS_KIND_START: i32 = 0x0;
+        pub const METEOR_STATUS_KIND_MOVE: i32 = 0x2;
+        pub const METEOR_STATUS_KIND_END: i32 = 0x1;
     }
 }

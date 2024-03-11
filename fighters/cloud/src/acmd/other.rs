@@ -213,6 +213,43 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+pub unsafe extern "C" fn meteor_move_game(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("have"), 8.0,60,60,0,70, 6.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);  
+        AttackModule::enable_safe_pos(agent.module_accessor);
+    }
+}
+pub unsafe extern "C" fn meteor_move_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let maxFrame = 3000;
+    let step=15;
+    for x in (1..maxFrame).step_by(step) {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("have"), 0, 0, 0, 0, -90, 0, 0.5, false);
+        }
+        wait(lua_state, step as f32);
+    }
+}
+pub unsafe extern "C" fn meteor_end_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        smash_script::notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
+    }
+}
+pub unsafe extern "C" fn meteor_end_effect(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_bomb_b"), Hash40::new("top"), 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+pub unsafe extern "C" fn meteor_end_sound(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_bomb_s"));
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("cloud")
         .acmd("sound_damageflyhi", damageflyhi_sound)
@@ -226,5 +263,12 @@ pub fn install() {
         .acmd("game_turndash", turn_dash_game)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
+    .install();
+    Agent::new("cloud_meteor")
+        .acmd("game_move", meteor_move_game)
+        .acmd("effect_move", meteor_move_effect)
+        .acmd("game_end", meteor_end_game)
+        .acmd("effect_end", meteor_end_effect)
+        .acmd("sound_end", meteor_end_sound)
+    .install();
 }
