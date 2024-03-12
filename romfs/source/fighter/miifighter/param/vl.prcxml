@@ -22,6 +22,9 @@
     <struct index="2">
       <float hash="hi3_pass_mul">0.85</float>
       <float hash="air_hi3_pass_mul">0.85</float>
+      <int hash="critical_frame">30</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

@@ -31,7 +31,11 @@
       <float hash="start_spd_x_mul">0.8</float>
       <float hash="start_spd_y_mul">0.05</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <int hash="critical_frame">30</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
+    </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
@@ -40,7 +44,11 @@
       <float hash="special_air_hi_start_x_mul">1</float>
       <float hash="special_hi_dir_mul">11</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <int hash="critical_frame">30</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
+    </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
@@ -48,6 +56,9 @@
     <struct index="0">
       <float hash="limit_gauge_add">0.23</float>
       <int hash="limit_break_clear_frame">1200</int>
+      <int hash="critical_frame">30</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
