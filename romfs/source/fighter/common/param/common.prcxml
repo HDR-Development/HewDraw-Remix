@@ -86,7 +86,7 @@
   <float hash="status_start_turn_stick_x">0.2</float>
   <float hash="special_stick_x">0.5673</float>
   <float hash="special_stick_y">0.51</float>
-  <int hash="special_air_n_turn_frame">10</int>
+  <int hash="special_air_n_turn_frame">13</int>
   <byte hash="special_command_life_max">10</byte>
   <byte hash="super_special_command_life_max">20</byte>
   <float hash="catch_dash_brake_mul">1</float>
