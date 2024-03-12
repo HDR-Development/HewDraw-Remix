@@ -504,11 +504,6 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         let fighter_info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
         if FighterInformation::stock_count(fighter_info) != 1 { return; }
     } 
-    // else {
-    //     // in training mode, check the flag for if the effects should be played
-    //     if !VarModule::is_flag(attacker_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { return; }
-    // }
-
 
     let knockback = *knockback_info;
     let initial_speed_x = *knockback_info.add(4);
