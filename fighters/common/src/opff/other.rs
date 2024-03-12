@@ -11,6 +11,7 @@ use smash::lib::{lua_const::*, L2CValue, L2CAgent};
 use smash::phx::*;
 use smash::hash40;
 use smash::app::sv_animcmd::*;
+use smash::app::smashball::*;
 use smash_script::*;
 use crate::misc::*;
 use globals::*;
@@ -336,6 +337,30 @@ const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
 
 unsafe extern "C" fn kill_screen_handler(fighter: &mut L2CFighterCommon) {
+    // allow kill effects to be toggled on and off in training mode
+    if is_training_mode() {
+        let is_toggle = VarModule::is_flag(fighter.object(), vars::common::instance::TRAINING_KILL_EFFECTS);
+        let is_input = fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL)
+            && fighter.is_button_on(Buttons::Guard) 
+            && fighter.is_button_on(Buttons::Attack);
+        if !is_toggle && is_input
+        && fighter.is_button_on(Buttons::AppealHi) {
+            VarModule::on_flag(fighter.object(), vars::common::instance::TRAINING_KILL_EFFECTS);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+            smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1);
+        } else if is_toggle && is_input
+        && fighter.is_button_on(Buttons::AppealLw) {
+            VarModule::off_flag(fighter.object(), vars::common::instance::TRAINING_KILL_EFFECTS);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("sys_equip_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.5, true);
+            smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1);
+        }
+    }
+    
+    // handles turning off kill effects
     if VarModule::get_int(fighter.object(), COUNTER) > 0 {
         let scale = (30 - VarModule::get_int(fighter.object(), COUNTER)) as f32 / 30.0 * 5.0;
         EffectModule::set_scale(fighter.module_accessor, VarModule::get_int(fighter.object(), HANDLE) as u32, &Vector3f::new(scale, 1.0, scale));

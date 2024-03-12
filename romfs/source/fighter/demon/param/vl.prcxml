@@ -13,7 +13,7 @@
   </struct>
   <list hash="param_attack_s4">
     <struct index="0">
-      <int hash="critical_frame">30</int>
+      <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
@@ -22,7 +22,7 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_attack_rage">
-    <int hash="critical_frame">30</int>
+    <int hash="critical_frame">36</int>
     <int hash="critical_slow_rate">8</int>
     <int hash="critical_zoom_in_frame">999</int>
   </struct>

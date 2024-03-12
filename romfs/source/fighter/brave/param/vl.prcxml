@@ -24,7 +24,7 @@
   <list hash="param_critical">
     <struct index="0">
       <float hash="rate">-1.0</float>
-      <int hash="critical_frame">30</int>
+      <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
@@ -32,14 +32,14 @@
   <list hash="param_metal_critical">
     <struct index="0">
       <float hash="rate">-1.0</float>
-      <int hash="critical_frame">30</int>
+      <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
   </list>
   <list hash="param_deathball_critical">
     <struct index="0">
-      <int hash="critical_frame">30</int>
+      <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
     </struct>

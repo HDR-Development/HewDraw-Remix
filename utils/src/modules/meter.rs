@@ -503,7 +503,19 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         let manager = utils_dyn::singletons::FighterManager() as *mut u64;
         let fighter_info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
         if FighterInformation::stock_count(fighter_info) != 1 { return; }
-    } 
+    } else {
+        // in training mode, check the flag for if the effects should be played
+        let mut is_training_toggle = false;
+        if !attacker_boma.is_weapon() {
+            if VarModule::is_flag(attacker_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
+        } else {
+            let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let owner = utils_dyn::util::get_battle_object_from_id(owner_id);
+            let owner_boma = &mut *(*owner).module_accessor;
+            if VarModule::is_flag(owner_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
+        }
+        if !is_training_toggle { return; }
+    }
 
     let knockback = *knockback_info;
     let initial_speed_x = *knockback_info.add(4);
@@ -575,15 +587,17 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         context = context_ref;
     }
 
-    println!("kill angles: {}/16", kill_angle_num);
-    if kill_angle_num >= 9 {
+    //println!("kill angles: {}/10", kill_angle_num);
+    if kill_angle_num >= 9
+    && VarModule::get_int(defender_boma.object(), COUNTER) == 0 {
         let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
         EffectModule::set_billboard(defender_boma, handle as u32, true);
         EffectModule::set_disable_render_offset_last(defender_boma);
         VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
         VarModule::set_int(defender_boma.object(), COUNTER, 20);
-        SlowModule::set_whole(defender_boma, 8, 25);
         SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
+        VarModule::set_int(defender_boma.object(), COUNTER, 20);
+        SlowModule::set_whole(defender_boma, 8, 25);
         let common = utils_dyn::util::get_fighter_common_from_accessor(defender_boma);
         EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
     }

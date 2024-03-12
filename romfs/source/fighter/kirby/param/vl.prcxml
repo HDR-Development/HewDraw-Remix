@@ -36,7 +36,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="critical_frame">30</int>
+      <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
