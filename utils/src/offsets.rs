@@ -419,7 +419,7 @@ mod offsets_impl {
             offsets.map_controls = byte_search(MAP_CONTROLS_SEARCH_CODE).expect("Unable to find control mapping function!");
             offsets.once_per_game_frame = byte_search(ONCE_PER_GAME_FRAME_SEARCH_CODE).expect("Unable to find once-per-game-frame function!");
             offsets.on_rule_select = byte_search(ON_RULE_SELECT_SEARCH_CODE).expect("Unable to find on-rule-select instructions!");
-            offsets.global_frame_counter = 0x52e6b44;
+            offsets.global_frame_counter = 0x52e8b44;
             offsets.get_match_mode = {
                 let offset = byte_search(GET_MATCH_MODE_SEARCH_CODE).expect("Unable to find get_match_mode!") - GET_MATCH_MODE_OFFSET_TO_START;
                 let bl_offset = offset_from_bl(offset);

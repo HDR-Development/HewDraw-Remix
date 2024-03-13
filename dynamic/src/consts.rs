@@ -180,38 +180,41 @@ pub mod vars {
 
             pub const DISABLE_CSTICK_BUFFER_ROLL_OOS: i32 = 0x0064;
 
+            pub const IS_INIT: i32 = 0x0065;
+
+            pub const IS_FLOAT: i32 = 0x0066;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
 
             pub const COSTUME_SLOT_NUMBER: i32 = 0x0001; // Unironically why does this need to exist? We have WorkModule.
 
-            pub const FLOAT_TIMER: i32 = 0x0002;
-            pub const FLOAT_DURATION: i32 = 0x0003;
-            pub const FLOAT_STYLE: i32 = 0x0004;
+            pub const FLOAT_DURATION: i32 = 0x0002;
+            pub const FLOAT_STATUS_KIND: i32 = 0x0003;
 
-            pub const HITFALL_BUFFER: i32 = 0x0005;
+            pub const HITFALL_BUFFER: i32 = 0x0004;
 
-            pub const JUMP_SQUAT_FRAME: i32 = 0x0006;
+            pub const JUMP_SQUAT_FRAME: i32 = 0x0005;
 
-            pub const GIMMICK_TIMER: i32 = 0x0007;
+            pub const GIMMICK_TIMER: i32 = 0x0006;
 
-            pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0008;
+            pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0007;
 
-            pub const CSTICK_LIFE: i32 = 0x0009;
+            pub const CSTICK_LIFE: i32 = 0x0008;
 
-            pub const AGT_USED_COUNTER: i32 = 0x000A;
+            pub const AGT_USED_COUNTER: i32 = 0x0009;
 
-            pub const CLIFF_XLU_FRAME: i32 = 0x000B;
-            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
-            pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+            pub const CLIFF_XLU_FRAME: i32 = 0x000A;
+            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000B;
+            pub const SHIELD_EFFECT_HANDLE: i32 = 0x000C;
 
-            pub const FRAME_COUNTER: i32 = 0x000E;
+            pub const FRAME_COUNTER: i32 = 0x000D;
 
-            pub const LEFT_STICK_FLICK_X: i32 = 0x000F;
-            pub const LEFT_STICK_FLICK_Y: i32 = 0x0010;
+            pub const LEFT_STICK_FLICK_X: i32 = 0x000E;
+            pub const LEFT_STICK_FLICK_Y: i32 = 0x000F;
 
-            pub const LEDGE_ID: i32 = 0x0011;
+            pub const LEDGE_ID: i32 = 0x0010;
 
             // floats
 
@@ -282,9 +285,15 @@ pub mod vars {
 
             pub const CSTICK_IRAR: i32 = 0x1000;
 
+            pub const FLOAT_INHERIT_AERIAL: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
+
+            pub const FLOAT_FRAME: i32 = 0x1000;
+            pub const FLOAT_ENABLE_UNIQ: i32 = 0x1001;
+            pub const FLOAT_MTRANS: i32 = 0x1002;
 
             // floats
 
@@ -691,10 +700,12 @@ pub mod vars {
             pub const FIREBALL_COOLDOWN_FRAME: i32 = 0x0100;
             pub const FIREBALL_EFFECT_ID: i32 = 0x0101;
             pub const CHARGE_EFFECT_HANDLER: i32 = 0x0102;
+            pub const SPECIAL_S_THROW_TYPE: i32 = 0x0103;
         }
         pub mod status {
-            // flags
+            //flags
             pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
+            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1102;
         }
     }
 
@@ -856,9 +867,8 @@ pub mod vars {
     pub mod mewtwo {
         pub mod instance {
             // flags
-            pub const GROUNDED_TELEPORT: i32 = 0x0100;
-            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
-            pub const UP_SPECIAL_FREEFALL: i32 = 0x0102;
+            pub const TELEPORT_CANCEL: i32 = 0x0100;
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
         }
     }
 
@@ -955,9 +965,12 @@ pub mod vars {
             pub const ELWIND1_CANCEL: i32 = 0x1100;
         }
         pub mod instance {
-            //flags
+            // flags
             pub const THUNDER_CHARGE: i32 = 0x0100;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
+
+            // ints
+            pub const LEVIN_AERIAL_LENIENCY: i32 = 0x0100;
         }
     }
 
@@ -1110,8 +1123,7 @@ pub mod vars {
             pub const ATTACK_12_INTO_S3: i32 = 0x0100;
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
-            pub const CYCLE_MAGIC: i32 = 0x0103; // used to properly cycle Sora's HUD to fire in training mode
-            pub const ATTACK_LW4_REBOUND: i32 = 0x0104;
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
@@ -1495,6 +1507,10 @@ pub mod statuses {
         pub const SPECIAL_HI_FINISH2: i32 = 0x1F1;
     }
 
+    pub mod samusd {
+        pub const FLOAT: i32 = 0x1F6;
+    }
+
     pub mod falco {
         pub const SPECIAL_LW_LOOP: i32 = 0x1e8;
         pub const SPECIAL_LW_END: i32 = 0x1e9;
@@ -1506,6 +1522,14 @@ pub mod statuses {
 
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0x1EC;
+    }
+
+    pub mod mewtwo {
+        pub const FLOAT: i32 = 0x1E9;
+    }
+
+    pub mod reflet {
+        pub const FLOAT: i32 = 0x1FD;
     }
 
     pub mod ryu {
