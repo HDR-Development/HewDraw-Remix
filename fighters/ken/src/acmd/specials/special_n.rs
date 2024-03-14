@@ -228,7 +228,11 @@ unsafe extern "C" fn effect_specialairn(fighter: &mut L2CAgentBase) {
     if !boma.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         frame(lua_state, 4.0);
         if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            if fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            } else {
+                EFFECT_FOLLOW(fighter, Hash40::new("ryu_syakunetsu_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            }
             if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             }
@@ -256,7 +260,11 @@ unsafe extern "C" fn effect_specialairn(fighter: &mut L2CAgentBase) {
         frame(lua_state, 11.0);
         if is_excute(fighter) {
             COL_NORMAL(fighter);
-            EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+            if fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+            } else {
+                EFFECT_FOLLOW(fighter, Hash40::new("ryu_syakunetsu_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+            }
         }
         frame(lua_state, 12.0);
         if is_excute(fighter) {
@@ -398,6 +406,12 @@ unsafe extern "C" fn game_movespwms(fighter: &mut L2CAgentBase) {
         } else {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 1.1, 80, 10, 0, 42, 3.5, 0.0, -5.2, 0.0, Some(0.0), Some(-5.2), Some(0.0), 0.25, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 1.1, 366, 10, 0, 40, 3.5, 0.0, 0.5, 0.0, Some(0.0), Some(-5.2), Some(0.0), 0.25, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);    
+        }
+        if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR)) {
+            let lr = PostureModule::lr(owner_module_accessor);
+            GroundModule::set_rhombus_offset(boma, &Vector2f{x: -4.0 * lr, y: 3.0});
+            KineticModule::reflect_speed(boma, &Vector3f{x: 0.26, y: lr * 0.97, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
         }
         AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
     }

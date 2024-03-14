@@ -16,7 +16,7 @@ pub unsafe extern "C" fn pre_special_n(fighter: &mut L2CFighterCommon) -> L2CVal
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND);
         return 1.into();
     }
-    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
 }
 
 // FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND //
