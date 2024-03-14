@@ -69,27 +69,11 @@ unsafe fn arts_cancelling(fighter: &mut L2CFighterCommon, status_kind: i32) {
     }
 }
 
-unsafe fn dashattack_land_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH) {
-        if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && boma.is_situation (*SITUATION_KIND_GROUND) {
-            // Current FAF in motion list is 51, frame is 0 indexed so subtract a frame
-            let dash_attack_cancel_frame_ground  = 50.0;
-            if MotionModule::frame(boma) < (dash_attack_cancel_frame_ground) {
-                MotionModule::change_motion(boma, Hash40::new("landing_air_f"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
     arts_cancelling(fighter, status_kind);
-    dashattack_land_cancel(boma);
 }
 
 pub extern "C" fn shulk_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

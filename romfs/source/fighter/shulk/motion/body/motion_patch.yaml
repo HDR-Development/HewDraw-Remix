@@ -126,36 +126,3 @@ throw_hi:
 furafura_end:
   extra:
     cancel_frame: 10
-attack_dash:
-  extra:
-    cancel_frame: 56
-attack_air_dash:
-  game_script: game_attackairdash
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-    - name: c00attackairdash.nuanmb
-      unk: 0
-  scripts:
-    - expression_attackairdash
-    - sound_attackairdash
-    - effect_attackairdash
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-    cancel_frame: 51
-    no_stop_intp: false
