@@ -1,7 +1,35 @@
 use super::*;
 
-#[acmd_script( agent = "kirby", scripts = ["game_specialneat", "game_specialairneat"], category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_n_eat_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.5);
+    frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KIRBY_STATUS_SPECIAL_N_FLAG_INHALE);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 6.0, 5.0, None, None, None, *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_GA);
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 4.0, 0.0, 7.0, 8.0, None, None, None, *COLLISION_KIND_MASK_ATTACK, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+    }
+}
+
+unsafe extern "C" fn kirby_special_n_loop_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KIRBY_STATUS_SPECIAL_N_FLAG_INHALE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 160, 100, 30, 0, 8.5, 0.0, 7.0, 15.5, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 10, false, false, true, true, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 25, 0, 7.8, 0.0, 7.0, 9.7, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 10, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        CATCH(fighter, 0, Hash40::new("top"), 5.3, 0.0, 6.4, 10.2, None, None, None, *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 1, Hash40::new("top"), 5.8, 0.0, 6.4, 6.2, None, None, None, *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_GA);
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 4.0, 0.0, 7.0, 8.0, None, None, None, *COLLISION_KIND_MASK_ATTACK, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+    }
+}
+
+unsafe extern "C" fn kirby_special_n_eat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -16,8 +44,7 @@ unsafe fn kirby_special_n_eat_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = ["game_specialndrink", "game_specialairndrink"], category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_n_drink_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_n_drink_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -30,8 +57,7 @@ unsafe fn kirby_special_n_drink_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = ["game_specialnlarge", "game_specialairnlarge"], category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_n_large_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_n_large_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -46,8 +72,7 @@ unsafe fn kirby_special_n_large_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 0.0, 15.0, 6.0);
@@ -56,8 +81,7 @@ unsafe fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specials", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -81,8 +105,7 @@ unsafe fn kirby_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialss", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_ss_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_ss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -106,8 +129,7 @@ unsafe fn kirby_special_ss_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialsmax", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_s_max_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_s_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 11.0);
@@ -133,8 +155,7 @@ unsafe fn kirby_special_s_max_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 0.0, 18.0, 11.0);
@@ -144,8 +165,7 @@ unsafe fn kirby_special_air_s_start_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_special_air_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -178,8 +198,7 @@ unsafe fn kirby_special_air_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairss" , category = ACMD_GAME , low_priority)]
-unsafe fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -212,8 +231,7 @@ unsafe fn kirby_special_air_ss_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_air_hi2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -252,7 +270,6 @@ unsafe fn kirby_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_specialairhi2", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn kirby_special_air_hi2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -274,8 +291,7 @@ unsafe extern "C" fn kirby_special_air_hi2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialhih", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_hi_h_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_hi_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 0.0, 23.0, 7.0);  // startup
@@ -306,8 +322,7 @@ unsafe fn kirby_special_hi_h_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_specialhih", category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_special_hi_h_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_hi_h_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 18.0);
@@ -345,8 +360,7 @@ unsafe fn kirby_special_hi_h_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "sound_specialhih", category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 23.0);
@@ -364,8 +378,7 @@ unsafe fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_specialhih", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 22.0);
@@ -375,12 +388,11 @@ unsafe fn kirby_special_hi_h_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairhih", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 0.0, 18.0, 6.0);  // startup
@@ -425,8 +437,7 @@ unsafe fn kirby_special_air_hi_h_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_specialairhih", category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_special_air_hi_h_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_hi_h_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 15.0);
@@ -447,8 +458,7 @@ unsafe fn kirby_special_air_hi_h_effect(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "kirby", script = "sound_specialairhih", category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 18.0);
@@ -466,8 +476,7 @@ unsafe fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_specialairhih", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -477,12 +486,11 @@ unsafe fn kirby_special_air_hi_h_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, false, 0);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -506,8 +514,7 @@ unsafe fn kirby_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -536,8 +543,7 @@ unsafe fn kirby_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_special_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_special_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -579,29 +585,39 @@ unsafe fn kirby_special_air_lw_effect(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kirby_special_n_eat_game,
-        kirby_special_n_drink_game,
-        kirby_special_n_large_game,
-        kirby_special_s_start_game,
-        kirby_special_s_game,
-        kirby_special_ss_game,
-        kirby_special_s_max_game,
-        kirby_special_air_s_start_game,
-        kirby_special_air_s_game,
-        kirby_special_air_ss_game,
-        kirby_special_air_hi2_game,
-        kirby_special_air_hi2_effect,
-        kirby_special_hi_h_game,
-        kirby_special_hi_h_effect,
-        kirby_special_hi_h_sound,
-        kirby_special_hi_h_expression,
-        kirby_special_air_hi_h_game,
-        kirby_special_air_hi_h_effect,
-        kirby_special_air_hi_h_sound,
-        kirby_special_air_hi_h_expression,
-        kirby_special_air_lw_game,
-        kirby_special_air_lw_effect
-    );
+    smashline::Agent::new("kirby")
+        .acmd("game_specialnstart", kirby_special_n_start_game)
+        .acmd("game_specialairnstart", kirby_special_n_start_game)
+        .acmd("game_specialnloop", kirby_special_n_loop_game)
+        .acmd("game_specialairnloop", kirby_special_n_loop_game)
+        .acmd("game_specialneat", kirby_special_n_eat_game)
+        .acmd("game_specialairneat", kirby_special_n_eat_game)
+        .acmd("game_specialndrink", kirby_special_n_drink_game)
+        .acmd("game_specialairndrink", kirby_special_n_drink_game)
+        .acmd("game_specialnlarge", kirby_special_n_large_game)
+        .acmd("game_specialairnlarge", kirby_special_n_large_game)
+        .acmd("game_specialsstart", kirby_special_s_start_game)
+        .acmd("game_specials", kirby_special_s_game)
+        .acmd("game_specialss", kirby_special_ss_game)
+        .acmd("game_specialsmax", kirby_special_s_max_game)
+        .acmd("game_specialairsstart", kirby_special_air_s_start_game)
+        .acmd("game_specialairs", kirby_special_air_s_game)
+        .acmd("game_specialairss", kirby_special_air_ss_game)
+        .acmd("game_specialairhi2", kirby_special_air_hi2_game)
+        .acmd("effect_specialairhi2", kirby_special_air_hi2_effect)
+        .acmd("game_specialhih", kirby_special_hi_h_game)
+        .acmd("effect_specialhih", kirby_special_hi_h_effect)
+        .acmd("sound_specialhih", kirby_special_hi_h_sound)
+        .acmd("expression_specialhih", kirby_special_hi_h_expression)
+        .acmd("game_specialairhih", kirby_special_air_hi_h_game)
+        .acmd("effect_specialairhih", kirby_special_air_hi_h_effect)
+        .acmd("sound_specialairhih", kirby_special_air_hi_h_sound)
+        .acmd(
+            "expression_specialairhih",
+            kirby_special_air_hi_h_expression,
+        )
+        .acmd("game_speciallw", kirby_special_lw_game)
+        .acmd("game_specialairlw", kirby_special_air_lw_game)
+        .acmd("effect_specialairlw", kirby_special_air_lw_effect)
+        .install();
 }
-

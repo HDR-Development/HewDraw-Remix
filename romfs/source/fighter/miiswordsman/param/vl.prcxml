@@ -40,11 +40,12 @@
   <list hash="param_tornadoshot">
     <struct index="0">
       <float hash="life">50</float>
-      <float hash="speed_x">0.3</float>
-      <float hash="limit_speed_x">2.0</float>
+      <float hash="speed_x">-0.05</float>
+      <float hash="accel_x">0.04</float>
+      <float hash="limit_speed_x">2.45</float>
       <float hash="speed_y">0.05</float>
-      <float hash="accel_y">-0.025</float>
-      <float hash="limit_speed_y">-1.8</float>
+      <float hash="accel_y">-0.014</float>
+      <float hash="limit_speed_y">-0.8</float>
     </struct>
   </list>
   <list hash="param_lightshuriken">

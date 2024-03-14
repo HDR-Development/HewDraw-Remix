@@ -1,7 +1,6 @@
 use super::*;
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn trail_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn trail_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(Hash40::new("special_s_start").into(), Hash40::new("special_air_s_start").into(), false.into());
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
     WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
@@ -30,7 +29,7 @@ unsafe extern "C" fn trail_special_s_set_angle_guide(fighter: &mut L2CFighterCom
     let stick_y = ControlModule::get_stick_y(fighter.module_accessor);
     let vector = fighter.Vector2__create(stick_x.into(), stick_y.into());
     let length = fighter.Vector2__length(vector.clone());
-    let threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), 0xc7b8ee93b);
+    let threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("search_stick"));
     let angle;
     if length.get_f32() < threshold {
         if effect == 0 {
@@ -42,7 +41,7 @@ unsafe extern "C" fn trail_special_s_set_angle_guide(fighter: &mut L2CFighterCom
         let mut degrees = vector["y"].get_f32().atan2(vector["x"].get_f32()).to_degrees();
         if degrees < 0.0 { degrees += 360.0 }
         let lr = PostureModule::lr(fighter.module_accessor);
-        let max_angle = 30.0;
+        let max_angle = 35.0;
         if lr >= 0.0 {
             if degrees <= 180.0 && degrees > max_angle {
                 degrees = max_angle;
@@ -87,17 +86,16 @@ unsafe extern "C" fn trail_special_s_get_guide_pos(fighter: &mut L2CFighterCommo
     let pos = PostureModule::pos(fighter.module_accessor);
     let rad = angle.get_f32().to_radians();
     let scale = PostureModule::scale(fighter.module_accessor);
-    let dist = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), 0x12145d2880);
+    let dist = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("search_cursor_dist"));
     let dist_scaled = dist * scale;
     let x_pos = rad.cos() * dist_scaled + (*pos).x;
     let y_pos = rad.sin() * dist_scaled + (*pos).y;
-    let y_offset = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), 0x16ee6fe522);
+    let y_offset = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("search_cursor_offset_y"));
     let y_pos = y_offset * scale + y_pos;
     Vector2f{x: x_pos, y: y_pos}
 }
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let effect = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE) as u32;
     if effect != 0 {
         EffectModule::kill(fighter.module_accessor, effect, true, true);
@@ -108,15 +106,19 @@ unsafe fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn trail_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn trail_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::trail::status::STOP_SIDE_SPECIAL);
     0.into()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        trail_special_s_main, trail_special_s_end,
-        trail_special_s_end_end
-    );
+    smashline::Agent::new("trail")
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, trail_special_s_main)
+        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, trail_special_s_end)
+        .status(
+            End,
+            *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
+            trail_special_s_end_end,
+        )
+        .install();
 }

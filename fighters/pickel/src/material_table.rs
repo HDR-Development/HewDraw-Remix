@@ -2,7 +2,7 @@ use super::*;
 use globals::*;
 
 // defines steve's material table
-#[skyline::hook(offset = 0x0f106f0)] // FighterSpecializer_Pickel::get_mining_material_table_result()
+#[skyline::hook(offset = 0x0f10710)] // FighterSpecializer_Pickel::get_mining_material_table_result()
 pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, arg3: u64) -> u32 {
     let dirt = 0; // this applies to whichever "grade 1" material is being used
     let wood = 1;
@@ -95,7 +95,7 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
 }
 
 // overrides stage id check for things such as mining speed
-#[skyline::hook(offset = 0x0f10660)] // FighterSpecializer_Pickel::is_mining_material_table_normal()
+#[skyline::hook(offset = 0x0f10680)] // FighterSpecializer_Pickel::is_mining_material_table_normal()
 pub unsafe extern "C" fn stub_stage_check() -> bool {
     return false;
 }

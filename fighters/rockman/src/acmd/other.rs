@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "rockman", script = "game_dash" , category = ACMD_GAME , low_priority)]
-unsafe fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -12,8 +11,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "rockman", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -31,8 +29,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -44,115 +41,6 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
     
-}
-
-// #[acmd_script( agent = "rockman_rockbuster", script = "game_regular", category = ACMD_GAME, low_priority )]
-// unsafe fn rockman_rockbuster_regular_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     if is_excute(fighter) {
-//         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 0, 0, 0, 3.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
-//     }
-//     frame(lua_state, 4.0);
-//     if is_excute(fighter) {
-//         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 0, 0, 0, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
-//     }
-//     frame(lua_state, 8.0);
-//     if is_excute(fighter) {
-//         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 0, 0, 0, 1.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
-//     }
-// }
-
-#[acmd_script( agent = "rockman_rockbuster", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn rockman_rockbuster_regular_game(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 361, 0, 0, 22, 3.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    frame(agent.lua_state_agent, 8.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 361, 0, 0, 11, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.75, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    frame(agent.lua_state_agent, 16.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 361, 0, 0, 0, 1.8, 0.0, 0.0, 0.0, None, None, None, 0.1, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-}
-
-#[acmd_script( agent = "rockman_airshooter", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn rockman_airshooter_regular_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 92, 100, 70, 0, 5.0, 0.0, 3.0, 0.0, None, None, None, 0.2, 0.7, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 3, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 92, 100, 70, 0, 7.0, 0.0, 3.0, 0.0, None, None, None, 0.2, 0.7, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 5, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
-        WorkModule::on_flag(boma, *WEAPON_ROCKMAN_AIRSHOOTER_INSTANCE_WORK_ID_FLAG_ATTACK_VECTOR_REVERSE_UD_CHECK);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 92, 100, 80, 0, 10.0, 0.0, 0.0, 0.0, None, None, None, 0.2, 0.7, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 5, true, false, true, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
-        WorkModule::on_flag(boma, *WEAPON_ROCKMAN_AIRSHOOTER_INSTANCE_WORK_ID_FLAG_ATTACK_VECTOR_REVERSE_UD_CHECK);
-    }
-    frame(lua_state, 45.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 92, 250, 0, 5, 9.0, 0.0, 0.0, 0.0, None, None, None, 0.2, 0.7, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 5, true, false, true, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
-        WorkModule::on_flag(boma, *WEAPON_ROCKMAN_AIRSHOOTER_INSTANCE_WORK_ID_FLAG_ATTACK_VECTOR_REVERSE_UD_CHECK);
-    }
-}
-
-#[acmd_script( agent = "rockman_hardknuckle", script = "game_regular" , category = ACMD_GAME , low_priority)]
-unsafe fn rockman_hardknuckle_regular_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-	if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 270, 61, 0, 8, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 270, 74, 0, 38, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-    }
-    frame(lua_state, 3.0);
-	if is_excute(fighter) {
-        WorkModule::on_flag(boma, *WEAPON_ROCKMAN_HARDKNUCKLE_INSTANCE_WORK_ID_FLAG_ATTACK_VECTOR_REVERSE_UD_CHECK);
-    }
-    frame(lua_state, 5.0);
-	if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-            0.0,
-            -0.5
-        );
-        sv_kinetic_energy!(
-            set_stable_speed,
-            fighter,
-            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-            0.0,
-            0.0
-        );
-        sv_kinetic_energy!(
-            set_brake,
-            fighter,
-            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-            0.0,
-            0.05
-        );
-    }
-}
-
-#[acmd_script( agent = "rockman_hardknuckle", script = "effect_regular" , category = ACMD_EFFECT , low_priority)]
-unsafe fn rockman_hardknuckle_regular_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("rockman_hardknuckle"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("rockman_hardknuckle"), true, true);
-    }
 }
 
 /*
@@ -175,8 +63,7 @@ unsafe fn rockman_crashbomb_stick_game(fighter: &mut L2CAgentBase) {
 }
 */
 
-#[acmd_script( agent = "rockman", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -191,8 +78,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -206,17 +92,10 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_game,
-        dash_sound,
-        turn_dash_game,
-        rockman_rockbuster_regular_game,
-        rockman_hardknuckle_regular_effect,
-        rockman_airshooter_regular_game,
-        rockman_hardknuckle_regular_game,
-    );
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_dash", dash_game);
+    agent.acmd("sound_dash", dash_sound);
+    agent.acmd("game_turndash", turn_dash_game);
+    agent.acmd("game_escapeair", escape_air_game);
+    agent.acmd("game_escapeairslide", escape_air_slide_game);
 }
-

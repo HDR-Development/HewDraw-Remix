@@ -11,11 +11,12 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
         }
     }
-    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
-        if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
-            WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-    }
+    // Uncomment for Cross Chop descent to refresh double jump
+    // if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
+    //     if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
+    //         WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    //     }
+    // }
 }
 
 // Incineroar Fthrow Movement
@@ -79,7 +80,6 @@ unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
         catch_lean(fighter.boma(), 12.0, 31.0, 30.0, 15.0);
     }
 }
-
 
 // boma: its a boma
 // start_frame: frame to start interpolating the waist rotation
@@ -235,8 +235,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
-pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		gaogaen_frame(fighter)
@@ -262,4 +261,10 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         fighter.check_hitfall();
         fastfall_specials(fighter);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("gaogaen")
+        .on_line(Main, gaogaen_frame_wrapper)
+        .install();
 }

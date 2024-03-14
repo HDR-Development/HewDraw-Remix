@@ -4,10 +4,10 @@ use super::*;
 use globals::*;
 
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if frame < 12.0
-    || boma.is_button_on(Buttons::SpecialAll)
-    || StatusModule::is_changing(boma)
-    || !boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP,
@@ -17,13 +17,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_B,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_B,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_F,
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F]) {
-        return;
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F])
+    && frame > 12.0
+    && boma.is_button_on(Buttons::Guard) {
+        if situation_kind == *SITUATION_KIND_AIR {
+            WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+        }
+        if situation_kind == *SITUATION_KIND_GROUND {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+        }
     }
-    WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
-    EffectModule::kill_kind(boma, Hash40::new("murabito_water"), false, false);
-    SoundModule::stop_se(boma, Hash40::new("se_murabito_special_l02"), 0);
-    CancelModule::enable_cancel(boma);
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
@@ -90,8 +95,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_MURABITO )]
-pub fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		murabito_frame(fighter);
@@ -104,8 +108,7 @@ pub unsafe fn murabito_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback(main)]
-pub fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() == *WEAPON_KIND_MURABITO_FLOWERPOT {
             if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -117,4 +120,13 @@ pub fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             return;
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("murabito")
+        .on_line(Main, murabito_frame_wrapper)
+        .install();
+    smashline::Agent::new("murabito_flowerpot")
+        .on_line(Main, article_frame_callback)
+        .install();
 }

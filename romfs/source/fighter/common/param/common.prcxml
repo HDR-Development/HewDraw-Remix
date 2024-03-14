@@ -55,8 +55,8 @@
   <float hash="escape_fb_stick_x">0.7386</float>
   <float hash="escape_air_slide_landing_speed_max">4</float>
   <int hash="hit_stop_delay_flick">2</int>
-  <float hash="hit_stop_delay_flick_mul">5</float>
-  <int hash="hit_stop_delay_flick_frame">2</int>
+  <float hash="hit_stop_delay_flick_mul">7</float>
+  <int hash="hit_stop_delay_flick_frame">4</int>
   <int hash="hit_stop_delay_flick_max_count">50</int>
   <float hash="hit_stop_delay_auto_mul">2.5</float>
   <float hash="damage_reaction_mul_max">1</float>
@@ -168,7 +168,6 @@
   <float hash="escape_f_penalty_motion_rate">0</float>
   <float hash="escape_b_penalty_motion_rate">0</float>
   <float hash="smash_hold_reaction_mul">1.2</float>
-  <float hash="ganon_special_s_fall_hold_frame">85</float>
   <!-- dk cargo carry: -->
   <!-- flat amount of clatter added when you enter cargo carry -->
   <float hash="shouldered_frame_add">30</float>

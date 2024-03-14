@@ -2,13 +2,11 @@ use super::*;
 
 mod special_s;
 
-#[smashline::status_script(agent = "inkling", status = FIGHTER_STATUS_KIND_GUARD_ON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardOn()
 }
 
-#[smashline::status_script(agent = "inkling", status = FIGHTER_STATUS_KIND_GUARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Guard()
 }
 
@@ -30,8 +28,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-#[smashline::fighter_init]
-fn inkling_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn inkling_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_INKLING {
@@ -42,7 +39,10 @@ fn inkling_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(inkling_init);
-    smashline::install_status_scripts!(guard_on, guard);
     special_s::install();
+    smashline::Agent::new("inkling")
+        .status(Main, *FIGHTER_STATUS_KIND_GUARD_ON, guard_on)
+        .status(Main, *FIGHTER_STATUS_KIND_GUARD, guard)
+        .on_start(inkling_init)
+        .install();
 }

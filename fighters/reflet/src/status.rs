@@ -1,23 +1,44 @@
 use super::*;
-use globals::*;
 
-#[status_script(agent = "reflet", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-    fighter.sub_attack_air_uniq_process_init();
-    0.into()
+mod attack_air;
+
+mod special_n;
+
+mod float;
+
+extern "Rust" {
+    #[link_name = "float_check_air_jump"]
+    fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+    #[link_name = "float_check_air_jump_aerial"]
+    fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }
 
-#[status_script(agent = "reflet", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.battle_object, vars::reflet::instance::THUNDER_CHARGE, fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_N_CURRENT_POINT));
-    original!(fighter)
+unsafe extern "C" fn reflet_air_jump_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+        return false.into();
+    }
+    float_check_air_jump(fighter, statuses::reflet::FLOAT.into())
+}
+
+unsafe extern "C" fn reflet_air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+        return false.into();
+    }
+    float_check_air_jump_aerial(fighter, statuses::reflet::FLOAT.into())
+}
+
+unsafe extern "C" fn reflet_on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[0x32].assign(&L2CValue::Ptr(reflet_air_jump_uniq as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(reflet_air_jump_aerial_uniq as *const () as _));
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::reflet::FLOAT);
 }
 
 pub fn install() {
-    install_status_scripts!(
-        init_attack_air,
-        init_special_n
-    );
+    attack_air::install();
+
+    special_n::install();
+
+    float::install();
+
+    Agent::new("reflet").on_start(reflet_on_start).install();
 }

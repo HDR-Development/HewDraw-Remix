@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "wolf", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -17,7 +15,7 @@ unsafe fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("arml"), 17.0, 361, 106, 0, 30, 4.5, 3.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 15.0, 361, 106, 0, 30, 4.0, -1.5, 0.0, -0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("arml"), 15.0, 361, 106, 0, 30, 4.0, -1.5, 0.0, -0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 15.0, 361, 106, 0, 30, 3.0, -1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("kneel"), 15.0, 361, 106, 0, 30, 3.0, 0.0, 0.0, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
@@ -29,8 +27,7 @@ unsafe fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wolf", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -67,8 +64,7 @@ unsafe fn wolf_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "wolf", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -100,8 +96,7 @@ unsafe fn wolf_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wolf", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
-unsafe fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -122,12 +117,12 @@ unsafe fn wolf_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
 }
-pub fn install() {
-    install_acmd_scripts!(
-        wolf_attack_s4_s_game,
-        wolf_attack_hi4_game,
-        wolf_attack_lw4_game,
-        wolf_attack_lw4_effect,
-    );
-}
 
+pub fn install() {
+    smashline::Agent::new("wolf")
+        .acmd("game_attacks4", wolf_attack_s4_s_game)
+        .acmd("game_attackhi4", wolf_attack_hi4_game)
+        .acmd("game_attacklw4", wolf_attack_lw4_game)
+        .acmd("effect_attacklw4", wolf_attack_lw4_effect)
+        .install();
+}

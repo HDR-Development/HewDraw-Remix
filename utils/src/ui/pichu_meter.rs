@@ -111,7 +111,7 @@ impl PichuMeter {
         self.visual_percentage = 0.0;
     }
 
-    pub fn set_meter_info(&mut self, current: f32, max: f32, per_level: f32, charged: bool) {
+    pub fn set_meter_info(&mut self, current: f32, _max: f32, per_level: f32, charged: bool) {
         let bar_total = per_level * 2.0;
 
         let number = current / bar_total;

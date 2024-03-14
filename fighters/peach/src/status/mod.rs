@@ -3,9 +3,11 @@ use smashline::*;
 
 mod attack_air;
 mod jump_aerial;
+mod special_hi;
 mod special_s;
 mod special_lw;
-
+mod uniq_float_start;
+mod uniq_float;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -37,23 +39,44 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
     }
 }
 
-#[smashline::fighter_init]
-fn peach_init(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_aerial = fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON) {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT) {
+            let mut allow_float = false;
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
+                if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
+                    allow_float = !is_aerial;
+                }
+            }
+
+            if allow_float {
+                fighter.change_status(FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into(), true.into());
+                return 1.into();
+            }
+        }
+    }
+    0.into()
+}
+
+extern "C" fn peach_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_PEACH {
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-            fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        }
+        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+        fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
     }
 }
 
-
 pub fn install() {
-    smashline::install_agent_init_callbacks!(peach_init);
+    smashline::Agent::new("peach").on_start(peach_init).install();
     attack_air::install();
     jump_aerial::install();
+    special_hi::install();
     special_s::install();
     special_lw::install();
+    uniq_float_start::install();
+    uniq_float::install();
 }

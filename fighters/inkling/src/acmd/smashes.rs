@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "inkling", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -38,18 +36,16 @@ unsafe fn inkling_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "inkling", script = "game_attacks4charge" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_s4_hold_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attack_s4_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BRUSH, smash::phx::Hash40::new_raw(0x104aaf9b16), false, 0.0);
+        ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BRUSH, smash::phx::Hash40::new("attack_s4_charge"), false, 0.0);
     }
 
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -91,21 +87,20 @@ unsafe fn inkling_attack_hi4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackhi4charge" , category = ACMD_GAME , low_priority)]
-unsafe fn inkling_attack_hi4_hold_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attack_hi4_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new_raw(0x11a8f5a6bf), false, 0.0);
+        ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new("attack_hi4_charge"), false, 0.0);
     }
 
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        inkling_attack_s4_s_game,
-        inkling_attack_s4_hold_game,
-        inkling_attack_hi4_game,
-        inkling_attack_hi4_hold_game,
-    );
+    smashline::Agent::new("inkling")
+        .acmd("game_attacks4", inkling_attack_s4_s_game)
+        .acmd("game_attacks4charge", inkling_attack_s4_hold_game)
+        .acmd("game_attackhi4", inkling_attack_hi4_game)
+        .acmd("game_attackhi4charge", inkling_attack_hi4_hold_game)
+        .install();
 }

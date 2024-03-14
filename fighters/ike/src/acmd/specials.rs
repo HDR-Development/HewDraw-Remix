@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "ike", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_n_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -10,12 +9,12 @@ unsafe fn ike_special_n_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 13.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 13.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 15.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 15.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 16.0);
@@ -25,8 +24,7 @@ unsafe fn ike_special_n_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_air_n_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -34,13 +32,13 @@ unsafe fn ike_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 13.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 13.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 15.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 275, 52, 0, 45, 4.0, 0.0, -4.0, 8.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 15.0, 0.0, 8.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 80, 110, 0, 40, 10.0, 0.0, 25.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 16.0);
@@ -50,8 +48,7 @@ unsafe fn ike_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ike", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -64,8 +61,7 @@ unsafe fn ike_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -78,8 +74,7 @@ unsafe fn ike_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialshold" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ike_special_s_hold_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_hold_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -103,8 +98,7 @@ unsafe fn ike_special_s_hold_effect(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
 }
 
-#[acmd_script( agent = "ike", script = "game_specialsdash" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_s_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -114,8 +108,7 @@ unsafe fn ike_special_s_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialsdash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ike_special_s_dash_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -143,8 +136,7 @@ unsafe fn ike_special_s_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "sound_specialsdash" , category = ACMD_SOUND , low_priority)]
-unsafe fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -161,15 +153,13 @@ unsafe fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairsdash" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         fighter.select_cliff_hangdata_from_name("special_s");
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialsattack" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     // Instakill
@@ -181,18 +171,10 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 70, 100, 400, 1, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(-8.0), 10.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
             //ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 361, 0, 0, 0, 6.0, 0.0, 7.0, 10.0, Some(0.0), Some(5.0), Some(-10.0), 5.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
             ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.05);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                SlowModule::set_whole(boma, 5, 30);
-                SLOW_OPPONENT(fighter, 100.0, 100.0);
-            }
         }
         frame(lua_state, 2.0);
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 70, 100, 400, 1, 6.0, 0.0, 8.0, 15.0, Some(0.0), Some(8.0), Some(-10.0), 10.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                SlowModule::set_whole(boma, 5, 30);
-                SLOW_OPPONENT(fighter, 100.0, 100.0);
-            }
         }
         frame(lua_state, 3.0);
         if is_excute(fighter) {
@@ -255,8 +237,7 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialsattack" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ike_special_s_attack_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -303,8 +284,7 @@ unsafe fn ike_special_s_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairsattack" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -348,8 +328,7 @@ unsafe fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialairsattack" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ike_special_air_s_attack_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_s_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -369,8 +348,7 @@ unsafe fn ike_special_air_s_attack_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", scripts = ["expression_specialsattack", "expression_specialairsattack"] , category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -383,13 +361,13 @@ unsafe fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slash_critical"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slash_critical"), 0);
         }
     }
     frame(lua_state, 1.3);
     if is_excute(fighter) {
         if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         }
     }
     frame(lua_state, 21.0);
@@ -398,8 +376,7 @@ unsafe fn ike_special_s_attack_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialsend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -426,8 +403,7 @@ unsafe fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -440,16 +416,14 @@ unsafe fn ike_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialhi1" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_hi1_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.82);
     
 }
 
-#[acmd_script( agent = "ike", scripts = ["game_specialhi2", "game_specialairhi2"] , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -497,8 +471,7 @@ unsafe fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -517,8 +490,7 @@ unsafe fn ike_special_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairhi2" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -568,8 +540,7 @@ unsafe fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", scripts = ["game_specialhi3", "game_specialairhi3"] , category = ACMD_GAME , low_priority)]
-unsafe fn ika_special_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ika_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -587,8 +558,7 @@ unsafe fn ika_special_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn ike_special_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ike_special_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -601,27 +571,34 @@ unsafe fn ike_special_hi4_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ike_special_n_end_game,
-        ike_special_air_n_end_game,
-        ike_special_s_start_game,
-        ike_special_air_s_start_game,
-        ike_special_s_hold_effect,
-        ike_special_s_dash_game,
-        ike_special_s_dash_effect,
-        ike_special_s_dash_sound,
-        ike_special_air_s_dash_game,
-        ike_special_s_attack_game,
-        ike_special_s_attack_effect,
-        ike_special_air_s_attack_game,
-        ike_special_air_s_attack_effect,
-        ike_special_s_attack_expression,
-        ike_special_s_end_effect,
-        ike_special_air_s_end_game,
-        ike_special_hi1_game,
-        ike_special_hi2_game,
-        ike_special_hi3_game,
-        ike_special_hi4_game,
-        ike_special_air_hi2_game,
-    );
+    smashline::Agent::new("ike")
+        .acmd("game_specialnend", ike_special_n_end_game)
+        .acmd("game_specialairnend", ike_special_air_n_end_game)
+        .acmd("game_specialsstart", ike_special_s_start_game)
+        .acmd("game_specialairsstart", ike_special_air_s_start_game)
+        .acmd("effect_specialshold", ike_special_s_hold_effect)
+        .acmd("game_specialsdash", ike_special_s_dash_game)
+        .acmd("effect_specialsdash", ike_special_s_dash_effect)
+        .acmd("sound_specialsdash", ike_special_s_dash_sound)
+        .acmd("game_specialairsdash", ike_special_air_s_dash_game)
+        .acmd("game_specialsattack", ike_special_s_attack_game)
+        .acmd("effect_specialsattack", ike_special_s_attack_effect)
+        .acmd("game_specialairsattack", ike_special_air_s_attack_game)
+        .acmd("effect_specialairsattack", ike_special_air_s_attack_effect)
+        .acmd("expression_specialsattack", ike_special_s_attack_expression)
+        .acmd(
+            "expression_specialairsattack",
+            ike_special_s_attack_expression,
+        )
+        .acmd("effect_specialsend", ike_special_s_end_effect)
+        .acmd("game_specialairsend", ike_special_air_s_end_game)
+        .acmd("game_specialhi1", ike_special_hi1_game)
+        .acmd("game_specialhi2", ike_special_hi2_game)
+        .acmd("game_specialairhi2", ike_special_hi2_game)
+        .acmd("game_specialhi3", ike_special_hi3_game)
+        .acmd("game_specialairhi2", ike_special_air_hi2_game)
+        .acmd("game_specialhi3", ika_special_hi3_game)
+        .acmd("game_specialairhi3", ika_special_hi3_game)
+        .acmd("game_specialhi4", ike_special_hi4_game)
+        .install();
 }

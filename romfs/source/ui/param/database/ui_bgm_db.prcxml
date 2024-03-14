@@ -697,7 +697,7 @@
       <short hash="test_disp_order">1</short>
     </struct>
     <struct index="243">
-      <hash40 hash="ui_gametitle_id">0x1a8f84a0c2</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_hewdraw_remix</hash40>
       <short hash="test_disp_order">2</short>
     </struct>
     <struct index="244">
@@ -3380,8 +3380,8 @@
       <short hash="test_disp_order">858</short>
     </struct>
     <struct index="1241">
-      <hash40 hash="ui_bgm_id">0x185ee5e21f</hash40>
-      <hash40 hash="stream_set_id">0x150355e18b</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_abyssal_ruins</hash40>
+      <hash40 hash="stream_set_id">set_hdr_abyssal_ruins</hash40>
       <hash40 hash="rarity">bgm_rarity_0</hash40>
       <hash40 hash="record_type">record_new_arrange</hash40>
       <hash40 hash="ui_gametitle_id">ui_gametitle_pokemon_black_white</hash40>
@@ -3411,8 +3411,8 @@
       <bool hash="0x0e6b57e593">false</bool>
     </struct>
     <struct index="1242">
-      <hash40 hash="ui_bgm_id">0x1dbadd11b3</hash40>
-      <hash40 hash="stream_set_id">0x1a46a5e284</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_team_skull_megamix</hash40>
+      <hash40 hash="stream_set_id">set_hdr_team_skull_megamix</hash40>
       <hash40 hash="rarity">bgm_rarity_0</hash40>
       <hash40 hash="record_type">record_new_arrange</hash40>
       <hash40 hash="ui_gametitle_id">ui_gametitle_pokemon_sun_moon</hash40>
@@ -3442,8 +3442,8 @@
       <bool hash="0x0e6b57e593">false</bool>
     </struct>
     <struct index="1243">
-      <hash40 hash="ui_bgm_id">0x18769745c4</hash40>
-      <hash40 hash="stream_set_id">0x152b274650</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_versus_julius</hash40>
+      <hash40 hash="stream_set_id">set_hdr_versus_julius</hash40>
       <hash40 hash="rarity">bgm_rarity_0</hash40>
       <hash40 hash="record_type">record_new_arrange</hash40>
       <hash40 hash="ui_gametitle_id">ui_gametitle_fire_emblem_holy_war</hash40>
@@ -3473,11 +3473,11 @@
       <bool hash="0x0e6b57e593">false</bool>
     </struct>
     <struct index="1244">
-      <hash40 hash="ui_bgm_id">0x1f19cb02eb</hash40>
-      <hash40 hash="stream_set_id">0x1cad78fd01</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_cloudrunner_fortress</hash40>
+      <hash40 hash="stream_set_id">set_hdr_cloudrunner_fortress</hash40>
       <hash40 hash="rarity">bgm_rarity_0</hash40>
       <hash40 hash="record_type">record_new_arrange</hash40>
-      <hash40 hash="ui_gametitle_id">0x2054c71fb0</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_star_fox_adventures</hash40>
       <hash40 hash="ui_gametitle_id_1">ui_gametitle_none</hash40>
       <hash40 hash="ui_gametitle_id_2">ui_gametitle_none</hash40>
       <hash40 hash="ui_gametitle_id_3">ui_gametitle_none</hash40>
@@ -3504,11 +3504,11 @@
       <bool hash="0x0e6b57e593">false</bool>
     </struct>
     <struct index="1245">
-      <hash40 hash="ui_bgm_id">0x1a8a4a5040</hash40>
-      <hash40 hash="stream_set_id">0x17066e1354</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_projectnx_theme</hash40>
+      <hash40 hash="stream_set_id">set_hdr_projectnx_theme</hash40>
       <hash40 hash="rarity">bgm_rarity_0</hash40>
       <hash40 hash="record_type">record_original</hash40>
-      <hash40 hash="ui_gametitle_id">0x16a7326a0c</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_projectnx</hash40>
       <hash40 hash="ui_gametitle_id_1">ui_gametitle_none</hash40>
       <hash40 hash="ui_gametitle_id_2">ui_gametitle_none</hash40>
       <hash40 hash="ui_gametitle_id_3">ui_gametitle_none</hash40>
@@ -3535,11 +3535,11 @@
       <bool hash="0x0e6b57e593">false</bool>
     </struct>
     <struct index="1246">
-      <hash40 hash="ui_bgm_id">0x1a8806b943</hash40>
-      <hash40 hash="stream_set_id">0x170422fa57</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_w_hole_equation</hash40>
+      <hash40 hash="stream_set_id">set_hdr_w_hole_equation</hash40>
       <hash40 hash="rarity">bgm_rarity_0</hash40>
       <hash40 hash="record_type">record_original</hash40>
-      <hash40 hash="ui_gametitle_id">0x1a8f84a0c2</hash40>
+      <hash40 hash="ui_gametitle_id">ui_gametitle_hewdraw_remix</hash40>
       <hash40 hash="ui_gametitle_id_1">ui_gametitle_none</hash40>
       <hash40 hash="ui_gametitle_id_2">ui_gametitle_none</hash40>
       <hash40 hash="ui_gametitle_id_3">ui_gametitle_none</hash40>
@@ -4806,9 +4806,9 @@
     <hash40 index="1236">dummy</hash40>
     <hash40 index="1237">dummy</hash40>
     <struct index="1238">
-      <hash40 hash="stream_set_id">0x150355e18b</hash40>
+      <hash40 hash="stream_set_id">set_hdr_abyssal_ruins</hash40>
       <hash40 hash="special_category"></hash40>
-      <hash40 hash="info0">0x16f3eb1777</hash40>
+      <hash40 hash="info0">info_hdr_abyssal_ruins</hash40>
       <hash40 hash="info1"></hash40>
       <hash40 hash="info2"></hash40>
       <hash40 hash="info3"></hash40>
@@ -4826,9 +4826,9 @@
       <hash40 hash="info15"></hash40>
     </struct>
     <struct index="1239">
-      <hash40 hash="stream_set_id">0x1a46a5e284</hash40>
+      <hash40 hash="stream_set_id">set_hdr_team_skull_megamix</hash40>
       <hash40 hash="special_category"></hash40>
-      <hash40 hash="info0">0x1bb3102404</hash40>
+      <hash40 hash="info0">info_hdr_team_skull_megamix</hash40>
       <hash40 hash="info1"></hash40>
       <hash40 hash="info2"></hash40>
       <hash40 hash="info3"></hash40>
@@ -4846,9 +4846,9 @@
       <hash40 hash="info15"></hash40>
     </struct>
     <struct index="1240">
-      <hash40 hash="stream_set_id">0x152b274650</hash40>
+      <hash40 hash="stream_set_id">set_hdr_versus_julius</hash40>
       <hash40 hash="special_category"></hash40>
-      <hash40 hash="info0">0x16db99b0ac</hash40>
+      <hash40 hash="info0">info_hdr_versus_julius</hash40>
       <hash40 hash="info1"></hash40>
       <hash40 hash="info2"></hash40>
       <hash40 hash="info3"></hash40>
@@ -4866,9 +4866,9 @@
       <hash40 hash="info15"></hash40>
     </struct>
     <struct index="1241">
-      <hash40 hash="stream_set_id">0x1cad78fd01</hash40>
+      <hash40 hash="stream_set_id">set_hdr_cloudrunner_fortress</hash40>
       <hash40 hash="special_category"></hash40>
-      <hash40 hash="info0">0x1de4fcf77a</hash40>
+      <hash40 hash="info0">info_hdr_cloudrunner_fortress</hash40>
       <hash40 hash="info1"></hash40>
       <hash40 hash="info2"></hash40>
       <hash40 hash="info3"></hash40>
@@ -4886,9 +4886,9 @@
       <hash40 hash="info15"></hash40>
     </struct>
     <struct index="1242">
-      <hash40 hash="stream_set_id">0x17066e1354</hash40>
+      <hash40 hash="stream_set_id">set_hdr_projectnx_theme</hash40>
       <hash40 hash="special_category"></hash40>
-      <hash40 hash="info0">0x18eab91a72</hash40>
+      <hash40 hash="info0">info_hdr_projectnx_theme</hash40>
       <hash40 hash="info1"></hash40>
       <hash40 hash="info2"></hash40>
       <hash40 hash="info3"></hash40>
@@ -4906,9 +4906,9 @@
       <hash40 hash="info15"></hash40>
     </struct>
     <struct index="1243">
-      <hash40 hash="stream_set_id">0x170422fa57</hash40>
+      <hash40 hash="stream_set_id">set_hdr_w_hole_equation</hash40>
       <hash40 hash="special_category"></hash40>
-      <hash40 hash="info0">0x18e8f5f371</hash40>
+      <hash40 hash="info0">info_hdr_w_hole_equation</hash40>
       <hash40 hash="info1"></hash40>
       <hash40 hash="info2"></hash40>
       <hash40 hash="info3"></hash40>
@@ -6164,8 +6164,8 @@
     <hash40 index="1234">dummy</hash40>
     <hash40 index="1235">dummy</hash40>
     <struct index="1236">
-      <hash40 hash="info_id">0x16f3eb1777</hash40>
-      <hash40 hash="stream_id">0x18e3ad66ec</hash40>
+      <hash40 hash="info_id">info_hdr_abyssal_ruins</hash40>
+      <hash40 hash="stream_id">stream_hdr_abyssal_ruins</hash40>
       <hash40 hash="condition">sound_condition_none</hash40>
       <hash40 hash="condition_process">sound_condition_process_add</hash40>
       <int hash="start_frame">0</int>
@@ -6179,8 +6179,8 @@
       <int hash="menu_change_stop_delay_frame">0</int>
     </struct>
     <struct index="1237">
-      <hash40 hash="info_id">0x1bb3102404</hash40>
-      <hash40 hash="stream_id">0x1df89016df</hash40>
+      <hash40 hash="info_id">info_hdr_team_skull_megamix</hash40>
+      <hash40 hash="stream_id">stream_hdr_team_skull_megamix</hash40>
       <hash40 hash="condition">sound_condition_none</hash40>
       <hash40 hash="condition_process">sound_condition_process_add</hash40>
       <int hash="start_frame">0</int>
@@ -6194,8 +6194,8 @@
       <int hash="menu_change_stop_delay_frame">0</int>
     </struct>
     <struct index="1238">
-      <hash40 hash="info_id">0x16db99b0ac</hash40>
-      <hash40 hash="stream_id">0x18cbdfc137</hash40>
+      <hash40 hash="info_id">info_hdr_versus_julius</hash40>
+      <hash40 hash="stream_id">stream_hdr_versus_julius</hash40>
       <hash40 hash="condition">sound_condition_none</hash40>
       <hash40 hash="condition_process">sound_condition_process_add</hash40>
       <int hash="start_frame">0</int>
@@ -6209,8 +6209,8 @@
       <int hash="menu_change_stop_delay_frame">0</int>
     </struct>
     <struct index="1239">
-      <hash40 hash="info_id">0x1de4fcf77a</hash40>
-      <hash40 hash="stream_id">0x1f4ee7f1ae</hash40>
+      <hash40 hash="info_id">info_hdr_cloudrunner_fortress</hash40>
+      <hash40 hash="stream_id">stream_hdr_cloudrunner_fortress</hash40>
       <hash40 hash="condition">sound_condition_none</hash40>
       <hash40 hash="condition_process">sound_condition_process_add</hash40>
       <int hash="start_frame">0</int>
@@ -6224,8 +6224,8 @@
       <int hash="menu_change_stop_delay_frame">0</int>
     </struct>
     <struct index="1240">
-      <hash40 hash="info_id">0x18eab91a72</hash40>
-      <hash40 hash="stream_id">0x1a5f0e184f</hash40>
+      <hash40 hash="info_id">info_hdr_projectnx_theme</hash40>
+      <hash40 hash="stream_id">stream_hdr_projectnx_theme</hash40>
       <hash40 hash="condition">sound_condition_none</hash40>
       <hash40 hash="condition_process">sound_condition_process_add</hash40>
       <int hash="start_frame">0</int>
@@ -6239,8 +6239,8 @@
       <int hash="menu_change_stop_delay_frame">0</int>
     </struct>
     <struct index="1241">
-      <hash40 hash="info_id">0x18e8f5f371</hash40>
-      <hash40 hash="stream_id">0x1a5d42f14c</hash40>
+      <hash40 hash="info_id">info_hdr_w_hole_equation</hash40>
+      <hash40 hash="stream_id">stream_hdr_w_hole_equation</hash40>
       <hash40 hash="condition">sound_condition_none</hash40>
       <hash40 hash="condition_process">sound_condition_process_add</hash40>
       <int hash="start_frame">0</int>
@@ -7492,7 +7492,7 @@
     <hash40 index="1234">dummy</hash40>
     <hash40 index="1235">dummy</hash40>
     <struct index="1236">
-      <hash40 hash="stream_id">0x18e3ad66ec</hash40>
+      <hash40 hash="stream_id">stream_hdr_abyssal_ruins</hash40>
       <string hash="data_name0">hdr_abyssal_ruins</string>
       <string hash="data_name1"></string>
       <string hash="data_name2"></string>
@@ -7510,7 +7510,7 @@
       <string hash="start_point4"></string>
     </struct>
     <struct index="1237">
-      <hash40 hash="stream_id">0x1df89016df</hash40>
+      <hash40 hash="stream_id">stream_hdr_team_skull_megamix</hash40>
       <string hash="data_name0">hdr_team_skull_megamix</string>
       <string hash="data_name1"></string>
       <string hash="data_name2"></string>
@@ -7528,7 +7528,7 @@
       <string hash="start_point4"></string>
     </struct>
     <struct index="1238">
-      <hash40 hash="stream_id">0x18cbdfc137</hash40>
+      <hash40 hash="stream_id">stream_hdr_versus_julius</hash40>
       <string hash="data_name0">hdr_versus_julius</string>
       <string hash="data_name1"></string>
       <string hash="data_name2"></string>
@@ -7546,7 +7546,7 @@
       <string hash="start_point4"></string>
     </struct>
     <struct index="1239">
-      <hash40 hash="stream_id">0x1f4ee7f1ae</hash40>
+      <hash40 hash="stream_id">stream_hdr_cloudrunner_fortress</hash40>
       <string hash="data_name0">hdr_cloudrunner_fortress</string>
       <string hash="data_name1"></string>
       <string hash="data_name2"></string>
@@ -7564,7 +7564,7 @@
       <string hash="start_point4"></string>
     </struct>
     <struct index="1240">
-      <hash40 hash="stream_id">0x1a5f0e184f</hash40>
+      <hash40 hash="stream_id">stream_hdr_projectnx_theme</hash40>
       <string hash="data_name0">hdr_projectnx_theme</string>
       <string hash="data_name1"></string>
       <string hash="data_name2"></string>
@@ -7582,7 +7582,7 @@
       <string hash="start_point4"></string>
     </struct>
     <struct index="1241">
-      <hash40 hash="stream_id">0x1a5d42f14c</hash40>
+      <hash40 hash="stream_id">stream_hdr_w_hole_equation</hash40>
       <string hash="data_name0">hdr_w_hole_equation</string>
       <string hash="data_name1"></string>
       <string hash="data_name2"></string>
@@ -8633,7 +8633,7 @@
       <short hash="order15">14</short>
     </struct>
     <struct index="13">
-      <hash40 hash="ui_bgm_id">0x1a8a4a5040</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_projectnx_theme</hash40>
       <short hash="order0">2</short>
       <ushort hash="incidence0">3000</ushort>
       <short hash="order1">1</short>
@@ -8653,7 +8653,7 @@
       <short hash="order15">1</short>
     </struct>
     <struct index="14">
-      <hash40 hash="ui_bgm_id">0x1a8806b943</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_w_hole_equation</hash40>
       <short hash="order0">1</short>
       <ushort hash="incidence0">6800</ushort>
     </struct>
@@ -12861,7 +12861,7 @@
       <short hash="order15">18</short>
     </struct>
     <struct index="18">
-      <hash40 hash="ui_bgm_id">0x1f19cb02eb</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_cloudrunner_fortress</hash40>
       <short hash="order0">0</short>
       <ushort hash="incidence0">8750</ushort>
       <short hash="order1">0</short>
@@ -13527,7 +13527,7 @@
       <short hash="order15">34</short>
     </struct>
     <struct index="33">
-      <hash40 hash="ui_bgm_id">0x1dbadd11b3</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_team_skull_megamix</hash40>
       <short hash="order0">0</short>
       <ushort hash="incidence0">10000</ushort>
       <short hash="order1">0</short>
@@ -13562,7 +13562,7 @@
       <ushort hash="incidence15">0</ushort>
     </struct>
     <struct index="34">
-      <hash40 hash="ui_bgm_id">0x185ee5e21f</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_abyssal_ruins</hash40>
       <short hash="order0">1</short>
       <ushort hash="incidence0">5750</ushort>
       <short hash="order1">1</short>
@@ -14722,7 +14722,7 @@
       <short hash="order15">52</short>
     </struct>
     <struct index="52">
-      <hash40 hash="ui_bgm_id">0x18769745c4</hash40>
+      <hash40 hash="ui_bgm_id">ui_bgm_hdr_versus_julius</hash40>
       <short hash="order0">0</short>
       <ushort hash="incidence0">10000</ushort>
       <short hash="order1">0</short>

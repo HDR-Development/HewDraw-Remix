@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "mario", script = "game_catch" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_grab(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_grab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn mario_grab(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_dashgrab(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_dashgrab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -49,8 +47,7 @@ unsafe fn mario_dashgrab(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
-unsafe fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 9.0);
@@ -71,8 +68,27 @@ unsafe fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "mario", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_f_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 8.0, 45, 65, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        CHECK_FINISH_CAMERA(fighter, 13, 2);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+    }
+}
+
+unsafe extern "C" fn mario_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -101,8 +117,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -122,8 +137,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -142,12 +156,13 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_grab,
-        mario_dashgrab,
-        mario_pivotgrab,
-        game_throwb,
-        game_throwhi,
-        game_throwlw,
-    );
+    smashline::Agent::new("mario")
+        .game_acmd("game_catch", mario_grab)
+        .game_acmd("game_catchdash", mario_dashgrab)
+        .game_acmd("game_catchturn", mario_pivotgrab)
+        .game_acmd("game_throwf", mario_throw_f_game)
+        .game_acmd("game_throwb", mario_throw_b_game)
+        .game_acmd("game_throwhi", mario_throw_hi_game)
+        .game_acmd("game_throwlw", mario_throw_lw_game)
+        .install();
 }

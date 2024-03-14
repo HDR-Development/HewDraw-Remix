@@ -16,23 +16,10 @@ extern "Rust" {
     fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
     fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
- 
-#[skyline::hook(offset = offsets::demon_on_link_capture_event())]
-unsafe fn demon_ongrab(arg1: u64, arg2: u64, arg3: u64) -> u64 {
-    let boma = *(arg2 as *const u64).add(4) as *mut BattleObjectModuleAccessor;
-    let catches = [*FIGHTER_STATUS_KIND_CATCH, *FIGHTER_STATUS_KIND_CATCH_DASH, *FIGHTER_STATUS_KIND_CATCH_TURN];
-    let status_kind = StatusModule::status_kind(boma);
-    if catches.iter().any(|x| *x == status_kind) && WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
-        1
-    } else {
-        original!()(arg1, arg2, arg3)
-    }
-}
 
 // FIGHTER_DEMON_STATUS_KIND_DASH //
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn status_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn status_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Dash_Sub();
     fighter.sub_shift_status_main(L2CValue::Ptr(status_dash_main as *const () as _))
 }
@@ -42,7 +29,7 @@ unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValu
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0 {
-                    let attack_stand_frame = WorkModule::get_param_int(fighter.module_accessor, 0x115d6fd7dau64, 0x1bc5449a43u64);
+                    let attack_stand_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_attack_step"), hash40("dash_to_attack_stand1_frame"));
                     if fighter.global_table[CURRENT_FRAME].get_i32() <= attack_stand_frame {
                         fighter.change_status(
                             L2CValue::I32(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_1), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
@@ -59,8 +46,7 @@ unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_TURN_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     app::FighterSpecializer_Demon::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
     let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
     if lr != 0.0 {
@@ -78,22 +64,19 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // FIGHTER_DEMON_STATUS_KIND_DASH_BACK //
 
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::shoto_status::fgc_end_dashback(fighter);
-    original!(fighter)
+    smashline::original_status(End, fighter, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK)(fighter)
 }
 
 // FIGHTER_STATUS_KIND_ATTACK //
 // Here to force Kazuya to only use neutral attack to continue the combo.
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
@@ -143,8 +126,7 @@ unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
 // FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO //
 // Here to force Kazuya to only use neutral attack to continue the combo.
 
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attackcombo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attackcombo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     demon_attackcombo_main_mot_helper(fighter, 2.into());
     MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_attackcombo_main_loop as *const () as _))
@@ -299,14 +281,13 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
 
 // FIGHTER_STATUS_KIND_WAIT //
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
 
 // vanilla script
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_wait_common();
     fighter.sub_wait_motion_mtrans();
     fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
@@ -339,33 +320,29 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 // FIGHTER_STATUS_KIND_LANDING //
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 // For fixing momentum transfer
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-    original!(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
 pub fn install() {
-    //skyline::install_hooks!(demon_ongrab);
-    install_status_scripts!(
-        pre_turndash,
-        main_dashback,
-        end_dashback,
-        status_dash,
-        demon_attack_main,
-        demon_attackcombo_main,
-        wait_pre,
-        //wait_main,
-        landing_main,
-        attackair_pre
-        
-    );
+    smashline::Agent::new("demon")
+        .status(Main, *FIGHTER_STATUS_KIND_DASH, status_dash)
+        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
+        .status(Main, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK, main_dashback)
+        .status(End, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK, end_dashback)
+        .status(Main, *FIGHTER_STATUS_KIND_ATTACK, demon_attack_main)
+        .status(Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, demon_attackcombo_main)
+        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
+        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
+        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attackair_pre)
+        .install();
 }

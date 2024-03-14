@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "ness", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -27,8 +26,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -53,8 +51,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -79,8 +76,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -95,8 +91,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -121,8 +116,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -140,8 +134,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_turndash" , category = ACMD_GAME , low_priority)]
-unsafe fn ness_turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ness_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -155,32 +148,29 @@ unsafe fn ness_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ness_pkfire", script = "game_pillar" , category = ACMD_GAME , low_priority)]
-unsafe fn ness_pkfire_pillar_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ness_pkfire_pillar_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 68, 30, 0, 10, 6.5, 0.0, 3.1, 2.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 68, 30, 0, 10, 4.5, 0.0, 9.6, 2.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.75, 68, 30, 0, 10, 6.5, 0.0, 3.1, 2.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.75, 68, 30, 0, 10, 4.5, 0.0, 9.6, 2.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
         AREA_WIND_2ND_RAD_arg9(fighter, 0, 1, 0.05, 200, 0.6, 0, 10, 20, 60);
     }    
 
 }
 
-#[acmd_script( agent = "ness_pkfire", script = "game_pillarair" , category = ACMD_GAME , low_priority)]
-unsafe fn ness_pkfire_pillar_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ness_pkfire_pillar_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 58, 45, 0, 16, 6.5, 0.0, 3.1, 2.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 58, 45, 0, 16, 4.5, 0.0, 9.6, 2.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.75, 58, 45, 0, 14, 6.5, 0.0, 3.1, 2.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.75, 58, 45, 0, 14, 4.5, 0.0, 9.6, 2.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 7, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
         AREA_WIND_2ND_RAD_arg9(fighter, 0, 1, 0.05, 200, 0.6, 0, 10, 20, 60);
     }  
 
 }
 
-#[acmd_script( agent = "ness_pkflash", script = "game_bang" , category = ACMD_GAME , low_priority)]
-unsafe fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -191,12 +181,37 @@ unsafe fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x27936db96d));
     }
-        
-
 }
 
-#[acmd_script( agent = "ness", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ness_pkthunder_move(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 110, 55, 0, 70, 4.4, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 48, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.object(), vars::ness::status::THUNDER_LOOSE) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 110, 55, 0, 70, 4.4, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 48, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        }
+    }
+}
+
+unsafe extern "C" fn ness_pkthunder_move_child(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 1, 1, Hash40::new("top"), 1.0, 361, 60, 0, 20, 2.3, 0.0, 0.0, 0.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 48, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.object(), vars::ness::status::THUNDER_LOOSE) {
+            ATTACK(fighter, 1, 1, Hash40::new("top"), 1.0, 361, 60, 0, 20, 2.3, 0.0, 0.0, 0.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 48, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        }
+    }
+}
+
+unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -211,8 +226,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -226,48 +240,53 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "effect_jumpaerialfront", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_jumpaerialfront(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+unsafe extern "C" fn effect_jumpaerialfront(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     for _ in 0..4 {
-        if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
         }
         wait(lua_state, 6.0);
     }
 }
 
-#[acmd_script( agent = "ness", script = "effect_jumpaerialback", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_jumpaerialback(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+unsafe extern "C" fn effect_jumpaerialback(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     for _ in 0..4 {
-        if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
         }
         wait(lua_state, 6.0);
     }
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        effect_jumpaerialfront,
-        effect_jumpaerialback,
-        dash_sound,
-		ness_turn_dash_game,
-        ness_pkfire_pillar_game,
-        ness_pkfire_pillar_air_game,
-        ness_pkflash_bang_game,
-	    damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
-    );
+    smashline::Agent::new("ness_pkfire")
+        .acmd("game_pillar", ness_pkfire_pillar_game)
+        .acmd("game_pillarair", ness_pkfire_pillar_air_game)
+        .install();
+    smashline::Agent::new("ness_pkflash")
+        .acmd("game_bang", ness_pkflash_bang_game)
+        .install();
+    smashline::Agent::new("ness_pkthunder")
+        .acmd("game_move", ness_pkthunder_move)
+        .acmd("game_movechild", ness_pkthunder_move_child)
+        .install();
+    smashline::Agent::new("ness")
+        .acmd("sound_damageflyhi", damageflyhi_sound)
+        .acmd("sound_damageflylw", damageflylw_sound)
+        .acmd("sound_damageflyn", damageflyn_sound)
+        .acmd("sound_damageflyroll", damageflyroll_sound)
+        .acmd("sound_damageflytop", damageflytop_sound)
+        .acmd("sound_dash", dash_sound)
+        .acmd("game_turndash", ness_turn_dash_game)
+        .acmd("game_escapeair", escape_air_game)
+        .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("effect_jumpaerialfront", effect_jumpaerialfront)
+        .acmd("effect_jumpaerialback", effect_jumpaerialback)
+        .install();
 }
-
