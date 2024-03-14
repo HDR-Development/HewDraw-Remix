@@ -53,8 +53,8 @@ use smashline::*;
 pub fn install() {
     let agent = &mut Agent::new("pickel");
     acmd::install(agent);
-    status::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.install();
 
     fire::install();
