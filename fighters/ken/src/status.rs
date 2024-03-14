@@ -58,23 +58,23 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
     // resets IS_USE_EX_SPECIAL
     if !fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        // *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        // *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND,
-        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        // *FIGHTER_STATUS_KIND_SPECIAL_S, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
-        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
-        statuses::ken::ATTACK_COMMAND_4
+        // *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
+        // *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
+        // statuses::ken::ATTACK_COMMAND_4
     ]) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_FADC);
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+        // VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
     }
 
     // Re-enables the ability to use sideB when connecting to ground or cliff

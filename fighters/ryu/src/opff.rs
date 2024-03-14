@@ -377,7 +377,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     if boma.is_cat_flag(Cat1::SpecialLw)
     && VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
     && (MeterModule::level(boma.object()) >= 1 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
-        VarModule::set_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL, MeterModule::level(fighter.battle_object) >= 4);
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
         return;
     }

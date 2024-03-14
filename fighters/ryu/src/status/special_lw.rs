@@ -15,8 +15,12 @@ pub fn install() {
 
 pub unsafe extern "C" fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+        VarModule::set_flag(
+            fighter.battle_object, 
+            vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
+            MeterModule::level(fighter.battle_object) >= 4
+        );
         MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
-        VarModule::on_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
     } else {
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
     }
