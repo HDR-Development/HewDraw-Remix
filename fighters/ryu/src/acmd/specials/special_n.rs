@@ -4,11 +4,14 @@ use super::*;
 unsafe extern "C" fn game_specialn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 12.0, 7.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 12.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         if boma.is_button_on(Buttons::Guard | Buttons::GuardHold)
         && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
