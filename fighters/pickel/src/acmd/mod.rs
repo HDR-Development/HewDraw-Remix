@@ -8,11 +8,11 @@ mod throws;
 mod tilts;
 
 pub fn install(agent: &mut Agent) {
-    aerials::install(agent: &mut Agent);
-    tilts::install(agent: &mut Agent);
-    other::install(agent: &mut Agent);
-    smashes::install(agent: &mut Agent);
-    specials::install(agent: &mut Agent);
-    throws::install(agent: &mut Agent);
-    ground::install(agent: &mut Agent);
+    aerials::install(agent);
+    tilts::install(agent);
+    other::install(agent);
+    smashes::install(agent);
+    specials::install(agent);
+    throws::install(agent);
+    ground::install(agent);
 }
