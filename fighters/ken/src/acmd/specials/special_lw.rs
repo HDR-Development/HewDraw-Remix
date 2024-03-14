@@ -98,6 +98,21 @@ unsafe extern "C" fn game_specialairlwstepf(fighter: &mut L2CAgentBase) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75);
     }
     frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+            VarModule::set_flag(
+                fighter.battle_object, 
+                vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
+                MeterModule::level(fighter.battle_object) >= 6
+            );
+            if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+                MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+            }
+        } else {
+            VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+        }
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+    }
     FT_MOTION_RATE(fighter, 1.0);
 }
 
