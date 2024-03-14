@@ -4,7 +4,8 @@ use smashline::*;
 
 pub fn install() {
     smashline::Agent::new("ken")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, init_special_lw)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
+        .status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, special_lw_step_f_init)
         .status(Pre, statuses::ken::INSTALL, special_lw_install_pre)
         .status(Main, statuses::ken::INSTALL, special_lw_install_main)
         .status(End, statuses::ken::INSTALL, special_lw_install_end)
@@ -13,7 +14,14 @@ pub fn install() {
 
 // FIGHTER_STATUS_KIND_SPECIAL_LW //
 
-pub unsafe extern "C" fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), true.into());
+    return 1.into();
+}
+
+// FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F //
+
+pub unsafe extern "C" fn special_lw_step_f_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
         MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
         VarModule::on_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
@@ -21,7 +29,10 @@ pub unsafe extern "C" fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CV
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
     }
     VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
-    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    }
+    smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)(fighter)
 }
 
 
@@ -119,7 +130,7 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
             true,
             true
         );
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
     else {
         fighter.set_situation(SITUATION_KIND_GROUND.into());

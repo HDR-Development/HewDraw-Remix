@@ -358,10 +358,6 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 unsafe fn ken_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
-        boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
-    }
-
     // enter EX if A+B on frame<5
     if fighter.is_status_one_of(&[
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, 
