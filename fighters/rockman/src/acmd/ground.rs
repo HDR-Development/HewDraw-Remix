@@ -183,68 +183,68 @@ unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 11.0 / (22.0 - 8.0));
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 70, 0, 60, 4.0, 0.0, 5.0, 3.5, Some(0.0), Some(11.0), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    if is_excute(agent) {
+        FT_MOTION_RATE(agent, 11.0 / (22.0 - 8.0));
+        ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 70, 0, 60, 4.0, 0.0, 5.0, 3.5, Some(0.0), Some(11.0), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.5, 65, 70, 0, 75, 2.5, 0.0, 5.0, 3.5, Some(0.0), Some(10.0), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 6.5, 65, 70, 0, 75, 2.5, 0.0, 5.0, 3.5, Some(0.0), Some(10.0), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 25.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 14.0 / (58.0 - 25.0));
+        FT_MOTION_RATE(agent, 14.0 / (58.0 - 25.0));
     }
     frame(lua_state, 58.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(agent) {
+        FT_MOTION_RATE(agent, 1.0);
     }
 }
 
-unsafe extern "C" fn effect_attackdash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
+unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     for _ in 0..5 {
-        if is_excute(fighter) {
-            EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -3, 8, 0, 0, 180, 0, 0.55, true, *EF_FLIP_YZ, 0.6);
-            EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 4, 11, -1, 0, 180, 0, 0.55, true, *EF_FLIP_YZ, 0.6);
-            EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 3, -6, 0, 180, 0, 0.6, true, *EF_FLIP_YZ, 0.6);
+        if is_excute(agent) {
+            EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -3, 8, 0, 0, 180, 0, 0.55, true, *EF_FLIP_YZ, 0.6);
+            EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 4, 11, -1, 0, 180, 0, 0.55, true, *EF_FLIP_YZ, 0.6);
+            EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 3, -6, 0, 180, 0, 0.6, true, *EF_FLIP_YZ, 0.6);
         }
         wait(lua_state, 5.0);
     }
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.2);
     }
 }
 
-unsafe extern "C" fn sound_attackdash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
+unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        PLAY_STATUS(fighter, Hash40::new("se_rockman_attackhard_l01"));
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_rockman_attackhard_l01"));
     }
 }
 
-unsafe extern "C" fn expression_attackdash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 6);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), FIGHTER_ROCKMAN_ARM_LEFT, FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), FIGHTER_ROCKMAN_ARM_RIGHT, FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 6);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), FIGHTER_ROCKMAN_ARM_LEFT, FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), FIGHTER_ROCKMAN_ARM_RIGHT, FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
     }
     frame(lua_state, 3.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         ControlModule::set_rumble(
             boma,
             Hash40::new("rbkind_nohitm"),
@@ -254,12 +254,12 @@ unsafe extern "C" fn expression_attackdash(fighter: &mut L2CAgentBase) {
         );
     }
     frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 6);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 6);
     }
     wait(lua_state, 6.0);
-    if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 6);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 6);
     }
 }
 
