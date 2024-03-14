@@ -1,6 +1,6 @@
 use super::*;
 mod aerials;
-mod ground;
+//mod ground;
 mod other;
 mod smashes;
 mod specials;
@@ -14,5 +14,5 @@ pub fn install(agent: &mut Agent) {
     smashes::install(agent);
     specials::install(agent);
     throws::install(agent);
-    ground::install(agent);
+    //ground::install(agent);
 }
