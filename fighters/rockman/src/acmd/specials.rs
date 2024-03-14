@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn rockman_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -18,7 +18,7 @@ unsafe extern "C" fn rockman_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -42,7 +42,7 @@ unsafe extern "C" fn rockman_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rockman_attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -59,7 +59,7 @@ unsafe extern "C" fn rockman_attack_s3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_busterchargeshot(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     FT_MOTION_RATE(agent, 1.0 / 7.0);
     frame(agent.lua_state_agent, 18.0);
@@ -70,7 +70,7 @@ unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_busterchargeshot(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -88,14 +88,14 @@ unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_busterchargeshot(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_rockman_smash_s02"));
     }
 }
 
-unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_busterchargeshot(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_ROCKBUSTER, 5);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
@@ -117,7 +117,7 @@ unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -141,7 +141,7 @@ unsafe extern "C" fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_special_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -179,7 +179,7 @@ unsafe extern "C" fn rockman_special_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -200,7 +200,7 @@ unsafe extern "C" fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn rockman_special_air_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 7.0);
@@ -233,7 +233,7 @@ unsafe extern "C" fn rockman_special_air_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
     if is_excute(agent) {
@@ -242,7 +242,7 @@ unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
     if is_excute(agent) {
@@ -252,21 +252,29 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", rockman_attack_11_game);
-    agent.acmd("game_attackairn", rockman_attack_air_n_game);
-    agent.acmd("game_attacks3", rockman_attack_s3_game);
-    agent.acmd("game_busterchargeshot", rockman_specialn);
-    agent.acmd("game_busterairchargeshot", rockman_specialn);
-    agent.acmd("effect_busterchargeshot", rockman_specialn_eff);
-    agent.acmd("effect_busterairchargeshot", rockman_specialn_eff);
-    agent.acmd("sound_busterchargeshot", rockman_specialn_snd);
-    agent.acmd("sound_busterairchargeshot", rockman_specialn_snd);
-    agent.acmd("expression_busterchargeshot", rockman_specialn_exp);
-    agent.acmd("expression_busterairchargeshot", rockman_specialn_exp);
-    agent.acmd("game_specials", rockman_special_s_game);
-    agent.acmd("effect_specials", rockman_special_s_effect);
-    agent.acmd("game_specialairs", rockman_special_air_s_game);
-    agent.acmd("effect_specialairs", rockman_special_air_s_effect);
-    agent.acmd("game_speciallw", rockman_speciallw);
-    agent.acmd("game_specialairlw", rockman_specialairlw);
+    agent.acmd("game_attack11", game_attack11);
+
+    agent.acmd("game_attackairn", game_attackairn);
+
+    agent.acmd("game_attacks3", game_attacks3);
+
+    agent.acmd("game_busterchargeshot", game_busterchargeshot);
+    agent.acmd("effect_busterchargeshot", effect_busterchargeshot);
+    agent.acmd("sound_busterchargeshot", sound_busterchargeshot);
+    agent.acmd("expression_busterchargeshot", expression_busterchargeshot);
+
+    agent.acmd("game_busterairchargeshot", game_busterchargeshot);
+    agent.acmd("effect_busterairchargeshot", effect_busterchargeshot);
+    agent.acmd("sound_busterairchargeshot", sound_busterchargeshot);
+    agent.acmd("expression_busterairchargeshot", expression_busterchargeshot);
+
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("effect_specials", effect_specials);
+
+    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("effect_specialairs", effect_specialairs);
+
+    agent.acmd("game_speciallw", game_speciallw);
+
+    agent.acmd("game_specialairlw", game_specialairlw);
 }

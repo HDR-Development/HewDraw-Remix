@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn rockman_airshooter_regular_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_regular(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -20,5 +20,5 @@ unsafe extern "C" fn rockman_airshooter_regular_game(fighter: &mut L2CAgentBase)
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_regular", rockman_airshooter_regular_game);
+    agent.acmd("game_regular", game_regular);
 }

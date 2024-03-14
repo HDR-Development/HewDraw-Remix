@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn rockman_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -22,7 +22,7 @@ unsafe extern "C" fn rockman_throw_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     FT_MOTION_RATE_RANGE(fighter, 1.0, 12.0, 14.0);
@@ -44,7 +44,7 @@ unsafe extern "C" fn rockman_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -66,7 +66,9 @@ unsafe extern "C" fn rockman_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_throwb", rockman_throw_b_game);
-    agent.acmd("game_throwhi", rockman_throw_hi_game);
-    agent.acmd("game_throwlw", rockman_throw_lw_game);
+    agent.acmd("game_throwb", game_throwb);
+
+    agent.acmd("game_throwhi", game_throwhi);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }

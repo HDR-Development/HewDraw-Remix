@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_start(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 4.0 / 3.0);
     if is_excute(agent) {
         if !WorkModule::is_flag(agent.module_accessor, 0x20000006) { // WEAPON_ROCKMAN_LEAFSHIELD_INSTANCE_WORK_ID_FLAG_DEAD_0
@@ -18,7 +18,7 @@ unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_shield(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 4.0 / 3.0);
     if is_excute(agent) {
         if !WorkModule::is_flag(agent.module_accessor, 0x20000006) { // WEAPON_ROCKMAN_LEAFSHIELD_INSTANCE_WORK_ID_FLAG_DEAD_0
@@ -36,7 +36,7 @@ unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 4.0 / 3.0);
     if is_excute(agent) {
         if !WorkModule::is_flag(agent.module_accessor, 0x20000006) { // WEAPON_ROCKMAN_LEAFSHIELD_INSTANCE_WORK_ID_FLAG_DEAD_0
@@ -55,10 +55,15 @@ unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_start", rockman_leafshield_start);
-    agent.acmd("game_startreverse", rockman_leafshield_start);
-    agent.acmd("game_shield", rockman_leafshield_shield);
-    agent.acmd("game_shieldreverse", rockman_leafshield_shield);
-    agent.acmd("game_fly", rockman_leafshield_fly);
-    agent.acmd("game_flyreverse", rockman_leafshield_fly);
+    agent.acmd("game_start", game_start);
+
+    agent.acmd("game_startreverse", game_start);
+
+    agent.acmd("game_shield", game_shield);
+
+    agent.acmd("game_shieldreverse", game_shield);
+
+    agent.acmd("game_fly", game_fly);
+
+    agent.acmd("game_flyreverse", game_fly);
 }

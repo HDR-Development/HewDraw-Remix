@@ -1,14 +1,14 @@
 use super::*;
 use super::helper::*;
 
-unsafe extern "C" fn rockman_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_special_lw_main_loop as *const () as _))
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if StatusModule::is_changing(fighter.module_accessor) || StatusModule::is_situation_changed(fighter.module_accessor) {
-        rockman_special_motion_helper(
+        special_motion_helper(
             fighter,
             hash40("special_lw").into(),
             hash40("special_air_lw").into(),
@@ -49,6 +49,6 @@ pub fn install(agent: &mut Agent) {
     agent.status(
             Main,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            rockman_special_lw_main,
+            special_lw_main,
         );
 }

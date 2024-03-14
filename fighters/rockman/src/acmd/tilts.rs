@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn rockman_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3melee(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("handl"), 14.0, 65, 70, 0, 55, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
@@ -23,7 +23,7 @@ unsafe extern "C" fn rockman_attacks3(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3melee(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), -8, 10, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -42,7 +42,7 @@ unsafe extern "C" fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3melee(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_rockman_jump01"));
@@ -57,7 +57,7 @@ unsafe extern "C" fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3melee(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
@@ -78,7 +78,7 @@ unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -105,7 +105,7 @@ unsafe extern "C" fn rockman_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -137,7 +137,7 @@ unsafe extern "C" fn rockman_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.75);
@@ -161,11 +161,13 @@ unsafe extern "C" fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3melee", rockman_attacks3);
-    agent.acmd("effect_attacks3melee", rockman_attacks3_eff);
-    agent.acmd("sound_attacks3melee", rockman_attacks3_snd);;
-    agent.acmd("expression_attacks3melee", rockman_attacks3_exp);
-    agent.acmd("game_attackhi3", rockman_attack_hi3_game);
-    agent.acmd("effect_attackhi3", rockman_attack_hi3_effect);
-    agent.acmd("game_attacklw3", rockman_attack_lw3_game);
+    agent.acmd("game_attacks3melee", game_attacks3melee);
+    agent.acmd("effect_attacks3melee", effect_attacks3melee);
+    agent.acmd("sound_attacks3melee", sound_attacks3melee);;
+    agent.acmd("expression_attacks3melee", expression_attacks3melee);
+
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
+
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

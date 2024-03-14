@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -11,7 +11,7 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -29,7 +29,7 @@ unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_turndash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -63,7 +63,7 @@ unsafe fn rockman_crashbomb_stick_game(fighter: &mut L2CAgentBase) {
 }
 */
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -78,7 +78,7 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -93,9 +93,12 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_dash", dash_game);
-    agent.acmd("sound_dash", dash_sound);
-    agent.acmd("game_turndash", turn_dash_game);
-    agent.acmd("game_escapeair", escape_air_game);
-    agent.acmd("game_escapeairslide", escape_air_slide_game);
+    agent.acmd("game_dash", game_dash);
+    agent.acmd("sound_dash", sound_dash);
+
+    agent.acmd("game_turndash", game_turndash);
+
+    agent.acmd("game_escapeair", game_escapeair);
+
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 }
