@@ -4,30 +4,11 @@ use smashline::*;
 
 pub fn install() {
     smashline::Agent::new("ryu")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, init_special_lw)
         .status(Pre, statuses::ryu::INSTALL, special_lw_install_pre)
         .status(Main, statuses::ryu::INSTALL, special_lw_install_main)
         .status(End, statuses::ryu::INSTALL, special_lw_install_end)
         .install();
 }
-
-// FIGHTER_STATUS_KIND_SPECIAL_LW //
-
-pub unsafe extern "C" fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
-        VarModule::set_flag(
-            fighter.battle_object, 
-            vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-            MeterModule::level(fighter.battle_object) >= 4
-        );
-        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
-    } else {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
-    }
-    VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
-    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
-}
-
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

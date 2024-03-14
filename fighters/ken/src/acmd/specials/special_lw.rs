@@ -55,6 +55,21 @@ unsafe extern "C" fn game_speciallwstepf(fighter: &mut L2CAgentBase) {
         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
     frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+            VarModule::set_flag(
+                fighter.battle_object, 
+                vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
+                MeterModule::level(fighter.battle_object) >= 6
+            );
+            if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+                MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+            }
+        } else {
+            VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+        }
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+    }
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 18.0);
     FT_MOTION_RATE(fighter, 1.0 / (26.0 - 18.0));
