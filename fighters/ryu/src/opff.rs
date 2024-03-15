@@ -181,7 +181,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     // reset meter upon depletion
     let meter_amount = MeterModule::meter(fighter.battle_object);
     if meter_amount <= 0.0 {
-        MeterModule::add(fighter.battle_object, meter_amount);
+        MeterModule::add(fighter.battle_object, -1.0 * meter_amount);
         end_magic_series(fighter, boma, status_kind, situation_kind);
     }
 
