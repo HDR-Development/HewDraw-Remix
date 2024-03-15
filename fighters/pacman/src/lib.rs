@@ -37,9 +37,12 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("pacman");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }
