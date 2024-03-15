@@ -421,7 +421,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     skyline::patching::Patch::in_text(0x12c29c0).data(instruction);
 }
 
-pub fn install() {
+pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_main);
