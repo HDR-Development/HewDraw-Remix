@@ -4,12 +4,12 @@ attack_11_near_s:
   animations:
   - name: c00attack11s.nuanmb
   extra:
-    cancel_frame: 38
+    cancel_frame: 28
 attack_11_s:
   flags:
     move: false
   extra:
-    cancel_frame: 38
+    cancel_frame: 28
 attack_11_w:
   extra:
     cancel_frame: 16
