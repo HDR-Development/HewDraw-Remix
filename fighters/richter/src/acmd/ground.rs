@@ -250,7 +250,7 @@ unsafe extern "C" fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         COL_NORMAL(fighter);
     }
-    frame(lua_state, 27.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, -0.5, 0, 0, 0, 0.8, false);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
@@ -270,7 +270,7 @@ unsafe extern "C" fn richter_attack_dash_sound(fighter: &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_l"));
     }
 
-    frame(lua_state, 27.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_richter_landing01"));
     }

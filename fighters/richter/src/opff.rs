@@ -53,8 +53,9 @@ unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
 
         let landing_lag = 10.0; // amount of frames until richter can act when landing
         let rate = 27.0 / landing_lag;
-        MotionModule::change_motion(boma, Hash40::new("landing_heavy"), 0.0, rate, false, 0.0, false, false);
+        MotionModule::change_motion(boma, Hash40::new("landing_fall_special"), 0.0, rate, false, 0.0, false, false);
         VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
+        EffectModule::kill_kind(boma, Hash40::new("sys_sp_flash"), true, true);
     }
 }
 
