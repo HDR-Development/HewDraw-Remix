@@ -56,7 +56,7 @@ unsafe extern "C" fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
         fighter.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
         if fighter.kind() != *FIGHTER_KIND_KIRBY 
         && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            MeterModule::add(fighter.battle_object, 2.0 * MeterModule::damage_gain_mul(fighter.battle_object));
+            MeterModule::add(fighter.battle_object, 0.7 * MeterModule::damage_gain_mul(fighter.battle_object));
         }
     }
     frame(lua_state, 15.0);
