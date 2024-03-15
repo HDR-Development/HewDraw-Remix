@@ -183,16 +183,28 @@ unsafe extern "C" fn richter_attack_squat_s3_expression(agent: &mut L2CAgentBase
 unsafe extern "C" fn richter_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 98, 80, 0, 50, 6.0, 0.0, 9.0, 6.0, Some(0.0), Some(5.3), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 98, 80, 0, 50, 6.0, 0.0, 11.0, 7.6, Some(0.0), Some(5.5), Some(7.6), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 98, 80, 0, 50, 6.0, 0.0, 12.0, 8.6, Some(0.0), Some(5.5), Some(8.6), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
             //ATTACK(fighter, 0, 0, Hash40::new("top"), 9.5, 90, 75, 0, 60, 4.5, 0.0, 53.0, 2.5, Some(0.0), Some(51.0), Some(2.5), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
             /* Ground-only */
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 285, 55, 0, 45, 3.8, 0.0, 46.0, 2.4, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 1.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 285, 55, 0, 45, 3.8, 0.0, 52.0, 2.4, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 1.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
             /* Air-only */
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 285, 47, 0, 45, 3.8, 0.0, 46.0, 2.4, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 1.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 285, 47, 0, 45, 3.8, 0.0, 52.0, 2.4, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 1.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
             
-            ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 88, 75, 0, 60, 2.5, 0.0, 17.0, 2.4, Some(0.0), Some(44.0), Some(2.4), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 88, 75, 0, 60, 5.5, 0.0, 19.0, 2.4, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 88, 75, 0, 60, 2.5, 0.0, 17.0, 2.4, Some(0.0), Some(50.0), Some(2.4), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 100, 75, 0, 60, 5.5, 0.0, 18.0, 2.4, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
         }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -218,14 +230,18 @@ unsafe extern "C" fn richter_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, true);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_trace"), Hash40::new("top"), 2, 10.5, 0.0, 20, 0, 90, 1.0, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, -1, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, -0.3, 188, 20, 184, 0.95, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EffectModule::kill_kind(boma, Hash40::new("richter_whip_trace"), true, true);
     }
 }
 
@@ -234,9 +250,15 @@ unsafe extern "C" fn richter_whip_attack_hi3_effect(fighter: &mut L2CAgentBase) 
     let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_straight"), Hash40::new("hookshot3"), -6, 0, 0, 180, 50, 90, 1.3, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.8);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("richter_whip_light"), Hash40::new("hookshot10"), 0, 0, 0, 0, 0, 0, 1, false, 0.65);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("hookshot3"), 2, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot26"), 2, 0, 0, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_light_s"), Hash40::new("hookshot3"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("richter_whip_flash_top"), Hash40::new("hookshot27"), 2, 0, 0, 0, 0, 0, 1.5, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EffectModule::kill_kind(boma, Hash40::new("richter_whip_straight"), true, true);
     }
 }
 
@@ -250,13 +272,16 @@ unsafe extern "C" fn richter_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_richter_attackair_b01"));
     }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_richter_attackair_b01"));
+    }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        STOP_SE(fighter, Hash40::new("se_richter_attackair_b01"));
         PLAY_SE(fighter, Hash40::new("se_richter_attackair_b02"));
     }
 }
