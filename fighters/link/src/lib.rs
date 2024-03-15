@@ -9,7 +9,7 @@ pub mod opff;
 
 // articles
 
-mod boomerang:
+mod boomerang;
 
 use smash::{
     lib::{
