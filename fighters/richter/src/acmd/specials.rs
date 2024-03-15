@@ -4,6 +4,11 @@ use super::*;
 unsafe extern "C" fn richter_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+            VarModule::on_flag(fighter.battle_object, vars::richter::instance::SPECIAL_N_LAND_CANCEL);
+        }
+    }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, -1);
@@ -57,19 +62,6 @@ unsafe extern "C" fn richter_special_n_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_lightthrow4item"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-}
-
-unsafe extern "C" fn richter_special_air_n_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, -1);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
     }
 }
 
@@ -734,7 +726,7 @@ pub fn install() {
         .acmd("effect_specialn", richter_special_n_effect)
         .acmd("sound_specialn", richter_special_n_sound)
         .acmd("expression_specialn", richter_special_n_expression)
-        .acmd("game_specialairn", richter_special_air_n_game)
+        .acmd("game_specialairn", richter_special_n_game)
         .acmd("effect_specialairn", richter_special_air_n_effect)
         .acmd("sound_specialairn", richter_special_air_n_sound)
         .acmd("expression_specialairn", richter_special_air_n_expression)
