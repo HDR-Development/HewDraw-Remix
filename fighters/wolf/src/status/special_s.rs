@@ -416,33 +416,25 @@ unsafe extern "C" fn special_s_end_exec(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-extern "C" fn wolf_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() != *FIGHTER_KIND_WOLF {
-            return;
-        }
-
-        let instruction = 0x7100001Fu32 | ((SPECIAL_S_RUSH as u32 & 0xFFF) << 10);
-        skyline::patching::Patch::in_text(0x12c29c0).data(instruction);
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    let instruction = 0x7100001Fu32 | ((SPECIAL_S_RUSH as u32 & 0xFFF) << 10);
+    skyline::patching::Patch::in_text(0x12c29c0).data(instruction);
 }
 
 pub fn install() {
-    smashline::Agent::new("wolf")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_end)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_init)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_exec)
-        .status(Pre, SPECIAL_S_RUSH, special_s_rush_pre)
-        .status(Main, SPECIAL_S_RUSH, special_s_rush_main)
-        .status(End, SPECIAL_S_RUSH, special_s_rush_end)
-        .status(Init, SPECIAL_S_RUSH, special_s_rush_init)
-        .status(Pre, SPECIAL_S_END, special_s_end_pre)
-        .status(Main, SPECIAL_S_END, special_s_end_main)
-        .status(End, SPECIAL_S_END, special_s_end_end)
-        .status(Init, SPECIAL_S_END, special_s_end_init)
-        .status(Exec, SPECIAL_S_END, special_s_end_exec)
-        .on_start(wolf_init)
-        .install();
+    agent.on_start(on_start);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_end);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_exec);
+    agent.status(Pre, SPECIAL_S_RUSH, special_s_rush_pre);
+    agent.status(Main, SPECIAL_S_RUSH, special_s_rush_main);
+    agent.status(End, SPECIAL_S_RUSH, special_s_rush_end);
+    agent.status(Init, SPECIAL_S_RUSH, special_s_rush_init);
+    agent.status(Pre, SPECIAL_S_END, special_s_end_pre);
+    agent.status(Main, SPECIAL_S_END, special_s_end_main);
+    agent.status(End, SPECIAL_S_END, special_s_end_end);
+    agent.status(Init, SPECIAL_S_END, special_s_end_init);
+    agent.status(Exec, SPECIAL_S_END, special_s_end_exec);
 }
