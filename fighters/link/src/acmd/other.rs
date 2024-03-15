@@ -122,5 +122,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_turndash", game_turndash);
 
     agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", escape_air_slide_game);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 }

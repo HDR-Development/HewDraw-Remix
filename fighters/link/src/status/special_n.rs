@@ -377,10 +377,10 @@ unsafe extern "C" fn sub_special_n_common(fighter: &mut L2CFighterCommon) -> L2C
     }
     else if bow_step != *FIGHTER_LINK_STATUS_BOW_STEP_HOLD {
         if bow_step != *FIGHTER_LINK_STATUS_BOW_STEP_END  {
-            fighter.fastshift(L2CValue::Ptr(special_n_Main as *const () as _))
+            fighter.fastshift(L2CValue::Ptr(special_n_main_loop as *const () as _))
         }
         else {
-            fighter.fastshift(L2CValue::Ptr(special_n_Main as *const () as _))
+            fighter.fastshift(L2CValue::Ptr(special_n_main_loop as *const () as _))
         }
     }
     else {
@@ -599,6 +599,21 @@ unsafe extern "C" fn sub_special_n_Main_uniq(fighter: &mut L2CFighterCommon) {
             app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
         }
     }
+}
+
+unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return 1.into()
+    }
+    else {
+        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+            return 1.into()
+        }
+        if fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            return 1.into()
+        }
+    }
+    return 0.into()
 }
 
 unsafe extern "C" fn special_n_helper(fighter: &mut L2CFighterCommon) {
