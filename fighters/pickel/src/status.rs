@@ -23,8 +23,6 @@ unsafe fn stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     VarModule::on_flag(fighter.battle_object, vars::pickel::instance::SHOULD_CYCLE_MATERIAL);
     VarModule::off_flag(fighter.battle_object, vars::pickel::instance::SHOULD_RESET_ROT);
     VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
