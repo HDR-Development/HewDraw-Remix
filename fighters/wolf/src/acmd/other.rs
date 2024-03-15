@@ -207,23 +207,17 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damageflyhi);
-
     agent.acmd("sound_damageflylw", sound_damageflylw);
-
     agent.acmd("sound_damageflyn", sound_damageflyn);
-
     agent.acmd("sound_damageflyroll", sound_damageflyroll);
-
     agent.acmd("sound_damageflytop", sound_damageflytop);
 
     agent.acmd("game_catch", game_catch);
 
     agent.acmd("game_dash", game_dash);
     agent.acmd("sound_dash", sound_dash);
-
     agent.acmd("game_turndash", game_turndash);
 
     agent.acmd("game_escapeair", game_escapeair);
-    
     agent.acmd("game_escapeairslide", game_escapeairslide);
 }
