@@ -40,6 +40,24 @@ unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
     }
 }
 
+// knife land cancel
+unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
+    && VarModule::is_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL)
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
+        // remove the unthrown knife from richter's hand
+        if (2.0..13.0).contains(&boma.motion_frame())
+        && ArticleModule::is_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE){
+            ArticleModule::remove_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+
+        let landing_lag = 10.0; // amount of frames until richter can act when landing
+        let rate = 27.0 / landing_lag;
+        MotionModule::change_motion(boma, Hash40::new("landing_heavy"), 0.0, rate, false, 0.0, false, false);
+        VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
+    }
+}
+
 // dtilt bounce
 unsafe fn dtilt_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if fighter.is_motion(Hash40::new("attack_lw32"))
@@ -118,6 +136,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
+    knife_lc(boma);
     dtilt_bounce(fighter, boma);
     whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
