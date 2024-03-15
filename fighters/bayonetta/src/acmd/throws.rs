@@ -40,7 +40,7 @@ unsafe extern "C" fn bayonetta_catch_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_catch_turn_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_catch_turn_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
