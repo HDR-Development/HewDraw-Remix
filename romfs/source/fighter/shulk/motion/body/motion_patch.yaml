@@ -76,6 +76,9 @@ special_air_lw:
 throw_hi:
   extra:
     cancel_frame: 44
+catch:
+  extra:
+    cancel_frame: 36
 furafura_end:
   extra:
     cancel_frame: 10

@@ -4,9 +4,6 @@ jump_squat:
   - name: a05landingheavy.nuanmb
 fall:
   blend_frames: 5
-catch:
-  flags:
-    move: false
 escape:
   flags:
     move: false
@@ -73,6 +70,11 @@ fall_special_f:
   blend_frames: 5
 attack_hi4_hold:
 attack_lw4_hold:
+catch:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 37
 catch_attack:
   extra:
     cancel_frame: 0
