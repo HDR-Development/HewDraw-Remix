@@ -176,7 +176,7 @@ unsafe extern "C" fn throwlw_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     smashline::Agent::new("miiswordsman")
         .acmd("game_catch", miiswordsman_catch_game)
-        .acmd("game_catchdash", miisowrdsman_catch_dash_game)
+        .acmd("game_catchdash", miiswordsman_catch_dash_game)
         .acmd("game_catchturn", miiswordsman_catch_turn_game)
         .acmd("game_throwf", throwf_game)
         .acmd("game_throwb", throwb_game)
