@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+pub mod copyability;
+
 use smash::{
     lib::{
         L2CValue,
@@ -43,6 +45,7 @@ pub const LUCAS_CHARGE_TIME : i32 = 120;
 
 pub fn install() {
     acmd::install();
+    copyability::install();
     status::install();
     opff::install();
 }

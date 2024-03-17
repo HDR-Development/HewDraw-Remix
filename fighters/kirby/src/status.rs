@@ -12,7 +12,7 @@ mod koopa_special_n;
 mod littlemac_special_n;
 mod diddy_special_n_cancel;
 mod lucas_special_n;
-mod sonic;
+mod sonic_special_n;
 mod edge_special_n;
 
 extern "C" fn kirby_init(fighter: &mut L2CFighterCommon) {

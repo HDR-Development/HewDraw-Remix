@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn koopa_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if !can_fireball {
         return smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N)(fighter);
@@ -16,11 +16,11 @@ unsafe extern "C" fn koopa_special_n_main(fighter: &mut L2CFighterCommon) -> L2C
             GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         }
 
-        fighter.sub_shift_status_main(L2CValue::Ptr(koopa_specialnmax_main_loop as *const () as _))
+        fighter.sub_shift_status_main(L2CValue::Ptr(special_n_max_main_loop as *const () as _))
     }
 }
 
-unsafe extern "C" fn koopa_specialnmax_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.sub_change_motion_by_situation(Hash40::new("koopa_special_n_max").into(), Hash40::new("koopa_special_air_n_max").into(), true.into());
 
@@ -54,7 +54,7 @@ unsafe extern "C" fn koopa_specialnmax_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn koopa_special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE_START)
@@ -71,7 +71,7 @@ unsafe extern "C" fn koopa_special_n_exec(fighter: &mut L2CFighterCommon) -> L2C
     }
 }
 
-unsafe extern "C" fn koopa_special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if (!can_fireball){
         return smashline::original_status(ExecStop, fighter, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N)(fighter);
@@ -86,17 +86,17 @@ pub fn install() {
         .status(
             Main,
             *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N,
-            koopa_special_n_main,
+            special_n_main,
         )
         .status(
             Exec,
             *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N,
-            koopa_special_n_exec,
+            special_n_exec,
         )
         .status(
             ExecStop,
             *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N,
-            koopa_special_n_execstop,
+            special_n_execstop,
         )
         .install();
 }
