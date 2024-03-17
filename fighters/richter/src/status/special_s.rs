@@ -16,6 +16,20 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let frame = MotionModule::frame(fighter.module_accessor) as i32;
+    let situation = fighter.global_table[SITUATION_KIND].get_i32();
+    if situation == *SITUATION_KIND_GROUND {
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL) {
+            if GroundModule::get_correct(fighter.module_accessor) != *GROUND_CORRECT_KIND_GROUND {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            }
+        }
+        else {
+            if GroundModule::get_correct(fighter.module_accessor) != *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+            }
+        }
+    }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {

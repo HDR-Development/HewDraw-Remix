@@ -292,6 +292,15 @@ unsafe extern "C" fn richter_attack_dash_expression(fighter: &mut L2CAgentBase) 
     }
 }
 
+unsafe extern "C" fn richter_whip_attack_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("richter")
         .acmd("game_attack11", richter_attack_11_game)
@@ -314,5 +323,6 @@ pub fn install() {
         .install();
         smashline::Agent::new("richter_whip")
         .acmd("game_attack13", richter_whip_attack_13_game)
+        .acmd("game_attackdash", richter_whip_attack_dash_game)
         .install();
 }

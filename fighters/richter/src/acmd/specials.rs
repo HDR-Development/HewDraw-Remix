@@ -45,7 +45,7 @@ unsafe extern "C" fn richter_special_n_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 13.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_richter_special_l01"));
         PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_special_s"));
@@ -87,7 +87,7 @@ unsafe extern "C" fn richter_special_air_n_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 13.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_richter_special_l01"));
         PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_special_s"));
@@ -212,6 +212,11 @@ unsafe extern "C" fn richter_axe_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
@@ -280,15 +285,16 @@ unsafe extern "C" fn richter_special_s1_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_whip_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
 }
 
 unsafe extern "C" fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
@@ -355,10 +361,6 @@ unsafe extern "C" fn richter_special_air_s1_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn richter_whip_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
 }
 
 unsafe extern "C" fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
