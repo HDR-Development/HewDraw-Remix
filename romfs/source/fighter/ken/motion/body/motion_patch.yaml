@@ -191,6 +191,9 @@ special_lw_step_b:
 special_lw_step_f:
   extra:
     cancel_frame: 14
+throw_hi:
+  extra:
+    cancel_frame: 34
 throw_lw:
   extra:
     cancel_frame: 41
