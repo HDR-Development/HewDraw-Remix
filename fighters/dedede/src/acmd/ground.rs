@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn dedede_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -35,7 +35,7 @@ unsafe extern "C" fn dedede_attack_11_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -70,7 +70,7 @@ unsafe extern "C" fn dedede_attack_12_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.86);
@@ -97,7 +97,7 @@ unsafe extern "C" fn dedede_attack_dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_100_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -111,7 +111,7 @@ unsafe extern "C" fn dedede_attack_100_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_attack_100_end_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -136,12 +136,12 @@ unsafe extern "C" fn dedede_attack_100_end_effect(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", dedede_attack_11_game);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", dedede_attack_12_game);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attackdash", dedede_attack_dash_game);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attack100end", dedede_attack_100_end_game);
-    agent.acmd("effect_attack100end", dedede_attack_100_end_effect);
+    agent.acmd("game_attack100end", game_attack100end);
+    agent.acmd("effect_attack100end", effect_attack100end);
 }

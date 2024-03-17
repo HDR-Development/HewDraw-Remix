@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn dedede_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 12.0);
@@ -34,7 +34,7 @@ unsafe extern "C" fn dedede_attack_s3_s_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -60,7 +60,7 @@ unsafe extern "C" fn dedede_attack_hi3_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_attack_hi3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -72,7 +72,7 @@ unsafe extern "C" fn dedede_attack_hi3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -94,7 +94,7 @@ unsafe extern "C" fn dedede_attack_lw3_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dedede_attack_lw3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -105,7 +105,7 @@ unsafe extern "C" fn dedede_attack_lw3_effect(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn dedede_attack_lw3_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -123,12 +123,12 @@ unsafe extern "C" fn dedede_attack_lw3_expression(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3", dedede_attack_s3_s_game);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", dedede_attack_hi3_game);
-    agent.acmd("effect_attackhi3", dedede_attack_hi3_effect);
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
     
-    agent.acmd("game_attacklw3", dedede_attack_lw3_game);
-    agent.acmd("effect_attacklw3", dedede_attack_lw3_effect);
-    agent.acmd("expression_attacklw3", dedede_attack_lw3_expression);
+    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 }

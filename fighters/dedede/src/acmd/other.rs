@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -26,7 +26,7 @@ unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflylw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -51,7 +51,7 @@ unsafe extern "C" fn damageflylw_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -76,7 +76,7 @@ unsafe extern "C" fn damageflyn_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -91,7 +91,7 @@ unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflytop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -128,7 +128,7 @@ unsafe extern "C" fn expression_landingheavy(agent: &mut L2CAgentBase) {
     } 
 }
 
-unsafe extern "C" fn dedede_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -158,7 +158,7 @@ unsafe extern "C" fn dedede_catch_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -172,7 +172,7 @@ unsafe extern "C" fn dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -186,7 +186,7 @@ unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -200,7 +200,7 @@ unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -218,7 +218,7 @@ unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -235,7 +235,7 @@ unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn landing_fall_special_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_landingfallspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -244,28 +244,28 @@ unsafe extern "C" fn landing_fall_special_sound(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", damageflyhi_sound);
+    agent.acmd("sound_damageflyhi", sound_damageflyhi);
 
-    agent.acmd("sound_damageflylw", damageflylw_sound);
+    agent.acmd("sound_damageflylw", sound_damageflylw);
 
-    agent.acmd("sound_damageflyn", damageflyn_sound);
+    agent.acmd("sound_damageflyn", sound_damageflyn);
 
-    agent.acmd("sound_damageflyroll", damageflyroll_sound);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
 
-    agent.acmd("sound_damageflytop", damageflytop_sound);
+    agent.acmd("sound_damageflytop", sound_damageflytop);
 
     agent.acmd("expression_landingheavy", expression_landingheavy);
 
-    agent.acmd("game_catch", dedede_catch_game);
+    agent.acmd("game_catch", game_catch);
 
-    agent.acmd("game_dash", dash_game);
-    agent.acmd("sound_dash", dash_sound);
+    agent.acmd("game_dash", game_dash);
+    agent.acmd("sound_dash", sound_dash);
 
-    agent.acmd("game_turndash", turn_dash_game);
+    agent.acmd("game_turndash", game_turndash);
 
-    agent.acmd("game_escapeair", escape_air_game);
+    agent.acmd("game_escapeair", game_escapeair);
 
-    agent.acmd("game_escapeairslide", escape_air_slide_game);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 
-    agent.acmd("sound_landingfallspecial", landing_fall_special_sound);
+    agent.acmd("sound_landingfallspecial", sound_landingfallspecial);
 }

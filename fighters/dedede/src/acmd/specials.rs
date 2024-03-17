@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn dedede_special_n_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -10,7 +10,7 @@ unsafe extern "C" fn dedede_special_n_start_game(agent: &mut L2CAgentBase) {
         FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn dedede_special_n_loop_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -41,14 +41,14 @@ unsafe extern "C" fn dedede_special_n_loop_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_n_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 25.0 / (19.0-1.0));
 }
 
-unsafe extern "C" fn dedede_special_air_n_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -58,7 +58,7 @@ unsafe extern "C" fn dedede_special_air_n_start_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn dedede_special_air_n_loop_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -89,14 +89,14 @@ unsafe extern "C" fn dedede_special_air_n_loop_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_n_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 25.0 / (19.0-1.0));
 }
 
-unsafe extern "C" fn dedede_special_s_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -114,7 +114,7 @@ unsafe extern "C" fn dedede_special_s_start_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 35.0 / (65.0-26.0));    
 }
 
-unsafe extern "C" fn dedede_special_s_start_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 14.0);
@@ -138,7 +138,7 @@ unsafe extern "C" fn dedede_special_s_start_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_s_start_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 17.0);
@@ -147,7 +147,7 @@ unsafe extern "C" fn dedede_special_s_start_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_s_start_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -161,7 +161,7 @@ unsafe extern "C" fn dedede_special_s_start_expression(agent: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn dedede_special_air_s_start_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 14.0);
@@ -185,7 +185,7 @@ unsafe extern "C" fn dedede_special_air_s_start_effect(agent: &mut L2CAgentBase)
 
 }
 
-unsafe extern "C" fn dedede_special_air_s_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -204,7 +204,7 @@ unsafe extern "C" fn dedede_special_air_s_start_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn dedede_special_air_s_start_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 17.0);
@@ -213,7 +213,7 @@ unsafe extern "C" fn dedede_special_air_s_start_sound(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn dedede_special_air_s_start_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -227,7 +227,7 @@ unsafe extern "C" fn dedede_special_air_s_start_expression(agent: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn dedede_special_s_miss_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsmiss(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -239,7 +239,7 @@ unsafe extern "C" fn dedede_special_s_miss_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_s_miss_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsmiss(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -251,7 +251,7 @@ unsafe extern "C" fn dedede_special_air_s_miss_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_s_get_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 18.0);
@@ -264,7 +264,7 @@ unsafe extern "C" fn dedede_special_s_get_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_s_get_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -279,7 +279,7 @@ unsafe extern "C" fn dedede_special_s_get_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_s_get_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -292,7 +292,7 @@ unsafe extern "C" fn dedede_special_s_get_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_s_get_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 18.0);
@@ -305,7 +305,7 @@ unsafe extern "C" fn dedede_special_air_s_get_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_s_get_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -320,7 +320,7 @@ unsafe extern "C" fn dedede_special_air_s_get_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_s_get_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -333,7 +333,7 @@ unsafe extern "C" fn dedede_special_air_s_get_expression(agent: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn dedede_special_lw_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
@@ -343,7 +343,7 @@ unsafe extern "C" fn dedede_special_lw_start_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_lw_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
@@ -353,7 +353,7 @@ unsafe extern "C" fn dedede_special_air_lw_start_game(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn dedede_special_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let rush_speed = 0.6 + 0.01*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
@@ -384,7 +384,7 @@ unsafe extern "C" fn dedede_special_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_lw_max_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwmax(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let rush_speed = 0.9 + 0.01*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
@@ -414,7 +414,7 @@ unsafe extern "C" fn dedede_special_lw_max_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let rush_speed = 0.6 + 0.01*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
@@ -445,7 +445,7 @@ unsafe extern "C" fn dedede_special_air_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_air_lw_max_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwmax(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let rush_speed = 0.9 + 0.01*WorkModule::get_float(boma, *FIGHTER_DEDEDE_STATUS_JET_HAMMER_WORK_FLOAT_HOLD_COUNT);
@@ -475,13 +475,13 @@ unsafe extern "C" fn dedede_special_air_lw_max_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_lw_jump_squat_game(agent: &mut L2CAgentBase){
+unsafe extern "C" fn game_speciallwjumpsquat(agent: &mut L2CAgentBase){
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 5.0 / (8.0-1.0));
 }
 
-unsafe extern "C" fn dedede_special_hi_jump_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -511,7 +511,7 @@ unsafe extern "C" fn dedede_special_hi_jump_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dedede_special_hi_landing_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhilanding(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
@@ -548,7 +548,7 @@ unsafe extern "C" fn dedede_special_hi_landing_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn dedede_special_hi_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhiturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 13.0 / (20.0 - 1.0));
@@ -574,56 +574,56 @@ unsafe extern "C" fn dedede_special_hi_turn_game(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnstart", dedede_special_n_start_game);
-    agent.acmd("game_specialnloop", dedede_special_n_loop_game);
-    agent.acmd("game_specialnend", dedede_special_n_end_game);
+    agent.acmd("game_specialnstart", game_specialnstart);
+    agent.acmd("game_specialnloop", game_specialnloop);
+    agent.acmd("game_specialnend", game_specialnend);
 
-    agent.acmd("game_specialairnstart", dedede_special_air_n_start_game);
-    agent.acmd("game_specialairnloop", dedede_special_air_n_loop_game);
-    agent.acmd("game_specialairnend", dedede_special_air_n_end_game);
+    agent.acmd("game_specialairnstart", game_specialairnstart);
+    agent.acmd("game_specialairnloop", game_specialairnloop);
+    agent.acmd("game_specialairnend", game_specialairnend);
 
-    agent.acmd("game_specialsstart", dedede_special_s_start_game);
-    agent.acmd("effect_specialsstart", dedede_special_s_start_effect);
-    agent.acmd("sound_specialsstart", dedede_special_s_start_sound);
-    agent.acmd("expression_specialsstart", dedede_special_s_start_expression);
+    agent.acmd("game_specialsstart", game_specialsstart);
+    agent.acmd("effect_specialsstart", effect_specialsstart);
+    agent.acmd("sound_specialsstart", sound_specialsstart);
+    agent.acmd("expression_specialsstart", expression_specialsstart);
 
-    agent.acmd("effect_specialairsstart", dedede_special_air_s_start_effect);
-    agent.acmd("game_specialairsstart", dedede_special_air_s_start_game);
-    agent.acmd("sound_specialairsstart", dedede_special_air_s_start_sound);
-    agent.acmd("expression_specialairsstart", dedede_special_air_s_start_expression);
+    agent.acmd("effect_specialairsstart", effect_specialairsstart);
+    agent.acmd("game_specialairsstart", game_specialairsstart);
+    agent.acmd("sound_specialairsstart", sound_specialairsstart);
+    agent.acmd("expression_specialairsstart", expression_specialairsstart);
 
-    agent.acmd("game_specialsmiss", dedede_special_s_miss_game);
+    agent.acmd("game_specialsmiss", game_specialsmiss);
 
-    agent.acmd("game_specialairsmiss", dedede_special_air_s_miss_game);
+    agent.acmd("game_specialairsmiss", game_specialairsmiss);
 
-    agent.acmd("game_specialsget", dedede_special_s_get_game);
-    agent.acmd("effect_specialsget", dedede_special_s_get_effect);
-    agent.acmd("expression_specialsget", dedede_special_s_get_expression);
+    agent.acmd("game_specialsget", game_specialsget);
+    agent.acmd("effect_specialsget", effect_specialsget);
+    agent.acmd("expression_specialsget", expression_specialsget);
 
-    agent.acmd("game_specialairsget", dedede_special_air_s_get_game);
-    agent.acmd("effect_specialairsget", dedede_special_air_s_get_effect);
-    agent.acmd("expression_specialairsget", dedede_special_air_s_get_expression);
+    agent.acmd("game_specialairsget", game_specialairsget);
+    agent.acmd("effect_specialairsget", effect_specialairsget);
+    agent.acmd("expression_specialairsget", expression_specialairsget);
 
-    agent.acmd("game_speciallwstart", dedede_special_lw_start_game);
-    agent.acmd("game_specialairlwstart", dedede_special_lw_start_game);
+    agent.acmd("game_speciallwstart", game_speciallwstart);
+    agent.acmd("game_specialairlwstart", game_specialairlwstart);
 
-    agent.acmd("game_specialairlwstart", dedede_special_air_lw_start_game);
+    agent.acmd("game_specialairlwstart", game_specialairlwstart);
 
-    agent.acmd("game_speciallw", dedede_special_lw_game);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_speciallwmax", dedede_special_lw_max_game);
+    agent.acmd("game_speciallwmax", game_speciallwmax);
 
-    agent.acmd("game_specialairlw", dedede_special_air_lw_game);
+    agent.acmd("game_specialairlw", game_specialairlw);
 
-    agent.acmd("game_specialairlwmax", dedede_special_air_lw_max_game);
+    agent.acmd("game_specialairlwmax", game_specialairlwmax);
 
-    agent.acmd("game_speciallwjumpsquat", dedede_special_lw_jump_squat_game);
+    agent.acmd("game_speciallwjumpsquat", game_speciallwjumpsquat);
 
-    agent.acmd("game_specialhijump", dedede_special_hi_jump_game);
+    agent.acmd("game_specialhijump", game_specialhijump);
 
-    agent.acmd("game_specialhilandingr", dedede_special_hi_landing_game);
-    agent.acmd("game_specialhilandingl", dedede_special_hi_landing_game);
+    agent.acmd("game_specialhilandingr", game_specialhilanding);
+    agent.acmd("game_specialhilandingl", game_specialhilanding);
 
-    agent.acmd("game_specialairhiturnl", dedede_special_hi_turn_game);
-    agent.acmd("game_specialairhiturnr", dedede_special_hi_turn_game);
+    agent.acmd("game_specialairhiturnl", game_specialairhiturn);
+    agent.acmd("game_specialairhiturnr", game_specialairhiturn);
 }
