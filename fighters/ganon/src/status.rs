@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 mod attack_lw3;
 
@@ -9,8 +10,8 @@ mod special_s;
 mod special_air_s_catch;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
-unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) {
+unsafe extern "C" fn should_use_special_n_callback(agent: &mut L2CFighterCommon) -> L2CValue {
+    if agent.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(agent.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N) {
         false.into()
     } else {
         true.into()
@@ -18,35 +19,33 @@ unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommo
 }
 
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
-unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
-        VarModule::off_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
+unsafe extern "C" fn change_status_callback(agent: &mut L2CFighterCommon) -> L2CValue {
+    if agent.is_situation(*SITUATION_KIND_GROUND) || agent.is_situation(*SITUATION_KIND_CLIFF)
+    || agent.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+        VarModule::off_flag(agent.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
     }
     true.into()
 }
 
-extern "C" fn ganon_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn on_start(agent: &mut L2CFighterCommon) {
     unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_GANON {
-            fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
+        // set the callbacks on agent init
+        agent.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
+        agent.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     }
 }
 
-pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
-    fighter.set_situation(SITUATION_KIND_AIR.into());
-    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+pub unsafe fn ganon_set_air(agent: &mut L2CFighterCommon) {
+    agent.set_situation(SITUATION_KIND_AIR.into());
+    GroundModule::correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
 }
 
-pub fn install() {
-    smashline::Agent::new("ganon").on_start(ganon_init).install();
-    attack_lw3::install();
-    special_n::install();
-    special_n_float::install();
-    special_lw::install();
-    special_s::install();
-    special_air_s_catch::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+    attack_lw3::install(agent);
+    special_n::install(agent);
+    special_n_float::install(agent);
+    special_lw::install(agent);
+    special_s::install(agent);
+    special_air_s_catch::install(agent);
 }
