@@ -22,7 +22,6 @@ unsafe extern "C" fn mariod_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 7, 7.5, 30, -60, 135, 0.95, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -52,7 +51,6 @@ unsafe extern "C" fn mariod_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 5, 9.0, 10, -39, 154, 0.95, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -83,7 +81,6 @@ unsafe extern "C" fn mariod_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 3, 9.0, 5, -90, 170, 0.95, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -137,7 +134,6 @@ unsafe extern "C" fn mariod_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 3, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 3, 4, -1, 12, -172, 0.95, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_COLOR(fighter, 0.5, 1.0, 2.0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
