@@ -3,31 +3,12 @@ use globals::*;
 use smashline::*;
 
 pub fn install() {
-    smashline::Agent::new("ken")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, special_lw_step_f_init)
-        .status(Pre, statuses::ken::INSTALL, special_lw_install_pre)
-        .status(Main, statuses::ken::INSTALL, special_lw_install_main)
-        .status(End, statuses::ken::INSTALL, special_lw_install_end)
+    smashline::Agent::new("ryu")
+        .status(Pre, statuses::ryu::INSTALL, special_lw_install_pre)
+        .status(Main, statuses::ryu::INSTALL, special_lw_install_main)
+        .status(End, statuses::ryu::INSTALL, special_lw_install_end)
         .install();
 }
-
-// FIGHTER_STATUS_KIND_SPECIAL_LW //
-
-pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), true.into());
-    return 1.into();
-}
-
-// FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F //
-
-pub unsafe extern "C" fn special_lw_step_f_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
-    }
-    smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)(fighter)
-}
-
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -62,10 +43,8 @@ unsafe extern "C" fn special_lw_install_main(fighter: &mut L2CFighterCommon) -> 
     // install should only have been allowed if we had max meter upon entering DSpecial, so we set meter to max just in case there was a metered DSpecial cancel
     MeterModule::add(fighter.battle_object, (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())) - MeterModule::meter(fighter.battle_object));
     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-    let id0 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("ken_syoryuken_fire"), Hash40::new("toel"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
-    let id1 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("ken_syoryuken_fire"), Hash40::new("toer"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
-    VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_FIRE_EFF_ID_0, id0 as i32);
-    VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_FIRE_EFF_ID_1, id1 as i32);
+    EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handl"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
+    EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_install_main_loop as *const () as _))
 }
 
@@ -123,7 +102,7 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
             true,
             true
         );
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     else {
         fighter.set_situation(SITUATION_KIND_GROUND.into());
