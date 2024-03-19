@@ -67,7 +67,7 @@ unsafe extern "C" fn younglink_attack_dash_game(fighter: &mut L2CAgentBase) {
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 70, 70, 0, 60, 4.5, 0.0, 5.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 70, 70, 0, 60, 4.5, 0.0, 5.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
     }
@@ -127,9 +127,13 @@ unsafe extern "C" fn younglink_attack_dash_effect(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn younglink_attack_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_younglink_rnd_attack"));
+        let rng = sv_math::rand(hash40("fighter"), 3) as i32;
+        if rng == 2 {
+            PLAY_SE(fighter, Hash40::new("vc_younglink_appeal_h01"));
+        } else {
+            PLAY_SE(fighter, Hash40::new("vc_younglink_attack01"));
+        }
     }
 }
 
