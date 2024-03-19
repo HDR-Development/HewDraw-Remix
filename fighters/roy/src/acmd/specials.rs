@@ -983,9 +983,9 @@ unsafe extern "C" fn game_speciallwhit(fighter: &mut L2CAgentBase) {
         AttackModule::set_force_reaction(boma, 1, true, false);
         AttackModule::set_force_reaction(boma, 2, true, false);
         if WorkModule::is_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
-            AttackModule::set_optional_hit_sound(boma, 0, smash::phx::Hash40::new_raw(0x12813fe196));
-            AttackModule::set_optional_hit_sound(boma, 1, smash::phx::Hash40::new_raw(0x12813fe196));
-            AttackModule::set_optional_hit_sound(boma, 2, smash::phx::Hash40::new_raw(0x12813fe196));
+            AttackModule::set_optional_hit_sound(boma, 0, smash::phx::Hash40::new("se_roy_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 1, smash::phx::Hash40::new("se_roy_criticalhit"));
+            AttackModule::set_optional_hit_sound(boma, 2, smash::phx::Hash40::new("se_roy_criticalhit"));
         }
     }
     frame(lua_state, 7.0);

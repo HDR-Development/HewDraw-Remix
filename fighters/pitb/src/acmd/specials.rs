@@ -134,8 +134,8 @@ unsafe extern "C" fn pitb_special_lw_start_effect(fighter: &mut L2CAgentBase) {
         let facing = PostureModule::lr(boma);
         let rot1 = if facing > 0.0 { 240 } else { 300 };
         let rot2 = if facing > 0.0 { 120 } else { 60 };
-        EFFECT_FOLLOW(fighter, Hash40::new("pitb_guardian_shield"), Hash40::new_raw(0x10489b2b69), 2.0 * facing, 3, -2, 0, rot1, 0, 1.3, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("pitb_guardian_shield"), Hash40::new_raw(0x104ff6ef70), 2.0 * facing, 3, 2, 0, rot2, 0, 1.3, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_guardian_shield"), Hash40::new("virtualguardianf"), 2.0 * facing, 3, -2, 0, rot1, 0, 1.3, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_guardian_shield"), Hash40::new("virtualguardianb"), 2.0 * facing, 3, 2, 0, rot2, 0, 1.3, true);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
         }

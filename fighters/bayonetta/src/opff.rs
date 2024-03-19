@@ -4,8 +4,7 @@ use smash::app::lua_bind::CancelModule::is_enable_cancel;
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) || fighter.is_motion(Hash40::new("attack_air_f3")))
-    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
+    if fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_hi"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_f3"), Hash40::new("attack_air_b")])
     && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) 
     && !fighter.is_in_hitlag() {
         let mut new_status = 0;
@@ -31,22 +30,6 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
-unsafe fn nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE) { //PM-like neutral-b canceling
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            if fighter.is_cat_flag(Cat1::AirEscape)  {
-                ControlModule::reset_trigger(boma);
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
-                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }//drift
-            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
-            sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.009);
-            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
-        }
-    }
-}
-
 unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     let boma = fighter.boma();
     if (StatusModule::is_situation_changed(boma) && !fighter.is_situation(*SITUATION_KIND_AIR))//checks for (re)spawn or grounded state
@@ -65,10 +48,10 @@ unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
             VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         }
-    } 
+    }
     //resets hitflag
     if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
-        if StatusModule::is_changing(boma) && !boma.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP) {
+        if StatusModule::is_changing(boma) && !boma.is_status_one_of(&[*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP, statuses::bayonetta::SPECIAL_S_EDGE]) {
             VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT);
         }
     }
@@ -152,7 +135,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     aerial_cancels(fighter, boma);
-    nspecial_mechanics(fighter, boma);
     reset_flags(fighter, boma);
     resources(fighter, boma);
     forward_tilt(boma);

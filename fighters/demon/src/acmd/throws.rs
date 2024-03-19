@@ -178,7 +178,7 @@ unsafe extern "C" fn demon_throw_command_game(fighter: &mut L2CAgentBase) {
                 if !WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_DISABLE_THROW_MOTION_CAMERA) {
                     if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
                         if is_excute(fighter) {
-                            REQ_MOTION_CAMERA(fighter, Hash40::new_raw(0x163d9703b0), false);
+                            REQ_MOTION_CAMERA(fighter, Hash40::new("e01throwcommand.nuanmb"), false);
                         }
                     }
                 }
