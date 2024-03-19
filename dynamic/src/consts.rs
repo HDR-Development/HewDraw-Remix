@@ -1009,7 +1009,6 @@ pub mod vars {
             pub const IS_ENABLE_FADC:         i32 = 0x0102;
             pub const IS_TARGET_COMBO_1:      i32 = 0x0103;
             pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
-            pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
             pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
             pub const IS_CURRENT_HADOKEN_AIR: i32 = 0x0107;
             pub const DISABLE_SPECIAL_LW:     i32 = 0x0108;
@@ -1018,18 +1017,16 @@ pub mod vars {
             // ints
             pub const REPEAT_COUNT_LW: i32 = 0x0100;
             pub const REPEAT_COUNT_HI: i32 = 0x0101;
-            pub const EX_SPECIAL_SCRIPTING: i32 = 0x0102;
-            pub const AIR_CHAIN_COMBO_NUM: i32 = 0x0103;
             pub const SPECIAL_HI_FIRE_EFF_ID: i32 = 0x0104;
             pub const SPECIAL_LW_FIRE_EFF_ID_0: i32 = 0x0105;
             pub const SPECIAL_LW_FIRE_EFF_ID_1: i32 = 0x0106;
+            pub const SPECIAL_N_EX_NUM: i32 = 0x0107;
         }
         pub mod status {
             // flags
             pub const SHOULD_COMBOS_SCALE: i32 = 0x1100;
             pub const REPEAT_INCREMENTED: i32 = 0x1101;
             pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1102;
-            pub const FLAG_MOT_INHERIT: i32 = 0x1103;
         }
     }
 

@@ -54,6 +54,7 @@ extern "C" fn ryu_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
             fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ryu_check_special_command as *const () as _));
+            VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_N_EX_NUM, 0);
         }
     }
 }

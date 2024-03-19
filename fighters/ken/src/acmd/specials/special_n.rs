@@ -309,7 +309,12 @@ unsafe extern "C" fn game_movewms(fighter: &mut L2CAgentBase) {
             VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
         );
         if VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            MeterModule::drain_direct(owner_module_accessor.object(), 2.0 * MeterModule::meter_per_level(owner_module_accessor.object()))
+            if VarModule::get_int(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_EX_NUM) <= 0 {
+                MeterModule::drain_direct(owner_module_accessor.object(), 2.0 * MeterModule::meter_per_level(owner_module_accessor.object()));
+                VarModule::set_int(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_EX_NUM, 2);
+            } else {
+                VarModule::dec_int(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_EX_NUM);
+            }
         }
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             let speed = KineticModule::get_sum_speed3f(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
