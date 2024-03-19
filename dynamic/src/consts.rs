@@ -184,6 +184,8 @@ pub mod vars {
 
             pub const IS_FLOAT: i32 = 0x0066;
 
+            pub const TRAINING_KILL_EFFECTS: i32 = 0x0067;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -972,6 +974,14 @@ pub mod vars {
 
             // ints
             pub const LEVIN_AERIAL_LENIENCY: i32 = 0x0100;
+        }
+    }
+
+    pub mod richter {
+        pub mod instance {
+            // flags
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
+            pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0101;
         }
     }
 

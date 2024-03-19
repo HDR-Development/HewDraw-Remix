@@ -21,11 +21,10 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="critical_aura_power">1.45</float>
-      <int hash="critical_frame">4</int>
-      <int hash="critical_slow_rate">4</int>
-      <float hash="critical_zoom_rate">1.0</float>
+      <int hash="critical_frame">10</int>
+      <int hash="critical_slow_rate">1</int>
+      <float hash="critical_zoom_rate">1</float>
       <int hash="critical_zoom_in_frame">999</int>
-      <int hash="critical_bg_only_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

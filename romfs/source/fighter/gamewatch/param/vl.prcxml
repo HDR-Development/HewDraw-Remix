@@ -21,6 +21,16 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_food">
     <struct index="0">
       <int hash="life">70</int>

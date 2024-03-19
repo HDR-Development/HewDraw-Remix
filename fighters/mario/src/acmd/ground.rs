@@ -22,6 +22,20 @@ unsafe extern "C" fn mario_attack_11_game(fighter: &mut L2CAgentBase) {
     
 }
 
+unsafe extern "C" fn mario_attack_11_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), -4, 6.7, 1, 0, 0, 0, 0.95, 0, 1, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 12, 6.7, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 360, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+    }
+}
+
 unsafe extern "C" fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -47,6 +61,20 @@ unsafe extern "C" fn mario_attack_12_game(fighter: &mut L2CAgentBase) {
     
 }
 
+unsafe extern "C" fn mario_attack_12_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), -3, 5.9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 12, 6.7, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 360, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+    }
+}
+
 unsafe extern "C" fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -66,6 +94,18 @@ unsafe extern "C" fn mario_attack_13_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     
+}
+
+unsafe extern "C" fn mario_attack_13_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1, 8.5, 4.5, 0, -25, 80, 0.85, true, *EF_FLIP_YZ);
+    }
 }
 
 unsafe extern "C" fn mario_attack_13_expression(fighter: &mut L2CAgentBase) {
@@ -128,8 +168,11 @@ unsafe extern "C" fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     smashline::Agent::new("mario")
         .game_acmd("game_attack11", mario_attack_11_game)
+        .effect_acmd("effect_attack11", mario_attack_11_effect)
         .game_acmd("game_attack12", mario_attack_12_game)
+        .effect_acmd("effect_attack12", mario_attack_12_effect)
         .game_acmd("game_attack13", mario_attack_13_game)
+        .effect_acmd("effect_attack13", mario_attack_13_effect)
         .expression_acmd("expression_attack13", mario_attack_13_expression)
         .game_acmd("game_attackdash", mario_attack_dash_game)
         .install();
