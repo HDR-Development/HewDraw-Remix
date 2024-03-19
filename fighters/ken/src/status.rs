@@ -3,7 +3,9 @@ use globals::*;
 // status script import
 mod finals;
 mod special_cmd4;
+mod special_hi;
 mod special_lw;
+mod special_n;
 mod special_s;
 
 utils::import_noreturn!(common::shoto_status::{
@@ -31,6 +33,7 @@ extern "C" fn ken_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
         fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
         fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
+        VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_N_EX_NUM, 0);
     }
 }
 
@@ -59,12 +62,20 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        // *FIGHTER_STATUS_KIND_SPECIAL_N,
+        // *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        // *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND,
         *FIGHTER_STATUS_KIND_SPECIAL_S, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, 
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
+        // *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
+        // *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
+        // statuses::ken::ATTACK_COMMAND_4
     ]) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_FADC);
+        // VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
     }
 
     // Re-enables the ability to use sideB when connecting to ground or cliff
@@ -92,7 +103,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     }
 
     // ORIGINAL
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLAG_AUTO_TURN_END_STATUS);
+    fighter.off_flag(*FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLAG_AUTO_TURN_END_STATUS);
     let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
     if lr == 0.0
     || PostureModule::lr(fighter.module_accessor) == lr
@@ -234,28 +245,6 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
         Cat1::AttackLw4
     );
 
-    // the tatsu super
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
-    && MeterModule::level(fighter.object()) >= 6 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-        return true.into();
-    }
-
-    // the shinryuken
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
-    && MeterModule::level(fighter.object()) >= 10 {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        return true.into();
-    }
-
     // shoryu
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0
@@ -271,6 +260,24 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
     && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // the supers
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        } else if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+        }
         return true.into();
     }
 
@@ -297,6 +304,7 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     if is_normal
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && !fighter.is_in_hitlag()
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
         fighter.change_status(statuses::ken::ATTACK_COMMAND_4.into(), true.into());
         return true.into();
@@ -606,7 +614,7 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     //         }
     //     }
     // }
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART) {
+    if !fighter.is_flag(*FIGHTER_STATUS_ATTACK_FLAG_RESTART) {
         if !MotionModule::is_end(fighter.module_accessor) {
             common::shoto_status::ryu_idkwhatthisis2(fighter);
         } else {
@@ -633,7 +641,9 @@ pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValu
 pub fn install() {
     finals::install();
     special_cmd4::install();
+    special_hi::install();
     special_lw::install();
+    special_n::install();
     special_s::install();
 
     smashline::Agent::new("ken")
