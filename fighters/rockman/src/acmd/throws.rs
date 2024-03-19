@@ -140,12 +140,10 @@ unsafe extern "C" fn rockman_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("rockman")
-        .acmd("game_catch", rockman_catch_game)
-        .acmd("game_catchdash", rockman_catch_dash_game)
-        .acmd("game_catchturn", rockman_catch_turn_game)
-        .acmd("game_throwb", rockman_throw_b_game)
-        .acmd("game_throwlw", rockman_throw_hi_game)
-        .acmd("game_throwhi", rockman_throw_lw_game)
-        .install();
+    agent.acmd("game_catch", rockman_catch_game);
+    agent.acmd("game_catchdash", rockman_catch_dash_game);
+    agent.acmd("game_catchturn", rockman_catch_turn_game);
+    agent.acmd("game_throwb", rockman_throw_b_game);
+    agent.acmd("game_throwhi", rockman_throw_hi_game);
+    agent.acmd("game_throwlw", rockman_throw_lw_game);
 }
