@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script(agent = "miifighter", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn miifighter_attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miifighter_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -21,8 +20,7 @@ unsafe fn miifighter_attack_11_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "miifighter", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn miifighter_attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miifighter_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -44,8 +42,7 @@ unsafe fn miifighter_attack_12_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script(agent = "miifighter", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
-unsafe fn miifighter_attack_100end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miifighter_attack_100end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -64,8 +61,7 @@ unsafe fn miifighter_attack_100end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn miifighter_attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miifighter_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -95,10 +91,10 @@ unsafe fn miifighter_attack_dash_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        miifighter_attack_11_game,
-        miifighter_attack_12_game,
-        miifighter_attack_100end_game,
-        miifighter_attack_dash_game,
-    );
+    smashline::Agent::new("miifighter")
+        .acmd("game_attack11", miifighter_attack_11_game)
+        .acmd("game_attack12", miifighter_attack_12_game)
+        .acmd("game_attack100end", miifighter_attack_100end_game)
+        .acmd("game_attackdash", miifighter_attack_dash_game)
+        .install();
 }

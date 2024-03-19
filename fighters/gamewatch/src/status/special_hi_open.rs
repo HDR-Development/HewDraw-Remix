@@ -21,7 +21,7 @@ unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CV
         false,
         false,
         false,
-        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
         *FIGHTER_STATUS_ATTR_START_TURN as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
         0
@@ -64,12 +64,9 @@ unsafe extern "C" fn special_hi_open_exit(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_gamewatch"),
-        statuses::gamewatch::SPECIAL_HI_OPEN,
-        StatusInfo::new()
-            .with_pre(special_hi_open_pre)
-            .with_main(special_hi_open_main)
-            .with_exit(special_hi_open_exit)
-    );
+    smashline::Agent::new("gamewatch")
+        .status(Pre, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_pre)
+        .status(Main, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_main)
+        .status(End, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_exit)
+        .install();
 }

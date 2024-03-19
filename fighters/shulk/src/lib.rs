@@ -4,8 +4,9 @@
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
+pub mod vtable_hook;
 
 use smash::{
     lib::{
@@ -38,8 +39,9 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
+pub fn install() {
     acmd::install();
-    //status::install();
-    opff::install(is_runtime);
+    status::install();
+    vtable_hook::install();
+    opff::install();
 }

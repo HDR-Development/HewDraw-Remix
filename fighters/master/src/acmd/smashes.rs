@@ -1,8 +1,7 @@
 
 use super::*;
 
-#[acmd_script( agent = "master", script = "effect_attacks4charge" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -31,8 +30,7 @@ unsafe fn master_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -160,8 +158,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "effect_attacks4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -240,8 +237,7 @@ unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -369,8 +365,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -449,8 +444,7 @@ unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -578,8 +572,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "master", script = "effect_attacks4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -658,8 +651,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", scripts = ["expression_attacks4hi", "expression_attacks4", "expression_attacks4lw"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -682,17 +674,17 @@ unsafe fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         fighter.clear_lua_stack();
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 1);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 2);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 3);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 4);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 1);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 2);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 3);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 4);
     }
     frame(lua_state, 44.0);
     frame(lua_state, 46.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_explosion"), 0);
         }
     }
     frame(lua_state, 85.0);
@@ -701,8 +693,7 @@ unsafe fn master_attack_s4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn master_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -749,18 +740,18 @@ unsafe fn master_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install() {
-    install_acmd_scripts!(
-        master_attack_s4_charge_effect,
-        master_attack_s4_hi_game,
-        master_attack_s4_hi_effect,
-        master_attack_s4_s_game,
-        master_attack_s4_s_effect,
-        master_attack_s4_lw_game,
-        master_attack_s4_lw_effect,
-        master_attack_s4_expression,
-        master_attack_lw4_game,
-    );
+    smashline::Agent::new("master")
+        .acmd("effect_attacks4charge", master_attack_s4_charge_effect)
+        .acmd("game_attacks4hi", master_attack_s4_hi_game)
+        .acmd("effect_attacks4hi", master_attack_s4_hi_effect)
+        .acmd("game_attacks4", master_attack_s4_s_game)
+        .acmd("effect_attacks4", master_attack_s4_s_effect)
+        .acmd("game_attacks4lw", master_attack_s4_lw_game)
+        .acmd("effect_attacks4lw", master_attack_s4_lw_effect)
+        .acmd("expression_attacks4hi", master_attack_s4_expression)
+        .acmd("expression_attacks4", master_attack_s4_expression)
+        .acmd("expression_attacks4lw", master_attack_s4_expression)
+        .acmd("game_attacklw4", master_attack_lw4_game)
+        .install();
 }
-

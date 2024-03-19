@@ -5,9 +5,6 @@ use std::collections::HashSet;
 use std::str::FromStr;
 
 pub mod tag;
-pub mod turbo;
-pub mod hitfall;
-pub mod airdash;
 
 lazy_static! {
     static ref GAME_MODE_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
@@ -16,6 +13,7 @@ lazy_static! {
     static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
     static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/hitfall.webp").unwrap();
     static ref AIRDASH_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/airdash.webp").unwrap();
+    static ref SMASH64_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/smash64.webp").unwrap();
 }
 
 static mut CURRENT_CUSTOM_MODES: Option<HashSet<CustomMode>> = None;
@@ -42,9 +40,9 @@ pub extern "Rust" fn signal_new_game() {
     }
 }
 
-fn detect_new_game(game_state_ptr: u64) -> bool {
-    static mut PREVIOUS_GAME_STATE_PTR: u64 = 0;
+static mut PREVIOUS_GAME_STATE_PTR: u64 = 0;
 
+fn detect_new_game(game_state_ptr: u64) -> bool {
     unsafe {
         let prev = PREVIOUS_GAME_STATE_PTR;
         PREVIOUS_GAME_STATE_PTR = game_state_ptr;
@@ -61,7 +59,7 @@ fn detect_new_game(game_state_ptr: u64) -> bool {
 unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
     unsafe { // Ryujinx handle separately
         let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8004000 {
+        if text_addr == 0x8504000 || text_addr == 0x80004000 {
             if ninput::any::is_down(ninput::Buttons::R) && ninput::any::is_down(ninput::Buttons::L) {
                 let mut modes = HashSet::new();
                 modes.insert(CustomMode::SmashballTag);
@@ -90,6 +88,7 @@ pub unsafe fn open_modes_session() {
         .file("hdr/turbo.webp", TURBO_WEBP.as_slice())
         .file("hdr/hitfall.webp", HITFALL_WEBP.as_slice())
         .file("hdr/airdash.webp", AIRDASH_WEBP.as_slice())
+        .file("hdr/smash64.webp", SMASH64_WEBP.as_slice())
         .start_page("help/html/USen/gamemodes.html")
         .open()
         .unwrap();
@@ -97,6 +96,7 @@ pub unsafe fn open_modes_session() {
     match response.get_last_url() {
         Ok(url) => {
             let modes_str = url.trim_start_matches("http://localhost/");
+            println!("modes str: {}", modes_str);
             // if no modes were selected, then set None
             if modes_str.is_empty() || modes_str.contains("none") {
                 CURRENT_CUSTOM_MODES = None;
@@ -143,15 +143,15 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
             if modes.contains(&CustomMode::SmashballTag) {
                 tag::update();
             }
-            if modes.contains(&CustomMode::TurboMode) {
-                turbo::update();
-            }
-            if modes.contains(&CustomMode::HitfallMode) {
-                hitfall::update();
-            }
-            if modes.contains(&CustomMode::AirdashMode) {
-                airdash::update();
-            }
+            // if modes.contains(&CustomMode::TurboMode) {
+            //     turbo::update();
+            // }
+            // if modes.contains(&CustomMode::HitfallMode) {
+            //     hitfall::update();
+            // }
+            // if modes.contains(&CustomMode::AirdashMode) {
+            //     airdash::update();
+            // }
         },
         _ => {}
     }
@@ -160,5 +160,8 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(on_rule_select_hook, once_per_game_frame);
+    skyline::install_hooks!(
+        on_rule_select_hook,
+        once_per_game_frame
+    );
 }

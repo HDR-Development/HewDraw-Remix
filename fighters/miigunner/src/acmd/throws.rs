@@ -1,7 +1,6 @@
 use super::*;
 
-#[acmd_script( agent = "miigunner", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_throw_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -27,8 +26,7 @@ unsafe fn miigunner_throw_f_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_throw_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -85,8 +83,7 @@ unsafe fn miigunner_throw_b_game(fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "miigunner_rapidshot_bullet", script = "game_flythrowb", category = ACMD_GAME, low_priority )]
-unsafe fn miigunner_rapidshot_bullet_flythrowb_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -94,8 +91,7 @@ unsafe fn miigunner_rapidshot_bullet_flythrowb_game(fighter: &mut L2CAgentBase) 
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_throwb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	// frame(lua_state, 4.0);
@@ -121,9 +117,9 @@ unsafe fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 20.0);
 	if is_excute(fighter) {
 		// if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		// 	EFFECT(fighter, Hash40::new_raw(0x1287005d5d), Hash40::new("armr"), 5.3, 0, 0, 70, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_shot_add"), Hash40::new("armr"), 5.3, 0, 0, 70, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
-		// 	EFFECT(fighter, Hash40::new_raw(0x168b3949cd), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_blaster_shot"), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 		// 	LAST_EFFECT_SET_RATE(fighter, 1.6);
 		// 	EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 19.0, -26.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -136,8 +132,7 @@ unsafe fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_throwb" , category = ACMD_SOUND , low_priority)]
-unsafe fn miigunner_throw_b_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 2.0);
@@ -170,8 +165,7 @@ unsafe fn miigunner_throw_b_sound(fighter: &mut L2CAgentBase) {
 	// }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_throw_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -231,8 +225,7 @@ unsafe fn miigunner_throw_hi_game(fighter: &mut L2CAgentBase) {
 	FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "miigunner_rapidshot_bullet", script = "game_flythrowhi", category = ACMD_GAME, low_priority )]
-unsafe fn miigunner_rapidshot_bullet_flythrowhi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowhi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -244,8 +237,7 @@ unsafe fn miigunner_rapidshot_bullet_flythrowhi_game(fighter: &mut L2CAgentBase)
     }
 }
 
-#[acmd_script( agent = "miigunner_rapidshot_bullet", script = "game_flythrowhi2", category = ACMD_GAME, low_priority )]
-unsafe fn miigunner_rapidshot_bullet_flythrowhi2_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowhi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -257,8 +249,7 @@ unsafe fn miigunner_rapidshot_bullet_flythrowhi2_game(fighter: &mut L2CAgentBase
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "effect_throwhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	// frame(lua_state, 2.0);
@@ -275,7 +266,7 @@ unsafe fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
 		// if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		// 	EFFECT(fighter, Hash40::new_raw(0x168b3949cd), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_blaster_shot"), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 		// 	LAST_EFFECT_SET_RATE(fighter, 1.6);
 		// 	EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 36.0, 0.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
@@ -297,7 +288,7 @@ unsafe fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
 		// if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		// 	EFFECT(fighter, Hash40::new_raw(0x168b3949cd), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
+		// 	EFFECT(fighter, Hash40::new("miigunner_blaster_shot"), Hash40::new("armr"), 5.3, 0, 0, 90, 0, 90, 0.9, 0, 0, 0, 0, 0, 0, true);
 		// 	LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 		// 	LAST_EFFECT_SET_RATE(fighter, 1.6);
 		// 	EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 43.0, 0.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
@@ -310,8 +301,7 @@ unsafe fn miigunner_throw_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "sound_throwhi", category = ACMD_SOUND, low_priority )]
-unsafe fn miigunner_throw_hi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -346,8 +336,7 @@ unsafe fn miigunner_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn miigunner_throw_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn miigunner_throw_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -370,17 +359,19 @@ unsafe fn miigunner_throw_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-		miigunner_throw_f_game,
-		miigunner_throw_b_game,
-		miigunner_rapidshot_bullet_flythrowb_game,
-		miigunner_throw_b_effect,
-		miigunner_throw_b_sound,
-		miigunner_throw_hi_game,
-		miigunner_rapidshot_bullet_flythrowhi_game,
-		miigunner_rapidshot_bullet_flythrowhi2_game,
-		miigunner_throw_hi_effect,
-		miigunner_throw_hi_sound,
-		miigunner_throw_lw_game,
-	);
+    smashline::Agent::new("miigunner_rapidshot_bullet")
+        .acmd("game_flythrowb", miigunner_rapidshot_bullet_flythrowb_game)
+        .acmd("game_flythrowhi", miigunner_rapidshot_bullet_flythrowhi_game)
+        .acmd("game_flythrowhi2", miigunner_rapidshot_bullet_flythrowhi2_game)
+        .install();
+    smashline::Agent::new("miigunner")
+        .acmd("game_throwf", miigunner_throw_f_game)
+        .acmd("game_throwb", miigunner_throw_b_game)
+        .acmd("effect_throwb", miigunner_throw_b_effect)
+        .acmd("sound_throwb", miigunner_throw_b_sound)
+        .acmd("game_throwhi", miigunner_throw_hi_game)
+        .acmd("effect_throwhi", miigunner_throw_hi_effect)
+        .acmd("sound_throwhi", miigunner_throw_hi_sound)
+        .acmd("game_throwlw", miigunner_throw_lw_game)
+        .install();
 }

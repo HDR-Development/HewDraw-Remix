@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "marth", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -35,8 +33,7 @@ unsafe fn marth_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -62,8 +59,7 @@ unsafe fn marth_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_hi4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -88,8 +84,7 @@ unsafe fn marth_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -131,8 +126,7 @@ unsafe fn marth_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -141,17 +135,17 @@ unsafe fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c96ac7caf), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10fef5ab02), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -160,8 +154,7 @@ unsafe fn marth_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -170,17 +163,17 @@ unsafe fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0c96ac7caf), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10fef5ab02), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -189,8 +182,7 @@ unsafe fn marth_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -199,17 +191,17 @@ unsafe fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0b20db98e9), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -218,8 +210,7 @@ unsafe fn marth_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -228,17 +219,17 @@ unsafe fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0f898e3c10), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x0b20db98e9), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x0f898e3c10), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -247,8 +238,7 @@ unsafe fn marth_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -257,52 +247,51 @@ unsafe fn marth_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x11f2f83bf9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11f2f83bf9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_green"), false, true);
         COL_NORMAL(fighter);
     }
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -311,62 +300,61 @@ unsafe fn marth_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x11f2f83bf9), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(fighter, Hash40::new_raw(0x0d0679b24d), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("marth_sword_green"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
         LAST_PARTICLE_SET_COLOR(fighter, 0.400000006, 1, 0.300000012);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11f2f83bf9), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_green"), false, true);
         COL_NORMAL(fighter);
     }
     
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        marth_attack_s4_s_game,
-        marth_attack_s4_s_effect,
-        marth_attack_hi4_game,
-        marth_attack_lw4_game,
-        marth_special_s4_hi_effect,
-        marth_special_air_s4_hi_effect,
-        marth_special_s4_s_effect,
-        marth_special_air_s4_s_effect,
-        marth_special_s4_lw_effect,
-        marth_special_air_s4_lw_effect,
-    );
+    smashline::Agent::new("marth")
+        .acmd("game_attacks4", marth_attack_s4_s_game)
+        .acmd("effect_attacks4", marth_attack_s4_s_effect)
+        .acmd("game_attackhi4", marth_attack_hi4_game)
+        .acmd("game_attacklw4", marth_attack_lw4_game)
+        .acmd("effect_specials4hi", marth_special_s4_hi_effect)
+        .acmd("effect_specialairs4hi", marth_special_air_s4_hi_effect)
+        .acmd("effect_specials4s", marth_special_s4_s_effect)
+        .acmd("effect_specialairs4s", marth_special_air_s4_s_effect)
+        .acmd("effect_specials4lw", marth_special_s4_lw_effect)
+        .acmd("effect_specialairs4lw", marth_special_air_s4_lw_effect)
+        .install();
 }
-

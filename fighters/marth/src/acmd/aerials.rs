@@ -1,9 +1,7 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "marth", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -48,8 +46,7 @@ unsafe fn marth_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_air_f_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -85,8 +82,7 @@ unsafe fn marth_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_air_b_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -116,26 +112,24 @@ unsafe fn marth_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        FT_MOTION_RATE(fighter, 2.0 / 2.5);
     }
-    frame(lua_state, 5.45);
+    frame(lua_state, 5.0);
+    FT_MOTION_RATE_RANGE(fighter, 5.0, 13.0, 6.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 5.0 / 6.0);
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 13.0, 90, 70, 0, 45, 4.0, 0.0, 0.0, 7.75, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("sword1"), 10.0, 80, 70, 0, 30, 4.0, 0.0, 0.0, 3.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("armr"), 9.0, 80, 70, 0, 20, 3.5, 0.0, 1.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new_raw(0x0954eb78b2), 9.0, 80, 70, 0, 18, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("claviclel"), 9.0, 80, 70, 0, 18, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    frame(lua_state, 11.45);
+    frame(lua_state, 13.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 38.0);
@@ -145,8 +139,7 @@ unsafe fn marth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -159,8 +152,7 @@ unsafe fn marth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn marth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -193,13 +185,12 @@ unsafe fn marth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
-unsafe fn marth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new_raw(0x106d6577e4), Hash40::new_raw(0x10f46c265e), 8, Hash40::new("sword1"), 0.0, 0.0, 0.0, Hash40::new("sword1"), 0.0, 0.0, 12.0, true, Hash40::new_raw(0x10fef5ab02), Hash40::new("haver"), -0.1, 0.0, 0.0, -11.0, 0.0, 1.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.39999998, 0.200000003);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_marth_sword1"), Hash40::new("tex_marth_sword2"), 8, Hash40::new("sword1"), 0.0, 0.0, 0.0, Hash40::new("sword1"), 0.0, 0.0, 12.0, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), -0.1, 0.0, 0.0, -11.0, 0.0, 1.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.39999998, 0.200000003);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -208,8 +199,7 @@ unsafe fn marth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn marth_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -226,15 +216,14 @@ unsafe fn marth_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        marth_attack_air_n_game,
-        marth_attack_air_f_game,
-        marth_attack_air_b_game,
-        marth_attack_air_hi_game,
-        marth_attack_air_hi_effect,
-        marth_attack_air_lw_game,
-        marth_attack_air_lw_effect,
-        marth_attack_air_lw_expression
-    );
+    smashline::Agent::new("marth")
+        .acmd("game_attackairn", marth_attack_air_n_game)
+        .acmd("game_attackairf", marth_attack_air_f_game)
+        .acmd("game_attackairb", marth_attack_air_b_game)
+        .acmd("game_attackairhi", marth_attack_air_hi_game)
+        .acmd("effect_attackairhi", marth_attack_air_hi_effect)
+        .acmd("game_attackairlw", marth_attack_air_lw_game)
+        .acmd("effect_attackairlw", marth_attack_air_lw_effect)
+        .acmd("expression_attackairlw", marth_attack_air_lw_expression)
+        .install();
 }
-

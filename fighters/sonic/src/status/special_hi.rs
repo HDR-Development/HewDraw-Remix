@@ -2,17 +2,7 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-  install_status_scripts!(
-      pre_special_hi,
-
-      exec_special_hi_jump,
-      exit_special_hi_jump,
-  );
-}
-
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
 	StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -44,8 +34,8 @@ pub unsafe fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     0.into()
 }
-#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-pub unsafe fn exec_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe extern "C" fn exec_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
     let min_speed_y = 1.0;
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
@@ -57,8 +47,7 @@ pub unsafe fn exec_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn exit_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn exit_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
 
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_landing_frame")) as f32;
@@ -68,4 +57,20 @@ unsafe fn exit_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::off_flag(boma, *FIGHTER_SONIC_INSTANCE_WORK_FLAG_SPECIAL_HI_FALL);
     }
     0.into()
+}
+
+pub fn install() {
+    smashline::Agent::new("sonic")
+        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_special_hi)
+        .status(
+            Exec,
+            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP,
+            exec_special_hi_jump,
+        )
+        .status(
+            Exit,
+            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP,
+            exit_special_hi_jump,
+        )
+        .install();
 }

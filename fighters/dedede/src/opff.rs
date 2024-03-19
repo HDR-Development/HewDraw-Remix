@@ -116,7 +116,7 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         //Prevents B reversing when we are in the dash
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S 
         && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO){
-            if fighter.status_frame() < 5{
+            if fighter.status_frame() > 1 && fighter.status_frame() < 4{
                 ControlModule::reset_main_stick(boma);
             }
         }
@@ -262,8 +262,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     super_jump_fail_edge_cancel(fighter);
     fastfall_specials(fighter);
 }
-#[utils::macros::opff(FIGHTER_KIND_DEDEDE )]
-pub fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+
+pub extern "C" fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		dedede_frame(fighter)
@@ -274,4 +274,9 @@ pub unsafe fn dedede_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+pub fn install() {
+    smashline::Agent::new("dedede")
+        .on_line(Main, dedede_frame_wrapper)
+        .install();
 }

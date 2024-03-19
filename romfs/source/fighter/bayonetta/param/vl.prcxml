@@ -10,26 +10,20 @@
     <int hash="attack_air_hi_loop_max">8</int>
     <float hash="attack_air_f_hit_speed_y">1.3</float>
     <float hash="attack_air_f2_hit_speed_y">1.3</float>
-    <float hash="combo_attack_ari_f2_end">30</float>
-    <float hash="combo_attack_ari_f3_end">30</float>
+    <float hash="combo_attack_ari_f2_end">55</float>
+    <float hash="combo_attack_ari_f3_end">55</float>
     <int hash="attack_air_n_shoot_landing_frame">3</int>
     <int hash="attack_air_f_shoot_landing_frame">3</int>
     <int hash="attack_air_b_shoot_landing_frame">3</int>
     <int hash="attack_air_hi_shoot_landing_frame">3</int>
     <float hash="final_vector_min">40</float>
     <float hash="final_vector_max">45</float>
-    <float hash="bat_escape_air_frame">45</float>
-  </struct>
-  <struct hash="map_collision_wickedweaveleg">
-    <float hash="down">1.0</float>
   </struct>
   <list hash="param_special_n">
     <struct index="0">
       <int hash="charge_frame_max">150</int>
-      <int hash="cancel_frame">18</int>
-      <float hash="air_start_speed_mul_x">0.3</float>
-      <float hash="air_start_max_speed_y">1.4</float>
-      <float hash="air_fire_max_speed_y">1.4</float>
+      <int hash="cancel_frame">7</int>
+      <float hash="air_start_speed_mul_x">0.35</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -40,8 +34,6 @@
       <float hash="shoot_angle_f">3</float>
       <float hash="shoot_angle_h">6</float>
       <float hash="attack_scale_mul">1.25</float>
-      <float hash="speed">15.0</float>
-      <int hash="life">10</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -49,13 +41,16 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="ab_u_landing_frame">18</int>
+      <float hash="guard_speed_mul_x">0.5</float>
+      <float hash="hs_shooting_speed_mul_x">0.8</float>
+      <int hash="ab_u_landing_frame">16</int>
       <int hash="ab_u_landing_frame_2nd">22</int>
-      <float hash="ab_d_hit_after_speed_y">2.6</float>
+      <float hash="ab_d_hit_after_speed_y">2.5</float>
       <float hash="ab_d_hit_after_max_accel_x">0.035</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
-      <float hash="ab_u_motion_speed_mul">0.81</float>
-      <float hash="ab_u_rotate">-25</float>
+      <float hash="ab_u_motion_speed_mul">0.79</float>
+      <float hash="ab_d_motion_speed_mul">0.9</float>
+      <float hash="ab_u_rotate">-20.5</float>
       <int hash="ab_d_hit_after_landing_frame">15</int>
       <int hash="ab_d_hit_after_landing_frame_2nd">30</int>
       <int hash="ab_d_landing_frame">30</int>
@@ -66,8 +61,6 @@
       <int hash="ab_d_enable_frame">-1</int>
       <int hash="ab_d_change_frame">-1</int>
       <int hash="disable_jump_after_frame">0</int>
-      <float hash="guard_speed_mul_x">0.6</float>
-      <float hash="hs_air_end_speed_x">1.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -75,8 +68,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="speed_mul_y">1.20</float>
-      <float hash="air_speed_mul_y">1.10</float>
+      <float hash="speed_mul_y">1.15</float>
+      <float hash="air_speed_mul_y">1.15</float>
       <float hash="speed_mul_y_2nd">1.05</float>
       <float hash="air_start_speed_mul_y">0.2</float>
       <float hash="air_start_speed_mul_x">0.4</float>
@@ -84,7 +77,7 @@
       <int hash="act_landing_frame">18</int>
       <int hash="landing_frame_2nd">20</int>
       <int hash="act_landing_frame_2nd">27</int>
-      <float hash="jump_count_reset_frame">0</float>
+      <float hash="jump_count_reset_frame">5</float>
 	</struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -92,12 +85,15 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
+      <float hash="max_speed_y">1.3</float>
       <int hash="success_cancel_frame">16</int>
+      <int hash="success_xlu_frame">55</int>
+      <int hash="batwithin_success_xlu_frame">55</int>
       <float hash="base_slow_frame_max">75</float>
       <float hash="damage_slow_rate_frame">0.5</float>
       <float hash="batwithin_slow_frame_mul">1.0</float>
       <int hash="0x1f3421e7d7">15</int>
-      <float hash="recover_slow_frame">0.08</float>		
+      <float hash="recover_slow_frame">0.08</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

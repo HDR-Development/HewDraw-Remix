@@ -1,32 +1,37 @@
-use smash::app::sv_battle_object::module_accessor;
-
 use super::*;
 
-// Prevents down special from being used if a bomb is present
-unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Grab the stored bomb ID
-    let bomb_object_id = VarModule::get_int(fighter.battle_object, vars::samusd::instance::BOMB_OBJECT_ID) as u32;
-    // Check if the stored object ID is *actually* a Dark Samus Bomb or not.
-    if sv_battle_object::is_active(bomb_object_id)
-    && sv_battle_object::category(bomb_object_id) == *BATTLE_OBJECT_CATEGORY_WEAPON
-    && sv_battle_object::kind(bomb_object_id) == *WEAPON_KIND_SAMUSD_BOMB {
-        false.into()
-    } else {
-        true.into()
-    }
+mod attack_air;
+mod float;
+
+extern "Rust" {
+    #[link_name = "float_check_air_jump"]
+    fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+    #[link_name = "float_check_air_jump_aerial"]
+    fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }
 
-#[smashline::fighter_init]
-fn samusd_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_SAMUSD {
-            fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        }
-    }
+unsafe extern "C" fn air_jump_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump(fighter, statuses::samusd::FLOAT.into())
 }
 
+unsafe extern "C" fn air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump_aerial(fighter, statuses::samusd::FLOAT.into())
+}
+
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[0x32].assign(&L2CValue::Ptr(air_jump_uniq as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION, 50);
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::samusd::FLOAT);
+}
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(samusd_init);
+    attack_air::install();
+
+    float::install();
+
+    Agent::new("samusd")
+        .on_start(on_start)
+        .install();
 }

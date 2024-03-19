@@ -51,6 +51,12 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
 // allow fair and bair to transition into their angled variants when the stick is angled up/down
 unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
+    let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        ControlModule::get_sub_stick_y(fighter.module_accessor)
+    }
+    else {
+        ControlModule::get_stick_y(fighter.module_accessor)
+    };
     if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
     && (11.0..12.0).contains(&frame) {
         if stick_y > 0.5 { // stick is held up
@@ -106,8 +112,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_SIMON )]
-pub fn simon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn simon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		simon_frame(fighter)
@@ -118,4 +123,10 @@ pub unsafe fn simon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("simon")
+        .on_line(Main, simon_frame_wrapper)
+        .install();
 }

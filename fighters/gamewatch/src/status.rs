@@ -23,15 +23,29 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_CAPTURE_JUMP,
+        *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+        *FIGHTER_STATUS_KIND_SWALLOWED,
+        *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN,
+        *FIGHTER_STATUS_KIND_KOOPA_DIVED,
+        *FIGHTER_STATUS_KIND_CLUNG_GANON,
+        *FIGHTER_STATUS_KIND_MEWTWO_THROWN,
+        *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
+        *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
+        *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+        *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
+        *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED,
+        *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+        *FIGHTER_STATUS_KIND_DEMON_DIVED
     ]) {
         VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
     }
     true.into()
 }
 
-#[smashline::fighter_init]
-fn gamewatch_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn gamewatch_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_GAMEWATCH {
@@ -45,7 +59,9 @@ fn gamewatch_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(gamewatch_init);
+    smashline::Agent::new("gamewatch")
+        .on_start(gamewatch_init)
+        .install();
     special_hi::install();
     special_hi_open::install();
 }

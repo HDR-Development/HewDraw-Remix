@@ -1,63 +1,255 @@
-fall:
-  blend_frames: 5
-guard_off:
-  blend_frames: 4
-  extra:
-    cancel_frame: 12
-throw_lw:
-  extra:
-    cancel_frame: 41
-attack_12:
-  extra:
-    cancel_frame: 22
-special_n:
+attack_11_near_s:
   flags:
     move: false
-attack_13:
+  animations:
+  - name: c00attack11s.nuanmb
   extra:
-    cancel_frame: 27
-attack_hi4:
-attack_lw4:
-  extra:
-    cancel_frame: 35
-fall_aerial:
-  blend_frames: 5
-attack_11_w:
-  extra:
-    cancel_frame: 15
+    cancel_frame: 28
 attack_11_s:
   flags:
     move: false
   extra:
-    cancel_frame: 31
-fall_special:
-  blend_frames: 5
-special_s_end:
+    cancel_frame: 28
+attack_11_w:
   extra:
-    cancel_frame: 31
+    cancel_frame: 16
+attack_12:
+  extra:
+    cancel_frame: 13
+attack_12_s:
+  game_script: game_attack12s
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attack12s.nuanmb
+  scripts:
+  - expression_attack12s
+  - sound_attack12s
+  - effect_attack12s
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 33
+    freeze_during_hitstop: true
+attack_13:
+  extra:
+    cancel_frame: 28
+attack_command4:
+  game_script: game_attackcommand4
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d05specialcmd4.nuanmb
+    unk: 0
+  scripts:
+  - expression_attackcommand4
+  - sound_attackcommand4
+  - effect_attackcommand4
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 46
+    freeze_during_hitstop: true
+attack_hi3_s:
+  extra:
+    cancel_frame: 33
+attack_lw3_s:
+  extra:
+    cancel_frame: 25
+attack_lw4:
+  extra:
+    cancel_frame: 35
+attack_near_w:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 27
 attack_s3_s_w:
   flags:
+    move: true
+  extra:
+    cancel_frame: 27
+attack_s4_s:
+  extra:
+    cancel_frame: 41
+catch_attack:
+  extra:
+    cancel_frame: 0
+escape_air_dash:
+  game_script: game_escapeair
+  flags:
+    turn: false
+    loop: false
     move: false
-attack_near_w:
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 5
+  animations:
+    - name: b02escapeairdash.nuanmb
+      unk: 0
+  scripts:
+    - expression_escapeair
+    - sound_escapeair
+    - effect_escapeair
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+furafura_end:
+  extra:
+    cancel_frame: 10
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+special_air_hi_command:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_lw_install:
+  game_script: game_speciallwinstall
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d05specialairlwinstall.nuanmb
+      unk: 0
+  scripts:
+    - expression_speciallwinstall
+    - sound_speciallwinstall
+    - effect_speciallwinstall
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 25
+    no_stop_intp: false
+special_air_lw_step_b:
+  extra:
+    cancel_frame: 13
+special_air_lw_step_f:
+  extra:
+    cancel_frame: 13
+special_air_s_end:
+  extra:
+    cancel_frame: 21
+special_hi_command:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_lw_install:
+  game_script: game_speciallwinstall
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d05speciallwinstall.nuanmb
+      unk: 0
+  scripts:
+    - expression_speciallwinstall
+    - sound_speciallwinstall
+    - effect_speciallwinstall
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 25
+    no_stop_intp: false
+special_lw_step_b:
+  extra:
+    cancel_frame: 13
+special_lw_step_f:
+  extra:
+    cancel_frame: 13
+special_n:
   flags:
     move: false
 special_n_empty:
   flags:
     move: false
-attack_11_near_s:
-  animations:
-  - name: e01throwhi.nuanmb
+special_s_end:
   extra:
-    cancel_frame: 50
-special_lw_step_f:
+    cancel_frame: 31
+throw_lw:
   extra:
-    cancel_frame: 13
-special_lw_step_b:
-  extra:
-    cancel_frame: 13
-catch_attack:
-  extra:
-    cancel_frame: 0
-furafura_end:
-  extra:
-    cancel_frame: 10
+    cancel_frame: 41

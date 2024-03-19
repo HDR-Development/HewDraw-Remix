@@ -28,8 +28,7 @@ unsafe fn koopajr_remainclown_special_air_hi_clownfall_game(weapon: &mut L2CAgen
 
 // ATTACK(weapon,0, 0, Hash40::new("top"), 13.0, 55, 70, 0, 85, 14.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB)
 
-#[acmd_script( agent = "koopajr", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
-unsafe fn koopajr_special_n_shoot_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -43,8 +42,7 @@ unsafe fn koopajr_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "effect_specialnshoot", category = ACMD_EFFECT, low_priority )]
-unsafe fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -65,29 +63,19 @@ unsafe fn koopajr_special_n_shoot_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
-    }
-}
-
-#[acmd_script( agent = "koopajr", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_air_lw_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
+        if !VarModule::is_flag(fighter.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA) {
+            ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
+            VarModule::on_flag(fighter.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+        }
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specials" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -97,8 +85,7 @@ unsafe fn koopajr_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specialsspin" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_s_spin_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_s_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -120,8 +107,7 @@ unsafe fn koopajr_special_s_spin_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_air_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -132,8 +118,7 @@ unsafe fn koopajr_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specialairsspin" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_special_air_s_spin_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_special_air_s_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -159,8 +144,7 @@ unsafe fn koopajr_special_air_s_spin_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr_cannonball", script = "game_hop" , category = ACMD_GAME , low_priority)]
-unsafe fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();
     let mut keep_hitbox = false;
@@ -180,8 +164,7 @@ unsafe fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specialhijrrise", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -197,8 +180,7 @@ unsafe fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specialhijrfall", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -208,18 +190,20 @@ unsafe fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        koopajr_special_n_shoot_game,
-        koopajr_special_n_shoot_effect,
-        koopajr_special_lw_game,
-        koopajr_special_air_lw_game,
-        koopajr_special_s_game,
-        koopajr_special_s_spin_game,
-        koopajr_special_air_s_game,
-        koopajr_special_air_s_spin_game,
-        koopajr_cannonball_hop_game,
-        game_specialhijrrise,
-        game_specialhijrfall
-    );
+    smashline::Agent::new("koopajr_cannonball")
+        .acmd("game_hop", koopajr_cannonball_hop_game)
+        .install();
+    smashline::Agent::new("koopajr")
+        .acmd("game_specialnshoot", koopajr_special_n_shoot_game)
+        .acmd("game_specialairnshoot", koopajr_special_n_shoot_game)
+        .acmd("effect_specialnshoot", koopajr_special_n_shoot_effect)
+        .acmd("game_speciallw", koopajr_special_lw_game)
+        .acmd("game_specialairlw", koopajr_special_lw_game)
+        .acmd("game_specials", koopajr_special_s_game)
+        .acmd("game_specialsspin", koopajr_special_s_spin_game)
+        .acmd("game_specialairs", koopajr_special_air_s_game)
+        .acmd("game_specialairsspin", koopajr_special_air_s_spin_game)
+        .acmd("game_specialhijrrise", game_specialhijrrise)
+        .acmd("game_specialhijrfall", game_specialhijrfall)
+        .install();
 }
-

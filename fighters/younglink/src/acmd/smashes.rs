@@ -1,58 +1,87 @@
 use super::*;
 
-#[acmd_script( agent = "younglink", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
-    frame(lua_state, 11.0);
-    FT_MOTION_RATE(fighter, 1.0/(14.0-11.0));
     frame(lua_state, 14.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 15.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("sword"), 6.0, 65, 15, 0, 35, 3.8, 1.0, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("sword"), 6.0, 65, 15, 0, 35, 3.5, 5.4, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 6.0, 50, 15, 0, 40, 2.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+        ATTACK(fighter, 0, 0, Hash40::new("sword"), 14.0, 48, 100, 0, 33, 3.8, 0.5, 1.0, 1.7, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("sword"), 14.0, 48, 100, 0, 33, 3.5, 5.4, 1.0, 1.7, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    wait(lua_state, 2.0);
+    wait(lua_state, 10.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-    }
-    
 }
 
-#[acmd_script( agent = "younglink", script = "game_attacks4s2" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn younglink_attack_s4_s_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
     frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("sword"), 12.0, 48, 119, 0, 43, 3.8, 0.5, 1.0, 1.7, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("sword"), 12.0, 48, 119, 0, 43, 3.5, 5.4, 1.0, 1.7, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 12.0, 48, 119, 0, 43, 2.8, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    if is_excute(agent) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(agent) {
+        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+    }
+}
+
+unsafe extern "C" fn younglink_attack_s4_charge_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        physics!(agent, *MA_MSC_CMD_PHYSICS_START_CHARGE, -1, -1, -1, -1, 0.1, -1, Hash40::new("invalid"));
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold1"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 61.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold2"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+}
+
+unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
     }
     wait(lua_state, 4.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_younglink_attack03"));
+        PLAY_SE(agent, Hash40::new("se_common_smashswing_03"));
+        PLAY_SE(agent, Hash40::new("se_younglink_swing_ll"));
     }
-    
 }
 
-#[acmd_script( agent = "younglink", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
 	frame(lua_state, 6.0);
@@ -89,8 +118,7 @@ unsafe fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "younglink", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
-unsafe fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -120,8 +148,7 @@ unsafe fn younglink_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "younglink", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
-unsafe fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -140,8 +167,7 @@ unsafe fn younglink_attack_hi4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "younglink", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -172,8 +198,7 @@ unsafe fn younglink_attack_hi4_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "younglink", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -202,17 +227,19 @@ unsafe fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        younglink_attack_s4_s_game,
-        younglink_attack_s4_s2_game,
-        younglink_attack_hi4_game,
-        younglink_attack_hi4_effect,
-        younglink_attack_hi4_sound,
-        younglink_attack_hi4_expression,
-        younglink_attack_lw4_game,
-    );
+    smashline::Agent::new("younglink")
+        .acmd("game_attacks4", younglink_attack_s4_s_game)
+        .acmd("expression_attacks4", younglink_attack_s4_s_expression)
+        .acmd("expression_attacks4charge", younglink_attack_s4_charge_expression)
+        .acmd("game_attackhi4", younglink_attack_hi4_game)
+        .acmd("effect_attackhi4", younglink_attack_hi4_effect)
+        .acmd("sound_attackhi4", younglink_attack_hi4_sound)
+        .acmd("expression_attackhi4", younglink_attack_hi4_expression)
+        .acmd("game_attacklw4", younglink_attack_lw4_game)
+        .acmd("sound_attacks4", sound_attacks4)
+        .install();
 }
+

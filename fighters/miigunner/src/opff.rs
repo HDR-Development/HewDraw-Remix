@@ -82,6 +82,9 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
     if boma.is_status_one_of(&[
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_HIT,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
@@ -292,7 +295,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     laser_blaze_ff_land_cancel(boma);
     remove_homing_missiles(boma);
     missile_land_cancel(boma);
-	arm_rocket_airdash(fighter);
+	  arm_rocket_airdash(fighter);
     lunar_launch_actionability(fighter);
     lunar_launch_reset(fighter);
     lunar_launch_effect_reset(fighter);
@@ -300,11 +303,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_MIIGUNNER )]
-pub fn miigunner_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn miigunner_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		miigunner_frame(fighter)
+		    miigunner_frame(fighter)
     }
 }
 
@@ -314,8 +316,7 @@ pub unsafe fn miigunner_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame(agent = WEAPON_KIND_MIIGUNNER_SUPERMISSILE)]
-pub fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+pub extern "C" fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -339,4 +340,13 @@ pub fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             }
         }
     }
+}
+
+pub fn install() {
+    smashline::Agent::new("miigunner")
+        .on_line(Main, miigunner_frame_wrapper)
+        .install();
+    smashline::Agent::new("miigunner_supermissile")
+        .on_line(Main, miigunner_missile_frame)
+        .install();
 }

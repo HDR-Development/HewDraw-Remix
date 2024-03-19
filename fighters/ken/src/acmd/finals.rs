@@ -1,23 +1,6 @@
 use super::*;
 
-pub fn install() {
-    install_acmd_scripts!(
-        game_final,
-        game_finalhit,
-        game_final_com2,
-        game_final_hit1,
-        game_final_hit2,
-        game_final_hit3,
-        game_final_hit4,
-        game_final_hitfinal,
-        game_final2,
-        ken_shinryuken_game_final,
-        ken_shinryuken_effect_final
-    );
-}
-
-#[acmd_script( agent = "ken", scripts = ["game_final", "game_finalair"], category = ACMD_GAME, low_priority )]
-unsafe fn game_final(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.65);
@@ -26,7 +9,7 @@ unsafe fn game_final(fighter: &mut L2CAgentBase) {
         CHECK_VALID_FINAL_START_CAMERA(fighter, 0, 0, 20, 0, 0, 0);
         SLOW_OPPONENT(fighter, 10.0, 70.0);
     }
-    if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
+    if !boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
         frame(lua_state, 5.0);
         if is_excute(fighter) {
             FT_SET_FINAL_FEAR_FACE(fighter, 40);
@@ -199,7 +182,9 @@ unsafe fn game_final(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 76.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_LOCK_ATTACK);
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_LOCK_ATTACK);
+        }
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 50, 95, 40, 0, 11.0, 0.0, 8.0, 8.0, Some(0.0), Some(10.0), Some(8.0), 3.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL01, *ATTACK_REGION_KICK);
         AttackModule::set_no_dead_all(boma, true, false);
     }
@@ -212,13 +197,12 @@ unsafe fn game_final(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_BRANCH_HIT);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_BRANCH_HIT);
         SlowModule::clear_whole(boma);
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_finalhit", "game_finalhit_com"], category = ACMD_GAME, low_priority )]
-unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_finalhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.65);
@@ -238,11 +222,11 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_REMOVE_FINAL_AURA);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_REMOVE_FINAL_AURA);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.3, 367, 100, 50, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
         AttackModule::set_no_dead_all(boma, true, false);
         AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("ken_final_shippu_hit_rush"));
@@ -253,7 +237,7 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.3, 367, 100, 40, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
         AttackModule::set_no_dead_all(boma, true, false);
         AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("ken_final_shippu_hit_rush"));
@@ -264,7 +248,7 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 37.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.3, 367, 100, 40, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
         AttackModule::set_no_dead_all(boma, true, false);
         AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("ken_final_shippu_hit_rush"));
@@ -275,18 +259,20 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 46.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
     }
     if(PostureModule::scale(boma) > 1.4){
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 80, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
         }
-    }else{
+    }
+    else{
         if(PostureModule::scale(boma) < 0.5){
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 40, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
             }
-        }else{
+        }
+        else{
             if is_excute(fighter) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 4.3, 80, 100, 60, 0, 10.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(14.0), 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL02, *ATTACK_REGION_KICK);
             }
@@ -302,11 +288,11 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 64.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END_SET_PARAM);
     }
     frame(lua_state, 65.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ATTACK_END);
     }
     if is_excute(fighter) {
         camera!(fighter, *MA_MSC_CMD_CAMERA_CAM_OFFSET, 10, 0);
@@ -314,10 +300,10 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     if is_excute(fighter) {
         SlowModule::set_whole(boma, 2, 0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 75, 95, 0, 86, 10.0, 0.0, 17.0, 10.0, Some(0.0), Some(17.0), Some(15.0), 5.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL03, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 85, 82, 0, 96, 10.0, 0.0, 17.0, 10.0, Some(0.0), Some(17.0), Some(15.0), 5.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL03, *ATTACK_REGION_KICK);
         AttackModule::set_force_reaction(boma, 0, true, false);
-        WorkModule::set_int(boma, *FIGHTER_RYU_FINAL_CAMERA_OFFSET_7, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_INT_CAMERA_OFFSET_TYPE);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_CAMERA_OFFSET);
+        boma.set_int(*FIGHTER_RYU_FINAL_CAMERA_OFFSET_7, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_INT_CAMERA_OFFSET_TYPE);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_CAMERA_OFFSET);
         // FILL_SCREEN_MODEL_COLOR(fighter, 1, 0, 1, 1, 1, 0, 0, 0, 0.9, 1.7, EffectScreenLayer:*CHAR, *EFFECT_SCREEN_PRIO_FINAL);
     }
     wait(lua_state, 1.0);
@@ -329,12 +315,11 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     frame(lua_state, 68.0);
     if is_excute(fighter) {
         CAM_ZOOM_OUT(fighter);
-        WorkModule::set_int(boma, *FIGHTER_RYU_FINAL_CAMERA_OFFSET_RETURN, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_INT_CAMERA_OFFSET_TYPE);
+        boma.set_int(*FIGHTER_RYU_FINAL_CAMERA_OFFSET_RETURN, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_INT_CAMERA_OFFSET_TYPE);
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_com2", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_com2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_com2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 10.0);
@@ -348,8 +333,7 @@ unsafe fn game_final_com2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit1", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit1(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 25.0);
@@ -363,8 +347,7 @@ unsafe fn game_final_hit1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit2", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 40.0);
@@ -377,8 +360,7 @@ unsafe fn game_final_hit2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit3", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit3(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 55.0);
@@ -391,8 +373,7 @@ unsafe fn game_final_hit3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hit4", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hit4(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hit4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 64.0);
@@ -405,20 +386,18 @@ unsafe fn game_final_hit4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_final_hitfinal", category = ACMD_GAME, low_priority )]
-unsafe fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final_hitfinal(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 76.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_LOCK_ATTACK);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_LOCK_ATTACK);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 50, 95, 40, 0, 11.0, 0.0, 8.0, 8.0, Some(0.0), Some(10.0), Some(8.0), 3.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL01, *ATTACK_REGION_KICK);
         AttackModule::set_no_dead_all(boma, true, false);
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_final2", "game_finalair2"], category = ACMD_GAME, low_priority )]
-unsafe fn game_final2(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -429,7 +408,7 @@ unsafe fn game_final2(fighter: &mut L2CAgentBase) {
         CHECK_VALID_FINAL_START_CAMERA(fighter, 0, 0, 20, 0, 0, 0);
         SLOW_OPPONENT(fighter, 10.0, 70.0);
     }
-    if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
+    if !boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
         frame(lua_state, 10.0);
         if is_excute(fighter) {
             FT_START_CUTIN(fighter);
@@ -485,30 +464,30 @@ unsafe fn game_final2(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
         camera!(fighter, *MA_MSC_CMD_CAMERA_CAM_RECT, 40, -40, 20, 0);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ADJUST_SHINRYUKEN_POS);
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ADJUST_SHINRYUKEN_POS);
     }
     frame(lua_state, 90.0);
 }
 
-#[acmd_script( agent = "ken_shinryuken", script = "game_final", category = ACMD_GAME, low_priority )]
-unsafe fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.3, 110, 120, 130, 0, 11.0, 0.0, -10.0, 8.0, Some(0.0), Some(50.0), Some(8.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 100, 0, 11.0, 0.0, 50.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 110, 120, 130, 0, 11.0, 0.0, -10.0, 8.0, Some(0.0), Some(50.0), Some(8.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 367, 100, 100, 0, 11.0, 0.0, 50.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 52.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *WEAPON_KEN_SHINRYUKEN_INSTANCE_WORK_ID_FLAG_ADD_ATTACK);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 1.2, 110, 85, 70, 0, 11.0, 0.0, -10.0, 8.0, Some(0.0), Some(50.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 1.2, 367, 100, 100, 0, 11.0, 0.0, 50.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        boma.on_flag(*WEAPON_KEN_SHINRYUKEN_INSTANCE_WORK_ID_FLAG_ADD_ATTACK);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 0.9, 110, 85, 70, 0, 11.0, 0.0, -10.0, 8.0, Some(0.0), Some(50.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 0.9, 367, 100, 100, 0, 11.0, 0.0, 50.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 90.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *WEAPON_KEN_SHINRYUKEN_INSTANCE_WORK_ID_FLAG_ADD_ATTACK);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 13.0, 90, 71, 0, 117, 11.0, 0.0, -10.0, 8.0, Some(0.0), Some(50.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 13.0, 90, 71, 0, 117, 11.0, 0.0, 50.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        boma.off_flag(*WEAPON_KEN_SHINRYUKEN_INSTANCE_WORK_ID_FLAG_ADD_ATTACK);
+        AttackModule::clear_all(boma);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 13.0, 90, 59, 0, 100, 11.0, 0.0, -10.0, 8.0, Some(0.0), Some(50.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 13.0, 90, 59, 0, 100, 11.0, 0.0, 50.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -516,8 +495,7 @@ unsafe fn ken_shinryuken_game_final(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_shinryuken", script = "effect_final", category = ACMD_EFFECT, low_priority )]
-unsafe fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 51.0);
@@ -529,4 +507,24 @@ unsafe fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("ken_final_shinryuken_beam"), -1);
     }
+}
+pub fn install() {
+    smashline::Agent::new("ken_shinryuken")
+        .acmd("game_final", ken_shinryuken_game_final)
+        .acmd("effect_final", ken_shinryuken_effect_final)
+        .install();
+    smashline::Agent::new("ken")
+        .acmd("game_final", game_final)
+        .acmd("game_finalair", game_final)
+        .acmd("game_finalhit", game_finalhit)
+        .acmd("game_finalhit_com", game_finalhit)
+        .acmd("game_final_com2", game_final_com2)
+        .acmd("game_final_hit1", game_final_hit1)
+        .acmd("game_final_hit2", game_final_hit2)
+        .acmd("game_final_hit3", game_final_hit3)
+        .acmd("game_final_hit4", game_final_hit4)
+        .acmd("game_final_hitfinal", game_final_hitfinal)
+        .acmd("game_final2", game_final2)
+        .acmd("game_finalair2", game_final2)
+        .install();
 }

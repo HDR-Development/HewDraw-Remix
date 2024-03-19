@@ -3,7 +3,6 @@ use crate::consts::*;
 use crate::consts::globals::*;
 use std::ops::{Deref, DerefMut};
 
-
 #[repr(C)]
 struct FlyData {
     pub turn_stick_x: f32,
@@ -96,7 +95,7 @@ impl DerefMut for FighterKineticEnergyControl {
     }
 }
 
-#[skyline::hook(offset = 0x6d3610)]
+#[skyline::hook(offset = 0x6d3630)]
 unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObjectModuleAccessor) {
     let reset_type = std::mem::transmute(energy.energy_reset_type);
 
@@ -136,8 +135,6 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
     } else {
         0.0
     };
-
-    let mut change_y = energy.accel.y;
 
     use EnergyControllerResetType::*;
 
@@ -214,7 +211,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
                 // If stick is at neutral
                 do_standard_accel = false;
                 energy.accel.x = 0.0;
-                energy.accel.y = change_y;
+                energy.accel.y = 0.0;
                 energy.speed_max.x = 0.0;
                 0.0
             } else {
@@ -231,8 +228,8 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
             }
         },
         Free => {
-            change_y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
-            energy.speed_max.y = stick.y * energy.speed_max.y;
+            energy.accel.y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
+            energy.speed_max.y = stick.y.abs() * energy.speed_max.y;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         ItemLift => loop {
@@ -335,10 +332,9 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
         let ratio = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_RATIO);
         // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
         let mut jump_speed_max_mul = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
-        match jump_speed_max_mul {
+        if jump_speed_max_mul < 0.1 || jump_speed_max_mul > 3.0 {
             // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-            0.1..=3.0 => {},
-            _ => { jump_speed_max_mul = 1.0 }
+            jump_speed_max_mul = 1.0;
         }
         let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
         if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR 
@@ -378,7 +374,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
     energy.speed_brake = backup_brake;
 }
 
-#[skyline::hook(offset = 0x6d4040)]
+#[skyline::hook(offset = 0x6d4060)]
 unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObjectModuleAccessor) {
     use EnergyControllerResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);
@@ -389,10 +385,9 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
             let ratio = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_RATIO);
             // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
             let mut jump_speed_max_mul = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
-            match jump_speed_max_mul {
+            if jump_speed_max_mul < 0.1 || jump_speed_max_mul > 3.0 {
                 // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-                0.1..=3.0 => {},
-                _ => { jump_speed_max_mul = 1.0 }
+                jump_speed_max_mul = 1.0;
             }
             let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
 
@@ -565,7 +560,7 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
     }
 }
 
-#[skyline::hook(offset = 0x6d4ba0)]
+#[skyline::hook(offset = 0x6d4bc0)]
 unsafe fn control_setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyControllerResetType, initial_speed: &Vector3f, unk: u64, boma: &mut BattleObjectModuleAccessor) {
     energy.clear_energy();
 
