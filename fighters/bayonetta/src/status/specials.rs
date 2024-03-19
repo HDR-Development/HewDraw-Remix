@@ -19,8 +19,7 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
     if CancelModule::is_enable_cancel(fighter.module_accessor) && (fighter.sub_wait_ground_check_common(false.into()).get_bool() || fighter.sub_air_check_fall_common().get_bool()) {
         return 1.into();
     }
-    let frame = fighter.global_table[CURRENT_FRAME].get_i32() + 1;
-    VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_S_FRAME, frame);
+    let frame = fighter.global_table[CURRENT_FRAME].get_i32() + 1; //0 index or whatev
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND { //gr checks
         bayonetta_special_s_slow_hit(fighter);
         if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && !fighter.is_in_hitlag() {
@@ -82,7 +81,7 @@ unsafe extern "C" fn bayonetta_special_s_edge_pre(fighter: &mut L2CFighterCommon
 }
 
 unsafe extern "C" fn bayonetta_special_s_edge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let frame = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_S_FRAME) as f32 - 18.0;
+    let frame = fighter.global_table[PREV_STATUS_FRAME].get_f32() - 18.0;
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_edge"), frame.clamp(0.0, 16.0), 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_edge_main_loop as *const () as _))
 }
@@ -131,7 +130,7 @@ unsafe extern "C" fn bayonetta_special_s_kick_pre(fighter: &mut L2CFighterCommon
 
 unsafe extern "C" fn bayonetta_special_s_kick_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_hold_end"), 0.0, 1.0, false, 0.0, false, false);
-    let frame = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_S_FRAME) - 20;
+    let frame = fighter.global_table[PREV_STATUS_FRAME].get_i32() - 20;
     let speed = 1.12 - (0.016 * frame as f32); //instant kick = 1.12, last second kick ~ 0.88
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed);
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_kick_main_loop as *const () as _))
