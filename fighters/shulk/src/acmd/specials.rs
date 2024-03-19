@@ -201,6 +201,29 @@ unsafe extern "C" fn shulk_special_s_sound(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("swordr"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_hand") as i64);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(agent) {
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_behind") as i64);
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 unsafe extern "C" fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -313,6 +336,8 @@ pub fn install() {
         .acmd("effect_specialairs", shulk_special_air_s_effect)
         .acmd("sound_specials", shulk_special_s_sound)
         .acmd("sound_specialairs", shulk_special_s_sound)
+        .acmd("expression_specials", expression_specials)
+        .acmd("expression_specialairs", expression_specials)
         .acmd("game_specialhi", shulk_special_hi_game)
         .acmd("game_specialairhi", shulk_special_hi_game)
         .acmd("game_speciallwattack", shulk_special_lw_attack_game)
