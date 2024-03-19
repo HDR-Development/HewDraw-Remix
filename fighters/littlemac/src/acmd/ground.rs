@@ -20,7 +20,6 @@ unsafe extern "C" fn littlemac_attack_11_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
