@@ -163,3 +163,15 @@ catch_attack:
 furafura_end:
   extra:
     cancel_frame: 10
+special_air_n_end_h:
+  extra:
+    cancel_frame: 58
+special_n_end_h:
+  extra:
+    cancel_frame: 58
+special_air_n_end_f:
+  extra:
+    cancel_frame: 48
+special_n_end_f:
+  extra:
+    cancel_frame: 48
