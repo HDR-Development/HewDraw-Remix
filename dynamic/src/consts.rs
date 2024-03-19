@@ -184,6 +184,8 @@ pub mod vars {
 
             pub const IS_FLOAT: i32 = 0x0066;
 
+            pub const TRAINING_KILL_EFFECTS: i32 = 0x0067;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
