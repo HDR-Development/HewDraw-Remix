@@ -62,7 +62,9 @@ unsafe extern "C" fn game_speciallwstepf(fighter: &mut L2CAgentBase) {
                 vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
                 MeterModule::level(fighter.battle_object) >= 6
             );
-            if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+                MeterModule::drain_direct(fighter.battle_object, 0.5 * MeterModule::meter_per_level(fighter.battle_object));
+            } else {
                 MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
             }
         } else {
