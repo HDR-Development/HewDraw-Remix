@@ -38,9 +38,9 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if cancel_start_frame > fighter.status_frame() {
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             let mut speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            let unk1 = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), 0x18ecc76f9d);
-            if unk1 < speed_y {
-                speed_y = unk1;
+            let air_invoke_speed_y_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("air_invoke_speed_y_limit"));
+            if air_invoke_speed_y_limit < speed_y {
+                speed_y = air_invoke_speed_y_limit;
             }
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y);
         }

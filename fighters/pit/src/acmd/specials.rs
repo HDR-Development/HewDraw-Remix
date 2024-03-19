@@ -121,8 +121,8 @@ unsafe extern "C" fn pit_special_lw_start_effect(fighter: &mut L2CAgentBase) {
         let facing = PostureModule::lr(boma);
         let rot1 = if facing > 0.0 { 240 } else { 300 };
         let rot2 = if facing > 0.0 { 120 } else { 60 };
-        EFFECT_FOLLOW(fighter, Hash40::new("pit_guardian_shield"), Hash40::new_raw(0x10489b2b69), 2.0 * facing, 1, 0, 0, rot1, 0, 1.5, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("pit_guardian_shield"), Hash40::new_raw(0x104ff6ef70), 2.0 * facing, 1, 0, 0, rot2, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pit_guardian_shield"), Hash40::new("virtualguardianf"), 2.0 * facing, 1, 0, 0, rot1, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pit_guardian_shield"), Hash40::new("virtualguardianb"), 2.0 * facing, 1, 0, 0, rot2, 0, 1.5, true);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
         }
@@ -136,8 +136,8 @@ unsafe extern "C" fn pit_special_lw_end_effect(fighter: &mut L2CAgentBase) {
         let facing = PostureModule::lr(boma);
         let rot1 = if facing > 0.0 { 240 } else { 300 };
         let rot2 = if facing > 0.0 { 120 } else { 60 };
-        EFFECT(fighter, Hash40::new("pit_guardian_shield_end"), Hash40::new_raw(0x10489b2b69), 2.0 * facing, 1, 0, 0, rot1, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("pit_guardian_shield_end"), Hash40::new_raw(0x104ff6ef70), 2.0 * facing, 1, 0, 0, rot2, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("pit_guardian_shield_end"), Hash40::new("virtualguardianf"), 2.0 * facing, 1, 0, 0, rot1, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("pit_guardian_shield_end"), Hash40::new("virtualguardianb"), 2.0 * facing, 1, 0, 0, rot2, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {

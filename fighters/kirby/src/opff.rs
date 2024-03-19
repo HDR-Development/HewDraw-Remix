@@ -501,31 +501,6 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Bullet Climax Mechanics
-unsafe fn bayo_nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE) { //PM-like neutral-b canceling
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            if fighter.is_cat_flag(Cat1::AirEscape)  {
-                ControlModule::reset_trigger(boma);
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
-                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }//drift
-            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
-            sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.005);
-            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
-        } else { //platdrop
-            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            if fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"))
-            && fighter.global_table[FLICK_Y].get_i32() < WorkModule::get_param_int(boma, hash40("common"), hash40("pass_flick_y"))
-            && GroundModule::is_passable_ground(boma) {
-                GroundModule::pass_floor(fighter.module_accessor);
-                ControlModule::clear_command;
-            }
-        }
-    }
-}
-
 // Falcon Punch Turnarounds
 unsafe fn repeated_falcon_punch_turnaround(fighter: &mut L2CFighterCommon) {
     if StatusModule::is_changing(fighter.module_accessor) {
@@ -721,6 +696,17 @@ unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
 // Simon's Axe Drift
 unsafe fn axe_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
+    }
+}
+
+// Richter's Knife Drift
+unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
             if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
                 KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
@@ -1228,9 +1214,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Wolf Drift and Laser Airdodge Cancel
     wolf_drift_airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
 
-    // Bullet Arts Mechanics
-    bayo_nspecial_mechanics(fighter, boma);
-
     // Falcon Punch Turnarounds
     repeated_falcon_punch_turnaround(fighter);
 
@@ -1273,6 +1256,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Simon's Axe Drift
     axe_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
+    // Richter's Knife Drift
+    knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
+    
     // Toon Link's Bow Drift
     heros_bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
