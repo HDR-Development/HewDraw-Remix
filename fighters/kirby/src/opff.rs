@@ -704,6 +704,17 @@ unsafe fn axe_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
     }
 }
 
+// Richter's Knife Drift
+unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
+    }
+}
+
 // Toon Link's Bow Drift
 unsafe fn heros_bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TOONLINK_SPECIAL_N {
@@ -1245,6 +1256,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Simon's Axe Drift
     axe_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
+    // Richter's Knife Drift
+    knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
+    
     // Toon Link's Bow Drift
     heros_bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 
