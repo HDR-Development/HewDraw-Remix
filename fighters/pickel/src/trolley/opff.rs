@@ -3,9 +3,9 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-pub unsafe extern "C" fn pickel_trolley_frame(agent: &mut smash::lua2cpp::L2CFighterBase) {
-    let boma = agent.boma();
-    let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+pub unsafe extern "C" fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    let boma = weapon.boma();
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
         let pickel = utils::util::get_battle_object_from_id(owner_id);
         let pickel_boma = &mut *(*pickel).module_accessor;
