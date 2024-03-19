@@ -316,7 +316,7 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const FAIR_STATE: i32 = 0x0101;
-            pub const SPECIAL_S_FRAME: i32 = 0x0102;
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x0102;
         }
         pub mod status {
             // floats
@@ -677,6 +677,7 @@ pub mod vars {
             // flags
             pub const SHOULD_CYCLE_MATERIAL: i32 = 0x01F4;
             pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
+            pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
 
             // ints 
             pub const MATERIAL_INDEX: i32 = 0x01F5;
@@ -976,6 +977,14 @@ pub mod vars {
         }
     }
 
+    pub mod richter {
+        pub mod instance {
+            // flags
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
+            pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0101;
+        }
+    }
+
     pub mod rockman {
         pub mod instance {
             // flags
@@ -1022,16 +1031,18 @@ pub mod vars {
             pub const IS_ENABLE_FADC:         i32 = 0x0102;
             pub const IS_TARGET_COMBO_1:      i32 = 0x0103;
             pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
-            pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
             pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
             pub const IS_CURRENT_HADOKEN_AIR: i32 = 0x0107;
             pub const DISABLE_SPECIAL_LW:     i32 = 0x0108;
+            pub const IS_ENABLE_SPECIAL_LW_INSTALL: i32 = 0x0109;
 
             // ints
             pub const REPEAT_COUNT_LW: i32 = 0x0100;
             pub const REPEAT_COUNT_HI: i32 = 0x0101;
-            pub const EX_SPECIAL_SCRIPTING: i32 = 0x0102;
-            pub const AIR_CHAIN_COMBO_NUM: i32 = 0x0103;
+            pub const SPECIAL_HI_FIRE_EFF_ID: i32 = 0x0104;
+            pub const SPECIAL_LW_FIRE_EFF_ID_0: i32 = 0x0105;
+            pub const SPECIAL_LW_FIRE_EFF_ID_1: i32 = 0x0106;
+            pub const SPECIAL_N_EX_NUM: i32 = 0x0107;
         }
         pub mod status {
             // flags
@@ -1488,6 +1499,20 @@ pub mod vars {
             pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
+    
+    pub mod shulk {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+
+            // ints
+            pub const SPECIAL_S_STEP: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const MONADO_BEAT: i32 = 0x1100;
+        }
+    }
 }
 
 pub mod statuses {
@@ -1521,11 +1546,13 @@ pub mod statuses {
     }
 
     pub mod ryu {
-        pub const AIR_DASH: i32 = 0x202;
+        pub const INSTALL: i32 = 0x202;
+        pub const ATTACK_COMMAND_4: i32 = 0x203;
     }
 
     pub mod ken {
-        pub const ATTACK_COMMAND_4: i32 = 0x202;
+        pub const INSTALL: i32 = 0x202;
+        pub const ATTACK_COMMAND_4: i32 = 0x203;
     }
 
     pub mod buddy {
@@ -1553,7 +1580,8 @@ pub mod statuses {
         pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8; 
         pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9; 
         pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
-        pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB; 
+        pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB;
+        pub const BAYONETTA_SPECIAL_N_CANCEL: i32 = 0x3EC;
     }
 
     pub mod krool {
@@ -1572,5 +1600,6 @@ pub mod statuses {
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
         pub const SPECIAL_S_EDGE: i32 = 0x1F3;
+        pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
     }
 }

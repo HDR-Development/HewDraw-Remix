@@ -135,7 +135,7 @@ unsafe extern "C" fn littlemac_special_n_end(fighter: &mut L2CFighterCommon) -> 
     let kirb = fighter.battle_object.cast::<Fighter>();
     copy_ability_reset(kirb, false);
     EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("kirby_star"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-    PLAY_SE(fighter, Hash40::new_raw(0x14cad4d75e));
+    PLAY_SE(fighter, Hash40::new("se_kirby_special_n05"));
     return 0.into()
 }
 
