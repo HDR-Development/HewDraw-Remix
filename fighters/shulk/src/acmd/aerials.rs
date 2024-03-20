@@ -105,6 +105,27 @@ unsafe extern "C" fn shulk_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_hand") as i64);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_pierces"), 0);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 unsafe extern "C" fn shulk_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -219,6 +240,7 @@ pub fn install() {
         .acmd("game_attackairn", shulk_attack_air_n_game)
         .acmd("game_attackairf", shulk_attack_air_f_game)
         .acmd("game_attackairb", shulk_attack_air_b_game)
+        .acmd("expression_attackairb", expression_attackairb)
         .acmd("game_attackairhi", shulk_attack_air_hi_game)
         .acmd("game_attackairlw", shulk_attack_air_lw_game)
         .install();
