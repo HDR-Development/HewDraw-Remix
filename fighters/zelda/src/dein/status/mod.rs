@@ -1,7 +1,7 @@
 use super::*;
 
-mod move;
+mod dein_move;
 
 pub fn install(agent: &mut Agent) {
-    move::install(agent);
+    dein_move::install(agent);
 }
