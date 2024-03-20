@@ -11,8 +11,6 @@ unsafe extern "C" fn build_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("zelda_phantom")
-        .status(Main, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD, build_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD, build_main);
 }

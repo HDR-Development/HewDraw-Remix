@@ -9,8 +9,6 @@ unsafe extern "C" fn move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     smashline::original_status(Main, weapon, *WEAPON_ZELDA_DEIN_STATUS_KIND_MOVE)(weapon)
 }
 
-pub fn install() {
-    smashline::Agent::new("zelda_dein")
-        .status(Main, *WEAPON_ZELDA_DEIN_STATUS_KIND_MOVE, move_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *WEAPON_ZELDA_DEIN_STATUS_KIND_MOVE, move_main);
 }
