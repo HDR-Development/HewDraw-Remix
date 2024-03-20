@@ -127,26 +127,19 @@ unsafe extern "C" fn mariod_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
-/*#[acmd_script( agent = "mariod", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn mariod_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 3, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 3, 6.0, -1, 12, -172, 1.0, true, *EF_FLIP_YZ);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("mariod_superjump_power"), Hash40::new("top"), 0.0, 3.0, 15.0, 0, 0, 0, 1.1, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("mariod_superjump_fnish"), Hash40::new("top"), 0.0, 3.0, 15.0, 0, 0, 0, 1.05, true);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 3, 4, -1, 12, -172, 0.95, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc"), false, true);
-        EFFECT_OFF_KIND(fighter, Hash40::new("mariod_superjump_power"), false, true);
     }
-}*/
+}
 
 pub fn install() {
     smashline::Agent::new("mariod")
@@ -158,5 +151,6 @@ pub fn install() {
         .acmd("effect_attacks3lw", mariod_attack_s3_lw_effect)
         .acmd("game_attackhi3", mariod_attack_hi3_game)
         .acmd("game_attacklw3", mariod_attack_lw3_game)
+        .acmd("effect_attacklw3", mariod_attack_lw3_effect)
         .install();
 }

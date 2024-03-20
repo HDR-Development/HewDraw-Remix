@@ -23,6 +23,7 @@ unsafe extern "C" fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(boma, 0, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 1, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 2, 2.0, false);
+        AttackModule::set_down_only(boma, 3, true);
     }
     frame(lua_state, 13.0); //8
     FT_MOTION_RATE_RANGE(fighter, 13.0, 27.0, 12.0);//20f
@@ -59,19 +60,23 @@ unsafe extern "C" fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(boma, 0, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 1, 1.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 2, 1.0, false);
+        AttackModule::set_down_only(boma, 3, true);
     }
     frame(lua_state, 12.0);//10
     FT_MOTION_RATE_RANGE(fighter, 12.0, 27.0, 10.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
         }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
         fighter.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         fighter.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }

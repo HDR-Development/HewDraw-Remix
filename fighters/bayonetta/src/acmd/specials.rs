@@ -5,7 +5,7 @@ unsafe extern "C" fn bayonetta_special_n_start_game(fighter: &mut L2CAgentBase) 
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.5);//van
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 30.0, 15.0);//van + 1
 }
 
 unsafe extern "C" fn bayonetta_special_n_charge_game(fighter: &mut L2CAgentBase) {
@@ -15,11 +15,18 @@ unsafe extern "C" fn bayonetta_special_n_charge_game(fighter: &mut L2CAgentBase)
     FT_MOTION_RATE(fighter, 1.65); //van
 }
 
-unsafe extern "C" fn bayonetta_special_n_end_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_special_n_end_h_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 65.0, 25.0);//32 > 26
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 58.0, 25.0);//32 > 26
+}
+
+unsafe extern "C" fn bayonetta_special_n_end_f_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 48.0, 25.0);//32 > 26
 }
 
 unsafe extern "C" fn bayonetta_special_s_game(fighter: &mut L2CAgentBase) {
@@ -86,8 +93,8 @@ unsafe extern "C" fn bayonetta_special_s_edge_effect(fighter: &mut L2CAgentBase)
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("bayonetta_heelslide_burst"), Hash40::new("kneer"), 9.5, 0, 0, 0, 90, 0, 1.1, true);
         EffectModule::enable_sync_init_pos_last(boma);
-        if WorkModule::get_int(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_COSTUME_KIND) == 2 {LAST_EFFECT_SET_COLOR(fighter, 1, 0.118, 0.118); }
-        else {LAST_EFFECT_SET_COLOR(fighter, 0.059, 0.38, 1); }
+        if WorkModule::get_int(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_COSTUME_KIND) == 2 {LAST_PARTICLE_SET_COLOR(fighter, 1.5, 0.095, 0.163); }
+        else {LAST_PARTICLE_SET_COLOR(fighter, 0.048, 0.452, 1); }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -383,6 +390,7 @@ unsafe extern "C" fn bayonetta_special_hi_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_WIND, Hash40::new("top"), 0, 25.3, 0, 0, 0, 0, 0.86, true);
         LAST_EFFECT_SET_RATE(fighter, 1.1);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("bayonetta_afterburner_line2"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 0.82, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
         if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_HI_FLAG_REUSE) {
             EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_SPIRAL, Hash40::new("top"), 0, 25.3, 0, 0, 0, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 1.7);
@@ -391,12 +399,12 @@ unsafe extern "C" fn bayonetta_special_hi_effect(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 22.0);
     if is_excute(fighter) {
         EFFECT_DETACH_KIND_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_WIND, -1);
+        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("bayonetta_afterburner_line2"), false, true);
     }
     frame(fighter.lua_state_agent, 24.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_WIND, false, true);
         EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_SPIRAL, false, true);
-        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("bayonetta_afterburner_line2"), false, true);
     }
 }
 
@@ -470,10 +478,10 @@ pub fn install() {
         .acmd("game_specialnchargeh", bayonetta_special_n_charge_game)
         .acmd("game_specialairnchargef", bayonetta_special_n_charge_game)
         .acmd("game_specialairnchargeh", bayonetta_special_n_charge_game)
-        .acmd("game_specialnendh", bayonetta_special_n_end_game)
-        .acmd("game_specialnendf", bayonetta_special_n_end_game)
-        .acmd("game_specialairnendh", bayonetta_special_n_end_game)
-        .acmd("game_specialairnendf", bayonetta_special_n_end_game)
+        .acmd("game_specialnendh", bayonetta_special_n_end_h_game)
+        .acmd("game_specialnendf", bayonetta_special_n_end_f_game)
+        .acmd("game_specialairnendh", bayonetta_special_n_end_h_game)
+        .acmd("game_specialairnendf", bayonetta_special_n_end_f_game)
         .acmd("game_specials", bayonetta_special_s_game)
         .acmd("game_specialsedge", bayonetta_special_s_edge_game)
         .acmd("effect_specialsedge", bayonetta_special_s_edge_effect)
