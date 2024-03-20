@@ -115,8 +115,13 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
         IS_KB_CALC_EARLY = true;
         KB = kb;
         let hitlag = *(((fighta as u64) + 0xf70c) as *mut i32);
-        // Set hitlag for attacker
-        *(((fighta as u64) + 0xf70c) as *mut i32) = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as i32;
+        let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        let attack_data = (*ctx.registers[22].x.as_ref() as *mut smash_rs::app::AttackData);
+        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+            // Set hitlag for attacker
+            *(((fighta as u64) + 0xf70c) as *mut i32) = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as i32;
+        }
         asm!("fmov s0, w8", in("w8") kb)
     }
 }
@@ -125,10 +130,16 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x406fdc, inline)]
 unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
     if IS_KB_CALC_EARLY {
+        let boma = &mut *(*ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor);
         let hitlag = *ctx.registers[0].w.as_ref();
         let kb = KB;
-        // Set hitlag for attacker
-        *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as u32;
+        let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        let attack_data = (*ctx.registers[24].x.as_ref() as *mut smash_rs::app::AttackData);
+        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+            // Set hitlag for attacker
+            *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+        }
     }
 }
 
@@ -141,8 +152,13 @@ unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let kb = DamageModule::reaction(opponent_boma, 0);
     IS_KB_CALC_EARLY = true;
     KB = kb;
-    // Set hitlag for attacking article
-    *ctx.registers[21].w.as_mut() = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as u32;
+    let max_hitlag = WorkModule::get_param_float(opponent_boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+    let attack_data = (*ctx.registers[20].x.as_ref() as *mut smash_rs::app::AttackData);
+    let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+    if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+        // Set hitlag for attacking article
+        *ctx.registers[21].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+    }
 }
 
 // This runs immediately before hitlag is set for the defender
@@ -152,8 +168,12 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
 
     let hitlag = *ctx.registers[0].w.as_ref();
     let kb = DamageModule::reaction(boma, 0);
-    // Set hitlag for defender
-    *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.63 * std::f32::consts::E.powf(0.00462 * kb)).clamp(1.0, 2.0)).round() as u32;
+    let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+    let attr = *((*ctx.registers[20].x.as_ref() + 0xb8) as *mut u64);
+    if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
+        // Set hitlag for defender
+        *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+    }
     IS_KB_CALC_EARLY = false;
 }
 
