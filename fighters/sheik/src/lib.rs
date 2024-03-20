@@ -44,7 +44,7 @@ use smashline::*;
 #[macro_use] extern crate smash_script;
 
 pub fn install() {
-    let agent = &mut Agent::new("sheik";)
+    let agent = &mut Agent::new("sheik");
     acmd::install(agent);
     opff::install(agent);
     agent.install();
