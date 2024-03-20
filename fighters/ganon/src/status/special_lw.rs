@@ -52,13 +52,7 @@ unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CV
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("ganon")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
-        .status(
-            Main,
-            *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,
-            special_lw_end_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+    agent.status(Main,*FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,special_lw_end_main);
 }
