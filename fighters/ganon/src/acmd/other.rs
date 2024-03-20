@@ -8,7 +8,7 @@ unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if !StopModule::is_stop(agent.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("agent"), 3)
+                app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
             };
@@ -18,7 +18,7 @@ unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(agent) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("agent"), 3)
+            app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
         };
@@ -33,7 +33,7 @@ unsafe extern "C" fn sound_damageflylw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if !StopModule::is_stop(agent.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("agent"), 3)
+                app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
             };
@@ -43,7 +43,7 @@ unsafe extern "C" fn sound_damageflylw(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(agent) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("agent"), 3)
+            app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
         };
@@ -58,7 +58,7 @@ unsafe extern "C" fn sound_damageflyn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if !StopModule::is_stop(agent.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("agent"), 3)
+                app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
             };
@@ -68,7 +68,7 @@ unsafe extern "C" fn sound_damageflyn(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(agent) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("agent"), 3)
+            app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
         };
@@ -98,7 +98,7 @@ unsafe extern "C" fn sound_damageflytop(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if !StopModule::is_stop(agent.module_accessor) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("agent"), 3)
+                app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
             };
@@ -108,7 +108,7 @@ unsafe extern "C" fn sound_damageflytop(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(agent) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("agent"), 3)
+            app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
         };
