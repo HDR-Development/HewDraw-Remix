@@ -63,14 +63,14 @@
   <list hash="pattern_power_mul">
     <hash40 index="0">dummy</hash40>
     <hash40 index="1">dummy</hash40>
-    <float index="2">0.08</float>
-    <float index="3">0.07</float>
-    <float index="4">0.06</float>
-    <float index="5">0.05</float>
-    <float index="6">0.04</float>
-    <float index="7">0.03</float>
-    <float index="8">0.02</float>
-    <float index="9">0.01</float>
+    <float index="2">0.075</float>
+    <float index="3">0.060</float>
+    <float index="4">0.045</float>
+    <float index="5">0.030</float>
+    <float index="6">0.015</float>
+    <float index="7">0.00</float>
+    <float index="8">0.00</float>
+    <float index="9">0.00</float>
   </list>
   <float hash="attack_s3_stick_x">0.2</float>
   <float hash="attack_s3_stick_dir_hi">0.2</float>
