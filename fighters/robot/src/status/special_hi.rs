@@ -420,11 +420,11 @@ unsafe extern "C" fn null_status(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec);
-    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_init);
     agent.status(Main, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, special_hi_keep_main);
     agent.status(End, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, special_hi_keep_end);
 
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, null_status);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, null_status);
     agent.status(Init, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, null_status);
     agent.status(Exec, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, null_status);
 }
