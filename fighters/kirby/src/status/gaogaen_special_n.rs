@@ -48,17 +48,7 @@ pub unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CVa
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(
-            Pre,
-            *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N,
-            special_n_pre,
-        )
-        .status(
-            Exec,
-            *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N,
-            special_n_exec,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N, special_n_pre,);
+    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N, special_n_exec,);
 }

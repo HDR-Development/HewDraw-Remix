@@ -438,18 +438,16 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .acmd("game_attacks4hi", game_attacks4hi)
-        .acmd("game_attacks4", game_attacks4)
-        .acmd("game_attacks4lw", game_attacks4lw)
-        .acmd("sound_attacks4hi", sound_attacks4)
-        .acmd("sound_attacks4", sound_attacks4)
-        .acmd("sound_attacks4lw", sound_attacks4)
-        .acmd("game_attackhi4", game_attackhi4)
-        .acmd("sound_attackhi4", sound_attackhi4)
-        .acmd("game_attacklw4", game_attacklw4)
-        .acmd("expression_attacklw4", expression_attacklw4)
-        .acmd("sound_attacklw4", sound_attacklw4)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.acmd("game_attacks4hi", game_attacks4hi);
+        agent.acmd("game_attacks4", game_attacks4);
+        agent.acmd("game_attacks4lw", game_attacks4lw);
+        agent.acmd("sound_attacks4hi", sound_attacks4);
+        agent.acmd("sound_attacks4", sound_attacks4);
+        agent.acmd("sound_attacks4lw", sound_attacks4);
+        agent.acmd("game_attackhi4", game_attackhi4);
+        agent.acmd("sound_attackhi4", sound_attackhi4);
+        agent.acmd("game_attacklw4", game_attacklw4);
+        agent.acmd("expression_attacklw4", expression_attacklw4);
+        agent.acmd("sound_attacklw4", sound_attacklw4);
 }

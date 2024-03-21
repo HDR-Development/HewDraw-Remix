@@ -191,14 +191,12 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .acmd("game_attackairn", game_attackairn)
-        .acmd("game_attackairf", game_attackairf)
-        .acmd("game_attackairb", game_attackairb)
-        .acmd("effect_attackairb", effect_attackairb)
-        .acmd("game_attackairhi", game_attackairhi)
-        .acmd("game_attackairlw", game_attackairlw)
-        .acmd("game_landingairlw", game_landingairlw)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.acmd("game_attackairn", game_attackairn);
+        agent.acmd("game_attackairf", game_attackairf);
+        agent.acmd("game_attackairb", game_attackairb);
+        agent.acmd("effect_attackairb", effect_attackairb);
+        agent.acmd("game_attackairhi", game_attackairhi);
+        agent.acmd("game_attackairlw", game_attackairlw);
+        agent.acmd("game_landingairlw", game_landingairlw);
 }

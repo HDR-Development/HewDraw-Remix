@@ -194,18 +194,16 @@ unsafe extern "C" fn effect_landingheavy(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .acmd("sound_damageflyhi", sound_damageflyhi)
-        .acmd("sound_damageflylw", sound_damageflylw)
-        .acmd("sound_damageflyn", sound_damageflyn)
-        .acmd("sound_damageflyroll", sound_damageflyroll)
-        .acmd("sound_damageflytop", sound_damageflytop)
-        .acmd("sound_dash", sound_dash)
-        .acmd("game_turndash", game_turndash)
-        .acmd("game_escapeair", game_escapeair)
-        .acmd("game_escapeairslide", game_escapeairslide)
-        .acmd("game_landingheavy", game_landingheavy)
-        .acmd("effect_landingheavy", effect_landingheavy)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.acmd("sound_damageflyhi", sound_damageflyhi);
+        agent.acmd("sound_damageflylw", sound_damageflylw);
+        agent.acmd("sound_damageflyn", sound_damageflyn);
+        agent.acmd("sound_damageflyroll", sound_damageflyroll);
+        agent.acmd("sound_damageflytop", sound_damageflytop);
+        agent.acmd("sound_dash", sound_dash);
+        agent.acmd("game_turndash", game_turndash);
+        agent.acmd("game_escapeair", game_escapeair);
+        agent.acmd("game_escapeairslide", game_escapeairslide);
+        agent.acmd("game_landingheavy", game_landingheavy);
+        agent.acmd("effect_landingheavy", effect_landingheavy);
 }

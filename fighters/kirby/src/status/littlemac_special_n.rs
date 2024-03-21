@@ -139,10 +139,8 @@ unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(Pre, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_pre)
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_main)
-        .status(End, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_end);
 }
