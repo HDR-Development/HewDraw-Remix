@@ -161,9 +161,9 @@ unsafe extern "C" fn samusd_throw_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::Agent::new("samusd")
-        .acmd("game_catch", samusd_catch_game)
-        .acmd("game_catchdash", samusd_catch_dash_game)
-        .acmd("game_catchturn", samusd_catch_turn_game)
+        //.acmd("game_catch", samusd_catch_game)
+        //.acmd("game_catchdash", samusd_catch_dash_game)
+        //.acmd("game_catchturn", samusd_catch_turn_game)
         .acmd("game_throwf", samusd_throw_f_game)
         .acmd("game_throwhi", samusd_throw_hi_game)
         .acmd("game_throwlw", samusd_throw_lw_game)

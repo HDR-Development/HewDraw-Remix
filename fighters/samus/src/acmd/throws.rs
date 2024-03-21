@@ -116,9 +116,9 @@ unsafe extern "C" fn game_throwb(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::Agent::new("samus")
-        .acmd("game_catch", samus_catch_game)
-        .acmd("game_catchdash", samus_catch_dash_game)
-        .acmd("game_catchturn", samus_catch_turn_game)
+        //.acmd("game_catch", samus_catch_game)
+        //.acmd("game_catchdash", samus_catch_dash_game)
+        //.acmd("game_catchturn", samus_catch_turn_game)
         .acmd("game_throwb", game_throwb)
         .install();
 }
