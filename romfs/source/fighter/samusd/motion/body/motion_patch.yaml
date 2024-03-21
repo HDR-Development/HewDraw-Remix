@@ -48,7 +48,7 @@ special_n_c:
     cancel_frame: 9
 attack_dash:
   extra:
-    cancel_frame: 34
+    cancel_frame: 37
 attack_s4_s:
   extra:
     cancel_frame: 54

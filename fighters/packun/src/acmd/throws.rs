@@ -81,7 +81,7 @@ unsafe extern "C" fn packun_throw_f_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         let sfx_lvl = if stance.label == 2 { *ATTACK_SOUND_LEVEL_L } else { *ATTACK_SOUND_LEVEL_M };
-        ATTACK(fighter, 0, 0, Hash40::new("mouth"), 3.0 * stance.damage_head, 361, 100, 0, 50, 6.0, 2.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_lvl, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("mouth"), 3.0 * stance.damage_head, 361, 100, 0, 50, 6.0, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_lvl, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
         AttackModule::set_catch_only_all(boma, true, false);
         CHECK_FINISH_CAMERA(fighter, 30, 8);
     }
@@ -173,11 +173,11 @@ unsafe extern "C" fn packun_throw_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         if stance.label == 1 {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5 * stance.damage_bite, 0, 100, 0, 0, 6.0, 0.0, 7.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5 * stance.damage_bite, 0, 100, 0, 0, 6.0, 0.0, 7.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
             AttackModule::set_poison_param(boma, 0, 121, 30, 1.5, false);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5 * stance.damage_bite, 0, 100, 0, 0, 6.0, 0.0, 7.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5 * stance.damage_bite, 0, 100, 0, 0, 6.0, 0.0, 7.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
         }
         AttackModule::set_catch_only_all(boma, true, false);
         CHECK_FINISH_CAMERA(fighter, 8, 0);

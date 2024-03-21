@@ -218,6 +218,12 @@ unsafe extern "C" fn sub_specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L
     }
     return 0.into()
 }
+
+// override vanilla shield visibility on forward smash
+unsafe extern "C" fn attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_AttackS4()
+}
+
 pub fn install() {
     smashline::Agent::new("younglink")
         .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_specialhi)
@@ -230,6 +236,11 @@ pub fn install() {
             Main,
             *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END,
             specialhi_end,
+        )
+        .status(
+            Main,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            attack_s4_main,
         )
         .install();
 }

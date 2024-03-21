@@ -63,6 +63,9 @@ fall_aerial_b:
 special_air_s1:
   extra:
     cancel_frame: 35
+special_air_s3:
+  extra:
+    cancel_frame: 52
 attack_s4_hold:
 fall_special_b:
   blend_frames: 5

@@ -76,7 +76,7 @@ unsafe extern "C" fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 80, 60, 0, 70, 5.5, 0.0, 14.0, 1.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 80, 60, 0, 70, 5.5, 0.0, 14.0, 1.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
         AttackModule::set_catch_only_all(boma, true, false);
         CHECK_FINISH_CAMERA(fighter, 1, 25);
     }
@@ -101,7 +101,7 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("trans"), 3.0, 361, 0, 100, 0, 5.5, 0.0, 2.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
+        ATTACK(fighter, 0, 0, Hash40::new("trans"), 3.0, 361, 0, 100, 0, 5.5, 0.0, 2.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
         AttackModule::set_catch_only_all(boma, true, false);
         AttackModule::clear_all(boma);
         CHECK_FINISH_CAMERA(fighter, 0, 0);

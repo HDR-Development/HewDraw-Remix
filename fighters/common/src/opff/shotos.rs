@@ -58,7 +58,8 @@ unsafe fn training_mode_full_meter(fighter: &mut L2CFighterCommon, boma: &mut Ba
 
 unsafe fn up_special_early_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP) 
-    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.motion_frame() >= 25.0 {
         fighter.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING, false);
     }
 }

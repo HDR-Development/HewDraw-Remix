@@ -150,7 +150,7 @@ unsafe extern "C" fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("throw"), 1.0, 361, 40, 0, 80, 6.0, -3.5, 2.0, -4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("throw"), 1.0, 361, 40, 0, 80, 6.0, -3.5, 2.0, -4.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         AttackModule::set_catch_only_all(boma, true, false);
     }
     frame(lua_state, 19.0);

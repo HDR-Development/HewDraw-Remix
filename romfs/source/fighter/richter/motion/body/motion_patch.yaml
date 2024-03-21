@@ -12,27 +12,52 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-attack_12:
+attack_13:
+  game_script: game_attack13
+  flags:
+    move: true
+  blend_frames: 0
+  animations:
+  - name: c00attack13.nuanmb
+  scripts:
+  - expression_attack13
+  - sound_attack13
+  - effect_attack13
   extra:
-    cancel_frame: 20
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 27
+    freeze_during_hitstop: false
+attack_12:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 17
 attack_11:
+  flags:
+    move: true
   extra:
     cancel_frame: 17
 attack_lw3:
   extra:
-    cancel_frame: 38
+    cancel_frame: 36
+attack_lw4:
+  extra:
+    cancel_frame: 50
 attack_hi4:
+  extra:
+    cancel_frame: 52
 attack_hi3:
   extra:
-    cancel_frame: 37
+    cancel_frame: 28
 attack_dash:
   extra:
-    cancel_frame: 49
+    cancel_frame: 36
 attack_s3_s:
   flags:
     move: false
   extra:
-    cancel_frame: 36
+    cancel_frame: 30
 attack_squat_s3:
   game_script: game_attacksquats3
   flags:
@@ -60,20 +85,22 @@ attack_squat_s3:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 36
+    cancel_frame: 30
     freeze_during_hitstop: false
 fall_leaning_c:
   extra:
     cancel_frame: 22
 attack_100_end:
-  extra:
-    cancel_frame: 43
+  animations:
+  - name: ~
+  scripts: ~
+  extra: ~
 item_light_throw_f:
   flags:
     move: false
 attack_lw32_landing:
   extra:
-    cancel_frame: 18
+    cancel_frame: 16
 catch:
   extra:
     cancel_frame: 40
@@ -86,3 +113,56 @@ catch_attack:
 furafura_end:
   extra:
     cancel_frame: 10
+special_n:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 37
+special_air_n:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 37
+special_s1:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 35
+special_air_s1:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 35
+special_lw:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 36
+special_air_lw:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 36
+attack_air_n:
+  extra:
+    cancel_frame: 36
+attack_air_hi:
+  extra:
+    cancel_frame: 28
+attack_air_lw2:
+  blend_frames: 8
+  extra:
+    cancel_frame: 25
+special_air_hi:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 35
+special_air_hi:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 35
+throw_hi:
+  extra:
+    cancel_frame: 35

@@ -784,6 +784,12 @@ reflet_special_n_cancel:
 reflet_special_air_n_cancel:
   extra:
     cancel_frame: 8
+richter_special_air_n:
+  extra:
+    cancel_frame: 41
+richter_special_n:
+  extra:
+    cancel_frame: 41
 ridley_special_n_shoot:
   extra:
     cancel_frame: 37

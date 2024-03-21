@@ -21,6 +21,9 @@ special_n:
 attack_11:
   extra:
     cancel_frame: 19
+attack_dash:
+  extra:
+    cancel_frame: 38
 attack_lw3:
   extra:
     cancel_frame: 37
