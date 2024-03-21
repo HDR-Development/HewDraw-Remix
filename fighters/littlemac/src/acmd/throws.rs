@@ -1,5 +1,69 @@
 use super::*;
 
+unsafe extern "C" fn littlemac_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.667);
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 3.7, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    
+}
+
+unsafe extern "C" fn littlemac_catch_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 3.7, 0.0, 8.0, 4.0, Some(0.0), Some(8.0), Some(8.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+unsafe extern "C" fn littlemac_catch_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 3.7, 0.0, 8.0, -4.0, Some(0.0), Some(8.0), Some(-12.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
 unsafe extern "C" fn littlemac_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -101,6 +165,9 @@ unsafe extern "C" fn littlemac_throw_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::Agent::new("littlemac")
+        .acmd("game_catch", littlemac_catch_game)
+        .acmd("game_catchdash", littlemac_catch_dash_game)
+        .acmd("game_catchturn", littlemac_catch_turn_game)
         .acmd("game_throwf", littlemac_throw_f_game)
         .acmd("game_throwb", littlemac_throw_b_game)
         .acmd("game_throwhi", littlemac_throw_hi_game)

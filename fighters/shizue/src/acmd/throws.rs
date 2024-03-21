@@ -1,5 +1,90 @@
 use super::*;
 
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 9.0/(14.0 - 1.0));
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 14.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 5.5, 4.0, Some(0.0), Some(5.5), Some(14.25), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        ENABLE_AREA(agent, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        UNABLE_AREA(agent, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
+    }
+    frame(lua_state, 43.0);
+    if is_excute(agent) {
+        ArticleModule::remove_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BUTTERFLYNET, app::ArticleOperationTarget(0));
+    }
+}
+
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 10.0/(16.0 - 1.0));
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 5.5, 4.0, Some(0.0), Some(5.5), Some(12.75), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        ENABLE_AREA(agent, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        UNABLE_AREA(agent, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH_DASH);
+    }
+}
+
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 12.0/(17.0 - 1.0));
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 17.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 5.5, -5.0, Some(0.0), Some(5.5), Some(-13.75), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        ENABLE_AREA(agent, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        UNABLE_AREA(agent, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH_TURN);
+    }
+}
+
 unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -72,11 +157,12 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", shizue_catch_game);
+    agent.acmd("game_catchdash", shizue_catch_dash_game);
+    agent.acmd("game_catchturn", shizue_catch_turn_game);
+
     agent.acmd("game_throwf", game_throwf);
-
     agent.acmd("game_throwb", game_throwb);
-
     agent.acmd("game_throwhi", game_throwhi);
-    
     agent.acmd("game_throwlw", game_throwlw);
 }

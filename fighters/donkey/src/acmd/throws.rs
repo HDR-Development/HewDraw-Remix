@@ -5,17 +5,15 @@ unsafe extern "C" fn catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.875);
-    }
+    FT_MOTION_RATE(fighter, 0.875);
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 8.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        CATCH(fighter, 0, Hash40::new("top"), 6.8, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(14.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(14.6), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 3.0);
@@ -36,7 +34,7 @@ unsafe extern "C" fn catch_dash(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 6.8, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(18.200001), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 7.0, 3.4, Some(0.0), Some(7.0), Some(18.6), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 3.0);
@@ -57,7 +55,7 @@ unsafe extern "C" fn catch_turn(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 6.8, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(-21.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(-21.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 3.0);
