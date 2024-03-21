@@ -9,10 +9,10 @@ pub mod opff;
 
 // articles
 
-pub mod fire;
-pub mod forge;
-pub mod melt;
-pub mod trolley;
+mod fire;
+mod forge;
+mod melt;
+mod trolley;
 
 // material table hook
 

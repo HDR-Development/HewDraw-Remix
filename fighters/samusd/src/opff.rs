@@ -11,7 +11,7 @@ pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind
         if frame >= 32.0 {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
                 && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_lw"), 12.0, 1.0, 1.0);
+                MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_lw"), 18.0, 1.0, 1.0);
             }
         }
     }

@@ -55,8 +55,8 @@
   <float hash="escape_fb_stick_x">0.7386</float>
   <float hash="escape_air_slide_landing_speed_max">4</float>
   <int hash="hit_stop_delay_flick">2</int>
-  <float hash="hit_stop_delay_flick_mul">7</float>
-  <int hash="hit_stop_delay_flick_frame">4</int>
+  <float hash="hit_stop_delay_flick_mul">5.25</float>
+  <int hash="hit_stop_delay_flick_frame">3</int>
   <int hash="hit_stop_delay_flick_max_count">50</int>
   <float hash="hit_stop_delay_auto_mul">2.5</float>
   <float hash="damage_reaction_mul_max">1</float>
@@ -86,7 +86,7 @@
   <float hash="status_start_turn_stick_x">0.2</float>
   <float hash="special_stick_x">0.5673</float>
   <float hash="special_stick_y">0.51</float>
-  <int hash="special_air_n_turn_frame">10</int>
+  <int hash="special_air_n_turn_frame">13</int>
   <byte hash="special_command_life_max">10</byte>
   <byte hash="super_special_command_life_max">20</byte>
   <float hash="catch_dash_brake_mul">1</float>

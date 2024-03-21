@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 mod attack_lw3;
 
@@ -26,13 +27,11 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn ganon_init(fighter: &mut L2CFighterCommon) {
+extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_GANON {
-            fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
+        // set the callbacks on agent init
+        fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     }
 }
 
@@ -41,12 +40,12 @@ pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
 }
 
-pub fn install() {
-    smashline::Agent::new("ganon").on_start(ganon_init).install();
-    attack_lw3::install();
-    special_n::install();
-    special_n_float::install();
-    special_lw::install();
-    special_s::install();
-    special_air_s_catch::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+    attack_lw3::install(agent);
+    special_n::install(agent);
+    special_n_float::install(agent);
+    special_lw::install(agent);
+    special_s::install(agent);
+    special_air_s_catch::install(agent);
 }

@@ -14,6 +14,7 @@ mod diddy_special_n_cancel;
 mod lucas_special_n;
 mod sonic_special_n;
 mod edge_special_n;
+mod bayonetta_special_n_cancel;
 
 extern "C" fn kirby_init(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -260,6 +261,7 @@ pub fn install(agent: &mut Agent) {
     lucas_special_n::install(agent);
     sonic_special_n::install(agent);
     edge_special_n::install(agent);
+    bayonetta_special_n_cancel::install(agent);
 
     smashline::Agent::new("kirby")
         .on_start(kirby_init)

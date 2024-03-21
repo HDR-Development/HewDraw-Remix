@@ -19,8 +19,6 @@ unsafe extern "C" fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("ganon")
-        .status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exit)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exit);
 }

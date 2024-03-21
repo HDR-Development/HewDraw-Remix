@@ -4,8 +4,8 @@ use globals::*;
 mod special_hi;
 mod special_lw;
 
-unsafe extern "C" fn on_start(agent: &mut L2CFighterCommon){
-    VarModule::set_int(agent.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon){
+    VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
 }
 
 pub fn install(agent: &mut Agent) {

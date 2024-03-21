@@ -6,6 +6,11 @@ pub mod acmd;
 
 pub mod opff;
 
+// articles
+
+mod fusin;
+mod needle;
+
 use smash::{
     lib::{
         L2CValue,
@@ -36,8 +41,14 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
+    let agent = &mut Agent::new("sheik");
+    acmd::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    fusin::install();
+    needle::install();
 }

@@ -3,7 +3,7 @@
     <struct hash="cliff_hang_data">
         <struct hash="special_hi">
             <float hash="p1_x">15</float>
-            <float hash="p1_y">16.5</float>
+            <float hash="p1_y">18.5</float>
             <float hash="p2_x">-9</float>
             <float hash="p2_y">4</float>
         </struct>
