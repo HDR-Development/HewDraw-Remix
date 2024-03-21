@@ -3,6 +3,23 @@ use globals::*;
 
 // FIGHTER_STATUS_KIND_GUARD_ON
 
+unsafe extern "C" fn init_guard_damage_uniq(fighter: &mut L2CFighterCommon) {
+    let shield_radius =
+        WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
+    let throw_scale: Vector3f = Vector3f {
+        x: shield_radius,
+        y: shield_radius,
+        z: shield_radius,
+    };
+
+    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &throw_scale);
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, 0x2dc1210b69i64);
+    app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+    fighter.pop_lua_stack(0);
+}
+
 pub unsafe extern "C" fn guard_on_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
     fighter.sub_status_guard_on_common();
