@@ -81,7 +81,7 @@ unsafe extern "C" fn richter_special_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 37.0);
     if is_excute(fighter) {
         VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
     }
