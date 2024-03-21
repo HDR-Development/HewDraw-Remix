@@ -295,31 +295,6 @@ unsafe fn fastfall_copyspecials(fighter: &mut L2CFighterCommon) {
 // End of Common
 
 // BAYONETTA----------------------------------------------------------------------------------------------------------------------------
-unsafe fn bayo_nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE) { //PM-like neutral-b canceling
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            if fighter.is_cat_flag(Cat1::AirEscape)  {
-                ControlModule::reset_trigger(boma);
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
-                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }//drift
-            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
-            sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.005);
-            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
-        } else { //platdrop
-            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            if fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"))
-            && fighter.global_table[FLICK_Y].get_i32() < WorkModule::get_param_int(boma, hash40("common"), hash40("pass_flick_y"))
-            && GroundModule::is_passable_ground(boma) {
-                GroundModule::pass_floor(fighter.module_accessor);
-                ControlModule::clear_command;
-            }
-        }
-    }
-}
-
-
 // BRAVE----------------------------------------------------------------------------------------------------------------------------
 unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_SHOOT)
@@ -996,6 +971,17 @@ unsafe fn reflet_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_
 
 
 // RICHTER----------------------------------------------------------------------------------------------------------------------------
+unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
+    }
+}
+
+
 // RIDLEY----------------------------------------------------------------------------------------------------------------------------
 // ROBOT----------------------------------------------------------------------------------------------------------------------------
 // ROCKMAN----------------------------------------------------------------------------------------------------------------------------
@@ -1193,7 +1179,6 @@ pub unsafe fn copymoveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     fastfall_copyspecials(fighter);
 
     // BAYONETTA
-    bayo_nspecial_mechanics(fighter, boma);
     // BRAVE
     dash_cancel_frizz(fighter);
     brave_nspecial_cancels(fighter);
@@ -1292,6 +1277,7 @@ pub unsafe fn copymoveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // REFLET
     reflet_nspecial_cancels(boma, status_kind, situation_kind);
     // RICHTER
+    knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
     // RIDLEY
     // ROBOT
     // ROCKMAN
