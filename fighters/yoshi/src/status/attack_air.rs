@@ -3,7 +3,7 @@ use globals::*;
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
-pub unsafe extern "C" attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_init();
     0.into()
 }
