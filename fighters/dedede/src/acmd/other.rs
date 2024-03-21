@@ -53,15 +53,13 @@ unsafe extern "C" fn expression_landingheavy(agent: &mut L2CAgentBase) {
     } 
 }
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.2);
-    }
+unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 1.2);
 	frame(lua_state, 11.0); // Effectively F13
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-		FT_MOTION_RATE(agent, 1.0);
 		WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
     

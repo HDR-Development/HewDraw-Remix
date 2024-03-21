@@ -221,9 +221,9 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", pickel_catch_game);
-    agent.acmd("game_catchdash", pickel_catch_dash_game);
-    agent.acmd("game_catchturn", pickel_catch_turn_game);
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
 
     agent.acmd("game_throwf", game_throwf);
     agent.acmd("game_throwlw", game_throwlw);
