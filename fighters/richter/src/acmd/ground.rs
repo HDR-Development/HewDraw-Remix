@@ -31,7 +31,6 @@ unsafe extern "C" fn richter_attack_11_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 9.5, 2.2, 13, -29, 154, 0.8, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
     }
 }
 
@@ -223,7 +222,6 @@ unsafe extern "C" fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 11.5, 0.0, 12, -20, 150, 1.1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
         LAST_EFFECT_SET_RATE(fighter, 1.8);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_speedline"), false, true);
     }

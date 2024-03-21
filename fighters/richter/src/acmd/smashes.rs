@@ -717,6 +717,26 @@ unsafe extern "C" fn richter_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn richter_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
 unsafe extern "C" fn richter_whip_attack_hi4_charge_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -841,6 +861,7 @@ pub fn install() {
         .acmd("game_attackhi4", richter_attack_hi4_game)
         .acmd("effect_attackhi4", richter_attack_hi4_effect)
         .acmd("sound_attackhi4", richter_attack_hi4_sound)
+        .acmd("expression_attackhi4", richter_attack_hi4_expression)
         .acmd("game_attacklw4", richter_attack_lw4_game)
         .install();
     smashline::Agent::new("richter_whip")

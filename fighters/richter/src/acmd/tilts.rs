@@ -237,6 +237,22 @@ unsafe extern "C" fn richter_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn richter_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 unsafe extern "C" fn richter_whip_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -347,6 +363,7 @@ pub fn install() {
         .acmd("game_attackhi3", richter_attack_hi3_game)
         .acmd("effect_attackhi3", richter_attack_hi3_effect)
         .acmd("sound_attackhi3", richter_attack_hi3_sound)
+        .acmd("expression_attackhi3", richter_attack_hi3_expression)
         .acmd("game_attacklw3", richter_attack_lw3_game)
         .acmd("game_attacklw32", richter_attack_lw32_game)
         .install();
