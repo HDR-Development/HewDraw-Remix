@@ -162,7 +162,6 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
         let hitlag = *ctx.registers[0].w.as_ref();
         let kb = DamageModule::reaction(boma, 0);
         let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-        println!("max hl {}", max_hitlag);
         let attr = *((*ctx.registers[20].x.as_ref() + 0xb8) as *mut u64);
         if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
             // Set hitlag for defender
