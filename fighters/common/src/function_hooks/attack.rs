@@ -165,14 +165,15 @@ unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x404658, inline)]
 unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let boma = &mut *(*ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor);
-
-    let hitlag = *ctx.registers[0].w.as_ref();
-    let kb = DamageModule::reaction(boma, 0);
-    let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-    let attr = *((*ctx.registers[20].x.as_ref() + 0xb8) as *mut u64);
-    if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
-        // Set hitlag for defender
-        *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+    if !boma.is_item() {
+        let hitlag = *ctx.registers[0].w.as_ref();
+        let kb = DamageModule::reaction(boma, 0);
+        let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        let attr = *((*ctx.registers[20].x.as_ref() + 0xb8) as *mut u64);
+        if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
+            // Set hitlag for defender
+            *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+        }
     }
     IS_KB_CALC_EARLY = false;
 }
