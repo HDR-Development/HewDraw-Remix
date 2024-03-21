@@ -719,8 +719,7 @@ unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
 unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N)
     && VarModule::is_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL)
-    && boma.is_situation(*SITUATION_KIND_GROUND)
-    && !boma.is_prev_situation(*SITUATION_KIND_AIR)  {
+    && boma.is_situation(*SITUATION_KIND_GROUND){
         // remove the unthrown knife from richter's hand
         if (2.0..13.0).contains(&boma.motion_frame())
         && ArticleModule::is_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE){
