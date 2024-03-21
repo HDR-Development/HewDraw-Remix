@@ -1,7 +1,9 @@
 use super::*;
 use crate::globals::*;
 
-unsafe extern "C" fn clayrocket_ready_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+// WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY
+
+unsafe extern "C" fn ready_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("ready"), 0.0, 1.0, false, 0.0, false, false);
     VisibilityModule::set_int64(weapon.module_accessor, hash40("body") as i64, hash40("body_off") as i64);
     HitModule::set_status(weapon.module_accessor, 0, app::HitStatus(*HIT_STATUS_NORMAL), 0);
@@ -9,7 +11,7 @@ unsafe extern "C" fn clayrocket_ready_main(weapon: &mut L2CWeaponCommon) -> L2CV
     weapon.fastshift(L2CValue::Ptr(clayrocket_ready_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn clayrocket_ready_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn ready_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let touch_normal = GroundModule::get_touch_normal(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
     let mut ground_angle = (touch_normal.y/touch_normal.x).atan().to_degrees();
     ground_angle -= 90.0;
@@ -43,12 +45,6 @@ unsafe extern "C" fn clayrocket_ready_main_loop(weapon: &mut L2CWeaponCommon) ->
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("shizue_clayrocket")
-        .status(
-            Main,
-            *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY,
-            clayrocket_ready_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY, ready_main);
 }
