@@ -137,6 +137,15 @@ item_light_throw_f:
   flags:
     move: false
     cancel_frame: 44
+catch:
+  extra:
+    cancel_frame: 40
+catch_dash:
+  extra:
+    cancel_frame: 46
+catch_turn:
+  extra:
+    cancel_frame: 41
 catch_attack:
   extra:
     cancel_frame: 0
