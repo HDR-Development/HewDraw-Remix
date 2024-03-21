@@ -7,6 +7,12 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+
+mod breath;
+mod parachute;
+mod rescue;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +45,11 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("gamewatch");
+    acmd::install(agent);
+    breath::install(agent);
+    parachute::install(agent);
+    rescue::install(agent);
+    opff::install(agent);
+    status::install(agent);
 }
