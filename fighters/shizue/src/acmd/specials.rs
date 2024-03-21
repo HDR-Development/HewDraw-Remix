@@ -349,7 +349,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnfailure", game_specialnfailure);
     agent.acmd("effect_specialnfailure", effect_specialnfailure);
     agent.acmd("effect_specialairnfailure", effect_specialnfailure);
-    agent acmd("expression_specialnfailure", expression_specialnfailure);
+    agent.acmd("expression_specialnfailure", expression_specialnfailure);
     agent.acmd("expression_specialairnfailure", expression_specialnfailure);
 
     agent.acmd("game_specialsstart", game_specialsstart);

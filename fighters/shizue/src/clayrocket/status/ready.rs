@@ -8,7 +8,7 @@ unsafe extern "C" fn ready_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     VisibilityModule::set_int64(weapon.module_accessor, hash40("body") as i64, hash40("body_off") as i64);
     HitModule::set_status(weapon.module_accessor, 0, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     HitModule::set_status(weapon.module_accessor, 1, app::HitStatus(*HIT_STATUS_OFF), 0);
-    weapon.fastshift(L2CValue::Ptr(clayrocket_ready_main_loop as *const () as _))
+    weapon.fastshift(L2CValue::Ptr(ready_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn ready_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
