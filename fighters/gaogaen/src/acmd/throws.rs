@@ -1,5 +1,140 @@
 use super::*;
 
+unsafe extern "C" fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+        ControlModule::clear_command(boma, true);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let mut z_mod = -1.0 * grab_y;
+        if grab_y > 0.0 {
+            z_mod = 3.0 * grab_y;
+        }
+        else if grab_y < 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 20, 10, 0, 4.2, 0.0, (grab_y * 8.0) + 11.0, 13.4 - z_mod, Some(0.0), Some(10.0), Some(2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        }
+        CATCH(fighter, 0, Hash40::new("top"), 4.2, 0.0, (grab_y * 8.0) + 11.0, 13.4 - z_mod, Some(0.0), Some(10.0), Some(2.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+unsafe extern "C" fn gaogaen_catch_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let rot_right = 0 - ((grab_y * 50.0) as i32);
+        let rot_left = 180 + ((grab_y * 50.0) as i32);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 11.0, 5, rot_right, -45, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 10.5, 4, rot_left, -225, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+}
+
+unsafe extern "C" fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+        ControlModule::clear_command(boma, true);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let mut z_mod = 0.0;
+        if grab_y > 0.0 {
+            z_mod = 4.0 * grab_y;
+        }
+        else if grab_y < 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 20, 10, 0, 4.2, 0.0, (grab_y * 8.0) + 9.0, 11.6 - z_mod, Some(0.0), Some(9.0), Some(2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        }
+        CATCH(fighter, 0, Hash40::new("top"), 4.2, 0.0, (grab_y * 8.0) + 9.0, 11.6 - z_mod, Some(0.0), Some(9.0), Some(2.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+unsafe extern "C" fn gaogaen_catchdash_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let rot_right = 0 - ((grab_y * 50.0) as i32);
+        let rot_left = 180 + ((grab_y * 50.0) as i32);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 9.0, 3.5, rot_right, -45, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 8.5, 2.5, rot_left, -225, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+}
+
+unsafe extern "C" fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+        ControlModule::clear_command(boma, true);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let mut z_mod = 0.0;
+        if grab_y > 0.0 {
+            z_mod = 3.0 * grab_y;
+        }
+        else if grab_y < 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 20, 10, 0, 4.2, 0.0, (grab_y * 8.0) + 11.0, -16.9 - z_mod, Some(0.0), Some(10.0), Some(-2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        }
+        CATCH(fighter, 0, Hash40::new("top"), 4.2, 0.0, (grab_y * 8.0) + 11.0, -16.9 + z_mod, Some(0.0), Some(10.0), Some(-2.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+unsafe extern "C" fn gaogaen_catchturn_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let rot_right = 0 - ((grab_y * 50.0) as i32);
+        let rot_left = 180 + ((grab_y * 50.0) as i32);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 11.0, -7, rot_right, 135, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 10.5, -8, rot_left, -45, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+}
+
 unsafe extern "C" fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -13,19 +148,19 @@ unsafe extern "C" fn gaogaen_throw_f_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 4.0, 30, 63, 0, 100, 8.0, -3.0, 7.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 4.0, 30, 63, 0, 100, 8.0, -3.0, 7.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 6.0, 30, 62, 0, 100, 8.0, -4.5, 14.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 6.0, 30, 62, 0, 100, 8.0, -4.5, 14.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
-        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 8.0, 30, 61, 0, 100, 8.0, -6.0, 22.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 8.0, 30, 61, 0, 100, 8.0, -6.0, 22.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 48.0);
     if is_excute(fighter) {
-        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 10.0, 30, 60, 0, 100, 8.0, -6.0, 22.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("hip"), 10.0, 30, 60, 0, 100, 8.0, -6.0, 22.0, 0.0, Some(1.0), Some(6.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 57.0);
     if is_excute(fighter) {
@@ -154,7 +289,7 @@ unsafe extern "C" fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         // Kill throw
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 32, 80, 0, 60, 7.0, 0.0, 2.7, 2.6, Some(0.0), Some(2.7), Some(-3.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 32, 80, 0, 60, 7.0, 0.0, 2.7, 2.6, Some(0.0), Some(2.7), Some(-3.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         }
         // Techchase throw
         else{
@@ -430,6 +565,12 @@ unsafe extern "C" fn gaogaen_throw_lw_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::Agent::new("gaogaen")
+        .acmd("game_catch", gaogaen_catch_game)
+        .acmd("effect_catch", gaogaen_catch_effect)
+        .acmd("game_catchturn", gaogaen_catchturn_game)
+        .acmd("effect_catchturn", gaogaen_catchturn_effect)
+        .acmd("game_catchdash", gaogaen_catchdash_game)
+        .acmd("effect_catchdash", gaogaen_catchdash_effect)
         .acmd("game_throwf", gaogaen_throw_f_game)
         .acmd("effect_throwf", gaogaen_throw_f_effect)
         .acmd("game_throwb", gaogaen_throw_b_game)

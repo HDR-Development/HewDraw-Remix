@@ -115,30 +115,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn trail_catch_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-        FT_MOTION_RATE(fighter, 0.5);
-    frame(lua_state, 5.0);
-        FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-    }
-    game_CaptureCutCommon(fighter);
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
-    }
-}
-
 unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -215,7 +191,6 @@ pub fn install() {
         .acmd("sound_damageflyn", damageflyn_sound)
         .acmd("sound_damageflyroll", damageflyroll_sound)
         .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", trail_catch_game)
         .acmd("game_dash", game_dash)
         .acmd("sound_dash", dash_sound)
         .acmd("game_escapeair", escape_air_game)
