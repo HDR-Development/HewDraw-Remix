@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_attack_11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -27,7 +27,7 @@ unsafe extern "C" fn game_attack_11(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_attack_100_end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -45,7 +45,7 @@ unsafe extern "C" fn game_attack_100_end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_dash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.6);
@@ -75,7 +75,7 @@ unsafe extern "C" fn game_attack_dash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack_11);
-    agent.acmd("game_attack100end", game_attack_100_end);
-    agent.acmd("game_attackdash", game_attack_dash);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack100end", game_attack100end);
+    agent.acmd("game_attackdash", game_attackdash);
 }

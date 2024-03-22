@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attack_air_n(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -45,7 +45,7 @@ unsafe extern "C" fn game_attack_air_n(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_attack_air_f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -87,7 +87,7 @@ unsafe extern "C" fn game_attack_air_f(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_attack_air_b(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -127,7 +127,7 @@ unsafe extern "C" fn game_attack_air_b(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn expression_attack_air_b(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -143,7 +143,7 @@ unsafe extern "C" fn expression_attack_air_b(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_air_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -189,7 +189,7 @@ unsafe extern "C" fn game_attack_air_hi(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn expression_attack_air_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.5);
@@ -202,7 +202,7 @@ unsafe extern "C" fn expression_attack_air_hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_air_lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -271,11 +271,11 @@ unsafe extern "C" fn game_attack_air_lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attack_air_n);
-    agent.acmd("game_attackairf", game_attack_air_f);
-    agent.acmd("game_attackairb", game_attack_air_b);
-    agent.acmd("expression_attackairb", expression_attack_air_b);
-    agent.acmd("game_attackairhi", game_attack_air_hi);
-    agent.acmd("expression_attackairhi", expression_attack_air_hi);
-    agent.acmd("game_attackairlw", game_attack_air_lw);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("expression_attackairb", expression_attackairb);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

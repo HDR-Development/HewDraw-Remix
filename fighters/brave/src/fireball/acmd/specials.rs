@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_burst_l(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_burstl(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -25,5 +25,5 @@ unsafe extern "C" fn game_burst_l(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_burstl", game_burst_l);
+    agent.acmd("game_burstl", game_burstl);
 }

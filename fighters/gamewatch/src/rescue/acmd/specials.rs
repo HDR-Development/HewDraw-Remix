@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_special_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -19,7 +19,7 @@ unsafe extern "C" fn game_special_hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_special_air_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -39,6 +39,6 @@ unsafe extern "C" fn game_special_air_hi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialhi", game_special_hi);
-    agent.acmd("game_specialairhi", game_special_air_hi);
+    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 }

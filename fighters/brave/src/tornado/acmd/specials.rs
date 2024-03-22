@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_special_hi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -9,7 +9,7 @@ unsafe extern "C" fn game_special_hi1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_special_hi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhi1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe extern "C" fn effect_special_hi1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_special_hi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe extern "C" fn game_special_hi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_special_hi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -39,7 +39,7 @@ unsafe extern "C" fn effect_special_hi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_special_hi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     for _ in 0..i32::MAX {
@@ -67,7 +67,7 @@ unsafe extern "C" fn game_special_hi3(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_special_hi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -77,10 +77,10 @@ unsafe extern "C" fn effect_special_hi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialhi1", game_special_hi1);
-    agent.acmd("effect_specialhi1", effect_special_hi1);
-    agent.acmd("game_specialhi2", game_special_hi2);
-    agent.acmd("effect_specialhi2", effect_special_hi2);
-    agent.acmd("game_specialhi3", game_special_hi3);
-    agent.acmd("effect_specialhi3", effect_special_hi3);
+    agent.acmd("game_specialhi1", game_specialhi1);
+    agent.acmd("effect_specialhi1", effect_specialhi1);
+    agent.acmd("game_specialhi2", game_specialhi2);
+    agent.acmd("effect_specialhi2", effect_specialhi2);
+    agent.acmd("game_specialhi3", game_specialhi3);
+    agent.acmd("effect_specialhi3", effect_specialhi3);
 }

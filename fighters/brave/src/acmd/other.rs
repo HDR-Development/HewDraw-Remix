@@ -108,7 +108,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_special_lw8(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw8(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -137,7 +137,7 @@ unsafe extern "C" fn effect_special_lw8(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_special_air_lw8(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlw8(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -173,6 +173,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_turndash", game_turndash);
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
-    agent.acmd("effect_speciallw8", effect_special_lw8);
-    agent.acmd("effect_specialairlw8", effect_special_air_lw8);
+    agent.acmd("effect_speciallw8", effect_speciallw8);
+    agent.acmd("effect_specialairlw8", effect_specialairlw8);
 }

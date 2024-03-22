@@ -59,7 +59,7 @@ unsafe extern "C" fn sound_appealhir(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -74,7 +74,7 @@ unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -115,8 +115,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_turndash", game_turndash);
     agent.acmd("sound_appealhil", sound_appealhil);
     agent.acmd("sound_appealhir", sound_appealhir);
-    agent.acmd("game_escapeair", escape_air_game);
-    agent.acmd("game_escapeairslide", escape_air_slide_game);
+    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
     agent.acmd("game_downforwardd", game_down);
     agent.acmd("game_downforwardu", game_down);
     agent.acmd("game_downbackd", game_down);

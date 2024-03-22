@@ -24,7 +24,7 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_catch_dash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -156,7 +156,7 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
-    agent.acmd("game_catchdash", game_catch_dash);
+    agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("game_catchturn", game_catchturn);
     agent.acmd("game_throwf", game_throwf);
     agent.acmd("game_throwb", game_throwb);

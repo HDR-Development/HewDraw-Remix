@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_attack_air_n(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -74,7 +74,7 @@ unsafe extern "C" fn game_attack_air_n(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_attack_air_f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -113,7 +113,7 @@ unsafe extern "C" fn game_attack_air_f(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_landing_air_f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -122,7 +122,7 @@ unsafe extern "C" fn game_landing_air_f(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn expression_attack_air_f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -139,7 +139,7 @@ unsafe extern "C" fn expression_attack_air_f(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_air_b(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -200,7 +200,7 @@ unsafe extern "C" fn game_attack_air_b(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_landing_air_b(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -209,7 +209,7 @@ unsafe extern "C" fn game_landing_air_b(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_attack_air_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -233,7 +233,7 @@ unsafe extern "C" fn game_attack_air_hi(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sound_attack_air_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -242,7 +242,7 @@ unsafe extern "C" fn sound_attack_air_hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attack_air_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -260,7 +260,7 @@ unsafe extern "C" fn expression_attack_air_hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_air_lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -299,13 +299,13 @@ unsafe extern "C" fn game_attack_air_lw(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn game_landing_air_lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
 }
 
-unsafe extern "C" fn expression_landing_air_lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -320,16 +320,16 @@ unsafe extern "C" fn expression_landing_air_lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attack_air_n);
-    agent.acmd("game_attackairf", game_attack_air_f);
-    agent.acmd("game_landingairf", game_landing_air_f);
-    agent.acmd("expression_attackairf", expression_attack_air_f);
-    agent.acmd("game_attackairb", game_attack_air_b);
-    agent.acmd("game_landingairb", game_landing_air_b);
-    agent.acmd("game_attackairhi", game_attack_air_hi);
-    agent.acmd("sound_attackairhi", sound_attack_air_hi);
-    agent.acmd("expression_attackairhi", expression_attack_air_hi);
-    agent.acmd("game_attackairlw", game_attack_air_lw);
-    agent.acmd("game_landingairlw", game_landing_air_lw);
-    agent.acmd("expression_landingairlw", expression_landing_air_lw);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_landingairf", game_landingairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_landingairb", game_landingairb);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("sound_attackairhi", sound_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("expression_landingairlw", expression_landingairlw);
 }

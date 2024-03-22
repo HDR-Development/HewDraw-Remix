@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attack_11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -27,7 +27,7 @@ unsafe extern "C" fn game_attack_11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attack_11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe extern "C" fn expression_attack_11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -71,7 +71,7 @@ unsafe extern "C" fn game_attack_12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -99,7 +99,7 @@ unsafe extern "C" fn game_attack_13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_dash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -131,7 +131,7 @@ unsafe extern "C" fn game_attack_dash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attack_dash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -163,10 +163,10 @@ unsafe extern "C" fn expression_attack_dash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack_11);
-    agent.acmd("expression_attack11", expression_attack_11);
-    agent.acmd("game_attack12", game_attack_12);
-    agent.acmd("game_attack13", game_attack_13);
-    agent.acmd("game_attackdash", game_attack_dash);
-    agent.acmd("expression_attackdash", expression_attack_dash);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("expression_attack11", expression_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("expression_attackdash", expression_attackdash);
 }

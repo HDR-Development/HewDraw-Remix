@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attack_s4_s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4s(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -40,7 +40,7 @@ unsafe extern "C" fn game_attack_s4_s(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attack_s4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -96,7 +96,7 @@ unsafe extern "C" fn effect_attack_s4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn sound_attack_s4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 15.0);
@@ -125,7 +125,7 @@ unsafe extern "C" fn sound_attack_s4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn expression_attack_s4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -151,7 +151,7 @@ unsafe extern "C" fn expression_attack_s4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attack_hi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -186,7 +186,7 @@ unsafe extern "C" fn game_attack_hi4(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sound_attack_hi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -214,7 +214,7 @@ unsafe extern "C" fn sound_attack_hi4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn effect_attack_hi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -260,7 +260,7 @@ unsafe extern "C" fn effect_attack_hi4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn game_attack_lw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -315,7 +315,7 @@ unsafe extern "C" fn game_attack_lw4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn effect_attack_lw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -379,7 +379,7 @@ unsafe extern "C" fn effect_attack_lw4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn sound_attack_lw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -410,14 +410,14 @@ unsafe extern "C" fn sound_attack_lw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks4", game_attack_s4_s);
-    agent.acmd("effect_attacks4", effect_attack_s4);
-    agent.acmd("sound_attacks4", sound_attack_s4);
-    agent.acmd("expression_attacks4", expression_attack_s4);
-    agent.acmd("game_attackhi4", game_attack_hi4);
-    agent.acmd("sound_attackhi4", sound_attack_hi4);
-    agent.acmd("effect_attackhi4", effect_attack_hi4);
-    agent.acmd("game_attacklw4", game_attack_lw4);
-    agent.acmd("effect_attacklw4", effect_attack_lw4);
-    agent.acmd("sound_attacklw4", sound_attack_lw4);
+    agent.acmd("game_attacks4", game_attacks4s);
+    agent.acmd("effect_attacks4", effect_attacks4);
+    agent.acmd("sound_attacks4", sound_attacks4);
+    agent.acmd("expression_attacks4", expression_attacks4);
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("effect_attacklw4", effect_attacklw4);
+    agent.acmd("sound_attacklw4", sound_attacklw4);
 }

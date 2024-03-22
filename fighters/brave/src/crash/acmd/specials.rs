@@ -87,7 +87,7 @@ unsafe extern "C" fn effect_crash1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_crash_end1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_crashend1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -102,5 +102,5 @@ unsafe extern "C" fn effect_crash_end1(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_crash1", game_crash1);
     agent.acmd("effect_crash1", effect_crash1);
-    agent.acmd("effect_crashend1", effect_crash_end1);
+    agent.acmd("effect_crashend1", effect_crashend1);
 }
