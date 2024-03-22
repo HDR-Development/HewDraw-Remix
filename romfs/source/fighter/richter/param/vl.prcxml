@@ -63,12 +63,15 @@
   </list>
   <list hash="param_axe">
     <struct index="0">
-      <float hash="gravity">0.13</float>
-      <float hash="limit_gravity">1.9</float>
-      <int hash="life">75</int>
-      <float hash="throw_angle_stick_back">70</float>
-      <float hash="throw_angle_stick_front">50</float>
-      <float hash="throw_speed_stick_back">9</float>
+      <float hash="gravity">0</float>
+      <float hash="throw_angle">0</float>
+      <float hash="throw_speed">3.9</float>
+      <float hash="brake_x">0</float>
+      <float hash="rot_speed">0</float>
+      <int hash="life">21</int>
+      <float hash="throw_angle_stick_back">0</float>
+      <float hash="throw_angle_stick_front">0</float>
+      <float hash="throw_speed_stick_back">4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -102,7 +105,10 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="throw_speed_ground">2.65</float>
+      <float hash="throw_angle_ground">-54</float>
+      <float hash="throw_angle_air">-54</float>
+      <float hash="throw_speed_ground">2.7</float>
+      <float hash="throw_speed_air">2.7</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

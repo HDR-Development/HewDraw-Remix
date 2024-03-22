@@ -66,6 +66,15 @@ special_air_lw_start:
   extra:
     xlu_start: 0
     xlu_end: 0
+catch:
+  extra:
+    cancel_frame: 39
+catch_dash:
+  extra:
+    cancel_frame: 46
+catch_turn:
+  extra:
+    cancel_frame: 42
 furafura_end:
   extra:
     cancel_frame: 10

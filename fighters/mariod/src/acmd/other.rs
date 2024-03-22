@@ -116,32 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_catch_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.200);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-    }
-    game_CaptureCutCommon(fighter);
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
-    }
-    
-}
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -214,6 +188,130 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn mariod_jumpback_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_passive"));
+    }
+}
+
+unsafe extern "C" fn mariod_jumpfront_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_passive"));
+    }
+}
+
+unsafe extern "C" fn mariod_jumpbackmini_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_attack05"));
+    }
+}
+
+unsafe extern "C" fn mariod_jumpfrontmini_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_attack05"));
+    }
+}
+
+unsafe extern "C" fn mariod_jumpaerialback_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_007"));
+    }
+    wait(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_05"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_05"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_05"));
+    }
+}
+
+unsafe extern "C" fn mariod_jumpaerialfront_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_007"));
+    }
+    wait(lua_state, 11.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+    wait(lua_state, 12.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_05"));
+    }
+}
+
+unsafe extern "C" fn mariod_cliffjump2_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_passive"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_04"));
+    }
+}
+
+unsafe extern "C" fn mariod_passivewalljump_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_009"));
+    }
+}
+
+unsafe extern "C" fn mariod_shootlegsjumpsquat_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_mariod_passive"));
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("mariod")
         .acmd("sound_damageflyhi", damageflyhi_sound)
@@ -221,11 +319,19 @@ pub fn install() {
         .acmd("sound_damageflyn", damageflyn_sound)
         .acmd("sound_damageflyroll", damageflyroll_sound)
         .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", mariod_catch_game)
         .acmd("sound_dash", dash_sound)
         .acmd("game_turndash", mariod_turn_dash_game)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("sound_jumpback", mariod_jumpback_sound)
+        .acmd("sound_jumpfront", mariod_jumpfront_sound)
+        .acmd("sound_jumpbackmini", mariod_jumpbackmini_sound)
+        .acmd("sound_jumpfrontmini", mariod_jumpfrontmini_sound)
+        .acmd("sound_jumpaerialback", mariod_jumpaerialback_sound)
+        .acmd("sound_jumpaerialfront", mariod_jumpaerialfront_sound)
+        .acmd("sound_cliffjump2", mariod_cliffjump2_sound)
+        .acmd("sound_passivewalljump", mariod_passivewalljump_sound)
+        .acmd("sound_shootlegsjumpsquat", mariod_shootlegsjumpsquat_sound)
         .install();
     smashline::Agent::new("mariod_drcapsule")
         .acmd("game_regular", mariod_drcapsule_regular_game)

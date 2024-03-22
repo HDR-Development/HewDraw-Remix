@@ -116,27 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shulk_catch_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 9.0, 0.0, Some(0.0), Some(9.0), Some(9.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-    }
-    game_CaptureCutCommon(fighter);
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
-    }
-    
-}
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -217,6 +196,51 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_win2(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_sword3"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_circle"), Hash40::new("swordr"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_sword3_end"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("shulk_monad_sword3"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("shulk_monad_sword3_2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("shulk_monad_circle"), false, false);
+    }
+}
+
+unsafe extern "C" fn sound_win2a_us_en(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 60.0);
+    if is_excute(agent) {
+        PLAY_SE_NO_3D(agent, Hash40::new("vc_shulk_win02_01"));
+    }
+    frame(lua_state, 118.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shulk_win02"));
+    }
+}
+
+unsafe extern "C" fn sound_win2b_us_en(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        PLAY_SE_NO_3D(agent, Hash40::new("vc_shulk_win02_02"));
+    }
+    frame(lua_state, 118.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shulk_win02"));
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("shulk")
         .acmd("sound_damageflyhi", damageflyhi_sound)
@@ -224,11 +248,13 @@ pub fn install() {
         .acmd("sound_damageflyn", damageflyn_sound)
         .acmd("sound_damageflyroll", damageflyroll_sound)
         .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", shulk_catch_game)
         .acmd("game_dash", dash_game)
         .acmd("sound_dash", dash_sound)
         .acmd("game_turndash", turn_dash_game)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("effect_win2", effect_win2)
+        .acmd("sound_win2a_us_en", sound_win2a_us_en)
+        .acmd("sound_win2b_us_en", sound_win2b_us_en)
         .install();
 }

@@ -157,9 +157,27 @@ special_air_s_d:
 special_air_s_d_hit:
   extra:
     cancel_frame: 32
+catch_dash:
+  extra:
+    cancel_frame: 44
+catch_turn:
+  extra:
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0
 furafura_end:
   extra:
     cancel_frame: 10
+special_air_n_end_h:
+  extra:
+    cancel_frame: 58
+special_n_end_h:
+  extra:
+    cancel_frame: 58
+special_air_n_end_f:
+  extra:
+    cancel_frame: 48
+special_n_end_f:
+  extra:
+    cancel_frame: 48

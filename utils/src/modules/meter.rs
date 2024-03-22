@@ -1,13 +1,16 @@
 use skyline::hooks::InlineCtx;
+use smash::app;
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::app::lua_bind::*;
+use smash::app::enSEType;
+use smash::app::smashball::*;
 use smash::lib::lua_const::*;
 use smash::phx::*;
 use crate::ext::*;
 use crate::offsets;
 use crate::consts::*;
-use super::METER_MODULE_OFFSET;
-use super::{VarModule, ParamModule, ParamType};
+use super::*;
+use smash_script::macros;
 
 macro_rules! get_meter_module {
     ($object:ident) => {{
@@ -397,33 +400,231 @@ unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u
     VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
 }
 
-// static mut IS_CALCULATING: Option<(u32, u32)> = None;
+#[derive(Debug, Copy, Clone)]
+struct KnockbackCalcContext {
+    pub knockback: f32,
+    pub x_launch_speed: f32,
+    pub y_launch_speed: f32,
+    pub y_chara_speed: f32,
+    pub tumble: bool,
+    pub is_damage_fly_top: bool,
+    pub hitstun: f32,
+    pub gravity: f32,
+    pub damageflytop_gravity: f32,
+    pub fall_speed: f32,
+    pub damageflytop_fall_speed: f32,
+    pub x_pos: f32,
+    pub y_pos: f32,
+    pub decay_x: f32,
+    pub decay_y: f32,
+}
 
-// #[skyline::hook(offset = 0x402ee0, inline)]
-// unsafe fn calculate_knockback(ctx: &InlineCtx) {
-//     let damage_module = *ctx.registers[19].x.as_ref();
-//     let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
-//     let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
-//     let id = *(ptr.add(0x24) as *const u32);
-//     IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
-// }
+impl KnockbackCalcContext {
+    pub fn step(&mut self) {
+        self.x_pos += self.x_launch_speed;
+        self.y_pos += self.y_launch_speed + self.y_chara_speed;
+        if self.x_launch_speed != 0.0 {
+            let dir = self.x_launch_speed.signum();
+            self.x_launch_speed = self.x_launch_speed.abs() - self.decay_x;
+            if self.x_launch_speed < 0.0 {
+                self.x_launch_speed = 0.0;
+            } else {
+                self.x_launch_speed *= dir;
+            }
+        }
+        if self.y_launch_speed != 0.0 {
+            let dir = self.y_launch_speed.signum();
+            self.y_launch_speed = self.y_launch_speed.abs() - self.decay_y;
+            if self.y_launch_speed < 0.0 {
+                self.y_launch_speed = 0.0;
+            } else {
+                self.y_launch_speed *= dir;
+            }
+        }
+        if self.is_damage_fly_top {
+            self.y_chara_speed -= self.damageflytop_gravity;
+            if self.y_chara_speed < -self.damageflytop_fall_speed {
+                self.y_chara_speed = -self.damageflytop_fall_speed;
+            }
+        } else {
+            self.y_chara_speed -= self.gravity;
+            if self.y_chara_speed < -self.fall_speed {
+                self.y_chara_speed = -self.fall_speed;
+            }
+        }
+    }
+}
 
-// extern "C" {
-//     #[link_name = "calculate_finishing_hit"]
-//     fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: u64);
-// }
+#[repr(simd)]
+#[derive(Debug)]
+struct Rect {
+    left: f32,
+    right: f32,
+    top: f32,
+    bottom: f32,
+}
 
-// #[skyline::hook(offset = 0x403930, inline)]
-// unsafe fn process_knockback(ctx: &InlineCtx) {
-//     if let Some((defender, attacker)) = IS_CALCULATING {
-//         let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
-//         if (*boma).battle_object_id == defender {
-//             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref());
-//         }
-//     }
-// }
+impl Rect {
+    fn contains(&self, x: f32, y: f32) -> bool {
+        (self.left <= x && x <= self.right) && (self.bottom <= y && y <= self.top)
+    }
+}
 
-// #[skyline::hook(offset = 0x401e30)]
+extern "C" {
+    #[link_name = "_ZN3app6camera13get_dead_areaEv"]
+    fn get_dead_area() -> Rect;
+
+    #[link_name = "_ZN3app10sv_animcmd25EFFECT_GLOBAL_BACK_GROUNDEP9lua_State"]
+    fn EFFECT_GLOBAL_BACK_GROUND(lua_state: u64);
+}
+
+/// Knockback log
+/// 0x8a -> the opponent was grounded (bool)
+/// 0x90 -> backslash (bool)
+/// 0x60 -> stop delay (f32) 
+/// 0x50 -> collision attr (Hash40)
+/// 0x40 -> launch angle in rad (f32)
+/// 0x4 -> level (?)
+/// 0x4c -> hitstop frame
+
+const HANDLE: i32 = 0x01FF;
+const COUNTER: i32 = 0x01FE;
+
+pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: *const f32) {
+    *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
+    let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
+    let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
+    if !defender_boma.is_fighter() { return; }
+    if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return; }
+
+    if !is_training_mode() {
+        // ensure kill calculations only occur when the defender is on their last stock
+        let entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+        let manager = utils_dyn::singletons::FighterManager() as *mut u64;
+        let fighter_info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
+        if FighterInformation::stock_count(fighter_info) != 1 { return; }
+    } else {
+        // in training mode, check the flag for if the effects should be played
+        let mut is_training_toggle = false;
+        if !attacker_boma.is_weapon() {
+            if VarModule::is_flag(attacker_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
+        } else {
+            let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let owner = utils_dyn::util::get_battle_object_from_id(owner_id);
+            let owner_boma = &mut *(*owner).module_accessor;
+            if VarModule::is_flag(owner_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
+        }
+        if !is_training_toggle { return; }
+    }
+
+    let knockback = *knockback_info;
+    let initial_speed_x = *knockback_info.add(4);
+    let initial_speed_y = *knockback_info.add(5);
+    let initial_pos_x = *knockback_info.add(8);
+    let initial_pos_y = *knockback_info.add(9);
+    let reaction = *knockback_info.add(0x48 / 4);
+    let mut y_speed = initial_speed_y;
+    let mut y_pos = PostureModule::pos_y(defender_boma);
+    let angle = *knockback_info.add(0x10);
+    let top_lw = defender_boma.get_param_float("battle_object", "fly_top_angle_lw");
+    let top_hi = defender_boma.get_param_float("battle_object", "fly_top_angle_hi");
+
+    let mut context = KnockbackCalcContext {
+        knockback,
+        x_launch_speed: initial_speed_x,
+        y_launch_speed: initial_speed_y,
+        y_chara_speed: 0.0,
+        tumble: *(knockback_info.add(1) as *const u32) >= 3,
+        is_damage_fly_top: top_lw <= angle && angle <= top_hi,
+        hitstun: reaction,
+        gravity: defender_boma.get_param_float("air_accel_y", ""),
+        damageflytop_gravity: defender_boma.get_param_float("damage_fly_top_air_accel_y", ""),
+        fall_speed: defender_boma.get_param_float("air_speed_y_stable", ""),
+        damageflytop_fall_speed: defender_boma.get_param_float("damage_fly_top_speed_y_stable", ""),
+        x_pos: PostureModule::pos_x(defender_boma),
+        y_pos: PostureModule::pos_y(defender_boma),
+        decay_x: defender_boma.get_param_float("common", "damage_air_brake") * angle.cos().abs(),
+        decay_y: defender_boma.get_param_float("common", "damage_air_brake") * angle.sin().abs(),
+    };
+    //println!("{:#x}: {:?}", defender, context);
+
+    let blastzones = get_dead_area();
+    let mag = (context.y_launch_speed.powi(2) + context.x_launch_speed.powi(2)).sqrt();
+    let kb_angle = context.y_launch_speed.atan2(context.x_launch_speed).to_degrees();
+    let di_angle = defender_boma.get_param_float("common", "damage_fly_correction_max");
+    let min_di = kb_angle - di_angle;
+    let max_di = kb_angle + di_angle;
+    let step = (di_angle * 2.0) / 10.0;
+    let context_ref = context;
+    //println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
+
+    // checks 10 different DI angles and sees how many of them will result in a kill
+    let mut kill_angle_num = 0;
+    for idx in 0..10 {
+        let ang = (min_di + (idx as f32 * step)).to_radians();
+        context.x_launch_speed = ang.cos() * mag;
+        context.y_launch_speed = ang.sin() * mag;
+        let mut x = 0;
+        let mut will_touch_stage = false;
+        while context.hitstun > x as f32  {
+            context.step();
+            if GroundModule::ray_check(
+                defender_boma, 
+                &Vector2f{ x: context.x_pos, y: (context.y_pos + 4.0)}, 
+                &Vector2f{ x: 0.0, y: -6.0}, 
+                true ) == 1
+            && !(30.0..150.0).contains(&ang.to_degrees()) {
+                    will_touch_stage = true;
+            }
+            if !blastzones.contains(context.x_pos, context.y_pos)
+            && !will_touch_stage {
+                //println!("{} will kill! adding to counter.", ang.to_degrees());
+                kill_angle_num += 1;
+                break;
+            }
+            x += 1;
+        }
+        context = context_ref;
+    }
+
+    //println!("kill angles: {}/10", kill_angle_num);
+    if kill_angle_num >= 9
+    && VarModule::get_int(defender_boma.object(), COUNTER) == 0 {
+        let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
+        EffectModule::set_billboard(defender_boma, handle as u32, true);
+        EffectModule::set_disable_render_offset_last(defender_boma);
+        VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
+        VarModule::set_int(defender_boma.object(), COUNTER, 20);
+        SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
+        VarModule::set_int(defender_boma.object(), COUNTER, 20);
+        SlowModule::set_whole(defender_boma, 8, 25);
+        let common = utils_dyn::util::get_fighter_common_from_accessor(defender_boma);
+        EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
+    }
+}
+
+static mut IS_CALCULATING: Option<(u32, u32)> = None;
+
+#[skyline::hook(offset = 0x402f00, inline)]
+unsafe fn calculate_knockback(ctx: &InlineCtx) {
+    let damage_module = *ctx.registers[19].x.as_ref();
+    let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
+    let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
+    let id = *(ptr.add(0x24) as *const u32);
+    IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
+}
+
+#[skyline::hook(offset = 0x403950, inline)]
+unsafe fn process_knockback(ctx: &InlineCtx) {
+    if let Some((defender, attacker)) = IS_CALCULATING {
+        let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
+        if (*boma).battle_object_id == defender {
+            calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref() as *const f32);
+        }
+    }
+}
+
+// #[skyline::hook(offset = 0x401e50)]
 // unsafe fn knockback_calculator(arg1: u64, arg2: u64, arg3: u64, arg4: u64, arg5: f32, arg6: f32, arg7: f32, arg8: f32) -> f32 {
 //     let knockback = call_original!(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
 //     if let Some((defender, attacker, log)) = IS_CALCULATING.take() {
@@ -486,7 +687,7 @@ pub fn init() {
         dolly_super_special_check_param,
         hit_module_handle_attack_event,
         shield_module_send_shield_attack_collision_event,
-        // process_knockback,
-        // calculate_knockback
+        process_knockback,
+        calculate_knockback
     );
 }

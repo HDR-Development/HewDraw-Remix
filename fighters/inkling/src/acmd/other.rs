@@ -116,32 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_catch_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.875);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-    }
-    game_CaptureCutCommon(fighter);
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
-    }
-    
-}
-
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -444,7 +418,6 @@ pub fn install() {
         .acmd("sound_damageflyn", damageflyn_sound)
         .acmd("sound_damageflyroll", damageflyroll_sound)
         .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", inkling_catch_game)
         .acmd("sound_dash", dash_sound)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
@@ -454,28 +427,13 @@ pub fn install() {
         .install();
     smashline::Agent::new("inkling_roller")
         .acmd("game_specialswalk", inkling_roller_special_s_walk_game)
-        .acmd(
-            "game_specialairswalk",
-            inkling_roller_special_air_s_walk_game,
-        )
-        .acmd(
-            "game_specialswalknoink",
-            inkling_roller_special_s_walk_no_ink_game,
-        )
+        .acmd("game_specialairswalk", inkling_roller_special_air_s_walk_game)
+        .acmd("game_specialswalknoink", inkling_roller_special_s_walk_no_ink_game)
         .acmd("game_specialsdash", inkling_roller_special_s_dash_game)
-        .acmd(
-            "game_specialairsdash",
-            inkling_roller_special_air_s_dash_game,
-        )
-        .acmd(
-            "game_specialsdashnoink",
-            inkling_roller_special_s_dash_no_ink_game,
-        )
+        .acmd("game_specialairsdash", inkling_roller_special_air_s_dash_game)
+        .acmd("game_specialsdashnoink", inkling_roller_special_s_dash_no_ink_game)
         .acmd("game_specialsrun", inkling_roller_special_s_run_game)
         .acmd("game_specialairsrun", inkling_roller_special_air_s_run_game)
-        .acmd(
-            "game_specialsrunnoink",
-            inkling_roller_special_s_run_no_ink_game,
-        )
+        .acmd("game_specialsrunnoink", inkling_roller_special_s_run_no_ink_game)
         .install();
 }
