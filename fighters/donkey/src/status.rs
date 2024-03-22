@@ -56,24 +56,18 @@ unsafe extern "C" fn status_change(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // setting the callback for shield to be used for b in shield
 
-extern "C" fn donkey_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if smash::app::utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
-            //fighter.global_table[0x34].assign(&L2CValue::Ptr(when_shield as *const () as _));
-            fighter.global_table[STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(status_change as *const () as _));
-        }
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    //fighter.global_table[0x34].assign(&L2CValue::Ptr(when_shield as *const () as _));
+    fighter.global_table[STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(status_change as *const () as _));
 }
 
-pub fn install() {
-    item_throw_heavy::install();
-    special_hi::install();
-    special_lw::install();
-    catch_pull::install();
-    shoulder::install();
-    super_lift::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
 
-    smashline::Agent::new("donkey")
-        .on_start(donkey_init)
-        .install();
+    item_throw_heavy::install(agent);
+    special_hi::install(agent);
+    special_lw::install(agent);
+    catch_pull::install(agent);
+    shoulder::install(agent);
+    super_lift::install(agent);
 }
