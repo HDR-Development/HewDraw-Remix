@@ -23,9 +23,7 @@ unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CV
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("captain")
-        .status(Init, *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END, special_lw_end_init)
-        .status(Main, *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END, special_lw_end_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END, special_lw_end_init);
+    agent.status(Main, *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END, special_lw_end_main);
 }
