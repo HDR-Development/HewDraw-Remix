@@ -7,8 +7,6 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
-pub mod copyability;
-
 use smash::{
     lib::{
         L2CValue,
@@ -46,7 +44,6 @@ pub const LUCAS_CHARGE_TIME : i32 = 120;
 pub fn install() {
     let agent = &mut Agent::new("kirby");
     acmd::install(agent);
-    copyability::install(agent);
     status::install(agent);
     opff::install();
     agent.install();

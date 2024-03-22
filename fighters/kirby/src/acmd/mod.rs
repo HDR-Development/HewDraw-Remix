@@ -7,6 +7,8 @@ mod specials;
 mod throws;
 mod ground;
 
+mod copy;
+
 pub fn install(agent: &mut Agent) {
     aerials::install(agent);
     tilts::install(agent);
@@ -15,4 +17,6 @@ pub fn install(agent: &mut Agent) {
     specials::install(agent);
     throws::install(agent);
     ground::install(agent);
+
+    copy::install(agent);
 }
