@@ -1,7 +1,9 @@
 use super::*;
 
-mod aerials;
+mod acmd;
 
-pub fn install(agent: &mut Agent) {
-    aerials::install(agent);
+pub fn install() {
+    let agent = &mut Agent::new("gamewatch_breath");
+    acmd::install(agent);
+    agent.install();
 }

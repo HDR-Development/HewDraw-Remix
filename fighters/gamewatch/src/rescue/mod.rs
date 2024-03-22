@@ -1,7 +1,9 @@
 use super::*;
 
-mod specials;
+mod acmd;
 
-pub fn install(agent: &mut Agent) {
-    specials::install(agent);
+pub fn install() {
+    let agent = &mut Agent::new("gamewatch_rescue");
+    acmd::install(agent);
+    agent.install();
 }

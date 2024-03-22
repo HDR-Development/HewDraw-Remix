@@ -8,7 +8,6 @@ pub mod status;
 pub mod opff;
 
 // articles
-
 mod breath;
 mod parachute;
 mod rescue;
@@ -47,9 +46,11 @@ use smashline::*;
 pub fn install() {
     let agent = &mut Agent::new("gamewatch");
     acmd::install(agent);
-    breath::install(agent);
-    parachute::install(agent);
-    rescue::install(agent);
     opff::install(agent);
     status::install(agent);
+    agent.install();
+
+    breath::install();
+    parachute::install();
+    rescue::install();
 }

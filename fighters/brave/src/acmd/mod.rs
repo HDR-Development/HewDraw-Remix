@@ -8,12 +8,12 @@ mod ground;
 mod specials;
 mod throws;
 
-pub fn install() {
-    aerials::install();
-    tilts::install();
-    smashes::install();
-    other::install();
-    ground::install();
-    specials::install();
-    throws::install();
+pub fn install(agent: &mut Agent) {
+    aerials::install(agent);
+    tilts::install(agent);
+    smashes::install(agent);
+    other::install(agent);
+    ground::install(agent);
+    specials::install(agent);
+    throws::install(agent);
 }
