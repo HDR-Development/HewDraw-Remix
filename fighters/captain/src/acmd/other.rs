@@ -106,9 +106,9 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damageflyhi);
-    agent.acmd("sound_damageflyn", sound_damageflyhi);
-    agent.acmd("sound_damageflytop", sound_damageflyhi);
+    agent.acmd("sound_damageflylw", sound_damagefly);
+    agent.acmd("sound_damageflyn", sound_damagefly);
+    agent.acmd("sound_damageflytop", sound_damagefly);
     agent.acmd("sound_damageflyroll", sound_damageflyroll);
 
     agent.acmd("sound_dash", sound_dash);
