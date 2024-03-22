@@ -166,11 +166,9 @@ unsafe extern "C" fn special_n2_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("littlemac")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, special_n2_pre)
-        .status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, special_n2_main)
-        .status(End, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, special_n2_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, special_n2_pre);
+    agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, special_n2_main);
+    agent.status(End, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2, special_n2_end);
 }

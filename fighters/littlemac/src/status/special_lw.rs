@@ -201,11 +201,9 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("littlemac")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_old_pre)
-        .status(Init, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_init)
-        .status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, special_lw_pre)
-        .status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, special_lw_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_old_pre);
+    agent.status(Init, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_init);
+    agent.status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, special_lw_pre);
+    agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, special_lw_main);
 }

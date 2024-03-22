@@ -163,15 +163,12 @@ unsafe extern "C" fn special_lw_jump_cancel_end(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("littlemac")
-        .status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_pre)
-        .status(Main, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_main)
-        .status(End, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_end)
-        .install();
-    smashline::Agent::new("littlemac")
-        .status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_pre)
-        .status(Main, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_main)
-        .status(End, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_pre);
+    agent.status(Main, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_main);
+    agent.status(End, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_end);
+
+    agent.status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_pre);
+    agent.status(Main, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_main);
+    agent.status(End, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_end);
 }

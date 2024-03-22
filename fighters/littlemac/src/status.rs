@@ -23,13 +23,11 @@ unsafe extern "C" fn littlemac_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    special_n::install();
-    special_s::install();
-    special_hi::install();
-    special_lw::install();
-    special_lw_cancel::install();
-    smashline::Agent::new("littlemac")
-        .on_start(littlemac_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    special_n::install(agent);
+    special_s::install(agent);
+    special_hi::install(agent);
+    special_lw::install(agent);
+    special_lw_cancel::install(agent);
+    agent.on_start(littlemac_init);
 }
