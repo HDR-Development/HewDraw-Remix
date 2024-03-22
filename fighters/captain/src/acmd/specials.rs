@@ -376,7 +376,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnturn", game_specialairnturn);
 
     agent.acmd("game_specialsstart", game_specialsstart);
-    agent.acmd("game_specialsend", captain_special_s_end_game);
+    agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("expression_specialsend", expression_specialsend);
     agent.acmd("game_specialairsend", game_specialairsend);
     
