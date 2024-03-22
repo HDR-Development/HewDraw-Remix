@@ -5,8 +5,8 @@ mod special_n;
 mod special_s;
 mod special_lw;
 
-pub fn install() {
-    special_n::install();
-    special_s::install();
-    special_lw::install();
+pub fn install(agent: &mut Agent) {
+    special_n::install(agent);
+    special_s::install(agent);
+    special_lw::install(agent);
 }

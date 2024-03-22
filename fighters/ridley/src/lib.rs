@@ -7,6 +7,9 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+mod breath;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +42,11 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("ridley");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    breath::install();
 }
