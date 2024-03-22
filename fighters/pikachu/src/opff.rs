@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 // Disable QA jump cancels if not directly QA into the ground
 unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor) {
     if StatusModule::is_changing(boma) {
@@ -127,8 +126,7 @@ pub unsafe fn pikachu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma);
     }
 }
-pub fn install() {
-    smashline::Agent::new("pikachu")
-        .on_line(Main, pikachu_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pikachu_frame_wrapper);
 }
