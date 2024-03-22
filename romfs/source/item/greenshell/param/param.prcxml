@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<struct>
-  <int hash="shell_lifetime">720</int>
-  <int hash="shell_hit_max">60</int>
-</struct>

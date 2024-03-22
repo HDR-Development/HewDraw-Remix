@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<struct>
-  <float hash="fly_effect_smoke_speed">4</float>
-  <float hash="fly_effect_aura_speed">999</float>
-  <int hash="vector_adjust_effect_remove_frame">1</int>
-</struct>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<struct>
-  <struct hash="cut_in_param">
-    <int hash="performance_frame">30</int>
-    <float hash="slow_rate">8</float>
-    <int hash="zoom_in_frame">999</int>
-  </struct>
-</struct>

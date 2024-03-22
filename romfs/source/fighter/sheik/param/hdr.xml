@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<struct>
-    <struct hash="param_special_hi">
-        <float hash="fall_max_x_mul">0.8</float>
-    </struct>
-</struct>
