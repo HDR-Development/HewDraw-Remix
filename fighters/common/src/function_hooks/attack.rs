@@ -124,16 +124,14 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
     if IS_KB_CALC_EARLY {
         let boma = &mut *(*ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor);
-        if !boma.is_item() {
-            let hitlag = *ctx.registers[0].w.as_ref();
-            let kb = KB;
-            let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-            let attack_data = (*ctx.registers[24].x.as_ref() as *mut smash_rs::app::AttackData);
-            let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
-            if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
-                // Set hitlag for attacker
-                *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
-            }
+        let hitlag = *ctx.registers[0].w.as_ref();
+        let kb = KB;
+        let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        let attack_data = (*ctx.registers[24].x.as_ref() as *mut smash_rs::app::AttackData);
+        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+            // Set hitlag for attacker
+            *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
         }
     }
 }
@@ -142,17 +140,18 @@ unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x33a9d90, inline)]
 unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let opponent_boma = &mut *(*ctx.registers[24].x.as_ref() as *mut BattleObjectModuleAccessor);
-
-    let hitlag = *ctx.registers[21].w.as_ref();
-    let kb = DamageModule::reaction(opponent_boma, 0);
-    IS_KB_CALC_EARLY = true;
-    KB = kb;
-    let max_hitlag = WorkModule::get_param_float(opponent_boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-    let attack_data = (*ctx.registers[20].x.as_ref() as *mut smash_rs::app::AttackData);
-    let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
-    if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
-        // Set hitlag for attacking article
-        *ctx.registers[21].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+    if !opponent_boma.is_item() {
+        let hitlag = *ctx.registers[21].w.as_ref();
+        let kb = DamageModule::reaction(opponent_boma, 0);
+        IS_KB_CALC_EARLY = true;
+        KB = kb;
+        let max_hitlag = WorkModule::get_param_float(opponent_boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        let attack_data = (*ctx.registers[20].x.as_ref() as *mut smash_rs::app::AttackData);
+        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+            // Set hitlag for attacking article
+            *ctx.registers[21].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+        }
     }
 }
 
