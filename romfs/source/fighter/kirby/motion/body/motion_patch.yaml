@@ -86,6 +86,9 @@ attack_air_hi:
 special_air_lw2:
   extra:
     cancel_frame: 28
+catch_dash:
+  extra:
+    cancel_frame: 41
 catch_attack:
   extra:
     cancel_frame: 0

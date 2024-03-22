@@ -97,6 +97,12 @@ special_air_s_start:
     move: false
   extra:
     cancel_frame: 57
+catch_dash:
+  extra:
+    cancel_frame: 45
+catch_turn:
+  extra:
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0

@@ -26,16 +26,14 @@ unsafe extern "C" fn game_catchdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.900);
-    }
+    FT_MOTION_RATE(fighter, 0.9);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
@@ -52,16 +50,14 @@ unsafe extern "C" fn game_catchturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.900);
-    }
+    FT_MOTION_RATE(fighter, 0.9);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 12.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(-15.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);

@@ -225,6 +225,8 @@ skyline_smash.workspace = true
 smashline.workspace = true
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
+hash40 = "1.2.0"
+smash-arc = { version = "0.6.0", features = ["rust-zstd", "smash-runtime"] }
 
 [features]
 default = [
@@ -324,9 +326,6 @@ default = [
 dev = ["utils/no-offset-search"]
 main_nro = ["skyline-web", "common"]
 runtime = []
-
-[patch.'https://github.com/jam1garner/smash-arc']
-smash-arc = "0.5"
 
 [profile.dev]
 panic = "abort"
