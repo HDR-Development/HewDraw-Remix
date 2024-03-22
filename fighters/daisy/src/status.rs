@@ -4,7 +4,6 @@ use globals::*;
 mod attack_air;
 mod special_s;
 mod special_lw;
-mod uniq_float_start;
 mod uniq_float;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
@@ -58,20 +57,18 @@ unsafe extern "C" fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
 }
 
-pub fn install() {
-    smashline::Agent::new("daisy").on_start(daisy_init).install();
-    attack_air::install();
-    special_s::install();
-    special_lw::install();
-    uniq_float_start::install();
-    uniq_float::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+
+    attack_air::install(agent);
+    special_s::install(agent);
+    special_lw::install(agent);
+    uniq_float::install(agent);
 }
