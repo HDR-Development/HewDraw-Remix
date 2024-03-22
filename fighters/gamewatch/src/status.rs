@@ -58,10 +58,10 @@ extern "C" fn gamewatch_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
+pub fn install(agent: &mut Agent) {
     smashline::Agent::new("gamewatch")
         .on_start(gamewatch_init)
         .install();
-    special_hi::install();
-    special_hi_open::install();
+    special_hi::install(agent);
+    special_hi_open::install(agent);
 }

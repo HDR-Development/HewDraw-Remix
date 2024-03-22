@@ -3,6 +3,8 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+mod copy;
+
 // symbol-based call for the pikachu/pichu characters' common opff
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
@@ -57,18 +59,16 @@ unsafe fn dash_attack_jump_cancels(boma: &mut BattleObjectModuleAccessor) {
 //     }
 // }
 
-pub extern "C" fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    unsafe {
-        if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-                AttackModule::clear_all(fighter.module_accessor);
-                MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
-                MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
-            }
-            if fighter.is_situation(*SITUATION_KIND_AIR) {
-                if KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-                }
+unsafe fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+            AttackModule::clear_all(fighter.module_accessor);
+            MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
+            MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
+        }
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            if KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -141,14 +141,17 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     dash_attack_jump_cancels(boma);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
+    hammer_swing_drift_landcancel(fighter);
     fastfall_specials(fighter);
     cutter_size(boma, status_kind);
+
+    copy::kirby_copy_handler(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 }
 
 pub extern "C" fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		kirby_frame(fighter)
+        kirby_frame(fighter)
     }
 }
 
@@ -160,6 +163,5 @@ pub unsafe fn kirby_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn install() {
     smashline::Agent::new("kirby")
         .on_line(Main, kirby_frame_wrapper)
-        .on_line(Main, hammer_swing_drift_landcancel)
         .install();
 }

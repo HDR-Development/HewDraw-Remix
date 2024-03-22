@@ -149,7 +149,7 @@ unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     }
 }
 
-pub fn install() {
+pub fn install(agent: &mut Agent) {
     smashline::Agent::new("gamewatch")
         .on_line(Main, gamewatch_frame_wrapper)
         .install();
