@@ -44,6 +44,8 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
+static mut BAYONET_EGGS:[i32;8] = [0; 8]; //I have no idea why varmod doesn't work with this, so this will have to do
+
 pub fn install() {
     let agent = &mut Agent::new("buddy");
     acmd::install(agent);

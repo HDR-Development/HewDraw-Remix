@@ -214,7 +214,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_throwhi", game_throwhi);
 
-    agent.acmd("game_throwlw", buddy_throw_lw_game);
+    agent.acmd("game_throwlw", game_throwlw);
     agent.acmd("effect_throwlw", effect_throwlw);
     agent.acmd("sound_throwlw", sound_throwlw);
 }
