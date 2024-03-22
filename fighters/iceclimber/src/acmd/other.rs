@@ -26,6 +26,21 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_damageflyroll(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            PLAY_FLY_VOICE(fighter, Hash40::new("seq_popo_rnd_futtobi01"), Hash40::new("seq_popo_rnd_futtobi02"));
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_popo_rnd_futtobi01"), Hash40::new("seq_popo_rnd_futtobi02"));
+    }
+}
+
 unsafe extern "C" fn sound_damagefly_nana(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -48,6 +63,21 @@ unsafe extern "C" fn sound_damagefly_nana(agent: &mut L2CAgentBase) {
             0
         };
         if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));}
+    }
+}
+
+unsafe extern "C" fn sound_damageflyroll_nana(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            PLAY_FLY_VOICE(fighter, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
     }
 }
 
@@ -126,13 +156,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly);
     agent.acmd("sound_damageflylw", sound_damagefly);
     agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damagefly);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
     agent.acmd("sound_damageflytop", sound_damagefly);
 
     agent.acmd("sound_damageflyhi_nana", sound_damagefly_nana);
     agent.acmd("sound_damageflylw_nana", sound_damagefly_nana);
     agent.acmd("sound_damageflyn_nana", sound_damagefly_nana);
-    agent.acmd("sound_damageflyroll_nana", sound_damagefly_nana);
+    agent.acmd("sound_damageflyroll_nana", sound_damageflyroll_nana);
     agent.acmd("sound_damageflytop_nana", sound_damagefly_nana);
 
     agent.acmd("game_dash", dash_game);
