@@ -1,16 +1,31 @@
 use super::*;
 use globals::*;
-utils::import!(popo::{ics_dash});
 // status script import
- 
+
+unsafe extern "C" fn ics_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[OBJECT_ID] == FIGHTER_KIND_NANA {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_FORBID) {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+        }
+    }
+    fighter.status_Dash_Main();
+    0.into()
+}
 
 // FIGHTER_STATUS_KIND_DASH //
 
 pub unsafe extern "C" fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    popo::ics_dash(fighter)
+    fighter.status_Dash_Sub();
+    fighter.sub_shift_status_main(L2CValue::Ptr(ics_dash_main as *const () as _))
 }
 
-pub unsafe extern "C" fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP //
+
+pub unsafe extern "C" fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+pub unsafe extern "C" fn throw_nana(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // TODO: this check has issues.
     // - if we grab on a platform far off stage (like smashville) this check fails
@@ -48,14 +63,14 @@ pub unsafe extern "C" fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.boma(), Hash40::new(throw_name), 0.0, 1.0, false, 0.0, false, false);
 
     // shift into the L2CFighterCommon's throw impl (instead of nana's default, modified impl)
-    return fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Throw_Main as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Throw_Main as *const () as _))
 }
 
-unsafe extern "C" fn catchwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_shift_status_main(L2CValue::Ptr(catchwait_main_loop as *const () as _))
+unsafe extern "C" fn catchwait_nana_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_shift_status_main(L2CValue::Ptr(catchwait_nana_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn catchwait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn catchwait_nana_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // let boma = fighter.boma();
     // let opponent_boma = boma.get_grabbed_opponent_boma();
     // let damage = DamageModule::damage(opponent_boma, 0);
@@ -67,21 +82,16 @@ unsafe extern "C" fn catchwait_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-// uncomment this to prevent buffering pummels with nana
-// #[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_CATCH_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// unsafe fn catchattack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     fighter.sub_shift_status_main(L2CValue::Ptr(catchattack_main_loop as *const () as _))
-// }
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash);
+    agent.status(
+        Exit,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP,
+        special_hi_jump_exit,
+    );
+}
 
-// unsafe extern "C" fn catchattack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
-//     0.into()
-// }
-
-pub fn install() {
-    smashline::Agent::new("nana")
-        .status(Main, *FIGHTER_STATUS_KIND_DASH, dash)
-        .status(Main, *FIGHTER_STATUS_KIND_THROW, throw)
-        .status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, catchwait_main)
-        .install();
+pub fn install_nana(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_THROW, throw_nana);
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, catchwait_nana_main);
 }

@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod blizzard;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +41,21 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let popo = &mut Agent::new("popo");
+    let nana = &mut Agent::new("nana");
+
+    acmd::install(popo);
+    acmd::install(nana);
+
+    status::install(popo);
+    status::install(nana);
+    status::install_nana(nana);
+
+    opff::install_popo(popo);
+    opff::install_nana(nana);
+
+    popo.install();
+    nana.install();
+
+    blizzard::install();
 }
