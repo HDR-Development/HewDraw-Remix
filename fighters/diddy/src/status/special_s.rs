@@ -8,8 +8,6 @@ pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("diddy")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s);
 }

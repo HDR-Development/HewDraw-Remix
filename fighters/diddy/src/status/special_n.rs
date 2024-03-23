@@ -240,20 +240,14 @@ unsafe extern "C" fn special_n_shoot_motion_helper(fighter: &mut L2CFighterCommo
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("diddy")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main)
-        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_main)
-        .install();
-    smashline::Agent::new("diddy")
-        .status(Pre, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_pre)
-        .status(Main, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_main)
-        .status(End, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_end)
-        .install();
-    smashline::Agent::new("diddy")
-        .status(Pre, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_pre)
-        .status(Main, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_main)
-        .status(End, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main);
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_main);
+    agent.status(Pre, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_pre);
+    agent.status(Main, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_main);
+    agent.status(End, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_end);
+    agent.status(Pre, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_pre);
+    agent.status(Main, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_main);
+    agent.status(End, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_end);
 }
