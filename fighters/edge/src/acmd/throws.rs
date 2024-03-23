@@ -1,5 +1,66 @@
 use super::*;
 
+unsafe extern "C" fn edge_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 4.2, 0.0, 8.5, 4.7, Some(0.0), Some(8.5), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    
+}
+
+unsafe extern "C" fn edge_catch_dash_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        CATCH(agent, 0, Hash40::new("top"), 4.2, 0.0, 7.0, 4.7, Some(0.0), Some(7.0), Some(11.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(agent);
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+unsafe extern "C" fn edge_catch_turn_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        CATCH(agent, 0, Hash40::new("top"), 4.2, 0.0, 7.0, -4.7, Some(0.0), Some(7.0), Some(-14.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(agent);
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
 unsafe extern "C" fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -13,7 +74,7 @@ unsafe extern "C" fn edge_throw_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 80, 0, 60, 7.5, 0.0, 11.0, -13.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 80, 0, 60, 7.5, 0.0, 11.0, -13.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
         AttackModule::set_catch_only_all(boma, true, false);
         CHECK_FINISH_CAMERA(fighter, -15.0, 8);
     }
@@ -192,6 +253,9 @@ unsafe extern "C" fn edge_throw_lw_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::Agent::new("edge")
+        .acmd("game_catch", edge_catch_game)
+        .acmd("game_catchdash", edge_catch_dash_game)
+        .acmd("game_catchturn", edge_catch_turn_game)
         .acmd("game_throwb", edge_throw_b_game)
         .acmd("game_throwhi", edge_throw_hi_game)
         .acmd("effect_throwhi", edge_throw_hi_effect)

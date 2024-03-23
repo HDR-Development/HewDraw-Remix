@@ -1,6 +1,71 @@
 
 use super::*;
 
+unsafe extern "C" fn wario_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.875);
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 4.7, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(10.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    
+}
+
+unsafe extern "C" fn wario_catch_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 4.7, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(11.3), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    
+}
+
+unsafe extern "C" fn wario_catch_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 4.7, 0.0, 7.0, -4.0, Some(0.0), Some(7.0), Some(-15.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
 unsafe extern "C" fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -147,7 +212,7 @@ unsafe extern "C" fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         
-        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("top"), 10.0*factorPower, 270, 90, 0, 15, 2.5*factorSize, 0.0, 0.0, -3.5, Some(0.0), Some(0.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("top"), 10.0*factorPower, 270, 90, 0, 15, 2.5*factorSize, 0.0, 0.0, -3.5, Some(0.0), Some(0.0), Some(3.5), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
 
         ATTACK_IGNORE_THROW(fighter, 1, 0, Hash40::new("rot"), 7.0, 65, 95, 0, 85, 8.25*factorSize, 0.0, 0.0, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
 
@@ -350,6 +415,9 @@ unsafe extern "C" fn wario_throw_f_expression(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::Agent::new("wario")
+        .acmd("game_catch", wario_catch_game)
+        .acmd("game_catchdash", wario_catch_dash_game)
+        .acmd("game_catchturn", wario_catch_turn_game)
         .acmd("game_catchattack", wario_catch_attack_game)
         .acmd("effect_catchattack", wario_catch_attack_effect)
         .acmd("game_throwlw", wario_throw_lw_game)

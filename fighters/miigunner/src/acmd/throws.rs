@@ -1,5 +1,68 @@
 use super::*;
 
+unsafe extern "C" fn miigunner_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 1.2);
+	frame(lua_state, 5.0);
+	if is_excute(fighter) {
+		GrabModule::set_rebound(boma, true);
+	}
+	frame(lua_state, 6.0);
+	FT_MOTION_RATE(fighter, 1.0);
+	if is_excute(fighter) {
+		CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(12.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+	}
+	game_CaptureCutCommon(fighter);
+	wait(lua_state, 2.0);
+	if is_excute(fighter) {
+		grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+		WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+		GrabModule::set_rebound(boma, false);
+	}
+}
+
+unsafe extern "C" fn miigunner_catch_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 8.0);
+	if is_excute(fighter) {
+		GrabModule::set_rebound(boma, true);
+	}
+	frame(lua_state, 9.0);
+	if is_excute(fighter) {
+		CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 6.7, 0.0, Some(0.0), Some(6.7), Some(12.9), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+	}
+	game_CaptureCutCommon(fighter);
+	wait(lua_state, 2.0);
+	if is_excute(fighter) {
+		grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+		WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+		GrabModule::set_rebound(boma, false);
+	}
+}
+
+unsafe extern "C" fn miigunner_catch_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 9.0);
+	if is_excute(fighter) {
+		GrabModule::set_rebound(boma, true);
+	}
+	frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 6.4, -4.0, Some(0.0), Some(6.4), Some(-14.9), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+	}
+	game_CaptureCutCommon(fighter);
+	wait(lua_state, 2.0);
+	if is_excute(fighter) {
+		grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+		WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+		GrabModule::set_rebound(boma, false);
+	}
+}
+
 unsafe extern "C" fn miigunner_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -87,7 +150,7 @@ unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowb_game(fighter: &mut L2C
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 160, 0, 20, 4.0, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 160, 0, 20, 4.0, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
     }
 }
 
@@ -229,7 +292,7 @@ unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowhi_game(fighter: &mut L2
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 90, 77, 0, 89, 6.5, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 90, 77, 0, 89, 6.5, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -365,6 +428,9 @@ pub fn install() {
         .acmd("game_flythrowhi2", miigunner_rapidshot_bullet_flythrowhi2_game)
         .install();
     smashline::Agent::new("miigunner")
+		.acmd("game_catch", miigunner_catch_game)
+		.acmd("game_catchdash", miigunner_catch_dash_game)
+		.acmd("game_catchturn", miigunner_catch_turn_game)
         .acmd("game_throwf", miigunner_throw_f_game)
         .acmd("game_throwb", miigunner_throw_b_game)
         .acmd("effect_throwb", miigunner_throw_b_effect)
