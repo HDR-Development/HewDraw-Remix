@@ -559,15 +559,13 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
 
     let step = (di_angle * 2.0) / (NUM_ANGLE_CHECK as f32);
     let context_ref = context;
-    println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
-
-    // checks 10 different DI angles and sees how many of them will result in a kill
-    let mut kill_angle_num = 0;
+    let mut false_angle_num = 0;
     for idx in 0..NUM_ANGLE_CHECK {
         let ang = (min_di + (idx as f32 * step)).to_radians();
         context.x_launch_speed = ang.cos() * mag;
         context.y_launch_speed = ang.sin() * mag;
         let mut x = 0;
+        let mut does_angle_kill = false;
         while context.hitstun > x as f32  {
             context.step();
             if GroundModule::ray_check(
@@ -583,16 +581,16 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
             }
             if !blastzones.contains(context.x_pos, context.y_pos){
                 //println!("{} will kill! adding to counter.", ang.to_degrees());
-                kill_angle_num += 1;
+                does_angle_kill = true;
                 break;
             }
             x += 1;
         }
         context = context_ref;
-    }
-    println!("kill angles: {}", kill_angle_num);
-    if kill_angle_num < NUM_ANGLE_CHECK - NUM_FALSE_ANGLES_ALLOWED {
-        return false;
+        if !does_angle_kill {false_angle_num += 1;}
+        if false_angle_num > NUM_FALSE_ANGLES_ALLOWED { 
+            return false; 
+        }
     }
     return true;
 }
@@ -614,9 +612,12 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
     let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
-
-    if !is_potential_finishing_hit(defender_boma, attacker_boma) { return; }
-    if !is_valid_finishing_hit(knockback_info, defender_boma) { return; }
+    if !is_potential_finishing_hit(defender_boma, attacker_boma) { 
+        return; 
+    }
+    if !is_valid_finishing_hit(knockback_info, defender_boma) { 
+        return; 
+    }
     call_finishing_hit_effects(defender_boma);
 }
 
