@@ -415,12 +415,16 @@ struct KnockbackCalcContext {
     pub damageflytop_fall_speed: f32,
     pub x_pos: f32,
     pub y_pos: f32,
+    pub x_pos_prev: f32,
+    pub y_pos_prev: f32,
     pub decay_x: f32,
     pub decay_y: f32,
 }
 
 impl KnockbackCalcContext {
     pub fn step(&mut self) {
+        self.x_pos_prev = self.x_pos;
+        self.y_pos_prev = self.y_pos;
         self.x_pos += self.x_launch_speed;
         self.y_pos += self.y_launch_speed + self.y_chara_speed;
         if self.x_launch_speed != 0.0 {
@@ -545,6 +549,8 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         damageflytop_fall_speed: defender_boma.get_param_float("damage_fly_top_speed_y_stable", ""),
         x_pos: PostureModule::pos_x(defender_boma),
         y_pos: PostureModule::pos_y(defender_boma),
+        x_pos_prev: PostureModule::pos_x(defender_boma),
+        y_pos_prev: PostureModule::pos_y(defender_boma),
         decay_x: defender_boma.get_param_float("common", "damage_air_brake") * angle.cos().abs(),
         decay_y: defender_boma.get_param_float("common", "damage_air_brake") * angle.sin().abs(),
     };
@@ -568,13 +574,13 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         let mut does_angle_kill = false;
         while context.hitstun > x as f32  {
             context.step();
-            if GroundModule::ray_check(
+            if !(30.0..150.0).contains(&ang.to_degrees())
+            && GroundModule::ray_check(
                 defender_boma, 
-                &Vector2f{ x: context.x_pos, y: (context.y_pos + 4.0)}, 
-                &Vector2f{ x: 0.0, y: -6.0}, 
+                &Vector2f{ x: context.x_pos_prev, y: context.y_pos_prev}, 
+                &Vector2f{ x: context.x_pos - context.x_pos_prev, y: context.y_pos - context.y_pos_prev}, 
                 true 
-            ) == 1
-            && !(30.0..150.0).contains(&ang.to_degrees()) {
+            ) == 1 {
                 // if it's ever possible to touch stage, this is not a valid finishing hit
                 println!("idx: {} would touch stage", idx);
                 return false;
