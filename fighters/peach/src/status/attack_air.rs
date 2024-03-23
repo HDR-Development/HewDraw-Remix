@@ -107,10 +107,8 @@ unsafe extern "C" fn peach_attack_air_main_loop(fighter: &mut L2CFighterCommon) 
     WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     0.into()
 }
-pub fn install() {
-    smashline::Agent::new("peach")
-        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_init)
-        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_exec)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_exec);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_main);
 }

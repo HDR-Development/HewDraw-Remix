@@ -55,13 +55,7 @@ unsafe extern "C" fn peach_jump_aerial_main_loop(fighter: &mut L2CFighterCommon)
     }
     fighter.status_JumpAerial_Main()
 }
-pub fn install() {
-    smashline::Agent::new("peach")
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP_AERIAL, peach_jump_aerial_pre)
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_JUMP_AERIAL,
-            peach_jump_aerial_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP_AERIAL, peach_jump_aerial_pre);
+    agent.status(Main,*FIGHTER_STATUS_KIND_JUMP_AERIAL,peach_jump_aerial_main,);
 }

@@ -37,8 +37,6 @@ unsafe extern "C" fn uniq_float(fighter: &mut L2CFighterCommon) -> L2CValue {
     peach_float_main_common(fighter)
 }
 
-pub fn install() {
-    Agent::new("peach")
-        .status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT, uniq_float)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT, uniq_float);
 }
