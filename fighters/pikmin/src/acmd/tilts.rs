@@ -70,8 +70,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin")
-        .acmd("game_attacks3", pikmin_attack_s3_s_game)
-        .acmd("game_attacklw3", pikmin_attack_lw3_game)
-        .acmd("game_attackhi3", pikmin_attack_hi3_game)
+        agent.acmd("game_attacks3", game_attacks3);
+        agent.acmd("game_attacklw3", game_attacklw3);
+        agent.acmd("game_attackhi3", game_attackhi3);
 }

@@ -78,6 +78,6 @@ impl From<i32> for PikminInfo {
 }
 
 pub fn install(agent: &mut Agent) {
-    acmd::install();
-    status::install();
+    acmd::install(agent);
+    status::install(agent);
 }

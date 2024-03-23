@@ -87,16 +87,15 @@ pub unsafe extern "C" fn special_s_cling_remove_end(agent: &mut L2CFighterCommon
     smashline::original_status(End, agent, *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE)(agent)
 }
 
-pub fn install() {
-    smashline::Agent::new("pikmin_pikmin")
-        .status(
+pub fn install(agent: &mut Agent) {
+        agent.status(
             Main,
             *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING,
             special_s_cling_main,
-        )
-        .status(
+        );
+        agent.status(
             End,
             *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE,
             special_s_cling_remove_end,
-        )
+        );
 }

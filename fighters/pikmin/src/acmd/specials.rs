@@ -66,14 +66,13 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin")
-        .acmd("game_specials", pikmin_special_s)
-        .acmd("game_specialairs", pikmin_special_s)
-        .acmd("game_specialnstart", pikmin_special_n)
-        .acmd("game_specialnfailure", pikmin_special_n_failure)
-        .acmd("game_specialairnfailure", pikmin_special_n_failure)
-        .acmd("game_speciallw", game_speciallw)
-        .acmd("game_specialairlw", game_speciallw)
-        .acmd("effect_speciallw", effect_speciallw)
-        .acmd("effect_specialairlw", effect_speciallw)
+        agent.acmd("game_specials", game_specials);
+        agent.acmd("game_specialairs", game_specialairs);
+        agent.acmd("game_specialnstart", game_specialnstart);
+        agent.acmd("game_specialnfailure", game_specialnfailure);
+        agent.acmd("game_specialairnfailure", game_specialairnfailure);
+        agent.acmd("game_speciallw", game_speciallw);
+        agent.acmd("game_specialairlw", game_speciallw);
+        agent.acmd("effect_speciallw", effect_speciallw);
+        agent.acmd("effect_specialairlw", effect_speciallw);
 }
