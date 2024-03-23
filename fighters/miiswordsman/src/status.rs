@@ -1284,30 +1284,27 @@ pub unsafe extern "C" fn special_hi2_bound_end(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("miiswordsman")
-        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD, pre_final_hold)
-        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, pre_special_s1_attack)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, special_s1_attack)
-        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, pre_special_s1_end)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, special_s1_end)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH, special_s2_dash)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, special_s2_attack)
-        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, pre_special_s2_end)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, special_s2_end)
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_special_hi)
-        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, pre_special_hi2_rush)
-        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, exec_special_hi2_rush)
-        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, exec_special_hi2_rush_end)
-        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, exec_special_hi3_hold)
-        .status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, pre_special_hi3_end)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, special_hi3_end)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw)
-        .status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, miiswordsman_speciallw1hit_main)
-        .status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, special_lw3_end)
-        .status(End, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, special_hi2_bound_end)
-        .install();
-    smashline::Agent::new("miiswordsman_chakram")
-        .status(Pre, *WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP, pre_chakram_hop)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD, pre_final_hold);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, pre_special_s1_attack);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, special_s1_attack);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, pre_special_s1_end);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, special_s1_end);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH, special_s2_dash);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, special_s2_attack);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, pre_special_s2_end);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, special_s2_end);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_special_hi);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, pre_special_hi2_rush);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, exec_special_hi2_rush);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, exec_special_hi2_rush_end);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, exec_special_hi3_hold);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, pre_special_hi3_end);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, special_hi3_end);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, miiswordsman_speciallw1hit_main);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, special_lw3_end);
+    agent.status(End, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, special_hi2_bound_end);
+    agent.status(Pre, *WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP, pre_chakram_hop);
+    agent.on_start(on_start);
 }
