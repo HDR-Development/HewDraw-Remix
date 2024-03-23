@@ -40,8 +40,10 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    vtable_hook::install();
-    opff::install();
+    let agent = &mut Agent::new("shulk");
+    acmd::install(agent);
+    status::install(agent);
+    vtable_hook::install(agent);
+    opff::install(agent);
+    agent.install();
 }
