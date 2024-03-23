@@ -14,17 +14,13 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn falco_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() == *FIGHTER_KIND_FALCO {
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
 }
 
 pub fn install(agent: &mut Agent) {
     special_s::install(agent);
     special_hi::install(agent);
     special_lw::install(agent);
-    agent.on_start(falco_on_start);
+    agent.on_start(on_start);
 }

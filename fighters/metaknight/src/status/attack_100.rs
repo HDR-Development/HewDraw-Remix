@@ -87,5 +87,5 @@ unsafe extern "C" fn metaknight_attack100_main_loop(fighter: &mut L2CFighterComm
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, metaknight_attack100_main)
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, metaknight_attack100_main);
 }

@@ -43,7 +43,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn cloud_attack_s4_s_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -122,7 +122,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn cloud_attack_hi4_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {

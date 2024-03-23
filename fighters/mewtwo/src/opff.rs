@@ -145,5 +145,5 @@ pub unsafe fn mewtwo_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_line(Main, mewtwo_frame_wrapper)
+    agent.on_line(Main, mewtwo_frame_wrapper);
 }

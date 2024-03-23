@@ -137,6 +137,5 @@ pub unsafe fn reflet_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 pub fn install(agent: &mut Agent) {
-    agent.on_line(Main, reflet_frame_wrapper)
-
+    agent.on_line(Main, reflet_frame_wrapper);
 }

@@ -320,7 +320,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe fn game_attackairhi(agent: &mut L2CAgentBase){
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase){
     let lua_state: u64 = agent.lua_state_agent;
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -388,5 +388,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairb", effect_attackairb);
     agent.acmd("expression_attackairb", expression_attackairb);
     agent.acmd("game_attackairhi", game_attackairhi);
-    agent.acmd("game_attackairlw", game_attackairlw)
+    agent.acmd("game_attackairlw", game_attackairlw);
 }
