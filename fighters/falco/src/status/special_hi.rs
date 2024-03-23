@@ -49,18 +49,8 @@ pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) ->
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("falco")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(
-            Main,
-            *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH_END,
-            special_hi_rush_end_main,
-        )
-        .status(
-            End,
-            *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_BOUND,
-            special_hi_bound_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+        agent.status( Main,*FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH_END,special_hi_rush_end_main,);
+        agent.status(End,*FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_BOUND,special_hi_bound_end,);
 }

@@ -22,9 +22,9 @@ extern "C" fn falco_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    special_s::install();
-    special_hi::install();
-    special_lw::install();
-    smashline::Agent::new("falco").on_start(falco_init).install();
+pub fn install(agent: &mut Agent) {
+    special_s::install(agent);
+    special_hi::install(agent);
+    special_lw::install(agent);
+    agent.on_start(falco_on_start);
 }

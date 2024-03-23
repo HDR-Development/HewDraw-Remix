@@ -449,21 +449,19 @@ unsafe extern "C" fn special_lw_end_exec(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("falco")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end)
-        .status(Pre, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_pre)
-        .status(Init, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_init)
-        .status(Main, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_main)
-        .status(Exec, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_exec)
-        .status(End, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_end)
-        .status(Pre, statuses::falco::SPECIAL_LW_END, special_lw_end_pre)
-        .status(Main, statuses::falco::SPECIAL_LW_END, special_lw_end_main)
-        .status(Exec, statuses::falco::SPECIAL_LW_END, special_lw_end_exec)
-        .status(End, statuses::falco::SPECIAL_LW_END, special_lw_end_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+        agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+        agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec);
+        agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+        agent.status(Pre, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_pre);
+        agent.status(Init, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_init);
+        agent.status(Main, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_main);
+        agent.status(Exec, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_exec);
+        agent.status(End, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_end);
+        agent.status(Pre, statuses::falco::SPECIAL_LW_END, special_lw_end_pre);
+        agent.status(Main, statuses::falco::SPECIAL_LW_END, special_lw_end_main);
+        agent.status(Exec, statuses::falco::SPECIAL_LW_END, special_lw_end_exec);
+        agent.status(End, statuses::falco::SPECIAL_LW_END, special_lw_end_end);
 }
