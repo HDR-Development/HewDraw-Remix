@@ -10,5 +10,5 @@ pub unsafe extern "C" fn special_s_end_main(fighter: &mut L2CFighterCommon) -> L
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main,*FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END,special_s_end_main,)
+    agent.status(Main, *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END, special_s_end_main);
 }
