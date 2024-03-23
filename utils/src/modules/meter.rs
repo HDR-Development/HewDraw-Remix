@@ -496,7 +496,7 @@ const COUNTER: i32 = 0x01FE;
 const NUM_ANGLE_CHECK: i32 = 10;
 const NUM_FALSE_ANGLES_ALLOWED: i32 = 1;
 
-unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
+pub unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     for is_abs in [false, true] {
         for id in 0..8 {
             let attack_data = AttackModule::attack_data(attacker_boma, id, is_abs);
@@ -514,7 +514,7 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
     if !defender_boma.is_fighter() { return false; }
     if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return false; }
     if VarModule::get_int(defender_boma.object(), COUNTER) > 0 {
-        println!("no effects because COUNTER: {}", VarModule::get_int(defender_boma.object(), COUNTER));
+        // println!("no effects because COUNTER: {}", VarModule::get_int(defender_boma.object(), COUNTER));
         return false; 
     }
     if is_no_finishing_hit(attacker_boma) { return false; }
@@ -580,7 +580,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
     let di_angle = defender_boma.get_param_float("common", "damage_fly_correction_max");
     let min_di = kb_angle - di_angle;
     let max_di = kb_angle + di_angle;
-    println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
+    // println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
 
     let step = (di_angle * 2.0) / (NUM_ANGLE_CHECK as f32);
     let context_ref = context;
@@ -600,7 +600,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
                 context.y_pos <= context.y_pos_prev // only check for platforms if going downwards
             ) == 1 {
                 // if it's ever possible to touch stage, this is not a valid finishing hit
-                println!("idx: {} would touch stage", idx);
+                // println!("idx: {} would touch stage", idx);
                 return false;
             }
             if !blastzones.contains(context.x_pos, context.y_pos){
@@ -613,15 +613,15 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         context = context_ref;
         if !does_angle_kill {false_angle_num += 1;}
         if false_angle_num > NUM_FALSE_ANGLES_ALLOWED { 
-            println!("false angles: at least {}", false_angle_num);
+            // println!("false angles: at least {}", false_angle_num);
             return false; 
         }
     }
-    println!("false angles: {}", false_angle_num);
+    // println!("false angles: {}", false_angle_num);
     return true;
 }
 
-unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor) {
+pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor) {
     let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
     EffectModule::set_billboard(defender_boma, handle as u32, true);
     EffectModule::set_disable_render_offset_last(defender_boma);
@@ -638,23 +638,23 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
     let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
-    let before = std::time::Instant::now();
-    println!("");
+    // let before = std::time::Instant::now();
+    // println!("");
     if !is_potential_finishing_hit(defender_boma, attacker_boma) { 
-        let elapsed = std::time::Instant::now().duration_since(before);
-        println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
+        // let elapsed = std::time::Instant::now().duration_since(before);
+        // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
-    let elapsed = std::time::Instant::now().duration_since(before);
-    println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
-    let before = std::time::Instant::now();
+    // let elapsed = std::time::Instant::now().duration_since(before);
+    // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
+    // let before = std::time::Instant::now();
     if !is_valid_finishing_hit(knockback_info, defender_boma) { 
-        let elapsed = std::time::Instant::now().duration_since(before);
-        println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
+        // let elapsed = std::time::Instant::now().duration_since(before);
+        // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
-    let elapsed = std::time::Instant::now().duration_since(before);
-    println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
+    // let elapsed = std::time::Instant::now().duration_since(before);
+    // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
     call_finishing_hit_effects(defender_boma);
 }
 
