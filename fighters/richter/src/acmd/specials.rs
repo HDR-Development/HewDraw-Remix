@@ -238,6 +238,7 @@ unsafe extern "C" fn richter_special_s1_game(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+        boma.select_cliff_hangdata_from_name("special_s1");
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -332,6 +333,7 @@ unsafe extern "C" fn richter_special_air_s1_game(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+        boma.select_cliff_hangdata_from_name("special_s1");
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
