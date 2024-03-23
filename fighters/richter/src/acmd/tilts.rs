@@ -253,6 +253,11 @@ unsafe extern "C" fn richter_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn richter_whip_attack_hi3_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+}
+
 unsafe extern "C" fn richter_whip_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -370,6 +375,7 @@ pub fn install() {
     smashline::Agent::new("richter_whip")
         .acmd("game_attacks3", richter_whip_attack_s3_s_game)
         .acmd("effect_attacks3", richter_whip_attack_s3_s_effect)
+        .acmd("game_attackhi3", richter_whip_attack_hi3_game)
         .acmd("effect_attackhi3", richter_whip_attack_hi3_effect)
         .install();
 }
