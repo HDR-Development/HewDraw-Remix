@@ -38,8 +38,10 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(agent: &mut Agent) {
+pub fn install() {
+    let agent = &mut Agent::new("pitb");
     acmd::install(agent);
     status::install(agent);
     opff::install(agent);
+    agent.install();
 }

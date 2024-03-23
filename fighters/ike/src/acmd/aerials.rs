@@ -337,16 +337,16 @@ unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_attackairn", game_attackairn);
-        agent.acmd("effect_attackairn", effect_attackairn);
-        agent.acmd("expression_attackairn", expression_attackairn);
-        agent.acmd("game_attackairf", game_attackairf);
-        agent.acmd("effect_attackairf", effect_attackairf);
-        agent.acmd("expression_attackairf", expression_attackairf);
-        agent.acmd("game_attackairb", game_attackairb);
-        agent.acmd("game_attackairhi", game_attackairhi);
-        agent.acmd("expression_attackairhi", expression_attackairhi);
-        agent.acmd("game_attackairlw", game_attackairlw);
-        agent.acmd("effect_attackairlw", effect_attackairlw);
-        agent.acmd("effect_landingairlw", effect_landingairlw);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("effect_attackairf", effect_attackairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
+    agent.acmd("effect_landingairlw", effect_landingairlw);
 }

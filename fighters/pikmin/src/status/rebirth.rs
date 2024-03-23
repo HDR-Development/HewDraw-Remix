@@ -7,5 +7,5 @@ pub unsafe extern "C" fn rebirth_end(agent: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, rebirth_end)
+    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, rebirth_end);
 }

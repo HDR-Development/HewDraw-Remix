@@ -77,7 +77,9 @@ impl From<i32> for PikminInfo {
     }
 }
 
-pub fn install(agent: &mut Agent) {
+pub fn install() {
+    let agent = &mut Agent::new("pikmin_pikmin");
     acmd::install(agent);
     status::install(agent);
+    agent.install();
 }

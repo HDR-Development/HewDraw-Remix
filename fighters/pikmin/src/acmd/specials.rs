@@ -66,13 +66,13 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_specials", game_specials);
-        agent.acmd("game_specialairs", game_specialairs);
-        agent.acmd("game_specialnstart", game_specialnstart);
-        agent.acmd("game_specialnfailure", game_specialnfailure);
-        agent.acmd("game_specialairnfailure", game_specialairnfailure);
-        agent.acmd("game_speciallw", game_speciallw);
-        agent.acmd("game_specialairlw", game_speciallw);
-        agent.acmd("effect_speciallw", effect_speciallw);
-        agent.acmd("effect_specialairlw", effect_speciallw);
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specials);
+    agent.acmd("game_specialnstart", game_specialnstart);
+    agent.acmd("game_specialnfailure", game_specialnfailure);
+    agent.acmd("game_specialairnfailure", game_specialnfailure);
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
+    agent.acmd("effect_speciallw", effect_speciallw);
+    agent.acmd("effect_specialairlw", effect_speciallw);
 }

@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod sword;
+
 use smash::{
     lib::{
         L2CValue,
@@ -38,8 +40,12 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(agent: &mut Agent) {
+pub fn install() {
+    let agent = &mut Agent::new("ike");
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
+    agent.install();
+
+    sword::install();
 }

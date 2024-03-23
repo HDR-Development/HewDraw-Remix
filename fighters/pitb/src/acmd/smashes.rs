@@ -115,7 +115,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_attacks4", game_attacks4);
-        agent.acmd("game_attackhi4", game_attackhi4);
-        agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }

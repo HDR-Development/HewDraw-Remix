@@ -291,14 +291,14 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_attackairn", game_attackairn);
-        agent.acmd("effect_attackairn", effect_attackairn);
-        agent.acmd("sound_attackairn", sound_attackairn);
-        agent.acmd("expression_attackairn", expression_attackairn);
-        agent.acmd("game_attackairf", game_attackairf);
-        agent.acmd("game_attackairb", game_attackairb);
-        agent.acmd("effect_attackairb", effect_attackairb);
-        agent.acmd("game_attackairhi", game_attackairhi);
-        agent.acmd("game_attackairlw", game_attackairlw);
-        agent.acmd("expression_attackairlw", expression_attackairlw);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("sound_attackairn", sound_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("effect_attackairb", effect_attackairb);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("expression_attackairlw", expression_attackairlw);
 }
