@@ -562,6 +562,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
     let di_angle = defender_boma.get_param_float("common", "damage_fly_correction_max");
     let min_di = kb_angle - di_angle;
     let max_di = kb_angle + di_angle;
+    println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
 
     let step = (di_angle * 2.0) / (NUM_ANGLE_CHECK as f32);
     let context_ref = context;
@@ -595,9 +596,11 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         context = context_ref;
         if !does_angle_kill {false_angle_num += 1;}
         if false_angle_num > NUM_FALSE_ANGLES_ALLOWED { 
+            println!("false angles: at least {}", false_angle_num);
             return false; 
         }
     }
+    println!("false angles: {}", false_angle_num);
     return true;
 }
 
@@ -618,12 +621,23 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
     let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
+    let before = std::time::Instant::now();
+    println!("");
     if !is_potential_finishing_hit(defender_boma, attacker_boma) { 
+        let elapsed = std::time::Instant::now().duration_since(before);
+        println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
+    let elapsed = std::time::Instant::now().duration_since(before);
+    println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
+    let before = std::time::Instant::now();
     if !is_valid_finishing_hit(knockback_info, defender_boma) { 
+        let elapsed = std::time::Instant::now().duration_since(before);
+        println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
+    let elapsed = std::time::Instant::now().duration_since(before);
+    println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
     call_finishing_hit_effects(defender_boma);
 }
 
