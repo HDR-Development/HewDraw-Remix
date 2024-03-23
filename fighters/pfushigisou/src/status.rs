@@ -13,8 +13,6 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("pfushigisou")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }
