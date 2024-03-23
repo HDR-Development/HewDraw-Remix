@@ -496,6 +496,20 @@ const COUNTER: i32 = 0x01FE;
 const NUM_ANGLE_CHECK: i32 = 10;
 const NUM_FALSE_ANGLES_ALLOWED: i32 = 1;
 
+unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
+    for is_abs in [false, true] {
+        for id in 0..8 {
+            let attack_data = AttackModule::attack_data(attacker_boma, id, is_abs);
+            let off = if is_abs { 0xd9 } else { 0xc9 };
+            if AttackModule::is_attack(attacker_boma, id, is_abs)
+            && *attack_data.cast::<bool>().add(off) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     if !defender_boma.is_fighter() { return false; }
     if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return false; }
@@ -503,6 +517,7 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         println!("no effects because COUNTER: {}", VarModule::get_int(defender_boma.object(), COUNTER));
         return false; 
     }
+    if is_no_finishing_hit(attacker_boma) { return false; }
     if !is_training_mode() {
         // ensure kill calculations only occur when the defender is on their last stock
         let entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
