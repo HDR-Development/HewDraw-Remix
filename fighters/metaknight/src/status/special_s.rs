@@ -15,8 +15,6 @@ pub unsafe extern "C" fn special_s_end_end(fighter: &mut L2CFighterCommon) -> L2
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("metaknight")
-        .status(End, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END, special_s_end_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END, special_s_end_end);
 }
