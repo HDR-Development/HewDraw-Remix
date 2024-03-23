@@ -499,7 +499,10 @@ const NUM_FALSE_ANGLES_ALLOWED: i32 = 1;
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     if !defender_boma.is_fighter() { return false; }
     if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return false; }
-    if VarModule::get_int(defender_boma.object(), COUNTER) != 0 { return false; }
+    if VarModule::get_int(defender_boma.object(), COUNTER) > 0 {
+        println!("no effects because COUNTER: {}", VarModule::get_int(defender_boma.object(), COUNTER));
+        return false; 
+    }
     if !is_training_mode() {
         // ensure kill calculations only occur when the defender is on their last stock
         let entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
@@ -510,12 +513,12 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         // in training mode, check the flag for if the effects should be played
         let mut is_training_toggle = false;
         if !attacker_boma.is_weapon() {
-            if VarModule::is_flag(attacker_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
+            if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) { is_training_toggle = true; }
         } else {
             let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let owner = utils_dyn::util::get_battle_object_from_id(owner_id);
             let owner_boma = &mut *(*owner).module_accessor;
-            if VarModule::is_flag(owner_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
+            if VarModule::is_flag(owner_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) { is_training_toggle = true; }
         }
         if !is_training_toggle { return false; }
     }
@@ -575,12 +578,11 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         let mut does_angle_kill = false;
         while context.hitstun > x as f32  {
             context.step();
-            if !(30.0..150.0).contains(&ang.to_degrees())
-            && GroundModule::ray_check(
+            if GroundModule::ray_check(
                 defender_boma, 
                 &Vector2f{ x: context.x_pos_prev, y: context.y_pos_prev}, 
                 &Vector2f{ x: context.x_pos - context.x_pos_prev, y: context.y_pos - context.y_pos_prev}, 
-                true 
+                context.y_pos <= context.y_pos_prev // only check for platforms if going downwards
             ) == 1 {
                 // if it's ever possible to touch stage, this is not a valid finishing hit
                 println!("idx: {} would touch stage", idx);
