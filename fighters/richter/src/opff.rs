@@ -30,6 +30,7 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// knife drift
 unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {

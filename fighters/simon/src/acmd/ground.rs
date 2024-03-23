@@ -126,6 +126,22 @@ unsafe extern "C" fn sound_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_attackdash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_rush"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("simon")
         .acmd("game_attack11", game_attack11)
@@ -133,5 +149,6 @@ pub fn install() {
         .acmd("game_attackdash", game_attackdash)
         .acmd("effect_attackdash", effect_attackdash)
         .acmd("sound_attackdash", sound_attackdash)
+        .acmd("expression_attackdash", expression_attackdash)
         .install();
 }
