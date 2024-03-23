@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
+unsafe fn winged_pikmin_cancel(agent: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::SpecialN) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END, false);
@@ -12,13 +12,13 @@ unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut Battle
             VarModule::on_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR);
         }
     }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && CancelModule::is_enable_cancel(fighter.module_accessor)
+    if agent.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
+    && agent.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(agent.module_accessor)
+    && CancelModule::is_enable_cancel(agent.module_accessor)
     && VarModule::is_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        agent.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(agent.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
 }
@@ -50,10 +50,10 @@ pub struct TroopManager {
     // funny blujay made this happen
 }
 
-unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ENTRY
+unsafe fn pikmin_antenna_indicator(agent: &mut L2CFighterCommon) {
+    if agent.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ENTRY
     || sv_information::is_ready_go() {
-        let troops = WorkModule::get_int64(fighter.module_accessor, 0x100000C0);
+        let troops = WorkModule::get_int64(agent.module_accessor, 0x100000C0);
         // 0x100000C0 = FIGHTER_PIKMIN_INSTANCE_WORK_INT_TROOPS_MANAGER_ADDRESS
         let troopmanager = troops as *const TroopManager;
         let count = (*troopmanager).current_pikmin_count;
@@ -67,7 +67,7 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
             pikmin = std::ptr::null_mut();
             pikmin_id = *BATTLE_OBJECT_ID_INVALID as u32;
         }
-        let antenna_eff = WorkModule::get_int(fighter.module_accessor, 0x100000C4) as u32;
+        let antenna_eff = WorkModule::get_int(agent.module_accessor, 0x100000C4) as u32;
         // 0x100000C4 = FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_ANTENNA_EFFECT_HANDLE
         if pikmin_id != *BATTLE_OBJECT_ID_INVALID as u32
         && sv_battle_object::is_active(pikmin_id) {
@@ -102,75 +102,74 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
                     b_param = "antenna.light_medium_high";
                 }  // Purple
             };
-            let r = ParamModule::get_float(fighter.battle_object, ParamType::Agent, r_param);
-            let g = ParamModule::get_float(fighter.battle_object, ParamType::Agent, g_param);
-            let b = ParamModule::get_float(fighter.battle_object, ParamType::Agent, b_param);
-            let alpha = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "antenna.light_bright_alpha");
-            EffectModule::set_alpha(fighter.module_accessor, antenna_eff, 1.0);
-            EffectModule::set_rgb(fighter.module_accessor, antenna_eff, r, g, b);
+            let r = ParamModule::get_float(agent.battle_object, ParamType::Agent, r_param);
+            let g = ParamModule::get_float(agent.battle_object, ParamType::Agent, g_param);
+            let b = ParamModule::get_float(agent.battle_object, ParamType::Agent, b_param);
+            let alpha = ParamModule::get_float(agent.battle_object, ParamType::Agent, "antenna.light_bright_alpha");
+            EffectModule::set_alpha(agent.module_accessor, antenna_eff, 1.0);
+            EffectModule::set_rgb(agent.module_accessor, antenna_eff, r, g, b);
         }
         else {
             // No Pikmin, make it transparent and grey.
-            let rgb = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "antenna.light_medium_high");
-            EffectModule::set_rgb(fighter.module_accessor, antenna_eff, rgb, rgb, rgb);
-            let alpha = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "antenna.light_dim_alpha");
-            EffectModule::set_alpha(fighter.module_accessor, antenna_eff, 0.05);
+            let rgb = ParamModule::get_float(agent.battle_object, ParamType::Agent, "antenna.light_medium_high");
+            EffectModule::set_rgb(agent.module_accessor, antenna_eff, rgb, rgb, rgb);
+            let alpha = ParamModule::get_float(agent.battle_object, ParamType::Agent, "antenna.light_dim_alpha");
+            EffectModule::set_alpha(agent.module_accessor, antenna_eff, 0.05);
         }
     }
 }
 
-unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_in_hitlag()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
+unsafe fn fastfall_specials(agent: &mut L2CFighterCommon) {
+    if !agent.is_in_hitlag()
+    && !StatusModule::is_changing(agent.module_accessor)
+    && agent.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END
         ]) 
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+    && agent.is_situation(*SITUATION_KIND_AIR) {
+        agent.sub_air_check_dive();
+        if agent.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(agent.module_accessor)) {
+                agent.clear_lua_stack();
+                lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(agent.lua_state_agent);
 
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                agent.clear_lua_stack();
+                lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(agent.lua_state_agent);
                 
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+                agent.clear_lua_stack();
+                lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(agent.lua_state_agent);
 
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, agent.module_accessor);
             }
         }
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    winged_pikmin_cancel(fighter, boma, status_kind, cat[0]);
+pub unsafe fn moveset(agent: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    winged_pikmin_cancel(agent, boma, status_kind, cat[0]);
     solimar_scaling(boma, status_kind, frame);
-    pikmin_antenna_indicator(fighter);
-    fastfall_specials(fighter);
+    pikmin_antenna_indicator(agent);
+    fastfall_specials(agent);
 }
 
-pub extern "C" fn pikmin_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn pikmin_frame_wrapper(agent: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        common::opff::fighter_common_opff(fighter);
-		pikmin_frame(fighter)
+        common::opff::fighter_common_opff(agent);
+		pikmin_frame(agent)
     }
 }
 
-pub unsafe fn pikmin_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+pub unsafe fn pikmin_frame(agent: &mut smash::lua2cpp::L2CFighterCommon) {
+    if let Some(info) = FrameInfo::update_and_get(agent) {
+        moveset(agent, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
+pub fn install(agent: &mut Agent) {
     smashline::Agent::new("pikmin")
         .on_line(Main, pikmin_frame_wrapper)
-        .install();
 }

@@ -39,8 +39,9 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
+    let agent = &mut Agent::new("pikmin");
+    acmd::install(agent);
     pikmin::install();
-    status::install();
-    opff::install();
+    status::install(agent);
+    opff::install(agent);
 }
