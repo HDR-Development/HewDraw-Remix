@@ -489,20 +489,19 @@ extern "C" {
 
 const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
+const NUM_ANGLE_CHECK: i32 = 10;
+const NUM_FALSE_ANGLES_ALLOWED: i32 = 1;
 
-pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: *const f32) {
-    *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
-    let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
-    let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
-    if !defender_boma.is_fighter() { return; }
-    if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return; }
-
+unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
+    if !defender_boma.is_fighter() { return false; }
+    if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { return false; }
+    if VarModule::get_int(defender_boma.object(), COUNTER) != 0 { return false; }
     if !is_training_mode() {
         // ensure kill calculations only occur when the defender is on their last stock
         let entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-        let manager = utils_dyn::singletons::FighterManager() as *mut u64;
+        // let manager = utils_dyn::singletons::FighterManager() as *mut u64;
         let fighter_info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
-        if FighterInformation::stock_count(fighter_info) != 1 { return; }
+        if FighterInformation::stock_count(fighter_info) != 1 { return false; }
     } else {
         // in training mode, check the flag for if the effects should be played
         let mut is_training_toggle = false;
@@ -514,9 +513,12 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
             let owner_boma = &mut *(*owner).module_accessor;
             if VarModule::is_flag(owner_boma.object(), vars::common::instance::TRAINING_KILL_EFFECTS) { is_training_toggle = true; }
         }
-        if !is_training_toggle { return; }
+        if !is_training_toggle { return false; }
     }
+    return true;
+}
 
+unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender_boma: &mut BattleObjectModuleAccessor) -> bool {
     let knockback = *knockback_info;
     let initial_speed_x = *knockback_info.add(4);
     let initial_speed_y = *knockback_info.add(5);
@@ -554,30 +556,32 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     let di_angle = defender_boma.get_param_float("common", "damage_fly_correction_max");
     let min_di = kb_angle - di_angle;
     let max_di = kb_angle + di_angle;
-    let step = (di_angle * 2.0) / 10.0;
+
+    let step = (di_angle * 2.0) / (NUM_ANGLE_CHECK as f32);
     let context_ref = context;
-    //println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
+    println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
 
     // checks 10 different DI angles and sees how many of them will result in a kill
     let mut kill_angle_num = 0;
-    for idx in 0..10 {
+    for idx in 0..NUM_ANGLE_CHECK {
         let ang = (min_di + (idx as f32 * step)).to_radians();
         context.x_launch_speed = ang.cos() * mag;
         context.y_launch_speed = ang.sin() * mag;
         let mut x = 0;
-        let mut will_touch_stage = false;
         while context.hitstun > x as f32  {
             context.step();
             if GroundModule::ray_check(
                 defender_boma, 
                 &Vector2f{ x: context.x_pos, y: (context.y_pos + 4.0)}, 
                 &Vector2f{ x: 0.0, y: -6.0}, 
-                true ) == 1
+                true 
+            ) == 1
             && !(30.0..150.0).contains(&ang.to_degrees()) {
-                    will_touch_stage = true;
+                // if it's ever possible to touch stage, this is not a valid finishing hit
+                println!("idx: {} would touch stage", idx);
+                return false;
             }
-            if !blastzones.contains(context.x_pos, context.y_pos)
-            && !will_touch_stage {
+            if !blastzones.contains(context.x_pos, context.y_pos){
                 //println!("{} will kill! adding to counter.", ang.to_degrees());
                 kill_angle_num += 1;
                 break;
@@ -586,21 +590,34 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         }
         context = context_ref;
     }
-
-    //println!("kill angles: {}/10", kill_angle_num);
-    if kill_angle_num >= 9
-    && VarModule::get_int(defender_boma.object(), COUNTER) == 0 {
-        let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
-        EffectModule::set_billboard(defender_boma, handle as u32, true);
-        EffectModule::set_disable_render_offset_last(defender_boma);
-        VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
-        VarModule::set_int(defender_boma.object(), COUNTER, 20);
-        SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
-        VarModule::set_int(defender_boma.object(), COUNTER, 20);
-        SlowModule::set_whole(defender_boma, 8, 25);
-        let common = utils_dyn::util::get_fighter_common_from_accessor(defender_boma);
-        EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
+    println!("kill angles: {}", kill_angle_num);
+    if kill_angle_num < NUM_ANGLE_CHECK - NUM_FALSE_ANGLES_ALLOWED {
+        return false;
     }
+    return true;
+}
+
+unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor) {
+    let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
+    EffectModule::set_billboard(defender_boma, handle as u32, true);
+    EffectModule::set_disable_render_offset_last(defender_boma);
+    VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
+    VarModule::set_int(defender_boma.object(), COUNTER, 20);
+    SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
+    VarModule::set_int(defender_boma.object(), COUNTER, 20);
+    SlowModule::set_whole(defender_boma, 8, 25);
+    let common = utils_dyn::util::get_fighter_common_from_accessor(defender_boma);
+    EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
+}
+
+pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: *const f32) {
+    *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
+    let defender_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(defender)).module_accessor;
+    let attacker_boma = &mut *(*utils_dyn::util::get_battle_object_from_id(attacker)).module_accessor;
+
+    if !is_potential_finishing_hit(defender_boma, attacker_boma) { return; }
+    if !is_valid_finishing_hit(knockback_info, defender_boma) { return; }
+    call_finishing_hit_effects(defender_boma);
 }
 
 static mut IS_CALCULATING: Option<(u32, u32)> = None;
