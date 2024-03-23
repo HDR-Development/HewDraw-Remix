@@ -146,25 +146,19 @@ unsafe extern "C" fn wario_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2
     
     return false.into();
 }
-pub fn install() {
-    special_s::install();
-    special_hi::install();
+pub fn install(agent: &mut Agent) {
+    special_s::install(agent);
+    special_hi::install(agent);
 
-    smashline::Agent::new("wario")
-        .on_start(wario_init)
-        .status(Exec, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_exec)
-        .status(End, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_end)
-        .status(Pre, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_pre)
-        .status(Init, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_init)
-        .status(Main, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_main)
-        .status(Exit, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exit)
-        .status(End, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_end)
-        .status(Exec, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exec)
-        .status(
-            End,
-            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-            wario_landing_attack_end,
-        )
-        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, wario_attack_air_exec)
-        .install();
+    agent.on_start(wario_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_exec);
+    agent.status(End, *FIGHTER_STATUS_KIND_CATCH_ATTACK, catch_attack_end);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exit);
+    agent.status(End, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_end);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exec);
+    agent.status(End,*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,wario_landing_attack_end,);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, wario_attack_air_exec);
 }
