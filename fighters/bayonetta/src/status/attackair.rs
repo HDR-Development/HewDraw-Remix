@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 
- 
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
@@ -67,13 +66,7 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
     false.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,
-            attack_air_f_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,attack_air_f_main,);
 }

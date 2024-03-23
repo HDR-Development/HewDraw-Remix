@@ -240,17 +240,7 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,
-            bayonetta_specialairs_d_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,
-            bayonetta_specialairs_u_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,bayonetta_specialairs_d_main,);
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,bayonetta_specialairs_u_main,);
 }

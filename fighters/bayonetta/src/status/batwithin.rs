@@ -24,8 +24,6 @@ unsafe extern "C" fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(End, *FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN, batwithin_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN, batwithin_end);
 }

@@ -152,8 +152,6 @@ pub unsafe fn bayonetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .on_line(Main, bayonetta_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, bayonetta_frame_wrapper);
 }
