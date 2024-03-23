@@ -38,7 +38,9 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("reflet");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
 }

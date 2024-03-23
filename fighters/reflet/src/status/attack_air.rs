@@ -25,10 +25,8 @@ unsafe extern "C" fn reflet_attack_air_main(fighter: &mut L2CFighterCommon) -> L
     attack_air_float_main(fighter, statuses::reflet::FLOAT.into())
 }
 
-pub fn install() {
-    smashline::Agent::new("reflet")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, reflet_attack_air_pre)
-        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, init_attack_air)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, reflet_attack_air_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, reflet_attack_air_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, init_attack_air);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, reflet_attack_air_main);
 }

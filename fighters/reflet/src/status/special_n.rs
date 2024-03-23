@@ -6,8 +6,6 @@ pub unsafe extern "C" fn init_special_n(fighter: &mut L2CFighterCommon) -> L2CVa
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("reflet")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, init_special_n)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, init_special_n);
 }
