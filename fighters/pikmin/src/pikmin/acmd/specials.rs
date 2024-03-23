@@ -149,25 +149,24 @@ unsafe extern "C" fn game_spsthrown_y(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin_pikmin")
-        .acmd("game_spsremved", game_spsremved)
-        .acmd("game_spsremved_b", game_spsremved)
-        .acmd("game_spsremved_v", game_spsremved)
-        .acmd("game_spsremved_w", game_spsremved)
-        .acmd("game_spsremved_y", game_spsremved)
-        .acmd("game_splwairrespond", game_spsremved)
-        .acmd("game_splwairrespond_b", game_spsremved)
-        .acmd("game_splwairrespond_v", game_spsremved)
-        .acmd("game_splwairrespond_w", game_spsremved)
-        .acmd("game_splwairrespond_y", game_spsremved)
-        .acmd("game_spntakenoutstart", pikmin_special_n_pikmin)
-        .acmd("game_spntakenoutstart_y", pikmin_special_n_pikmin)
-        .acmd("game_spntakenoutstart_b", pikmin_special_n_pikmin)
-        .acmd("game_spntakenoutstart_w", pikmin_special_n_pikmin)
-        .acmd("game_spntakenoutstart_v", pikmin_special_n_pikmin)
-        .acmd("game_spsthrown", game_spsthrown)
-        .acmd("game_spsthrown_b", game_spsthrown_b)
-        .acmd("game_spsthrown_v", game_spsthrown_v)
-        .acmd("game_spsthrown_w", game_spsthrown_w)
-        .acmd("game_spsthrown_y", game_spsthrown_y)
+agent.acmd("game_spsremved", game_spsremved);
+agent.acmd("game_spsremved_b", game_spsremved);
+agent.acmd("game_spsremved_v", game_spsremved);
+agent.acmd("game_spsremved_w", game_spsremved);
+agent.acmd("game_spsremved_y", game_spsremved);
+agent.acmd("game_splwairrespond", game_spsremved);
+agent.acmd("game_splwairrespond_b", game_spsremved);
+agent.acmd("game_splwairrespond_v", game_spsremved);
+agent.acmd("game_splwairrespond_w", game_spsremved);
+agent.acmd("game_splwairrespond_y", game_spsremved);
+agent.acmd("game_spntakenoutstart", game_spntakenoutstart);
+agent.acmd("game_spntakenoutstart_y", game_spntakenoutstart);
+agent.acmd("game_spntakenoutstart_b", game_spntakenoutstart);
+agent.acmd("game_spntakenoutstart_w", game_spntakenoutstart);
+agent.acmd("game_spntakenoutstart_v", game_spntakenoutstart);
+agent.acmd("game_spsthrown", game_spsthrown);
+agent.acmd("game_spsthrown_b", game_spsthrown_b);
+agent.acmd("game_spsthrown_v", game_spsthrown_v);
+agent.acmd("game_spsthrown_w", game_spsthrown_w);
+agent.acmd("game_spsthrown_y", game_spsthrown_y);
 }

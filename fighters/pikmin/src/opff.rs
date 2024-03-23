@@ -170,6 +170,5 @@ pub unsafe fn pikmin_frame(agent: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin")
-        .on_line(Main, pikmin_frame_wrapper)
+    agent.on_line(Main, pikmin_frame_wrapper);
 }

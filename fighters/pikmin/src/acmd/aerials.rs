@@ -217,7 +217,7 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -310,16 +310,15 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin")
-        .acmd("game_attackairf", olimar_attack_air_f_game)
-        .acmd("expression_attackairf", olimar_attack_air_f_expression)
-        .acmd("game_attackairhi", olimar_attack_air_hi_game)
-        .acmd("expression_attackairhi", olimar_attack_air_hi_expression)
-        .acmd("game_attackairlw", olimar_attack_air_lw_game)
-        .acmd("game_attackairb", olimar_attack_air_b_game)
-        .acmd("expression_attackairb", olimar_attack_air_b_expression)
-        .acmd("game_attackairn", olimar_attack_air_n_game)
-        .acmd("effect_attackairn", effect_attackairn)
-        .acmd("sound_attackairn", sound_attackairn)
-        .acmd("expression_attackairn", expression_attackairn)
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("expression_attackairb", expression_attackairb);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("sound_attackairn", sound_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
 }

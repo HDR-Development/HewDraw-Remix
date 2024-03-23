@@ -7,6 +7,5 @@ pub unsafe extern "C" fn escape_air_end(agent: &mut L2CFighterCommon) -> L2CValu
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin")
-        .status(End, *FIGHTER_STATUS_KIND_ESCAPE_AIR, escape_air_end)
+        agent.status(End, *FIGHTER_STATUS_KIND_ESCAPE_AIR, escape_air_end)
 }

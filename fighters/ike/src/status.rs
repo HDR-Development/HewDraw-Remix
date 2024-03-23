@@ -49,9 +49,7 @@ unsafe extern "C" fn ike_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("ike")
-        .on_start(ike_init)
+pub fn install(agent: &mut Agent) {
+    agent.on_start(ike_init)
         .status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, ike_rebirth_end)
-        .install();
 }

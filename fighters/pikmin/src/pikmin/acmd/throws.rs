@@ -102,26 +102,25 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin_pikmin")
-        .acmd("game_throwb", game_throwb)
-        .acmd("game_throwb_b", game_throwb)
-        .acmd("game_throwb_v", game_throwb)
-        .acmd("game_throwb_w", game_throwb)
-        .acmd("game_throwb_y", game_throwb)
-        .acmd("game_throwf", game_throwf)
-        .acmd("game_throwf_b", game_throwf)
-        .acmd("game_throwf_v", game_throwf)
-        .acmd("game_throwf_w", game_throwf)
-        .acmd("game_throwf_y", game_throwf)
-        .acmd("game_throwhi", game_throwhi)
-        .acmd("game_throwhi_b", game_throwhi)
-        .acmd("game_throwhi_v", game_throwhi)
-        .acmd("game_throwhi_w", game_throwhi)
-        .acmd("game_throwhi_y", game_throwhi)
-        .acmd("game_throwlw", game_throwlw)
-        .acmd("game_throwlw_b", game_throwlw)
-        .acmd("game_throwlw_v", game_throwlw)
-        .acmd("game_throwlw_w", game_throwlw)
-        .acmd("game_throwlw_y", game_throwlw)
+pub fn install(agent: &mut Agent) {;
+        agent.acmd("game_throwb", game_throwb);
+        agent.acmd("game_throwb_b", game_throwb);
+        agent.acmd("game_throwb_v", game_throwb);
+        agent.acmd("game_throwb_w", game_throwb);
+        agent.acmd("game_throwb_y", game_throwb);
+        agent.acmd("game_throwf", game_throwf);
+        agent.acmd("game_throwf_b", game_throwf);
+        agent.acmd("game_throwf_v", game_throwf);
+        agent.acmd("game_throwf_w", game_throwf);
+        agent.acmd("game_throwf_y", game_throwf);
+        agent.acmd("game_throwhi", game_throwhi);
+        agent.acmd("game_throwhi_b", game_throwhi);
+        agent.acmd("game_throwhi_v", game_throwhi);
+        agent.acmd("game_throwhi_w", game_throwhi);
+        agent.acmd("game_throwhi_y", game_throwhi);
+        agent.acmd("game_throwlw", game_throwlw);
+        agent.acmd("game_throwlw_b", game_throwlw);
+        agent.acmd("game_throwlw_v", game_throwlw);
+        agent.acmd("game_throwlw_w", game_throwlw);
+        agent.acmd("game_throwlw_y", game_throwlw);
 }

@@ -38,8 +38,8 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+pub fn install(agent: &mut Agent) {
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
 }

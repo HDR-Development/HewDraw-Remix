@@ -164,6 +164,5 @@ unsafe extern "C" fn link_event_store_l2c_table(agent: &mut L2CFighterCommon, li
     ret
 }
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("pikmin")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
+        agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
 }
