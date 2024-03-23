@@ -39,7 +39,7 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    let agent = &mut Agent::new("diddy kong");
+    let agent = &mut Agent::new("diddy");
     acmd::install(agent);
     status::install(agent);
     opff::install(agent);
