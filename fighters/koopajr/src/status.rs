@@ -42,12 +42,11 @@ unsafe extern "C" fn koopajr_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install() {
-    special_s_jump::install();
-    special_hi_escape::install();
-    special_hi_damage::install();
-    smashline::Agent::new("koopajr")
-        .on_start(koopajr_init)
-        .status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, koopajr_rebirth_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    special_s_jump::install(agent);
+    special_hi_escape::install(agent);
+    special_hi_damage::install(agent);
+    agent.on_start(koopajr_init);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, koopajr_rebirth_end);
+    agent.install();
 }
