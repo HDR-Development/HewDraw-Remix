@@ -3,46 +3,11 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-// upB freefalls after one use per airtime
-unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor)
-    && (fighter.is_situation(*SITUATION_KIND_GROUND)
-        || fighter.is_situation(*SITUATION_KIND_CLIFF)
-        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
-    {
-        VarModule::off_flag(fighter.battle_object, vars::richter::instance::UP_SPECIAL_FREEFALL);
-    }
-    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::richter::instance::UP_SPECIAL_FREEFALL);
-        }
-    }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        if fighter.is_situation(*SITUATION_KIND_AIR)
-        && !StatusModule::is_changing(fighter.module_accessor)
-        && VarModule::is_flag(fighter.battle_object, vars::richter::instance::UP_SPECIAL_FREEFALL) {
-            if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-                let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
-                *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
-            }
-        }
-    }
-}
-
-// knife drift
-unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            }
-        }
-    }
-}
-
 // knife land cancel
 unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
     && VarModule::is_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL)
     && boma.is_situation(*SITUATION_KIND_GROUND) {
@@ -57,24 +22,6 @@ unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
         MotionModule::change_motion(boma, Hash40::new("landing_fall_special"), 0.0, rate, false, 0.0, false, false);
         VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
         EffectModule::kill_kind(boma, Hash40::new("sys_sp_flash"), true, true);
-    }
-}
-
-// dtilt bounce
-unsafe fn dtilt_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
-    if fighter.is_motion(Hash40::new("attack_lw32"))
-    && fighter.motion_frame() > 1.0 {
-        let mut speed = -0.2;
-        if fighter.motion_frame() < 18.0 { 
-            speed = -0.05;
-        }
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_lw2"), 0.0, 1.0, false, 0.0, false, false);
-            KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(0.0, speed, 0.0));
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            WorkModule::off_flag(boma, *FIGHTER_SIMON_STATUS_ATTACK_LW32_WORK_ID_FLAG_LANDING_AIR);
-        }
     }
 }
 
@@ -109,7 +56,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2
@@ -137,12 +83,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
     knife_lc(boma);
-    dtilt_bounce(fighter, boma);
     whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
-    up_special_freefall(fighter);
 }
 
 pub extern "C" fn richter_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

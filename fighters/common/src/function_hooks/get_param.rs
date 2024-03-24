@@ -476,6 +476,15 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
 
+        // else if fighter_kind == *WEAPON_KIND_RICHTER_AXE {
+        //     if x1 == hash40("param_axe") {
+        //         if (&[hash40("throw_angle"), hash40("throw_angle_stick_back"), hash40("throw_angle_stick_back")]).contains(&x2)
+        //         && owner_module_accessor.is_situation(*SITUATION_KIND_AIR) {
+        //             return -30.0;
+        //         }
+        //     }
+        // }
+
     }
 
     original!()(x0, x1, x2)

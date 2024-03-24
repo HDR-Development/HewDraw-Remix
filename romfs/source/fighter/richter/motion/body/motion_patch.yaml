@@ -26,7 +26,7 @@ attack_13:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 27
+    cancel_frame: 30
     freeze_during_hitstop: false
 attack_12:
   flags:
@@ -49,10 +49,10 @@ attack_hi4:
     cancel_frame: 52
 attack_hi3:
   extra:
-    cancel_frame: 33
+    cancel_frame: 36
 attack_dash:
   extra:
-    cancel_frame: 36
+    cancel_frame: 40
 attack_s3_s:
   flags:
     move: false
@@ -127,22 +127,22 @@ special_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 35
+    cancel_frame: 45
 special_air_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 35
+    cancel_frame: 45
 special_lw:
   flags:
     move: true
   extra:
-    cancel_frame: 36
+    cancel_frame: 44
 special_air_lw:
   flags:
     move: true
   extra:
-    cancel_frame: 36
+    cancel_frame: 44
 attack_air_n:
   extra:
     cancel_frame: 36
@@ -162,11 +162,9 @@ special_hi:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 40
 special_air_hi:
   flags:
     move: true
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 40
