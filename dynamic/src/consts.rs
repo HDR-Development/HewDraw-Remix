@@ -785,6 +785,7 @@ pub mod vars {
         pub mod instance {
             // flag
             pub const EQUIP_MASK: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_LW: i32 = 0x0101;
             
             // int
             /// This int stores damage received from an attack during quick riposte
@@ -798,6 +799,7 @@ pub mod vars {
 
             // flag
             pub const SPECIAL_LW_SPECIAL_CHECK: i32 = 0x1100;
+            pub const SPECIAL_LW_STOP_ON_HIT: i32 = 0x1101;
         }
     }
 

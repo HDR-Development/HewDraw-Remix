@@ -1212,8 +1212,8 @@ unsafe extern "C" fn lucina_special_air_s4_hi_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("top"), 10.0 + add_damage, 79, 80, 0, 60, 3.0, 0.0, 23.0, 14.0, Some(0.0), Some(27.0), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 11.0);
+    FT_MOTION_RATE_RANGE(fighter, 11.0, 44.0, 24.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 24.0/(44.0-11.0));
         AttackModule::clear_all(boma);
     }
 }
@@ -1300,8 +1300,8 @@ unsafe extern "C" fn lucina_special_air_s4_s_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0 + add_damage, 361, 73, 0, 60, 5.0, 0.0, 9.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 10.0);
+    FT_MOTION_RATE_RANGE(fighter, 10.0, 55.0, 35.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 35.0/(55.0-10.0));
         AttackModule::clear_all(boma);
     }
 }
@@ -1580,6 +1580,7 @@ unsafe extern "C" fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
+        SET_SPEED_EX(fighter, 2.3, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 3.0, HitStopMulTarget{_address: (*HIT_STOP_MUL_TARGET_OPPONENT) as u8}, 0.0);
         DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -1595,7 +1596,6 @@ unsafe extern "C" fn lucina_special_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 12.0/(64.0-28.0));
-        VarModule::off_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK)
     }
 }
 
@@ -1604,6 +1604,8 @@ unsafe extern "C" fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
+        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 1.2, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 3.0, HitStopMulTarget{_address: (*HIT_STOP_MUL_TARGET_OPPONENT) as u8}, 0.0);
         DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -1618,7 +1620,6 @@ unsafe extern "C" fn lucina_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK)
     }
 }
 
