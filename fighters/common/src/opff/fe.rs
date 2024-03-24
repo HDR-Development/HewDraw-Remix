@@ -23,13 +23,6 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, fighter_kind
     }
 }
 
-// Lengthen swords
-unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-    let long_sword_scale = Vector3f{x: 1.015, y: 1.115, z: 1.045};
-    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
-    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
-}
-
 #[no_mangle]
 pub unsafe extern "Rust" fn fe_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
@@ -40,5 +33,4 @@ pub unsafe extern "Rust" fn fe_common(fighter: &mut L2CFighterCommon) {
 pub unsafe fn fe_moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     let fighter_kind = boma.kind();
     up_special_reverse(boma, fighter_kind, status_kind, stick_x, facing, frame);
-    sword_length(boma);
 }

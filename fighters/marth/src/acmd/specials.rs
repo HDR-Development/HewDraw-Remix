@@ -679,7 +679,7 @@ unsafe extern "C" fn marth_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
@@ -715,7 +715,7 @@ unsafe extern "C" fn marth_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }

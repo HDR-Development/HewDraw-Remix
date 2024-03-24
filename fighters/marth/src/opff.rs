@@ -73,7 +73,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX
-        ]) 
+        ])
+    
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
@@ -96,11 +97,18 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+    let long_sword_scale = Vector3f{x: 1.015, y: 1.0775, z: 1.045};
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
+    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dancing_blade_vertical_momentum(boma);
     dancing_blade_during_hitlag(fighter);
     up_special_proper_landing(fighter);
     fastfall_specials(fighter);
+    sword_length(&mut *(fighter.module_accessor));
 }
 
 // symbol-based call for the fe characters' common opff
