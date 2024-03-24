@@ -317,89 +317,35 @@ unsafe extern "C" fn tantan_special_hi_air_reach_exec(fighter: &mut L2CFighterCo
     fighter.set_joint_rotate("claviclel", Vector3f::new(0.0, angle, 0.0));
     return 0.into();
 }
-pub fn install() {
-    smashline::Agent::new("tantan")
-        .on_start(tantan_init)
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP_SQUAT, pre_jump_squat)
-        .status(
-            Main,
-            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_AERIAL,
-            tantan_attack_jump_aerial_main,
-        )
-        .status(
-            Exec,
-            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING_LIGHT,
-            tantan_attack_landing_exec,
-        )
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK, tantan_attack_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK, tantan_attack_main)
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_S3, tantan_attack_s3_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, tantan_attack_s3_main)
-        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_S3, tantan_attack_s3_exec)
-        .status(
-            Pre,
-            *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-            tantan_attack_s4_start_pre,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-            tantan_attack_s4_start_main,
-        )
-        .status(
-            Pre,
-            *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
-            tantan_attack_s4_hold_pre,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
-            tantan_attack_s4_hold_main,
-        )
-        .status(
-            Exec,
-            *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
-            tantan_attack_s4_hold_exec,
-        )
-        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_S4, tantan_attack_s4_exec)
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_S4, tantan_attack_s4_end)
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, tantan_attack_air_pre)
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, tantan_attack_air_end)
-        .status(Pre, *FIGHTER_STATUS_KIND_CATCH, tantan_catch_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_CATCH, tantan_catch_main)
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_PULL,
-            tantan_catch_pull_main,
-        )
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_main)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_exec)
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-            tantan_landing_air_main,
-        )
-        .status(
-            Exec,
-            *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND,
-            tantan_special_hi_exec,
-        )
-        .status(
-            Pre,
-            *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR,
-            tantan_special_hi_air_pre,
-        )
-        .status(
-            Exec,
-            *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR,
-            tantan_special_hi_air_exec,
-        )
-        .status(
-            Exec,
-            *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR_REACH,
-            tantan_special_hi_air_reach_exec,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.on_start(tantan_init);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP_SQUAT, pre_jump_squat);
+        agent.status(Main,*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_AERIAL,tantan_attack_jump_aerial_main,);
+        agent.status(Exec,*FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING_LIGHT,tantan_attack_landing_exec,);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK, tantan_attack_pre);
+        agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, tantan_attack_main);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_S3, tantan_attack_s3_pre);
+        agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, tantan_attack_s3_main);
+        agent.status(Exec, *FIGHTER_STATUS_KIND_ATTACK_S3, tantan_attack_s3_exec);
+        agent.status(Pre,*FIGHTER_STATUS_KIND_ATTACK_S4_START,tantan_attack_s4_start_pre,);
+        agent.status(Main,*FIGHTER_STATUS_KIND_ATTACK_S4_START,tantan_attack_s4_start_main,);
+        agent.status(Pre,*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,tantan_attack_s4_hold_pre,);
+        agent.status(Main,*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,tantan_attack_s4_hold_main,);
+        agent.status(Exec,*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,tantan_attack_s4_hold_exec,);
+        agent.status(Exec, *FIGHTER_STATUS_KIND_ATTACK_S4, tantan_attack_s4_exec);
+        agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_S4, tantan_attack_s4_end);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, tantan_attack_air_pre);
+        agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, tantan_attack_air_end);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_CATCH, tantan_catch_pre);
+        agent.status(Main, *FIGHTER_STATUS_KIND_CATCH, tantan_catch_main);
+        agent.status(Main,*FIGHTER_STATUS_KIND_CATCH_PULL,tantan_catch_pull_main,);
+        agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_pre);
+        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_main);
+        agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_exec);
+        agent.status(Main,*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,tantan_landing_air_main,);
+        agent.status(Exec,*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND,tantan_special_hi_exec,);
+        agent.status(Pre,*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR,tantan_special_hi_air_pre,);
+        agent.status(Exec,*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR,tantan_special_hi_air_exec,);
+        agent.status(Exec,*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR_REACH,tantan_special_hi_air_reach_exec);
 }
