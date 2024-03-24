@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn elight_attack_s4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -69,7 +69,7 @@ unsafe extern "C" fn elight_attack_s4_game(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn elight_attack_lw4_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -139,9 +139,7 @@ unsafe extern "C" fn elight_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .acmd("game_attacks4", elight_attack_s4_game)
-        .acmd("game_attacklw4", elight_attack_lw4_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }
