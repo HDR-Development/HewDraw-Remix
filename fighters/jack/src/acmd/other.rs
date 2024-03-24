@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -26,7 +26,7 @@ unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflylw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -51,7 +51,7 @@ unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -76,7 +76,7 @@ unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyroll(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -91,7 +91,7 @@ unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflytop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -116,43 +116,35 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealhil(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     
 }
 
-unsafe extern "C" fn jack_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealhir(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     
 }
 
-unsafe extern "C" fn jack_appeal_s_l_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealsl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     
 }
 
-unsafe extern "C" fn jack_appeal_s_r_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealsr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     
 }
 
-unsafe extern "C" fn jack_appeal_lw_l_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 4.0);
-    frame(lua_state, 5.0);
-    
-}
-
-unsafe extern "C" fn jack_appeal_lw_r_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appeallwl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -160,7 +152,15 @@ unsafe extern "C" fn jack_appeal_lw_r_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appeallwr(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
+    
+}
+
+unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 12.0);
@@ -170,7 +170,7 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -197,18 +197,7 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
-unsafe extern "C" fn jack_fire_hit_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 200, 0, 25, 8.5, 0.0, 1.5, 0.0, Some(0.0), Some(3.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
-        AttackModule::set_poison_param(boma, 0, 361, 45, 1.0, false);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
-    }
-}
-
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -223,7 +212,7 @@ unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -237,14 +226,14 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_attack_lw3_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_jack_special_n01"));
     }
 }
 
-unsafe extern "C" fn jack_attack_lw3_sound_ex(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw3_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_jack_special_n06"));
@@ -259,29 +248,23 @@ unsafe extern "C" fn jack_attack_lw3_sound_ex(agent: &mut L2CAgentBase) {
     }
 
 }
-
-pub fn install() {
-    smashline::Agent::new("jack_fire")
-        .acmd("game_hit", jack_fire_hit_game)
-        .install();
-    smashline::Agent::new("jack")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_appealhil", jack_appeal_hi_l_game)
-        .acmd("game_appealhir", jack_appeal_hi_r_game)
-        .acmd("game_appealsl", jack_appeal_s_l_game)
-        .acmd("game_appealsr", jack_appeal_s_r_game)
-        .acmd("game_appeallwl", jack_appeal_lw_l_game)
-        .acmd("game_appeallwr", jack_appeal_lw_r_game)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("sound_attacklw3", jack_attack_lw3_sound)
-        .acmd("sound_attacklw3_ex", jack_attack_lw3_sound_ex)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_damageflyhi", sound_damageflyhi);
+    agent.acmd("sound_damageflylw", sound_damageflylw);
+    agent.acmd("sound_damageflyn", sound_damageflyn);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflytop", sound_damageflytop);
+    agent.acmd("game_appealhil", game_appealhil);
+    agent.acmd("game_appealhir", game_appealhir);
+    agent.acmd("game_appealsl", game_appealsl);
+    agent.acmd("game_appealsr", game_appealsr);
+    agent.acmd("game_appeallwl", game_appeallwl);
+    agent.acmd("game_appeallwr", game_appeallwr);
+    agent.acmd("game_dash", game_dash);
+    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("game_turndash", turn_dash_game);
+    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("sound_attacklw3", sound_attacklw3);
+    agent.acmd("sound_attacklw3_ex", sound_attacklw3_ex);
 }
