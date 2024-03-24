@@ -38,7 +38,8 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    acmd::install(agent);    let agent = &mut Agent::new("chrom");
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }
