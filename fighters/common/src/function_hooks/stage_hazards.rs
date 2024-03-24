@@ -128,6 +128,6 @@ pub fn install() {
         handle_movement_grav_update,
         fix_hazards_for_online,
         lylat_no_rot,
-        lylat_set_form_hazards_off
+        // lylat_set_form_hazards_off
     );
 }
