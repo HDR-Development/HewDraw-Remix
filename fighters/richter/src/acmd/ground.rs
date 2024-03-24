@@ -31,7 +31,6 @@ unsafe extern "C" fn richter_attack_11_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 9.5, 2.2, 13, -29, 154, 0.8, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
     }
 }
 
@@ -42,6 +41,14 @@ unsafe extern "C" fn richter_attack_11_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
         PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
+    }
+}
+
+unsafe extern "C" fn richter_whip_attack_11_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
     }
 }
 
@@ -109,6 +116,14 @@ unsafe extern "C" fn richter_attack_13_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn richter_whip_attack_12_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
     }
 }
 
@@ -223,7 +238,6 @@ unsafe extern "C" fn richter_attack_dash_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 11.5, 0.0, 12, -20, 150, 1.1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
         LAST_EFFECT_SET_RATE(fighter, 1.8);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_speedline"), false, true);
     }
@@ -322,6 +336,8 @@ pub fn install() {
         .acmd("expression_attackdash", richter_attack_dash_expression)
         .install();
         smashline::Agent::new("richter_whip")
+        .acmd("game_attack11", richter_whip_attack_11_game)
+        .acmd("game_attack12", richter_whip_attack_12_game)
         .acmd("game_attack13", richter_whip_attack_13_game)
         .acmd("game_attackdash", richter_whip_attack_dash_game)
         .install();

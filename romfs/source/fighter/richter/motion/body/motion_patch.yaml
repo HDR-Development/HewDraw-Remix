@@ -49,7 +49,7 @@ attack_hi4:
     cancel_frame: 52
 attack_hi3:
   extra:
-    cancel_frame: 28
+    cancel_frame: 33
 attack_dash:
   extra:
     cancel_frame: 36
@@ -153,16 +153,20 @@ attack_air_lw2:
   blend_frames: 8
   extra:
     cancel_frame: 25
-special_air_hi:
-  flags:
-    move: true
-  extra:
-    cancel_frame: 35
-special_air_hi:
-  flags:
-    move: true
-  extra:
-    cancel_frame: 35
 throw_hi:
   extra:
     cancel_frame: 35
+special_hi:
+  flags:
+    move: true
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 40
+special_air_hi:
+  flags:
+    move: true
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 40
